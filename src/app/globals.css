@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+:root {
+  /* Brand Colors */
+  --primary: #4F46E5; /* Indigo 600 */
+  --primary-light: #818CF8;
+  --primary-dark: #3730A3;
+  
+  --secondary: #10B981; /* Emerald 500 */
+  --accent: #F43F5E; /* Rose 500 */
+  
+  /* Neutral Colors */
+  --background: #F8FAFC; /* Slate 50 */
+  --surface: #FFFFFF;
+  --foreground: #1E293B; /* Slate 800 */
+  --text-secondary: #64748B; /* Slate 500 */
+  
+  /* UI Elements */
+  --border: #E2E8F0;
+  --radius: 16px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  /* Subtle pattern overlay */
+  background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
+  background-size: 32px 32px;
+  
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.5;
+  
+  /* Flex Layout for Sticky Footer */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
