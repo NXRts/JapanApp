@@ -8,6 +8,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 4rem 2rem;
   min-height: 80vh;
+  
+  @media (max-width: 768px) {
+    padding: 2rem 1rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -18,6 +22,11 @@ const Title = styled.h1`
   -webkit-text-fill-color: transparent;
   font-weight: 800;
   text-align: center;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const Form = styled.form`
@@ -29,6 +38,12 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    border-radius: 16px;
+    gap: 1.25rem;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -112,7 +127,7 @@ export default function ContactPage() {
         <div style={{ textAlign: 'center', padding: '2rem', background: 'var(--surface)', borderRadius: '20px', border: '1px solid var(--border)' }}>
           <h2 style={{ color: 'var(--secondary)', marginBottom: '1rem' }}>Message Sent!</h2>
           <p>Thank you for reaching out. We will get back to you shortly.</p>
-          <button 
+          <button
             onClick={() => setSubmitted(false)}
             style={{ marginTop: '1.5rem', padding: '0.5rem 1rem', background: 'transparent', border: '1px solid var(--primary)', color: 'var(--primary)', borderRadius: '8px', cursor: 'pointer' }}
           >

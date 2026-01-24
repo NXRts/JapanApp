@@ -7,6 +7,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 4rem 2rem;
   min-height: 80vh;
+  
+  @media (max-width: 768px) {
+    padding: 2rem 1rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -17,6 +21,11 @@ const Title = styled.h1`
   -webkit-text-fill-color: transparent;
   font-weight: 800;
   text-align: center;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const Content = styled.div`
@@ -27,6 +36,11 @@ const Content = styled.div`
   border: 1px solid var(--border);
   line-height: 1.8;
   color: var(--foreground);
+  
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
 `;
 
 const Paragraph = styled.p`
@@ -40,12 +54,12 @@ export default function AboutPage() {
       <Title>About Japan Learning App</Title>
       <Content>
         <Paragraph>
-          Welcome to the Japan Learning App, your ultimate companion for mastering the Japanese writing system. 
+          Welcome to the Japan Learning App, your ultimate companion for mastering the Japanese writing system.
           Our mission is to make learning Kanji, Hiragana, and Katakana accessible, interactive, and aesthetically pleasing.
         </Paragraph>
         <Paragraph>
-          Whether you are studying for the JLPT N5 or aiming for advanced N1 proficiency, our tools are designed 
-          to support your journey. We combine modern web technologies with effective learning patterns to 
+          Whether you are studying for the JLPT N5 or aiming for advanced N1 proficiency, our tools are designed
+          to support your journey. We combine modern web technologies with effective learning patterns to
           create a seamless experience.
         </Paragraph>
         <Paragraph>
