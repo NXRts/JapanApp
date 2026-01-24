@@ -8,7 +8,7 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { ThemeProvider } from "@/context/ThemeContext";
 
 const inter = Inter({ subsets: ["latin"] });
-const notoSansJP = Noto_Sans_JP({ 
+const notoSansJP = Noto_Sans_JP({
   weight: ['400', '500', '700'],
   subsets: ["latin"],
   variable: '--font-noto-sans-jp'
@@ -17,6 +17,18 @@ const notoSansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   title: "Japan Learning App",
   description: "Master Kanji and Kana effectively",
+  manifest: "/manifest.json",
+  themeColor: "#4F46E5",
+  viewport: "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "JapanApp",
+  },
+  icons: {
+    icon: "/icons/icon-192.png",
+    apple: "/icons/icon-192.png",
+  },
 };
 
 export default function RootLayout({
@@ -29,12 +41,12 @@ export default function RootLayout({
       <body suppressHydrationWarning className={`${inter.className} ${notoSansJP.variable}`}>
         <ThemeProvider>
           <StyledRegistry>
-          <Navbar />
-          <main style={{ flex: 1, paddingBottom: '40px' }}>
-            {children}
-          </main>
-          <Footer />
-          <ScrollToTop />
+            <Navbar />
+            <main style={{ flex: 1, paddingBottom: '40px' }}>
+              {children}
+            </main>
+            <Footer />
+            <ScrollToTop />
           </StyledRegistry>
         </ThemeProvider>
       </body>
