@@ -124,28 +124,35 @@ const SecondaryButton = styled(Link)`
   align-items: center;
   justify-content: center;
   padding: 1rem 2.5rem;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  color: var(--foreground);
+  color: white;
   font-weight: 700;
   border-radius: 999px;
   text-decoration: none;
-  transition: all 0.3s ease;
-  border: 1px solid var(--border);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
 
   &:hover {
-    background: white;
-    transform: translateY(-3px);
-    border-color: var(--primary);
-    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 1);
+    color: var(--primary);
+    transform: translateY(-4px) scale(1.02);
+    border-color: transparent;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
   }
   
   @media (max-width: 768px) {
     width: 100%;
     padding: 1.25rem 2rem;
     font-size: 1.1rem;
-    background: var(--surface); /* Solid bg for potential mobile contrast issues */
+    background: rgba(255, 255, 255, 0.05);
   }
 `;
 
