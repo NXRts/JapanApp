@@ -10,18 +10,11 @@ const NavRoot = styled.nav`
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--surface);
-  /* Modern glass effect */
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--navbar-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-  
-  /* Dark mode override handled by CSS vars mostly, but ensures surface blend */
-  @media (prefers-color-scheme: dark) {
-    background: rgba(30, 41, 59, 0.85);
-    border-bottom: 1px solid rgba(51, 65, 85, 0.6);
-  }
+  border-bottom: 1px solid var(--navbar-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
 `;
 
 const NavContainer = styled.div`

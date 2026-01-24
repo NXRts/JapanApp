@@ -51,6 +51,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty('--border', '#334155');
       root.style.setProperty('--shadow-sm', '0 1px 2px 0 rgb(0 0 0 / 0.3)');
       root.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.3)');
+      root.style.setProperty('--navbar-bg', 'rgba(30, 41, 59, 0.85)');
+      root.style.setProperty('--navbar-border', 'rgba(51, 65, 85, 0.6)');
+
+      /* Dark: Glassy transparent */
+      root.style.setProperty('--btn-secondary-bg', 'rgba(255, 255, 255, 0.1)');
+      root.style.setProperty('--btn-secondary-text', '#FFFFFF');
+      root.style.setProperty('--btn-secondary-border', 'rgba(255, 255, 255, 0.2)');
     } else {
       root.style.setProperty('--background', '#F8FAFC');
       root.style.setProperty('--surface', '#FFFFFF');
@@ -59,6 +66,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty('--border', '#E2E8F0');
       root.style.setProperty('--shadow-sm', '0 1px 2px 0 rgb(0 0 0 / 0.05)');
       root.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.1)');
+      root.style.setProperty('--dot-color', '#E2E8F0');
+      root.style.setProperty('--navbar-bg', 'rgba(255, 255, 255, 0.85)');
+      root.style.setProperty('--navbar-border', 'rgba(226, 232, 240, 0.6)');
+
+      /* Light: White solid with dark text/primary text */
+      root.style.setProperty('--btn-secondary-bg', '#FFFFFF');
+      root.style.setProperty('--btn-secondary-text', '#4F46E5'); /* Primary color */
+      root.style.setProperty('--btn-secondary-border', '#E2E8F0');
     }
 
     localStorage.setItem('theme-color', color);

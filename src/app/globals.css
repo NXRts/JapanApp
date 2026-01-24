@@ -2,25 +2,39 @@
 
 :root {
   /* Brand Colors */
-  --primary: #4F46E5; /* Indigo 600 */
+  --primary: #4F46E5;
+  /* Indigo 600 */
   --primary-light: #818CF8;
   --primary-dark: #3730A3;
-  
-  --secondary: #10B981; /* Emerald 500 */
-  --accent: #F43F5E; /* Rose 500 */
-  
+
+  --secondary: #10B981;
+  /* Emerald 500 */
+  --accent: #F43F5E;
+  /* Rose 500 */
+
   /* Neutral Colors */
-  --background: #F8FAFC; /* Slate 50 */
+  --background: #F8FAFC;
+  /* Slate 50 */
   --surface: #FFFFFF;
-  --foreground: #1E293B; /* Slate 800 */
-  --text-secondary: #64748B; /* Slate 500 */
-  
+  --foreground: #1E293B;
+  /* Slate 800 */
+  --text-secondary: #64748B;
+  /* Slate 500 */
+
   /* UI Elements */
   --border: #E2E8F0;
   --radius: 16px;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  --navbar-bg: rgba(255, 255, 255, 0.85);
+  --navbar-border: rgba(226, 232, 240, 0.6);
+
+  /* Secondary Button Defaults */
+  --btn-secondary-bg: rgba(255, 255, 255, 0.1);
+  --btn-secondary-text: #FFFFFF;
+  --btn-secondary-border: rgba(255, 255, 255, 0.2);
 }
 
 * {
@@ -39,12 +53,12 @@ body {
   /* Subtle pattern overlay */
   background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
   background-size: 32px 32px;
-  
+
   font-family: 'Inter', 'Noto Sans JP', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
-  
+
   /* Flex Layout for Sticky Footer */
   display: flex;
   flex-direction: column;
