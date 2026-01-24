@@ -181,7 +181,7 @@ export function Footer() {
         <SocialLinks>
           <a href="#" aria-label="Instagram">Instagram</a>
           <a href="#" aria-label="Twitter">Twitter</a>
-          <a href="#" aria-label="GitHub">GitHub</a>
+          <a href="https://github.com/NXRts/JapanApp" aria-label="GitHub">GitHub</a>
           <a href="#" aria-label="Discord">Discord</a>
         </SocialLinks>
       </FooterBottom>
