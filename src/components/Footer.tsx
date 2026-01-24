@@ -176,7 +176,7 @@ export function Footer() {
 
       <FooterBottom>
         <Copyright>
-          &copy; {year} Japan Learning App by NXRts. All rights reserved.
+          &copy; {year} Japan Learning App by <a href="https://github.com/NXRts"><u>NXRts</u></a>. All rights reserved.
         </Copyright>
         <SocialLinks>
           <a href="#" aria-label="Instagram">Instagram</a>
