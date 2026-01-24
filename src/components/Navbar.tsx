@@ -56,33 +56,51 @@ const Logo = styled(Link)`
 
 const NavList = styled.ul`
   display: flex;
+  align-items: center;
   list-style: none;
-  gap: 1rem;
+  gap: 2rem;
   margin: 0;
   padding: 0;
-  background: rgba(0, 0, 0, 0.03);
-  padding: 4px;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  
+  @media (max-width: 768px) {
+    display: none; /* Hide on mobile for now, would need hamburger menu */
+  }
 `;
 
 const NavItem = styled.li`
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 500;
 `;
 
-const StyledLink = styled(Link) <{ $active: boolean }>`
+const StyledLink = styled(Link) <{ $active?: boolean }>`
   color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
   text-decoration: none;
-  transition: all 0.3s ease;
-  padding: 0.6rem 1.2rem;
-  border-radius: 999px;
-  background: ${({ $active }) => ($active ? 'white' : 'transparent')};
-  box-shadow: ${({ $active }) => ($active ? '0 2px 4px rgba(0,0,0,0.05)' : 'none')};
-  display: block;
+  transition: all 0.2s ease;
+  font-weight: ${({ $active }) => ($active ? '600' : '500')};
   
   &:hover {
     color: var(--primary);
+  }
+`;
+
+const LearningLink = styled(Link) <{ $active?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: ${({ $active }) => ($active ? 'var(--primary)' : 'transparent')};
+  color: ${({ $active }) => ($active ? 'white' : 'var(--foreground)')};
+  border-radius: 999px;
+  font-weight: 600;
+  border: 1px solid ${({ $active }) => ($active ? 'transparent' : 'var(--border)')};
+  text-decoration: none;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: ${({ $active }) => ($active ? 'var(--primary-dark)' : 'var(--surface)')};
+    border-color: ${({ $active }) => ($active ? 'transparent' : 'var(--primary)')};
+    color: ${({ $active }) => ($active ? 'white' : 'var(--primary)')};
+    transform: translateY(-1px);
   }
 `;
 
@@ -126,14 +144,10 @@ export function Navbar() {
 
           <NavList>
             <NavItem>
-              <StyledLink href="/kanji" $active={pathname === '/kanji'}>
-                Kanji
-              </StyledLink>
+              <StyledLink href="/about">About</StyledLink>
             </NavItem>
             <NavItem>
-              <StyledLink href="/kana" $active={pathname === '/kana'}>
-                Kana
-              </StyledLink>
+              <StyledLink href="/contact">Contact</StyledLink>
             </NavItem>
           </NavList>
 
