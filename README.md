@@ -4,9 +4,9 @@ A modern, interactive Japanese learning companion application built with Next.js
 
 ## ✨ Features
 
-- **Kanji Grid Visualization**: Explore and learn Kanji characters in an organized grid layout.
-- **Kana Reference**: Comprehensive reference for Hiragana and Katakana.
-- **Interactive Learning**: Tools to assist in memorizing and practicing Japanese characters.
+- **Kanji Grid Visualization**: Explore and learn Kanji characters in an organized, responsive grid layout.
+- **Kana Mastery**: Comprehensive reference and practice tools for both Hiragana and Katakana.
+- **Practice Mode**: Dedicated section to test your knowledge and build muscle memory.
 - **Theme Customization**: Toggle between Light and Dark modes for comfortable viewing in any environment.
 - **Advanced Input Handling**: Integrated **Wanakana** for seamless Romaji-to-Kana conversion.
 - **Responsive Design**: Optimized for a smooth experience across desktop and mobile devices.
@@ -33,8 +33,8 @@ Follow these steps to set up the project locally.
 
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/japan-app.git
-    cd japan-app
+    git clone https://github.com/NXRts/JapanApp.git
+    cd JapanApp
     ```
 
 2.  Install dependencies:
@@ -82,3 +82,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
+
+---
+
+Developed by [NXRts](https://github.com/NXRts)
