@@ -122,6 +122,140 @@ const SectionTitle = styled.h2`
   }
 `;
 
+const StatsSection = styled.section`
+  padding: 3rem 1rem;
+  margin-bottom: 2rem;
+  position: relative;
+  
+  /* Add a subtle separator instead of a box */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+    opacity: 0.5;
+  }
+`;
+
+const StatsGrid = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  text-align: center;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+`;
+
+const StatItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03); /* Extremely subtle highlight */
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+`;
+
+const StatNumber = styled.div`
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.2));
+`;
+
+const StatLabel = styled.div`
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+`;
+
+const StepsSection = styled.section`
+  padding: 6rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+`;
+
+const StepsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3rem;
+  margin-top: 4rem;
+  counter-reset: step-counter;
+  position: relative;
+  
+  /* Connecting line for desktop */
+  @media (min-width: 768px) {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 25px; /* Aligns with circle center roughly, depending on padding */
+      left: 15%;
+      right: 15%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      z-index: 0;
+    }
+  }
+`;
+
+const StepCard = styled.div`
+  position: relative;
+  text-align: center;
+  padding: 2rem;
+  background: var(--surface);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  z-index: 1; /* Sit above the line */
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-light);
+  }
+  
+  &::before {
+    counter-increment: step-counter;
+    content: counter(step-counter);
+    width: 50px;
+    height: 50px;
+    background: var(--surface);
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.5rem;
+    margin: -45px auto 1.5rem; /* Pull up to sit on edge or overlap */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+`;
+
+const StepTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+`;
+
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -220,6 +354,23 @@ export default function Home() {
         </ButtonGroup>
       </HeroSection>
 
+      <StatsSection>
+        <StatsGrid>
+          <StatItem>
+            <StatNumber>2,136</StatNumber>
+            <StatLabel>Joyo Kanji</StatLabel>
+          </StatItem>
+          <StatItem>
+            <StatNumber>92</StatNumber>
+            <StatLabel>Kana Characters</StatLabel>
+          </StatItem>
+          <StatItem>
+            <StatNumber>100%</StatNumber>
+            <StatLabel>Free to Use</StatLabel>
+          </StatItem>
+        </StatsGrid>
+      </StatsSection>
+
       <FeaturesSection>
         <SectionTitle><span>Everything you need</span></SectionTitle>
         <Grid>
@@ -249,6 +400,30 @@ export default function Home() {
           </Card>
         </Grid>
       </FeaturesSection>
+
+      <StepsSection>
+        <SectionTitle><span>How it works</span></SectionTitle>
+        <StepsGrid>
+          <StepCard>
+            <StepTitle>Choose Your Level</StepTitle>
+            <p style={{ color: 'var(--text-secondary)' }}>
+              Start with the basics of Hiragana or challenge yourself with N1 Kanji.
+            </p>
+          </StepCard>
+          <StepCard>
+            <StepTitle>Study Details</StepTitle>
+            <p style={{ color: 'var(--text-secondary)' }}>
+              Learn stroke orders, onyomi/kunyomi readings, and example words.
+            </p>
+          </StepCard>
+          <StepCard>
+            <StepTitle>Test Yourself</StepTitle>
+            <p style={{ color: 'var(--text-secondary)' }}>
+              Reinforce your knowledge with quizzes and writing practice (coming soon).
+            </p>
+          </StepCard>
+        </StepsGrid>
+      </StepsSection>
 
       <CTASection>
         <CTATitle>Ready to start?</CTATitle>
