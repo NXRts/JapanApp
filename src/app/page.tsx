@@ -124,14 +124,14 @@ const SecondaryButton = styled(Link)`
   align-items: center;
   justify-content: center;
   padding: 1rem 2.5rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--btn-secondary-bg);
   backdrop-filter: blur(10px);
-  color: white;
+  color: var(--btn-secondary-text);
   font-weight: 700;
   border-radius: 999px;
   text-decoration: none;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--btn-secondary-border);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   position: relative;
   overflow: hidden;

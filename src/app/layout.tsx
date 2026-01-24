@@ -25,10 +25,6 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "JapanApp",
   },
-  icons: {
-    icon: "/icons/icon-192.png",
-    apple: "/icons/icon-192.png",
-  },
 };
 
 export default function RootLayout({
