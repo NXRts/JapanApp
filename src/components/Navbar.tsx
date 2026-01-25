@@ -207,10 +207,13 @@ export function Navbar() {
 
           <NavList>
             <NavItem>
-              <StyledLink href="/about">About</StyledLink>
+              <StyledLink href="/practice" $active={pathname.startsWith('/practice')}>Practice</StyledLink>
             </NavItem>
             <NavItem>
-              <StyledLink href="/contact">Contact</StyledLink>
+              <StyledLink href="/about" $active={pathname === '/about'}>About</StyledLink>
+            </NavItem>
+            <NavItem>
+              <StyledLink href="/contact" $active={pathname === '/contact'}>Contact</StyledLink>
             </NavItem>
           </NavList>
 
@@ -236,6 +239,7 @@ export function Navbar() {
           <MobileLink href="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact</MobileLink>
           <MobileLink href="/kanji" onClick={() => setIsMobileMenuOpen(false)}>Kanji</MobileLink>
           <MobileLink href="/kana" onClick={() => setIsMobileMenuOpen(false)}>Kana</MobileLink>
+          <MobileLink href="/practice" onClick={() => setIsMobileMenuOpen(false)}>Practice</MobileLink>
         </MobileMenu>
       </NavRoot>
 
