@@ -14,6 +14,10 @@ const Container = styled.div`
   /* Premium radial background similar to home */
   background: radial-gradient(circle at top center, rgba(79, 70, 229, 0.1) 0%, transparent 60%);
   margin-top: -80px; /* Pull up into navbar area */
+
+  @media (max-width: 768px) {
+    padding: 8rem 1rem 4rem; /* Increased top/bottom padding */
+  }
 `;
 
 const Header = styled.div`
@@ -25,6 +29,10 @@ const Header = styled.div`
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  @media (max-width: 600px) {
+    margin-bottom: 5rem; /* Increased bottom spacing */
+  }
 `;
 
 const Title = styled.h1`
@@ -33,11 +41,17 @@ const Title = styled.h1`
   margin-bottom: 1.5rem;
   color: var(--foreground);
   letter-spacing: -0.02em;
+  line-height: 1.2;
 
   span {
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -47,15 +61,28 @@ const Subtitle = styled.p`
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+  padding: 0 1rem;
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
   width: 100%;
   max-width: 900px;
   padding: 1rem;
+  justify-items: center; /* Center items in their grid cells */
+  
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr; /* Force single column on mobile to ensure centering */
+    gap: 1.5rem;
+    padding: 0;
+  }
 `;
 
 const Card = styled(Link)`
@@ -74,6 +101,8 @@ const Card = styled(Link)`
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  width: 100%;
+  max-width: 400px; /* Prevent overly wide cards on desktop */
 
   &:hover {
     transform: translateY(-8px);
