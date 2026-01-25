@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Link from 'next/link';
 import { KanaCard } from '@/components/Card/KanaCard';
 
 const Container = styled.div`
@@ -109,16 +110,16 @@ export function KanaGrid() {
   return (
     <Container>
       <MainTitle>Kana Learning</MainTitle>
-      
+
       <Controls>
-        <TabButton 
-          $active={activeTab === 'hiragana'} 
+        <TabButton
+          $active={activeTab === 'hiragana'}
           onClick={() => setActiveTab('hiragana')}
         >
           Hiragana
         </TabButton>
-        <TabButton 
-          $active={activeTab === 'katakana'} 
+        <TabButton
+          $active={activeTab === 'katakana'}
           onClick={() => setActiveTab('katakana')}
         >
           Katakana
@@ -126,15 +127,25 @@ export function KanaGrid() {
       </Controls>
 
       <Grid>
-        {activeTab === 'hiragana' 
+        {activeTab === 'hiragana'
           ? data.hiragana.map((char) => (
-              <KanaCard key={`h-${char}`} char={char} />
-            ))
+            <KanaCard key={`h-${char}`} char={char} />
+          ))
           : data.katakana.map((char) => (
-              <KanaCard key={`k-${char}`} char={char} />
-            ))
+            <KanaCard key={`k-${char}`} char={char} />
+          ))
         }
       </Grid>
+
+      <div style={{ marginTop: '4rem', textAlign: 'center' }}>
+        <p style={{ marginBottom: '1.5rem', color: 'var(--text-secondary)' }}>Mastered both scripts?</p>
+        <Link href="/kanji" style={{ textDecoration: 'none' }}>
+          <TabButton $active={true} style={{ minWidth: '200px', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+            Start Learning Kanji
+            <span>→</span>
+          </TabButton>
+        </Link>
+      </div>
     </Container>
   );
 }
