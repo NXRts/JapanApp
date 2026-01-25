@@ -14,48 +14,28 @@ const Container = styled.div`
   /* Premium radial background similar to home */
   background: radial-gradient(circle at top center, rgba(79, 70, 229, 0.1) 0%, transparent 60%);
   margin-top: -80px; /* Pull up into navbar area */
-`;
 
-const Header = styled.div`
-  text-align: center;
-  margin-bottom: 5rem;
-  animation: fadeIn 0.8s ease-out;
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) {
+    padding: 6rem 1rem 2rem;
   }
 `;
 
-const Title = styled.h1`
-  font-size: 3.5rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  color: var(--foreground);
-  letter-spacing: -0.02em;
-
-  span {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-`;
-
-const Subtitle = styled.p`
-  font-size: 1.25rem;
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-`;
+// ... Header ...
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
   width: 100%;
   max-width: 900px;
   padding: 1rem;
+  justify-items: center; /* Center items in their grid cells */
+  
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr; /* Force single column on mobile to ensure centering */
+    gap: 1.5rem;
+    padding: 0;
+  }
 `;
 
 const Card = styled(Link)`
@@ -74,6 +54,8 @@ const Card = styled(Link)`
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  width: 100%;
+  max-width: 400px; /* Prevent overly wide cards on desktop */
 
   &:hover {
     transform: translateY(-8px);
