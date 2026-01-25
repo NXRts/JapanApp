@@ -177,8 +177,18 @@ export default function KanaQuizPage() {
             const res = await fetch('/api/kana?type=all');
             const data: string[] = await res.json();
 
+            // Fisher-Yates shuffle function
+            const shuffleArray = <T,>(array: T[]): T[] => {
+                const newArray = [...array];
+                for (let i = newArray.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+                }
+                return newArray;
+            };
+
             // Shuffle data
-            const shuffled = [...data].sort(() => 0.5 - Math.random());
+            const shuffled = shuffleArray(data);
             const selectedChars = shuffled.slice(0, TOTAL_QUESTIONS);
 
             const newQuestions = selectedChars.map(char => {
@@ -194,10 +204,11 @@ export default function KanaQuizPage() {
                     }
                 }
 
+                // Shuffle options using Fisher-Yates
                 return {
                     char,
                     romaji: correctRomaji,
-                    options: [...distractors, correctRomaji].sort(() => 0.5 - Math.random())
+                    options: shuffleArray([...distractors, correctRomaji])
                 };
             });
 
