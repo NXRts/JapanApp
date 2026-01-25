@@ -64,6 +64,11 @@ const QuizCard = styled.div`
   position: relative;
   overflow: hidden;
   transition: all 0.5s ease;
+
+  @media (max-width: 600px) {
+    padding: 2.5rem 1.5rem;
+    border-radius: 24px;
+  }
 `;
 
 const ProgressInfo = styled.div`
@@ -74,6 +79,12 @@ const ProgressInfo = styled.div`
   font-weight: 600;
   color: var(--text-secondary);
   opacity: 0.7;
+
+  @media (max-width: 600px) {
+    top: 20px;
+    right: 20px;
+    font-size: 0.85rem;
+  }
 `;
 
 const Character = styled.div`
@@ -86,7 +97,10 @@ const Character = styled.div`
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
   
-  /* Slight bounce animation on change could be added here */
+  @media (max-width: 600px) {
+    font-size: 6rem;
+    margin-bottom: 2rem;
+  }
 `;
 
 const OptionsGrid = styled.div`
@@ -96,8 +110,10 @@ const OptionsGrid = styled.div`
   margin-bottom: 2.5rem;
 
   @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    /* Keep 2 columns on mobile to save vertical space */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
@@ -133,6 +149,13 @@ const OptionButton = styled.button<{ $state?: 'correct' | 'incorrect' | 'neutral
   &:active {
     transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-1px)' : 'none'};
   }
+
+  @media (max-width: 600px) {
+    padding: 1rem 0.5rem;
+    font-size: 1.25rem;
+    border-radius: 16px;
+    border-width: 1px;
+  }
 `;
 
 const ProgressBarContainer = styled.div`
@@ -166,20 +189,46 @@ const ResultOverlay = styled.div`
   width: 100%;
   margin: 0 auto;
 
+  @media (max-width: 600px) {
+    padding: 2rem 1.5rem;
+    border-radius: 24px;
+  }
+
   h2 {
     font-size: 3.5rem;
     font-weight: 800;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    /* Brighter gradient for better contrast on dark */
+    background: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+
+    @media (max-width: 600px) {
+        font-size: 2.5rem;
+    }
   }
 
   p {
     font-size: 1.5rem;
     color: var(--text-secondary);
     margin-bottom: 3rem;
+
+    @media (max-width: 600px) {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+    }
   }
+`;
+
+const ButtonGroup = styled.div`
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    @media (max-width: 600px) {
+        flex-direction: column;
+        width: 100%;
+    }
 `;
 
 const Button = styled.button`
@@ -193,22 +242,32 @@ const Button = styled.button`
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+  
+  /* Ensure perfect centering */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
 
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
   }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: 1rem; /* Less padding to relying on width */
+  }
 `;
 
 const SecondaryButton = styled(Button)`
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--foreground); /* Use foreground for better contrast */
   border: 1px solid var(--border);
   box-shadow: none;
 
   &:hover {
     background: rgba(255,255,255,0.05);
-    color: var(--foreground);
     border-color: var(--text-secondary);
     box-shadow: none;
   }
@@ -325,12 +384,12 @@ export default function KanaQuizPage() {
                 <ResultOverlay>
                     <h2>Quiz Complete!</h2>
                     <p>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
-                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                    <ButtonGroup>
                         <Button onClick={generateQuiz}>Try Again</Button>
-                        <Link href="/practice" style={{ textDecoration: 'none' }}>
-                            <SecondaryButton>Exit</SecondaryButton>
+                        <Link href="/practice" style={{ textDecoration: 'none', width: '100%' }}>
+                            <SecondaryButton style={{ width: '100%' }}>Exit</SecondaryButton>
                         </Link>
-                    </div>
+                    </ButtonGroup>
                 </ResultOverlay>
             </Container>
         );
