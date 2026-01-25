@@ -29,6 +29,10 @@ const Header = styled.div`
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  @media (max-width: 600px) {
+    margin-bottom: 3rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -37,11 +41,17 @@ const Title = styled.h1`
   margin-bottom: 1.5rem;
   color: var(--foreground);
   letter-spacing: -0.02em;
+  line-height: 1.2;
 
   span {
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -51,6 +61,12 @@ const Subtitle = styled.p`
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+  padding: 0 1rem;
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
 `;
 
 const Grid = styled.div`
