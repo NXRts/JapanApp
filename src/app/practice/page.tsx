@@ -16,7 +16,7 @@ const Container = styled.div`
   margin-top: -80px; /* Pull up into navbar area */
 
   @media (max-width: 768px) {
-    padding: 6rem 1rem 2rem;
+    padding: 8rem 1rem 4rem; /* Increased top/bottom padding */
   }
 `;
 
@@ -31,7 +31,7 @@ const Header = styled.div`
   }
 
   @media (max-width: 600px) {
-    margin-bottom: 3rem;
+    margin-bottom: 5rem; /* Increased bottom spacing */
   }
 `;
 
