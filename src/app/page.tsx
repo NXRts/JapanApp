@@ -465,7 +465,8 @@ export default function Home() {
           Start your journey to fluency today.
         </Subtitle>
         <ButtonGroup>
-          <PrimaryButton href="/kanji">Browse Kanji</PrimaryButton>
+          <PrimaryButton href="/kana">Hiragana & Katakana</PrimaryButton>
+          <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
           <SecondaryButton href="/practice">Start Practicing</SecondaryButton>
         </ButtonGroup>
       </HeroSection>
