@@ -64,6 +64,11 @@ const QuizCard = styled.div`
   position: relative;
   overflow: hidden;
   transition: all 0.5s ease;
+
+  @media (max-width: 600px) {
+    padding: 2.5rem 1.5rem;
+    border-radius: 24px;
+  }
 `;
 
 const ProgressInfo = styled.div`
@@ -74,6 +79,12 @@ const ProgressInfo = styled.div`
   font-weight: 600;
   color: var(--text-secondary);
   opacity: 0.7;
+
+  @media (max-width: 600px) {
+    top: 20px;
+    right: 20px;
+    font-size: 0.85rem;
+  }
 `;
 
 const Character = styled.div`
@@ -86,7 +97,10 @@ const Character = styled.div`
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
   
-  /* Slight bounce animation on change could be added here */
+  @media (max-width: 600px) {
+    font-size: 6rem;
+    margin-bottom: 2rem;
+  }
 `;
 
 const OptionsGrid = styled.div`
@@ -96,8 +110,10 @@ const OptionsGrid = styled.div`
   margin-bottom: 2.5rem;
 
   @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    /* Keep 2 columns on mobile to save vertical space */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
@@ -132,6 +148,13 @@ const OptionButton = styled.button<{ $state?: 'correct' | 'incorrect' | 'neutral
   
   &:active {
     transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-1px)' : 'none'};
+  }
+
+  @media (max-width: 600px) {
+    padding: 1rem 0.5rem;
+    font-size: 1.25rem;
+    border-radius: 16px;
+    border-width: 1px;
   }
 `;
 
