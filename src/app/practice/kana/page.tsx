@@ -8,18 +8,20 @@ import { toRomaji } from 'wanakana';
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
-  padding: 2rem;
-  min-height: 80vh;
+  padding: 4rem 2rem;
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* Premium radial background */
+  background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
 `;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 `;
 
 const BackButton = styled(Link)`
@@ -29,50 +31,79 @@ const BackButton = styled(Link)`
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
-  transition: color 0.2s;
+  transition: all 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
 
   &:hover {
     color: var(--primary);
+    background: rgba(79, 70, 229, 0.1);
   }
 `;
 
-const Score = styled.div`
-  font-size: 1.25rem;
+const ScoreBadge = styled.div`
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--primary);
+  background: rgba(79, 70, 229, 0.1);
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid rgba(79, 70, 229, 0.2);
 `;
 
 const QuizCard = styled.div`
   background: var(--surface);
-  border-radius: 24px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 32px;
   border: 1px solid var(--border);
-  padding: 3rem;
+  padding: 4rem 3rem;
   text-align: center;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
   position: relative;
   overflow: hidden;
+  transition: all 0.5s ease;
+`;
+
+const ProgressInfo = styled.div`
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  opacity: 0.7;
 `;
 
 const Character = styled.div`
-  font-size: 8rem;
+  font-size: 9rem;
   font-weight: 800;
-  margin-bottom: 3rem;
-  color: var(--foreground);
+  margin-bottom: 3.5rem;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+  
+  /* Slight bounce animation on change could be added here */
 `;
 
 const OptionsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.5rem;
+  margin-bottom: 2.5rem;
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 `;
 
 const OptionButton = styled.button<{ $state?: 'correct' | 'incorrect' | 'neutral' }>`
   padding: 1.5rem;
-  border-radius: 16px;
+  border-radius: 20px;
   border: 2px solid ${({ $state }) =>
         $state === 'correct' ? '#10b981' :
             $state === 'incorrect' ? '#ef4444' :
@@ -85,40 +116,59 @@ const OptionButton = styled.button<{ $state?: 'correct' | 'incorrect' | 'neutral
         $state === 'correct' ? '#10b981' :
             $state === 'incorrect' ? '#ef4444' :
                 'var(--foreground)'};
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   pointer-events: ${({ $state }) => $state && $state !== 'neutral' ? 'none' : 'auto'};
+  box-shadow: ${({ $state }) =>
+        $state === 'neutral' ? '0 4px 6px -1px rgba(0, 0, 0, 0.05)' : 'none'};
 
   &:hover {
+    transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-3px)' : 'none'};
     border-color: ${({ $state }) => $state === 'neutral' ? 'var(--primary)' : ''};
-    transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-2px)' : 'none'};
+    box-shadow: ${({ $state }) => $state === 'neutral' ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : ''};
+  }
+  
+  &:active {
+    transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-1px)' : 'none'};
   }
 `;
 
-const ProgressBar = styled.div`
+const ProgressBarContainer = styled.div`
   width: 100%;
-  height: 8px;
+  height: 6px;
   background: var(--border);
-  border-radius: 4px;
-  margin-top: 2rem;
+  border-radius: 99px;
+  margin-top: 1rem;
   overflow: hidden;
+  position: relative;
 `;
 
 const ProgressFill = styled.div<{ $percent: number }>`
   height: 100%;
   width: ${({ $percent }) => `${$percent}%`};
-  background: var(--primary);
-  transition: width 0.3s ease;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(79, 70, 229, 0.5);
+  border-radius: 99px;
 `;
 
 const ResultOverlay = styled.div`
   text-align: center;
-  animation: fadeIn 0.5s ease;
+  animation: fadeIn 0.8s ease-out;
+  padding: 3rem;
+  background: var(--surface);
+  border-radius: 32px;
+  border: 1px solid var(--border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
 
   h2 {
-    font-size: 3rem;
+    font-size: 3.5rem;
+    font-weight: 800;
     margin-bottom: 1rem;
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     -webkit-background-clip: text;
@@ -134,18 +184,33 @@ const ResultOverlay = styled.div`
 
 const Button = styled.button`
   padding: 1rem 3rem;
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
   border: none;
   border-radius: 999px;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s;
+  box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
 
   &:hover {
-    background: var(--primary-dark);
-    transform: scale(1.05);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
+  }
+`;
+
+const SecondaryButton = styled(Button)`
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  box-shadow: none;
+
+  &:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--foreground);
+    border-color: var(--text-secondary);
+    box-shadow: none;
   }
 `;
 
@@ -187,7 +252,7 @@ export default function KanaQuizPage() {
                 return newArray;
             };
 
-            // Shuffle data
+            // Shuffle initial data
             const shuffled = shuffleArray(data);
             const selectedChars = shuffled.slice(0, TOTAL_QUESTIONS);
 
@@ -204,7 +269,7 @@ export default function KanaQuizPage() {
                     }
                 }
 
-                // Shuffle options using Fisher-Yates
+                // Shuffle options
                 return {
                     char,
                     romaji: correctRomaji,
@@ -247,7 +312,9 @@ export default function KanaQuizPage() {
     if (loading) {
         return (
             <Container>
-                <div style={{ textAlign: 'center', fontSize: '1.5rem' }}>Loading Quiz...</div>
+                <div style={{ textAlign: 'center', fontSize: '1.25rem', color: 'var(--text-secondary)' }}>
+                    Generating Quiz...
+                </div>
             </Container>
         );
     }
@@ -257,13 +324,11 @@ export default function KanaQuizPage() {
             <Container>
                 <ResultOverlay>
                     <h2>Quiz Complete!</h2>
-                    <p>You scored {score} out of {TOTAL_QUESTIONS}</p>
+                    <p>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
                         <Button onClick={generateQuiz}>Try Again</Button>
                         <Link href="/practice" style={{ textDecoration: 'none' }}>
-                            <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)' }}>
-                                Exit
-                            </Button>
+                            <SecondaryButton>Exit</SecondaryButton>
                         </Link>
                     </div>
                 </ResultOverlay>
@@ -276,15 +341,22 @@ export default function KanaQuizPage() {
     return (
         <Container>
             <Header>
-                <BackButton href="/practice">← Exit</BackButton>
-                <Score>Score: {score}/{TOTAL_QUESTIONS}</Score>
+                <BackButton href="/practice">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Exit
+                </BackButton>
+                <ScoreBadge>Score: {score}</ScoreBadge>
             </Header>
 
             <QuizCard>
-                <div style={{ position: 'absolute', top: 20, right: 20, color: 'var(--text-secondary)' }}>
+                <ProgressInfo>
                     {currentIndex + 1} / {TOTAL_QUESTIONS}
-                </div>
+                </ProgressInfo>
+
                 <Character>{currentQuestion.char}</Character>
+
                 <OptionsGrid>
                     {currentQuestion.options.map((opt) => {
                         let state: 'neutral' | 'correct' | 'incorrect' = 'neutral';
@@ -304,9 +376,10 @@ export default function KanaQuizPage() {
                         );
                     })}
                 </OptionsGrid>
-                <ProgressBar>
+
+                <ProgressBarContainer>
                     <ProgressFill $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100} />
-                </ProgressBar>
+                </ProgressBarContainer>
             </QuizCard>
         </Container>
     );

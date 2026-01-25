@@ -6,25 +6,39 @@ import styled from 'styled-components';
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 4rem 2rem;
-  min-height: 80vh;
+  padding: 8rem 2rem 4rem;
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Premium radial background similar to home */
+  background: radial-gradient(circle at top center, rgba(79, 70, 229, 0.1) 0%, transparent 60%);
+  margin-top: -80px; /* Pull up into navbar area */
 `;
 
 const Header = styled.div`
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
+  animation: fadeIn 0.8s ease-out;
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 `;
 
 const Title = styled.h1`
   font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--foreground);
+  letter-spacing: -0.02em;
+
+  span {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 `;
 
 const Subtitle = styled.p`
@@ -32,52 +46,76 @@ const Subtitle = styled.p`
   color: var(--text-secondary);
   max-width: 600px;
   margin: 0 auto;
+  line-height: 1.6;
 `;
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2.5rem;
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
+  padding: 1rem;
 `;
 
 const Card = styled(Link)`
   background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   border-radius: 24px;
-  padding: 2.5rem;
+  padding: 3rem;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
     border-color: var(--primary);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 20px 40px -5px rgba(79, 70, 229, 0.15);
+  }
+
+  /* Shine effect on hover */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: 0.5s;
+  }
+
+  &:hover::before {
+    left: 100%;
   }
 `;
 
 const IconWrapper = styled.div`
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
+  width: 90px;
+  height: 90px;
+  border-radius: 24px;
   background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
   color: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-  transition: transform 0.3s ease;
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  transition: transform 0.4s ease;
+  box-shadow: inset 0 0 0 1px rgba(79, 70, 229, 0.1);
 
   ${Card}:hover & {
     transform: scale(1.1) rotate(5deg);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
   }
 `;
 
@@ -91,36 +129,37 @@ const CardTitle = styled.h2`
 const CardDescription = styled.p`
   color: var(--text-secondary);
   line-height: 1.6;
+  font-size: 1.05rem;
 `;
 
 export default function PracticePage() {
-    return (
-        <Container>
-            <Header>
-                <Title>Practice Mode</Title>
-                <Subtitle>
-                    Reinforce your learning with interactive quizzes and writing exercises.
-                    Choose a category to get started.
-                </Subtitle>
-            </Header>
+  return (
+    <Container>
+      <Header>
+        <Title>Practice <span>Mode</span></Title>
+        <Subtitle>
+          Reinforce your learning with interactive quizzes and writing exercises.
+          <br />Choose a category to get started.
+        </Subtitle>
+      </Header>
 
-            <Grid>
-                <Card href="/practice/kana">
-                    <IconWrapper>あ</IconWrapper>
-                    <CardTitle>Kana Quiz</CardTitle>
-                    <CardDescription>
-                        Test your knowledge of Hiragana and Katakana with quick-fire multiple choice questions.
-                    </CardDescription>
-                </Card>
+      <Grid>
+        <Card href="/practice/kana">
+          <IconWrapper>あ</IconWrapper>
+          <CardTitle>Kana Quiz</CardTitle>
+          <CardDescription>
+            Test your reflex and memory of Hiragana and Katakana with quick-fire multiple choice questions.
+          </CardDescription>
+        </Card>
 
-                <Card href="/practice/kanji">
-                    <IconWrapper>✍️</IconWrapper>
-                    <CardTitle>Kanji Flashcards</CardTitle>
-                    <CardDescription>
-                        Practice writing Kanji and memorize meanings with our digital flashcard system.
-                    </CardDescription>
-                </Card>
-            </Grid>
-        </Container>
-    );
+        <Card href="/practice/kanji">
+          <IconWrapper>✍️</IconWrapper>
+          <CardTitle>Kanji Flashcards</CardTitle>
+          <CardDescription>
+            Practice writing Kanji strokes and memorize meanings with our digital self-check flashcards.
+          </CardDescription>
+        </Card>
+      </Grid>
+    </Container>
+  );
 }
