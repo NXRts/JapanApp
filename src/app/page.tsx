@@ -21,7 +21,7 @@ const HeroSection = styled.section`
   margin-top: -2rem; /* Offset navbar margin */
   
   @media (max-width: 768px) {
-    padding: 3rem 1rem 2rem; /* Drastically reduced */
+    padding: 8rem 1rem 6rem; /* Increased vertical spacing */
     min-height: auto;
   }
 `;
@@ -465,8 +465,8 @@ export default function Home() {
           Start your journey to fluency today.
         </Subtitle>
         <ButtonGroup>
-          <PrimaryButton href="/kanji">Start Learning Kanji</PrimaryButton>
-          <SecondaryButton href="/kana">Practice Kana</SecondaryButton>
+          <PrimaryButton href="/practice">Start Practicing</PrimaryButton>
+          <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
         </ButtonGroup>
       </HeroSection>
 
@@ -508,10 +508,10 @@ export default function Home() {
           </Card>
           <Card>
             <CardIcon>✍️</CardIcon>
-            <CardTitle>Draw & Practice</CardTitle>
+            <CardTitle>Interactive Practice</CardTitle>
             <CardDescription>
-              Coming soon: Interactive writing practice to help build
-              muscle memory and perfect your stroke order.
+              Test your knowledge with Kana quizzes and practice checking your memory with
+              Kanji flashcards and drawing exercises.
             </CardDescription>
           </Card>
         </Grid>
@@ -535,7 +535,7 @@ export default function Home() {
           <StepCard>
             <StepTitle>Test Yourself</StepTitle>
             <p style={{ color: 'var(--text-secondary)' }}>
-              Reinforce your knowledge with quizzes and writing practice (coming soon).
+              Reinforce your knowledge with interactive quizzes and writing practice.
             </p>
           </StepCard>
         </StepsGrid>
