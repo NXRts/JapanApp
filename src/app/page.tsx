@@ -468,6 +468,7 @@ export default function Home() {
           <PrimaryButton href="/kana">Hiragana & Katakana</PrimaryButton>
           <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
           <SecondaryButton href="/practice">Start Practicing</SecondaryButton>
+          <SecondaryButton href="/daily-quiz" style={{ borderColor: '#10b981', color: '#10b981' }}>Daily Quiz</SecondaryButton>
         </ButtonGroup>
       </HeroSection>
 
