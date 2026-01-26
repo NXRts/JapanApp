@@ -17,7 +17,7 @@ const HeroSection = styled.section`
   justify-content: center;
   text-align: center;
   padding: 8rem 1rem 6rem;
-  background: radial-gradient(circle at top center, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
+  /* background: radial-gradient removed as per user request */
   margin-top: -2rem; /* Offset navbar margin */
   
   @media (max-width: 768px) {
