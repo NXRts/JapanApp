@@ -452,6 +452,163 @@ const CTATitle = styled.h2`
   position: relative;
 `;
 
+const BenefitsSection = styled.section`
+  padding: 6rem 2rem;
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+`;
+
+const BenefitsGrid = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 4rem;
+  align-items: center;
+`;
+
+const BenefitContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const BenefitItem = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+`;
+
+const BenefitIcon = styled.div`
+  min-width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 1.5rem;
+`;
+
+const BenefitText = styled.div`
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--foreground);
+  }
+  
+  p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+`;
+
+const TestimonialsSection = styled.section`
+  padding: 6rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
+const TestimonialsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+`;
+
+const TestimonialCard = styled.div`
+  background: var(--surface);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  position: relative;
+  
+  &::before {
+    content: '"';
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    font-size: 4rem;
+    color: var(--primary);
+    opacity: 0.1;
+    font-family: serif;
+  }
+`;
+
+const TestimonialText = styled.p`
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+`;
+
+const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const Avatar = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+`;
+
+const UserMeta = styled.div`
+  h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--foreground);
+  }
+  
+  span {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+`;
+
+const FAQSection = styled.section`
+  padding: 6rem 2rem;
+  background: var(--surface);
+  width: 100%;
+`;
+
+const FAQContainer = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const FAQItem = styled.div`
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  
+  &:last-child {
+    border-bottom: none;
+  }
+`;
+
+const Question = styled.h3`
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--foreground);
+`;
+
+const Answer = styled.p`
+  color: var(--text-secondary);
+  line-height: 1.7;
+`;
+
 export default function Home() {
   return (
     <Container>
@@ -488,6 +645,42 @@ export default function Home() {
           </StatItem>
         </StatsGrid>
       </StatsSection>
+
+      <BenefitsSection>
+        <SectionTitle><span>Why Learn Japanese?</span></SectionTitle>
+        <BenefitsGrid>
+          <BenefitContent>
+            <BenefitItem>
+              <BenefitIcon>🎌</BenefitIcon>
+              <BenefitText>
+                <h3>Unlock a Rich Culture</h3>
+                <p>Understand your favorite anime, manga, and music in their original language. Connect with history and tradition.</p>
+              </BenefitText>
+            </BenefitItem>
+            <BenefitItem>
+              <BenefitIcon>✈️</BenefitIcon>
+              <BenefitText>
+                <h3>Travel with Confidence</h3>
+                <p>Navigate Tokyo's streets, order food like a local, and make meaningful connections during your travels.</p>
+              </BenefitText>
+            </BenefitItem>
+            <BenefitItem>
+              <BenefitIcon>💼</BenefitIcon>
+              <BenefitText>
+                <h3>Career Opportunities</h3>
+                <p>Open doors to one of the world's largest economies and stand out in the job market.</p>
+              </BenefitText>
+            </BenefitItem>
+          </BenefitContent>
+          <div style={{ position: 'relative', borderRadius: '24px', overflow: 'hidden', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-hover)' }}>
+            {/* Placeholder for an illustrative image or 3D element */}
+            <div style={{ textAlign: 'center' }}>
+              <span style={{ fontSize: '5rem', display: 'block', marginBottom: '1rem' }}>🗾</span>
+              <p style={{ fontWeight: 'bold' }}>Your Gateway to Japan</p>
+            </div>
+          </div>
+        </BenefitsGrid>
+      </BenefitsSection>
 
       <FeaturesSection>
         <SectionTitle><span>Everything you need</span></SectionTitle>
@@ -542,6 +735,66 @@ export default function Home() {
           </StepCard>
         </StepsGrid>
       </StepsSection>
+
+      <TestimonialsSection>
+        <SectionTitle><span>Community Stories</span></SectionTitle>
+        <TestimonialsGrid>
+          <TestimonialCard>
+            <TestimonialText>
+              "I struggled with Kanji for years until I found this app. The clean interface and daily quizzes kept me coming back. I finally passed N3!"
+            </TestimonialText>
+            <UserInfo>
+              <Avatar>JD</Avatar>
+              <UserMeta>
+                <h4>Jane Doe</h4>
+                <span>JLPT N3 Certified</span>
+              </UserMeta>
+            </UserInfo>
+          </TestimonialCard>
+          <TestimonialCard>
+            <TestimonialText>
+              "The best way to learn Kana. I memorized Hiragana in just a week using the visualization tools. Highly recommended for beginners."
+            </TestimonialText>
+            <UserInfo>
+              <Avatar>AS</Avatar>
+              <UserMeta>
+                <h4>Alex Smith</h4>
+                <span>Beginner Learner</span>
+              </UserMeta>
+            </UserInfo>
+          </TestimonialCard>
+          <TestimonialCard>
+            <TestimonialText>
+              "Simple, effective, and beautiful. It cuts out the noise and focuses on what matters: learning the characters. Love the dark mode."
+            </TestimonialText>
+            <UserInfo>
+              <Avatar>MK</Avatar>
+              <UserMeta>
+                <h4>Maria K.</h4>
+                <span>Intermediate Student</span>
+              </UserMeta>
+            </UserInfo>
+          </TestimonialCard>
+        </TestimonialsGrid>
+      </TestimonialsSection>
+
+      <FAQSection>
+        <FAQContainer>
+          <SectionTitle><span>Frequently Asked Questions</span></SectionTitle>
+          <FAQItem>
+            <Question>Is this app really free to use?</Question>
+            <Answer>Yes! Our mission is to make Japanese language education accessible to everyone. You have full access to all Kanji, Kana, and quiz features completely free of charge.</Answer>
+          </FAQItem>
+          <FAQItem>
+            <Question>Is this suitable for absolute beginners?</Question>
+            <Answer>Absolutely. We recommend starting with the "Hiragana & Katakana" section to master the alphabets before moving on to Kanji.</Answer>
+          </FAQItem>
+          <FAQItem>
+            <Question>Do I need to create an account?</Question>
+            <Answer>No account is required to start studying. We believe in removing barriers to entry so you can start learning immediately.</Answer>
+          </FAQItem>
+        </FAQContainer>
+      </FAQSection>
 
       <CTASection>
         <CTATitle>Ready to start?</CTATitle>
