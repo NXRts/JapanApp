@@ -153,7 +153,7 @@ export function Footer() {
           <FooterLink href="/kanji">Kanji Library</FooterLink>
           <FooterLink href="/kana">Hiragana & Katakana</FooterLink>
           <FooterLink href="/practice">Practice Mode</FooterLink>
-          <FooterLink href="/quiz">Daily Quiz</FooterLink>
+          <FooterLink href="/daily-quiz">Daily Quiz</FooterLink>
         </FooterColumn>
 
         <FooterColumn>

@@ -13,10 +13,9 @@
   /* Rose 500 */
 
   /* Neutral Colors */
-  --background: #F8FAFC;
-  /* Slate 50 */
+  --background: #F1F5F9;
+  /* Slate 100 */
   --surface: #FFFFFF;
-  --foreground: #1E293B;
   /* Slate 800 */
   --text-secondary: #64748B;
   /* Slate 500 */
@@ -51,7 +50,7 @@ body {
   color: var(--foreground);
   background: var(--background);
   /* Subtle pattern overlay */
-  background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
+  background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
   background-size: 32px 32px;
 
   font-family: 'Inter', 'Noto Sans JP', sans-serif;
