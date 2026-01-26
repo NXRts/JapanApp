@@ -481,15 +481,23 @@ const BenefitItem = styled.div`
 `;
 
 const BenefitIcon = styled.div`
-  min-width: 50px;
-  height: 50px;
-  border-radius: 12px;
+  min-width: 80px;
+  height: 80px;
+  border-radius: 20px;
   background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--primary);
-  font-size: 1.5rem;
+  margin-top: 5px; /* Visual alignment */
+
+  svg {
+    width: 40px;
+    height: 40px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+  }
 `;
 
 const BenefitText = styled.div`
@@ -651,21 +659,34 @@ export default function Home() {
         <BenefitsGrid>
           <BenefitContent>
             <BenefitItem>
-              <BenefitIcon>🎌</BenefitIcon>
+              <BenefitIcon>
+                <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+              </BenefitIcon>
               <BenefitText>
                 <h3>Unlock a Rich Culture</h3>
                 <p>Understand your favorite anime, manga, and music in their original language. Connect with history and tradition.</p>
               </BenefitText>
             </BenefitItem>
             <BenefitItem>
-              <BenefitIcon>✈️</BenefitIcon>
+              <BenefitIcon>
+                <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
+              </BenefitIcon>
               <BenefitText>
                 <h3>Travel with Confidence</h3>
                 <p>Navigate Tokyo's streets, order food like a local, and make meaningful connections during your travels.</p>
               </BenefitText>
             </BenefitItem>
             <BenefitItem>
-              <BenefitIcon>💼</BenefitIcon>
+              <BenefitIcon>
+                <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                </svg>
+              </BenefitIcon>
               <BenefitText>
                 <h3>Career Opportunities</h3>
                 <p>Open doors to one of the world's largest economies and stand out in the job market.</p>

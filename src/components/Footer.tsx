@@ -116,6 +116,17 @@ const FooterBottom = styled.div`
 const Copyright = styled.div`
   font-size: 0.9rem;
   opacity: 0.8;
+  
+  a {
+    color: var(--primary-light);
+    text-decoration: none;
+    font-weight: 600;
+    
+    &:hover {
+      text-decoration: underline;
+      color: var(--primary);
+    }
+  }
 `;
 
 const SocialLinks = styled.div`
@@ -176,7 +187,7 @@ export function Footer() {
 
       <FooterBottom>
         <Copyright>
-          &copy; {year} Japan Learning App by <a href="https://github.com/NXRts"><u>NXRts</u></a>. All rights reserved.
+          &copy; {year} Japan Learning App by <a href="https://github.com/NXRts">NXRts</a>. All rights reserved.
         </Copyright>
         <SocialLinks>
           <a href="#" aria-label="Instagram">Instagram</a>
