@@ -22,6 +22,13 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 3rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+  }
 `;
 
 const BackButton = styled(Link)`
@@ -50,6 +57,15 @@ const DateBadge = styled.div`
   padding: 0.5rem 1.25rem;
   border-radius: 999px;
   border: 1px solid rgba(16, 185, 129, 0.2);
+
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
+    padding: 0.4rem 1rem;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
 `;
 
 const QuizCard = styled.div`
@@ -489,7 +505,7 @@ export default function DailyQuizPage() {
                     </svg>
                     Home
                 </BackButton>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', justifyContent: 'space-between' }}>
                     <DateBadge>{dateString}</DateBadge>
                     <ResetButton onClick={() => {
                         // Force Reset: Clear storage for this hour and reload
