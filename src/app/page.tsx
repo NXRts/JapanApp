@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -693,11 +694,16 @@ export default function Home() {
               </BenefitText>
             </BenefitItem>
           </BenefitContent>
-          <div style={{ position: 'relative', borderRadius: '24px', overflow: 'hidden', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface-hover)' }}>
-            {/* Placeholder for an illustrative image or 3D element */}
-            <div style={{ textAlign: 'center' }}>
-              <span style={{ fontSize: '5rem', display: 'block', marginBottom: '1rem' }}>🗾</span>
-              <p style={{ fontWeight: 'bold' }}>Your Gateway to Japan</p>
+          <div style={{ position: 'relative', borderRadius: '24px', overflow: 'hidden', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface)' }}>
+            <Image
+              src="/jp.svg"
+              alt="Map of Japan"
+              fill
+              style={{ objectFit: 'contain', padding: '2rem', opacity: 0.8 }}
+            />
+            <div style={{ position: 'absolute', bottom: '2rem', textAlign: 'center', width: '100%', zIndex: 2 }}>
+              <p style={{ fontWeight: '800', fontSize: '1.5rem', color: 'var(--foreground)', textShadow: '0 2px 4px var(--surface)' }}>Your Gateway</p>
+              <p style={{ color: 'var(--text-secondary)', fontWeight: '600' }}>to Japan</p>
             </div>
           </div>
         </BenefitsGrid>
