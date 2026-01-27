@@ -458,6 +458,10 @@ const BenefitsSection = styled.section`
   background: var(--surface);
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 3rem 1rem;
+  }
 `;
 
 const BenefitsGrid = styled.div`
@@ -467,6 +471,11 @@ const BenefitsGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 4rem;
   align-items: center;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 `;
 
 const BenefitContent = styled.div`
@@ -492,6 +501,12 @@ const BenefitIcon = styled.div`
   color: var(--primary);
   margin-top: 5px; /* Visual alignment */
 
+  @media (max-width: 768px) {
+    min-width: 60px;
+    height: 60px;
+    border-radius: 16px;
+  }
+
   svg {
     width: 40px;
     height: 40px;
@@ -512,6 +527,24 @@ const BenefitText = styled.div`
   p {
     color: var(--text-secondary);
     line-height: 1.6;
+    font-size: 1rem;
+  }
+`;
+
+const BenefitsMapContainer = styled.div`
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  
+  @media (max-width: 768px) {
+    height: 250px;
+    width: 100%;
+    margin-top: 2rem;
   }
 `;
 
@@ -694,7 +727,7 @@ export default function Home() {
               </BenefitText>
             </BenefitItem>
           </BenefitContent>
-          <div style={{ position: 'relative', borderRadius: '24px', overflow: 'hidden', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface)' }}>
+          <BenefitsMapContainer>
             <Image
               src="/jp.svg"
               alt="Map of Japan"
@@ -705,7 +738,7 @@ export default function Home() {
               <p style={{ fontWeight: '800', fontSize: '1.5rem', color: 'var(--foreground)', textShadow: '0 2px 4px var(--surface)' }}>Your Gateway</p>
               <p style={{ color: 'var(--text-secondary)', fontWeight: '600' }}>to Japan</p>
             </div>
-          </div>
+          </BenefitsMapContainer>
         </BenefitsGrid>
       </BenefitsSection>
 
