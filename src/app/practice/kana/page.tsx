@@ -258,7 +258,7 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   min-width: 160px;
-  border: 2px solid transparent; /* Reserve space for border to match secondary */
+  /* border: none; - Default is none, no need to add transparent border which causes artifacts */
 
   &:hover {
     transform: translateY(-3px);
@@ -274,13 +274,11 @@ const Button = styled.button`
 const SecondaryButton = styled(Button)`
   background: transparent;
   color: var(--foreground); /* Use foreground for better contrast */
-  border: 2px solid var(--border);
-  box-shadow: none;
-
+  box-shadow: inset 0 0 0 2px var(--border); /* Use inset shadow instead of border for sizing match */
+  
   &:hover {
     background: rgba(255,255,255,0.05);
-    border-color: var(--text-secondary);
-    box-shadow: none;
+    box-shadow: inset 0 0 0 2px var(--text-secondary); /* Update shadow on hover */
   }
 `;
 
