@@ -23,8 +23,9 @@ const Title = styled.h1`
   text-align: center;
   
   @media (max-width: 768px) {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.75rem; /* Slightly smaller for better wrapping */
+    margin-bottom: 2rem;
+    line-height: 1.3;
   }
 `;
 
@@ -46,6 +47,12 @@ const Content = styled.div`
 const Paragraph = styled.p`
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
+  color: var(--text-secondary); /* Ensure consistent color */
+  
+  @media (max-width: 768px) {
+    font-size: 1rem; /* Standard readable size */
+    line-height: 1.6; /* Comfortable reading height */
+  }
 `;
 
 export default function AboutPage() {
