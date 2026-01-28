@@ -16,6 +16,11 @@ const HeroSection = styled.section`
   background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
   margin-top: -70px;
   padding-top: calc(8rem + 70px);
+
+  @media (max-width: 768px) {
+    padding: 6rem 1.5rem 4rem;
+    padding-top: calc(6rem + 70px);
+  }
 `;
 
 const Title = styled.h1`
@@ -31,7 +36,9 @@ const Title = styled.h1`
   }
 
   @media (max-width: 768px) {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
   }
 `;
 
@@ -41,6 +48,11 @@ const Subtitle = styled.p`
   max-width: 600px;
   margin: 0 auto 3rem;
   line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
 `;
 
 const ValuesSection = styled.section`
@@ -59,8 +71,13 @@ const SectionTitle = styled.h2`
 
 const ValuesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 `;
 
 const ValueCard = styled.div`
@@ -75,11 +92,24 @@ const ValueCard = styled.div`
     transform: translateY(-5px);
     border-color: var(--primary);
   }
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+  }
 `;
 
 const ValueIcon = styled.div`
-  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 1rem;
+  color: var(--primary);
+  
+  svg {
+    width: 48px;
+    height: 48px;
+    stroke-width: 1.5;
+  }
 `;
 
 const ValueTitle = styled.h3`
@@ -126,6 +156,7 @@ const JobCard = styled.div`
     flex-direction: column;
     align-items: flex-start;
     gap: 1.5rem;
+    padding: 1.5rem;
   }
 `;
 
@@ -133,6 +164,7 @@ const JobInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 `;
 
 const JobTitle = styled.h3`
@@ -146,9 +178,22 @@ const JobMeta = styled.div`
   gap: 1rem;
   color: var(--text-secondary);
   font-size: 0.9rem;
+  flex-wrap: wrap;
+  
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    
+    span {
+      white-space: nowrap;
+    }
+  }
 `;
 
 const ApplyButton = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.75rem 1.5rem;
   background: var(--primary);
   color: white;
@@ -156,6 +201,8 @@ const ApplyButton = styled(Link)`
   text-decoration: none;
   font-weight: 600;
   transition: background 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 
   &:hover {
     background: var(--primary-dark);
@@ -163,50 +210,49 @@ const ApplyButton = styled(Link)`
 
   @media (max-width: 768px) {
     width: 100%;
-    text-align: center;
   }
 `;
 
 export default function CareersPage() {
-    return (
-        <Container>
-            <HeroSection>
-                <Title>Join our <span>Mission</span></Title>
-                <Subtitle>
-                    We're building the future of language learning.
-                    Help us connect the world through Japanese culture and language.
-                </Subtitle>
-            </HeroSection>
+  return (
+    <Container>
+      <HeroSection>
+        <Title>Join our <span>Mission</span></Title>
+        <Subtitle>
+          We're building the future of language learning.
+          Help us connect the world through Japanese culture and language.
+        </Subtitle>
+      </HeroSection>
 
-            <ValuesSection>
-                <SectionTitle>Our Values</SectionTitle>
-                <ValuesGrid>
-                    {values.map((value, index) => (
-                        <ValueCard key={index}>
-                            <ValueIcon>{value.icon}</ValueIcon>
-                            <ValueTitle>{value.title}</ValueTitle>
-                            <ValueDescription>{value.description}</ValueDescription>
-                        </ValueCard>
-                    ))}
-                </ValuesGrid>
-            </ValuesSection>
+      <ValuesSection>
+        <SectionTitle>Our Values</SectionTitle>
+        <ValuesGrid>
+          {values.map((value, index) => (
+            <ValueCard key={index}>
+              <ValueIcon>{value.icon}</ValueIcon>
+              <ValueTitle>{value.title}</ValueTitle>
+              <ValueDescription>{value.description}</ValueDescription>
+            </ValueCard>
+          ))}
+        </ValuesGrid>
+      </ValuesSection>
 
-            <JobsSection>
-                <SectionTitle>Open Positions</SectionTitle>
-                <JobList>
-                    {jobs.map((job) => (
-                        <JobCard key={job.id}>
-                            <JobInfo>
-                                <JobTitle>{job.title}</JobTitle>
-                                <JobMeta>
-                                    <span>{job.department}</span> • <span>{job.location}</span> • <span>{job.type}</span>
-                                </JobMeta>
-                            </JobInfo>
-                            <ApplyButton href={`/careers/${job.slug}`}>View Details</ApplyButton>
-                        </JobCard>
-                    ))}
-                </JobList>
-            </JobsSection>
-        </Container>
-    );
+      <JobsSection>
+        <SectionTitle>Open Positions</SectionTitle>
+        <JobList>
+          {jobs.map((job) => (
+            <JobCard key={job.id}>
+              <JobInfo>
+                <JobTitle>{job.title}</JobTitle>
+                <JobMeta>
+                  <span>{job.department}</span> • <span>{job.location}</span> • <span>{job.type}</span>
+                </JobMeta>
+              </JobInfo>
+              <ApplyButton href={`/careers/${job.slug}`}>View Details</ApplyButton>
+            </JobCard>
+          ))}
+        </JobList>
+      </JobsSection>
+    </Container>
+  );
 }
