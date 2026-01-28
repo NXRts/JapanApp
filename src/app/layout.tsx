@@ -39,7 +39,7 @@ export default function RootLayout({
         <ThemeProvider>
           <StyledRegistry>
             <Navbar />
-            <main style={{ flex: 1, paddingBottom: '40px' }}>
+            <main style={{ flex: 1, paddingBottom: '40px', position: 'relative' }}>
               <BackToHome />
               {children}
             </main>

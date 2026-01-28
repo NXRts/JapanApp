@@ -5,10 +5,16 @@ import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 
 const Container = styled.div`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem 1.5rem 0;
   width: 100%;
+  z-index: 10;
+  pointer-events: none;
 `;
 
 const ArrowIcon = styled.svg`
@@ -33,6 +39,7 @@ const StyledLink = styled(Link)`
   padding: 0.5rem 1rem;
   border-radius: 12px;
   margin-left: -1rem; /* Visual alignment with content below */
+  pointer-events: auto;
   
   &:hover {
     color: var(--primary);
