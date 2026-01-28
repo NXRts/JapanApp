@@ -15,6 +15,10 @@ const Container = styled.div`
   width: 100%;
   z-index: 10;
   pointer-events: none;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ArrowIcon = styled.svg`
@@ -40,6 +44,10 @@ const StyledLink = styled(Link)`
   border-radius: 12px;
   margin-left: -1rem; /* Visual alignment with content below */
   pointer-events: auto;
+  
+  @media (max-width: 768px) {
+    margin-left: -0.5rem;
+  }
   
   &:hover {
     color: var(--primary);
