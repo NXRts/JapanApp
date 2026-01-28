@@ -5,6 +5,13 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { DrawingCanvas } from '@/components/Practice/Canvas';
 
+const PageWrapper = styled.div`
+  min-height: 90vh;
+  width: 100%;
+  /* Premium radial background */
+  background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
+`;
+
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -12,9 +19,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 90vh;
-  /* Premium radial background */
-  background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
 `;
 
 const Header = styled.div`
@@ -293,97 +297,101 @@ export default function KanjiFlashcards() {
   };
 
   if (loading) return (
-    <Container>
-      <div style={{ color: 'var(--text-secondary)' }}>Loading Kanji...</div>
-    </Container>
+    <PageWrapper>
+      <Container>
+        <div style={{ color: 'var(--text-secondary)' }}>Loading Kanji...</div>
+      </Container>
+    </PageWrapper>
   );
 
-  if (!currentKanji) return <Container>No Kanji found for this level.</Container>;
+  if (!currentKanji) return <PageWrapper><Container>No Kanji found for this level.</Container></PageWrapper>;
 
   return (
-    <Container>
-      <Header>
-        <BackLink href="/practice">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          Back
-        </BackLink>
-        <Controls>
-          <select value={level} onChange={(e) => setLevel(e.target.value)}>
-            {['n5', 'n4', 'n3', 'n2', 'n1'].map(l => (
-              <option key={l} value={l}>Level {l.toUpperCase()}</option>
-            ))}
-          </select>
-        </Controls>
-      </Header>
+    <PageWrapper>
+      <Container>
+        <Header>
+          <BackLink href="/practice">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back
+          </BackLink>
+          <Controls>
+            <select value={level} onChange={(e) => setLevel(e.target.value)}>
+              {['n5', 'n4', 'n3', 'n2', 'n1'].map(l => (
+                <option key={l} value={l}>Level {l.toUpperCase()}</option>
+              ))}
+            </select>
+          </Controls>
+        </Header>
 
-      <FlashcardContainer>
-        <DrawingArea>
-          <SectionTitle>Practice Writing</SectionTitle>
-          <CanvasSection>
-            <DrawingCanvas width={320} height={320} clearTrigger={clearTrigger} />
-          </CanvasSection>
-        </DrawingArea>
+        <FlashcardContainer>
+          <DrawingArea>
+            <SectionTitle>Practice Writing</SectionTitle>
+            <CanvasSection>
+              <DrawingCanvas width={320} height={320} clearTrigger={clearTrigger} />
+            </CanvasSection>
+          </DrawingArea>
 
-        <CardArea>
-          <SectionTitle>Flashcard</SectionTitle>
-          <CardPerspective onClick={() => setFlipped(!flipped)}>
-            <CardInner $flipped={flipped}>
-              <CardFace>
-                <div style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '2rem', fontWeight: 600 }}>
-                  What is this?
-                </div>
-                {details ? (
-                  <PromptText>
-                    {details.meanings ? details.meanings[0] : '...'}
-                  </PromptText>
-                ) : (
-                  <h2>Loading...</h2>
-                )}
-                <p style={{ marginTop: 'auto', color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem' }}>
-                  Tap to Flip ⟳
-                </p>
-              </CardFace>
+          <CardArea>
+            <SectionTitle>Flashcard</SectionTitle>
+            <CardPerspective onClick={() => setFlipped(!flipped)}>
+              <CardInner $flipped={flipped}>
+                <CardFace>
+                  <div style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '2rem', fontWeight: 600 }}>
+                    What is this?
+                  </div>
+                  {details ? (
+                    <PromptText>
+                      {details.meanings ? details.meanings[0] : '...'}
+                    </PromptText>
+                  ) : (
+                    <h2>Loading...</h2>
+                  )}
+                  <p style={{ marginTop: 'auto', color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem' }}>
+                    Tap to Flip ⟳
+                  </p>
+                </CardFace>
 
-              <CardBack>
-                <BigChar>{currentKanji}</BigChar>
-                {details && (
-                  <Details>
-                    {details.on_readings && details.on_readings.length > 0 && (
-                      <>
-                        <h4>Onyomi</h4>
-                        <p>{details.on_readings.join(', ')}</p>
-                      </>
-                    )}
-                    {details.kun_readings && details.kun_readings.length > 0 && (
-                      <>
-                        <h4>Kunyomi</h4>
-                        <p>{details.kun_readings.join(', ')}</p>
-                      </>
-                    )}
-                    <h4>Meanings</h4>
-                    <p>{details.meanings?.slice(0, 3).join(', ')}</p>
-                  </Details>
-                )}
-              </CardBack>
-            </CardInner>
-          </CardPerspective>
+                <CardBack>
+                  <BigChar>{currentKanji}</BigChar>
+                  {details && (
+                    <Details>
+                      {details.on_readings && details.on_readings.length > 0 && (
+                        <>
+                          <h4>Onyomi</h4>
+                          <p>{details.on_readings.join(', ')}</p>
+                        </>
+                      )}
+                      {details.kun_readings && details.kun_readings.length > 0 && (
+                        <>
+                          <h4>Kunyomi</h4>
+                          <p>{details.kun_readings.join(', ')}</p>
+                        </>
+                      )}
+                      <h4>Meanings</h4>
+                      <p>{details.meanings?.slice(0, 3).join(', ')}</p>
+                    </Details>
+                  )}
+                </CardBack>
+              </CardInner>
+            </CardPerspective>
 
-          <ActionButtons>
-            {!flipped ? (
-              <ActionBtn $type="flip" onClick={() => setFlipped(true)}>
-                Reveal Answer
-              </ActionBtn>
-            ) : (
-              <>
-                <ActionBtn $type="hard" onClick={nextCard}>Hard</ActionBtn>
-                <ActionBtn $type="easy" onClick={nextCard}>Easy</ActionBtn>
-              </>
-            )}
-          </ActionButtons>
-        </CardArea>
-      </FlashcardContainer>
-    </Container>
+            <ActionButtons>
+              {!flipped ? (
+                <ActionBtn $type="flip" onClick={() => setFlipped(true)}>
+                  Reveal Answer
+                </ActionBtn>
+              ) : (
+                <>
+                  <ActionBtn $type="hard" onClick={nextCard}>Hard</ActionBtn>
+                  <ActionBtn $type="easy" onClick={nextCard}>Easy</ActionBtn>
+                </>
+              )}
+            </ActionButtons>
+          </CardArea>
+        </FlashcardContainer>
+      </Container>
+    </PageWrapper>
   );
 }
