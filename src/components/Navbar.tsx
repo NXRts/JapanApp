@@ -10,16 +10,11 @@ const NavRoot = styled.nav`
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--navbar-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--navbar-border);
   transition: all 0.3s ease;
-
-  @media (prefers-color-scheme: dark) {
-    background: rgba(15, 23, 42, 0.85);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
 `;
 
 const NavContainer = styled.div`
@@ -166,12 +161,8 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   pointer-events: ${({ $isOpen }) => ($isOpen ? 'all' : 'none')};
   
   @supports (backdrop-filter: blur(20px)) {
-    background: rgba(255, 255, 255, 0.98);
+    background: var(--navbar-bg);
     backdrop-filter: blur(20px);
-    
-    @media (prefers-color-scheme: dark) {
-      background: rgba(15, 23, 42, 0.98);
-    }
   }
   
   @media (min-width: 769px) {
@@ -189,11 +180,7 @@ const MobileLink = styled(Link) <{ $active?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(0,0,0,0.05);
-  
-  @media (prefers-color-scheme: dark) {
-     border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
+  border-bottom: 1px solid var(--navbar-border);
   
   &:hover {
     color: var(--primary);
