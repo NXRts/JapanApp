@@ -3,6 +3,7 @@ import { Inter, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import StyledRegistry from "@/app/registry";
 import { Navbar } from "@/components/Navbar";
+import { BackToHome } from "@/components/BackToHome";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -39,6 +40,7 @@ export default function RootLayout({
           <StyledRegistry>
             <Navbar />
             <main style={{ flex: 1, paddingBottom: '40px' }}>
+              <BackToHome />
               {children}
             </main>
             <Footer />
