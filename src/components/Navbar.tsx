@@ -206,6 +206,9 @@ export function Navbar() {
 
           <NavList>
             <NavItem>
+              <StyledLink href="/" $active={pathname === '/'}>Home</StyledLink>
+            </NavItem>
+            <NavItem>
               <StyledLink href="/practice" $active={pathname.startsWith('/practice')}>Practice</StyledLink>
             </NavItem>
             <NavItem>
@@ -247,6 +250,10 @@ export function Navbar() {
         </NavContainer>
 
         <MobileMenu $isOpen={isMobileMenuOpen}>
+          <MobileLink href="/" $active={pathname === '/'} onClick={() => setIsMobileMenuOpen(false)}>
+            Home
+            <span>→</span>
+          </MobileLink>
           <MobileLink href="/practice" $active={pathname.startsWith('/practice')} onClick={() => setIsMobileMenuOpen(false)}>
             Practice
             <span>→</span>
