@@ -151,7 +151,7 @@ export default function TermsOfService() {
             <Section>
                 <SectionTitle>8. Contact Us</SectionTitle>
                 <Paragraph>
-                    If you have any questions about these Terms, please contact us via email at <a href="mailto:support@japanapp.com">support@japanapp.com</a>.
+                    If you have any questions about these Terms, please contact us via email at <a href="mailto:japanapp@gmail.com">japanapp@gmail.com</a>.
                 </Paragraph>
             </Section>
         </Container>

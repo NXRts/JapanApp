@@ -155,7 +155,7 @@ export default function PrivacyPolicy() {
                     If you have any questions about this Privacy Policy, please contact us:
                 </Paragraph>
                 <List>
-                    <ListItem>By email: support@japanapp.com</ListItem>
+                    <ListItem>By email: japanapp@gmail.com</ListItem>
                 </List>
             </Section>
         </Container>
