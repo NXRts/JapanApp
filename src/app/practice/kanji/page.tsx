@@ -155,27 +155,27 @@ const CardFace = styled.div`
   padding: 2.5rem;
   text-align: center;
   /* Glass effect */
-  background: rgba(255, 255, 255, 0.8);
+  /* Glass effect */
+  background: var(--surface); /* Use theme variable which handles light/dark */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-
-  @media (prefers-color-scheme: dark) {
-    background: rgba(30, 41, 59, 0.8);
-  }
 `;
 
 const CardBack = styled(CardFace)`
   transform: rotateY(180deg);
-  background: white;
-  color: #1a1a1a;
-  border: 1px solid rgba(0,0,0,0.1);
+  background: var(--surface);
+  color: var(--foreground);
+  border: 1px solid var(--border);
 `;
 
 const BigChar = styled.div`
   font-size: 6rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
-  color: #1a1a1a; /* Always dark for ink look on white paper */
+  font-size: 6rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: var(--foreground);
   line-height: 1;
 `;
 
