@@ -97,7 +97,7 @@ export function DrawingCanvas({
             try {
                 // Determine Hex Code (KanjiVG uses 5-digit hex)
                 const code = char.charCodeAt(0).toString(16).padStart(5, '0');
-                const res = await fetch(`https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${code}.svg`);
+                const res = await fetch(`https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg@master/kanji/${code}.svg`);
                 if (!res.ok) return;
 
                 const text = await res.text();
