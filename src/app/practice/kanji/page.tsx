@@ -253,6 +253,7 @@ const ActionBtn = styled.button<{ $type: 'easy' | 'hard' | 'flip' }>`
 
 export default function KanjiFlashcards() {
   const [level, setLevel] = useState('n5');
+  const [studyMode, setStudyMode] = useState<'read' | 'write'>('read');
   const [kanjiList, setKanjiList] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
@@ -317,6 +318,7 @@ export default function KanjiFlashcards() {
             Back
           </BackLink>
           <Controls>
+
             <select value={level} onChange={(e) => setLevel(e.target.value)}>
               {['n5', 'n4', 'n3', 'n2', 'n1'].map(l => (
                 <option key={l} value={l}>Level {l.toUpperCase()}</option>
@@ -329,7 +331,7 @@ export default function KanjiFlashcards() {
           <DrawingArea>
             <SectionTitle>Practice Writing</SectionTitle>
             <CanvasSection>
-              <DrawingCanvas width={320} height={320} clearTrigger={clearTrigger} />
+              <DrawingCanvas width={320} height={320} clearTrigger={clearTrigger} char={currentKanji} />
             </CanvasSection>
           </DrawingArea>
 
@@ -339,15 +341,22 @@ export default function KanjiFlashcards() {
               <CardInner $flipped={flipped}>
                 <CardFace>
                   <div style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '2rem', fontWeight: 600 }}>
-                    What is this?
+                    Write this Kanji
                   </div>
+
                   {details ? (
-                    <PromptText>
-                      {details.meanings ? details.meanings[0] : '...'}
-                    </PromptText>
+                    <>
+                      <div style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--primary)', fontWeight: 700, marginBottom: '0.5rem' }}>
+                        MEANING
+                      </div>
+                      <PromptText>
+                        {details.meanings ? details.meanings[0] : '...'}
+                      </PromptText>
+                    </>
                   ) : (
                     <h2>Loading...</h2>
                   )}
+
                   <p style={{ marginTop: 'auto', color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem' }}>
                     Tap to Flip ⟳
                   </p>
