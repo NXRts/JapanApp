@@ -54,21 +54,28 @@ const Toolbar = styled.div`
   gap: 0.75rem;
   margin-top: 1.5rem;
   flex-wrap: wrap;
+  width: 100%;
+
+  @media (max-width: 600px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
 `;
 
-const ToolBtn = styled.button<{ $variant?: 'primary' | 'danger' | 'ghost' }>`
+const ToolBtn = styled.button<{ $variant?: 'primary' | 'danger' | 'ghost' | 'ghost-danger' }>`
   background: ${({ $variant }) =>
         $variant === 'danger' ? 'rgba(239, 68, 68, 0.1)' :
             $variant === 'primary' ? 'var(--primary)' :
-                $variant === 'ghost' ? 'transparent' :
+                ($variant === 'ghost' || $variant === 'ghost-danger') ? 'transparent' :
                     'var(--surface)'};
   border: 1px solid ${({ $variant }) =>
         $variant === 'danger' ? 'rgba(239, 68, 68, 0.2)' :
             $variant === 'primary' ? 'var(--primary)' :
-                $variant === 'ghost' ? 'transparent' :
+                ($variant === 'ghost' || $variant === 'ghost-danger') ? 'transparent' :
                     'var(--border)'};
   color: ${({ $variant }) =>
-        $variant === 'danger' ? '#ef4444' :
+        ($variant === 'danger' || $variant === 'ghost-danger') ? '#ef4444' :
             $variant === 'primary' ? '#ffffff' :
                 $variant === 'ghost' ? 'var(--text-secondary)' :
                     'var(--foreground)'};
@@ -81,16 +88,22 @@ const ToolBtn = styled.button<{ $variant?: 'primary' | 'danger' | 'ghost' }>`
   align-items: center;
   gap: 0.4rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: ${({ $variant }) => $variant === 'ghost' ? 'none' : 'var(--shadow-sm)'};
+  box-shadow: ${({ $variant }) => ($variant === 'ghost' || $variant === 'ghost-danger') ? 'none' : 'var(--shadow-sm)'};
+  justify-content: center; /* Center content */
+
+  @media (max-width: 600px) {
+    width: 100%; /* Full width in grid cells */
+  }
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${({ $variant }) => $variant === 'ghost' ? 'none' : 'var(--shadow-md)'};
+    box-shadow: ${({ $variant }) => ($variant === 'ghost' || $variant === 'ghost-danger') ? 'none' : 'var(--shadow-md)'};
     background: ${({ $variant }) =>
         $variant === 'danger' ? 'rgba(239, 68, 68, 0.15)' :
             $variant === 'primary' ? 'var(--primary-dark)' :
-                $variant === 'ghost' ? 'rgba(0,0,0,0.05)' :
-                    'var(--surface)'};
+                $variant === 'ghost-danger' ? 'rgba(239, 68, 68, 0.1)' :
+                    $variant === 'ghost' ? 'rgba(0,0,0,0.05)' :
+                        'var(--surface)'};
     
     ${({ $variant }) => $variant === 'ghost' && `
         color: var(--primary);
@@ -448,7 +461,7 @@ export function DrawingCanvas({
                         </>
                     )}
                 </ToolBtn>
-                <ToolBtn onClick={clearCanvas} $variant="danger">
+                <ToolBtn onClick={clearCanvas} $variant="ghost-danger">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" /></svg>
                     Clear
                 </ToolBtn>

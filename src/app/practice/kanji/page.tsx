@@ -147,6 +147,8 @@ const CanvasSection = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    max-width: 360px; /* Limit width but allow shrink */
     height: 460px; /* Fixed height to match card */
     justify-content: center;
     gap: 1rem;
@@ -169,6 +171,7 @@ const CardArea = styled.div`
 
 const CardPerspective = styled.div`
   width: 340px;
+  max-width: 100%; /* Responsive width */
   height: 460px; /* Increased to match canvas section */
   perspective: 1500px; /* Enhanced depth */
   cursor: pointer;
