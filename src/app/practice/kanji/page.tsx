@@ -47,26 +47,69 @@ const BackLink = styled(Link)`
   }
 `;
 
-const Controls = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  
-  select {
-    padding: 0.75rem 2rem;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--foreground);
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s;
-    outline: none;
+const DropdownContainer = styled.div`
+  position: relative;
+  width: 160px;
+`;
 
-    &:hover, :focus {
-        border-color: var(--primary);
-    }
+const DropdownTrigger = styled.button<{ $isOpen: boolean }>`
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  svg {
+    transition: transform 0.2s;
+    transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0)')};
+    color: var(--text-secondary);
+  }
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: 50;
+  animation: fadeIn 0.2s ease-out;
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+
+const DropdownItem = styled.div<{ $isActive: boolean }>`
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: ${({ $isActive }) => ($isActive ? 'var(--primary)' : 'var(--foreground)')};
+  background: ${({ $isActive }) => ($isActive ? 'rgba(79, 70, 229, 0.05)' : 'transparent')};
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(79, 70, 229, 0.05);
+    color: var(--primary);
   }
 `;
 
@@ -260,6 +303,7 @@ export default function KanjiFlashcards() {
   const [loading, setLoading] = useState(true);
   const [details, setDetails] = useState<any>(null);
   const [clearTrigger, setClearTrigger] = useState(0);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Fetch List
   useEffect(() => {
@@ -317,14 +361,34 @@ export default function KanjiFlashcards() {
             </svg>
             Back
           </BackLink>
-          <Controls>
+          <DropdownContainer>
+            <DropdownTrigger
+              $isOpen={isDropdownOpen}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              Level {level.toUpperCase()}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </DropdownTrigger>
 
-            <select value={level} onChange={(e) => setLevel(e.target.value)}>
-              {['n5', 'n4', 'n3', 'n2', 'n1'].map(l => (
-                <option key={l} value={l}>Level {l.toUpperCase()}</option>
-              ))}
-            </select>
-          </Controls>
+            {isDropdownOpen && (
+              <DropdownMenu>
+                {['n5', 'n4', 'n3', 'n2', 'n1'].map(l => (
+                  <DropdownItem
+                    key={l}
+                    $isActive={level === l}
+                    onClick={() => {
+                      setLevel(l);
+                      setIsDropdownOpen(false);
+                    }}
+                  >
+                    Level {l.toUpperCase()}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            )}
+          </DropdownContainer>
         </Header>
 
         <FlashcardContainer>
@@ -352,6 +416,9 @@ export default function KanjiFlashcards() {
                       <PromptText>
                         {details.meanings ? details.meanings[0] : '...'}
                       </PromptText>
+                      <div style={{ fontSize: '4rem', fontWeight: 700, color: 'var(--foreground)', marginTop: '0.5rem' }}>
+                        {currentKanji}
+                      </div>
                     </>
                   ) : (
                     <h2>Loading...</h2>
