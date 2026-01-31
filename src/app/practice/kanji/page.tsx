@@ -147,6 +147,9 @@ const CanvasSection = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 460px; /* Fixed height to match card */
+    justify-content: center;
+    gap: 1rem;
 `;
 
 const DrawingArea = styled.div`
@@ -166,7 +169,7 @@ const CardArea = styled.div`
 
 const CardPerspective = styled.div`
   width: 340px;
-  height: 440px;
+  height: 460px; /* Increased to match canvas section */
   perspective: 1500px; /* Enhanced depth */
   cursor: pointer;
   position: relative;
@@ -395,7 +398,16 @@ export default function KanjiFlashcards() {
           <DrawingArea>
             <SectionTitle>Practice Writing</SectionTitle>
             <CanvasSection>
-              <DrawingCanvas width={320} height={320} clearTrigger={clearTrigger} char={currentKanji} />
+              <DrawingCanvas
+                width={320}
+                height={320}
+                clearTrigger={clearTrigger}
+                char={currentKanji}
+                onComplete={() => {
+                  // Optional: Play sound or show toast here
+                  nextCard();
+                }}
+              />
             </CanvasSection>
           </DrawingArea>
 
