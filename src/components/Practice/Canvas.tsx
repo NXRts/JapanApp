@@ -51,49 +51,50 @@ const StyledCanvas = styled.canvas`
 const Toolbar = styled.div`
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 0.75rem;
   margin-top: 1.5rem;
+  flex-wrap: wrap;
 `;
 
-const ToolBtn = styled.button<{ $variant?: 'primary' | 'danger' }>`
+const ToolBtn = styled.button<{ $variant?: 'primary' | 'danger' | 'ghost' }>`
   background: ${({ $variant }) =>
-        $variant === 'danger'
-            ? 'rgba(239, 68, 68, 0.1)'
-            : 'var(--surface)'};
+        $variant === 'danger' ? 'rgba(239, 68, 68, 0.1)' :
+            $variant === 'primary' ? 'var(--primary)' :
+                $variant === 'ghost' ? 'transparent' :
+                    'var(--surface)'};
   border: 1px solid ${({ $variant }) =>
-        $variant === 'danger'
-            ? 'rgba(239, 68, 68, 0.2)'
-            : 'var(--border)'};
+        $variant === 'danger' ? 'rgba(239, 68, 68, 0.2)' :
+            $variant === 'primary' ? 'var(--primary)' :
+                $variant === 'ghost' ? 'transparent' :
+                    'var(--border)'};
   color: ${({ $variant }) =>
-        $variant === 'danger'
-            ? '#ef4444'
-            : 'var(--foreground)'};
-  padding: 0.5rem 1rem;
+        $variant === 'danger' ? '#ef4444' :
+            $variant === 'primary' ? '#ffffff' :
+                $variant === 'ghost' ? 'var(--text-secondary)' :
+                    'var(--foreground)'};
+  padding: 0.5rem 0.85rem;
   border-radius: 12px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow-sm);
+  box-shadow: ${({ $variant }) => $variant === 'ghost' ? 'none' : 'var(--shadow-sm)'};
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: ${({ $variant }) => $variant === 'ghost' ? 'none' : 'var(--shadow-md)'};
     background: ${({ $variant }) =>
-        $variant === 'danger'
-            ? 'rgba(239, 68, 68, 0.15)'
-            : 'var(--surface)'};
-    border-color: ${({ $variant }) =>
-        $variant === 'danger'
-            ? '#ef4444'
-            : 'var(--primary)'};
-    color: ${({ $variant }) =>
-        $variant === 'danger'
-            ? '#ef4444'
-            : 'var(--primary)'};
+        $variant === 'danger' ? 'rgba(239, 68, 68, 0.15)' :
+            $variant === 'primary' ? 'var(--primary-dark)' :
+                $variant === 'ghost' ? 'rgba(0,0,0,0.05)' :
+                    'var(--surface)'};
+    
+    ${({ $variant }) => $variant === 'ghost' && `
+        color: var(--primary);
+    `}
   }
 
   &:active {
@@ -111,13 +112,15 @@ export function DrawingCanvas({
     height = 300,
     clearTrigger = 0,
     char = '',
-    onComplete
+    onComplete,
+    onSkip
 }: {
     width?: number;
     height?: number;
     clearTrigger?: number;
     char?: string;
     onComplete?: () => void;
+    onSkip?: () => void;
 }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isDrawing, setIsDrawing] = useState(false);
@@ -333,6 +336,12 @@ export function DrawingCanvas({
         }
     };
 
+    const handleSkip = () => {
+        if (onSkip) {
+            onSkip();
+        }
+    };
+
     return (
         <div>
             <CanvasWrapper>
@@ -426,26 +435,30 @@ export function DrawingCanvas({
                 />
             </CanvasWrapper>
             <Toolbar>
-                <ToolBtn onClick={() => setShowGuide(!showGuide)}>
+                <ToolBtn onClick={() => setShowGuide(!showGuide)} $variant="ghost">
                     {showGuide ? (
                         <>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22" /></svg>
-                            Hide Guide
+                            Hide
                         </>
                     ) : (
                         <>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
-                            Show Guide
+                            Guide
                         </>
                     )}
+                </ToolBtn>
+                <ToolBtn onClick={clearCanvas} $variant="danger">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" /></svg>
+                    Clear
                 </ToolBtn>
                 <ToolBtn onClick={calculateScore} $variant="primary">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                     Check
                 </ToolBtn>
-                <ToolBtn onClick={clearCanvas} $variant="danger">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" /></svg>
-                    Clear
+                <ToolBtn onClick={handleSkip} $variant="ghost">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+                    Next
                 </ToolBtn>
             </Toolbar>
         </div>

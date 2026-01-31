@@ -407,6 +407,7 @@ export default function KanjiFlashcards() {
                   // Optional: Play sound or show toast here
                   nextCard();
                 }}
+                onSkip={() => nextCard()}
               />
             </CanvasSection>
           </DrawingArea>
