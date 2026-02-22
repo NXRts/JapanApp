@@ -1,15 +1,6 @@
 import { NextResponse } from 'next/server';
-
-type KotonogiVocab = {
-    romaji: string;
-    kana: string;
-    arti: string;
-};
-
-type KotonogiData = {
-    hiragana_huruf?: { kosakata?: KotonogiVocab[] }[];
-    katakana_huruf?: { kosakata?: KotonogiVocab[] }[];
-};
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export async function GET(
     request: Request,
@@ -17,30 +8,38 @@ export async function GET(
 ) {
     try {
         const params = await context.params;
-        // Map 'n5', 'n4', etc. from the old URL to something sensible if needed, 
-        // or expect 'hiragana'/'katakana' from the frontend directly.
-        // For safety, fallback to hiragana if the level isn't exactly 'katakana'.
-        const type = params.level.toLowerCase() === 'katakana' ? 'katakana' : 'hiragana';
+        const type = params.level.toLowerCase();
 
-        // Fetch from Kotonogi API
-        const res = await fetch(`https://kotonogi-api.vercel.app/${type}`);
-        if (!res.ok) {
-            throw new Error(`Failed to fetch from Kotonogi API: ${res.status}`);
+        // Ensure only valid types are requested
+        const validTypes = ['hiragana', 'katakana', 'dakuten', 'handakuten', 'yoon'];
+        if (!validTypes.includes(type)) {
+            return NextResponse.json({ error: 'Invalid vocabulary type' }, { status: 400 });
         }
 
-        const data: KotonogiData = await res.json();
+        const jsonPath = path.join(process.cwd(), 'public', 'jsons', `${type}.json`);
+        const raw = await fs.readFile(jsonPath, 'utf-8');
+        const data = JSON.parse(raw);
 
         // Extract the kosakata (vocabulary) arrays
-        const extractedVocab = [];
-        const charArray = type === 'hiragana' ? data.hiragana_huruf : data.katakana_huruf;
+        const extractedVocab: { word: string; reading: string; romaji: string; meaning: string }[] = [];
 
-        if (charArray) {
-            for (const charObj of charArray) {
+        let charCollection = null;
+        if (type === 'hiragana') charCollection = data.hiragana_huruf;
+        else if (type === 'katakana') charCollection = data.katakana_huruf;
+        else if (type === 'dakuten') charCollection = data.dakuten_huruf;
+        else if (type === 'handakuten') charCollection = data.handakuten_huruf;
+        else if (type === 'yoon') charCollection = data.yoon_huruf;
+
+        if (charCollection) {
+            // Handle both cases where charCollection is an array or an object
+            const charArray = Array.isArray(charCollection) ? charCollection : Object.values(charCollection);
+
+            for (const charObj of charArray as any[]) {
                 if (charObj.kosakata && Array.isArray(charObj.kosakata)) {
                     for (const vocab of charObj.kosakata) {
                         extractedVocab.push({
-                            word: vocab.kana,
-                            reading: vocab.kana, // Kotonogi provides kana in Both places usually for simple words
+                            word: vocab.hiragana || vocab.katakana || vocab.kana || vocab.romaji,
+                            reading: vocab.hiragana || vocab.katakana || vocab.kana || vocab.romaji,
                             romaji: vocab.romaji,
                             meaning: vocab.arti,
                         });
@@ -52,6 +51,6 @@ export async function GET(
         return NextResponse.json(extractedVocab);
     } catch (error) {
         console.error('API Route Error:', error);
-        return NextResponse.json({ error: 'Failed to fetch vocabulary' }, { status: 500 });
+        return NextResponse.json({ error: 'Failed to load local vocabulary data' }, { status: 500 });
     }
 }

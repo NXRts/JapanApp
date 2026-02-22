@@ -429,7 +429,7 @@ export default function VocabularyFlashcards() {
 
             {isDropdownOpen && (
               <DropdownMenu>
-                {['hiragana', 'katakana'].map(l => (
+                {['hiragana', 'katakana', 'dakuten', 'handakuten', 'yoon'].map(l => (
                   <DropdownItem
                     key={l}
                     $isActive={level === l}
