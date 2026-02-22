@@ -23,26 +23,31 @@ export async function GET(
         // Extract the kosakata (vocabulary) arrays
         const extractedVocab: { word: string; reading: string; romaji: string; meaning: string }[] = [];
 
-        let charCollection = null;
-        if (type === 'hiragana') charCollection = data.hiragana_huruf;
-        else if (type === 'katakana') charCollection = data.katakana_huruf;
-        else if (type === 'dakuten') charCollection = data.dakuten_huruf;
-        else if (type === 'handakuten') charCollection = data.handakuten_huruf;
-        else if (type === 'yoon') charCollection = data.yoon_huruf;
+        let collections = [];
+        if (type === 'hiragana') {
+            collections.push(data.hiragana_huruf);
+        } else if (type === 'katakana') {
+            collections.push(data.katakana_huruf);
+        } else {
+            collections.push(data.hiragana_huruf);
+            collections.push(data.katakana_huruf);
+        }
 
-        if (charCollection) {
-            // Handle both cases where charCollection is an array or an object
-            const charArray = Array.isArray(charCollection) ? charCollection : Object.values(charCollection);
+        for (const charCollection of collections) {
+            if (charCollection) {
+                // Handle both cases where charCollection is an array or an object
+                const charArray = Array.isArray(charCollection) ? charCollection : Object.values(charCollection);
 
-            for (const charObj of charArray as any[]) {
-                if (charObj.kosakata && Array.isArray(charObj.kosakata)) {
-                    for (const vocab of charObj.kosakata) {
-                        extractedVocab.push({
-                            word: vocab.hiragana || vocab.katakana || vocab.kana || vocab.romaji,
-                            reading: vocab.hiragana || vocab.katakana || vocab.kana || vocab.romaji,
-                            romaji: vocab.romaji,
-                            meaning: vocab.arti,
-                        });
+                for (const charObj of charArray as any[]) {
+                    if (charObj && charObj.kosakata && Array.isArray(charObj.kosakata)) {
+                        for (const vocab of charObj.kosakata) {
+                            extractedVocab.push({
+                                word: vocab.hiragana || vocab.katakana || vocab.kana || vocab.romaji,
+                                reading: vocab.hiragana || vocab.katakana || vocab.kana || vocab.romaji,
+                                romaji: vocab.romaji,
+                                meaning: vocab.arti,
+                            });
+                        }
                     }
                 }
             }
