@@ -1,0 +1,674 @@
+{
+  "total": 50,
+  "tentang": "Dakuten adalah tanda berupa dua garis kecil yang ditempatkan di sudut kanan atas karakter hiragana atau katakana.\n\nDakuten digunakan untuk mengubah bunyi karakter menjadi lebih keras atau 'bergetar.' Dakuten (濁点) secara harfiah berarti 'titik keruh.' Nama lain yang lebih informal adalah 'tenten' (てんてん), yang berarti 'dua titik.' Nama ini sering digunakan oleh pelajar karena lebih sederhana.\n\nSecara teknis, dakuten mengubah bunyi konsonan tidak bersuara (voiceless) menjadi bersuara (voiced). Proses fonologis ini disebut 'rendaku' (連濁) dalam linguistik Jepang, yang merupakan fenomena di mana konsonan pertama dari kata kedua dalam komposit menjadi bersuara.",
+  "info": "Dakuten sangat penting dalam bahasa Jepang karena membantu membedakan pengucapan kata.\n\nMisalnya, か (ka) dan が (ga) memiliki makna yang berbeda dalam konteks tertentu, sehingga peran dakuten sangat krusial untuk memperjelas arti sebuah kata.\n\nContoh perbedaan makna dengan dakuten:\n1. かわ (kawa) = kulit vs. がわ (gawa) = sisi\n2. とき (toki) = waktu vs. どき (doki) = detak jantung\n3. はし (hashi) = jembatan vs. ばし (bashi) = jembatan (dengan nuansa berbeda)\n4. かみ (kami) = kertas vs. がみ (gami) = dewa (bentuk alternatif)",
+  "penjelasan": "Dakuten diterapkan pada lima baris konsonan dasar dalam sistem hiragana dan katakana:\n\n1. か行 → が行 (k→g): かきくけこ → がぎぐげご\n   Contoh: かお (kao) = wajah vs. がお (gao) = ekspresi wajah\n\n2. さ行 → ざ行 (s→z): さしすせそ → ざじずぜぞ\n   Contoh: さかな (sakana) = ikan vs. ざかな (zakana) = tidak ada arti khusus (jarang)\n\n3. た行 → だ行 (t→d): たちつてと → だぢづでど\n   Contoh: たべる (taberu) = makan vs. だべる (daberu) = mengobrol (dialek)\n\n4. は行 → ば行 (h→b): はひふへほ → ばびぶべぼ\n   Contoh: はな (hana) = bunga vs. ばな (bana) = tidak umum\n\nDalam katakana, sistem yang sama berlaku:\nカキクケコ → ガギグゲゴ\nサシスセソ → ザジズゼゾ\nタチツテト → ダヂヅデド\nハヒフヘホ → バビブベボ\n\nPerlu diperhatikan bahwa karakter ぢ (ji) dan づ (zu) dengan dakuten sangat jarang digunakan dalam bahasa Jepang modern, biasanya digantikan oleh じ dan ず.\n\nDakuten juga dapat dikombinasikan dengan yōon (huruf gabungan):\n• きゃ → ぎゃ (kya → gya)\n• しゃ → じゃ (sha → ja)\n• ちゃ → ぢゃ (cha → dya) - jarang\n• ひゃ → びゃ (hya → bya)\n• ぴゃ (tidak ada bentuk dakuten, sudah handakuten)\n\nDalam tata bahasa Jepang, dakuten muncul dalam:\n1. Konjugasi kata kerja: かく (kaku) → かいて (kaite) vs. かぐ (kagu) → かいで (kaide)\n2. Bentuk sopan: です (desu) dan ます (masu) tidak berubah\n3. Kata majemuk: て + がみ → てがみ (tegami) = surat",
+  "hiragana_huruf": {
+    "ga": {
+      "romaji": "ga",
+      "hiragana": "が",
+      "kakikata_gambar": "/images/hiragana/ga.svg",
+      "kakikata_animasi": "/animation/hiragana/ga.svg",
+      "kosakata": [
+        { "romaji": "gaku", "hiragana": "がく", "arti": "pelajaran" },
+        { "romaji": "gakki", "hiragana": "がっき", "arti": "alat musik" },
+        { "romaji": "gan", "hiragana": "がん", "arti": "keinginan" },
+        { "romaji": "gaman", "hiragana": "がまん", "arti": "kesabaran" },
+        { "romaji": "gawa", "hiragana": "がわ", "arti": "sisi" }
+      ]
+    },
+    "gi": {
+      "romaji": "gi",
+      "hiragana": "ぎ",
+      "kakikata_gambar": "/images/hiragana/gi.svg",
+      "kakikata_animasi": "/animation/hiragana/gi.svg",
+      "kosakata": [
+        { "romaji": "ginkou", "hiragana": "ぎんこう", "arti": "bank" },
+        { "romaji": "gin", "hiragana": "ぎん", "arti": "perak" },
+        { "romaji": "giri", "hiragana": "ぎり", "arti": "kewajiban" },
+        { "romaji": "gimon", "hiragana": "ぎもん", "arti": "keraguan" },
+        { "romaji": "gishi", "hiragana": "ぎし", "arti": "teknisi" }
+      ]
+    },
+    "gu": {
+      "romaji": "gu",
+      "hiragana": "ぐ",
+      "kakikata_gambar": "/images/hiragana/gu.svg",
+      "kakikata_animasi": "/animation/hiragana/gu.svg",
+      "kosakata": [
+        { "romaji": "gumi", "hiragana": "ぐみ", "arti": "kelompok" },
+        {
+          "romaji": "guuzen",
+          "hiragana": "ぐうぜん",
+          "arti": "kebetulan"
+        },
+        { "romaji": "guru", "hiragana": "ぐる", "arti": "pengkhianat" },
+        {
+          "romaji": "gushin",
+          "hiragana": "ぐしん",
+          "arti": "dewa penjaga"
+        },
+        { "romaji": "guai", "hiragana": "ぐあい", "arti": "kondisi" }
+      ]
+    },
+    "ge": {
+      "romaji": "ge",
+      "hiragana": "げ",
+      "kakikata_gambar": "/images/hiragana/ge.svg",
+      "kakikata_animasi": "/animation/hiragana/ge.svg",
+      "kosakata": [
+        { "romaji": "geki", "hiragana": "げき", "arti": "drama" },
+        { "romaji": "genki", "hiragana": "げんき", "arti": "sehat" },
+        {
+          "romaji": "geijutsu",
+          "hiragana": "げいじゅつ",
+          "arti": "seni"
+        },
+        { "romaji": "gehin", "hiragana": "げひん", "arti": "kasar" },
+        { "romaji": "gen", "hiragana": "げん", "arti": "nyata" }
+      ]
+    },
+    "go": {
+      "romaji": "go",
+      "hiragana": "ご",
+      "kakikata_gambar": "/images/hiragana/go.svg",
+      "kakikata_animasi": "/animation/hiragana/go.svg",
+      "kosakata": [
+        { "romaji": "gohan", "hiragana": "ごはん", "arti": "nasi" },
+        { "romaji": "gogo", "hiragana": "ごご", "arti": "sore" },
+        {
+          "romaji": "gojuu",
+          "hiragana": "ごじゅう",
+          "arti": "lima puluh"
+        },
+        { "romaji": "gonin", "hiragana": "ごにん", "arti": "lima orang" },
+        { "romaji": "gou", "hiragana": "ごう", "arti": "nomor" }
+      ]
+    },
+    "za": {
+      "romaji": "za",
+      "hiragana": "ざ",
+      "kakikata_gambar": "/images/hiragana/za.svg",
+      "kakikata_animasi": "/animation/hiragana/za.svg",
+      "kosakata": [
+        {
+          "romaji": "zaru",
+          "hiragana": "ざる",
+          "arti": "keranjang bambu"
+        },
+        { "romaji": "zasshi", "hiragana": "ざっし", "arti": "majalah" },
+        {
+          "romaji": "zanzou",
+          "hiragana": "ざんぞう",
+          "arti": "bayangan"
+        },
+        {
+          "romaji": "zannen",
+          "hiragana": "ざんねん",
+          "arti": "mengecewakan"
+        },
+        { "romaji": "zankoku", "hiragana": "ざんこく", "arti": "kejam" }
+      ]
+    },
+    "ji": {
+      "romaji": "ji",
+      "hiragana": "じ",
+      "kakikata_gambar": "/images/hiragana/ji.svg",
+      "kakikata_animasi": "/animation/hiragana/ji.svg",
+      "kosakata": [
+        {
+          "romaji": "jitensha",
+          "hiragana": "じてんしゃ",
+          "arti": "sepeda"
+        },
+        { "romaji": "jikan", "hiragana": "じかん", "arti": "waktu" },
+        {
+          "romaji": "jishin",
+          "hiragana": "じしん",
+          "arti": "gempa bumi"
+        },
+        {
+          "romaji": "jinsei",
+          "hiragana": "じんせい",
+          "arti": "kehidupan"
+        },
+        { "romaji": "jiko", "hiragana": "じこ", "arti": "kecelakaan" }
+      ]
+    },
+    "zu": {
+      "romaji": "zu",
+      "hiragana": "ず",
+      "kakikata_gambar": "/images/hiragana/zu.svg",
+      "kakikata_animasi": "/animation/hiragana/zu.svg",
+      "kosakata": [
+        { "romaji": "zu", "hiragana": "ず", "arti": "diagram" },
+        {
+          "romaji": "zutsu",
+          "hiragana": "ずつ",
+          "arti": "masing-masing"
+        },
+        { "romaji": "zumi", "hiragana": "ずみ", "arti": "selesai" },
+        { "romaji": "zuibun", "hiragana": "ずいぶん", "arti": "sangat" },
+        {
+          "romaji": "zuikan",
+          "hiragana": "ずいかん",
+          "arti": "keajaiban"
+        }
+      ]
+    },
+    "ze": {
+      "romaji": "ze",
+      "hiragana": "ぜ",
+      "kakikata_gambar": "/images/hiragana/ze.svg",
+      "kakikata_animasi": "/animation/hiragana/ze.svg",
+      "kosakata": [
+        { "romaji": "zen", "hiragana": "ぜん", "arti": "keseluruhan" },
+        { "romaji": "zehi", "hiragana": "ぜひ", "arti": "pasti" },
+        { "romaji": "zettai", "hiragana": "ぜったい", "arti": "mutlak" },
+        {
+          "romaji": "zekkou",
+          "hiragana": "ぜっこう",
+          "arti": "sempurna"
+        },
+        {
+          "romaji": "zekkai",
+          "hiragana": "ぜっかい",
+          "arti": "laut yang jauh"
+        }
+      ]
+    },
+    "zo": {
+      "romaji": "zo",
+      "hiragana": "ぞ",
+      "kakikata_gambar": "/images/hiragana/zo.svg",
+      "kakikata_animasi": "/animation/hiragana/zo.svg",
+      "kosakata": [
+        { "romaji": "zou", "hiragana": "ぞう", "arti": "gajah" },
+        { "romaji": "zoku", "hiragana": "ぞく", "arti": "klan" },
+        {
+          "romaji": "zonbun",
+          "hiragana": "ぞんぶん",
+          "arti": "sepenuhnya"
+        },
+        { "romaji": "zoku", "hiragana": "ぞく", "arti": "kelanjutan" },
+        { "romaji": "zondai", "hiragana": "ぞんだい", "arti": "penting" }
+      ]
+    },
+    "da": {
+      "romaji": "da",
+      "hiragana": "だ",
+      "kakikata_gambar": "/images/hiragana/da.svg",
+      "kakikata_animasi": "/animation/hiragana/da.svg",
+      "kosakata": [
+        { "romaji": "dare", "hiragana": "だれ", "arti": "siapa" },
+        { "romaji": "dame", "hiragana": "だめ", "arti": "tidak boleh" },
+        { "romaji": "dai", "hiragana": "だい", "arti": "besar" },
+        { "romaji": "dansu", "hiragana": "だんす", "arti": "tarian" },
+        {
+          "romaji": "dansei",
+          "hiragana": "だんせい",
+          "arti": "laki-laki"
+        }
+      ]
+    },
+    "ji2": {
+      "romaji": "ji",
+      "hiragana": "ぢ",
+      "kakikata_gambar": "/images/hiragana/ji2.svg",
+      "kakikata_animasi": "/animation/hiragana/ji2.svg",
+      "catatan": "Huruf ぢ (ji) sangat jarang digunakan dalam kosakata modern bahasa Jepang. Biasanya, pelafalan 'ji' ditulis sebagai じ (ji).\nNamun, ぢ dapat muncul dalam kasus tertentu seperti kata majemuk.",
+      "kosakata": [
+        { "romaji": "chijimu", "hiragana": "ちぢむ", "arti": "menyusut" },
+        {
+          "romaji": "chijireru",
+          "hiragana": "ちぢれる",
+          "arti": "berkerut"
+        },
+        { "romaji": "chiji", "hiragana": "ちぢ", "arti": "penyusutan" },
+        {
+          "romaji": "chijimi",
+          "hiragana": "ちぢみ",
+          "arti": "penyusutan (kain)"
+        },
+        { "romaji": "aji", "hiragana": "あぢ", "arti": "rasa (langka)" }
+      ]
+    },
+    "zu2": {
+      "romaji": "zu",
+      "hiragana": "づ",
+      "kakikata_gambar": "/images/hiragana/zu2.svg",
+      "kakikata_animasi": "/animation/hiragana/zu2.svg",
+      "catatan": "Sama seperti ぢ, huruf づ (zu) jarang digunakan dalam kosakata modern.\nPelafalan 'zu' biasanya ditulis sebagai ず (zu), tetapi づ tetap muncul dalam kata tertentu.",
+      "kosakata": [
+        {
+          "romaji": "tsudzuku",
+          "hiragana": "つづく",
+          "arti": "berlanjut"
+        },
+        {
+          "romaji": "tsudzukeru",
+          "hiragana": "つづける",
+          "arti": "melanjutkan"
+        },
+        { "romaji": "tsudzuri", "hiragana": "つづり", "arti": "ejaan" },
+        {
+          "romaji": "kidzukai",
+          "hiragana": "きづかい",
+          "arti": "perhatian"
+        },
+        { "romaji": "kidzuku", "hiragana": "きづく", "arti": "menyadari" }
+      ]
+    },
+    "de": {
+      "romaji": "de",
+      "hiragana": "で",
+      "kakikata_gambar": "/images/hiragana/de.svg",
+      "kakikata_animasi": "/animation/hiragana/de.svg",
+      "kosakata": [
+        { "romaji": "denwa", "hiragana": "でんわ", "arti": "telepon" },
+        { "romaji": "deai", "hiragana": "であい", "arti": "pertemuan" },
+        { "romaji": "dekiru", "hiragana": "できる", "arti": "bisa" },
+        {
+          "romaji": "densha",
+          "hiragana": "でんしゃ",
+          "arti": "kereta listrik"
+        },
+        { "romaji": "dezain", "hiragana": "でざいん", "arti": "desain" }
+      ]
+    },
+    "do": {
+      "romaji": "do",
+      "hiragana": "ど",
+      "kakikata_gambar": "/images/hiragana/do.svg",
+      "kakikata_animasi": "/animation/hiragana/do.svg",
+      "kosakata": [
+        { "romaji": "doko", "hiragana": "どこ", "arti": "di mana" },
+        { "romaji": "dou", "hiragana": "どう", "arti": "bagaimana" },
+        { "romaji": "donna", "hiragana": "どんな", "arti": "jenis apa" },
+        { "romaji": "doubutsu", "hiragana": "どうぶつ", "arti": "hewan" },
+        { "romaji": "domo", "hiragana": "どうも", "arti": "terima kasih" }
+      ]
+    },
+    "ba": {
+      "romaji": "ba",
+      "hiragana": "ば",
+      "kakikata_gambar": "/images/hiragana/ba.svg",
+      "kakikata_animasi": "/animation/hiragana/ba.svg",
+      "kosakata": [
+        { "romaji": "basho", "hiragana": "ばしょ", "arti": "tempat" },
+        { "romaji": "ban", "hiragana": "ばん", "arti": "malam" },
+        { "romaji": "bashi", "hiragana": "ばし", "arti": "jembatan" },
+        { "romaji": "basu", "hiragana": "ばす", "arti": "bus" },
+        { "romaji": "baka", "hiragana": "ばか", "arti": "bodoh" }
+      ]
+    },
+    "bi": {
+      "romaji": "bi",
+      "hiragana": "び",
+      "kakikata_gambar": "/images/hiragana/bi.svg",
+      "kakikata_animasi": "/animation/hiragana/bi.svg",
+      "kosakata": [
+        {
+          "romaji": "bijin",
+          "hiragana": "びじん",
+          "arti": "wanita cantik"
+        },
+        { "romaji": "bijo", "hiragana": "びじょ", "arti": "gadis" },
+        { "romaji": "bin", "hiragana": "びん", "arti": "botol" },
+        { "romaji": "bijutsu", "hiragana": "びじゅつ", "arti": "seni" },
+        { "romaji": "bikuri", "hiragana": "びっくり", "arti": "terkejut" }
+      ]
+    },
+    "bu": {
+      "romaji": "bu",
+      "hiragana": "ぶ",
+      "kakikata_gambar": "/images/hiragana/bu.svg",
+      "kakikata_animasi": "/animation/hiragana/bu.svg",
+      "kosakata": [
+        { "romaji": "buta", "hiragana": "ぶた", "arti": "babi" },
+        { "romaji": "bunka", "hiragana": "ぶんか", "arti": "budaya" },
+        { "romaji": "bun", "hiragana": "ぶん", "arti": "kalimat" },
+        { "romaji": "bushi", "hiragana": "ぶし", "arti": "samurai" },
+        { "romaji": "buki", "hiragana": "ぶき", "arti": "senjata" }
+      ]
+    },
+    "be": {
+      "romaji": "be",
+      "hiragana": "べ",
+      "kakikata_gambar": "/images/hiragana/be.svg",
+      "kakikata_animasi": "/animation/hiragana/be.svg",
+      "kosakata": [
+        { "romaji": "benri", "hiragana": "べんり", "arti": "praktis" },
+        { "romaji": "betsu", "hiragana": "べつ", "arti": "berbeda" },
+        {
+          "romaji": "benkyou",
+          "hiragana": "べんきょう",
+          "arti": "belajar"
+        },
+        {
+          "romaji": "beisuto",
+          "hiragana": "べいすと",
+          "arti": "terbaik"
+        },
+        {
+          "romaji": "bekkan",
+          "hiragana": "べっかん",
+          "arti": "gedung terpisah"
+        }
+      ]
+    },
+    "bo": {
+      "romaji": "bo",
+      "hiragana": "ぼ",
+      "kakikata_gambar": "/images/hiragana/bo.svg",
+      "kakikata_animasi": "/animation/hiragana/bo.svg",
+      "kosakata": [
+        { "romaji": "botan", "hiragana": "ぼたん", "arti": "tombol" },
+        { "romaji": "boshi", "hiragana": "ぼうし", "arti": "topi" },
+        { "romaji": "bon", "hiragana": "ぼん", "arti": "nampan" },
+        {
+          "romaji": "bouken",
+          "hiragana": "ぼうけん",
+          "arti": "petualangan"
+        },
+        { "romaji": "boku", "hiragana": "ぼく", "arti": "saya (pria)" }
+      ]
+    }
+  },
+  "katakana_huruf": {
+    "ga": {
+      "romaji": "ga",
+      "katakana": "ガ",
+      "kakikata_gambar": "/images/katakana/ga.svg",
+      "kakikata_animasi": "/animation/katakana/ga.svg",
+      "kosakata": [
+        {
+          "romaji": "gachi",
+          "katakana": "ガチ",
+          "arti": "nyata, nyata sekali (sering dipakai dalam konteks kompetisi atau olahraga)"
+        },
+        { "romaji": "gurasu", "katakana": "グラス", "arti": "gelas" },
+        {
+          "romaji": "gaijin",
+          "katakana": "ガイジン",
+          "arti": "orang asing"
+        }
+      ]
+    },
+    "gi": {
+      "romaji": "gi",
+      "katakana": "ギ",
+      "kakikata_gambar": "/images/katakana/gi.svg",
+      "kakikata_animasi": "/animation/katakana/gi.svg",
+      "kosakata": [
+        {
+          "romaji": "giru",
+          "katakana": "ギル",
+          "arti": "sejenis mata uang virtual dalam permainan"
+        },
+        { "romaji": "ginn", "katakana": "ギン", "arti": "perak" },
+        { "romaji": "gita", "katakana": "ギター", "arti": "gitar" }
+      ]
+    },
+    "gu": {
+      "romaji": "gu",
+      "katakana": "グ",
+      "kakikata_gambar": "/images/katakana/gu.svg",
+      "kakikata_animasi": "/animation/katakana/gu.svg",
+      "kosakata": [
+        {
+          "romaji": "guru",
+          "katakana": "グル",
+          "arti": "guru (dalam konteks ajaran atau pengajaran)"
+        },
+        {
+          "romaji": "gura",
+          "katakana": "グラ",
+          "arti": "grafik (biasanya digunakan untuk istilah seperti grafik komputer atau grafik lainnya)"
+        }
+      ]
+    },
+    "ge": {
+      "romaji": "ge",
+      "katakana": "ゲ",
+      "kakikata_gambar": "/images/katakana/ge.svg",
+      "kakikata_animasi": "/animation/katakana/ge.svg",
+      "kosakata": [
+        { "romaji": "gen", "katakana": "ゲン", "arti": "asal, sumber" },
+        {
+          "romaji": "geimu",
+          "katakana": "ゲーム",
+          "arti": "permainan (game)"
+        }
+      ]
+    },
+    "go": {
+      "romaji": "go",
+      "katakana": "ゴ",
+      "kakikata_gambar": "/images/katakana/go.svg",
+      "kakikata_animasi": "/animation/katakana/go.svg",
+      "kosakata": [
+        {
+          "romaji": "goju",
+          "katakana": "ゴジュ",
+          "arti": "lima puluh (angka dalam sistem hitung Jepang)"
+        },
+        { "romaji": "gomu", "katakana": "ゴム", "arti": "karet" }
+      ]
+    },
+    "za": {
+      "romaji": "za",
+      "katakana": "ザ",
+      "kakikata_gambar": "/images/katakana/za.svg",
+      "kakikata_animasi": "/animation/katakana/za.svg",
+      "kosakata": [
+        { "romaji": "zato", "katakana": "ザト", "arti": "tempat" },
+        {
+          "romaji": "zaru",
+          "katakana": "ザル",
+          "arti": "keranjang, saringan"
+        },
+        { "romaji": "zaimu", "katakana": "ザイム", "arti": "keuangan" }
+      ]
+    },
+    "ji": {
+      "romaji": "ji",
+      "katakana": "ジ",
+      "kakikata_gambar": "/images/katakana/ji.svg",
+      "kakikata_animasi": "/animation/katakana/ji.svg",
+      "kosakata": [
+        { "romaji": "jisho", "katakana": "ジショ", "arti": "kamus" },
+        { "romaji": "jikan", "katakana": "ジカン", "arti": "waktu" },
+        { "romaji": "jin", "katakana": "ジン", "arti": "orang" }
+      ]
+    },
+    "zu": {
+      "romaji": "zu",
+      "katakana": "ズ",
+      "kakikata_gambar": "/images/katakana/zu.svg",
+      "kakikata_animasi": "/animation/katakana/zu.svg",
+      "kosakata": [
+        { "romaji": "zutto", "katakana": "ズット", "arti": "selalu" },
+        {
+          "romaji": "zu",
+          "katakana": "ズ",
+          "arti": "gambar, diagram (biasanya digunakan dalam istilah teknis atau ilmiah)"
+        }
+      ]
+    },
+    "ze": {
+      "romaji": "ze",
+      "katakana": "ゼ",
+      "kakikata_gambar": "/images/katakana/ze.svg",
+      "kakikata_animasi": "/animation/katakana/ze.svg",
+      "kosakata": [
+        {
+          "romaji": "zein",
+          "katakana": "ゼイン",
+          "arti": "protein dari gandum"
+        },
+        {
+          "romaji": "zen",
+          "katakana": "ゼン",
+          "arti": "keseluruhan, lengkap"
+        }
+      ]
+    },
+    "zo": {
+      "romaji": "zo",
+      "katakana": "ゾ",
+      "kakikata_gambar": "/images/katakana/zo.svg",
+      "kakikata_animasi": "/animation/katakana/zo.svg",
+      "kosakata": [
+        { "romaji": "zoku", "katakana": "ゾク", "arti": "kelompok" },
+        {
+          "romaji": "zo",
+          "katakana": "ゾ",
+          "arti": "gajah (dalam konteks hewan)"
+        }
+      ]
+    },
+    "da": {
+      "romaji": "da",
+      "katakana": "ダ",
+      "kakikata_gambar": "/images/katakana/da.svg",
+      "kakikata_animasi": "/animation/katakana/da.svg",
+      "kosakata": [
+        {
+          "romaji": "dai",
+          "katakana": "ダイ",
+          "arti": "besar, utama (dalam konteks ukuran atau pentingnya)"
+        },
+        { "romaji": "daibu", "katakana": "ダイブ", "arti": "menyelam" },
+        {
+          "romaji": "danchi",
+          "katakana": "ダンチ",
+          "arti": "kompleks perumahan"
+        }
+      ]
+    },
+    "ji2": {
+      "romaji": "ji",
+      "katakana": "ヂ",
+      "kakikata_gambar": "/images/katakana/ji2.svg",
+      "kakikata_animasi": "/animation/katakana/ji2.svg",
+      "catatan": "sama seperti hiragana ヂ (ji) jarang digunakan dan hampir tidak pernah muncul dalam kata-kata sehari-hari.\nBiasanya hanya digunakan dalam kata-kata yang lebih tua atau dalam konversi fonetik yang jarang.",
+      "kosakata": [
+        {
+          "romaji": "djin",
+          "katakana": "ヂン",
+          "arti": "jin (sejenis makhluk mitologi)"
+        }
+      ]
+    },
+    "zu2": {
+      "romaji": "zu",
+      "katakana": "ヅ",
+      "kakikata_gambar": "/images/katakana/zu2.svg",
+      "kakikata_animasi": "/animation/katakana/zu2.svg",
+      "catatan": "sama seperti hiragana ヅ (zu) sangat jarang digunakan dan hanya ditemukan dalam beberapa kata yang sudah sangat tua atau terpengaruh oleh bahasa asing.\nIni adalah bentuk yang jarang digunakan dibandingkan ズ (zu).",
+      "kosakata": [{ "romaji": "zuma", "katakana": "ヅマ", "arti": "istri" }]
+    },
+    "de": {
+      "romaji": "de",
+      "katakana": "デ",
+      "kakikata_gambar": "/images/katakana/de.svg",
+      "kakikata_animasi": "/animation/katakana/de.svg",
+      "kosakata": [
+        { "romaji": "denki", "katakana": "デンキ", "arti": "listrik" },
+        {
+          "romaji": "deri",
+          "katakana": "デリ",
+          "arti": "pengiriman barang"
+        },
+        { "romaji": "deto", "katakana": "デート", "arti": "kencan" }
+      ]
+    },
+    "do": {
+      "romaji": "do",
+      "katakana": "ド",
+      "kakikata_gambar": "/images/katakana/do.svg",
+      "kakikata_animasi": "/animation/katakana/do.svg",
+      "kosakata": [
+        { "romaji": "doru", "katakana": "ドル", "arti": "dolar" },
+        { "romaji": "dokuto", "katakana": "ドクト", "arti": "doktor" }
+      ]
+    },
+    "ba": {
+      "romaji": "ba",
+      "katakana": "バ",
+      "kakikata_gambar": "/images/katakana/ba.svg",
+      "kakikata_animasi": "/animation/katakana/ba.svg",
+      "kosakata": [
+        {
+          "romaji": "ban",
+          "katakana": "バン",
+          "arti": "kendaraan (mobil van)"
+        },
+        { "romaji": "baba", "katakana": "ババ", "arti": "nenek" },
+        { "romaji": "bato", "katakana": "バト", "arti": "batang" },
+        { "romaji": "bashi", "katakana": "バシ", "arti": "jembatan" },
+        {
+          "romaji": "banshee",
+          "katakana": "バンシー",
+          "arti": "hantu (dalam mitologi Irlandia)"
+        }
+      ]
+    },
+    "bi": {
+      "romaji": "bi",
+      "katakana": "ビ",
+      "kakikata_gambar": "/images/katakana/bi.svg",
+      "kakikata_animasi": "/animation/katakana/bi.svg",
+      "kosakata": [
+        { "romaji": "biku", "katakana": "ビク", "arti": "terkejut" },
+        { "romaji": "biru", "katakana": "ビル", "arti": "gedung" },
+        { "romaji": "bikini", "katakana": "ビキニ", "arti": "bikini" }
+      ]
+    },
+    "bu": {
+      "romaji": "bu",
+      "katakana": "ブ",
+      "kakikata_gambar": "/images/katakana/bu.svg",
+      "kakikata_animasi": "/animation/katakana/bu.svg",
+      "kosakata": [
+        { "romaji": "buta", "katakana": "ブタ", "arti": "babi" },
+        {
+          "romaji": "burakku",
+          "katakana": "ブラック",
+          "arti": "hitam (sering digunakan untuk menggambarkan warna atau konsep gelap)"
+        },
+        { "romaji": "buji", "katakana": "ブジ", "arti": "tanpa masalah" }
+      ]
+    },
+    "be": {
+      "romaji": "be",
+      "katakana": "ベ",
+      "kakikata_gambar": "/images/katakana/be.svg",
+      "kakikata_animasi": "/animation/katakana/be.svg",
+      "kosakata": [
+        {
+          "romaji": "bento",
+          "katakana": "ベント",
+          "arti": "bekal makan siang"
+        },
+        { "romaji": "besuto", "katakana": "ベスト", "arti": "terbaik" }
+      ]
+    },
+    "bo": {
+      "romaji": "bo",
+      "katakana": "ボ",
+      "kakikata_gambar": "/images/katakana/bo.svg",
+      "kakikata_animasi": "/animation/katakana/bo.svg",
+      "kosakata": [
+        {
+          "romaji": "boku",
+          "katakana": "ボク",
+          "arti": "saya (informal, digunakan oleh pria muda atau pria dewasa dalam situasi santai)"
+        },
+        { "romaji": "bozu", "katakana": "ボズ", "arti": "kepala botak" },
+        { "romaji": "boru", "katakana": "ボール", "arti": "bola" }
+      ]
+    }
+  }
+}

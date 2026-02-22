@@ -1,0 +1,643 @@
+{
+  "total": 46,
+  "tentang": "Hiragana adalah salah satu sistem penulisan dalam bahasa Jepang yang digunakan untuk menulis kata-kata asli Jepang, partikel, dan akhiran kata. Hiragana terdiri dari 46 karakter dasar yang masing-masing mewakili satu suku kata, bukan huruf tunggal seperti alfabet Latin. Misalnya, karakter さ (sa), し (shi), す (su), dan せ (se).\n\nHiragana merupakan sistem penulisan tertua yang berasal dari Jepang dan berkembang dari bentuk penyederhanaan kanji pada abad ke-5. Sistem ini awalnya disebut 'onnade' (tangan wanita) karena banyak digunakan oleh wanita bangsawan dalam sastra Jepang klasik seperti 'The Tale of Genji'.\n\nDalam perkembangannya, hiragana menjadi sistem penulisan standar yang digunakan oleh semua lapisan masyarakat dan berperan penting dalam standardisasi bahasa Jepang modern. Hiragana tidak hanya berfungsi sebagai alat tulis, tetapi juga sebagai fondasi untuk memahami struktur dan tata bahasa Jepang.\n\nSelain karakter dasar, hiragana juga mencakup variasi seperti yōon (huruf gabungan) yang terbentuk dari kombinasi konsonan dengan ya, yu, yo kecil (ゃ, ゅ, ょ) serta sokuon (っ) untuk bunyi geminate (konsonan ganda).",
+  "info": "Hiragana biasanya digunakan untuk menulis kata-kata yang tidak memiliki kanji, partikel dalam kalimat, dan akhiran kata yang menunjukkan hubungan antar kata. Dalam tulisan Jepang, hiragana sering dipadukan dengan kanji dan katakana untuk membentuk kalimat yang lengkap.\n\nFungsi spesifik hiragana meliputi:\n1. Penulisan okurigana - bagian akhir kata kerja dan adjektiva yang mengikuti kanji\n2. Partikel gramatikal seperti は (wa), が (ga), を (o), dan に (ni)\n3. Kata bantu dan kata sambung\n4. Kata-kata asli Jepang yang tidak memiliki kanji atau kanjinya terlalu kompleks\n5. Furigana - penulisan kecil di atas kanji untuk membantu membaca\n6. Buku anak-anak dan materi pembelajaran dasar\n\nSelain itu, hiragana juga digunakan dalam pembelajaran bahasa Jepang untuk anak-anak dan pemula karena bentuknya yang sederhana dan mudah diingat dibandingkan dengan kanji yang lebih kompleks. Sistem ini menjadi langkah pertama dalam mempelajari bahasa Jepang sebelum beralih ke kanji.",
+  "penjelasan": "Hiragana juga memiliki variasi suara yang diubah dengan dua tanda: dakuten (tenten) dan handakuten (maru). Dakuten, yang berupa dua titik, digunakan untuk mengubah suara karakter menjadi lebih keras, seperti か (ka) menjadi が (ga), sementara handakuten, yang berupa lingkaran kecil, mengubah suara menjadi lebih ringan, seperti は (ha) menjadi ぱ (pa).\n\nSelain tanda-tanda tersebut, hiragana juga memiliki beberapa karakter khusus:\n\n1. Sokuon (っ) - menandakan konsonan ganda atau geminate, membuat bunyi konsonan berikutnya diucapkan lebih panjang, seperti dalam がっこう (gakkou - sekolah)\n2. Chōonpu (ー) - meskipun lebih umum di katakana, kadang digunakan di hiragana untuk memperpanjang vokal, terutama dalam kata serapan\n3. Kombinasi yōon - seperti きゃ (kya), しゅ (shu), ちょ (cho) yang mengaburkan bunyi ya/yu/yo\n\nUrutan pembelajaran hiragana biasanya mengikuti sistem gojūon (五十音), tabel 5x10 yang mengatur karakter berdasarkan baris vokal dan kolom konsonan. Sistem ini membantu dalam mempelajari pelafalan dan pola bunyi bahasa Jepang secara sistematis.\n\nPenguasaan hiragana sangat penting karena tidak hanya digunakan untuk membaca dan menulis, tetapi juga untuk memahami fonologi dan struktur kata dalam bahasa Jepang. Banyak aplikasi dan materi pembelajaran menggunakan hiragana sebagai dasar sebelum memperkenalkan kanji.",
+  "hiragana_huruf": {
+    "a": {
+      "romaji": "a",
+      "hiragana": "あ",
+      "kakikata_gambar": "/images/hiragana/a.svg",
+      "kakikata_animasi": "/animation/hiragana/a.svg",
+      "kosakata": [
+        { "romaji": "ai", "hiragana": "あい", "arti": "cinta" },
+        { "romaji": "ao", "hiragana": "あお ", "arti": "biru" },
+        { "romaji": "asa", "hiragana": "あさ", "arti": "pagi" },
+        { "romaji": "ame", "hiragana": "あめ", "arti": "hujan" },
+        { "romaji": "ashi", "hiragana": "あし", "arti": "kaki" }
+      ]
+    },
+    "i": {
+      "romaji": "i",
+      "hiragana": "い",
+      "kakikata_gambar": "/images/hiragana/i.svg",
+      "kakikata_animasi": "/animation/hiragana/i.svg",
+      "kosakata": [
+        { "romaji": "inu", "hiragana": "いぬ", "arti": "anjing" },
+        { "romaji": "iwa", "hiragana": "いわ", "arti": "batu" },
+        { "romaji": "ika", "hiragana": "いか", "arti": "cumi" },
+        { "romaji": "ishi", "hiragana": "いし", "arti": "batu kecil" },
+        { "romaji": "iro", "hiragana": "いろ", "arti": "warna" }
+      ]
+    },
+    "u": {
+      "romaji": "u",
+      "hiragana": "う",
+      "kakikata_gambar": "/images/hiragana/u.svg",
+      "kakikata_animasi": "/animation/hiragana/u.svg",
+      "kosakata": [
+        { "romaji": "umi", "hiragana": "うみ", "arti": "laut" },
+        { "romaji": "usa", "hiragana": "うさ", "arti": "kelinci" },
+        { "romaji": "uta", "hiragana": "うた", "arti": "lagu" },
+        { "romaji": "usu", "hiragana": "うす", "arti": "tipis" },
+        { "romaji": "uwo", "hiragana": "うを", "arti": "ikan (klasik)" }
+      ]
+    },
+    "e": {
+      "romaji": "e",
+      "hiragana": "え",
+      "kakikata_gambar": "/images/hiragana/e.svg",
+      "kakikata_animasi": "/animation/hiragana/e.svg",
+      "kosakata": [
+        { "romaji": "eki", "hiragana": "えき", "arti": "stasiun" },
+        { "romaji": "en", "hiragana": "えん", "arti": "lingkaran" },
+        { "romaji": "eda", "hiragana": "えだ", "arti": "cabang" },
+        { "romaji": "eiga", "hiragana": "えいが", "arti": "film" },
+        { "romaji": "ebi", "hiragana": "えび", "arti": "udang" }
+      ]
+    },
+    "o": {
+      "romaji": "o",
+      "hiragana": "お",
+      "kakikata_gambar": "/images/hiragana/o.svg",
+      "kakikata_animasi": "/animation/hiragana/o.svg",
+      "kosakata": [
+        { "romaji": "oka", "hiragana": "おか", "arti": "bukit" },
+        { "romaji": "onna", "hiragana": "おんな", "arti": "wanita" },
+        { "romaji": "omo", "hiragana": "おも", "arti": "wajah" },
+        { "romaji": "omoide", "hiragana": "おもいで", "arti": "kenangan" },
+        { "romaji": "otoko", "hiragana": "おとこ", "arti": "pria" }
+      ]
+    },
+    "ka": {
+      "romaji": "ka",
+      "hiragana": "か",
+      "kakikata_gambar": "/images/hiragana/ka.svg",
+      "kakikata_animasi": "/animation/hiragana/ka.svg",
+      "kosakata": [
+        { "romaji": "kaze", "hiragana": "かぜ", "arti": "angin" },
+        { "romaji": "kami", "hiragana": "かみ", "arti": "kertas" },
+        { "romaji": "kawa", "hiragana": "かわ", "arti": "sungai" },
+        { "romaji": "kaba", "hiragana": "かば", "arti": "kuda nil" },
+        { "romaji": "kasa", "hiragana": "かさ", "arti": "payung" }
+      ]
+    },
+    "ki": {
+      "romaji": "ki",
+      "hiragana": "き",
+      "kakikata_gambar": "/images/hiragana/ki.svg",
+      "kakikata_animasi": "/animation/hiragana/ki.svg",
+      "kosakata": [
+        { "romaji": "ki", "hiragana": "き", "arti": "pohon" },
+        { "romaji": "kitsu", "hiragana": "きつ", "arti": "serigala rubah" },
+        { "romaji": "kimochi", "hiragana": "きもち", "arti": "perasaan" },
+        { "romaji": "kirai", "hiragana": "きらい", "arti": "benci" },
+        { "romaji": "kimo", "hiragana": "きも", "arti": "hati (organ)" }
+      ]
+    },
+    "ku": {
+      "romaji": "ku",
+      "hiragana": "く",
+      "kakikata_gambar": "/images/hiragana/ku.svg",
+      "kakikata_animasi": "/animation/hiragana/ku.svg",
+      "kosakata": [
+        { "romaji": "kusa", "hiragana": "くさ", "arti": "rumput" },
+        { "romaji": "kuchi", "hiragana": "くち", "arti": "mulut" },
+        { "romaji": "kuma", "hiragana": "くま", "arti": "beruang" },
+        { "romaji": "kuruma", "hiragana": "くるま", "arti": "mobil" },
+        { "romaji": "kumo", "hiragana": "くも", "arti": "awan" }
+      ]
+    },
+    "ke": {
+      "romaji": "ke",
+      "hiragana": "け",
+      "kakikata_gambar": "/images/hiragana/ke.svg",
+      "kakikata_animasi": "/animation/hiragana/ke.svg",
+      "kosakata": [
+        { "romaji": "kemuri", "hiragana": "けむり", "arti": "asap" },
+        { "romaji": "kesa", "hiragana": "けさ", "arti": "pagi ini" },
+        { "romaji": "ken", "hiragana": "けん", "arti": "pedang" },
+        { "romaji": "ketai", "hiragana": "けたい", "arti": "ponsel" },
+        { "romaji": "keshiki", "hiragana": "けしき", "arti": "pemandangan" }
+      ]
+    },
+    "ko": {
+      "romaji": "ko",
+      "hiragana": "こ",
+      "kakikata_gambar": "/images/hiragana/ko.svg",
+      "kakikata_animasi": "/animation/hiragana/ko.svg",
+      "kosakata": [
+        { "romaji": "koko", "hiragana": "ここ", "arti": "di sini" },
+        { "romaji": "kore", "hiragana": "これ", "arti": "ini" },
+        { "romaji": "kodomo", "hiragana": "こども", "arti": "anak" },
+        { "romaji": "kona", "hiragana": "こな", "arti": "tepung" },
+        { "romaji": "koe", "hiragana": "こえ", "arti": "suara" }
+      ]
+    },
+    "sa": {
+      "romaji": "sa",
+      "hiragana": "さ",
+      "kakikata_gambar": "/images/hiragana/sa.svg",
+      "kakikata_animasi": "/animation/hiragana/sa.svg",
+      "kosakata": [
+        { "romaji": "same", "hiragana": "さめ", "arti": "hiu" },
+        { "romaji": "sara", "hiragana": "さら", "arti": "piring" },
+        { "romaji": "sashi", "hiragana": "さし", "arti": "penunjuk" },
+        { "romaji": "sato", "hiragana": "さと", "arti": "desa" },
+        { "romaji": "sakura", "hiragana": "さくら", "arti": "bunga sakura" }
+      ]
+    },
+    "shi": {
+      "romaji": "shi",
+      "hiragana": "し",
+      "kakikata_gambar": "/images/hiragana/shi.svg",
+      "kakikata_animasi": "/animation/hiragana/shi.svg",
+      "kosakata": [
+        { "romaji": "shika", "hiragana": "しか", "arti": "rusa" },
+        { "romaji": "shiro", "hiragana": "しろ", "arti": "putih" },
+        { "romaji": "shiwa", "hiragana": "しわ", "arti": "kerut" },
+        { "romaji": "shinu", "hiragana": "しぬ", "arti": "mati" },
+        { "romaji": "shio", "hiragana": "しお", "arti": "garam" }
+      ]
+    },
+    "su": {
+      "romaji": "su",
+      "hiragana": "す",
+      "kakikata_gambar": "/images/hiragana/su.svg",
+      "kakikata_animasi": "/animation/hiragana/su.svg",
+      "kosakata": [
+        { "romaji": "sushi", "hiragana": "すし", "arti": "sushi" },
+        { "romaji": "sukoshi", "hiragana": "すこし", "arti": "sedikit" },
+        { "romaji": "sumu", "hiragana": "すむ", "arti": "tinggal" },
+        { "romaji": "suika", "hiragana": "すいか", "arti": "semangka" },
+        { "romaji": "suna", "hiragana": "すな", "arti": "pasir" }
+      ]
+    },
+    "se": {
+      "romaji": "se",
+      "hiragana": "せ",
+      "kakikata_gambar": "/images/hiragana/se.svg",
+      "kakikata_animasi": "/animation/hiragana/se.svg",
+      "kosakata": [
+        { "romaji": "seki", "hiragana": "せき", "arti": "batuk" },
+        { "romaji": "sen", "hiragana": "せん", "arti": "seribu" },
+        { "romaji": "senaka", "hiragana": "せなか", "arti": "punggung" },
+        { "romaji": "semaru", "hiragana": "せまる", "arti": "mendesak" },
+        { "romaji": "sekai", "hiragana": "せかい", "arti": "dunia" }
+      ]
+    },
+    "so": {
+      "romaji": "so",
+      "hiragana": "そ",
+      "kakikata_gambar": "/images/hiragana/so.svg",
+      "kakikata_animasi": "/animation/hiragana/so.svg",
+      "kosakata": [
+        { "romaji": "soba", "hiragana": "そば", "arti": "mie soba" },
+        { "romaji": "soko", "hiragana": "そこ", "arti": "di sana" },
+        { "romaji": "sonna", "hiragana": "そんな", "arti": "seperti itu" },
+        { "romaji": "soji", "hiragana": "そうじ", "arti": "membersihkan" },
+        { "romaji": "sora", "hiragana": "そら", "arti": "langit" }
+      ]
+    },
+    "ta": {
+      "romaji": "ta",
+      "hiragana": "た",
+      "kakikata_gambar": "/images/hiragana/ta.svg",
+      "kakikata_animasi": "/animation/hiragana/ta.svg",
+      "kosakata": [
+        { "romaji": "taka", "hiragana": "たか", "arti": "elang" },
+        { "romaji": "taiyo", "hiragana": "たいよう", "arti": "matahari" },
+        { "romaji": "tanbo", "hiragana": "たんぼ", "arti": "sawah" },
+        { "romaji": "tanuki", "hiragana": "たぬき", "arti": "anjing rakun" },
+        { "romaji": "taberu", "hiragana": "たべる", "arti": "makan" }
+      ]
+    },
+    "chi": {
+      "romaji": "chi",
+      "hiragana": "ち",
+      "kakikata_gambar": "/images/hiragana/chi.svg",
+      "kakikata_animasi": "/animation/hiragana/chi.svg",
+      "kosakata": [
+        { "romaji": "chikara", "hiragana": "ちから", "arti": "kekuatan" },
+        { "romaji": "chiri", "hiragana": "ちり", "arti": "debu" },
+        { "romaji": "chi", "hiragana": "ち", "arti": "darah" },
+        { "romaji": "chikaku", "hiragana": "ちかく", "arti": "dekat" },
+        { "romaji": "chizu", "hiragana": "ちず", "arti": "peta" }
+      ]
+    },
+    "tsu": {
+      "romaji": "tsu",
+      "hiragana": "つ",
+      "kakikata_gambar": "/images/hiragana/tsu.svg",
+      "kakikata_animasi": "/animation/hiragana/tsu.svg",
+      "kosakata": [
+        { "romaji": "tsuru", "hiragana": "つる", "arti": "burung bangau" },
+        { "romaji": "tsukue", "hiragana": "つくえ", "arti": "meja" },
+        { "romaji": "tsume", "hiragana": "つめ", "arti": "kuku" },
+        { "romaji": "tsurai", "hiragana": "つらい", "arti": "sulit" },
+        { "romaji": "tsuki", "hiragana": "つき", "arti": "bulan" }
+      ]
+    },
+    "te": {
+      "romaji": "te",
+      "hiragana": "て",
+      "kakikata_gambar": "/images/hiragana/te.svg",
+      "kakikata_animasi": "/animation/hiragana/te.svg",
+      "kosakata": [
+        { "romaji": "tenki", "hiragana": "てんき", "arti": "cuaca" },
+        { "romaji": "te", "hiragana": "て", "arti": "tangan" },
+        { "romaji": "tesuto", "hiragana": "てすと", "arti": "ujian" },
+        { "romaji": "tenpura", "hiragana": "てんぷら", "arti": "tempura" },
+        { "romaji": "tegami", "hiragana": "てがみ", "arti": "surat" }
+      ]
+    },
+    "to": {
+      "romaji": "to",
+      "hiragana": "と",
+      "kakikata_gambar": "/images/hiragana/to.svg",
+      "kakikata_animasi": "/animation/hiragana/to.svg",
+      "kosakata": [
+        { "romaji": "tori", "hiragana": "とり", "arti": "burung" },
+        { "romaji": "tomato", "hiragana": "とまと", "arti": "tomat" },
+        { "romaji": "tokei", "hiragana": "とけい", "arti": "jam" },
+        { "romaji": "tomo", "hiragana": "とも", "arti": "teman" },
+        { "romaji": "tochi", "hiragana": "とち", "arti": "tanah" }
+      ]
+    },
+    "na": {
+      "romaji": "na",
+      "hiragana": "な",
+      "kakikata_gambar": "/images/hiragana/na.svg",
+      "kakikata_animasi": "/animation/hiragana/na.svg",
+      "kosakata": [
+        { "romaji": "nani", "hiragana": "なに", "arti": "apa" },
+        { "romaji": "namae", "hiragana": "なまえ", "arti": "nama" },
+        { "romaji": "naku", "hiragana": "なく", "arti": "menangis" },
+        { "romaji": "nagasa", "hiragana": "ながさ", "arti": "panjang" },
+        { "romaji": "natsu", "hiragana": "なつ", "arti": "musim panas" }
+      ]
+    },
+    "ni": {
+      "romaji": "ni",
+      "hiragana": "に",
+      "kakikata_gambar": "/images/hiragana/ni.svg",
+      "kakikata_animasi": "/animation/hiragana/ni.svg",
+      "kosakata": [
+        { "romaji": "nishi", "hiragana": "にし", "arti": "barat" },
+        { "romaji": "ningyo", "hiragana": "にんぎょ", "arti": "duyung" },
+        { "romaji": "niwa", "hiragana": "にわ", "arti": "taman" },
+        { "romaji": "nikki", "hiragana": "にっき", "arti": "diari" },
+        { "romaji": "niku", "hiragana": "にく", "arti": "daging" }
+      ]
+    },
+    "nu": {
+      "romaji": "nu",
+      "hiragana": "ぬ",
+      "kakikata_gambar": "/images/hiragana/nu.svg",
+      "kakikata_animasi": "/animation/hiragana/nu.svg",
+      "kosakata": [
+        { "romaji": "nugu", "hiragana": "ぬぐ", "arti": "melepas" },
+        { "romaji": "nuru", "hiragana": "ぬる", "arti": "mengoleskan" },
+        {
+          "romaji": "nurui",
+          "hiragana": "ぬるい",
+          "arti": "hangat (tidak panas)"
+        },
+        { "romaji": "numa", "hiragana": "ぬま", "arti": "rawa" },
+        { "romaji": "nuno", "hiragana": "ぬの", "arti": "kain" }
+      ]
+    },
+    "ne": {
+      "romaji": "ne",
+      "hiragana": "ね",
+      "kakikata_gambar": "/images/hiragana/ne.svg",
+      "kakikata_animasi": "/animation/hiragana/ne.svg",
+      "kosakata": [
+        { "romaji": "nemui", "hiragana": "ねむい", "arti": "mengantuk" },
+        { "romaji": "negi", "hiragana": "ねぎ", "arti": "bawang daun" },
+        { "romaji": "nekutai", "hiragana": "ねくたい", "arti": "dasi" },
+        { "romaji": "netto", "hiragana": "ねっと", "arti": "internet" },
+        { "romaji": "neko", "hiragana": "ねこ", "arti": "kucing" }
+      ]
+    },
+    "no": {
+      "romaji": "no",
+      "hiragana": "の",
+      "kakikata_gambar": "/images/hiragana/no.svg",
+      "kakikata_animasi": "/animation/hiragana/no.svg",
+      "kosakata": [
+        { "romaji": "noru", "hiragana": "のる", "arti": "menaiki" },
+        { "romaji": "noto", "hiragana": "のと", "arti": "catatan" },
+        { "romaji": "noboru", "hiragana": "のぼる", "arti": "memanjat" },
+        { "romaji": "nomu", "hiragana": "のむ", "arti": "minum" },
+        { "romaji": "noko", "hiragana": "のこ", "arti": "sisa" }
+      ]
+    },
+    "ha": {
+      "romaji": "ha",
+      "hiragana": "は",
+      "kakikata_gambar": "/images/hiragana/ha.svg",
+      "kakikata_animasi": "/animation/hiragana/ha.svg",
+      "kosakata": [
+        { "romaji": "hana", "hiragana": "はな", "arti": "bunga" },
+        { "romaji": "haru", "hiragana": "はる", "arti": "musim semi" },
+        { "romaji": "hashi", "hiragana": "はし", "arti": "jembatan" },
+        { "romaji": "hako", "hiragana": "はこ", "arti": "kotak" },
+        { "romaji": "haha", "hiragana": "はは", "arti": "ibu" }
+      ]
+    },
+    "hi": {
+      "romaji": "hi",
+      "hiragana": "ひ",
+      "kakikata_gambar": "/images/hiragana/hi.svg",
+      "kakikata_animasi": "/animation/hiragana/hi.svg",
+      "kosakata": [
+        { "romaji": "hikari", "hiragana": "ひかり", "arti": "cahaya" },
+        { "romaji": "hito", "hiragana": "ひと", "arti": "orang" },
+        { "romaji": "himitsu", "hiragana": "ひみつ", "arti": "rahasia" },
+        { "romaji": "hiru", "hiragana": "ひる", "arti": "siang" },
+        { "romaji": "hitsuji", "hiragana": "ひつじ", "arti": "domba" }
+      ]
+    },
+    "fu": {
+      "romaji": "fu",
+      "hiragana": "ふ",
+      "kakikata_gambar": "/images/hiragana/fu.svg",
+      "kakikata_animasi": "/animation/hiragana/fu.svg",
+      "kosakata": [
+        { "romaji": "fuku", "hiragana": "ふく", "arti": "pakaian" },
+        { "romaji": "fune", "hiragana": "ふね", "arti": "kapal" },
+        { "romaji": "fuji", "hiragana": "ふじ", "arti": "gunung Fuji" },
+        { "romaji": "furu", "hiragana": "ふる", "arti": "mengguncang" },
+        { "romaji": "futari", "hiragana": "ふたり", "arti": "dua orang" }
+      ]
+    },
+    "he": {
+      "romaji": "he",
+      "hiragana": "へ",
+      "kakikata_gambar": "/images/hiragana/he.svg",
+      "kakikata_animasi": "/animation/hiragana/he.svg",
+      "kosakata": [
+        { "romaji": "heya", "hiragana": "へや", "arti": "ruangan" },
+        { "romaji": "hen", "hiragana": "へん", "arti": "aneh" },
+        { "romaji": "heta", "hiragana": "へた", "arti": "tidak mahir" },
+        { "romaji": "hebi", "hiragana": "へび", "arti": "ular" },
+        { "romaji": "heru", "hiragana": "へる", "arti": "berkurang" }
+      ]
+    },
+    "ho": {
+      "romaji": "ho",
+      "hiragana": "ほ",
+      "kakikata_gambar": "/images/hiragana/ho.svg",
+      "kakikata_animasi": "/animation/hiragana/ho.svg",
+      "kosakata": [
+        { "romaji": "hoshi", "hiragana": "ほし", "arti": "bintang" },
+        { "romaji": "hon", "hiragana": "ほん", "arti": "buku" },
+        { "romaji": "houki", "hiragana": "ほうき", "arti": "sapu" },
+        { "romaji": "hotaru", "hiragana": "ほたる", "arti": "kunang-kunang" },
+        { "romaji": "hora", "hiragana": "ほら", "arti": "lihat" }
+      ]
+    },
+    "ma": {
+      "romaji": "ma",
+      "hiragana": "ま",
+      "kakikata_gambar": "/images/hiragana/ma.svg",
+      "kakikata_animasi": "/animation/hiragana/ma.svg",
+      "kosakata": [
+        { "romaji": "machi", "hiragana": "まち", "arti": "kota kecil" },
+        { "romaji": "mame", "hiragana": "まめ", "arti": "kacang" },
+        { "romaji": "matsu", "hiragana": "まつ", "arti": "menunggu" },
+        { "romaji": "mizu", "hiragana": "みず", "arti": "air" },
+        { "romaji": "mimi", "hiragana": "みみ", "arti": "telinga" }
+      ]
+    },
+    "mi": {
+      "romaji": "mi",
+      "hiragana": "み",
+      "kakikata_gambar": "/images/hiragana/mi.svg",
+      "kakikata_animasi": "/animation/hiragana/mi.svg",
+      "kosakata": [
+        { "romaji": "michi", "hiragana": "みち", "arti": "jalan" },
+        { "romaji": "minami", "hiragana": "みなみ", "arti": "selatan" },
+        { "romaji": "miru", "hiragana": "みる", "arti": "melihat" },
+        { "romaji": "midori", "hiragana": "みどり", "arti": "hijau" },
+        { "romaji": "mitsuru", "hiragana": "みつる", "arti": "penuh" }
+      ]
+    },
+    "mu": {
+      "romaji": "mu",
+      "hiragana": "む",
+      "kakikata_gambar": "/images/hiragana/mu.svg",
+      "kakikata_animasi": "/animation/hiragana/mu.svg",
+      "kosakata": [
+        { "romaji": "mura", "hiragana": "むら", "arti": "desa" },
+        {
+          "romaji": "musume",
+          "hiragana": "むすめ",
+          "arti": "anak perempuan"
+        },
+        { "romaji": "mushi", "hiragana": "むし", "arti": "serangga" },
+        { "romaji": "mune", "hiragana": "むね", "arti": "dada" },
+        { "romaji": "muri", "hiragana": "むり", "arti": "mustahil" }
+      ]
+    },
+    "me": {
+      "romaji": "me",
+      "hiragana": "め",
+      "kakikata_gambar": "/images/hiragana/me.svg",
+      "kakikata_animasi": "/animation/hiragana/me.svg",
+      "kosakata": [
+        { "romaji": "me", "hiragana": "め", "arti": "mata" },
+        { "romaji": "megane", "hiragana": "めがね", "arti": "kacamata" },
+        { "romaji": "medaka", "hiragana": "めだか", "arti": "ikan kecil" },
+        { "romaji": "meshi", "hiragana": "めし", "arti": "nasi" },
+        { "romaji": "men", "hiragana": "めん", "arti": "mie" }
+      ]
+    },
+    "mo": {
+      "romaji": "mo",
+      "hiragana": "も",
+      "kakikata_gambar": "/images/hiragana/mo.svg",
+      "kakikata_animasi": "/animation/hiragana/mo.svg",
+      "kosakata": [
+        { "romaji": "mori", "hiragana": "もり", "arti": "hutan" },
+        { "romaji": "momo", "hiragana": "もも", "arti": "buah persik" },
+        { "romaji": "mon", "hiragana": "もん", "arti": "gerbang" },
+        { "romaji": "moshi", "hiragana": "もし", "arti": "jika" },
+        { "romaji": "moji", "hiragana": "もじ", "arti": "huruf" }
+      ]
+    },
+    "ya": {
+      "romaji": "ya",
+      "hiragana": "や",
+      "kakikata_gambar": "/images/hiragana/ya.svg",
+      "kakikata_animasi": "/animation/hiragana/ya.svg",
+      "kosakata": [
+        { "romaji": "yama", "hiragana": "やま", "arti": "gunung" },
+        { "romaji": "yasai", "hiragana": "やさい", "arti": "sayuran" },
+        { "romaji": "yaku", "hiragana": "やく", "arti": "membakar" },
+        { "romaji": "yami", "hiragana": "やみ", "arti": "kegelapan" },
+        { "romaji": "yakuza", "hiragana": "やくざ", "arti": "geng Jepang" }
+      ]
+    },
+    "yu": {
+      "romaji": "yu",
+      "hiragana": "ゆ",
+      "kakikata_gambar": "/images/hiragana/yu.svg",
+      "kakikata_animasi": "/animation/hiragana/yu.svg",
+      "kosakata": [
+        { "romaji": "yuki", "hiragana": "ゆき", "arti": "salju" },
+        { "romaji": "yume", "hiragana": "ゆめ", "arti": "mimpi" },
+        { "romaji": "yubi", "hiragana": "ゆび", "arti": "jari" },
+        { "romaji": "yuugata", "hiragana": "ゆうがた", "arti": "sore" },
+        { "romaji": "yudoufu", "hiragana": "ゆどうふ", "arti": "tofu rebus" }
+      ]
+    },
+    "yo": {
+      "romaji": "yo",
+      "hiragana": "よ",
+      "kakikata_gambar": "/images/hiragana/yo.svg",
+      "kakikata_animasi": "/animation/hiragana/yo.svg",
+      "kosakata": [
+        { "romaji": "yoru", "hiragana": "よる", "arti": "malam" },
+        { "romaji": "yomu", "hiragana": "よむ", "arti": "membaca" },
+        { "romaji": "yoi", "hiragana": "よい", "arti": "baik" },
+        { "romaji": "yobu", "hiragana": "よぶ", "arti": "memanggil" },
+        { "romaji": "yoji", "hiragana": "よじ", "arti": "jam empat" }
+      ]
+    },
+    "ra": {
+      "romaji": "ra",
+      "hiragana": "ら",
+      "kakikata_gambar": "/images/hiragana/ra.svg",
+      "kakikata_animasi": "/animation/hiragana/ra.svg",
+      "kosakata": [
+        { "romaji": "ringo", "hiragana": "りんご", "arti": "apel" },
+        { "romaji": "raku", "hiragana": "らく", "arti": "nyaman" },
+        { "romaji": "rakuda", "hiragana": "らくだ", "arti": "unta" },
+        { "romaji": "ramen", "hiragana": "らーめん", "arti": "mie ramen" },
+        { "romaji": "rara", "hiragana": "らら", "arti": "lala (bunyi)" }
+      ]
+    },
+    "ri": {
+      "romaji": "ri",
+      "hiragana": "り",
+      "kakikata_gambar": "/images/hiragana/ri.svg",
+      "kakikata_animasi": "/animation/hiragana/ri.svg",
+      "kosakata": [
+        { "romaji": "ringo", "hiragana": "りんご", "arti": "apel" },
+        { "romaji": "rikai", "hiragana": "りかい", "arti": "pemahaman" },
+        { "romaji": "riso", "hiragana": "りそう", "arti": "ideal" },
+        { "romaji": "rika", "hiragana": "りか", "arti": "ilmu sains" },
+        { "romaji": "rippuku", "hiragana": "りっぷく", "arti": "kemarahan" }
+      ]
+    },
+    "ru": {
+      "romaji": "ru",
+      "hiragana": "る",
+      "kakikata_gambar": "/images/hiragana/ru.svg",
+      "kakikata_animasi": "/animation/hiragana/ru.svg",
+      "kosakata": [
+        { "romaji": "ruka", "hiragana": "るか", "arti": "nama orang" },
+        { "romaji": "rumi", "hiragana": "るみ", "arti": "nama orang" },
+        { "romaji": "ruto", "hiragana": "ると", "arti": "nama karakter" },
+        { "romaji": "run", "hiragana": "るん", "arti": "bunyi gembira" },
+        { "romaji": "rumba", "hiragana": "るんば", "arti": "tarian rumba" }
+      ]
+    },
+    "re": {
+      "romaji": "re",
+      "hiragana": "れ",
+      "kakikata_gambar": "/images/hiragana/re.svg",
+      "kakikata_animasi": "/animation/hiragana/re.svg",
+      "kosakata": [
+        { "romaji": "rekishi", "hiragana": "れきし", "arti": "sejarah" },
+        { "romaji": "remon", "hiragana": "れもん", "arti": "lemon" },
+        { "romaji": "renji", "hiragana": "れんじ", "arti": "microwave" },
+        { "romaji": "renraku", "hiragana": "れんらく", "arti": "kontak" },
+        { "romaji": "rekodo", "hiragana": "れこど", "arti": "rekaman" }
+      ]
+    },
+    "ro": {
+      "romaji": "ro",
+      "hiragana": "ろ",
+      "kakikata_gambar": "/images/hiragana/ro.svg",
+      "kakikata_animasi": "/animation/hiragana/ro.svg",
+      "kosakata": [
+        { "romaji": "roku", "hiragana": "ろく", "arti": "enam" },
+        {
+          "romaji": "ronin",
+          "hiragana": "ろにん",
+          "arti": "samurai tanpa tuan"
+        },
+        { "romaji": "romi", "hiragana": "ろみ", "arti": "nama orang" },
+        { "romaji": "rotoru", "hiragana": "ろとる", "arti": "nama alat" },
+        { "romaji": "roshi", "hiragana": "ろし", "arti": "guru tua" }
+      ]
+    },
+    "wa": {
+      "romaji": "wa",
+      "hiragana": "わ",
+      "kakikata_gambar": "/images/hiragana/wa.svg",
+      "kakikata_animasi": "/animation/hiragana/wa.svg",
+      "kosakata": [
+        { "romaji": "washi", "hiragana": "わし", "arti": "elang" },
+        { "romaji": "watashi", "hiragana": "わたし", "arti": "saya" },
+        { "romaji": "wakaru", "hiragana": "わかる", "arti": "mengerti" },
+        { "romaji": "warau", "hiragana": "わらう", "arti": "tertawa" },
+        { "romaji": "waga", "hiragana": "わが", "arti": "milikku" }
+      ]
+    },
+    "wo": {
+      "romaji": "wo",
+      "hiragana": "を",
+      "kakikata_gambar": "/images/hiragana/wo.svg",
+      "kakikata_animasi": "/animation/hiragana/wo.svg",
+      "kosakata": [
+        {
+          "romaji": "wo",
+          "hiragana": "「を」",
+          "arti": "(partikel gramatikal)"
+        },
+        {
+          "romaji": "wotoru",
+          "hiragana": "「を」とる",
+          "arti": "mengambil (menggunakan を sebagai partikel)"
+        },
+        {
+          "romaji": "wokiru",
+          "hiragana": "「を」きる",
+          "arti": "memotong (menggunakan を sebagai partikel)"
+        },
+        {
+          "romaji": "wotsukau",
+          "hiragana": "「を」つかう",
+          "arti": "menggunakan (menggunakan を sebagai partikel)"
+        },
+        {
+          "romaji": "wosuru",
+          "hiragana": "「を」する",
+          "arti": "melakukan (menggunakan を sebagai partikel)"
+        }
+      ]
+    },
+    "n": {
+      "romaji": "n",
+      "hiragana": "ん",
+      "kakikata_gambar": "/images/hiragana/n.svg",
+      "kakikata_animasi": "/animation/hiragana/n.svg",
+      "catatan": "Huruf ん adalah satu-satunya konsonan murni dalam sistem hiragana dan katakana. Tidak seperti huruf lainnya, ん tidak memiliki pasangan vokal. Huruf ん biasanya digunakan di tengah atau akhir kata. ん diucapkan sesuai dengan posisi atau huruf setelahnya: Sebelum huruf konsonan seperti m, b, dan p, ん diucapkan seperti m. Contoh: さんぽ (sanpo) 'arti' : jalan-jalan. Sebelum huruf konsonan seperti k atau g, ん diucapkan seperti ng.Contoh: ばんごはん (bangohan) 'arti' : makan malam. Sebelum huruf vokal atau konsonan lainnya, ん diucapkan seperti n biasa.Contoh: ほん (hon) 'arti' : buku. Perhatian Khusus: ん tidak pernah muncul di awal kata dalam bahasa Jepang Saat ditulis, pastikan membedakan ん dengan る (ru) di hiragana atau ソ (so) di katakana karena bentuknya mirip.",
+      "kosakata": [
+        { "romaji": "on", "hiragana": "おん", "arti": "suara" },
+        {
+          "romaji": "san",
+          "hiragana": "さん",
+          "arti": "tuan/nyonya (sapaan)"
+        },
+        { "romaji": "ten", "hiragana": "てん", "arti": "langit" },
+        { "romaji": "kin", "hiragana": "きん", "arti": "emas" },
+        { "romaji": "hon", "hiragana": "ほん", "arti": "buku" }
+      ]
+    }
+  }
+}

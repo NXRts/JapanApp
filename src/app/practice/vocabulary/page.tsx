@@ -207,32 +207,74 @@ const HighlightText = styled.h2`
   }
 `;
 
-const Details = styled.div`
-  flex-grow: 1;
+const DetailsStacked = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  
-  h4 {
-    color: #4f46e5;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 700;
-    margin-top: 1.5rem;
-    
-    &:first-child { margin-top: 0; }
+  width: 90%;
+  margin: 1rem 0;
+  padding: 1.5rem;
+  border: 4px dotted #16A34A; /* Green dotted border from screenshot */
+  border-radius: 12px;
+  background-color: var(--surface); /* Keep it matching the app dark theme */
+  gap: 0.5rem;
+`;
+
+const ReadingTop = styled.div`
+  color: #16A34A; /* Green matching screenshot */
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 600px) {
+    font-size: 2.5rem;
   }
+`;
+
+const WordMid = styled.div`
+  color: var(--foreground);
+  font-size: 2.5rem;
+  font-weight: 700;
+  position: relative;
+  margin-bottom: 0.5rem;
   
-  p {
+  /* Mock pitch accent line for styling similarity to the screenshot */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: -5px;
+    width: 35%;
+    height: 3px;
+    background-color: #EF4444; /* Red accent line */
+    border-radius: 2px;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 2rem;
+  }
+`;
+
+const RomajiText = styled.div`
+  color: #16A34A; /* Green */
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+
+  @media (max-width: 600px) {
+    font-size: 1.8rem;
+  }
+`;
+
+const MeaningText = styled.div`
+  color: #3B82F6; /* Blue matching screenshot */
+  font-size: 1.8rem;
+  font-weight: 500;
+
+  @media (max-width: 600px) {
     font-size: 1.5rem;
-    line-height: 1.4;
-    color: var(--foreground);
-    margin: 0;
-    font-weight: 600;
   }
 `;
 
@@ -307,138 +349,138 @@ const ActionBtn = styled.button`
 `;
 
 type VocabItem = {
-    word: string;
-    reading: string;
-    meaning: string;
+  word: string;
+  reading: string;
+  romaji: string;
+  meaning: string;
 };
 
 export default function VocabularyFlashcards() {
-    const [level, setLevel] = useState('n5');
-    const [vocabList, setVocabList] = useState<VocabItem[]>([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [flipped, setFlipped] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [level, setLevel] = useState('hiragana');
+  const [vocabList, setVocabList] = useState<VocabItem[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-    // Fetch List
-    useEffect(() => {
-        setLoading(true);
-        fetch(`/api/vocabulary/${level}`)
-            .then(res => res.json())
-            .then((data: VocabItem[]) => {
-                if (Array.isArray(data)) {
-                    // Shuffle
-                    setVocabList(data.sort(() => 0.5 - Math.random()));
-                    setCurrentIndex(0);
-                    setFlipped(false);
-                }
-            })
-            .catch(console.error)
-            .finally(() => setLoading(false));
-    }, [level]);
+  // Fetch List
+  useEffect(() => {
+    setLoading(true);
+    fetch(`/api/vocabulary/${level}`)
+      .then(res => res.json())
+      .then((data: VocabItem[]) => {
+        if (Array.isArray(data)) {
+          // Shuffle
+          setVocabList(data.sort(() => 0.5 - Math.random()));
+          setCurrentIndex(0);
+          setFlipped(false);
+        }
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [level]);
 
-    const currentVocab = vocabList[currentIndex];
+  const currentVocab = vocabList[currentIndex];
 
-    const nextCard = () => {
-        setFlipped(false);
-        setTimeout(() => {
-            setCurrentIndex(prev => (prev + 1) % vocabList.length);
-        }, 400); // Wait for flip back
-    };
+  const nextCard = () => {
+    setFlipped(false);
+    setTimeout(() => {
+      setCurrentIndex(prev => (prev + 1) % vocabList.length);
+    }, 400); // Wait for flip back
+  };
 
-    const prevCard = () => {
-        setFlipped(false);
-        setTimeout(() => {
-            setCurrentIndex(prev => (prev === 0 ? vocabList.length - 1 : prev - 1));
-        }, 400);
-    };
+  const prevCard = () => {
+    setFlipped(false);
+    setTimeout(() => {
+      setCurrentIndex(prev => (prev === 0 ? vocabList.length - 1 : prev - 1));
+    }, 400);
+  };
 
-    if (loading) return (
-        <PageWrapper>
-            <Container>
-                <div style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', marginTop: '4rem' }}>Loading Vocabulary...</div>
-            </Container>
-        </PageWrapper>
-    );
+  if (loading) return (
+    <PageWrapper>
+      <Container>
+        <div style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', marginTop: '4rem' }}>Loading Vocabulary...</div>
+      </Container>
+    </PageWrapper>
+  );
 
-    if (!currentVocab) return <PageWrapper><Container>No Vocabulary found for this level.</Container></PageWrapper>;
+  if (!currentVocab) return <PageWrapper><Container>No Vocabulary found for this level.</Container></PageWrapper>;
 
-    return (
-        <PageWrapper>
-            <Container>
-                <Header>
-                    <BackLink href="/practice">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M19 12H5M12 19l-7-7 7-7" />
-                        </svg>
-                        Back
-                    </BackLink>
-                    <DropdownContainer>
-                        <DropdownTrigger
-                            $isOpen={isDropdownOpen}
-                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        >
-                            JLPT {level.toUpperCase()}
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </DropdownTrigger>
+  return (
+    <PageWrapper>
+      <Container>
+        <Header>
+          <BackLink href="/practice">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back
+          </BackLink>
+          <DropdownContainer>
+            <DropdownTrigger
+              $isOpen={isDropdownOpen}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              {level.charAt(0).toUpperCase() + level.slice(1)}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </DropdownTrigger>
 
-                        {isDropdownOpen && (
-                            <DropdownMenu>
-                                {['n5', 'n4', 'n3', 'n2', 'n1'].map(l => (
-                                    <DropdownItem
-                                        key={l}
-                                        $isActive={level === l}
-                                        onClick={() => {
-                                            setLevel(l);
-                                            setIsDropdownOpen(false);
-                                        }}
-                                    >
-                                        JLPT {l.toUpperCase()}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        )}
-                    </DropdownContainer>
-                </Header>
+            {isDropdownOpen && (
+              <DropdownMenu>
+                {['hiragana', 'katakana'].map(l => (
+                  <DropdownItem
+                    key={l}
+                    $isActive={level === l}
+                    onClick={() => {
+                      setLevel(l);
+                      setIsDropdownOpen(false);
+                    }}
+                  >
+                    {l.charAt(0).toUpperCase() + l.slice(1)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            )}
+          </DropdownContainer>
+        </Header>
 
-                <FlashcardContainer>
-                    <SectionTitle>Memorization Mode</SectionTitle>
-                    <CardPerspective onClick={() => setFlipped(!flipped)}>
-                        <CardInner $flipped={flipped}>
-                            <CardFace>
-                                <InstructionText>Word</InstructionText>
-                                <BigWord>{currentVocab.word}</BigWord>
-                                <HintText>Tap to Reveal ⟳</HintText>
-                            </CardFace>
+        <FlashcardContainer>
+          <SectionTitle>Memorization Mode</SectionTitle>
+          <CardPerspective onClick={() => setFlipped(!flipped)}>
+            <CardInner $flipped={flipped}>
+              <CardFace>
+                <InstructionText>Word</InstructionText>
+                <BigWord>{currentVocab.word}</BigWord>
+                <HintText>Tap to Reveal ⟳</HintText>
+              </CardFace>
 
-                            <CardBack>
-                                <Details>
-                                    <h4>Reading</h4>
-                                    <p>{currentVocab.reading}</p>
+              <CardBack>
+                <DetailsStacked>
+                  <ReadingTop>{currentVocab.reading}</ReadingTop>
+                  <WordMid>{currentVocab.word}</WordMid>
+                  <RomajiText>{currentVocab.romaji}</RomajiText>
+                  <MeaningText>{currentVocab.meaning}</MeaningText>
+                </DetailsStacked>
+                <HintText>Tap to Flip ⟳</HintText>
+              </CardBack>
+            </CardInner>
+          </CardPerspective>
 
-                                    <h4>Meaning</h4>
-                                    <HighlightText>{currentVocab.meaning}</HighlightText>
-                                </Details>
-                                <HintText>Tap to Flip ⟳</HintText>
-                            </CardBack>
-                        </CardInner>
-                    </CardPerspective>
+          <ActionButtons>
+            <IconBtn onClick={prevCard} aria-label="Previous Word">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </IconBtn>
 
-                    <ActionButtons>
-                        <IconBtn onClick={prevCard} aria-label="Previous Word">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="15 18 9 12 15 6"></polyline>
-                            </svg>
-                        </IconBtn>
-
-                        <ActionBtn onClick={nextCard}>
-                            Next Word {currentIndex + 1} / {vocabList.length}
-                        </ActionBtn>
-                    </ActionButtons>
-                </FlashcardContainer>
-            </Container>
-        </PageWrapper>
-    );
+            <ActionBtn onClick={nextCard}>
+              Next Word {currentIndex + 1} / {vocabList.length}
+            </ActionBtn>
+          </ActionButtons>
+        </FlashcardContainer>
+      </Container>
+    </PageWrapper>
+  );
 }
