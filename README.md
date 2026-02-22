@@ -7,6 +7,7 @@ A modern, interactive Japanese learning companion application built with Next.js
 - **Kanji Grid Visualization**: Explore and learn Kanji characters in an organized, responsive grid layout.
 - **Kana Mastery**: Comprehensive reference and practice tools for both Hiragana and Katakana.
 - **Practice Mode**: Dedicated section to test your knowledge and build muscle memory.
+- **Vocabulary Flashcards**: Interactive flashcards with beautiful, modern styling to master Japanese vocabulary (Hiragana, Katakana, Dakuten, Handakuten, and Yoon).
 - **Theme Customization**: Toggle between Light and Dark modes for comfortable viewing in any environment.
 - **Advanced Input Handling**: Integrated **Wanakana** for seamless Romaji-to-Kana conversion.
 - **Responsive Design**: Optimized for a smooth experience across desktop and mobile devices.
@@ -60,19 +61,22 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ```bash
 src/
-├── app/              # Next.js App Router pages and layouts
-│   ├── about/        # About page
-│   ├── contact/      # Contact page
-│   ├── kana/         # Kana learning page
-│   ├── fonts/        # Local font files
-│   ├── globals.css   # Global styles
-│   └── page.tsx      # Main entry point (Home)
-├── components/       # Reusable UI components
-│   ├── KanjiGrid/    # Kanji display grid
-│   ├── Navbar.tsx    # Navigation bar
-│   ├── Footer.tsx    # Site footer
+├── app/                  # Next.js App Router pages and layouts
+│   ├── about/            # About page
+│   ├── api/vocabulary/   # API route serving local JSON data
+│   ├── contact/          # Contact page
+│   ├── kana/             # Kana learning page
+│   ├── practice/         # Practice hub
+│   │   ├── kanji/        # Kanji drawing practice
+│   │   └── vocabulary/   # Vocabulary flashcards
+│   ├── globals.css       # Global styles
+│   └── page.tsx          # Main entry point (Home)
+├── components/           # Reusable UI components
+│   ├── KanjiGrid/        # Kanji display grid
+│   ├── Navbar.tsx        # Navigation bar
+│   ├── Footer.tsx        # Site footer
 │   └── ...
-└── context/          # React Context providers (e.g., ThemeContext)
+└── context/              # React Context providers (e.g., ThemeContext)
 ```
 
 ## 🤝 Contributing
