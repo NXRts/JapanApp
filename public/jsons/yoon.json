@@ -1,0 +1,736 @@
+{
+  "total": 72,
+  "tentang": "Huruf gabungan dalam bahasa Jepang biasanya merujuk pada yōon (拗音), yaitu kombinasi antara sebuah huruf kana dari kelompok konsonan dan salah satu dari tiga kana kecil: ゃ (ya kecil), ゅ (yu kecil), atau ょ (yo kecil). Gabungan ini menghasilkan bunyi yang lebih pendek dan menyatu dibandingkan pengucapan terpisah.\n\nYōon secara harfiah berarti 'bunyi tertekuk' atau 'bunyi kontraksi'. Sistem ini memungkinkan bahasa Jepang untuk mewakili suku kata yang tidak ada dalam tabel gojūon dasar. Dalam fonologi, yōon menciptakan palatalisasi di mana konsonan utama diucapkan dengan lidah mendekati langit-langit keras.",
+  "info": "Huruf seperti ぢゃ, ぢゅ, ぢょ lebih sering digantikan oleh じゃ, じゅ, じょ dalam praktik modern. Jadi, meskipun totalnya 36 kombinasi, beberapa jarang muncul dalam penggunaan sehari-hari.\n\nDalam bahasa Jepang kontemporer, beberapa yōon lebih umum daripada yang lain. Kombinasi yang sangat umum seperti きゃ, しゃ, ちゃ, sedangkan kombinasi seperti ぢゃ, ぢゅ, ぢょ sangat jarang digunakan.",
+  "penjelasan": "Dalam bahasa Jepang, huruf gabungan ini sering digunakan untuk kata-kata serapan atau ekspresi alami yang tidak bisa diucapkan dengan kana biasa.\n\nPenulisan 'romaji'-nya juga mengikuti pola gabungan, seperti 'kya,' 'kyu,' 'kyo'.\n\nYōon dapat diklasifikasikan berdasarkan baris konsonan:\n\n1. Baris k: きゃ, きゅ, きょ (kya, kyu, kyo)\n2. Baris s: しゃ, しゅ, しょ (sha, shu, sho)\n3. Baris t: ちゃ, ちゅ, ちょ (cha, chu, cho)\n4. Baris n: にゃ, にゅ, にょ (nya, nyu, nyo)\n5. Baris h: ひゃ, ひゅ, ひょ (hya, hyu, hyo)\n6. Baris m: みゃ, みゅ, みょ (mya, myu, myo)\n7. Baris r: りゃ, りゅ, りょ (rya, ryu, ryo)\n\nDengan dakuten:\n8. Baris g: ぎゃ, ぎゅ, ぎょ (gya, gyu, gyo)\n9. Baris z: じゃ, じゅ, じょ (ja, ju, jo)\n10. Baris b: びゃ, びゅ, びょ (bya, byu, byo)\n11. Baris p: ぴゃ, ぴゅ, ぴょ (pya, pyu, pyo)\n\nKarakteristik fonetik yōon:\n1. Palatalisasi: Bunyi 'y' menyebabkan konsonan utama menjadi palatal\n2. Durasi: Diucapkan sebagai satu mora (satuan waktu)\n3. Penulisan: Kana kecil ditulis di kanan bawah karakter utama\n\nPenggunaan dalam berbagai konteks:\n1. Kata serapan: コンピュータ (konpyūta) = komputer\n2. Kata sehari-hari: きょう (kyō) = hari ini\n3. Onomatopeia: ぎゅっ (gyu') = suara memeluk erat\n4. Istilah teknis: キャンセル (kyanseru) = cancel\n\nYōon juga penting dalam sistem penulisan karena:\n1. Membantu menulis kata asing dengan akurat\n2. Memperkaya sistem fonologi Jepang\n3. Memungkinkan variasi bunyi yang lebih luas",
+  "hiragana_huruf": {
+    "kya": {
+      "romaji": "kya",
+      "hiragana": "きゃ",
+      "kakikata_gambar": "/images/hiragana/kya.svg",
+      "kakikata_animasi": "/animation/hiragana/kya.svg",
+      "kosakata": [
+        { "romaji": "kyaku", "hiragana": "きゃく", "arti": "tamu" },
+        { "romaji": "kyabetsu", "hiragana": "きゃべつ", "arti": "kubis" }
+      ]
+    },
+    "kyu": {
+      "romaji": "kyu",
+      "hiragana": "きゅ",
+      "kakikata_gambar": "/images/hiragana/kyu.svg",
+      "kakikata_animasi": "/animation/hiragana/kyu.svg",
+      "kosakata": [
+        {
+          "romaji": "kyuudou",
+          "hiragana": "きゅうどう",
+          "arti": "panahan Jepang"
+        },
+        { "romaji": "kyuuryou", "hiragana": "きゅうりょう", "arti": "gaji" }
+      ]
+    },
+    "kyo": {
+      "romaji": "kyo",
+      "hiragana": "きょ",
+      "kakikata_gambar": "/images/hiragana/kyo.svg",
+      "kakikata_animasi": "/animation/hiragana/kyo.svg",
+      "kosakata": [
+        { "romaji": "kyou", "hiragana": "きょう", "arti": "hari ini" },
+        {
+          "romaji": "kyoudai",
+          "hiragana": "きょうだい",
+          "arti": "saudara kandung"
+        }
+      ]
+    },
+    "sha": {
+      "romaji": "sha",
+      "hiragana": "しゃ",
+      "kakikata_gambar": "/images/hiragana/sha.svg",
+      "kakikata_animasi": "/animation/hiragana/sha.svg",
+      "kosakata": [
+        { "romaji": "shashin", "hiragana": "しゃしん", "arti": "foto" },
+        { "romaji": "shachou", "hiragana": "しゃちょう", "arti": "direktur" }
+      ]
+    },
+    "shu": {
+      "romaji": "shu",
+      "hiragana": "しゅ",
+      "kakikata_gambar": "/images/hiragana/shu.svg",
+      "kakikata_animasi": "/animation/hiragana/shu.svg",
+      "kosakata": [
+        {
+          "romaji": "shuukan",
+          "hiragana": "しゅうかん",
+          "arti": "minggu (periode)"
+        },
+        { "romaji": "shumi", "hiragana": "しゅみ", "arti": "hobi" }
+      ]
+    },
+    "sho": {
+      "romaji": "sho",
+      "hiragana": "しょ",
+      "kakikata_gambar": "/images/hiragana/sho.svg",
+      "kakikata_animasi": "/animation/hiragana/sho.svg",
+      "kosakata": [
+        { "romaji": "shou", "hiragana": "しょう", "arti": "kecil" },
+        {
+          "romaji": "shougakko",
+          "hiragana": "しょうがっこう",
+          "arti": "sekolah dasar"
+        }
+      ]
+    },
+    "cha": {
+      "romaji": "cha",
+      "hiragana": "ちゃ",
+      "kakikata_gambar": "/images/hiragana/cha.svg",
+      "kakikata_animasi": "/animation/hiragana/cha.svg",
+      "kosakata": [
+        { "romaji": "ocha", "hiragana": "おちゃ", "arti": "teh" },
+        { "romaji": "chanoma", "hiragana": "ちゃのま", "arti": "ruang teh" }
+      ]
+    },
+    "chu": {
+      "romaji": "chu",
+      "hiragana": "ちゅ",
+      "kakikata_gambar": "/images/hiragana/chu.svg",
+      "kakikata_animasi": "/animation/hiragana/chu.svg",
+      "kosakata": [
+        { "romaji": "chuugoku", "hiragana": "ちゅうごく", "arti": "China" },
+        { "romaji": "chuusha", "hiragana": "ちゅうしゃ", "arti": "suntikan" }
+      ]
+    },
+    "cho": {
+      "romaji": "cho",
+      "hiragana": "ちょ",
+      "kakikata_gambar": "/images/hiragana/cho.svg",
+      "kakikata_animasi": "/animation/hiragana/cho.svg",
+      "kosakata": [
+        { "romaji": "chotto", "hiragana": "ちょっと", "arti": "sebentar" },
+        { "romaji": "choushi", "hiragana": "ちょうし", "arti": "kondisi" }
+      ]
+    },
+    "nya": {
+      "romaji": "nya",
+      "hiragana": "にゃ",
+      "kakikata_gambar": "/images/hiragana/nya.svg",
+      "kakikata_animasi": "/animation/hiragana/nya.svg",
+      "kosakata": [
+        { "romaji": "nyanko", "hiragana": "にゃんこ", "arti": "kucing kecil" }
+      ]
+    },
+    "nyu": {
+      "romaji": "nyu",
+      "hiragana": "にゅ",
+      "kakikata_gambar": "/images/hiragana/nyu.svg",
+      "kakikata_animasi": "/animation/hiragana/nyu.svg",
+      "kosakata": [
+        {
+          "romaji": "nyuugaku",
+          "hiragana": "にゅうがく",
+          "arti": "masuk sekolah"
+        }
+      ]
+    },
+    "nyo": {
+      "romaji": "nyo",
+      "hiragana": "にょ",
+      "kakikata_gambar": "/images/hiragana/nyo.svg",
+      "kakikata_animasi": "/animation/hiragana/nyo.svg",
+      "kosakata": [
+        { "romaji": "nyoronyoro", "hiragana": "にょろにょろ", "arti": "melata" }
+      ]
+    },
+    "hya": {
+      "romaji": "hya",
+      "hiragana": "ひゃ",
+      "kakikata_gambar": "/images/hiragana/hya.svg",
+      "kakikata_animasi": "/animation/hiragana/hya.svg",
+      "kosakata": [
+        { "romaji": "hyaku", "hiragana": "ひゃく", "arti": "seratus" }
+      ]
+    },
+    "hyu": {
+      "romaji": "hyu",
+      "hiragana": "ひゅ",
+      "kakikata_gambar": "/images/hiragana/hyu.svg",
+      "kakikata_animasi": "/animation/hiragana/hyu.svg",
+      "kosakata": [
+        { "romaji": "hyuudo", "hiragana": "ひゅうど", "arti": "desir angin" }
+      ]
+    },
+    "hyo": {
+      "romaji": "hyo",
+      "hiragana": "ひょ",
+      "kakikata_gambar": "/images/hiragana/hyo.svg",
+      "kakikata_animasi": "/animation/hiragana/hyo.svg",
+      "kosakata": [
+        { "romaji": "hyou", "hiragana": "ひょう", "arti": "daftar" },
+        { "romaji": "hyoutan", "hiragana": "ひょうたん", "arti": "labu botol" }
+      ]
+    },
+    "mya": {
+      "romaji": "mya",
+      "hiragana": "みゃ",
+      "kakikata_gambar": "/images/hiragana/mya.svg",
+      "kakikata_animasi": "/animation/hiragana/mya.svg",
+      "catatan": "Kosakata dengan huruf ini di awal kata sangat jarang digunakan.",
+      "kosakata": null
+    },
+    "myu": {
+      "romaji": "myu",
+      "hiragana": "みゅ",
+      "kakikata_gambar": "/images/hiragana/myu.svg",
+      "kakikata_animasi": "/animation/hiragana/myu.svg",
+      "kosakata": [
+        {
+          "romaji": "myuujikku",
+          "hiragana": "みゅーじっく",
+          "arti": "musik (serapan)"
+        }
+      ]
+    },
+    "myo": {
+      "romaji": "myo",
+      "hiragana": "みょ",
+      "kakikata_gambar": "/images/hiragana/myo.svg",
+      "kakikata_animasi": "/animation/hiragana/myo.svg",
+      "catatan": "Kosakata dengan huruf ini di awal kata sangat jarang digunakan.",
+      "kosakata": null
+    },
+    "rya": {
+      "romaji": "rya",
+      "hiragana": "りゃ",
+      "kakikata_gambar": "/images/hiragana/rya.svg",
+      "kakikata_animasi": "/animation/hiragana/rya.svg",
+      "catatan": "Kosakata dengan huruf ini di awal kata sangat jarang digunakan.",
+      "kosakata": null
+    },
+    "ryu": {
+      "romaji": "ryu",
+      "hiragana": "りゅ",
+      "kakikata_gambar": "/images/hiragana/ryu.svg",
+      "kakikata_animasi": "/animation/hiragana/ryu.svg",
+      "kosakata": [
+        {
+          "romaji": "ryuugaku",
+          "hiragana": "りゅうがく",
+          "arti": "belajar di luar negeri"
+        },
+        { "romaji": "ryuu", "hiragana": "りゅう", "arti": "naga" }
+      ]
+    },
+    "ryo": {
+      "romaji": "ryo",
+      "hiragana": "りょ",
+      "kakikata_gambar": "/images/hiragana/ryo.svg",
+      "kakikata_animasi": "/animation/hiragana/ryo.svg",
+      "kosakata": [
+        { "romaji": "ryokou", "hiragana": "りょこう", "arti": "perjalanan" },
+        { "romaji": "ryori", "hiragana": "りょうり", "arti": "memasak" }
+      ]
+    },
+    "gya": {
+      "romaji": "gya",
+      "hiragana": "ぎゃ",
+      "kakikata_gambar": "/images/hiragana/gya.svg",
+      "kakikata_animasi": "/animation/hiragana/gya.svg",
+      "catatan": "Huruf ini lebih sering ditemukan di tengah atau akhir kata.",
+      "kosakata": [
+        {
+          "romaji": "gyakuten",
+          "hiragana": "ぎゃくてん",
+          "arti": "pembalikan situasi"
+        }
+      ]
+    },
+    "gyu": {
+      "romaji": "gyu",
+      "hiragana": "ぎゅ",
+      "kakikata_gambar": "/images/hiragana/gyu.svg",
+      "kakikata_animasi": "/animation/hiragana/gyu.svg",
+      "kosakata": [
+        {
+          "romaji": "gyuunyuu",
+          "hiragana": "ぎゅうにゅう",
+          "arti": "susu sapi"
+        },
+        {
+          "romaji": "gyuudon",
+          "hiragana": "ぎゅうどん",
+          "arti": "mangkuk daging sapi"
+        }
+      ]
+    },
+    "gyo": {
+      "romaji": "gyo",
+      "hiragana": "ぎょ",
+      "kakikata_gambar": "/images/hiragana/gyo.svg",
+      "kakikata_animasi": "/animation/hiragana/gyo.svg",
+      "kosakata": [
+        { "romaji": "gyoza", "hiragana": "ぎょーざ", "arti": "pangsit" },
+        { "romaji": "gyorui", "hiragana": "ぎょるい", "arti": "jenis ikan" }
+      ]
+    },
+    "jya": {
+      "romaji": "jya",
+      "hiragana": "じゃ",
+      "kakikata_gambar": "/images/hiragana/jya.svg",
+      "kakikata_animasi": "/animation/hiragana/jya.svg",
+      "kosakata": [
+        {
+          "romaji": "japan",
+          "hiragana": "じゃぱん",
+          "arti": "Jepang (serapan)"
+        },
+        { "romaji": "janai", "hiragana": "じゃない", "arti": "bukan" }
+      ]
+    },
+    "jyu": {
+      "romaji": "jyu",
+      "hiragana": "じゅ",
+      "kakikata_gambar": "/images/hiragana/jyu.svg",
+      "kakikata_animasi": "/animation/hiragana/jyu.svg",
+      "kosakata": [
+        { "romaji": "juusho", "hiragana": "じゅうしょ", "arti": "alamat" },
+        { "romaji": "juudou", "hiragana": "じゅうどう", "arti": "judo" }
+      ]
+    },
+    "jyo": {
+      "romaji": "jyo",
+      "hiragana": "じょ",
+      "kakikata_gambar": "/images/hiragana/jyo.svg",
+      "kakikata_animasi": "/animation/hiragana/jyo.svg",
+      "kosakata": [
+        { "romaji": "josei", "hiragana": "じょせい", "arti": "wanita" },
+        { "romaji": "jouhou", "hiragana": "じょうほう", "arti": "informasi" }
+      ]
+    },
+    "dya": {
+      "romaji": "dya",
+      "hiragana": "ぢゃ",
+      "kakikata_gambar": "/images/hiragana/dya.svg",
+      "kakikata_animasi": "/animation/hiragana/dya.svg",
+      "catatan": "Huruf ini sangat jarang digunakan dan biasanya ditemukan dalam beberapa kata yang sangat tua atau terpengaruh oleh bahasa asing.",
+      "kosakata": [
+        {
+          "romaji": "yodaya",
+          "hiragana": "よだぢゃ",
+          "arti": "nama tempat (kata tua)"
+        }
+      ]
+    },
+    "dyu": {
+      "romaji": "dyu",
+      "hiragana": "ぢゅ",
+      "kakikata_gambar": "/images/hiragana/dyu.svg",
+      "kakikata_animasi": "/animation/hiragana/dyu.svg",
+      "catatan": "Huruf ini sangat jarang digunakan dan biasanya ditemukan dalam beberapa kata yang sangat tua atau terpengaruh oleh bahasa asing.",
+      "kosakata": [
+        {
+          "romaji": "chidyuuryuu",
+          "hiragana": "ちぢゅうりゅう",
+          "arti": "arus bawah tanah (kata tua)"
+        }
+      ]
+    },
+    "dyo": {
+      "romaji": "dyo",
+      "hiragana": "ぢょ",
+      "kakikata_gambar": "/images/hiragana/dyo.svg",
+      "kakikata_animasi": "/animation/hiragana/dyo.svg",
+      "catatan": "Huruf ini sangat jarang digunakan dan biasanya ditemukan dalam beberapa kata yang sangat tua atau terpengaruh oleh bahasa asing.",
+      "kosakata": [
+        {
+          "romaji": "midyoka",
+          "hiragana": "みぢょか",
+          "arti": "ramah atau baik hati (dialek lama)"
+        }
+      ]
+    },
+    "bya": {
+      "romaji": "bya",
+      "hiragana": "びゃ",
+      "kakikata_gambar": "/images/hiragana/bya.svg",
+      "kakikata_animasi": "/animation/hiragana/bya.svg",
+      "catatan": "Huruf ini lebih sering ditemukan di tengah atau akhir kata.",
+      "kosakata": [
+        {
+          "romaji": "kanbya",
+          "hiragana": "かんびゃ",
+          "arti": "keselamatan (kata tua)"
+        }
+      ]
+    },
+    "byu": {
+      "romaji": "byu",
+      "hiragana": "びゅ",
+      "kakikata_gambar": "/images/hiragana/byu.svg",
+      "kakikata_animasi": "/animation/hiragana/byu.svg",
+      "catatan": "Huruf ini lebih sering ditemukan di tengah atau akhir kata.",
+      "kosakata": [
+        {
+          "romaji": "byuun",
+          "hiragana": "びゅうん",
+          "arti": "suara berputar atau melesat"
+        }
+      ]
+    },
+    "byo": {
+      "romaji": "byo",
+      "hiragana": "びょ",
+      "kakikata_gambar": "/images/hiragana/byo.svg",
+      "kakikata_animasi": "/animation/hiragana/byo.svg",
+      "catatan": "Huruf ini lebih sering ditemukan di tengah atau akhir kata.",
+      "kosakata": [
+        {
+          "romaji": "byoushin",
+          "hiragana": "びょうしん",
+          "arti": "jarum detik"
+        }
+      ]
+    },
+    "pya": {
+      "romaji": "pya",
+      "hiragana": "ぴゃ",
+      "kakikata_gambar": "/images/hiragana/pya.svg",
+      "kakikata_animasi": "/animation/hiragana/pya.svg",
+      "catatan": "Huruf ini sangat jarang digunakan.",
+      "kosakata": null
+    },
+    "pyu": {
+      "romaji": "pyu",
+      "hiragana": "ぴゅ",
+      "kakikata_gambar": "/images/hiragana/pyu.svg",
+      "kakikata_animasi": "/animation/hiragana/pyu.svg",
+      "catatan": "Huruf ini lebih sering ditemukan di tengah atau akhir kata.",
+      "kosakata": [
+        {
+          "romaji": "pyuun",
+          "hiragana": "ぴゅうん",
+          "arti": "suara bersiul atau angin"
+        }
+      ]
+    },
+    "pyo": {
+      "romaji": "pyo",
+      "hiragana": "ぴょ",
+      "kakikata_gambar": "/images/hiragana/pyo.svg",
+      "kakikata_animasi": "/animation/hiragana/pyo.svg",
+      "catatan": "Huruf ini lebih sering ditemukan di tengah atau akhir kata.",
+      "kosakata": [
+        {
+          "romaji": "pyocho",
+          "hiragana": "ぴょちょ",
+          "arti": "suara melompat kecil"
+        }
+      ]
+    }
+  },
+  "katakana_huruf": {
+    "kya": {
+      "romaji": "kya",
+      "katakana": "キャ",
+      "kakikata_gambar": "/images/katakana/kya.svg",
+      "kakikata_animasi": "/animation/katakana/kya.svg",
+      "kosakata": [
+        { "romaji": "kyabetsu", "katakana": "キャベツ", "arti": "kubis" }
+      ]
+    },
+    "kyu": {
+      "romaji": "kyu",
+      "katakana": "キュ",
+      "kakikata_gambar": "/images/katakana/kyu.svg",
+      "kakikata_animasi": "/animation/katakana/kyu.svg",
+      "kosakata": [
+        { "romaji": "kyuuri", "katakana": "キュウリ", "arti": "mentimun" }
+      ]
+    },
+    "kyo": {
+      "romaji": "kyo",
+      "katakana": "キョ",
+      "kakikata_gambar": "/images/katakana/kyo.svg",
+      "kakikata_animasi": "/animation/katakana/kyo.svg",
+      "kosakata": [{ "romaji": "kyoka", "katakana": "キョカ", "arti": "izin" }]
+    },
+    "sha": {
+      "romaji": "sha",
+      "katakana": "シャ",
+      "kakikata_gambar": "/images/katakana/sha.svg",
+      "kakikata_animasi": "/animation/katakana/sha.svg",
+      "kosakata": [
+        { "romaji": "shatsu", "katakana": "シャツ", "arti": "kemeja" }
+      ]
+    },
+    "shu": {
+      "romaji": "shu",
+      "katakana": "シュ",
+      "kakikata_gambar": "/images/katakana/shu.svg",
+      "kakikata_animasi": "/animation/katakana/shu.svg",
+      "kosakata": [
+        { "romaji": "shuto", "katakana": "シュト", "arti": "ibu kota" }
+      ]
+    },
+    "sho": {
+      "romaji": "sho",
+      "katakana": "ショ",
+      "kakikata_gambar": "/images/katakana/sho.svg",
+      "kakikata_animasi": "/animation/katakana/sho.svg",
+      "kosakata": [
+        { "romaji": "shokupan", "katakana": "ショクパン", "arti": "roti tawar" }
+      ]
+    },
+    "cha": {
+      "romaji": "cha",
+      "katakana": "チャ",
+      "kakikata_gambar": "/images/katakana/cha.svg",
+      "kakikata_animasi": "/animation/katakana/cha.svg",
+      "kosakata": [
+        { "romaji": "chawan", "katakana": "チャワン", "arti": "mangkuk" }
+      ]
+    },
+    "chu": {
+      "romaji": "chu",
+      "katakana": "チュ",
+      "kakikata_gambar": "/images/katakana/chu.svg",
+      "kakikata_animasi": "/animation/katakana/chu.svg",
+      "kosakata": [
+        { "romaji": "chuugoku", "katakana": "チュウゴク", "arti": "China" }
+      ]
+    },
+    "cho": {
+      "romaji": "cho",
+      "katakana": "チョ",
+      "kakikata_gambar": "/images/katakana/cho.svg",
+      "kakikata_animasi": "/animation/katakana/cho.svg",
+      "kosakata": [
+        { "romaji": "chotto", "katakana": "チョット", "arti": "sebentar" }
+      ]
+    },
+    "nya": {
+      "romaji": "nya",
+      "katakana": "ニャ",
+      "kakikata_gambar": "/images/katakana/nya.svg",
+      "kakikata_animasi": "/animation/katakana/nya.svg",
+      "kosakata": []
+    },
+    "nyu": {
+      "romaji": "nyu",
+      "katakana": "ニュ",
+      "kakikata_gambar": "/images/katakana/nyu.svg",
+      "kakikata_animasi": "/animation/katakana/nyu.svg",
+      "kosakata": [
+        { "romaji": "nyuusu", "katakana": "ニュース", "arti": "berita" }
+      ]
+    },
+    "nyo": {
+      "romaji": "nyo",
+      "katakana": "ニョ",
+      "kakikata_gambar": "/images/katakana/nyo.svg",
+      "kakikata_animasi": "/animation/katakana/nyo.svg",
+      "kosakata": []
+    },
+    "hya": {
+      "romaji": "hya",
+      "katakana": "ヒャ",
+      "kakikata_gambar": "/images/katakana/hya.svg",
+      "kakikata_animasi": "/animation/katakana/hya.svg",
+      "kosakata": [
+        { "romaji": "hyaku", "katakana": "ヒャク", "arti": "seratus" }
+      ]
+    },
+    "hyu": {
+      "romaji": "hyu",
+      "katakana": "ヒュ",
+      "kakikata_gambar": "/images/katakana/hyu.svg",
+      "kakikata_animasi": "/animation/katakana/hyu.svg",
+      "kosakata": [
+        { "romaji": "hyuman", "katakana": "ヒューマン", "arti": "manusia" }
+      ]
+    },
+    "hyo": {
+      "romaji": "hyo",
+      "katakana": "ヒョ",
+      "kakikata_gambar": "/images/katakana/hyo.svg",
+      "kakikata_animasi": "/animation/katakana/hyo.svg",
+      "kosakata": [
+        { "romaji": "hyoushi", "katakana": "ヒョウシ", "arti": "ritme" }
+      ]
+    },
+    "mya": {
+      "romaji": "mya",
+      "katakana": "ミャ",
+      "kakikata_gambar": "/images/katakana/mya.svg",
+      "kakikata_animasi": "/animation/katakana/mya.svg",
+      "kosakata": [
+        { "romaji": "myaku", "katakana": "ミャク", "arti": "denyut nadi" }
+      ]
+    },
+    "myu": {
+      "romaji": "myu",
+      "katakana": "ミュ",
+      "kakikata_gambar": "/images/katakana/myu.svg",
+      "kakikata_animasi": "/animation/katakana/myu.svg",
+      "kosakata": [
+        { "romaji": "myuujikku", "katakana": "ミュージック", "arti": "musik" }
+      ]
+    },
+    "myo": {
+      "romaji": "myo",
+      "katakana": "ミョ",
+      "kakikata_gambar": "/images/katakana/myo.svg",
+      "kakikata_animasi": "/animation/katakana/myo.svg",
+      "kosakata": [
+        { "romaji": "myouji", "katakana": "ミョウジ", "arti": "nama keluarga" }
+      ]
+    },
+    "rya": {
+      "romaji": "rya",
+      "katakana": "リャ",
+      "kakikata_gambar": "/images/katakana/rya.svg",
+      "kakikata_animasi": "/animation/katakana/rya.svg",
+      "kosakata": [
+        { "romaji": "ryaku", "katakana": "リャク", "arti": "singkatan" }
+      ]
+    },
+    "ryu": {
+      "romaji": "ryu",
+      "katakana": "リュ",
+      "kakikata_gambar": "/images/katakana/ryu.svg",
+      "kakikata_animasi": "/animation/katakana/ryu.svg",
+      "kosakata": [{ "romaji": "ryuu", "katakana": "リュウ", "arti": "naga" }]
+    },
+    "ryo": {
+      "romaji": "ryo",
+      "katakana": "リョ",
+      "kakikata_gambar": "/images/katakana/ryo.svg",
+      "kakikata_animasi": "/animation/katakana/ryo.svg",
+      "kosakata": [
+        { "romaji": "ryokou", "katakana": "リョコウ", "arti": "perjalanan" }
+      ]
+    },
+    "gya": {
+      "romaji": "gya",
+      "katakana": "ギャ",
+      "kakikata_gambar": "/images/katakana/gya.svg",
+      "kakikata_animasi": "/animation/katakana/gya.svg",
+      "kosakata": [
+        { "romaji": "gyaku", "katakana": "ギャク", "arti": "kebalikan" }
+      ]
+    },
+    "gyu": {
+      "romaji": "gyu",
+      "katakana": "ギュ",
+      "kakikata_gambar": "/images/katakana/gyu.svg",
+      "kakikata_animasi": "/animation/katakana/gyu.svg",
+      "kosakata": [
+        {
+          "romaji": "gyuunyuu",
+          "katakana": "ギュウニュウ",
+          "arti": "susu sapi"
+        }
+      ]
+    },
+    "gyo": {
+      "romaji": "gyo",
+      "katakana": "ギョ",
+      "kakikata_gambar": "/images/katakana/gyo.svg",
+      "kakikata_animasi": "/animation/katakana/gyo.svg",
+      "kosakata": [
+        { "romaji": "gyokai", "katakana": "ギョカイ", "arti": "produk laut" }
+      ]
+    },
+    "jya": {
+      "romaji": "jya",
+      "katakana": "ジャ",
+      "kakikata_gambar": "/images/katakana/jya.svg",
+      "kakikata_animasi": "/animation/katakana/jya.svg",
+      "kosakata": [
+        { "romaji": "janken", "katakana": "ジャンケン", "arti": "suit Jepang" }
+      ]
+    },
+    "jyu": {
+      "romaji": "jyu",
+      "katakana": "ジュ",
+      "kakikata_gambar": "/images/katakana/jyu.svg",
+      "kakikata_animasi": "/animation/katakana/jyu.svg",
+      "kosakata": [{ "romaji": "juice", "katakana": "ジュース", "arti": "jus" }]
+    },
+    "jyo": {
+      "romaji": "jyo",
+      "katakana": "ジョ",
+      "kakikata_gambar": "/images/katakana/jyo.svg",
+      "kakikata_animasi": "/animation/katakana/jyo.svg",
+      "kosakata": [
+        { "romaji": "joushiki", "katakana": "ジョウシキ", "arti": "akal sehat" }
+      ]
+    },
+    "dya": {
+      "romaji": "dya",
+      "katakana": "ヂャ",
+      "kakikata_gambar": "/images/katakana/dya.svg",
+      "kakikata_animasi": "/animation/katakana/dya.svg",
+      "kosakata": []
+    },
+    "dyu": {
+      "romaji": "dyu",
+      "katakana": "ヂュ",
+      "kakikata_gambar": "/images/katakana/dyu.svg",
+      "kakikata_animasi": "/animation/katakana/dyu.svg",
+      "kosakata": []
+    },
+    "dyo": {
+      "romaji": "dyo",
+      "katakana": "ヂョ",
+      "kakikata_gambar": "/images/katakana/dyo.svg",
+      "kakikata_animasi": "/animation/katakana/dyo.svg",
+      "kosakata": []
+    },
+    "bya": {
+      "romaji": "bya",
+      "katakana": "ビャ",
+      "kakikata_gambar": "/images/katakana/bya.svg",
+      "kakikata_animasi": "/animation/katakana/bya.svg",
+      "kosakata": []
+    },
+    "byu": {
+      "romaji": "byu",
+      "katakana": "ビュ",
+      "kakikata_gambar": "/images/katakana/byu.svg",
+      "kakikata_animasi": "/animation/katakana/byu.svg",
+      "kosakata": [
+        { "romaji": "byuuti", "katakana": "ビューティ", "arti": "kecantikan" }
+      ]
+    },
+    "byo": {
+      "romaji": "byo",
+      "katakana": "ビョ",
+      "kakikata_gambar": "/images/katakana/byo.svg",
+      "kakikata_animasi": "/animation/katakana/byo.svg",
+      "kosakata": [
+        { "romaji": "byouin", "katakana": "ビョウイン", "arti": "rumah sakit" }
+      ]
+    },
+    "pya": {
+      "romaji": "pya",
+      "katakana": "ピャ",
+      "kakikata_gambar": "/images/katakana/pya.svg",
+      "kakikata_animasi": "/animation/katakana/pya.svg",
+      "kosakata": []
+    },
+    "pyu": {
+      "romaji": "pyu",
+      "katakana": "ピュ",
+      "kakikata_gambar": "/images/katakana/pyu.svg",
+      "kakikata_animasi": "/animation/katakana/pyu.svg",
+      "kosakata": []
+    },
+    "pyo": {
+      "romaji": "pyo",
+      "katakana": "ピョ",
+      "kakikata_gambar": "/images/katakana/pyo.svg",
+      "kakikata_animasi": "/animation/katakana/pyo.svg",
+      "kosakata": []
+    }
+  }
+}

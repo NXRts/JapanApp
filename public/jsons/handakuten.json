@@ -1,0 +1,156 @@
+{
+  "total": 10,
+  "tentang": "Handakuten adalah tanda berupa lingkaran kecil yang ditempatkan di sudut kanan atas karakter hiragana atau katakana.\n\nHandakuten digunakan untuk mengubah bunyi karakter dalam baris h (は行 / Ha-gyou) menjadi lebih ringan, yaitu suara p. Handakuten (maru) sering disebut dengan nama lain yang lebih informal, yaitu 'maru' (まる), yang berarti 'lingkaran.'\n\nSecara historis, handakuten merupakan perkembangan yang lebih baru dibandingkan dakuten. Penggunaannya mulai standar pada periode Meiji (abad ke-19) ketika Jepang membakukan sistem penulisannya.",
+  "info": "Handakuten sangat penting dalam bahasa Jepang karena memungkinkan perubahan pengucapan yang lebih ringan pada karakter dari baris h.\n\nMisalnya, は (ha) dan ぱ (pa) memiliki perbedaan pengucapan yang signifikan, sehingga handakuten berperan untuk membedakan kata-kata yang memiliki makna yang berbeda dalam konteks tertentu.\n\nContoh penggunaan handakuten:\n1. Kata serapan: パン (pan) = roti (dari Portugis 'pão')\n2. Onomatopeia: パチパチ (pachipachi) = suara bertepuk tangan\n3. Kata asli Jepang: っぽい (ppoi) = sufiks yang berarti 'seperti'\n4. Nama orang asing: パク・シネ (Paku Sine) = Park Shin-hye",
+  "penjelasan": "Handakuten hanya diterapkan pada baris h dalam sistem hiragana dan katakana:\n\nHiragana dengan handakuten:\n1. は → ぱ (ha → pa)\n2. ひ → ぴ (hi → pi)\n3. ふ → ぷ (fu → pu)\n4. へ → ぺ (he → pe)\n5. ほ → ぽ (ho → po)\n\nKatakana dengan handakuten:\n1. ハ → パ (ha → pa)\n2. ヒ → ピ (hi → pi)\n3. フ → プ (fu → pu)\n4. ヘ → ペ (he → pe)\n5. ホ → ポ (ho → po)\n\nKarakteristik penting handakuten:\n1. Penggunaan terbatas: Hanya untuk baris h, tidak seperti dakuten yang lebih luas\n2. Bunyi 'p': Dalam bahasa Jepang kuno, bunyi 'p' cenderung berubah menjadi 'h' atau 'f'\n3. Distribusi fonemik: Bunyi 'p' lebih umum di awal kata serapan\n\nHandakuten dapat dikombinasikan dengan yōon (huruf gabungan):\n• ひゃ → ぴゃ (hya → pya)\n• ひゅ → ぴゅ (hyu → pyu)\n• ひょ → ぴょ (hyo → pyo)\n\nContoh kata dengan handakuten dan yōon:\n1. ピョン (pyon) = bunyi melompat\n2. ピュア (pyua) = murni (dari 'pure')\n3. ピャッ (pyatto) = suara mendadak\n\nPerbedaan fonetik antara dakuten dan handakuten:\n1. Dakuten: [k] → [g] (voiceless → voiced)\n2. Handakuten: [h] → [p] (glottal fricative → bilabial stop)\n\nDalam kosakata bahasa Jepang:\n1. Kata asli Jepang lebih sering menggunakan bentuk tanpa handakuten\n2. Kata serapan lebih sering menggunakan handakuten\n3. Onomatopeia menggunakan kedua bentuk tergantung suara yang diwakili\n\nCatatan penting: Beberapa kata memiliki variasi dengan dan tanpa handakuten yang mengubah makna:\n• はし (hashi) = jembatan\n• ぱし (pashi) = tidak umum\n• はしる (hashiru) = berlari\n• ぱしる (pashiru) = tidak ada",
+  "hiragana_huruf": {
+    "pa": {
+      "romaji": "pa",
+      "hiragana": "ぱ",
+      "kakikata_gambar": "/images/hiragana/pa.svg",
+      "kakikata_animasi": "/animation/hiragana/pa.svg",
+      "kosakata": [
+        { "romaji": "pan", "hiragana": "ぱん", "arti": "bread" },
+        { "romaji": "papa", "hiragana": "ぱぱ", "arti": "dad (casual)" },
+        { "romaji": "pato", "hiragana": "ぱと", "arti": "patrol" },
+        { "romaji": "panya", "hiragana": "ぱんや", "arti": "bakery" },
+        { "romaji": "panda", "hiragana": "ぱんだ", "arti": "panda" }
+      ]
+    },
+    "pi": {
+      "romaji": "pi",
+      "hiragana": "ぴ",
+      "kakikata_gambar": "/images/hiragana/pi.svg",
+      "kakikata_animasi": "/animation/hiragana/pi.svg",
+      "kosakata": [
+        { "romaji": "piano", "hiragana": "ぴあの", "arti": "piano" },
+        { "romaji": "pin", "hiragana": "ぴん", "arti": "pin/needle" },
+        { "romaji": "pika", "hiragana": "ぴか", "arti": "shine/sparkle" },
+        { "romaji": "pinku", "hiragana": "ぴんく", "arti": "pink color" },
+        { "romaji": "piru", "hiragana": "ぴる", "arti": "pill" }
+      ]
+    },
+    "pu": {
+      "romaji": "pu",
+      "hiragana": "ぷ",
+      "kakikata_gambar": "/images/hiragana/pu.svg",
+      "kakikata_animasi": "/animation/hiragana/pu.svg",
+      "kosakata": [
+        { "romaji": "purasu", "hiragana": "ぷらす", "arti": "plus" },
+        { "romaji": "puro", "hiragana": "ぷろ", "arti": "professional" },
+        { "romaji": "puraido", "hiragana": "ぷらいど", "arti": "pride" },
+        { "romaji": "puchi", "hiragana": "ぷち", "arti": "small (cute)" },
+        {
+          "romaji": "puni",
+          "hiragana": "ぷに",
+          "arti": "soft and squishy"
+        }
+      ]
+    },
+    "pe": {
+      "romaji": "pe",
+      "hiragana": "ぺ",
+      "kakikata_gambar": "/images/hiragana/pe.svg",
+      "kakikata_animasi": "/animation/hiragana/pe.svg",
+      "kosakata": [
+        { "romaji": "pen", "hiragana": "ぺん", "arti": "pen" },
+        { "romaji": "petto", "hiragana": "ぺっと", "arti": "pet" },
+        { "romaji": "peji", "hiragana": "ぺーじ", "arti": "page" },
+        { "romaji": "peko", "hiragana": "ぺこ", "arti": "hungry (slang)" },
+        { "romaji": "pepper", "hiragana": "ぺっぱー", "arti": "pepper" }
+      ]
+    },
+    "po": {
+      "romaji": "po",
+      "hiragana": "ぽ",
+      "kakikata_gambar": "/images/hiragana/po.svg",
+      "kakikata_animasi": "/animation/hiragana/po.svg",
+      "kosakata": [
+        { "romaji": "poka", "hiragana": "ぽか", "arti": "warmth" },
+        { "romaji": "poketto", "hiragana": "ぽけっと", "arti": "pocket" },
+        {
+          "romaji": "popura",
+          "hiragana": "ぽぷら",
+          "arti": "poplar tree"
+        },
+        { "romaji": "poteto", "hiragana": "ぽてと", "arti": "potato" },
+        { "romaji": "pon", "hiragana": "ぽん", "arti": "sound \"pon\"" }
+      ]
+    }
+  },
+  "katakana_huruf": {
+    "pa": {
+      "romaji": "pa",
+      "katakana": "パ",
+      "kakikata_gambar": "/images/katakana/pa.svg",
+      "kakikata_animasi": "/animation/katakana/pa.svg",
+      "kosakata": [
+        { "romaji": "papa", "katakana": "パパ", "arti": "dad" },
+        { "romaji": "panchi", "katakana": "パンチ", "arti": "punch" },
+        { "romaji": "pasokon", "katakana": "パソコン", "arti": "computer" }
+      ]
+    },
+    "pi": {
+      "romaji": "pi",
+      "katakana": "ピ",
+      "kakikata_gambar": "/images/katakana/pi.svg",
+      "kakikata_animasi": "/animation/katakana/pi.svg",
+      "kosakata": [
+        { "romaji": "piano", "katakana": "ピアノ", "arti": "piano" },
+        {
+          "romaji": "pika",
+          "katakana": "ピカ",
+          "arti": "lightning/flash"
+        },
+        {
+          "romaji": "pikupiku",
+          "katakana": "ピクピク",
+          "arti": "twitching"
+        }
+      ]
+    },
+    "pu": {
+      "romaji": "pu",
+      "katakana": "プ",
+      "kakikata_gambar": "/images/katakana/pu.svg",
+      "kakikata_animasi": "/animation/katakana/pu.svg",
+      "kosakata": [
+        {
+          "romaji": "puppu",
+          "katakana": "プップ",
+          "arti": "whistle sound"
+        },
+        { "romaji": "purin", "katakana": "プリン", "arti": "pudding" },
+        { "romaji": "puro", "katakana": "プロ", "arti": "professional" }
+      ]
+    },
+    "pe": {
+      "romaji": "pe",
+      "katakana": "ペ",
+      "kakikata_gambar": "/images/katakana/pe.svg",
+      "kakikata_animasi": "/animation/katakana/pe.svg",
+      "kosakata": [
+        { "romaji": "pen", "katakana": "ペン", "arti": "pen" },
+        { "romaji": "petto", "katakana": "ペット", "arti": "pet" },
+        { "romaji": "peji", "katakana": "ページ", "arti": "page" }
+      ]
+    },
+    "po": {
+      "romaji": "po",
+      "katakana": "ポ",
+      "kakikata_gambar": "/images/katakana/po.svg",
+      "kakikata_animasi": "/animation/katakana/po.svg",
+      "kosakata": [
+        { "romaji": "pon", "katakana": "ポン", "arti": "sound 'pon'" },
+        { "romaji": "poka", "katakana": "ポカ", "arti": "warmth" },
+        { "romaji": "poketto", "katakana": "ポケット", "arti": "pocket" },
+        {
+          "romaji": "popura",
+          "katakana": "ポプラ",
+          "arti": "poplar tree"
+        },
+        { "romaji": "poteto", "katakana": "ポテト", "arti": "potato" }
+      ]
+    }
+  }
+}

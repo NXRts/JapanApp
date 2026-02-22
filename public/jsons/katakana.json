@@ -1,0 +1,809 @@
+{
+  "total": 46,
+  "tentang": "Katakana adalah salah satu sistem penulisan dalam bahasa Jepang yang digunakan untuk menulis kata-kata serapan atau pinjaman dari bahasa asing, nama-nama asing, istilah ilmiah, dan beberapa istilah teknis. Katakana memiliki bentuk yang lebih tajam dan lebih sederhana dibandingkan dengan kanji atau hiragana.\n\nBerbeda dengan hiragana yang digunakan untuk kata-kata asli Jepang, katakana sering digunakan untuk menulis kata-kata yang berasal dari luar bahasa Jepang. Misalnya, kata-kata seperti 'computer' (コンピュータ, konpyūta) atau 'coffee' (コーヒー, kōhī) ditulis dengan katakana. Katakana juga digunakan untuk menulis nama-nama orang atau tempat asing, seperti 'London' (ロンドン, Rondon) atau 'Michael' (マイケル, Maikeru).\n\nKatakana terdiri dari 46 karakter dasar, yang juga mewakili suara-suaranya. Sama seperti hiragana, katakana juga memiliki variasi suara dengan tanda dakuten dan handakuten untuk mengubah bunyi karakter tertentu.\n\nSecara umum, katakana digunakan dalam beberapa konteks berikut:\n1. Menulis kata serapan atau pinjaman dari bahasa asing.\n2. Nama orang atau tempat asing.\n3. Onomatopeia (kata yang meniru suara, seperti 'bzzz' atau 'boom').\n4. Penekanan kata atau untuk memberikan kesan yang lebih tegas, mirip dengan penggunaan huruf tebal dalam bahasa Inggris.\n\nJadi, katakana memiliki peran yang penting dalam bahasa Jepang untuk menulis berbagai jenis kata yang bukan berasal dari bahasa Jepang asli.",
+  "info": "Katakana lebih sering digunakan untuk menuliskan kata-kata asing, nama tempat, nama orang, dan istilah teknis. Oleh karena itu, huruf-huruf tertentu mungkin memiliki kosakata lebih sedikit dalam bahasa Jepang asli, tetapi banyak digunakan untuk menuliskan kata-kata asing.",
+  "penjelasan": "Tanda ― (sering disebut 'chōon' atau 'long vowel mark') digunakan dalam bahasa Jepang untuk menunjukkan pengucapan vokal yang lebih panjang atau diperpanjang. Ini sering digunakan pada kata-kata yang berasal dari bahasa asing, terutama dalam penulisan dengan katakana, atau dalam beberapa kata Jepang untuk memanjangkan bunyi vokal.\n\nBerikut beberapa cara penggunaan ―:\n\nPada kata pinjaman: Tanda ini sering digunakan pada kata-kata serapan dari bahasa asing yang ditulis dengan katakana untuk menandakan vokal yang diperpanjang. Misalnya:\nコーヒー (kōhī) - 'kopi' (dengan tanda ― untuk memperpanjang vokal 'o' dan 'i').\nテーブル (tēburu) - 'meja' (memperpanjang vokal 'e').\n\nPada kata-kata Jepang: Meskipun lebih jarang dibandingkan di katakana, tanda ― kadang digunakan dalam beberapa kata Jepang untuk menandakan pengucapan vokal yang lebih panjang. Misalnya:\nおばあさん (obāsan) - 'nenek' (di mana 'ā' menunjukkan pengucapan vokal 'a' yang panjang).\n\nDalam nama orang atau tempat: Tanda ― juga bisa muncul dalam beberapa nama tempat atau orang untuk menunjukkan pengucapan vokal yang lebih panjang, seperti dalam nama Jepang atau tempat yang sering dipinjamkan ke dalam katakana.\n\nSecara umum, ― digunakan untuk memperpanjang bunyi vokal dalam kata-kata tertentu dan memengaruhi pengucapan kata tersebut, sering kali untuk membedakan arti atau menghindari kebingungannya.",
+  "katakana_huruf": {
+    "a": {
+      "romaji": "a",
+      "katakana": "ア",
+      "kakikata_gambar": "/images/katakana/a.svg",
+      "kakikata_animasi": "/animation/katakana/a.svg",
+      "kosakata": [
+        { "romaji": "amerika", "katakana": "アメリカ", "arti": "America" },
+        {
+          "romaji": "arubaito",
+          "katakana": "アルバイト",
+          "arti": "part-time job"
+        },
+        { "romaji": "ase", "katakana": "アセ", "arti": "sweat" },
+        { "romaji": "atto", "katakana": "アット", "arti": "suddenly" }
+      ]
+    },
+    "i": {
+      "romaji": "i",
+      "katakana": "イ",
+      "kakikata_gambar": "/images/katakana/i.svg",
+      "kakikata_animasi": "/animation/katakana/i.svg",
+      "kosakata": [
+        { "romaji": "ikura", "katakana": "イクラ", "arti": "salmon roe" },
+        {
+          "romaji": "ikimono",
+          "katakana": "イキモノ",
+          "arti": "living creature"
+        },
+        { "romaji": "itemu", "katakana": "アイテム", "arti": "item" }
+      ]
+    },
+    "u": {
+      "romaji": "u",
+      "katakana": "ウ",
+      "kakikata_gambar": "/images/katakana/u.svg",
+      "kakikata_animasi": "/animation/katakana/u.svg",
+      "kosakata": [
+        { "romaji": "usa", "katakana": "ウサ", "arti": "rabbit (slang)" },
+        { "romaji": "ufo", "katakana": "UFO", "arti": "UFO" },
+        {
+          "romaji": "utensiru",
+          "katakana": "ウテンス",
+          "arti": "utensils"
+        }
+      ]
+    },
+    "e": {
+      "romaji": "e",
+      "katakana": "エ",
+      "kakikata_gambar": "/images/katakana/e.svg",
+      "kakikata_animasi": "/animation/katakana/e.svg",
+      "kosakata": [
+        {
+          "romaji": "esupure",
+          "katakana": "エスプレ",
+          "arti": "espresso"
+        },
+        { "romaji": "enpitsu", "katakana": "エンピツ", "arti": "pencil" },
+        { "romaji": "enjin", "katakana": "エンジン", "arti": "engine" }
+      ]
+    },
+    "o": {
+      "romaji": "o",
+      "katakana": "オ",
+      "kakikata_gambar": "/images/katakana/o.svg",
+      "kakikata_animasi": "/animation/katakana/o.svg",
+      "kosakata": [
+        {
+          "romaji": "otaku",
+          "katakana": "オタク",
+          "arti": "otaku (geek/enthusiast)"
+        },
+        { "romaji": "orenge", "katakana": "オレンジ", "arti": "orange" },
+        { "romaji": "onsen", "katakana": "オンセン", "arti": "hot spring" }
+      ]
+    },
+    "ka": {
+      "romaji": "ka",
+      "katakana": "カ",
+      "kakikata_gambar": "/images/katakana/ka.svg",
+      "kakikata_animasi": "/animation/katakana/ka.svg",
+      "kosakata": [
+        {
+          "romaji": "kaigi",
+          "katakana": "カイギ",
+          "arti": "meeting/conference"
+        },
+        {
+          "romaji": "kanban",
+          "katakana": "カンバン",
+          "arti": "signboard/banner"
+        },
+        { "romaji": "kamera", "katakana": "カメラ", "arti": "camera" }
+      ]
+    },
+    "ki": {
+      "romaji": "ki",
+      "katakana": "キ",
+      "kakikata_gambar": "/images/katakana/ki.svg",
+      "kakikata_animasi": "/animation/katakana/ki.svg",
+      "kosakata": [
+        {
+          "romaji": "kirei",
+          "katakana": "キレイ",
+          "arti": "beautiful/clean"
+        },
+        { "romaji": "kitte", "katakana": "キッテ", "arti": "stamp" },
+        { "romaji": "kippu", "katakana": "キップ", "arti": "ticket" }
+      ]
+    },
+    "ku": {
+      "romaji": "ku",
+      "katakana": "ク",
+      "kakikata_gambar": "/images/katakana/ku.svg",
+      "kakikata_animasi": "/animation/katakana/ku.svg",
+      "kosakata": [
+        { "romaji": "kura", "katakana": "クラ", "arti": "warehouse" },
+        { "romaji": "kuki", "katakana": "クキ", "arti": "stem/stalk" },
+        { "romaji": "kuruma", "katakana": "クルマ", "arti": "car" }
+      ]
+    },
+    "ke": {
+      "romaji": "ke",
+      "katakana": "ケ",
+      "kakikata_gambar": "/images/katakana/ke.svg",
+      "kakikata_animasi": "/animation/katakana/ke.svg",
+      "kosakata": [
+        { "romaji": "ketsu", "katakana": "ケツ", "arti": "butt (vulgar)" },
+        { "romaji": "ken", "katakana": "ケン", "arti": "fight/quarrel" },
+        { "romaji": "keru", "katakana": "ケル", "arti": "to kick" }
+      ]
+    },
+    "ko": {
+      "romaji": "ko",
+      "katakana": "コ",
+      "kakikata_gambar": "/images/katakana/ko.svg",
+      "kakikata_animasi": "/animation/katakana/ko.svg",
+      "kosakata": [
+        {
+          "romaji": "kompyu-ta",
+          "katakana": "コンピュータ",
+          "arti": "computer"
+        },
+        {
+          "romaji": "konsato",
+          "katakana": "コンサート",
+          "arti": "concert"
+        },
+        { "romaji": "kohi", "katakana": "コーヒー", "arti": "coffee" }
+      ]
+    },
+    "sa": {
+      "romaji": "sa",
+      "katakana": "サ",
+      "kakikata_gambar": "/images/katakana/sa.svg",
+      "kakikata_animasi": "/animation/katakana/sa.svg",
+      "kosakata": [
+        { "romaji": "samu", "katakana": "サム", "arti": "cold" },
+        { "romaji": "sato", "katakana": "サト", "arti": "garden" },
+        { "romaji": "sakata", "katakana": "サカタ", "arti": "back" }
+      ]
+    },
+    "shi": {
+      "romaji": "shi",
+      "katakana": "シ",
+      "kakikata_gambar": "/images/katakana/shi.svg",
+      "kakikata_animasi": "/animation/katakana/shi.svg",
+      "kosakata": [
+        { "romaji": "shimu", "katakana": "シム", "arti": "clothing" },
+        { "romaji": "shita", "katakana": "シタ", "arti": "under/below" },
+        { "romaji": "shiru", "katakana": "シル", "arti": "to know" }
+      ]
+    },
+    "su": {
+      "romaji": "su",
+      "katakana": "ス",
+      "kakikata_gambar": "/images/katakana/su.svg",
+      "kakikata_animasi": "/animation/katakana/su.svg",
+      "kosakata": [
+        { "romaji": "sumo", "katakana": "スモ", "arti": "sumo wrestling" },
+        { "romaji": "susu", "katakana": "スス", "arti": "soot" },
+        { "romaji": "suki", "katakana": "スキ", "arti": "skiing/liking" }
+      ]
+    },
+    "se": {
+      "romaji": "se",
+      "katakana": "セ",
+      "kakikata_gambar": "/images/katakana/se.svg",
+      "kakikata_animasi": "/animation/katakana/se.svg",
+      "kosakata": [
+        {
+          "romaji": "seikatsu",
+          "katakana": "セイカツ",
+          "arti": "life/living"
+        },
+        { "romaji": "seikou", "katakana": "セイコウ", "arti": "success" },
+        { "romaji": "seki", "katakana": "セキ", "arti": "seat" }
+      ]
+    },
+    "so": {
+      "romaji": "so",
+      "katakana": "ソ",
+      "kakikata_gambar": "/images/katakana/so.svg",
+      "kakikata_animasi": "/animation/katakana/so.svg",
+      "kosakata": [
+        { "romaji": "sokudo", "katakana": "ソクド", "arti": "speed" },
+        { "romaji": "soba", "katakana": "ソバ", "arti": "soba noodles" },
+        { "romaji": "sonota", "katakana": "ソノタ", "arti": "others" }
+      ]
+    },
+    "ta": {
+      "romaji": "ta",
+      "katakana": "タ",
+      "kakikata_gambar": "/images/katakana/ta.svg",
+      "kakikata_animasi": "/animation/katakana/ta.svg",
+      "kosakata": [
+        { "romaji": "takushi", "katakana": "タクシー", "arti": "taxi" },
+        {
+          "romaji": "taburetto",
+          "katakana": "タブレット",
+          "arti": "tablet (device)"
+        },
+        { "romaji": "tanpura", "katakana": "タンプラ", "arti": "tempura" },
+        { "romaji": "taoru", "katakana": "タオル", "arti": "towel" },
+        { "romaji": "tai", "katakana": "タイ", "arti": "Thailand" }
+      ]
+    },
+    "chi": {
+      "romaji": "chi",
+      "katakana": "チ",
+      "kakikata_gambar": "/images/katakana/chi.svg",
+      "kakikata_animasi": "/animation/katakana/chi.svg",
+      "kosakata": [
+        {
+          "romaji": "chokoreeto",
+          "katakana": "チョコレート",
+          "arti": "chocolate"
+        },
+        {
+          "romaji": "chirashi",
+          "katakana": "チラシ",
+          "arti": "flyer/handbill"
+        },
+        { "romaji": "chiimu", "katakana": "チーム", "arti": "team" },
+        { "romaji": "chipusu", "katakana": "チップス", "arti": "chips" },
+        { "romaji": "chizu", "katakana": "チーズ", "arti": "cheese" }
+      ]
+    },
+    "tsu": {
+      "romaji": "tsu",
+      "katakana": "ツ",
+      "kakikata_gambar": "/images/katakana/tsu.svg",
+      "kakikata_animasi": "/animation/katakana/tsu.svg",
+      "kosakata": [
+        { "romaji": "tsuuru", "katakana": "ツール", "arti": "tool" },
+        {
+          "romaji": "tsuina",
+          "katakana": "ツイナ",
+          "arti": "Twitter (slang)"
+        },
+        { "romaji": "tsu-na", "katakana": "ツナ", "arti": "tuna" },
+        { "romaji": "tsuppa", "katakana": "ツッパ", "arti": "tension" },
+        { "romaji": "tsurii", "katakana": "ツリー", "arti": "tree" }
+      ]
+    },
+    "te": {
+      "romaji": "te",
+      "katakana": "テ",
+      "kakikata_gambar": "/images/katakana/te.svg",
+      "kakikata_animasi": "/animation/katakana/te.svg",
+      "kosakata": [
+        { "romaji": "terebi", "katakana": "テレビ", "arti": "television" },
+        { "romaji": "teeburu", "katakana": "テーブル", "arti": "table" },
+        { "romaji": "tenisu", "katakana": "テニス", "arti": "tennis" },
+        { "romaji": "teepu", "katakana": "テープ", "arti": "tape" },
+        {
+          "romaji": "techikku",
+          "katakana": "テクニック",
+          "arti": "technique"
+        }
+      ]
+    },
+    "to": {
+      "romaji": "to",
+      "katakana": "ト",
+      "kakikata_gambar": "/images/katakana/to.svg",
+      "kakikata_animasi": "/animation/katakana/to.svg",
+      "kosakata": [
+        {
+          "romaji": "toiretto",
+          "katakana": "トイレット",
+          "arti": "toilet"
+        },
+        { "romaji": "tokyo", "katakana": "トウキョウ", "arti": "Tokyo" },
+        { "romaji": "torakku", "katakana": "トラック", "arti": "truck" },
+        {
+          "romaji": "torena",
+          "katakana": "トレーナー",
+          "arti": "trainer"
+        },
+        { "romaji": "tonneru", "katakana": "トンネル", "arti": "tunnel" }
+      ]
+    },
+    "na": {
+      "romaji": "na",
+      "katakana": "ナ",
+      "kakikata_gambar": "/images/katakana/na.svg",
+      "kakikata_animasi": "/animation/katakana/na.svg",
+      "kosakata": [
+        { "romaji": "naisu", "katakana": "ナイス", "arti": "nice/good" },
+        { "romaji": "nairu", "katakana": "ナイル", "arti": "Nile River" },
+        { "romaji": "napukin", "katakana": "ナプキン", "arti": "napkin" },
+        {
+          "romaji": "natsuki",
+          "katakana": "ナツキ",
+          "arti": "Natsuki (person name)"
+        },
+        { "romaji": "nairu", "katakana": "ナイル", "arti": "nail" }
+      ]
+    },
+    "ni": {
+      "romaji": "ni",
+      "katakana": "ニ",
+      "kakikata_gambar": "/images/katakana/ni.svg",
+      "kakikata_animasi": "/animation/katakana/ni.svg",
+      "kosakata": [
+        { "romaji": "niga", "katakana": "ニガ", "arti": "bitter" },
+        { "romaji": "niku", "katakana": "ニク", "arti": "meat" },
+        {
+          "romaji": "nigaeri",
+          "katakana": "ニガエリ",
+          "arti": "to regain strength"
+        },
+        {
+          "romaji": "nikuya",
+          "katakana": "ニクヤ",
+          "arti": "butcher shop"
+        },
+        { "romaji": "niger", "katakana": "ニゲル", "arti": "country" }
+      ]
+    },
+    "nu": {
+      "romaji": "nu",
+      "katakana": "ヌ",
+      "kakikata_gambar": "/images/katakana/nu.svg",
+      "kakikata_animasi": "/animation/katakana/nu.svg",
+      "kosakata": [
+        { "romaji": "nureta", "katakana": "ヌレタ", "arti": "wet" },
+        { "romaji": "nugatto", "katakana": "ヌガット", "arti": "nougat" },
+        { "romaji": "nuudo", "katakana": "ヌード", "arti": "nude" },
+        {
+          "romaji": "nuutaa",
+          "katakana": "ヌーター",
+          "arti": "notebook computer"
+        },
+        { "romaji": "nuru", "katakana": "ヌル", "arti": "to apply/spread" }
+      ]
+    },
+    "ne": {
+      "romaji": "ne",
+      "katakana": "ネ",
+      "kakikata_gambar": "/images/katakana/ne.svg",
+      "kakikata_animasi": "/animation/katakana/ne.svg",
+      "kosakata": [
+        { "romaji": "neeto", "katakana": "ネット", "arti": "net" },
+        { "romaji": "nekuto", "katakana": "ネクト", "arti": "collar" },
+        { "romaji": "netto", "katakana": "ネット", "arti": "online/net" }
+      ]
+    },
+    "no": {
+      "romaji": "no",
+      "katakana": "ノ",
+      "kakikata_gambar": "/images/katakana/no.svg",
+      "kakikata_animasi": "/animation/katakana/no.svg",
+      "kosakata": [
+        {
+          "romaji": "noruma",
+          "katakana": "ノルマ",
+          "arti": "quota/target"
+        },
+        { "romaji": "nooto", "katakana": "ノート", "arti": "notebook" },
+        {
+          "romaji": "noruwee",
+          "katakana": "ノルウェー",
+          "arti": "Norway"
+        },
+        {
+          "romaji": "noodoru",
+          "katakana": "ノードル",
+          "arti": "instant noodles"
+        },
+        { "romaji": "norway", "katakana": "ノルウェー", "arti": "Norway" }
+      ]
+    },
+    "ha": {
+      "romaji": "ha",
+      "katakana": "ハ",
+      "kakikata_gambar": "/images/katakana/ha.svg",
+      "kakikata_animasi": "/animation/katakana/ha.svg",
+      "kosakata": [
+        {
+          "romaji": "hanbaagaa",
+          "katakana": "ハンバーガー",
+          "arti": "hamburger"
+        },
+        { "romaji": "haka", "katakana": "ハカ", "arti": "grave" },
+        { "romaji": "hanko", "katakana": "ハンコ", "arti": "stamp/seal" },
+        { "romaji": "harimau", "katakana": "ハリマウ", "arti": "tiger" },
+        { "romaji": "hanaa", "katakana": "ハナ", "arti": "snow" }
+      ]
+    },
+    "hi": {
+      "romaji": "hi",
+      "katakana": "ヒ",
+      "kakikata_gambar": "/images/katakana/hi.svg",
+      "kakikata_animasi": "/animation/katakana/hi.svg",
+      "kosakata": [
+        { "romaji": "himitsu", "katakana": "ヒミツ", "arti": "secret" },
+        {
+          "romaji": "hiragana",
+          "katakana": "ヒラガナ",
+          "arti": "hiragana script"
+        },
+        { "romaji": "hito", "katakana": "ヒト", "arti": "human" },
+        { "romaji": "hisa", "katakana": "ヒサ", "arti": "time" }
+      ]
+    },
+    "fu": {
+      "romaji": "fu",
+      "katakana": "フ",
+      "kakikata_gambar": "/images/katakana/fu.svg",
+      "kakikata_animasi": "/animation/katakana/fu.svg",
+      "kosakata": [
+        { "romaji": "fuku", "katakana": "フク", "arti": "clothes" },
+        { "romaji": "fusa", "katakana": "フサ", "arti": "bundle/clump" },
+        { "romaji": "furansu", "katakana": "フランス", "arti": "France" },
+        {
+          "romaji": "futon",
+          "katakana": "フトン",
+          "arti": "Japanese bedding"
+        }
+      ]
+    },
+    "he": {
+      "romaji": "he",
+      "katakana": "ヘ",
+      "kakikata_gambar": "/images/katakana/he.svg",
+      "kakikata_animasi": "/animation/katakana/he.svg",
+      "kosakata": [
+        {
+          "romaji": "herikoputaa",
+          "katakana": "ヘリコプター",
+          "arti": "helicopter"
+        },
+        {
+          "romaji": "heta",
+          "katakana": "ヘタ",
+          "arti": "unskilled/clumsy"
+        },
+        { "romaji": "hen", "katakana": "ヘン", "arti": "strange" }
+      ]
+    },
+    "ho": {
+      "romaji": "ho",
+      "katakana": "ホ",
+      "kakikata_gambar": "/images/katakana/ho.svg",
+      "kakikata_animasi": "/animation/katakana/ho.svg",
+      "kosakata": [
+        { "romaji": "hon", "katakana": "ホン", "arti": "book" },
+        {
+          "romaji": "hokkaido",
+          "katakana": "ホッカイドウ",
+          "arti": "Hokkaido"
+        },
+        { "romaji": "hoteru", "katakana": "ホテル", "arti": "hotel" },
+        { "romaji": "hooru", "katakana": "ホール", "arti": "hall" },
+        { "romaji": "hori", "katakana": "ホリ", "arti": "ditch" }
+      ]
+    },
+    "ma": {
+      "romaji": "ma",
+      "katakana": "マ",
+      "kakikata_gambar": "/images/katakana/ma.svg",
+      "kakikata_animasi": "/animation/katakana/ma.svg",
+      "kosakata": [
+        {
+          "romaji": "makudonarudo",
+          "katakana": "マクドナルド",
+          "arti": "McDonald's"
+        },
+        { "romaji": "maiku", "katakana": "マイク", "arti": "microphone" },
+        {
+          "romaji": "manshon",
+          "katakana": "マンション",
+          "arti": "apartment"
+        },
+        {
+          "romaji": "mannga",
+          "katakana": "マンガ",
+          "arti": "manga/comics"
+        },
+        { "romaji": "masuku", "katakana": "マスク", "arti": "mask" }
+      ]
+    },
+    "mi": {
+      "romaji": "mi",
+      "katakana": "ミ",
+      "kakikata_gambar": "/images/katakana/mi.svg",
+      "kakikata_animasi": "/animation/katakana/mi.svg",
+      "kosakata": [
+        { "romaji": "miruku", "katakana": "ミルク", "arti": "milk" },
+        { "romaji": "mira-", "katakana": "ミラー", "arti": "mirror" },
+        { "romaji": "mikka", "katakana": "ミッカ", "arti": "three days" },
+        { "romaji": "misairu", "katakana": "ミサイル", "arti": "missile" },
+        { "romaji": "minto", "katakana": "ミント", "arti": "mint" }
+      ]
+    },
+    "mu": {
+      "romaji": "mu",
+      "katakana": "ム",
+      "kakikata_gambar": "/images/katakana/mu.svg",
+      "kakikata_animasi": "/animation/katakana/mu.svg",
+      "kosakata": [
+        {
+          "romaji": "muudo",
+          "katakana": "ムード",
+          "arti": "mood/atmosphere"
+        },
+        { "romaji": "murasaki", "katakana": "ムラサキ", "arti": "purple" },
+        {
+          "romaji": "musshu",
+          "katakana": "ムッシュ",
+          "arti": "Monsieur (Mr. in French)"
+        },
+        { "romaji": "muika", "katakana": "ムイカ", "arti": "six days" },
+        {
+          "romaji": "mugicha",
+          "katakana": "ムギチャ",
+          "arti": "barley tea"
+        }
+      ]
+    },
+    "me": {
+      "romaji": "me",
+      "katakana": "メ",
+      "kakikata_gambar": "/images/katakana/me.svg",
+      "kakikata_animasi": "/animation/katakana/me.svg",
+      "kosakata": [
+        { "romaji": "megane", "katakana": "メガネ", "arti": "glasses" },
+        { "romaji": "meeru", "katakana": "メール", "arti": "email" },
+        { "romaji": "meido", "katakana": "メイド", "arti": "maid" },
+        { "romaji": "mesu", "katakana": "メス", "arti": "scalpel" },
+        { "romaji": "mentaru", "katakana": "メンタル", "arti": "mental" }
+      ]
+    },
+    "mo": {
+      "romaji": "mo",
+      "katakana": "モ",
+      "kakikata_gambar": "/images/katakana/mo.svg",
+      "kakikata_animasi": "/animation/katakana/mo.svg",
+      "kosakata": [
+        {
+          "romaji": "moteru",
+          "katakana": "モテル",
+          "arti": "popular (romantically)"
+        },
+        { "romaji": "modan", "katakana": "モダン", "arti": "modern" },
+        { "romaji": "monitaa", "katakana": "モニター", "arti": "monitor" },
+        {
+          "romaji": "morning",
+          "katakana": "モーニング",
+          "arti": "morning"
+        },
+        {
+          "romaji": "moru",
+          "katakana": "モル",
+          "arti": "mole (chemistry)"
+        }
+      ]
+    },
+    "ya": {
+      "romaji": "ya",
+      "katakana": "ヤ",
+      "kakikata_gambar": "/images/katakana/ya.svg",
+      "kakikata_animasi": "/animation/katakana/ya.svg",
+      "kosakata": [
+        {
+          "romaji": "yakuza",
+          "katakana": "ヤクザ",
+          "arti": "Japanese gangster"
+        },
+        {
+          "romaji": "yasaiga",
+          "katakana": "ヤサイガ",
+          "arti": "vegetables"
+        },
+        {
+          "romaji": "yaado",
+          "katakana": "ヤード",
+          "arti": "yard (unit of length)"
+        },
+        {
+          "romaji": "yamaha",
+          "katakana": "ヤマハ",
+          "arti": "Yamaha (brand)"
+        },
+        { "romaji": "yakan", "katakana": "ヤカン", "arti": "kettle" }
+      ]
+    },
+    "yu": {
+      "romaji": "yu",
+      "katakana": "ユ",
+      "kakikata_gambar": "/images/katakana/yu.svg",
+      "kakikata_animasi": "/animation/katakana/yu.svg",
+      "kosakata": [
+        { "romaji": "yuuki", "katakana": "ユウキ", "arti": "courage" },
+        {
+          "romaji": "yuukon",
+          "katakana": "ユウコン",
+          "arti": "Yukon (Canada)"
+        },
+        {
+          "romaji": "yuugu",
+          "katakana": "ユウグ",
+          "arti": "play equipment"
+        },
+        { "romaji": "yuugata", "katakana": "ユウガタ", "arti": "evening" },
+        {
+          "romaji": "yuutenshiru",
+          "katakana": "ユウテンシル",
+          "arti": "cooking utensils"
+        }
+      ]
+    },
+    "yo": {
+      "romaji": "yo",
+      "katakana": "ヨ",
+      "kakikata_gambar": "/images/katakana/yo.svg",
+      "kakikata_animasi": "/animation/katakana/yo.svg",
+      "kosakata": [
+        {
+          "romaji": "yoguruto",
+          "katakana": "ヨーグルト",
+          "arti": "yogurt"
+        },
+        { "romaji": "yon", "katakana": "ヨン", "arti": "four" },
+        { "romaji": "yooji", "katakana": "ヨージ", "arti": "toothpick" },
+        {
+          "romaji": "yoomu",
+          "katakana": "ヨーム",
+          "arti": "Ohm (electrical unit)"
+        },
+        { "romaji": "yomu", "katakana": "ヨム", "arti": "to read" }
+      ]
+    },
+    "ra": {
+      "romaji": "ra",
+      "katakana": "ラ",
+      "kakikata_gambar": "/images/katakana/ra.svg",
+      "kakikata_animasi": "/animation/katakana/ra.svg",
+      "kosakata": [
+        { "romaji": "ramen", "katakana": "ラーメン", "arti": "ramen" },
+        { "romaji": "rabu", "katakana": "ラブ", "arti": "love" },
+        { "romaji": "raito", "katakana": "ライト", "arti": "light" },
+        { "romaji": "rajio", "katakana": "ラジオ", "arti": "radio" },
+        { "romaji": "raketto", "katakana": "ラケット", "arti": "racket" }
+      ]
+    },
+    "ri": {
+      "romaji": "ri",
+      "katakana": "リ",
+      "kakikata_gambar": "/images/katakana/ri.svg",
+      "kakikata_animasi": "/animation/katakana/ri.svg",
+      "kosakata": [
+        { "romaji": "ringo", "katakana": "リンゴ", "arti": "apple" },
+        {
+          "romaji": "rikuesuto",
+          "katakana": "リクエスト",
+          "arti": "request"
+        },
+        { "romaji": "riado", "katakana": "リアド", "arti": "follower" },
+        { "romaji": "riido", "katakana": "リード", "arti": "to lead" },
+        { "romaji": "riingu", "katakana": "リング", "arti": "ring" }
+      ]
+    },
+    "ru": {
+      "romaji": "ru",
+      "katakana": "ル",
+      "kakikata_gambar": "/images/katakana/ru.svg",
+      "kakikata_animasi": "/animation/katakana/ru.svg",
+      "kosakata": [
+        { "romaji": "ruuru", "katakana": "ルール", "arti": "rule" },
+        { "romaji": "ruusuu", "katakana": "ルースー", "arti": "loose" },
+        {
+          "romaji": "rukku",
+          "katakana": "ルック",
+          "arti": "look/appearance"
+        },
+        { "romaji": "rumu", "katakana": "ルム", "arti": "room" },
+        { "romaji": "rubii", "katakana": "ルビー", "arti": "ruby" }
+      ]
+    },
+    "re": {
+      "romaji": "re",
+      "katakana": "レ",
+      "kakikata_gambar": "/images/katakana/re.svg",
+      "kakikata_animasi": "/animation/katakana/re.svg",
+      "kosakata": [
+        { "romaji": "rekoodo", "katakana": "レコード", "arti": "record" },
+        {
+          "romaji": "resutoran",
+          "katakana": "レストラン",
+          "arti": "restaurant"
+        },
+        { "romaji": "renji", "katakana": "レンジ", "arti": "microwave" },
+        {
+          "romaji": "rekkaa",
+          "katakana": "レッカー",
+          "arti": "tow truck"
+        },
+        { "romaji": "reshiito", "katakana": "レシート", "arti": "receipt" }
+      ]
+    },
+    "ro": {
+      "romaji": "ro",
+      "katakana": "ロ",
+      "kakikata_gambar": "/images/katakana/ro.svg",
+      "kakikata_animasi": "/animation/katakana/ro.svg",
+      "kosakata": [
+        { "romaji": "roojii", "katakana": "ロージー", "arti": "route" },
+        { "romaji": "rokku", "katakana": "ロック", "arti": "rock music" },
+        { "romaji": "robotto", "katakana": "ロボット", "arti": "robot" },
+        { "romaji": "romansu", "katakana": "ロマンス", "arti": "romance" },
+        {
+          "romaji": "roppongi",
+          "katakana": "ロッポンギ",
+          "arti": "Roppongi (Tokyo district)"
+        }
+      ]
+    },
+    "wa": {
+      "romaji": "wa",
+      "katakana": "ワ",
+      "kakikata_gambar": "/images/katakana/wa.svg",
+      "kakikata_animasi": "/animation/katakana/wa.svg",
+      "kosakata": [
+        { "romaji": "wan", "katakana": "ワン", "arti": "one" },
+        { "romaji": "wara", "katakana": "ワラ", "arti": "straw" },
+        {
+          "romaji": "wappa",
+          "katakana": "ワッパ",
+          "arti": "wooden bento box"
+        },
+        { "romaji": "wasabi", "katakana": "ワサビ", "arti": "wasabi" },
+        {
+          "romaji": "wai",
+          "katakana": "ワイ",
+          "arti": "letter Y or expression of joy"
+        }
+      ]
+    },
+    "wo": {
+      "romaji": "wo",
+      "katakana": "ヲ",
+      "kakikata_gambar": "/images/katakana/wo.svg",
+      "kakikata_animasi": "/animation/katakana/wo.svg",
+      "catatan": "Huruf ヲ (wo) dalam bahasa Jepang memang dibaca sebagai 'o' dengan kombinasi huruf 「ウ」(u) dan 「オ」(o) dalam pengucapan modern, meskipun secara historis memiliki pengucapan 'wo'.",
+      "kosakata": [
+        { "romaji": "wokka", "katakana": "ウォッカ", "arti": "vodka" },
+        { "romaji": "wok", "katakana": "ウォック", "arti": "wok" },
+        { "romaji": "woodo", "katakana": "ウォード", "arti": "wood" },
+        { "romaji": "woru", "katakana": "ウォル", "arti": "wool" },
+        {
+          "romaji": "wosshingu",
+          "katakana": "ウォッシング",
+          "arti": "washing"
+        }
+      ]
+    },
+    "n": {
+      "romaji": "n",
+      "katakana": "ン",
+      "kakikata_gambar": "/images/katakana/n.svg",
+      "kakikata_animasi": "/animation/katakana/n.svg",
+      "catatan": "ン (n) tidak pernah muncul di awal kata. Huruf ini hanya digunakan di tengah atau di akhir kata sama seperti ん (n) pada hiragana. \nJangan bingung antara ン (n) dan ソ (so), terutama saat menulis dengan tangan. Bentuk mereka bisa terlihat mirip, tetapi sudut dan arah goresannya berbeda.",
+      "kosakata": [
+        { "romaji": "pan", "katakana": "パン", "arti": "bread" },
+        {
+          "romaji": "kon",
+          "katakana": "コン",
+          "arti": "conference (abbreviation)"
+        },
+        {
+          "romaji": "san",
+          "katakana": "サン",
+          "arti": "Mr./Ms. (honorific)"
+        },
+        { "romaji": "ten", "katakana": "テン", "arti": "point/score" },
+        { "romaji": "pen", "katakana": "ペン", "arti": "pen" }
+      ]
+    }
+  }
+}
