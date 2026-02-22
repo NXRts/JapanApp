@@ -181,6 +181,14 @@ export default function PracticePage() {
           </CardDescription>
         </Card>
 
+        <Card href="/practice/kana-flashcards">
+          <IconWrapper>🎴</IconWrapper>
+          <CardTitle>Kana Flashcards</CardTitle>
+          <CardDescription>
+            Focus on mastering individual Kana characters (Hiragana, Katakana, Dakuten) with interactive flip cards.
+          </CardDescription>
+        </Card>
+
         <Card href="/practice/kanji">
           <IconWrapper>✍️</IconWrapper>
           <CardTitle>Kanji Flashcards</CardTitle>
