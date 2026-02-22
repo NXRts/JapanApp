@@ -188,6 +188,14 @@ export default function PracticePage() {
             Practice writing Kanji strokes and memorize meanings with our digital self-check flashcards.
           </CardDescription>
         </Card>
+
+        <Card href="/practice/vocabulary">
+          <IconWrapper>📖</IconWrapper>
+          <CardTitle>Vocabulary Flashcards</CardTitle>
+          <CardDescription>
+            Learn and memorize Japanese vocabulary meanings and readings without the pressure of scoring.
+          </CardDescription>
+        </Card>
       </Grid>
     </Container>
   );
