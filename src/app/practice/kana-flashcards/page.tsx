@@ -330,6 +330,11 @@ export default function KanaFlashcards() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isRandom, setIsRandom] = useState(false); // Default sequentially
 
+  // Touch swipe states
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
   // Fetch List
   useEffect(() => {
     setLoading(true);
@@ -376,6 +381,30 @@ export default function KanaFlashcards() {
     setTimeout(() => {
       setCurrentIndex(prev => (prev === 0 ? kanaList.length - 1 : prev - 1));
     }, 400);
+  };
+
+  // Swipe Handlers
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEndX(null);
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStartX || !touchEndX) return;
+    const distance = touchStartX - touchEndX;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      nextCard(); // Swipe left -> Next
+    }
+    if (isRightSwipe) {
+      prevCard(); // Swipe right -> Previous
+    }
   };
 
   if (loading) return (
@@ -460,7 +489,12 @@ export default function KanaFlashcards() {
 
         <FlashcardContainer>
           <SectionTitle>Kana Memorization</SectionTitle>
-          <CardPerspective onClick={() => setFlipped(!flipped)}>
+          <CardPerspective
+            onClick={() => setFlipped(!flipped)}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
             <CardInner $flipped={flipped}>
               <CardFace>
                 <InstructionText>Character</InstructionText>
