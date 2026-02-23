@@ -160,6 +160,8 @@ const CardPerspective = styled.div`
   cursor: pointer;
   position: relative;
   margin-bottom: 3rem;
+  user-select: none;
+  -webkit-user-select: none;
 `;
 
 const CardInner = styled.div<{ $flipped: boolean }>`
@@ -411,25 +413,27 @@ export default function VocabularyFlashcards() {
   const currentVocab = vocabList[currentIndex];
 
   const nextCard = () => {
-    setSlideDir('next');
     if (flipped) {
       setFlipped(false);
       setTimeout(() => {
+        setSlideDir('next');
         setCurrentIndex(prev => (prev + 1) % vocabList.length);
       }, 300); // Wait for flip back
     } else {
+      setSlideDir('next');
       setCurrentIndex(prev => (prev + 1) % vocabList.length);
     }
   };
 
   const prevCard = () => {
-    setSlideDir('prev');
     if (flipped) {
       setFlipped(false);
       setTimeout(() => {
+        setSlideDir('prev');
         setCurrentIndex(prev => (prev === 0 ? vocabList.length - 1 : prev - 1));
       }, 300); // Wait for flip back
     } else {
+      setSlideDir('prev');
       setCurrentIndex(prev => (prev === 0 ? vocabList.length - 1 : prev - 1));
     }
   };
