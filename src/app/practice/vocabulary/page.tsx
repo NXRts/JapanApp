@@ -120,6 +120,28 @@ const FlashcardContainer = styled.div`
   max-width: 800px;
 `;
 
+const AnimContainer = styled.div<{ $dir: 'next' | 'prev' | null }>`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  
+  animation: ${({ $dir }) => {
+    if ($dir === 'next') return 'slideInNext 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    if ($dir === 'prev') return 'slideInPrev 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    return 'none';
+  }};
+
+  @keyframes slideInNext {
+    0% { opacity: 0; transform: translateX(80px) scale(0.95); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
+  }
+  
+  @keyframes slideInPrev {
+    0% { opacity: 0; transform: translateX(-80px) scale(0.95); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
+  }
+`;
+
 const SectionTitle = styled.h3`
   margin-bottom: 2rem;
   color: var(--text-secondary);
@@ -362,6 +384,7 @@ export default function VocabularyFlashcards() {
   const [flipped, setFlipped] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [slideDir, setSlideDir] = useState<'next' | 'prev' | null>(null);
 
   // Touch swipe states
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -388,17 +411,27 @@ export default function VocabularyFlashcards() {
   const currentVocab = vocabList[currentIndex];
 
   const nextCard = () => {
-    setFlipped(false);
-    setTimeout(() => {
+    setSlideDir('next');
+    if (flipped) {
+      setFlipped(false);
+      setTimeout(() => {
+        setCurrentIndex(prev => (prev + 1) % vocabList.length);
+      }, 300); // Wait for flip back
+    } else {
       setCurrentIndex(prev => (prev + 1) % vocabList.length);
-    }, 400); // Wait for flip back
+    }
   };
 
   const prevCard = () => {
-    setFlipped(false);
-    setTimeout(() => {
+    setSlideDir('prev');
+    if (flipped) {
+      setFlipped(false);
+      setTimeout(() => {
+        setCurrentIndex(prev => (prev === 0 ? vocabList.length - 1 : prev - 1));
+      }, 300); // Wait for flip back
+    } else {
       setCurrentIndex(prev => (prev === 0 ? vocabList.length - 1 : prev - 1));
-    }, 400);
+    }
   };
 
   // Swipe Handlers
@@ -477,30 +510,32 @@ export default function VocabularyFlashcards() {
 
         <FlashcardContainer>
           <SectionTitle>Memorization Mode</SectionTitle>
-          <CardPerspective
-            onClick={() => setFlipped(!flipped)}
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-          >
-            <CardInner $flipped={flipped}>
-              <CardFace>
-                <InstructionText>Word</InstructionText>
-                <BigWord>{currentVocab.word}</BigWord>
-                <HintText>Tap to Reveal ⟳</HintText>
-              </CardFace>
+          <AnimContainer key={currentIndex} $dir={slideDir}>
+            <CardPerspective
+              onClick={() => setFlipped(!flipped)}
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
+              <CardInner $flipped={flipped}>
+                <CardFace>
+                  <InstructionText>Word</InstructionText>
+                  <BigWord>{currentVocab.word}</BigWord>
+                  <HintText>Tap to Reveal ⟳</HintText>
+                </CardFace>
 
-              <CardBack>
-                <DetailsStacked>
-                  <ReadingTop>{currentVocab.reading}</ReadingTop>
-                  <WordMid>{currentVocab.word}</WordMid>
-                  <RomajiText>{currentVocab.romaji}</RomajiText>
-                  <MeaningText>{currentVocab.meaning}</MeaningText>
-                </DetailsStacked>
-                <HintText>Tap to Flip ⟳</HintText>
-              </CardBack>
-            </CardInner>
-          </CardPerspective>
+                <CardBack>
+                  <DetailsStacked>
+                    <ReadingTop>{currentVocab.reading}</ReadingTop>
+                    <WordMid>{currentVocab.word}</WordMid>
+                    <RomajiText>{currentVocab.romaji}</RomajiText>
+                    <MeaningText>{currentVocab.meaning}</MeaningText>
+                  </DetailsStacked>
+                  <HintText>Tap to Flip ⟳</HintText>
+                </CardBack>
+              </CardInner>
+            </CardPerspective>
+          </AnimContainer>
 
           <ActionButtons>
             <IconBtn onClick={prevCard} aria-label="Previous Word">
