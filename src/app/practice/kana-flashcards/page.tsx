@@ -9,6 +9,7 @@ const PageWrapper = styled.div`
   width: 100%;
   /* Premium radial background */
   background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
+  overflow-x: hidden;
 `;
 
 const Container = styled.div`
@@ -27,6 +28,13 @@ const Header = styled.div`
   align-items: center;
   margin-bottom: 4rem;
   max-width: 800px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: stretch;
+    margin-bottom: 2rem;
+  }
 `;
 
 const BackLink = styled(Link)`
@@ -39,6 +47,7 @@ const BackLink = styled(Link)`
   transition: all 0.2s;
   padding: 0.5rem 1rem;
   border-radius: 999px;
+  align-self: flex-start;
 
   &:hover {
     color: var(--primary);
@@ -49,6 +58,11 @@ const BackLink = styled(Link)`
 const DropdownContainer = styled.div`
   position: relative;
   width: 160px;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    flex: 1;
+  }
 `;
 
 const Controls = styled.div`
@@ -58,6 +72,8 @@ const Controls = styled.div`
 
   @media (max-width: 600px) {
     gap: 0.5rem;
+    width: 100%;
+    justify-content: space-between;
   }
 `;
 
@@ -188,6 +204,11 @@ const SectionTitle = styled.h3`
   letter-spacing: 0.05em;
   text-align: center;
   font-weight: 700;
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const CardPerspective = styled.div`
