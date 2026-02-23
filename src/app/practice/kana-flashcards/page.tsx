@@ -198,6 +198,8 @@ const CardPerspective = styled.div`
   cursor: pointer;
   position: relative;
   margin-bottom: 3rem;
+  user-select: none;
+  -webkit-user-select: none;
 `;
 
 const CardInner = styled.div<{ $flipped: boolean }>`
@@ -393,25 +395,27 @@ export default function KanaFlashcards() {
   const currentKana = kanaList[currentIndex];
 
   const nextCard = () => {
-    setSlideDir('next');
     if (flipped) {
       setFlipped(false);
       setTimeout(() => {
+        setSlideDir('next');
         setCurrentIndex(prev => (prev + 1) % kanaList.length);
       }, 300); // Wait for flip back
     } else {
+      setSlideDir('next');
       setCurrentIndex(prev => (prev + 1) % kanaList.length);
     }
   };
 
   const prevCard = () => {
-    setSlideDir('prev');
     if (flipped) {
       setFlipped(false);
       setTimeout(() => {
+        setSlideDir('prev');
         setCurrentIndex(prev => (prev === 0 ? kanaList.length - 1 : prev - 1));
       }, 300);
     } else {
+      setSlideDir('prev');
       setCurrentIndex(prev => (prev === 0 ? kanaList.length - 1 : prev - 1));
     }
   };
