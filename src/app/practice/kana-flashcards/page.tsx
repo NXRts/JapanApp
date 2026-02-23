@@ -51,6 +51,44 @@ const DropdownContainer = styled.div`
   width: 160px;
 `;
 
+const Controls = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  @media (max-width: 600px) {
+    gap: 0.5rem;
+  }
+`;
+
+const ToggleBtn = styled.button<{ $active: boolean }>`
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid ${({ $active }) => ($active ? 'var(--primary)' : 'var(--border)')};
+  background: ${({ $active }) => ($active ? 'rgba(79, 70, 229, 0.1)' : 'var(--surface)')};
+  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.75rem;
+    span {
+      display: none;
+    }
+  }
+`;
+
 const DropdownTrigger = styled.button<{ $isOpen: boolean }>`
   width: 100%;
   padding: 0.75rem 1rem;
@@ -278,132 +316,179 @@ const ActionBtn = styled.button`
 `;
 
 type KanaItem = {
-    character: string;
-    romaji: string;
+  character: string;
+  romaji: string;
 };
 
 export default function KanaFlashcards() {
-    const [level, setLevel] = useState('hiragana');
-    const [kanaList, setKanaList] = useState<KanaItem[]>([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [flipped, setFlipped] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [level, setLevel] = useState('hiragana');
+  const [originalList, setOriginalList] = useState<KanaItem[]>([]);
+  const [kanaList, setKanaList] = useState<KanaItem[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isRandom, setIsRandom] = useState(false); // Default sequentially
 
-    // Fetch List
-    useEffect(() => {
-        setLoading(true);
-        fetch(`/api/kana/${level}`)
-            .then(res => res.json())
-            .then((data: KanaItem[]) => {
-                if (Array.isArray(data)) {
-                    // Shuffle
-                    setKanaList(data.sort(() => 0.5 - Math.random()));
-                    setCurrentIndex(0);
-                    setFlipped(false);
-                }
-            })
-            .catch(console.error)
-            .finally(() => setLoading(false));
-    }, [level]);
+  // Fetch List
+  useEffect(() => {
+    setLoading(true);
+    fetch(`/api/kana/${level}`)
+      .then(res => res.json())
+      .then((data: KanaItem[]) => {
+        if (Array.isArray(data)) {
+          setOriginalList(data);
+        } else {
+          setOriginalList([]);
+        }
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [level]);
 
-    const currentKana = kanaList[currentIndex];
+  // Update list order based on mode
+  useEffect(() => {
+    if (originalList.length > 0) {
+      if (isRandom) {
+        // Shuffle copy
+        setKanaList([...originalList].sort(() => 0.5 - Math.random()));
+      } else {
+        setKanaList([...originalList]); // Sequential
+      }
+      setCurrentIndex(0);
+      setFlipped(false);
+    } else {
+      setKanaList([]);
+    }
+  }, [originalList, isRandom]);
 
-    const nextCard = () => {
-        setFlipped(false);
-        setTimeout(() => {
-            setCurrentIndex(prev => (prev + 1) % kanaList.length);
-        }, 400); // Wait for flip back
-    };
+  const currentKana = kanaList[currentIndex];
 
-    const prevCard = () => {
-        setFlipped(false);
-        setTimeout(() => {
-            setCurrentIndex(prev => (prev === 0 ? kanaList.length - 1 : prev - 1));
-        }, 400);
-    };
+  const nextCard = () => {
+    setFlipped(false);
+    setTimeout(() => {
+      setCurrentIndex(prev => (prev + 1) % kanaList.length);
+    }, 400); // Wait for flip back
+  };
 
-    if (loading) return (
-        <PageWrapper>
-            <Container>
-                <div style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', marginTop: '4rem' }}>Loading Characters...</div>
-            </Container>
-        </PageWrapper>
-    );
+  const prevCard = () => {
+    setFlipped(false);
+    setTimeout(() => {
+      setCurrentIndex(prev => (prev === 0 ? kanaList.length - 1 : prev - 1));
+    }, 400);
+  };
 
-    if (!currentKana) return <PageWrapper><Container>No Kana found for this level.</Container></PageWrapper>;
+  if (loading) return (
+    <PageWrapper>
+      <Container>
+        <div style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', marginTop: '4rem' }}>Loading Characters...</div>
+      </Container>
+    </PageWrapper>
+  );
 
-    return (
-        <PageWrapper>
-            <Container>
-                <Header>
-                    <BackLink href="/practice">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M19 12H5M12 19l-7-7 7-7" />
-                        </svg>
-                        Back
-                    </BackLink>
-                    <DropdownContainer>
-                        <DropdownTrigger
-                            $isOpen={isDropdownOpen}
-                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        >
-                            {level.charAt(0).toUpperCase() + level.slice(1)}
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="6 9 12 15 18 9"></polyline>
-                            </svg>
-                        </DropdownTrigger>
+  if (!currentKana) return <PageWrapper><Container>No Kana found for this level.</Container></PageWrapper>;
 
-                        {isDropdownOpen && (
-                            <DropdownMenu>
-                                {['hiragana', 'katakana', 'dakuten', 'handakuten', 'yoon'].map(l => (
-                                    <DropdownItem
-                                        key={l}
-                                        $isActive={level === l}
-                                        onClick={() => {
-                                            setLevel(l);
-                                            setIsDropdownOpen(false);
-                                        }}
-                                    >
-                                        {l.charAt(0).toUpperCase() + l.slice(1)}
-                                    </DropdownItem>
-                                ))}
-                            </DropdownMenu>
-                        )}
-                    </DropdownContainer>
-                </Header>
+  return (
+    <PageWrapper>
+      <Container>
+        <Header>
+          <BackLink href="/practice">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            Back
+          </BackLink>
+          <Controls>
+            <ToggleBtn
+              $active={isRandom}
+              onClick={() => setIsRandom(!isRandom)}
+              title={isRandom ? 'Sequential Mode' : 'Shuffle Mode'}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {!isRandom ? (
+                  <>
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                  </>
+                ) : (
+                  <>
+                    <polyline points="16 3 21 3 21 8"></polyline>
+                    <line x1="4" y1="20" x2="21" y2="3"></line>
+                    <polyline points="21 16 21 21 16 21"></polyline>
+                    <line x1="15" y1="15" x2="21" y2="21"></line>
+                    <line x1="4" y1="4" x2="9" y2="9"></line>
+                  </>
+                )}
+              </svg>
+              <span>{isRandom ? 'Random' : 'Sequential'}</span>
+            </ToggleBtn>
 
-                <FlashcardContainer>
-                    <SectionTitle>Kana Memorization</SectionTitle>
-                    <CardPerspective onClick={() => setFlipped(!flipped)}>
-                        <CardInner $flipped={flipped}>
-                            <CardFace>
-                                <InstructionText>Character</InstructionText>
-                                <BigCharacter>{currentKana.character}</BigCharacter>
-                                <HintText>Tap to Reveal ⟳</HintText>
-                            </CardFace>
+            <DropdownContainer>
+              <DropdownTrigger
+                $isOpen={isDropdownOpen}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </DropdownTrigger>
 
-                            <CardBack>
-                                <InstructionText>Romaji</InstructionText>
-                                <HighlightRomaji>{currentKana.romaji}</HighlightRomaji>
-                                <HintText>Tap to Flip ⟳</HintText>
-                            </CardBack>
-                        </CardInner>
-                    </CardPerspective>
+              {isDropdownOpen && (
+                <DropdownMenu>
+                  {['hiragana', 'katakana', 'dakuten', 'handakuten', 'yoon'].map(l => (
+                    <DropdownItem
+                      key={l}
+                      $isActive={level === l}
+                      onClick={() => {
+                        setLevel(l);
+                        setIsDropdownOpen(false);
+                      }}
+                    >
+                      {l.charAt(0).toUpperCase() + l.slice(1)}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              )}
+            </DropdownContainer>
+          </Controls>
+        </Header>
 
-                    <ActionButtons>
-                        <IconBtn onClick={prevCard} aria-label="Previous Character">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <polyline points="15 18 9 12 15 6"></polyline>
-                            </svg>
-                        </IconBtn>
+        <FlashcardContainer>
+          <SectionTitle>Kana Memorization</SectionTitle>
+          <CardPerspective onClick={() => setFlipped(!flipped)}>
+            <CardInner $flipped={flipped}>
+              <CardFace>
+                <InstructionText>Character</InstructionText>
+                <BigCharacter>{currentKana.character}</BigCharacter>
+                <HintText>Tap to Reveal ⟳</HintText>
+              </CardFace>
 
-                        <ActionBtn onClick={nextCard}>
-                            Next Character {currentIndex + 1} / {kanaList.length}
-                        </ActionBtn>
-                    </ActionButtons>
-                </FlashcardContainer>
-            </Container>
-        </PageWrapper>
-    );
+              <CardBack>
+                <InstructionText>Romaji</InstructionText>
+                <HighlightRomaji>{currentKana.romaji}</HighlightRomaji>
+                <HintText>Tap to Flip ⟳</HintText>
+              </CardBack>
+            </CardInner>
+          </CardPerspective>
+
+          <ActionButtons>
+            <IconBtn onClick={prevCard} aria-label="Previous Character">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </IconBtn>
+
+            <ActionBtn onClick={nextCard}>
+              Next Character {currentIndex + 1} / {kanaList.length}
+            </ActionBtn>
+          </ActionButtons>
+        </FlashcardContainer>
+      </Container>
+    </PageWrapper>
+  );
 }
