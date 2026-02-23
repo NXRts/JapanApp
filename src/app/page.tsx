@@ -652,219 +652,239 @@ const Answer = styled.p`
 `;
 
 export default function Home() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Japan Learning App",
+    "url": "https://japan-app.vercel.app",
+    "description": "The most effective way to learn, practice, and memorize Japanese characters (Hiragana, Katakana, and Kanji).",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "author": {
+      "@type": "Person",
+      "name": "NXRts"
+    }
+  };
+
   return (
-    <Container>
-      <HeroSection>
-        <Title>
-          Master Japanese <br />
-          <span>Kanji & Kana</span>
-        </Title>
-        <Subtitle>
-          The most effective way to learn, practice, and memorize Japanese characters.
-          Start your journey to fluency today.
-        </Subtitle>
-        <ButtonGroup>
-          <PrimaryButton href="/kana">Hiragana & Katakana</PrimaryButton>
-          <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
-          <SecondaryButton href="/practice">Start Practicing</SecondaryButton>
-          <SecondaryButton href="/daily-quiz" style={{ borderColor: '#10b981', color: '#10b981' }}>Daily Quiz</SecondaryButton>
-        </ButtonGroup>
-      </HeroSection>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <Container>
+        <HeroSection>
+          <Title>
+            Master Japanese <br />
+            <span>Kanji & Kana</span>
+          </Title>
+          <Subtitle>
+            The most effective way to learn, practice, and memorize Japanese characters.
+            Start your journey to fluency today.
+          </Subtitle>
+          <ButtonGroup>
+            <PrimaryButton href="/kana">Hiragana & Katakana</PrimaryButton>
+            <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
+            <SecondaryButton href="/practice">Start Practicing</SecondaryButton>
+            <SecondaryButton href="/daily-quiz" style={{ borderColor: '#10b981', color: '#10b981' }}>Daily Quiz</SecondaryButton>
+          </ButtonGroup>
+        </HeroSection>
 
-      <StatsSection>
-        <StatsGrid>
-          <StatItem>
-            <StatNumber>2,136</StatNumber>
-            <StatLabel>Joyo Kanji</StatLabel>
-          </StatItem>
-          <StatItem>
-            <StatNumber>92</StatNumber>
-            <StatLabel>Kana Characters</StatLabel>
-          </StatItem>
-          <StatItem>
-            <StatNumber>100%</StatNumber>
-            <StatLabel>Free to Use</StatLabel>
-          </StatItem>
-        </StatsGrid>
-      </StatsSection>
+        <StatsSection>
+          <StatsGrid>
+            <StatItem>
+              <StatNumber>2,136</StatNumber>
+              <StatLabel>Joyo Kanji</StatLabel>
+            </StatItem>
+            <StatItem>
+              <StatNumber>92</StatNumber>
+              <StatLabel>Kana Characters</StatLabel>
+            </StatItem>
+            <StatItem>
+              <StatNumber>100%</StatNumber>
+              <StatLabel>Free to Use</StatLabel>
+            </StatItem>
+          </StatsGrid>
+        </StatsSection>
 
-      <BenefitsSection>
-        <SectionTitle><span>Why Learn Japanese?</span></SectionTitle>
-        <BenefitsGrid>
-          <BenefitContent>
-            <BenefitItem>
-              <BenefitIcon>
-                <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </svg>
-              </BenefitIcon>
-              <BenefitText>
-                <h3>Unlock a Rich Culture</h3>
-                <p>Understand your favorite anime, manga, and music in their original language. Connect with history and tradition.</p>
-              </BenefitText>
-            </BenefitItem>
-            <BenefitItem>
-              <BenefitIcon>
-                <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-              </BenefitIcon>
-              <BenefitText>
-                <h3>Travel with Confidence</h3>
-                <p>Navigate Tokyo's streets, order food like a local, and make meaningful connections during your travels.</p>
-              </BenefitText>
-            </BenefitItem>
-            <BenefitItem>
-              <BenefitIcon>
-                <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-                </svg>
-              </BenefitIcon>
-              <BenefitText>
-                <h3>Career Opportunities</h3>
-                <p>Open doors to one of the world's largest economies and stand out in the job market.</p>
-              </BenefitText>
-            </BenefitItem>
-          </BenefitContent>
-          <BenefitsMapContainer>
-            <Image
-              src="/jp.svg"
-              alt="Map of Japan"
-              fill
-              style={{ objectFit: 'contain', padding: '2rem', opacity: 0.8 }}
-            />
-            <div style={{ position: 'absolute', bottom: '2rem', textAlign: 'center', width: '100%', zIndex: 2 }}>
-              <p style={{ fontWeight: '800', fontSize: '1.5rem', color: 'var(--foreground)', textShadow: '0 2px 4px var(--surface)' }}>Your Gateway</p>
-              <p style={{ color: 'var(--text-secondary)', fontWeight: '600' }}>to Japan</p>
-            </div>
-          </BenefitsMapContainer>
-        </BenefitsGrid>
-      </BenefitsSection>
+        <BenefitsSection>
+          <SectionTitle><span>Why Learn Japanese?</span></SectionTitle>
+          <BenefitsGrid>
+            <BenefitContent>
+              <BenefitItem>
+                <BenefitIcon>
+                  <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                </BenefitIcon>
+                <BenefitText>
+                  <h3>Unlock a Rich Culture</h3>
+                  <p>Understand your favorite anime, manga, and music in their original language. Connect with history and tradition.</p>
+                </BenefitText>
+              </BenefitItem>
+              <BenefitItem>
+                <BenefitIcon>
+                  <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                  </svg>
+                </BenefitIcon>
+                <BenefitText>
+                  <h3>Travel with Confidence</h3>
+                  <p>Navigate Tokyo's streets, order food like a local, and make meaningful connections during your travels.</p>
+                </BenefitText>
+              </BenefitItem>
+              <BenefitItem>
+                <BenefitIcon>
+                  <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                  </svg>
+                </BenefitIcon>
+                <BenefitText>
+                  <h3>Career Opportunities</h3>
+                  <p>Open doors to one of the world's largest economies and stand out in the job market.</p>
+                </BenefitText>
+              </BenefitItem>
+            </BenefitContent>
+            <BenefitsMapContainer>
+              <Image
+                src="/jp.svg"
+                alt="Map of Japan"
+                fill
+                style={{ objectFit: 'contain', padding: '2rem', opacity: 0.8 }}
+              />
+              <div style={{ position: 'absolute', bottom: '2rem', textAlign: 'center', width: '100%', zIndex: 2 }}>
+                <p style={{ fontWeight: '800', fontSize: '1.5rem', color: 'var(--foreground)', textShadow: '0 2px 4px var(--surface)' }}>Your Gateway</p>
+                <p style={{ color: 'var(--text-secondary)', fontWeight: '600' }}>to Japan</p>
+              </div>
+            </BenefitsMapContainer>
+          </BenefitsGrid>
+        </BenefitsSection>
 
-      <FeaturesSection>
-        <SectionTitle><span>Everything you need</span></SectionTitle>
-        <Grid>
-          <Card>
-            <CardIcon>字</CardIcon>
-            <CardTitle>2000+ Kanji</CardTitle>
-            <CardDescription>
-              Comprehensive library of Joyo Kanji tailored for all JLPT levels.
-              Master readings, meanings, and stroke orders.
-            </CardDescription>
-          </Card>
-          <Card>
-            <CardIcon>あ</CardIcon>
-            <CardTitle>Hiragana & Katakana</CardTitle>
-            <CardDescription>
-              Visualize and practice the essential alphabets of Japanese.
-              Perfect for beginners starting their journey.
-            </CardDescription>
-          </Card>
-          <Card>
-            <CardIcon>✍️</CardIcon>
-            <CardTitle>Interactive Practice</CardTitle>
-            <CardDescription>
-              Test your knowledge with Kana quizzes and practice checking your memory with
-              Kanji flashcards and drawing exercises.
-            </CardDescription>
-          </Card>
-        </Grid>
-      </FeaturesSection>
+        <FeaturesSection>
+          <SectionTitle><span>Everything you need</span></SectionTitle>
+          <Grid>
+            <Card>
+              <CardIcon>字</CardIcon>
+              <CardTitle>2000+ Kanji</CardTitle>
+              <CardDescription>
+                Comprehensive library of Joyo Kanji tailored for all JLPT levels.
+                Master readings, meanings, and stroke orders.
+              </CardDescription>
+            </Card>
+            <Card>
+              <CardIcon>あ</CardIcon>
+              <CardTitle>Hiragana & Katakana</CardTitle>
+              <CardDescription>
+                Visualize and practice the essential alphabets of Japanese.
+                Perfect for beginners starting their journey.
+              </CardDescription>
+            </Card>
+            <Card>
+              <CardIcon>✍️</CardIcon>
+              <CardTitle>Interactive Practice</CardTitle>
+              <CardDescription>
+                Test your knowledge with Kana quizzes and practice checking your memory with
+                Kanji flashcards and drawing exercises.
+              </CardDescription>
+            </Card>
+          </Grid>
+        </FeaturesSection>
 
-      <StepsSection>
-        <SectionTitle><span>How it works</span></SectionTitle>
-        <StepsGrid>
-          <StepCard>
-            <StepTitle>Choose Your Level</StepTitle>
-            <p style={{ color: 'var(--text-secondary)' }}>
-              Start with the basics of Hiragana or challenge yourself with N1 Kanji.
-            </p>
-          </StepCard>
-          <StepCard>
-            <StepTitle>Study Details</StepTitle>
-            <p style={{ color: 'var(--text-secondary)' }}>
-              Learn stroke orders, onyomi/kunyomi readings, and example words.
-            </p>
-          </StepCard>
-          <StepCard>
-            <StepTitle>Test Yourself</StepTitle>
-            <p style={{ color: 'var(--text-secondary)' }}>
-              Reinforce your knowledge with interactive quizzes and writing practice.
-            </p>
-          </StepCard>
-        </StepsGrid>
-      </StepsSection>
+        <StepsSection>
+          <SectionTitle><span>How it works</span></SectionTitle>
+          <StepsGrid>
+            <StepCard>
+              <StepTitle>Choose Your Level</StepTitle>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Start with the basics of Hiragana or challenge yourself with N1 Kanji.
+              </p>
+            </StepCard>
+            <StepCard>
+              <StepTitle>Study Details</StepTitle>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Learn stroke orders, onyomi/kunyomi readings, and example words.
+              </p>
+            </StepCard>
+            <StepCard>
+              <StepTitle>Test Yourself</StepTitle>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Reinforce your knowledge with interactive quizzes and writing practice.
+              </p>
+            </StepCard>
+          </StepsGrid>
+        </StepsSection>
 
-      <TestimonialsSection>
-        <SectionTitle><span>Community Stories</span></SectionTitle>
-        <TestimonialsGrid>
-          <TestimonialCard>
-            <TestimonialText>
-              "I struggled with Kanji for years until I found this app. The clean interface and daily quizzes kept me coming back. I finally passed N3!"
-            </TestimonialText>
-            <UserInfo>
-              <Avatar>JD</Avatar>
-              <UserMeta>
-                <h4>Jane Doe</h4>
-                <span>JLPT N3 Certified</span>
-              </UserMeta>
-            </UserInfo>
-          </TestimonialCard>
-          <TestimonialCard>
-            <TestimonialText>
-              "The best way to learn Kana. I memorized Hiragana in just a week using the visualization tools. Highly recommended for beginners."
-            </TestimonialText>
-            <UserInfo>
-              <Avatar>AS</Avatar>
-              <UserMeta>
-                <h4>Alex Smith</h4>
-                <span>Beginner Learner</span>
-              </UserMeta>
-            </UserInfo>
-          </TestimonialCard>
-          <TestimonialCard>
-            <TestimonialText>
-              "Simple, effective, and beautiful. It cuts out the noise and focuses on what matters: learning the characters. Love the dark mode."
-            </TestimonialText>
-            <UserInfo>
-              <Avatar>MK</Avatar>
-              <UserMeta>
-                <h4>Maria K.</h4>
-                <span>Intermediate Student</span>
-              </UserMeta>
-            </UserInfo>
-          </TestimonialCard>
-        </TestimonialsGrid>
-      </TestimonialsSection>
+        <TestimonialsSection>
+          <SectionTitle><span>Community Stories</span></SectionTitle>
+          <TestimonialsGrid>
+            <TestimonialCard>
+              <TestimonialText>
+                "I struggled with Kanji for years until I found this app. The clean interface and daily quizzes kept me coming back. I finally passed N3!"
+              </TestimonialText>
+              <UserInfo>
+                <Avatar>JD</Avatar>
+                <UserMeta>
+                  <h4>Jane Doe</h4>
+                  <span>JLPT N3 Certified</span>
+                </UserMeta>
+              </UserInfo>
+            </TestimonialCard>
+            <TestimonialCard>
+              <TestimonialText>
+                "The best way to learn Kana. I memorized Hiragana in just a week using the visualization tools. Highly recommended for beginners."
+              </TestimonialText>
+              <UserInfo>
+                <Avatar>AS</Avatar>
+                <UserMeta>
+                  <h4>Alex Smith</h4>
+                  <span>Beginner Learner</span>
+                </UserMeta>
+              </UserInfo>
+            </TestimonialCard>
+            <TestimonialCard>
+              <TestimonialText>
+                "Simple, effective, and beautiful. It cuts out the noise and focuses on what matters: learning the characters. Love the dark mode."
+              </TestimonialText>
+              <UserInfo>
+                <Avatar>MK</Avatar>
+                <UserMeta>
+                  <h4>Maria K.</h4>
+                  <span>Intermediate Student</span>
+                </UserMeta>
+              </UserInfo>
+            </TestimonialCard>
+          </TestimonialsGrid>
+        </TestimonialsSection>
 
-      <FAQSection>
-        <FAQContainer>
-          <SectionTitle><span>Frequently Asked Questions</span></SectionTitle>
-          <FAQItem>
-            <Question>Is this app really free to use?</Question>
-            <Answer>Yes! Our mission is to make Japanese language education accessible to everyone. You have full access to all Kanji, Kana, and quiz features completely free of charge.</Answer>
-          </FAQItem>
-          <FAQItem>
-            <Question>Is this suitable for absolute beginners?</Question>
-            <Answer>Absolutely. We recommend starting with the "Hiragana & Katakana" section to master the alphabets before moving on to Kanji.</Answer>
-          </FAQItem>
-          <FAQItem>
-            <Question>Do I need to create an account?</Question>
-            <Answer>No account is required to start studying. We believe in removing barriers to entry so you can start learning immediately.</Answer>
-          </FAQItem>
-        </FAQContainer>
-      </FAQSection>
+        <FAQSection>
+          <FAQContainer>
+            <SectionTitle><span>Frequently Asked Questions</span></SectionTitle>
+            <FAQItem>
+              <Question>Is this app really free to use?</Question>
+              <Answer>Yes! Our mission is to make Japanese language education accessible to everyone. You have full access to all Kanji, Kana, and quiz features completely free of charge.</Answer>
+            </FAQItem>
+            <FAQItem>
+              <Question>Is this suitable for absolute beginners?</Question>
+              <Answer>Absolutely. We recommend starting with the "Hiragana & Katakana" section to master the alphabets before moving on to Kanji.</Answer>
+            </FAQItem>
+            <FAQItem>
+              <Question>Do I need to create an account?</Question>
+              <Answer>No account is required to start studying. We believe in removing barriers to entry so you can start learning immediately.</Answer>
+            </FAQItem>
+          </FAQContainer>
+        </FAQSection>
 
-      <CTASection>
-        <CTATitle>Ready to start?</CTATitle>
-        <p style={{ color: '#cbd5e1', marginBottom: '2rem', position: 'relative' }}>
-          Join thousands of learners mastering Japanese every day.
-        </p>
-        <PrimaryButton href="/kanji" style={{ position: 'relative', background: 'white', color: 'var(--primary)' }}>
-          Get Started Now
-        </PrimaryButton>
-      </CTASection>
-    </Container>
+        <CTASection>
+          <CTATitle>Ready to start?</CTATitle>
+          <p style={{ color: '#cbd5e1', marginBottom: '2rem', position: 'relative' }}>
+            Join thousands of learners mastering Japanese every day.
+          </p>
+          <PrimaryButton href="/kanji" style={{ position: 'relative', background: 'white', color: 'var(--primary)' }}>
+            Get Started Now
+          </PrimaryButton>
+        </CTASection>
+      </Container>
+    </>
   );
 }
