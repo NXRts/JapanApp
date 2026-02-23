@@ -20,7 +20,7 @@ const FooterContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   gap: 4rem;
   margin-bottom: 4rem;
 
@@ -172,7 +172,16 @@ export function Footer() {
           <FooterLink href="/about">About Us</FooterLink>
           <FooterLink href="/contact">Contact</FooterLink>
           <FooterLink href="/blog">Blog</FooterLink>
-          <FooterLink href="/careers">Careers</FooterLink>
+        </FooterColumn>
+
+        <FooterColumn>
+          <ColumnTitle>Support</ColumnTitle>
+          <FooterLink as="a" href="https://saweria.co/yusufarrofi" target="_blank" rel="noopener noreferrer">
+            Saweria ☕
+          </FooterLink>
+          <FooterLink as="a" href="https://ko-fi.com/yusufarrofi/" target="_blank" rel="noopener noreferrer">
+            Ko-fi ☕
+          </FooterLink>
         </FooterColumn>
 
         <FooterColumn>
