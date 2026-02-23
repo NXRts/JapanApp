@@ -158,6 +158,28 @@ const FlashcardContainer = styled.div`
   max-width: 800px;
 `;
 
+const AnimContainer = styled.div<{ $dir: 'next' | 'prev' | null }>`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  
+  animation: ${({ $dir }) => {
+    if ($dir === 'next') return 'slideInNext 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    if ($dir === 'prev') return 'slideInPrev 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    return 'none';
+  }};
+
+  @keyframes slideInNext {
+    0% { opacity: 0; transform: translateX(80px) scale(0.95); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
+  }
+  
+  @keyframes slideInPrev {
+    0% { opacity: 0; transform: translateX(-80px) scale(0.95); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
+  }
+`;
+
 const SectionTitle = styled.h3`
   margin-bottom: 2rem;
   color: var(--text-secondary);
@@ -329,6 +351,7 @@ export default function KanaFlashcards() {
   const [loading, setLoading] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isRandom, setIsRandom] = useState(false); // Default sequentially
+  const [slideDir, setSlideDir] = useState<'next' | 'prev' | null>(null);
 
   // Touch swipe states
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -370,17 +393,27 @@ export default function KanaFlashcards() {
   const currentKana = kanaList[currentIndex];
 
   const nextCard = () => {
-    setFlipped(false);
-    setTimeout(() => {
+    setSlideDir('next');
+    if (flipped) {
+      setFlipped(false);
+      setTimeout(() => {
+        setCurrentIndex(prev => (prev + 1) % kanaList.length);
+      }, 300); // Wait for flip back
+    } else {
       setCurrentIndex(prev => (prev + 1) % kanaList.length);
-    }, 400); // Wait for flip back
+    }
   };
 
   const prevCard = () => {
-    setFlipped(false);
-    setTimeout(() => {
+    setSlideDir('prev');
+    if (flipped) {
+      setFlipped(false);
+      setTimeout(() => {
+        setCurrentIndex(prev => (prev === 0 ? kanaList.length - 1 : prev - 1));
+      }, 300);
+    } else {
       setCurrentIndex(prev => (prev === 0 ? kanaList.length - 1 : prev - 1));
-    }, 400);
+    }
   };
 
   // Swipe Handlers
@@ -489,26 +522,28 @@ export default function KanaFlashcards() {
 
         <FlashcardContainer>
           <SectionTitle>Kana Memorization</SectionTitle>
-          <CardPerspective
-            onClick={() => setFlipped(!flipped)}
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-          >
-            <CardInner $flipped={flipped}>
-              <CardFace>
-                <InstructionText>Character</InstructionText>
-                <BigCharacter>{currentKana.character}</BigCharacter>
-                <HintText>Tap to Reveal ⟳</HintText>
-              </CardFace>
+          <AnimContainer key={currentIndex} $dir={slideDir}>
+            <CardPerspective
+              onClick={() => setFlipped(!flipped)}
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
+              <CardInner $flipped={flipped}>
+                <CardFace>
+                  <InstructionText>Character</InstructionText>
+                  <BigCharacter>{currentKana.character}</BigCharacter>
+                  <HintText>Tap to Reveal ⟳</HintText>
+                </CardFace>
 
-              <CardBack>
-                <InstructionText>Romaji</InstructionText>
-                <HighlightRomaji>{currentKana.romaji}</HighlightRomaji>
-                <HintText>Tap to Flip ⟳</HintText>
-              </CardBack>
-            </CardInner>
-          </CardPerspective>
+                <CardBack>
+                  <InstructionText>Romaji</InstructionText>
+                  <HighlightRomaji>{currentKana.romaji}</HighlightRomaji>
+                  <HintText>Tap to Flip ⟳</HintText>
+                </CardBack>
+              </CardInner>
+            </CardPerspective>
+          </AnimContainer>
 
           <ActionButtons>
             <IconBtn onClick={prevCard} aria-label="Previous Character">
