@@ -651,6 +651,80 @@ const Answer = styled.p`
   line-height: 1.7;
 `;
 
+const WhatsNewSection = styled.section`
+  padding: 5rem 2rem;
+  background: linear-gradient(to bottom, transparent, rgba(79, 70, 229, 0.03), transparent);
+  width: 100%;
+`;
+
+const WhatsNewGrid = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+`;
+
+const NewsCard = styled(Link)`
+  background: var(--surface);
+  padding: 2rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-light);
+    box-shadow: 0 10px 30px -10px rgba(79, 70, 229, 0.15);
+    
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+`;
+
+const NewsBadge = styled.span`
+  align-self: flex-start;
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981; 
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+`;
+
+const NewsTitle = styled.h3`
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 0.75rem;
+`;
+
+const NewsDescription = styled.p`
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 1rem;
+`;
+
 export default function Home() {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -760,6 +834,33 @@ export default function Home() {
             </BenefitsMapContainer>
           </BenefitsGrid>
         </BenefitsSection>
+
+        <WhatsNewSection>
+          <SectionTitle><span>What's New</span></SectionTitle>
+          <WhatsNewGrid>
+            <NewsCard href="/blog">
+              <NewsBadge>New Feature</NewsBadge>
+              <NewsTitle>Japanese Culture Blog</NewsTitle>
+              <NewsDescription>
+                Explore our brand new blog featuring a gorgeous UI, immersive reading experience, and tips on learning Japanese effectively.
+              </NewsDescription>
+            </NewsCard>
+            <NewsCard href="/practice">
+              <NewsBadge>Enhanced</NewsBadge>
+              <NewsTitle>Flashcard Animations</NewsTitle>
+              <NewsDescription>
+                Learning is now smoother with intuitive swipe gestures and randomized learning modes for Kana and Vocabulary flashcards.
+              </NewsDescription>
+            </NewsCard>
+            <NewsCard href="/">
+              <NewsBadge>Support Us</NewsBadge>
+              <NewsTitle>Donation Feature</NewsTitle>
+              <NewsDescription>
+                You can now support the development of Japan App. Help us keep the app free and growing with more exciting features!
+              </NewsDescription>
+            </NewsCard>
+          </WhatsNewGrid>
+        </WhatsNewSection>
 
         <FeaturesSection>
           <SectionTitle><span>Everything you need</span></SectionTitle>
