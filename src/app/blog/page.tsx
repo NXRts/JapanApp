@@ -3,72 +3,7 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 
-interface BlogPost {
-    id: string;
-    title: string;
-    excerpt: string;
-    date: string;
-    author: string;
-    category: 'grammar' | 'culture' | 'kanji' | 'learning-tips';
-    readTime: string;
-}
-
-const mockPosts: BlogPost[] = [
-    {
-        id: '1',
-        title: 'Top 10 Essential Kanji for Beginners',
-        excerpt: 'Starting your Kanji journey? Focus on these 10 characters that appear most frequently in daily Japanese life.',
-        date: 'January 25, 2026',
-        author: 'Kenji Sato',
-        category: 'kanji',
-        readTime: '5 min read'
-    },
-    {
-        id: '2',
-        title: 'Understanding the Particle "Wa" vs "Ga"',
-        excerpt: 'One of the most confusing aspects for learners. We break down the differences and when to use each.',
-        date: 'January 22, 2026',
-        author: 'Yuki Tanaka',
-        category: 'grammar',
-        readTime: '8 min read'
-    },
-    {
-        id: '3',
-        title: 'Hanami: The Art of Flower Viewing',
-        excerpt: 'Discover the history and traditions behind Japan\'s famous cherry blossom festivals.',
-        date: 'January 18, 2026',
-        author: 'Sakura Johnson',
-        category: 'culture',
-        readTime: '6 min read'
-    },
-    {
-        id: '4',
-        title: 'How to Ace the JLPT N5',
-        excerpt: 'Strategic tips and study schedules to help you pass the N5 level with confidence.',
-        date: 'January 15, 2026',
-        author: 'Mike Chen',
-        category: 'learning-tips',
-        readTime: '10 min read'
-    },
-    {
-        id: '5',
-        title: 'Japanese Business Etiquette 101',
-        excerpt: 'Don\'t make a mistake in your next meeting. Learn the basics of bowing, business cards, and keigo.',
-        date: 'January 10, 2026',
-        author: 'Kenji Sato',
-        category: 'culture',
-        readTime: '7 min read'
-    },
-    {
-        id: '6',
-        title: 'Mastering Katakana in 3 Days',
-        excerpt: 'A proven method to memorize all Katakana characters quickly and effectively.',
-        date: 'January 5, 2026',
-        author: 'Yuki Tanaka',
-        category: 'learning-tips',
-        readTime: '4 min read'
-    }
-];
+import { mockPosts } from '@/data/blog';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -135,14 +70,14 @@ const BlogCard = styled(Link)`
 const CardImage = styled.div<{ $category: string }>`
   height: 200px;
   background: ${props => {
-        switch (props.$category) {
-            case 'kanji': return 'linear-gradient(135deg, #FF6B6B 0%, #EE5253 100%)';
-            case 'grammar': return 'linear-gradient(135deg, #4834d4 0%, #686de0 100%)';
-            case 'culture': return 'linear-gradient(135deg, #f0932b 0%, #ffbe76 100%)';
-            case 'learning-tips': return 'linear-gradient(135deg, #6ab04c 0%, #badc58 100%)';
-            default: return 'var(--surface-light)';
-        }
-    }};
+    switch (props.$category) {
+      case 'kanji': return 'linear-gradient(135deg, #FF6B6B 0%, #EE5253 100%)';
+      case 'grammar': return 'linear-gradient(135deg, #4834d4 0%, #686de0 100%)';
+      case 'culture': return 'linear-gradient(135deg, #f0932b 0%, #ffbe76 100%)';
+      case 'learning-tips': return 'linear-gradient(135deg, #6ab04c 0%, #badc58 100%)';
+      default: return 'var(--surface-light)';
+    }
+  }};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,23 +119,23 @@ const Category = styled.span<{ $category: string }>`
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
   background: ${props => {
-        switch (props.$category) {
-            case 'kanji': return 'rgba(255, 107, 107, 0.1)';
-            case 'grammar': return 'rgba(72, 52, 212, 0.1)';
-            case 'culture': return 'rgba(240, 147, 43, 0.1)';
-            case 'learning-tips': return 'rgba(106, 176, 76, 0.1)';
-            default: return 'var(--surface-light)';
-        }
-    }};
+    switch (props.$category) {
+      case 'kanji': return 'rgba(255, 107, 107, 0.1)';
+      case 'grammar': return 'rgba(72, 52, 212, 0.1)';
+      case 'culture': return 'rgba(240, 147, 43, 0.1)';
+      case 'learning-tips': return 'rgba(106, 176, 76, 0.1)';
+      default: return 'var(--surface-light)';
+    }
+  }};
   color: ${props => {
-        switch (props.$category) {
-            case 'kanji': return '#FF6B6B';
-            case 'grammar': return '#686de0';
-            case 'culture': return '#f0932b';
-            case 'learning-tips': return '#6ab04c';
-            default: return 'var(--text-secondary)';
-        }
-    }};
+    switch (props.$category) {
+      case 'kanji': return '#FF6B6B';
+      case 'grammar': return '#686de0';
+      case 'culture': return '#f0932b';
+      case 'learning-tips': return '#6ab04c';
+      default: return 'var(--text-secondary)';
+    }
+  }};
 `;
 
 const Date = styled.span`
@@ -254,43 +189,43 @@ const ReadTime = styled.span`
 `;
 
 export default function BlogPage() {
-    return (
-        <Container>
-            <Header>
-                <Title>Latest Insights</Title>
-                <Subtitle>
-                    Tips, guides, and stories to help you on your journey to mastering Japanese.
-                </Subtitle>
-            </Header>
+  return (
+    <Container>
+      <Header>
+        <Title>Latest Insights</Title>
+        <Subtitle>
+          Tips, guides, and stories to help you on your journey to mastering Japanese.
+        </Subtitle>
+      </Header>
 
-            <Grid>
-                {mockPosts.map((post) => (
-                    <BlogCard href={`/blog/${post.id}`} key={post.id}>
-                        <CardImage $category={post.category}>
-                            {/* Simple placeholder icon based on category */}
-                            {post.category === 'kanji' && '字'}
-                            {post.category === 'grammar' && '文'}
-                            {post.category === 'culture' && '和'}
-                            {post.category === 'learning-tips' && '学'}
-                        </CardImage>
-                        <CardContent>
-                            <Meta>
-                                <Category $category={post.category}>{post.category.replace('-', ' ')}</Category>
-                                <Date>{post.date}</Date>
-                            </Meta>
-                            <PostTitle>{post.title}</PostTitle>
-                            <Excerpt>{post.excerpt}</Excerpt>
-                            <Footer>
-                                <Author>
-                                    <AuthorAvatar />
-                                    {post.author}
-                                </Author>
-                                <ReadTime>{post.readTime}</ReadTime>
-                            </Footer>
-                        </CardContent>
-                    </BlogCard>
-                ))}
-            </Grid>
-        </Container>
-    );
+      <Grid>
+        {mockPosts.map((post) => (
+          <BlogCard href={`/blog/${post.id}`} key={post.id}>
+            <CardImage $category={post.category}>
+              {/* Simple placeholder icon based on category */}
+              {post.category === 'kanji' && '字'}
+              {post.category === 'grammar' && '文'}
+              {post.category === 'culture' && '和'}
+              {post.category === 'learning-tips' && '学'}
+            </CardImage>
+            <CardContent>
+              <Meta>
+                <Category $category={post.category}>{post.category.replace('-', ' ')}</Category>
+                <Date>{post.date}</Date>
+              </Meta>
+              <PostTitle>{post.title}</PostTitle>
+              <Excerpt>{post.excerpt}</Excerpt>
+              <Footer>
+                <Author>
+                  <AuthorAvatar />
+                  {post.author}
+                </Author>
+                <ReadTime>{post.readTime}</ReadTime>
+              </Footer>
+            </CardContent>
+          </BlogCard>
+        ))}
+      </Grid>
+    </Container>
+  );
 }
