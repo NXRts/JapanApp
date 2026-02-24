@@ -218,9 +218,9 @@ export function Navbar() {
             <NavItem>
               <StyledLink href="/blog" $active={pathname.startsWith('/blog')}>Blog</StyledLink>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <StyledLink href="/careers" $active={pathname === '/careers'}>Careers</StyledLink>
-            </NavItem>
+            </NavItem> */}
             <NavItem>
               <StyledLink href="/about" $active={pathname === '/about'}>About</StyledLink>
             </NavItem>
