@@ -11,11 +11,19 @@ const Container = styled.div`
   padding: 8rem 2rem 4rem;
   max-width: 1200px;
   margin: 0 auto;
+
+  @media (max-width: 768px) {
+    padding: 6rem 1.5rem 3rem;
+  }
 `;
 
 const Header = styled.div`
   text-align: center;
   margin-bottom: 5rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 3rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -28,6 +36,7 @@ const Title = styled.h1`
   
   @media (max-width: 768px) {
     font-size: 2.5rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -37,6 +46,11 @@ const Subtitle = styled.p`
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    padding: 0 0.5rem;
+  }
 `;
 
 const Grid = styled.div`
@@ -193,10 +207,15 @@ const SearchContainer = styled.div`
   max-width: 600px;
   margin: 0 auto 4rem auto;
   position: relative;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2.5rem;
+  }
 `;
 
 const SearchInput = styled.input`
   width: 100%;
+  box-sizing: border-box;
   padding: 1rem 1.5rem;
   border-radius: 999px;
   border: 1px solid var(--border);
@@ -213,6 +232,12 @@ const SearchInput = styled.input`
   
   &::placeholder {
     color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
   }
 `;
 
