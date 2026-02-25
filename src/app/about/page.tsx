@@ -72,10 +72,12 @@ export default function AboutPage() {
         <Paragraph>
           <strong>Key Features:</strong>
         </Paragraph>
-        <ul style={{ paddingLeft: '20px', marginBottom: '1.5rem' }}>
-          <li>Interactive Flashcards with stroke-order font support and audio pronunciation.</li>
+        <ul style={{ paddingLeft: '20px', marginBottom: '1.5rem', lineHeight: '1.8', color: 'var(--text-secondary)' }}>
+          <li>Interactive Flashcards with stroke-order font support and audio pronunciation, now with smooth swipe animations and randomized modes.</li>
           <li>Comprehensive JLPT N1-N5 Kanji lists.</li>
           <li>Kana (Hiragana & Katakana) mastery tables.</li>
+          <li>Beautiful Japanese Culture Blog with an immersive reading UI.</li>
+          <li>Show your support and help keep the app growing via our new Donation Feature.</li>
           <li>Indonesian language support for accessibility.</li>
         </ul>
         <Paragraph>
