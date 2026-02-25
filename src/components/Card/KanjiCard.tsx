@@ -21,7 +21,7 @@ export function KanjiCard({ char }: { char: string }) {
 
     setLoading(true);
 
-    fetch(`https://kanjiapi.dev/v1/kanji/${char}`)
+    fetch(`https://kanjiapi.dev/v1/kanji/${encodeURIComponent(char)}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Failed to fetch kanji details: ${res.statusText}`);
@@ -42,7 +42,9 @@ export function KanjiCard({ char }: { char: string }) {
         setDetail({ onyomi, kunyomi, meanings });
       })
       .catch((error) => {
-        console.error('Error fetching kanji details:', error);
+        // Use console.warn instead of console.error to prevent Next.js dev overlay 
+        // interrupting the UI just because of a network error or missing character
+        console.warn('Error fetching kanji details:', error.message || error);
         setDetail(null);
       })
       .finally(() => setLoading(false));
@@ -126,14 +128,14 @@ export function KanjiCard({ char }: { char: string }) {
 
               <Label style={{ marginTop: '12px' }}>Translate</Label>
               <LanguageContainer>
-                <LanguageButton 
-                  $active={lang === 'en'} 
+                <LanguageButton
+                  $active={lang === 'en'}
                   onClick={(e) => { e.stopPropagation(); setLang('en'); }}
                 >
                   EN
                 </LanguageButton>
-                <LanguageButton 
-                  $active={lang === 'id'} 
+                <LanguageButton
+                  $active={lang === 'id'}
                   onClick={(e) => { e.stopPropagation(); setLang('id'); }}
                 >
                   ID
@@ -152,7 +154,7 @@ export function KanjiCard({ char }: { char: string }) {
                     {detail.meanings.slice(0, 3).map((m, i) => (
                       <MeaningText key={i}>{m} (Inggris)</MeaningText>
                     ))}
-                    <MeaningText className="id-note" style={{fontSize: '0.7em', marginTop: '10px'}}>
+                    <MeaningText className="id-note" style={{ fontSize: '0.7em', marginTop: '10px' }}>
                       *Maaf, API saat ini hanya mendukung Bahasa Inggris.
                     </MeaningText>
                   </>
