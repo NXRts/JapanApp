@@ -2,6 +2,7 @@
 
 import styled from 'styled-components';
 import Link from 'next/link';
+import { useState } from 'react';
 
 import { mockPosts } from '@/data/blog';
 
@@ -188,7 +189,55 @@ const ReadTime = styled.span`
   color: var(--text-secondary);
 `;
 
+const SearchContainer = styled.div`
+  max-width: 600px;
+  margin: 0 auto 4rem auto;
+  position: relative;
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+  
+  &::placeholder {
+    color: var(--text-secondary);
+  }
+`;
+
+const EmptyState = styled.div`
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  background: var(--surface);
+  border-radius: 20px;
+  border: 1px dashed var(--border);
+`;
+
 export default function BlogPage() {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredPosts = mockPosts.filter((post) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      post.title.toLowerCase().includes(query) ||
+      post.excerpt.toLowerCase().includes(query) ||
+      post.category.toLowerCase().replace('-', ' ').includes(query)
+    );
+  });
+
   return (
     <Container>
       <Header>
@@ -198,34 +247,49 @@ export default function BlogPage() {
         </Subtitle>
       </Header>
 
-      <Grid>
-        {mockPosts.map((post) => (
-          <BlogCard href={`/blog/${post.id}`} key={post.id}>
-            <CardImage $category={post.category}>
-              {/* Simple placeholder icon based on category */}
-              {post.category === 'kanji' && '字'}
-              {post.category === 'grammar' && '文'}
-              {post.category === 'culture' && '和'}
-              {post.category === 'learning-tips' && '学'}
-            </CardImage>
-            <CardContent>
-              <Meta>
-                <Category $category={post.category}>{post.category.replace('-', ' ')}</Category>
-                <Date>{post.date}</Date>
-              </Meta>
-              <PostTitle>{post.title}</PostTitle>
-              <Excerpt>{post.excerpt}</Excerpt>
-              <Footer>
-                <Author>
-                  <AuthorAvatar />
-                  {post.author}
-                </Author>
-                <ReadTime>{post.readTime}</ReadTime>
-              </Footer>
-            </CardContent>
-          </BlogCard>
-        ))}
-      </Grid>
+      <SearchContainer>
+        <SearchInput
+          type="text"
+          placeholder="Search articles by title, excerpt, or category..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </SearchContainer>
+
+      {filteredPosts.length > 0 ? (
+        <Grid>
+          {filteredPosts.map((post) => (
+            <BlogCard href={`/blog/${post.id}`} key={post.id}>
+              <CardImage $category={post.category}>
+                {/* Simple placeholder icon based on category */}
+                {post.category === 'kanji' && '字'}
+                {post.category === 'grammar' && '文'}
+                {post.category === 'culture' && '和'}
+                {post.category === 'learning-tips' && '学'}
+              </CardImage>
+              <CardContent>
+                <Meta>
+                  <Category $category={post.category}>{post.category.replace('-', ' ')}</Category>
+                  <Date>{post.date}</Date>
+                </Meta>
+                <PostTitle>{post.title}</PostTitle>
+                <Excerpt>{post.excerpt}</Excerpt>
+                <Footer>
+                  <Author>
+                    <AuthorAvatar />
+                    {post.author}
+                  </Author>
+                  <ReadTime>{post.readTime}</ReadTime>
+                </Footer>
+              </CardContent>
+            </BlogCard>
+          ))}
+        </Grid>
+      ) : (
+        <EmptyState>
+          No articles found matching "{searchQuery}". Try a different search term.
+        </EmptyState>
+      )}
     </Container>
   );
 }
