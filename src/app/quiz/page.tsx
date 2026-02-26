@@ -136,60 +136,83 @@ const PlayButton = styled.div<{ $color: string }>`
 `;
 
 export default function QuizHubPage() {
-    return (
-        <Container>
-            <Header>
-                <Title>Quiz Hub</Title>
-                <Subtitle>
-                    Test your Japanese knowledge and reading speed with our selection of interactive quizzes.
-                </Subtitle>
-            </Header>
+  return (
+    <Container>
+      <Header>
+        <Title>Quiz Hub</Title>
+        <Subtitle>
+          Test your Japanese knowledge and reading speed with our selection of interactive quizzes.
+        </Subtitle>
+      </Header>
 
-            <QuizGrid>
-                {/* Daily Quiz */}
-                <QuizCard href="/daily-quiz">
-                    <CardContent>
-                        <IconWrapper $color="16, 185, 129">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                            </svg>
-                        </IconWrapper>
-                        <CardTitle>Daily Kana Quiz</CardTitle>
-                        <CardDescription>
-                            A quick 10-question multiple choice quiz to test your Kana recognition. Questions reset every hour!
-                        </CardDescription>
-                        <PlayButton $color="16, 185, 129">
-                            Play Now
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
-                        </PlayButton>
-                    </CardContent>
-                </QuizCard>
+      <QuizGrid>
+        {/* Kana Quiz */}
+        <QuizCard href="/daily-quiz">
+          <CardContent>
+            <IconWrapper $color="16, 185, 129">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+              </svg>
+            </IconWrapper>
+            <CardTitle>Kana Quiz</CardTitle>
+            <CardDescription>
+              A quick 10-question multiple choice quiz to test your Kana recognition. Play as many times as you like!
+            </CardDescription>
+            <PlayButton $color="16, 185, 129">
+              Play Now
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </QuizCard>
 
-                {/* Match Pairs */}
-                <QuizCard href="/match-pairs">
-                    <CardContent>
-                        <IconWrapper $color="79, 70, 229">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                                <path d="M3.27 6.96L12 12.01l8.73-5.05" />
-                                <path d="M12 22.08V12" />
-                            </svg>
-                        </IconWrapper>
-                        <CardTitle>Match the Pairs</CardTitle>
-                        <CardDescription>
-                            Find the correct Romaji reading for each Japanese Kana character. Improve your reading speed!
-                        </CardDescription>
-                        <PlayButton $color="79, 70, 229">
-                            Play Now
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M5 12h14M12 5l7 7-7 7" />
-                            </svg>
-                        </PlayButton>
-                    </CardContent>
-                </QuizCard>
-            </QuizGrid>
-        </Container>
-    );
+        {/* Match Pairs */}
+        <QuizCard href="/match-pairs">
+          <CardContent>
+            <IconWrapper $color="79, 70, 229">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <path d="M3.27 6.96L12 12.01l8.73-5.05" />
+                <path d="M12 22.08V12" />
+              </svg>
+            </IconWrapper>
+            <CardTitle>Match the Pairs</CardTitle>
+            <CardDescription>
+              Find the correct Romaji reading for each Japanese Kana character. Improve your reading speed!
+            </CardDescription>
+            <PlayButton $color="79, 70, 229">
+              Play Now
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </QuizCard>
+
+        {/* Reverse Quiz */}
+        <QuizCard href="/reverse-quiz">
+          <CardContent>
+            <IconWrapper $color="244, 63, 94">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="1 4 1 10 7 10" />
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+              </svg>
+            </IconWrapper>
+            <CardTitle>Reverse Kana Quiz</CardTitle>
+            <CardDescription>
+              Given the Romaji reading, select the correct Japanese Kana character. Test your reverse recall!
+            </CardDescription>
+            <PlayButton $color="244, 63, 94">
+              Play Now
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </QuizCard>
+      </QuizGrid>
+    </Container>
+  );
 }

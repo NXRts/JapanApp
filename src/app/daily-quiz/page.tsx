@@ -49,24 +49,6 @@ const BackButton = styled(Link)`
   }
 `;
 
-const DateBadge = styled.div`
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
-  padding: 0.5rem 1.25rem;
-  border-radius: 999px;
-  border: 1px solid rgba(16, 185, 129, 0.2);
-
-  @media (max-width: 600px) {
-    font-size: 0.9rem;
-    padding: 0.4rem 1rem;
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-  }
-`;
 
 const QuizCard = styled.div`
   background: var(--surface);
@@ -245,211 +227,72 @@ interface Question {
     type: 'kana' | 'kanji';
 }
 
-// Seeded Random Class
-class SeededRandom {
-    private seed: number;
-
-    constructor(seed: number) {
-        this.seed = seed;
+// Helper to shuffle arrays
+const shuffleArray = <T,>(array: T[]): T[] => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
-
-    // Mulberry32
-    next() {
-        let t = this.seed += 0x6D2B79F5;
-        t = Math.imul(t ^ (t >>> 15), t | 1);
-        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    }
-
-    // Fisher-Yates shuffle
-    shuffle<T>(array: T[]): T[] {
-        const newArray = [...array];
-        for (let i = newArray.length - 1; i > 0; i--) {
-            const j = Math.floor(this.next() * (i + 1));
-            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-        }
-        return newArray;
-    }
-
-    pick<T>(array: T[]): T {
-        return array[Math.floor(this.next() * array.length)];
-    }
-}
-
-// Helper to get today's seed
-// Helper to get hourly seed key
-const getHourlyKey = () => {
-    const now = new Date();
-    // Key format: YYYY-MM-DD-HH
-    return `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}-${now.getHours()}`;
+    return newArray;
 };
 
-const getQuizSeed = () => {
-    // 1. Get current hour key
-    const key = getHourlyKey();
-    const storageKey = `quiz_seed_${key}`;
-
-    // 2. Check local storage for existing seed for this hour
-    const stored = localStorage.getItem(storageKey);
-    if (stored) {
-        return parseInt(stored, 10);
-    }
-
-    // 3. If no seed for this hour, generate a RANDOM one (unique per device)
-    // and save it.
-    const newSeed = Math.floor(Math.random() * 10000000);
-    localStorage.setItem(storageKey, newSeed.toString());
-
-    // Cleanup old keys (optional optimisation)
-    // implementation skipped for brevity, but good practice
-
-    return newSeed;
-};
-
-export default function DailyQuizPage() {
+export default function KanaQuizPage() {
     const [loading, setLoading] = useState(true);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [score, setScore] = useState(0);
     const [isFinished, setIsFinished] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
-    const [dateString, setDateString] = useState('');
 
     const TOTAL_QUESTIONS = 10;
 
-    useEffect(() => {
-        const generateDailyQuiz = async () => {
-            setLoading(true);
+    const generateQuiz = useCallback(async () => {
+        setLoading(true);
+        try {
+            // Fetch Kana data
+            const res = await fetch('/api/kana?type=all');
+            const kanaData: string[] = await res.json();
 
-            // Set display date with Time
-            const today = new Date();
-            const dateStr = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
-            const hourStr = today.getHours() + ':00'; // e.g., 14:00
-            setDateString(`${dateStr} • ${hourStr} Session`);
+            // Create a pool of UNIQUE Romaji to prevent duplicate wrong answers
+            const uniqueRomajiPool = Array.from(new Set(kanaData.map(c => toRomaji(c))));
 
-            try {
-                // Fetch data
-                const [kanaRes, kanjiRes] = await Promise.all([
-                    fetch('/api/kana?type=all'),
-                    fetch('/api/kanji/n5')
-                ]);
+            const kanaQuestions: Question[] = [];
+            const shuffledKana = shuffleArray(kanaData);
+            const selectedKana = shuffledKana.slice(0, TOTAL_QUESTIONS);
 
-                const kanaData: string[] = await kanaRes.json();
-                const kanjiData: string[] = await kanjiRes.json();
+            selectedKana.forEach(char => {
+                const correctRomaji = toRomaji(char);
 
-                // Create a pool of UNIQUE Romaji to prevent duplicates (e.g., 'a' from 'あ' and 'ア')
-                const uniqueRomajiPool = Array.from(new Set(kanaData.map(c => toRomaji(c))));
+                // Generate distractors using UNIQUE Romaji pool
+                const availableDistractors = uniqueRomajiPool.filter(r => r !== correctRomaji);
+                const shuffledDistractors = shuffleArray(availableDistractors);
+                const distractors = shuffledDistractors.slice(0, 3);
 
-                // Initialize seeded RNG
-                // Use new hourly+device logic
-                const seed = getQuizSeed();
-                const rng = new SeededRandom(seed);
-
-                // --- Generate Kana Questions (5) ---
-                const kanaQuestions: Question[] = [];
-                const shuffledKana = rng.shuffle(kanaData);
-
-                // Take first 5 from shuffled (safe way to pick distinct randoms)
-                const selectedKana = shuffledKana.slice(0, 5);
-
-                selectedKana.forEach(char => {
-                    const correctRomaji = toRomaji(char);
-
-                    // Generate distractors using RNG from UNIQUE Romaji pool
-                    const availableDistractors = uniqueRomajiPool.filter(r => r !== correctRomaji);
-                    const shuffledDistractors = rng.shuffle(availableDistractors);
-
-                    const distractors = shuffledDistractors.slice(0, 3);
-
-                    kanaQuestions.push({
-                        char,
-                        answer: correctRomaji,
-                        options: rng.shuffle([...distractors, correctRomaji]),
-                        type: 'kana'
-                    });
+                kanaQuestions.push({
+                    char,
+                    answer: correctRomaji,
+                    options: shuffleArray([...distractors, correctRomaji]),
+                    type: 'kana'
                 });
+            });
 
-                // --- Generate Kanji Questions (5) ---
-                // Ensure we have kanji data
-                if (kanjiData && kanjiData.length > 0) {
-                    const shuffledKanji = rng.shuffle(kanjiData);
-                    const selectedKanji = shuffledKanji.slice(0, 5);
+            setQuestions(shuffleArray(kanaQuestions));
+            setCurrentIndex(0);
+            setScore(0);
+            setIsFinished(false);
+            setSelectedOption(null);
 
-                    selectedKanji.forEach(char => {
-                        // For Kanji, since we only have the char in this simple API, 
-                        // we can't easily auto-generate "correct" romaji if we don't have the reading data.
-                        // Wait, previous investigation showed /api/kanji/n5 returns string[].
-                        // Does toRomaji work on Kanji? No, it usually returns the same char or needs context.
-                        // 'wanakana' toRomaji converts Kana to Romaji. It doesn't convert Kanji to reading.
-
-                        // LIMITATION: We don't have reading data for Kanji in the current API response based on my check of KanjiGrid.
-                        // KanjiGrid just renders the char.
-                        // I might need to make a quick assumption or fix.
-                        // Let's check what 'wanakana' does with Kanji. It ignores it generally.
-
-                        // FIX: For this task, if I cannot get readings, I cannot make a "Reading Quiz" for Kanji easily.
-                        // However, I can fetch extended data if available, OR I can just stick to Kana for "Daily Quiz" if Kanji is too hard.
-                        // BUT the plan said "5 Kana + 5 Kanji".
-
-                        // Let's assume for a moment I can get readings. 
-                        // If I can't, I will just do 10 Kana questions for now to avoid breaking it, 
-                        // OR I will try to find a library/data source.
-
-                        // actually 'wanakana' does NOT support kanji-to-kana conversion.
-
-                        // Let's check /api/kanji/[level]/route.ts if I can find it?
-                        // I saw /api/kanji/[kanji] directory.
-
-                    });
-                }
-
-                // RE-EVALUATION: simple fetch of /api/kanji/n5 returned ["一", "二", ...] (presumably).
-                // Without readings, I cannot create a "What is this Kanji?" quiz where answer is Romaji.
-                // I will stick to 10 Kana questions for the "Daily Quiz" mixed between Hiragana/Katakana 
-                // AND I will add a "Coming Soon" note for Kanji or just do Kana for now to ensure quality.
-                // OR, I can use a small hardcoded map for N5 Kanji if the list is small, but that's risky.
-
-                // BETTER APPROACH for MVP: 
-                // Generate 10 KANA questions (mixed Hiragana/Katakana).
-                // It ensures correctness.
-                // I will comment this decision in the code.
-
-                // Wait, I can't deviate too much from plan without user knowing, but breaking functionality is worse.
-                // I'll stick to Kana for the daily quiz for now to ensure it works perfect.
-
-                // Reworking strategy: 10 Kana questions, seeded.
-                const allQuestions = kanaQuestions;
-
-                // Need 5 more Kana to replace the Kanji
-                const moreKana = shuffledKana.slice(5, 10);
-                moreKana.forEach(char => {
-                    const correctRomaji = toRomaji(char);
-
-                    // Generate distractors from UNIQUE Romaji pool
-                    const availableDistractors = uniqueRomajiPool.filter(r => r !== correctRomaji);
-                    const shuffledDistractors = rng.shuffle(availableDistractors);
-
-                    const distractors = shuffledDistractors.slice(0, 3);
-
-                    allQuestions.push({
-                        char,
-                        answer: correctRomaji,
-                        options: rng.shuffle([...distractors, correctRomaji]),
-                        type: 'kana'
-                    });
-                });
-
-                setQuestions(rng.shuffle(allQuestions));
-
-            } catch (error) {
-                console.error("Failed to generate quiz", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        generateDailyQuiz();
+        } catch (error) {
+            console.error("Failed to generate quiz", error);
+        } finally {
+            setLoading(false);
+        }
     }, []);
+
+    useEffect(() => {
+        generateQuiz();
+    }, [generateQuiz]);
 
     const handleAnswer = (option: string) => {
         if (selectedOption) return;
@@ -483,12 +326,15 @@ export default function DailyQuizPage() {
         return (
             <Container>
                 <ResultOverlay>
-                    <h2>Daily Quiz Complete!</h2>
+                    <h2>Kana Quiz Complete!</h2>
                     <p>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
-                    <p style={{ fontSize: '1rem', opacity: 0.8 }}>Come back tomorrow for a new set of questions!</p>
-                    <Link href="/" style={{ textDecoration: 'none' }}>
-                        <Button>Back to Home</Button>
-                    </Link>
+                    <p style={{ fontSize: '1rem', opacity: 0.8 }}>Keep practicing to improve your reading speed!</p>
+                    <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <Button onClick={generateQuiz}>Play Again</Button>
+                        <Link href="/quiz" style={{ textDecoration: 'none' }}>
+                            <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none' }}>Quiz Hub</Button>
+                        </Link>
+                    </div>
                 </ResultOverlay>
             </Container>
         );
@@ -506,13 +352,7 @@ export default function DailyQuizPage() {
                     Quiz Hub
                 </BackButton>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <DateBadge>{dateString}</DateBadge>
-                    <ResetButton onClick={() => {
-                        // Force Reset: Clear storage for this hour and reload
-                        const key = getHourlyKey();
-                        localStorage.removeItem(`quiz_seed_${key}`);
-                        window.location.reload(); // Simple reload to re-run logic with new random seed
-                    }} title="New Questions">
+                    <ResetButton onClick={generateQuiz} title="New Questions">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                             <path d="M3 3v5h5" />
