@@ -281,6 +281,8 @@ export default function MatchPairsPage() {
             setIsFinished(false);
             setGameOver(false);
             setMatchedPairIds([]);
+            setSelectedKanaPair(null);
+            setSelectedRomajiPair(null);
         } catch (error) {
             console.error("Failed to generate quiz", error);
         } finally {
