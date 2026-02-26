@@ -15,6 +15,15 @@ const notoSansJP = Noto_Sans_JP({
   variable: '--font-noto-sans-jp'
 });
 
+export const viewport = {
+  themeColor: "#4F46E5",
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  shrinkToFit: "no",
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://japan-app.vercel.app'),
   title: {
@@ -48,8 +57,6 @@ export const metadata: Metadata = {
     images: ["/og-image.jpg"],
   },
   manifest: "/manifest.json",
-  themeColor: "#4F46E5",
-  viewport: "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
