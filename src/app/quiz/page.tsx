@@ -167,6 +167,27 @@ export default function QuizHubPage() {
             </PlayButton>
           </CardContent>
         </QuizCard>
+        {/* Reverse Quiz */}
+        <QuizCard href="/reverse-quiz">
+          <CardContent>
+            <IconWrapper $color="244, 63, 94">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="1 4 1 10 7 10" />
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+              </svg>
+            </IconWrapper>
+            <CardTitle>Reverse Quiz</CardTitle>
+            <CardDescription>
+              Given the Romaji reading, select the correct Japanese Kana character. Test your reverse recall!
+            </CardDescription>
+            <PlayButton $color="244, 63, 94">
+              Play Now
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </QuizCard>
 
         {/* Match Pairs */}
         <QuizCard href="/match-pairs">
@@ -183,28 +204,6 @@ export default function QuizHubPage() {
               Find the correct Romaji reading for each Japanese Kana character. Improve your reading speed!
             </CardDescription>
             <PlayButton $color="79, 70, 229">
-              Play Now
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </PlayButton>
-          </CardContent>
-        </QuizCard>
-
-        {/* Reverse Quiz */}
-        <QuizCard href="/reverse-quiz">
-          <CardContent>
-            <IconWrapper $color="244, 63, 94">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="1 4 1 10 7 10" />
-                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-              </svg>
-            </IconWrapper>
-            <CardTitle>Reverse Kana Quiz</CardTitle>
-            <CardDescription>
-              Given the Romaji reading, select the correct Japanese Kana character. Test your reverse recall!
-            </CardDescription>
-            <PlayButton $color="244, 63, 94">
               Play Now
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7" />
