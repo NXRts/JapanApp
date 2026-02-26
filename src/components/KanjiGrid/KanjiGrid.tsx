@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { KanjiCard } from '@/components/Card/KanjiCard';
 
@@ -114,17 +114,17 @@ export function KanjiGrid() {
   // Since we only have the character char in the list (string[]), we can only filter by character match
   // In a real app with full metadata, we could match meaning/reading too. 
   // For now, this effectively "Highlights" or "Finds" the character if it exists in the list for this level.
-  const filteredList = kanjiList.filter(char => char.includes(search));
+  const filteredList = useMemo(() => kanjiList.filter(char => char.includes(search)), [kanjiList, search]);
 
   return (
     <>
       <Title>JLPT {level.toUpperCase()} Kanji</Title>
-      
+
       <Controls>
         {['n5', 'n4', 'n3', 'n2', 'n1'].map((l) => (
-          <LevelButton 
-            key={l} 
-            $active={level === l} 
+          <LevelButton
+            key={l}
+            $active={level === l}
             onClick={() => setLevel(l)}
           >
             {l.toUpperCase()}
@@ -133,10 +133,10 @@ export function KanjiGrid() {
       </Controls>
 
       <div style={{ padding: '0 20px' }}>
-        <SearchInput 
-          placeholder="Search Kanji..." 
+        <SearchInput
+          placeholder="Search Kanji..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)} 
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 

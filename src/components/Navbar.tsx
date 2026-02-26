@@ -4,7 +4,9 @@ import { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
-import { SettingsModal } from './SettingsModal';
+import dynamic from 'next/dynamic';
+
+const SettingsModal = dynamic(() => import('./SettingsModal').then((mod) => mod.SettingsModal), { ssr: false });
 
 const NavRoot = styled.nav`
   position: sticky;

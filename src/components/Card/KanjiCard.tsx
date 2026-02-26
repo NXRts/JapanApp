@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { toRomaji } from 'wanakana';
 import { Card, Inner, Face, Back, ReadingGroup, Label, Readings, ReadingItem, AudioButton, LanguageContainer, LanguageButton, Meanings, MeaningText } from './KanjiCard.styled';
 
@@ -10,7 +10,7 @@ interface ReadingDetail {
   meanings: string[];
 }
 
-export function KanjiCard({ char }: { char: string }) {
+export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
   const [flipped, setFlipped] = useState(false);
   const [detail, setDetail] = useState<ReadingDetail | null>(null);
   const [loading, setLoading] = useState(false);
@@ -166,4 +166,4 @@ export function KanjiCard({ char }: { char: string }) {
       </Inner>
     </Card>
   );
-}
+});
