@@ -375,10 +375,10 @@ export default function MatchPairsPage() {
                             ? `You made ${MAX_MISTAKES} mistakes. Keep practicing!`
                             : `Good job! You matched all pairs with ${mistakes} mistake(s).`}
                     </p>
-                    <div style={{ marginTop: '2rem' }}>
-                        <Button onClick={generateQuiz}>Next Quiz</Button>
-                        <Link href="/" style={{ textDecoration: 'none' }}>
-                            <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)' }}>Back to Home</Button>
+                    <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <Button onClick={generateQuiz}>Play Again</Button>
+                        <Link href="/quiz" style={{ textDecoration: 'none' }}>
+                            <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none' }}>Quiz Hub</Button>
                         </Link>
                     </div>
                 </ResultOverlay>
