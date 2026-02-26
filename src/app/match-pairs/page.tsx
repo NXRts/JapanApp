@@ -221,13 +221,16 @@ export default function MatchPairsPage() {
     const [questions, setQuestions] = useState<MatchPairsQuestion[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [score, setScore] = useState(0);
+    const [mistakes, setMistakes] = useState(0);
     const [isFinished, setIsFinished] = useState(false);
+    const [gameOver, setGameOver] = useState(false); // separate state for losing
 
     const [selectedKanaPair, setSelectedKanaPair] = useState<string | null>(null);
     const [selectedRomajiPair, setSelectedRomajiPair] = useState<string | null>(null);
     const [matchedPairIds, setMatchedPairIds] = useState<string[]>([]);
 
-    const TOTAL_QUESTIONS = 5; // e.g. 5 rounds of matching
+    const TOTAL_QUESTIONS = 1; // 1 round per game
+    const MAX_MISTAKES = 2; // allowance
     const PAIRS_PER_ROUND = 4;
 
     const shuffleArray = <T,>(array: T[]): T[] => {
@@ -274,8 +277,12 @@ export default function MatchPairsPage() {
             setQuestions(newQuestions);
             setCurrentIndex(0);
             setScore(0);
+            setMistakes(0);
             setIsFinished(false);
+            setGameOver(false);
             setMatchedPairIds([]);
+            setSelectedKanaPair(null);
+            setSelectedRomajiPair(null);
         } catch (error) {
             console.error("Failed to generate quiz", error);
         } finally {
@@ -288,28 +295,36 @@ export default function MatchPairsPage() {
     }, [generateQuiz]);
 
     const handleMatchSelection = (id: string, isRomaji: boolean) => {
-        if (isRomaji) {
-            if (selectedRomajiPair === id) setSelectedRomajiPair(null);
-            else setSelectedRomajiPair(id);
-        } else {
-            if (selectedKanaPair === id) setSelectedKanaPair(null);
-            else setSelectedKanaPair(id);
-        }
-    };
+        // Prevent selection if already two selected (wait for timeout)
+        if (selectedKanaPair && selectedRomajiPair) return;
 
-    useEffect(() => {
+        let newKanaPair = selectedKanaPair;
+        let newRomajiPair = selectedRomajiPair;
+
+        if (isRomaji) {
+            newRomajiPair = selectedRomajiPair === id ? null : id;
+            setSelectedRomajiPair(newRomajiPair);
+        } else {
+            newKanaPair = selectedKanaPair === id ? null : id;
+            setSelectedKanaPair(newKanaPair);
+        }
+
         const currentQ = questions[currentIndex];
         if (!currentQ) return;
 
-        if (selectedKanaPair && selectedRomajiPair) {
-            if (selectedKanaPair === selectedRomajiPair) {
-                const newMatched = [...matchedPairIds, selectedKanaPair];
+        if (newKanaPair && newRomajiPair) {
+            // Check for match
+            if (newKanaPair === newRomajiPair) {
+                const newMatched = [...matchedPairIds, newKanaPair];
                 setMatchedPairIds(newMatched);
+
+                // Clear selections immediately
                 setSelectedKanaPair(null);
                 setSelectedRomajiPair(null);
 
+                // Round complete check
                 if (newMatched.length === currentQ.pairs.length) {
-                    setScore(s => s + 1); // point for finishing the round
+                    setScore(s => s + 1);
                     setTimeout(() => {
                         if (currentIndex < TOTAL_QUESTIONS - 1) {
                             setCurrentIndex(i => i + 1);
@@ -317,17 +332,28 @@ export default function MatchPairsPage() {
                         } else {
                             setIsFinished(true);
                         }
-                    }, 1000);
+                    }, 500);
                 }
             } else {
-                // Incorrect match setup
-                setTimeout(() => {
-                    setSelectedKanaPair(null);
-                    setSelectedRomajiPair(null);
-                }, 400);
+                // Incorrect match
+                const newMistakes = mistakes + 1;
+                setMistakes(newMistakes);
+
+                if (newMistakes >= MAX_MISTAKES) {
+                    setTimeout(() => {
+                        setGameOver(true);
+                        setIsFinished(true);
+                    }, 500);
+                } else {
+                    // Flash error before clearing selection
+                    setTimeout(() => {
+                        setSelectedKanaPair(null);
+                        setSelectedRomajiPair(null);
+                    }, 400);
+                }
             }
         }
-    }, [selectedKanaPair, selectedRomajiPair, matchedPairIds, currentIndex, questions]);
+    };
 
     if (loading || questions.length === 0) {
         return (
@@ -343,10 +369,14 @@ export default function MatchPairsPage() {
         return (
             <Container>
                 <ResultOverlay>
-                    <h2>Quiz Complete!</h2>
-                    <p>You matched all <strong>{TOTAL_QUESTIONS * PAIRS_PER_ROUND}</strong> pairs!</p>
+                    <h2>{gameOver ? 'Game Over!' : 'Round Complete!'}</h2>
+                    <p>
+                        {gameOver
+                            ? `You made ${MAX_MISTAKES} mistakes. Keep practicing!`
+                            : `Good job! You matched all pairs with ${mistakes} mistake(s).`}
+                    </p>
                     <div style={{ marginTop: '2rem' }}>
-                        <Button onClick={generateQuiz}>Play Again</Button>
+                        <Button onClick={generateQuiz}>Next Quiz</Button>
                         <Link href="/" style={{ textDecoration: 'none' }}>
                             <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)' }}>Back to Home</Button>
                         </Link>
@@ -371,9 +401,14 @@ export default function MatchPairsPage() {
             </Header>
 
             <QuizCard>
-                <ProgressInfo>
-                    Round {currentIndex + 1} / {TOTAL_QUESTIONS}
-                </ProgressInfo>
+                <div style={{ position: 'absolute', top: 30, right: 30, display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <ProgressInfo style={{ position: 'relative', top: 0, right: 0 }}>
+                        Round {currentIndex + 1} / {TOTAL_QUESTIONS}
+                    </ProgressInfo>
+                    <div style={{ color: mistakes >= MAX_MISTAKES - 1 ? '#ef4444' : 'var(--text-secondary)', fontWeight: 600, fontSize: '0.95rem' }}>
+                        Mistakes: {mistakes} / {MAX_MISTAKES}
+                    </div>
+                </div>
 
                 <h3 style={{ marginBottom: '2rem', color: 'var(--text-secondary)' }}>Find the correct pairings</h3>
 
