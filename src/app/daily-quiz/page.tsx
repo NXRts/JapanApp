@@ -499,11 +499,11 @@ export default function DailyQuizPage() {
     return (
         <Container>
             <Header>
-                <BackButton href="/">
+                <BackButton href="/quiz">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                     </svg>
-                    Home
+                    Quiz Hub
                 </BackButton>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', justifyContent: 'space-between' }}>
                     <DateBadge>{dateString}</DateBadge>
