@@ -505,7 +505,7 @@ export default function DailyQuizPage() {
                     </svg>
                     Quiz Hub
                 </BackButton>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <DateBadge>{dateString}</DateBadge>
                     <ResetButton onClick={() => {
                         // Force Reset: Clear storage for this hour and reload
