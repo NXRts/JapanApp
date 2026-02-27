@@ -15,6 +15,10 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background: radial-gradient(circle at center, rgba(245, 158, 11, 0.05) 0%, transparent 70%);
+
+  @media (max-width: 600px) {
+    padding: 2rem 1rem;
+  }
 `;
 
 const Header = styled.div`
@@ -24,6 +28,11 @@ const Header = styled.div`
   width: 100%;
   margin-bottom: 2rem;
   max-width: 800px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 const BackButton = styled(Link)`
@@ -111,6 +120,11 @@ const StatsRow = styled.div`
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-secondary);
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const CardsGrid = styled.div`
@@ -119,8 +133,9 @@ const CardsGrid = styled.div`
   gap: 1rem;
   
   @media (max-width: 600px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
+    /* To keep 16 cards (8 pairs) we should stick to 4x4 even on mobile or make it tighter */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
   }
 `;
 
@@ -155,8 +170,9 @@ const CardFace = styled.div`
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   
   @media (max-width: 600px) {
-    font-size: 2rem;
-    border-radius: 12px;
+    font-size: 1.75rem; 
+    border-radius: 8px; /* Tighter rounding for smaller cards */
+    border-width: 1px;
   }
 `;
 
@@ -171,6 +187,14 @@ const CardFront = styled(CardFace)`
     font-size: 2.5rem;
     font-weight: 900;
     opacity: 0.5;
+
+    @media (max-width: 600px) {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    border-width: 1px;
   }
 `;
 
