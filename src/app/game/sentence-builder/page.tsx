@@ -319,10 +319,12 @@ const Header = styled.div`
   width: 100%;
   margin-bottom: 2rem;
   max-width: 800px;
+  position: relative;
 
   @media (max-width: 600px) {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
+    align-items: stretch;
   }
 `;
 
@@ -337,6 +339,7 @@ const BackButton = styled(Link)`
   padding: 0.5rem 1rem;
   border-radius: 999px;
   background: rgba(255,255,255,0.05);
+  align-self: flex-start;
 
   &:hover {
     color: var(--primary);
@@ -358,6 +361,12 @@ const HeaderActions = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    justify-content: center;
+    position: relative;
+  }
 `;
 
 const RefreshButton = styled.button`
@@ -379,6 +388,11 @@ const RefreshButton = styled.button`
 
   &:active {
     transform: rotate(360deg) scale(0.9);
+  }
+
+  @media (max-width: 600px) {
+    position: absolute;
+    right: 0;
   }
 `;
 
@@ -433,6 +447,11 @@ const TargetSentenceBox = styled.div`
   position: relative;
   text-align: center;
   margin-bottom: 2rem;
+
+  @media (max-width: 600px) {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const ShowRomajiToggle = styled.div`
@@ -499,7 +518,7 @@ const TranslationText = styled.h2`
   margin-bottom: 0.5rem;
 
   @media (max-width: 600px) {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 `;
 
@@ -507,6 +526,10 @@ const RomajiHint = styled.p`
   color: var(--text-secondary);
   font-size: 0.95rem;
   font-style: italic;
+
+  @media (max-width: 600px) {
+    font-size: 0.85rem;
+  }
 `;
 
 const DropZoneWrapper = styled.div<{ $isError?: boolean; $isSuccess?: boolean }>`
@@ -529,6 +552,12 @@ const DropZoneWrapper = styled.div<{ $isError?: boolean; $isSuccess?: boolean }>
   gap: 1rem;
   margin-bottom: 2rem;
   transition: all 0.3s ease;
+
+  @media (max-width: 600px) {
+    padding: 1rem;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const WordChipWrapper = styled.div<{ $isDragging?: boolean }>`
@@ -550,17 +579,31 @@ const WordChipWrapper = styled.div<{ $isDragging?: boolean }>`
   &:active {
     cursor: grabbing;
   }
+
+  @media (max-width: 600px) {
+    padding: 0.5rem 0.8rem;
+    border-radius: 10px;
+  }
 `;
 
 const ChipKana = styled.div`
   font-size: 1.25rem;
   font-weight: 700;
+
+  @media (max-width: 600px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const ChipRomaji = styled.div<{ $isDragging?: boolean }>`
   font-size: 0.8rem;
   margin-top: 0.25rem;
   color: ${({ $isDragging }) => $isDragging ? 'rgba(255,255,255,0.8)' : 'var(--text-secondary)'};
+
+  @media (max-width: 600px) {
+    font-size: 0.7rem;
+    margin-top: 0.15rem;
+  }
 `;
 
 const ActionButton = styled.button<{ $variant?: 'primary' | 'success' }>`
