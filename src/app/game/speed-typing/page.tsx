@@ -16,6 +16,10 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+
+  @media (max-width: 600px) {
+    padding: 2rem 1rem;
+  }
 `;
 
 const GameCard = styled.div`
@@ -45,6 +49,11 @@ const Header = styled.div`
   width: 100%;
   margin-bottom: 2rem;
   max-width: 600px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 const BackButton = styled(Link)`
@@ -83,6 +92,11 @@ const StatsRow = styled.div`
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-secondary);
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const KanaDisplay = styled.div`
@@ -91,6 +105,11 @@ const KanaDisplay = styled.div`
   margin: 2rem 0;
   color: var(--foreground);
   text-shadow: 0 10px 30px rgba(0,0,0,0.1);
+
+  @media (max-width: 600px) {
+    font-size: 4rem;
+    margin: 1.5rem 0;
+  }
 `;
 
 const Input = styled.input`
@@ -108,6 +127,11 @@ const Input = styled.input`
     outline: none;
     border-color: #4f46e5;
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+  }
+
+  @media (max-width: 600px) {
+    font-size: 1.25rem;
+    padding: 0.875rem 1rem;
   }
 `;
 
