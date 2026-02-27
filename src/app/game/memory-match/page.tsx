@@ -57,7 +57,7 @@ const TitleBadge = styled.div`
   gap: 0.75rem;
 `;
 
-const RefreshButton = styled.button`
+const RefreshButton = styled.button<{ $isRefreshing?: boolean }>`
   background: transparent;
   border: none;
   cursor: pointer;
@@ -65,14 +65,21 @@ const RefreshButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2px;
+  padding: 4px; /* Slightly larger hit area */
   border-radius: 50%;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* smoother transition */
   
   &:hover {
     background: rgba(245, 158, 11, 0.2);
-    transform: rotate(180deg);
+    /* Subtle hover scale, we don't spin on hover anymore for a cleaner click effect */
+    transform: scale(1.1); 
   }
+
+  /* Spin when active/refreshing */
+  ${({ $isRefreshing }) => $isRefreshing && `
+    transform: rotate(360deg) scale(1.1);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  `}
 
   svg {
     width: 18px;
@@ -221,6 +228,7 @@ export default function MemoryMatchPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showRomaji, setShowRomaji] = useState(false);
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const PAIRS_COUNT = 8; // Number of pairs to match (16 cards total)
   const MAX_MOVES = 30; // Limit when Easy Mode (showRomaji) is on
@@ -236,6 +244,7 @@ export default function MemoryMatchPage() {
 
   const generateGame = useCallback(async () => {
     setIsLoading(true);
+    setIsRefreshing(true);
 
     try {
       const res = await fetch('/api/kana');
@@ -275,8 +284,12 @@ export default function MemoryMatchPage() {
       setMoves(0);
       setMatches(0);
       setGameStatus('playing');
+
+      // Reset rotation animation after a short delay
+      setTimeout(() => setIsRefreshing(false), 600);
     } catch (error) {
       console.error("Failed to fetch kana for Memory Match", error);
+      setIsRefreshing(false);
     } finally {
       setIsLoading(false);
     }
@@ -364,7 +377,11 @@ export default function MemoryMatchPage() {
         </BackButton>
         <TitleBadge>
           Memory Match
-          <RefreshButton onClick={generateGame} title="Restart Game">
+          <RefreshButton
+            $isRefreshing={isRefreshing}
+            onClick={generateGame}
+            title="Restart Game"
+          >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
               <path d="M3 3v5h5" />
