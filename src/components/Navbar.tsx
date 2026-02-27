@@ -218,6 +218,9 @@ export function Navbar() {
               <StyledLink href="/quiz" $active={pathname.startsWith('/quiz')}>Quiz</StyledLink>
             </NavItem>
             <NavItem>
+              <StyledLink href="/game" $active={pathname.startsWith('/game')}>Game</StyledLink>
+            </NavItem>
+            <NavItem>
               <StyledLink href="/blog" $active={pathname.startsWith('/blog')}>Blog</StyledLink>
             </NavItem>
             {/* <NavItem>
@@ -263,6 +266,10 @@ export function Navbar() {
           </MobileLink>
           <MobileLink href="/quiz" $active={pathname.startsWith('/quiz')} onClick={() => setIsMobileMenuOpen(false)}>
             Quiz
+            <span>→</span>
+          </MobileLink>
+          <MobileLink href="/game" $active={pathname.startsWith('/game')} onClick={() => setIsMobileMenuOpen(false)}>
+            Game
             <span>→</span>
           </MobileLink>
           <MobileLink href="/blog" $active={pathname.startsWith('/blog')} onClick={() => setIsMobileMenuOpen(false)}>
