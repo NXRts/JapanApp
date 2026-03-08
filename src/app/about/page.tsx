@@ -17,6 +17,10 @@ const HeroSection = styled.section`
   justify-content: center;
   text-align: center;
   padding: 6rem 1rem 4rem;
+  
+  @media (max-width: 768px) {
+    padding: 4rem 1rem 3rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -217,6 +221,10 @@ const TextSection = styled.section`
   background: var(--surface);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+  
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+  }
 `;
 
 const ContentGrid = styled.div`
@@ -228,7 +236,7 @@ const ContentGrid = styled.div`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2rem;
   }
 `;
 
@@ -255,6 +263,11 @@ const BlockTitle = styled.h2`
     background: var(--primary);
     border-radius: 2px;
   }
+  
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const BlockParagraph = styled.p`
@@ -265,6 +278,12 @@ const BlockParagraph = styled.p`
 
   &:last-child {
     margin-bottom: 0;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
   }
 `;
 
