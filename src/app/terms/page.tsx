@@ -8,6 +8,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 8rem 2rem 4rem;
   color: var(--foreground);
+  
+  @media (max-width: 768px) {
+    padding: 6rem 1.5rem 3rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -18,6 +22,10 @@ const Title = styled.h1`
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const LastUpdated = styled.p`
@@ -25,6 +33,10 @@ const LastUpdated = styled.p`
   color: var(--text-secondary);
   font-size: 0.9rem;
   margin-bottom: 3rem;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 2rem;
+  }
 `;
 
 const Section = styled.section`
@@ -48,6 +60,13 @@ const SectionTitle = styled.h2`
     border-radius: 2px;
     display: inline-block;
   }
+  
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+    &::before {
+      height: 20px;
+    }
+  }
 `;
 
 const Paragraph = styled.p`
@@ -64,6 +83,11 @@ const Paragraph = styled.p`
       text-decoration: underline;
     }
   }
+  
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
 `;
 
 const List = styled.ul`
@@ -72,6 +96,11 @@ const List = styled.ul`
   margin-bottom: 1rem;
   color: var(--text-secondary);
   line-height: 1.8;
+  
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
 `;
 
 const ListItem = styled.li`
