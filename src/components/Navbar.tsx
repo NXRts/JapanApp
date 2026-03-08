@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
@@ -38,7 +38,7 @@ const Logo = styled(Link)`
   align-items: center;
   gap: 0.5rem;
   transition: opacity 0.2s;
-  z-index: 101; /* Ensure logo stays above mobile menu if needed, though menu usually covers all */
+  z-index: 102; /* High enough to sit securely above the mobile menu */
 
   &:hover {
     opacity: 0.8;
@@ -151,21 +151,22 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
-  background: var(--background);
-  z-index: 100;
-  padding: 6rem 2rem 2rem; /* Top padding to account for header area */
+  height: 100dvh;
+  background: var(--background); /* Fallback to a solid background */
+  z-index: 101;
+  padding: 6rem 2rem 2rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform: ${({ $isOpen }) => ($isOpen ? 'translateY(0)' : 'translateY(-100%)')};
   opacity: ${({ $isOpen }) => ($isOpen ? '1' : '0')};
   pointer-events: ${({ $isOpen }) => ($isOpen ? 'all' : 'none')};
+  overflow-y: auto;
   
+  /* Force a completely solid, dark background in modern browsers to prevent overlap bleed */
   @supports (backdrop-filter: blur(20px)) {
-    background: var(--navbar-bg);
-    backdrop-filter: blur(20px);
+    background: #0f172a; /* Slate 900 for a solid dark theme */
   }
   
   @media (min-width: 769px) {
@@ -174,9 +175,9 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
 `;
 
 const MobileLink = styled(Link) <{ $active?: boolean }>`
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: ${({ $active }) => ($active ? '700' : '600')};
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--foreground)')};
+  color: ${({ $active }) => ($active ? 'var(--primary-light)' : '#f1f5f9')}; /* Use light text on dark bg */
   text-decoration: none;
   padding: 0.5rem 0;
   transition: all 0.2s;
@@ -186,7 +187,7 @@ const MobileLink = styled(Link) <{ $active?: boolean }>`
   border-bottom: 1px solid var(--navbar-border);
   
   &:hover {
-    color: var(--primary);
+    color: var(--primary-light);
     padding-left: 10px;
   }
 `;
@@ -195,6 +196,19 @@ export function Navbar() {
   const pathname = usePathname();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
 
   // Close menu when route changes (optional, but good for UX if Link doesn't fully reload)
   // We handle it via onClick on Links usually
@@ -276,10 +290,10 @@ export function Navbar() {
             Blog
             <span>→</span>
           </MobileLink>
-          <MobileLink href="/careers" $active={pathname === '/careers'} onClick={() => setIsMobileMenuOpen(false)}>
+          {/* <MobileLink href="/careers" $active={pathname === '/careers'} onClick={() => setIsMobileMenuOpen(false)}>
             Careers
             <span>→</span>
-          </MobileLink>
+          </MobileLink> */}
           <MobileLink href="/about" $active={pathname === '/about'} onClick={() => setIsMobileMenuOpen(false)}>
             About
             <span>→</span>
