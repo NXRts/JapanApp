@@ -212,6 +212,62 @@ const PrimaryButton = styled(Link)`
   }
 `;
 
+const TextSection = styled.section`
+  padding: 4rem 2rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+`;
+
+const ContentGrid = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+`;
+
+const TextBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const BlockTitle = styled.h2`
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--foreground);
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
+`;
+
+const BlockParagraph = styled.p`
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
 export default function AboutPage() {
   return (
     <Container>
@@ -223,15 +279,43 @@ export default function AboutPage() {
           Your ultimate companion for mastering the Japanese writing system. 
           Our mission is to make learning Kanji, Hiragana, and Katakana accessible, interactive, and aesthetically pleasing.
         </Subtitle>
-        <Subtitle style={{ marginBottom: 0 }}>
-          Whether you are studying for the JLPT N5 or aiming for advanced N1 proficiency, 
-          our tools are designed to support your journey by combining modern web technologies 
-          with effective learning patterns to create a seamless experience.
-        </Subtitle>
         <PrimaryButton href="/practice">
           Start Learning Now
         </PrimaryButton>
       </HeroSection>
+
+      <TextSection>
+        <ContentGrid>
+          <TextBlock>
+            <BlockTitle>Our Story</BlockTitle>
+            <BlockParagraph>
+              The Japanese language is incredibly rich and challenging, especially when it comes to mastering its unique writing systems. 
+              Japan Learning App was born out of a passion for the language and a desire to build a tool that feels less like a chore and more 
+              like a natural part of your daily routine.
+            </BlockParagraph>
+            <BlockParagraph>
+              We noticed that many traditional learning resources were either too rigid or visually unappealing, making the 
+              process of memorizing thousands of characters daunting. We wanted to build something different&mdash;a modern, beautiful, 
+              and highly interactive platform tailored for learners at all levels, from complete beginners tackling Hiragana to advanced students 
+              preparing for the JLPT N1.
+            </BlockParagraph>
+          </TextBlock>
+          
+          <TextBlock>
+            <BlockTitle>Our Learning Approach</BlockTitle>
+            <BlockParagraph>
+              We believe that effective learning comes from consistent, engaging practice. That&#39;s why we&#39;ve built our platform around 
+              proven educational methods. Our interactive flashcards employ spaced repetition principles and randomized modes to 
+              ensure that characters move into your long-term memory.
+            </BlockParagraph>
+            <BlockParagraph>
+              Beyond rote memorization, we emphasize context and culture. With features like stroke-order animations, native audio pronunciation, 
+              and our immersive Japanese Culture Blog, we provide a holistic learning experience. We don&#39;t just want you to pass a test; 
+              we want you to connect with the language and the culture it represents.
+            </BlockParagraph>
+          </TextBlock>
+        </ContentGrid>
+      </TextSection>
 
       <GridSection>
         <SectionTitle><span>Key Features</span></SectionTitle>
