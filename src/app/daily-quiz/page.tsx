@@ -237,7 +237,10 @@ const shuffleArray = <T,>(array: T[]): T[] => {
     return newArray;
 };
 
+import { useProgress } from '@/context/ProgressContext';
+
 export default function KanaQuizPage() {
+    const { updateMastery, recordQuizResult } = useProgress();
     const [loading, setLoading] = useState(true);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -298,9 +301,13 @@ export default function KanaQuizPage() {
         if (selectedOption) return;
         setSelectedOption(option);
 
-        if (option === questions[currentIndex].answer) {
+        const isCorrect = option === questions[currentIndex].answer;
+        if (isCorrect) {
             setScore(s => s + 1);
         }
+
+        // Record individual mastery
+        updateMastery(questions[currentIndex].char, isCorrect);
 
         setTimeout(() => {
             if (currentIndex < TOTAL_QUESTIONS - 1) {
@@ -308,6 +315,8 @@ export default function KanaQuizPage() {
                 setSelectedOption(null);
             } else {
                 setIsFinished(true);
+                // Record overall quiz result
+                recordQuizResult(score + (isCorrect ? 1 : 0), TOTAL_QUESTIONS, 'daily-quiz');
             }
         }, 1500);
     };

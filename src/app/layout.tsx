@@ -64,6 +64,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { ProgressProvider } from "@/context/ProgressContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -73,15 +75,17 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning className={`${inter.className} ${notoSansJP.variable}`}>
         <ThemeProvider>
-          <StyledRegistry>
-            <Navbar />
-            <main style={{ flex: 1, paddingBottom: '40px', position: 'relative' }}>
-              <BackToHome />
-              {children}
-            </main>
-            <Footer />
-            <ScrollToTop />
-          </StyledRegistry>
+          <ProgressProvider>
+            <StyledRegistry>
+              <Navbar />
+              <main style={{ flex: 1, paddingBottom: '40px', position: 'relative' }}>
+                <BackToHome />
+                {children}
+              </main>
+              <Footer />
+              <ScrollToTop />
+            </StyledRegistry>
+          </ProgressProvider>
         </ThemeProvider>
       </body>
     </html>
