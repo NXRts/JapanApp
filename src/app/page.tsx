@@ -152,9 +152,12 @@ const SecondaryButton = styled(Link)`
   
   @media (max-width: 768px) {
     width: 100%;
-    padding: 1.25rem 2rem;
-    font-size: 1.1rem;
+    padding: 1.25rem 1.5rem;
+    font-size: 1rem;
     background: rgba(255, 255, 255, 0.05);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `;
 

@@ -171,7 +171,11 @@ const StatsSummary = styled.div`
   max-width: 900px;
   margin-bottom: 4rem;
   
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 600px) {
     grid-template-columns: 1fr;
     gap: 1rem;
     margin-bottom: 3rem;
@@ -194,6 +198,10 @@ const StatValue = styled.div`
   font-size: 2rem;
   font-weight: 800;
   color: var(--primary);
+  
+  @media (max-width: 480px) {
+    font-size: 1.75rem;
+  }
 `;
 
 const StatLabel = styled.div`

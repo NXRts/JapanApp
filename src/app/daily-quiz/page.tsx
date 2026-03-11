@@ -27,9 +27,18 @@ const Header = styled.div`
 
   @media (max-width: 600px) {
     flex-direction: column;
-    gap: 1rem;
-    align-items: flex-start;
+    gap: 1.5rem;
+    align-items: center;
+    text-align: center;
     margin-bottom: 2rem;
+  }
+`;
+
+const HeaderRight = styled.div`
+  text-align: right;
+  
+  @media (max-width: 600px) {
+    text-align: center;
   }
 `;
 
@@ -379,14 +388,14 @@ export default function KanaQuizPage() {
                     </svg>
                     Quizzes
                 </BackButton>
-                <div style={{ textAlign: 'right' }}>
+                <HeaderRight>
                     <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                         Official Daily Challenge
                     </div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                         {new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
                     </div>
-                </div>
+                </HeaderRight>
             </Header>
 
             <QuizCard>
@@ -395,12 +404,14 @@ export default function KanaQuizPage() {
                         position: 'absolute', 
                         top: 0, left: 0, right: 0, 
                         background: 'rgba(16, 185, 129, 0.1)', 
-                        padding: '0.5rem', 
-                        fontSize: '0.75rem', 
-                        fontWeight: 700, 
-                        color: '#10b981'
+                        padding: '0.75rem 0.5rem', 
+                        fontSize: '0.7rem', 
+                        fontWeight: 800, 
+                        color: '#10b981',
+                        letterSpacing: '0.05em',
+                        zIndex: 10
                     }}>
-                        ✓ YOU ALREADY COMPLETED TODAY'S CHALLENGE
+                        ✓ TODAY'S CHALLENGE COMPLETED
                     </div>
                 )}
                 <ProgressInfo>
