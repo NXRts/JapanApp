@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { toRomaji } from 'wanakana';
+import { SeededRandom, getTodaySeed } from '@/utils/seededRandom';
+import { useProgress } from '@/context/ProgressContext';
 
 // Styled Components (Reusing similar style to KanaQuizPage for consistency)
 const Container = styled.div`
@@ -237,50 +239,62 @@ const shuffleArray = <T,>(array: T[]): T[] => {
     return newArray;
 };
 
-import { useProgress } from '@/context/ProgressContext';
-
 export default function KanaQuizPage() {
-    const { updateMastery, recordQuizResult } = useProgress();
+    const { progress, updateMastery, recordQuizResult } = useProgress();
     const [loading, setLoading] = useState(true);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [score, setScore] = useState(0);
     const [isFinished, setIsFinished] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
 
     const TOTAL_QUESTIONS = 10;
+    const TODAY_SEED = getTodaySeed();
 
     const generateQuiz = useCallback(async () => {
         setLoading(true);
         try {
+            // Check if already completed today
+            const today = new Date().toISOString().split('T')[0];
+            const completedToday = progress.quizHistory.some(
+                q => q.date.split('T')[0] === today && q.type === 'daily-challenge'
+            );
+            setIsAlreadyCompleted(completedToday);
+
             // Fetch Kana data
             const res = await fetch('/api/kana?type=all');
             const kanaData: string[] = await res.json();
 
-            // Create a pool of UNIQUE Romaji to prevent duplicate wrong answers
+            // Initialize seeded random for TODAY
+            const rng = new SeededRandom(TODAY_SEED);
+
+            // Create a pool of UNIQUE Romaji
             const uniqueRomajiPool = Array.from(new Set(kanaData.map(c => toRomaji(c))));
 
             const kanaQuestions: Question[] = [];
-            const shuffledKana = shuffleArray(kanaData);
+            
+            // Seeded shuffle of all kana to pick selection
+            const shuffledKana = rng.safeShuffle(kanaData);
             const selectedKana = shuffledKana.slice(0, TOTAL_QUESTIONS);
 
             selectedKana.forEach(char => {
                 const correctRomaji = toRomaji(char);
 
-                // Generate distractors using UNIQUE Romaji pool
+                // Generate distractors using seeded selection
                 const availableDistractors = uniqueRomajiPool.filter(r => r !== correctRomaji);
-                const shuffledDistractors = shuffleArray(availableDistractors);
+                const shuffledDistractors = rng.safeShuffle(availableDistractors);
                 const distractors = shuffledDistractors.slice(0, 3);
 
                 kanaQuestions.push({
                     char,
                     answer: correctRomaji,
-                    options: shuffleArray([...distractors, correctRomaji]),
+                    options: rng.safeShuffle([...distractors, correctRomaji]),
                     type: 'kana'
                 });
             });
 
-            setQuestions(shuffleArray(kanaQuestions));
+            setQuestions(kanaQuestions);
             setCurrentIndex(0);
             setScore(0);
             setIsFinished(false);
@@ -291,7 +305,7 @@ export default function KanaQuizPage() {
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [TODAY_SEED, progress.quizHistory, TOTAL_QUESTIONS]);
 
     useEffect(() => {
         generateQuiz();
@@ -315,8 +329,8 @@ export default function KanaQuizPage() {
                 setSelectedOption(null);
             } else {
                 setIsFinished(true);
-                // Record overall quiz result
-                recordQuizResult(score + (isCorrect ? 1 : 0), TOTAL_QUESTIONS, 'daily-quiz');
+                // Record overall quiz result - label as daily-challenge
+                recordQuizResult(score + (isCorrect ? 1 : 0), TOTAL_QUESTIONS, 'daily-challenge');
             }
         }, 1500);
     };
@@ -325,7 +339,7 @@ export default function KanaQuizPage() {
         return (
             <Container>
                 <div style={{ textAlign: 'center', fontSize: '1.25rem', color: 'var(--text-secondary)' }}>
-                    Generating Daily Quiz...
+                    Loading Today's Challenge...
                 </div>
             </Container>
         );
@@ -335,13 +349,18 @@ export default function KanaQuizPage() {
         return (
             <Container>
                 <ResultOverlay>
-                    <h2>Kana Quiz Complete!</h2>
-                    <p>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
-                    <p style={{ fontSize: '1rem', opacity: 0.8 }}>Keep practicing to improve your reading speed!</p>
-                    <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <Button onClick={generateQuiz}>Play Again</Button>
+                    <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🏆</div>
+                    <h2>Daily Challenge Complete!</h2>
+                    <p style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+                        {score === TOTAL_QUESTIONS ? "Perfect! You're mastering Japanese!" : "Great effort! Come back tomorrow for a new set."}
+                    </p>
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <Link href="/practice" style={{ textDecoration: 'none' }}>
+                            <Button>Back to Practice</Button>
+                        </Link>
                         <Link href="/quiz" style={{ textDecoration: 'none' }}>
-                            <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none' }}>Quiz Hub</Button>
+                            <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none' }}>Other Quizzes</Button>
                         </Link>
                     </div>
                 </ResultOverlay>
@@ -358,21 +377,32 @@ export default function KanaQuizPage() {
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                     </svg>
-                    Quiz Hub
+                    Quizzes
                 </BackButton>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <ResetButton onClick={generateQuiz} title="New Questions">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                            <path d="M3 3v5h5" />
-                            <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
-                            <path d="M16 21h5v-5" />
-                        </svg>
-                    </ResetButton>
+                <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                        Official Daily Challenge
+                    </div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                        {new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </div>
                 </div>
             </Header>
 
             <QuizCard>
+                {isAlreadyCompleted && currentIndex === 0 && (
+                    <div style={{ 
+                        position: 'absolute', 
+                        top: 0, left: 0, right: 0, 
+                        background: 'rgba(16, 185, 129, 0.1)', 
+                        padding: '0.5rem', 
+                        fontSize: '0.75rem', 
+                        fontWeight: 700, 
+                        color: '#10b981'
+                    }}>
+                        ✓ YOU ALREADY COMPLETED TODAY'S CHALLENGE
+                    </div>
+                )}
                 <ProgressInfo>
                     {currentIndex + 1} / {TOTAL_QUESTIONS}
                 </ProgressInfo>

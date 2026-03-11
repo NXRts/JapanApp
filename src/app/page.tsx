@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
+import { useProgress } from '@/context/ProgressContext';
 
 const Container = styled.div`
   display: flex;
@@ -726,6 +727,12 @@ const NewsDescription = styled.p`
 `;
 
 export default function Home() {
+  const { progress } = useProgress();
+  const today = new Date().toISOString().split('T')[0];
+  const isDailyCompleted = progress.quizHistory.some(
+    q => q.date.split('T')[0] === today && q.type === 'daily-challenge'
+  );
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -760,7 +767,16 @@ export default function Home() {
             <PrimaryButton href="/kana">Hiragana & Katakana</PrimaryButton>
             <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
             <SecondaryButton href="/practice">Start Practicing</SecondaryButton>
-            <SecondaryButton href="/daily-quiz" style={{ borderColor: '#10b981', color: '#10b981' }}>Daily Quiz</SecondaryButton>
+            <SecondaryButton 
+              href="/daily-quiz" 
+              style={{ 
+                borderColor: isDailyCompleted ? 'var(--border)' : '#10b981', 
+                color: isDailyCompleted ? 'var(--text-secondary)' : '#10b981',
+                opacity: isDailyCompleted ? 0.8 : 1
+              }}
+            >
+              {isDailyCompleted ? '✓ Daily Quiz Done' : 'Daily Quiz'}
+            </SecondaryButton>
           </ButtonGroup>
         </HeroSection>
 
