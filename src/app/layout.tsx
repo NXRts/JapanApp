@@ -79,7 +79,6 @@ export default function RootLayout({
             <StyledRegistry>
               <Navbar />
               <main style={{ flex: 1, paddingBottom: '40px', position: 'relative' }}>
-                <BackToHome />
                 {children}
               </main>
               <Footer />
