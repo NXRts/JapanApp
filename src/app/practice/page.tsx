@@ -206,8 +206,13 @@ const StatLabel = styled.div`
 
 export default function PracticePage() {
   const { progress } = useProgress();
+  const today = new Date().toISOString().split('T')[0];
+  const isDailyCompleted = progress.quizHistory.some(
+    q => q.date.split('T')[0] === today && q.type === 'daily-challenge'
+  );
   
   const masteredCount = Object.values(progress.mastery).filter(m => m.correct > m.incorrect * 2 && m.correct > 3).length;
+// ... (rest of the component)
   const learningCount = Object.keys(progress.mastery).length;
 
   return (
@@ -235,6 +240,16 @@ export default function PracticePage() {
       </StatsSummary>
 
       <Grid>
+        <Card href="/daily-quiz">
+          <IconWrapper>📅</IconWrapper>
+          <CardTitle>Daily Challenge</CardTitle>
+          <CardDescription>
+            {isDailyCompleted 
+              ? "✓ You've completed today's official challenge! Come back tomorrow." 
+              : "Take today's official 10-question challenge and maintain your streak."}
+          </CardDescription>
+        </Card>
+
         <Card href="/practice/kana">
           <IconWrapper>あ</IconWrapper>
           <CardTitle>Kana Quiz</CardTitle>
