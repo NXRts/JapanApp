@@ -82,14 +82,14 @@ const QuizCard = styled.div`
 
 const ProgressInfo = styled.div`
   position: absolute;
-  top: 30px;
+  top: 45px;
   right: 30px;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-secondary);
 
   @media (max-width: 600px) {
-    top: 20px;
+    top: 40px;
     right: 20px;
     font-size: 0.85rem;
   }
@@ -382,11 +382,11 @@ export default function KanaQuizPage() {
     return (
         <Container>
             <Header>
-                <BackButton href="/quiz">
+                <BackButton href="/practice">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                     </svg>
-                    Quizzes
+                    Practice
                 </BackButton>
                 <HeaderRight>
                     <div style={{ fontSize: '0.85rem', fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
