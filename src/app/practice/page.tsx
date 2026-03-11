@@ -161,16 +161,78 @@ const CardDescription = styled.p`
   font-size: 1.05rem;
 `;
 
+import { useProgress } from '@/context/ProgressContext';
+
+const StatsSummary = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 4rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+`;
+
+const StatCard = styled.div`
+  background: var(--surface);
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: var(--shadow-sm);
+`;
+
+const StatValue = styled.div`
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--primary);
+`;
+
+const StatLabel = styled.div`
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+`;
+
 export default function PracticePage() {
+  const { progress } = useProgress();
+  
+  const masteredCount = Object.values(progress.mastery).filter(m => m.correct > m.incorrect * 2 && m.correct > 3).length;
+  const learningCount = Object.keys(progress.mastery).length;
+
   return (
     <Container>
       <Header>
         <Title>Practice <span>Mode</span></Title>
         <Subtitle>
           Reinforce your learning with interactive quizzes and writing exercises.
-          <br />Choose a category to get started.
         </Subtitle>
       </Header>
+
+      <StatsSummary>
+        <StatCard>
+          <StatValue>{progress.streak} 🔥</StatValue>
+          <StatLabel>Daily Streak</StatLabel>
+        </StatCard>
+        <StatCard>
+          <StatValue>{masteredCount}</StatValue>
+          <StatLabel>Mastered Characters</StatLabel>
+        </StatCard>
+        <StatCard>
+          <StatValue>{learningCount}</StatValue>
+          <StatLabel>Characters Learning</StatLabel>
+        </StatCard>
+      </StatsSummary>
 
       <Grid>
         <Card href="/practice/kana">
