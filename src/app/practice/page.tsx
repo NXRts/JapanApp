@@ -6,14 +6,11 @@ import styled from 'styled-components';
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 8rem 2rem 4rem;
+  padding: 4rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Premium radial background similar to home */
-  background: radial-gradient(circle at top center, rgba(79, 70, 229, 0.1) 0%, transparent 60%);
-  margin-top: -80px; /* Pull up into navbar area */
 
   @media (max-width: 768px) {
     padding: 8rem 1rem 4rem; /* Increased top/bottom padding */
