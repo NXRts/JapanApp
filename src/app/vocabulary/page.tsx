@@ -1,8 +1,9 @@
 'use client';
 
 import styled from 'styled-components';
-import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
 import { useState } from 'react';
+import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
+import { n4Vocabulary } from '@/data/jlpt/n4/vocabulary';
 
 const Container = styled.div`
   max-width: 1000px;
@@ -14,22 +15,50 @@ const Container = styled.div`
 const Header = styled.div`
   margin-bottom: 4rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
 `;
 
 const Title = styled.h1`
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 800;
-  margin-bottom: 1rem;
   background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin: 0;
 `;
 
 const Subtitle = styled.p`
   font-size: 1.25rem;
   color: var(--text-secondary);
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0;
+  line-height: 1.6;
+`;
+
+const LevelSelector = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  justify-content: center;
+`;
+
+const LevelButton = styled.button<{ $active: boolean }>`
+  padding: 0.75rem 2rem;
+  border-radius: 99px;
+  border: 1px solid ${({ $active }) => ($active ? 'var(--primary)' : 'var(--border)')};
+  background: ${({ $active }) => ($active ? 'rgba(79, 70, 229, 0.1)' : 'var(--surface)')};
+  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
 `;
 
 const VocabList = styled.div`
@@ -128,7 +157,10 @@ const ExampleBox = styled.div`
 `;
 
 export default function VocabularyPage() {
+  const [activeLevel, setActiveLevel] = useState<'N5' | 'N4'>('N5');
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const currentData = activeLevel === 'N5' ? n5Vocabulary : n4Vocabulary;
 
   const toggleExample = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
@@ -139,12 +171,27 @@ export default function VocabularyPage() {
       <Header>
         <Title>Vocabulary</Title>
         <Subtitle>
-          Essential words to build your Japanese foundation.
+          Essential words to build your Japanese foundation. Select your target JLPT level.
         </Subtitle>
       </Header>
 
+      <LevelSelector>
+        <LevelButton 
+          $active={activeLevel === 'N5'} 
+          onClick={() => setActiveLevel('N5')}
+        >
+          JLPT N5
+        </LevelButton>
+        <LevelButton 
+          $active={activeLevel === 'N4'} 
+          onClick={() => setActiveLevel('N4')}
+        >
+          JLPT N4
+        </LevelButton>
+      </LevelSelector>
+
       <VocabList>
-        {n5Vocabulary.map((item) => (
+        {currentData.map((item) => (
           <VocabCard key={item.id}>
             <Word>{item.word}</Word>
             <Reading>
