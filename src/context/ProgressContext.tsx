@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { calculateNextSRS, SRSItem } from '@/lib/srs';
 
 interface MasteryRecord {
   correct: number;
@@ -18,6 +19,7 @@ interface ProgressData {
     total: number;
     type: string;
   }[];
+  srs: Record<string, SRSItem>;
 }
 
 interface ProgressContextType {
@@ -25,6 +27,7 @@ interface ProgressContextType {
   updateMastery: (char: string, isCorrect: boolean) => void;
   recordQuizResult: (score: number, total: number, type: string) => void;
   checkStreak: () => void;
+  updateSRS: (char: string, quality: number) => void;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
@@ -34,6 +37,7 @@ const INITIAL_DATA: ProgressData = {
   streak: 0,
   lastActiveDate: null,
   quizHistory: [],
+  srs: {},
 };
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
@@ -45,7 +49,15 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem('user-progress');
     if (saved) {
       try {
-        setProgress(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        setProgress({
+          ...INITIAL_DATA,
+          ...parsed,
+          srs: parsed.srs || {},
+          mastery: parsed.mastery || {},
+          quizHistory: parsed.quizHistory || [],
+          streak: parsed.streak || 0,
+        });
       } catch (e) {
         console.error('Failed to parse progress data', e);
       }
@@ -104,6 +116,20 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const updateSRS = (char: string, quality: number) => {
+    setProgress(prev => {
+      const currentItem = prev.srs[char];
+      const nextItem = calculateNextSRS(currentItem, quality);
+      return {
+        ...prev,
+        srs: {
+          ...prev.srs,
+          [char]: nextItem
+        }
+      };
+    });
+  };
+
   const recordQuizResult = (score: number, total: number, type: string) => {
     checkStreak(); // Record activity on quiz completion
     setProgress(prev => ({
@@ -121,7 +147,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ProgressContext.Provider value={{ progress, updateMastery, recordQuizResult, checkStreak }}>
+    <ProgressContext.Provider value={{ progress, updateMastery, recordQuizResult, checkStreak, updateSRS }}>
       {children}
     </ProgressContext.Provider>
   );

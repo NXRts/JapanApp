@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -731,6 +732,12 @@ const NewsDescription = styled.p`
 
 export default function Home() {
   const { progress } = useProgress();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const today = new Date().toISOString().split('T')[0];
   const isDailyCompleted = progress.quizHistory.some(
     q => q.date.split('T')[0] === today && q.type === 'daily-challenge'
@@ -749,6 +756,25 @@ export default function Home() {
       "name": "NXRts"
     }
   };
+
+  if (!mounted) {
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <Container>
+          <HeroSection>
+            <Title>
+              Master Japanese <br />
+              <span>Kanji & Kana</span>
+            </Title>
+         </HeroSection>
+        </Container>
+      </>
+    ); // Avoid hydration mismatch on initial render
+  }
 
   return (
     <>
