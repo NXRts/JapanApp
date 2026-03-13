@@ -246,14 +246,20 @@ export function Navbar() {
             <NavItem>
               <StyledLink href="/practice" $active={pathname.startsWith('/practice')}>Practice</StyledLink>
             </NavItem>
-            <NavItem>
+            {/* <NavItem>
               <StyledLink href="/review" $active={pathname.startsWith('/review')}>
                 Review
                 {dueItemsCount > 0 && <Badge>{dueItemsCount}</Badge>}
               </StyledLink>
-            </NavItem>
+            </NavItem> */}
             <NavItem>
               <StyledLink href="/quiz" $active={pathname.startsWith('/quiz')}>Quiz</StyledLink>
+            </NavItem>
+            <NavItem>
+              <StyledLink href="/grammar" $active={pathname.startsWith('/grammar')}>Grammar</StyledLink>
+            </NavItem>
+            <NavItem>
+              <StyledLink href="/vocabulary" $active={pathname.startsWith('/vocabulary')}>Vocabulary</StyledLink>
             </NavItem>
             <NavItem>
               <StyledLink href="/game" $active={pathname.startsWith('/game')}>Game</StyledLink>
@@ -308,6 +314,14 @@ export function Navbar() {
           </MobileLink>
           <MobileLink href="/quiz" $active={pathname.startsWith('/quiz')} onClick={() => setIsMobileMenuOpen(false)}>
             Quiz
+            <span>→</span>
+          </MobileLink>
+          <MobileLink href="/grammar" $active={pathname.startsWith('/grammar')} onClick={() => setIsMobileMenuOpen(false)}>
+            Grammar
+            <span>→</span>
+          </MobileLink>
+          <MobileLink href="/vocabulary" $active={pathname.startsWith('/vocabulary')} onClick={() => setIsMobileMenuOpen(false)}>
+            Vocabulary
             <span>→</span>
           </MobileLink>
           <MobileLink href="/game" $active={pathname.startsWith('/game')} onClick={() => setIsMobileMenuOpen(false)}>
