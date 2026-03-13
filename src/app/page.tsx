@@ -795,6 +795,8 @@ export default function Home() {
           <ButtonGroup>
             <PrimaryButton href="/kana">Hiragana & Katakana</PrimaryButton>
             <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
+            <SecondaryButton href="/grammar">Grammar N5</SecondaryButton>
+            <SecondaryButton href="/vocabulary">Vocabulary N5</SecondaryButton>
             <SecondaryButton href="/practice">Start Practicing</SecondaryButton>
             <SecondaryButton 
               href="/daily-quiz" 
