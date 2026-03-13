@@ -5,6 +5,8 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import { useProgress } from '@/context/ProgressContext';
+import { isItemDue } from '@/lib/srs';
 
 const SettingsModal = dynamic(() => import('./SettingsModal').then((mod) => mod.SettingsModal), { ssr: false });
 
@@ -67,6 +69,7 @@ const NavList = styled.ul`
 const NavItem = styled.li`
   font-size: 0.95rem;
   font-weight: 500;
+  position: relative;
 `;
 
 const StyledLink = styled(Link) <{ $active?: boolean }>`
@@ -145,6 +148,18 @@ const HamburgerBtn = styled.button<{ $isOpen: boolean }>`
   }
 `;
 
+const Badge = styled.span`
+  background: #ef4444;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  margin-left: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const MobileMenu = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -196,6 +211,9 @@ export function Navbar() {
   const pathname = usePathname();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { progress } = useProgress();
+  
+  const dueItemsCount = Object.values(progress.srs).filter(isItemDue).length;
 
   // Prevent background scrolling when mobile menu is open
   useEffect(() => {
@@ -227,6 +245,12 @@ export function Navbar() {
             </NavItem>
             <NavItem>
               <StyledLink href="/practice" $active={pathname.startsWith('/practice')}>Practice</StyledLink>
+            </NavItem>
+            <NavItem>
+              <StyledLink href="/review" $active={pathname.startsWith('/review')}>
+                Review
+                {dueItemsCount > 0 && <Badge>{dueItemsCount}</Badge>}
+              </StyledLink>
             </NavItem>
             <NavItem>
               <StyledLink href="/quiz" $active={pathname.startsWith('/quiz')}>Quiz</StyledLink>
@@ -276,6 +300,10 @@ export function Navbar() {
           </MobileLink>
           <MobileLink href="/practice" $active={pathname.startsWith('/practice')} onClick={() => setIsMobileMenuOpen(false)}>
             Practice
+            <span>→</span>
+          </MobileLink>
+          <MobileLink href="/review" $active={pathname.startsWith('/review')} onClick={() => setIsMobileMenuOpen(false)}>
+            Review {dueItemsCount > 0 && <Badge>{dueItemsCount}</Badge>}
             <span>→</span>
           </MobileLink>
           <MobileLink href="/quiz" $active={pathname.startsWith('/quiz')} onClick={() => setIsMobileMenuOpen(false)}>

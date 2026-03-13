@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -211,14 +212,29 @@ const StatLabel = styled.div`
 
 export default function PracticePage() {
   const { progress } = useProgress();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const today = new Date().toISOString().split('T')[0];
   const isDailyCompleted = progress.quizHistory.some(
     q => q.date.split('T')[0] === today && q.type === 'daily-challenge'
   );
   
   const masteredCount = Object.values(progress.mastery).filter(m => m.correct > m.incorrect * 2 && m.correct > 3).length;
-// ... (rest of the component)
   const learningCount = Object.keys(progress.mastery).length;
+
+  if (!mounted) {
+    return (
+      <Container>
+        <Header>
+          <Title>Practice <span>Mode</span></Title>
+        </Header>
+      </Container>
+    ); // Avoid hydration mismatch on initial render
+  }
 
   return (
     <Container>
