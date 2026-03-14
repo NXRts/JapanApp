@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { n5Grammar } from '@/data/jlpt/n5/grammar';
 import { n4Grammar } from '@/data/jlpt/n4/grammar';
+import { n3Grammar } from '@/data/jlpt/n3/grammar';
+import { n2Grammar } from '@/data/jlpt/n2/grammar';
+import { n1Grammar } from '@/data/jlpt/n1/grammar';
 
 const Container = styled.div`
   max-width: 1000px;
@@ -131,9 +134,15 @@ const CardMeaning = styled.p`
 `;
 
 export default function GrammarPage() {
-  const [activeLevel, setActiveLevel] = useState<'N5' | 'N4'>('N5');
+  const [activeLevel, setActiveLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1' >('N5');
 
-  const currentData = activeLevel === 'N5' ? n5Grammar : n4Grammar;
+  const currentData = {
+    N5: n5Grammar,
+    N4: n4Grammar,
+    N3: n3Grammar,
+    N2: n2Grammar,
+    N1: n1Grammar,
+  }[activeLevel];
 
   return (
     <Container>
@@ -157,10 +166,28 @@ export default function GrammarPage() {
         >
           JLPT N4
         </LevelButton>
+        <LevelButton 
+          $active={activeLevel === 'N3'} 
+          onClick={() => setActiveLevel('N3')}
+        >
+          JLPT N3
+        </LevelButton>
+        <LevelButton 
+          $active={activeLevel === 'N2'} 
+          onClick={() => setActiveLevel('N2')}
+        >
+          JLPT N2
+        </LevelButton>
+        <LevelButton 
+          $active={activeLevel === 'N1'} 
+          onClick={() => setActiveLevel('N1')}
+        >
+          JLPT N1
+        </LevelButton>
       </LevelSelector>
 
       <GrammarGrid>
-        {currentData.map((point) => (
+        {currentData?.map((point) => (
           <GrammarCard key={point.id} href={`/grammar/${point.id}`}>
             <CardTitle>{point.title}</CardTitle>
             <CardMeaning>{point.meaning}</CardMeaning>

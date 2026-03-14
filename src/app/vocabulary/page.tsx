@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
 import { n4Vocabulary } from '@/data/jlpt/n4/vocabulary';
+import { n3Vocabulary } from '@/data/jlpt/n3/vocabulary';
+import { n2Vocabulary } from '@/data/jlpt/n2/vocabulary';
+import { n1Vocabulary } from '@/data/jlpt/n1/vocabulary';
 
 const Container = styled.div`
   max-width: 1000px;
@@ -169,10 +172,16 @@ const ExampleBox = styled.div`
 `;
 
 export default function VocabularyPage() {
-  const [activeLevel, setActiveLevel] = useState<'N5' | 'N4'>('N5');
+  const [activeLevel, setActiveLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1' >('N5');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const currentData = activeLevel === 'N5' ? n5Vocabulary : n4Vocabulary;
+  const currentData = {
+    N5: n5Vocabulary,
+    N4: n4Vocabulary,
+    N3: n3Vocabulary,
+    N2: n2Vocabulary,
+    N1: n1Vocabulary,
+  }[activeLevel];
 
   const toggleExample = (id: string) => {
     setExpandedId(expandedId === id ? null : id);
@@ -200,10 +209,29 @@ export default function VocabularyPage() {
         >
           JLPT N4
         </LevelButton>
+        <LevelButton 
+          $active={activeLevel === 'N3'} 
+          onClick={() => setActiveLevel('N3')}
+        >
+          JLPT N3
+        </LevelButton>
+        <LevelButton 
+          $active={activeLevel === 'N2'} 
+          onClick={() => setActiveLevel('N2')}
+        >
+          JLPT N2
+        </LevelButton>
+        <LevelButton 
+          $active={activeLevel === 'N1'} 
+          onClick={() => setActiveLevel('N1')}
+        >
+          JLPT N1
+        </LevelButton>
+
       </LevelSelector>
 
       <VocabList>
-        {currentData.map((item) => (
+        {currentData?.map((item) => (
           <VocabCard key={item.id}>
             <Word>{item.word}</Word>
             <Reading>
