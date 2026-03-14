@@ -14,6 +14,20 @@ const Container = styled.div`
   padding: 2rem;
   overflow-x: auto;
   width: 100%;
+  
+  /* Custom scrollbar for mobile */
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
 `;
 
 const Title = styled.h3`
@@ -21,6 +35,11 @@ const Title = styled.h3`
   font-weight: 700;
   margin-bottom: 2rem;
   color: var(--text-secondary);
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const HeatmapWrapper = styled.div`

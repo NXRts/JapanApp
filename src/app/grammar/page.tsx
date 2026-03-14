@@ -11,6 +11,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 4rem 2rem;
   min-height: 90vh;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+  }
 `;
 
 const Header = styled.div`
@@ -29,6 +33,10 @@ const Title = styled.h1`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 2.5rem;
+  }
 `;
 
 const Subtitle = styled.p`
@@ -37,6 +45,10 @@ const Subtitle = styled.p`
   max-width: 600px;
   margin: 0;
   line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const LevelSelector = styled.div`
