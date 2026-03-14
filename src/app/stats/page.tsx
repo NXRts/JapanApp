@@ -10,6 +10,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 4rem 2rem;
   min-height: 90vh;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+  }
 `;
 
 const Header = styled.div`
@@ -20,6 +24,10 @@ const Title = styled.h1`
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
 `;
 
 const Subtitle = styled.p`
