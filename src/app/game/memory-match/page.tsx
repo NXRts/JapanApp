@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { toRomaji } from 'wanakana';
+import { useProgress } from '@/context/ProgressContext';
 
 // Styled Components
 const Container = styled.div`
@@ -324,6 +325,8 @@ export default function MemoryMatchPage() {
     generateGame();
   }, [generateGame]);
 
+  const { addExp } = useProgress();
+
   const handleCardClick = (index: number) => {
     // Prevent clicking if two cards are already flipped, or if card is already flipped/matched, or game not active
     if (gameStatus !== 'playing' || flippedIndices.length >= 2 || cards[index].isFlipped || cards[index].isMatched) {
@@ -365,6 +368,7 @@ export default function MemoryMatchPage() {
             const newMatches = m + 1;
             if (newMatches === PAIRS_COUNT) {
               setGameStatus('won');
+              addExp(500); // Reward for winning
             } else if (showRomaji && newMoves >= MAX_MOVES) {
               setGameStatus('lost');
             }

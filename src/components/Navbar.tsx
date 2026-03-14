@@ -271,6 +271,9 @@ export function Navbar() {
               <StyledLink href="/careers" $active={pathname === '/careers'}>Careers</StyledLink>
             </NavItem> */}
             <NavItem>
+              <StyledLink href="/stats" $active={pathname === '/stats'}>Stats</StyledLink>
+            </NavItem>
+            <NavItem>
               <StyledLink href="/about" $active={pathname === '/about'}>About</StyledLink>
             </NavItem>
             <NavItem>
@@ -336,6 +339,10 @@ export function Navbar() {
             Careers
             <span>→</span>
           </MobileLink> */}
+          <MobileLink href="/stats" $active={pathname === '/stats'} onClick={() => setIsMobileMenuOpen(false)}>
+            Stats
+            <span>→</span>
+          </MobileLink>
           <MobileLink href="/about" $active={pathname === '/about'} onClick={() => setIsMobileMenuOpen(false)}>
             About
             <span>→</span>

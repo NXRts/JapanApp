@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { toRomaji } from 'wanakana';
 import Link from 'next/link';
+import { useProgress } from '@/context/ProgressContext';
 
 // Styled Components
 const Container = styled.div`
@@ -181,6 +182,8 @@ export default function GamePage() {
         return kanaList[randomIndex];
     }, [kanaList]);
 
+    const { addExp } = useProgress();
+
     // Timer logic
     useEffect(() => {
         let timer: NodeJS.Timeout;
@@ -191,9 +194,10 @@ export default function GamePage() {
         } else if (timeLeft === 0 && isPlaying) {
             setIsPlaying(false);
             setIsGameOver(true);
+            addExp(score * 20); // 20 EXP per correct word
         }
         return () => clearInterval(timer);
-    }, [isPlaying, timeLeft]);
+    }, [isPlaying, timeLeft, score, addExp]);
 
     const startGame = () => {
         if (kanaList.length === 0) return;

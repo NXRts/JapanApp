@@ -20,6 +20,8 @@ interface ProgressData {
     type: string;
   }[];
   srs: Record<string, SRSItem>;
+  exp: number;
+  activityLog: Record<string, number>; // Date string -> EXP gained
 }
 
 interface ProgressContextType {
@@ -28,6 +30,7 @@ interface ProgressContextType {
   recordQuizResult: (score: number, total: number, type: string) => void;
   checkStreak: () => void;
   updateSRS: (char: string, quality: number) => void;
+  addExp: (amount: number) => void;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
@@ -38,6 +41,8 @@ const INITIAL_DATA: ProgressData = {
   lastActiveDate: null,
   quizHistory: [],
   srs: {},
+  exp: 0,
+  activityLog: {},
 };
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
@@ -57,6 +62,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
           mastery: parsed.mastery || {},
           quizHistory: parsed.quizHistory || [],
           streak: parsed.streak || 0,
+          exp: parsed.exp || 0,
+          activityLog: parsed.activityLog || {},
         });
       } catch (e) {
         console.error('Failed to parse progress data', e);
@@ -71,6 +78,22 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('user-progress', JSON.stringify(progress));
     }
   }, [progress, isLoaded]);
+
+  // Handle EXP and Activity
+  const addExp = (amount: number) => {
+    const today = new Date().toISOString().split('T')[0];
+    setProgress(prev => {
+      const newActivityLog = { ...prev.activityLog };
+      newActivityLog[today] = (newActivityLog[today] || 0) + amount;
+      
+      return {
+        ...prev,
+        exp: prev.exp + amount,
+        activityLog: newActivityLog
+      };
+    });
+    checkStreak();
+  };
 
   // Handle streak and last active date
   const checkStreak = () => {
@@ -132,6 +155,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   const recordQuizResult = (score: number, total: number, type: string) => {
     checkStreak(); // Record activity on quiz completion
+    addExp(score * 10); // Reward 10 EXP per correct answer
     setProgress(prev => ({
       ...prev,
       quizHistory: [
@@ -147,7 +171,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ProgressContext.Provider value={{ progress, updateMastery, recordQuizResult, checkStreak, updateSRS }}>
+    <ProgressContext.Provider value={{ progress, updateMastery, recordQuizResult, checkStreak, updateSRS, addExp }}>
       {children}
     </ProgressContext.Provider>
   );

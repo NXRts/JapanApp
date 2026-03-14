@@ -3,15 +3,8 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent
-} from '@dnd-kit/core';
+import { DndContext, DragOverlay, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragStartEvent, DragEndEvent } from '@dnd-kit/core';
+import { useProgress } from '@/context/ProgressContext';
 import {
   arrayMove,
   SortableContext,
@@ -754,6 +747,8 @@ export default function SentenceBuilderPage() {
     }
   };
 
+  const { addExp } = useProgress();
+
   const checkSentence = () => {
     const correctSequence = gameSentences[levelIndex].items;
 
@@ -762,6 +757,7 @@ export default function SentenceBuilderPage() {
 
     if (isMatched) {
       setStatus('success');
+      addExp(100); // 100 EXP per correct sentence
     } else {
       setStatus('error');
     }
