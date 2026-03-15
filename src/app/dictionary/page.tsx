@@ -37,17 +37,13 @@ const Subtitle = styled.p`
 `;
 
 const SearchBarWrapper = styled.div`
-  position: sticky;
-  top: 90px;
-  z-index: 10;
   margin-bottom: 3rem;
-  background: var(--background);
   padding: 1rem 0;
 `;
 
 const SearchInputContainer = styled.div`
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: none;
   border-radius: 24px;
   padding: 0.75rem 2rem;
   display: flex;
@@ -156,12 +152,12 @@ const Badge = styled.span<{ $type?: string }>`
   background: ${({ $type }) => 
     $type === 'grammar' ? 'rgba(16, 185, 129, 0.1)' : 
     $type === 'jisho' ? 'rgba(234, 179, 8, 0.1)' : 
-    $type === 'library' ? 'rgba(59, 130, 246, 0.1)' :
+    $type === 'kamus' ? 'rgba(59, 130, 246, 0.1)' :
     'rgba(255, 255, 255, 0.05)'};
   color: ${({ $type }) => 
     $type === 'grammar' ? '#10b981' : 
     $type === 'jisho' ? '#eab308' : 
-    $type === 'library' ? '#3b82f6' :
+    $type === 'kamus' ? '#3b82f6' :
     'var(--text-secondary)'};
 `;
 
@@ -198,7 +194,7 @@ const LoadingSpinner = styled.div`
 
 export default function DictionaryPage() {
   const [query, setQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState<'all' | 'vocabulary' | 'grammar'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'vocabulary' | 'grammar' | 'kamus'>('all');
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -228,12 +224,17 @@ export default function DictionaryPage() {
 
   // Pre-filtered internal data for "browse" view
   const browseData = [
-    ...allVocabulary.map(v => ({ ...v, type: 'vocabulary' as const, source: 'local' as const })),
+    ...allVocabulary.map(v => ({ 
+      ...v, 
+      type: 'vocabulary' as const, 
+      source: (v.id.startsWith('lib-') ? 'kamus' : 'local') as 'local' | 'kamus'
+    })),
     ...allGrammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const }))
   ].filter(item => {
     if (activeFilter === 'all') return true;
+    if (activeFilter === 'kamus') return item.source === 'kamus';
     return (item as any).type === activeFilter;
-  }).slice(0, 50); // Show top 50 as initial browse
+  }).slice(0, 100); // Show more items initially if needed
 
   const displayData = searchResults || browseData;
 
@@ -284,6 +285,12 @@ export default function DictionaryPage() {
         >
           Tata Bahasa
         </FilterChip>
+        <FilterChip 
+          $active={activeFilter === 'kamus'} 
+          onClick={() => setActiveFilter('kamus')}
+        >
+          Kamus
+        </FilterChip>
       </FilterSection>
 
       {isLoading ? (
@@ -299,7 +306,7 @@ export default function DictionaryPage() {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
                   <Badge $type={item.source}>
-                    {item.source === 'jisho' ? 'Jisho API' : item.source === 'library' ? 'Library' : 'Internal'}
+                    {item.source === 'jisho' ? 'Jisho API' : item.source === 'kamus' ? 'Kamus' : 'Internal'}
                   </Badge>
                   <Badge $type={item.type}>{item.type}</Badge>
                 </div>
