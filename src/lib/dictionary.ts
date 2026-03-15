@@ -1,3 +1,4 @@
+import jlptWordsData from '../../public/JLPT_Vocabulary/data/results/JLPTWords.json';
 import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
 import { n4Vocabulary } from '@/data/jlpt/n4/vocabulary';
 import { n3Vocabulary } from '@/data/jlpt/n3/vocabulary';
@@ -19,17 +20,28 @@ export interface DictionaryResult {
   reading?: string; // For vocabulary
   meaning: string;
   romaji?: string;
+  source: 'local' | 'jisho' | 'library';
 }
 
-const allVocabulary = [
+const libraryVocabulary = Object.entries(jlptWordsData).map(([word, level]) => ({
+  id: `lib-${word}`,
+  word,
+  reading: '',
+  romaji: '',
+  meaning: 'See Jisho for definition',
+  level: level as string,
+}));
+
+export const allVocabulary = [
   ...n5Vocabulary,
   ...n4Vocabulary,
   ...n3Vocabulary,
   ...n2Vocabulary,
   ...n1Vocabulary,
+  ...libraryVocabulary,
 ];
 
-const allGrammar = [
+export const allGrammar = [
   ...n5Grammar,
   ...n4Grammar,
   ...n3Grammar,
@@ -37,21 +49,21 @@ const allGrammar = [
   ...n1Grammar,
 ];
 
-export function searchDictionary(query: string): DictionaryResult[] {
+export async function searchDictionary(query: string): Promise<DictionaryResult[]> {
   const normalizedQuery = query.toLowerCase().trim();
   if (!normalizedQuery) return [];
 
-  const results: DictionaryResult[] = [];
+  const localResults: DictionaryResult[] = [];
 
-  // Search Vocabulary
+  // Search local Vocabulary
   allVocabulary.forEach((item) => {
     if (
       item.word.toLowerCase().includes(normalizedQuery) ||
-      item.reading.toLowerCase().includes(normalizedQuery) ||
-      item.romaji.toLowerCase().includes(normalizedQuery) ||
-      item.meaning.toLowerCase().includes(normalizedQuery)
+      (item.reading && item.reading.toLowerCase().includes(normalizedQuery)) ||
+      (item.romaji && item.romaji.toLowerCase().includes(normalizedQuery)) ||
+      (item.meaning && item.meaning.toLowerCase().includes(normalizedQuery))
     ) {
-      results.push({
+      localResults.push({
         id: item.id,
         type: 'vocabulary',
         level: item.level,
@@ -59,25 +71,50 @@ export function searchDictionary(query: string): DictionaryResult[] {
         reading: item.reading,
         meaning: item.meaning,
         romaji: item.romaji,
+        source: item.id.startsWith('lib-') ? 'library' : 'local',
       });
     }
   });
 
-  // Search Grammar
+  // Search local Grammar
   allGrammar.forEach((item) => {
     if (
       item.title.toLowerCase().includes(normalizedQuery) ||
       item.meaning.toLowerCase().includes(normalizedQuery)
     ) {
-      results.push({
+      localResults.push({
         id: item.id,
         type: 'grammar',
         level: item.level,
         title: item.title,
         meaning: item.meaning,
+        source: 'local',
       });
     }
   });
 
-  return results.slice(0, 10); // Limit to top 10 results for performance
+  // Fetch from Jisho API Proxy
+  try {
+    const response = await fetch(`/api/proxy/jisho?keyword=${encodeURIComponent(normalizedQuery)}`);
+    const data = await response.json();
+    
+    const jishoResults: DictionaryResult[] = (data.data || []).map((item: any) => ({
+      id: item.japanese[0].word || item.japanese[0].reading,
+      type: 'vocabulary' as const,
+      level: item.jlpt?.[0]?.toUpperCase().replace('JLPT-', '') || '?',
+      word: item.japanese[0].word || item.japanese[0].reading,
+      reading: item.japanese[0].reading,
+      meaning: item.senses[0].english_definitions.join(', '),
+      source: 'jisho' as const,
+    }));
+
+    // Filter out duplicates (if word already in localResults)
+    const localWords = new Set(localResults.map(r => r.word || r.title));
+    const uniqueJishoResults = jishoResults.filter(r => !localWords.has(r.word || r.title));
+
+    return [...localResults, ...uniqueJishoResults].slice(0, 15);
+  } catch (error) {
+    console.error('Search yield error:', error);
+    return localResults.slice(0, 10);
+  }
 }
