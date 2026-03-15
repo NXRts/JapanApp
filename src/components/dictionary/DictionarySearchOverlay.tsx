@@ -123,6 +123,7 @@ interface Props {
 export default function DictionarySearchOverlay({ onClose }: Props) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<DictionaryResult[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -136,23 +137,29 @@ export default function DictionarySearchOverlay({ onClose }: Props) {
     return () => window.removeEventListener('keydown', handleEsc);
   }, [onClose]);
 
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      if (query.trim()) {
+        setIsLoading(true);
+        const searchResults = await searchDictionary(query);
+        setResults(searchResults);
+        setIsLoading(false);
+      } else {
+        setResults([]);
+      }
+    }, 300); // Debounce for API
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
     
-    // Auto convert romaji to kana if it's likely intended
     if (isRomaji(val) && val.length > 0) {
-      // We use toKana but we want to allow the user to type
-      // So we only convert if it looks like a completed syllable or if query starts with it
-      // Actually per requirement: "mengubah Romaji ke Kana"
       val = toKana(val, { IMEMode: true });
     }
     
     setQuery(val);
-    if (val.trim()) {
-      setResults(searchDictionary(val));
-    } else {
-      setResults([]);
-    }
   };
 
   return (
@@ -170,18 +177,26 @@ export default function DictionarySearchOverlay({ onClose }: Props) {
             onChange={handleInputChange}
             autoComplete="off"
           />
-          {query && (
+          {isLoading ? (
+             <div style={{ width: '20px', height: '20px', border: '2px solid rgba(79, 70, 229, 0.2)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+          ) : query && (
             <button onClick={() => { setQuery(''); setResults([]); }} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '0.5rem' }}>
               ✕
             </button>
           )}
         </SearchInputWrapper>
 
+        <style jsx global>{`
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
+
         {results.length > 0 && (
           <ResultsContainer>
             {results.map((res) => (
               <ResultItem 
-                key={`${res.type}-${res.id}`} 
+                key={`${res.source}-${res.type}-${res.level}-${res.id}`} 
                 href={res.type === 'vocabulary' ? `/vocabulary` : `/grammar/${res.id}`}
                 onClick={onClose}
               >
@@ -198,6 +213,13 @@ export default function DictionarySearchOverlay({ onClose }: Props) {
                 </WordInfo>
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                   <Badge>{res.level}</Badge>
+                  <Badge style={{ 
+                    background: res.source === 'jisho' ? 'rgba(234, 179, 8, 0.1)' : res.source === 'library' ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+                    color: res.source === 'jisho' ? '#eab308' : res.source === 'library' ? '#3b82f6' : 'var(--text-secondary)',
+                    border: res.source === 'jisho' ? '1px solid rgba(234, 179, 8, 0.2)' : res.source === 'library' ? '1px solid rgba(59, 130, 246, 0.2)' : 'none'
+                  }}>
+                    {res.source === 'jisho' ? 'Jisho API' : res.source === 'library' ? 'Library' : 'Internal'}
+                  </Badge>
                   <Badge style={{ background: res.type === 'grammar' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(79, 70, 229, 0.1)', color: res.type === 'grammar' ? '#10b981' : 'var(--primary)' }}>
                     {res.type}
                   </Badge>

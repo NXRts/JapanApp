@@ -206,6 +206,28 @@ export default function MateriHubPage() {
             </ActionButton>
           </CardContent>
         </HubCardLink>
+
+        {/* Dictionary Hub */}
+        <HubCardLink href="/dictionary">
+          <CardContent>
+            <IconWrapper $color="234, 179, 8"> {/* Amber color */}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+            </IconWrapper>
+            <CardTitle>Kamus (Dictionary)</CardTitle>
+            <CardDescription>
+              Akses cepat ribuan kosakata dan tata bahasa Jepang secara instan melalui sistem pencarian cerdas kami.
+            </CardDescription>
+            <ActionButton $color="234, 179, 8">
+              Buka Kamus
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </ActionButton>
+          </CardContent>
+        </HubCardLink>
       </HubGrid>
     </Container>
   );
