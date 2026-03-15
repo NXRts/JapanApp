@@ -31,25 +31,45 @@
     "60": { "kanji": "六十", "hiragana": "ろくじゅう", "romaji": "roku-juu" },
     "70": { "kanji": "七十", "hiragana": "ななじゅう", "romaji": "nana-juu" },
     "80": { "kanji": "八十", "hiragana": "はちじゅう", "romaji": "hachi-juu" },
-    "90": { "kanji": "九十", "hiragana": "きゅうじゅう", "romaji": "kyuu-juu" },
-    "100": { "kanji": "百", "hiragana": "ひゃく", "romaji": "hyaku" }
+    "90": { "kanji": "九十", "hiragana": "きゅうじゅう", "romaji": "kyuu-juu" }
   },
-  "contoh_kombinasi": {
-    "21": { "kanji": "二十一", "hiragana": "にじゅういち", "romaji": "ni-juu-ichi" },
-    "35": { "kanji": "三十五", "hiragana": "さんじゅうご", "romaji": "san-juu-go" },
-    "58": { "kanji": "五十八", "hiragana": "ごじゅうはち", "romaji": "go-juu-hachi" },
-    "99": { "kanji": "九十九", "hiragana": "きゅうじゅうきゅう", "romaji": "kyuu-juu-kyuu" }
-  },
-  "angka_besar": {
+  "ratusan": {
     "100": { "kanji": "百", "hiragana": "ひゃく", "romaji": "hyaku" },
     "200": { "kanji": "二百", "hiragana": "にひゃく", "romaji": "ni-hyaku" },
     "300": { "kanji": "三百", "hiragana": "さんびゃく", "romaji": "sanbyaku" },
+    "400": { "kanji": "四百", "hiragana": "よんひゃく", "romaji": "yonhyaku" },
+    "500": { "kanji": "五百", "hiragana": "ごひゃく", "romaji": "gohyaku" },
     "600": { "kanji": "六百", "hiragana": "ろっぴゃく", "romaji": "roppyaku" },
+    "700": { "kanji": "七百", "hiragana": "ななひゃく", "romaji": "nanahyaku" },
     "800": { "kanji": "八百", "hiragana": "はっぴゃく", "romaji": "happyaku" },
+    "900": { "kanji": "九百", "hiragana": "きゅうひゃく", "romaji": "kyuuhyaku" }
+  },
+  "ribuan": {
     "1000": { "kanji": "千", "hiragana": "せん", "romaji": "sen" },
+    "2000": { "kanji": "二千", "hiragana": "にせん", "romaji": "nisen" },
     "3000": { "kanji": "三千", "hiragana": "さんぜん", "romaji": "sanzen" },
+    "4000": { "kanji": "四千", "hiragana": "よんせん", "romaji": "yonsen" },
+    "5000": { "kanji": "五千", "hiragana": "ごせん", "romaji": "gosen" },
+    "6000": { "kanji": "六千", "hiragana": "ろくせん", "romaji": "rokusen" },
+    "7000": { "kanji": "七千", "hiragana": "ななせん", "romaji": "nanasen" },
     "8000": { "kanji": "八千", "hiragana": "はっせん", "romaji": "hassen" },
-    "10000": { "kanji": "一万", "hiragana": "いちまん", "romaji": "ichi-man" },
-    "100000000": { "kanji": "一億", "hiragana": "いちおく", "romaji": "ichi-oku" }
+    "9000": { "kanji": "九千", "hiragana": "きゅうせん", "romaji": "kyuusen" }
+  },
+  "angka_besar": {
+    "10000": { "kanji": "一万", "hiragana": "いちまん", "romaji": "ichiman" },
+    "50000": { "kanji": "五万", "hiragana": "ごまん", "romaji": "goman" },
+    "100000": { "kanji": "十万", "hiragana": "じゅうまん", "romaji": "juuman" },
+    "1000000": { "kanji": "百万", "hiragana": "ひゃくまん", "romaji": "hyakuman" },
+    "10000000": { "kanji": "千万", "hiragana": "せんまん", "romaji": "senman" },
+    "100000000": { "kanji": "一億", "hiragana": "いちおく", "romaji": "ichioku" }
+  },
+  "contoh_kombinasi": {
+    "25": { "kanji": "二十五", "hiragana": "にじゅうご", "romaji": "ni-juu-go" },
+    "42": { "kanji": "四十二", "hiragana": "よんじゅうに", "romaji": "yon-juu-ni" },
+    "99": { "kanji": "九十九", "hiragana": "きゅうじゅうきゅう", "romaji": "kyuu-juu-kyuu" },
+    "150": { "kanji": "百五十", "hiragana": "ひゃくごじゅう", "romaji": "hyaku-go-juu" },
+    "365": { "kanji": "三百六十五", "hiragana": "さんびゃくろくじゅうご", "romaji": "sanbyaku-roku-juu-go" },
+    "1999": { "kanji": "千九百九十九", "hiragana": "せんきゅうひゃくきゅうじゅうきゅう", "romaji": "sen-kyuuhyaku-kyuu-juu-kyuu" },
+    "2026": { "kanji": "二千二十六", "hiragana": "にせんにじゅうろく", "romaji": "nisen-ni-juu-roku" }
   }
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { toKana, isRomaji } from 'wanakana';
-import { searchDictionary, DictionaryResult, allVocabulary, allGrammar } from '@/lib/dictionary';
+import { searchDictionary, DictionaryResult, allVocabulary, allGrammar, allNumbers } from '@/lib/dictionary';
 import Link from 'next/link';
 
 const Container = styled.div`
@@ -194,7 +194,7 @@ const LoadingSpinner = styled.div`
 
 export default function DictionaryPage() {
   const [query, setQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState<'all' | 'vocabulary' | 'grammar' | 'kamus'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'vocabulary' | 'grammar' | 'kamus' | 'angka'>('all');
   const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('all');
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -229,9 +229,10 @@ export default function DictionaryPage() {
       ...allVocabulary.map(v => ({ 
         ...v, 
         type: 'vocabulary' as const, 
-        source: (v.id.startsWith('lib-') ? 'kamus' : 'local') as 'local' | 'kamus'
+        source: (v.id.startsWith('lib-') ? 'kamus' : 'local') as 'local' | 'kamus' | 'angka'
       })),
-      ...allGrammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const }))
+      ...allGrammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const })),
+      ...allNumbers
     ].filter(item => {
       if (activeFilter === 'all') return true;
       if (activeFilter === 'kamus') {
@@ -239,6 +240,7 @@ export default function DictionaryPage() {
         const matchesLevel = activeLevel === 'all' || item.level === activeLevel;
         return isKamus && matchesLevel;
       }
+      if (activeFilter === 'angka') return item.source === 'angka';
       return (item as any).type === activeFilter;
     });
 
@@ -308,6 +310,12 @@ export default function DictionaryPage() {
         >
           Kamus
         </FilterChip>
+        <FilterChip 
+          $active={activeFilter === 'angka'} 
+          onClick={() => setActiveFilter('angka')}
+        >
+          Angka
+        </FilterChip>
       </FilterSection>
 
       {activeFilter === 'kamus' && (
@@ -338,7 +346,7 @@ export default function DictionaryPage() {
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
                   <Badge $type={item.source}>
-                    {item.source === 'jisho' ? 'Jisho API' : item.source === 'kamus' ? 'Kamus' : 'Internal'}
+                    {item.source === 'jisho' ? 'Jisho API' : item.source === 'kamus' ? 'Kamus' : item.source === 'angka' ? 'Angka' : 'Internal'}
                   </Badge>
                   <Badge $type={item.type}>{item.type}</Badge>
                 </div>
@@ -347,7 +355,7 @@ export default function DictionaryPage() {
               <MeaningText>{item.meaning}</MeaningText>
               
               <StatsInfo>
-                <span>Level: <strong>{item.level || '?'}</strong></span>
+                <span>{item.source === 'angka' ? 'Category' : 'Level'}: <strong>{item.level || '?'}</strong></span>
                 {item.source === 'local' && (
                    <Link 
                     href={item.type === 'vocabulary' ? '/vocabulary' : `/grammar/${item.id}`}

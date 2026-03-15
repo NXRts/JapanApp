@@ -1,4 +1,5 @@
 import jlptWordsData from '../../public/JLPT_Vocabulary/data/results/JLPTWords.json';
+import numbersData from '../../public/JLPT_Vocabulary/data/Angka.json';
 import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
 import { n4Vocabulary } from '@/data/jlpt/n4/vocabulary';
 import { n3Vocabulary } from '@/data/jlpt/n3/vocabulary';
@@ -20,7 +21,7 @@ export interface DictionaryResult {
   reading?: string; // For vocabulary
   meaning: string;
   romaji?: string;
-  source: 'local' | 'jisho' | 'kamus';
+  source: 'local' | 'jisho' | 'kamus' | 'angka';
 }
 
 const libraryVocabulary = Object.entries(jlptWordsData).map(([word, level]) => ({
@@ -48,6 +49,19 @@ export const allGrammar = [
   ...n2Grammar,
   ...n1Grammar,
 ];
+
+export const allNumbers = Object.entries(numbersData).flatMap(([category, items]) => 
+  Object.entries(items).map(([num, data]: [string, any]) => ({
+    id: `num-${num}`,
+    type: 'vocabulary' as const,
+    level: category.replace('_', ' '),
+    word: data.kanji,
+    reading: data.hiragana,
+    meaning: `Number: ${num}`,
+    romaji: data.romaji,
+    source: 'angka' as const,
+  }))
+);
 
 export async function searchDictionary(query: string): Promise<DictionaryResult[]> {
   const normalizedQuery = query.toLowerCase().trim();
