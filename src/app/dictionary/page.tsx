@@ -195,6 +195,7 @@ const LoadingSpinner = styled.div`
 export default function DictionaryPage() {
   const [query, setQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<'all' | 'vocabulary' | 'grammar' | 'kamus'>('all');
+  const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('all');
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -223,18 +224,31 @@ export default function DictionaryPage() {
   };
 
   // Pre-filtered internal data for "browse" view
-  const browseData = [
-    ...allVocabulary.map(v => ({ 
-      ...v, 
-      type: 'vocabulary' as const, 
-      source: (v.id.startsWith('lib-') ? 'kamus' : 'local') as 'local' | 'kamus'
-    })),
-    ...allGrammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const }))
-  ].filter(item => {
-    if (activeFilter === 'all') return true;
-    if (activeFilter === 'kamus') return item.source === 'kamus';
-    return (item as any).type === activeFilter;
-  }).slice(0, 100); // Show more items initially if needed
+  const browseData = (() => {
+    const data = [
+      ...allVocabulary.map(v => ({ 
+        ...v, 
+        type: 'vocabulary' as const, 
+        source: (v.id.startsWith('lib-') ? 'kamus' : 'local') as 'local' | 'kamus'
+      })),
+      ...allGrammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const }))
+    ].filter(item => {
+      if (activeFilter === 'all') return true;
+      if (activeFilter === 'kamus') {
+        const isKamus = item.source === 'kamus';
+        const matchesLevel = activeLevel === 'all' || item.level === activeLevel;
+        return isKamus && matchesLevel;
+      }
+      return (item as any).type === activeFilter;
+    });
+
+    // If viewing Kamus with no specific level, shuffle to show a mix
+    if (activeFilter === 'kamus' && activeLevel === 'all') {
+      return [...data].sort(() => Math.random() - 0.5).slice(0, 100);
+    }
+
+    return data.slice(0, 100);
+  })();
 
   const displayData = searchResults || browseData;
 
@@ -287,11 +301,29 @@ export default function DictionaryPage() {
         </FilterChip>
         <FilterChip 
           $active={activeFilter === 'kamus'} 
-          onClick={() => setActiveFilter('kamus')}
+          onClick={() => {
+            setActiveFilter('kamus');
+            setActiveLevel('all');
+          }}
         >
           Kamus
         </FilterChip>
       </FilterSection>
+
+      {activeFilter === 'kamus' && (
+        <FilterSection style={{ marginBottom: '2rem', gap: '0.5rem' }}>
+          {['all', 'N1', 'N2', 'N3', 'N4', 'N5'].map((lvl) => (
+            <FilterChip 
+              key={lvl}
+              $active={activeLevel === lvl}
+              onClick={() => setActiveLevel(lvl as any)}
+              style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }}
+            >
+              {lvl === 'all' ? 'Semua Level' : lvl}
+            </FilterChip>
+          ))}
+        </FilterSection>
+      )}
 
       {isLoading ? (
         <LoadingSpinner />
