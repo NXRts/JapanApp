@@ -20,7 +20,7 @@ export interface DictionaryResult {
   reading?: string; // For vocabulary
   meaning: string;
   romaji?: string;
-  source: 'local' | 'jisho' | 'library';
+  source: 'local' | 'jisho' | 'kamus';
 }
 
 const libraryVocabulary = Object.entries(jlptWordsData).map(([word, level]) => ({
@@ -71,7 +71,7 @@ export async function searchDictionary(query: string): Promise<DictionaryResult[
         reading: item.reading,
         meaning: item.meaning,
         romaji: item.romaji,
-        source: item.id.startsWith('lib-') ? 'library' : 'local',
+        source: item.id.startsWith('lib-') ? 'kamus' : 'local',
       });
     }
   });

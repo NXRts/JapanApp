@@ -214,11 +214,11 @@ export default function DictionarySearchOverlay({ onClose }: Props) {
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                   <Badge>{res.level}</Badge>
                   <Badge style={{ 
-                    background: res.source === 'jisho' ? 'rgba(234, 179, 8, 0.1)' : res.source === 'library' ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255, 255, 255, 0.05)',
-                    color: res.source === 'jisho' ? '#eab308' : res.source === 'library' ? '#3b82f6' : 'var(--text-secondary)',
-                    border: res.source === 'jisho' ? '1px solid rgba(234, 179, 8, 0.2)' : res.source === 'library' ? '1px solid rgba(59, 130, 246, 0.2)' : 'none'
+                    background: res.source === 'jisho' ? 'rgba(234, 179, 8, 0.1)' : res.source === 'kamus' ? 'rgba(59, 130, 246, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+                    color: res.source === 'jisho' ? '#eab308' : res.source === 'kamus' ? '#3b82f6' : 'var(--text-secondary)',
+                    border: res.source === 'jisho' ? '1px solid rgba(234, 179, 8, 0.2)' : res.source === 'kamus' ? '1px solid rgba(59, 130, 246, 0.2)' : 'none'
                   }}>
-                    {res.source === 'jisho' ? 'Jisho API' : res.source === 'library' ? 'Library' : 'Internal'}
+                    {res.source === 'jisho' ? 'Jisho API' : res.source === 'kamus' ? 'Kamus' : 'Internal'}
                   </Badge>
                   <Badge style={{ background: res.type === 'grammar' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(79, 70, 229, 0.1)', color: res.type === 'grammar' ? '#10b981' : 'var(--primary)' }}>
                     {res.type}
