@@ -3,8 +3,15 @@ import { useState, useEffect } from 'react';
 
 import Link from 'next/link';
 import Image from 'next/image';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useProgress } from '@/context/ProgressContext';
+import { Heatmap } from '@/components/gamification/Heatmap';
+
+const float = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+`;
 
 const Container = styled.div`
   display: flex;
@@ -42,6 +49,8 @@ const Title = styled.h1`
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 2px 10px rgba(79, 70, 229, 0.2));
+    display: inline-block;
+    animation: ${float} 6s ease-in-out infinite;
   }
   
   @media (max-width: 768px) {
@@ -370,12 +379,18 @@ const StepTitle = styled.h3`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 2.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
   
+  @media (max-width: 992px) {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 1rem; /* Tighter gap */
+    gap: 1.5rem;
   }
 `;
 
@@ -670,6 +685,20 @@ const WhatsNewGrid = styled.div`
   gap: 2rem;
 `;
 
+const GamesSection = styled.section`
+  padding: 5rem 2rem;
+  background: linear-gradient(to bottom, transparent, rgba(16, 185, 129, 0.03), transparent);
+  width: 100%;
+`;
+
+const GamesGrid = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+`;
+
 const NewsCard = styled(Link)`
   background: var(--surface);
   padding: 2rem;
@@ -783,6 +812,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Container>
+        
         <HeroSection>
           <Title>
             Master Japanese <br />
@@ -827,6 +857,33 @@ export default function Home() {
           </StatsGrid>
         </StatsSection>
 
+        <GamesSection>
+          <SectionTitle><span>Interactive Learning</span></SectionTitle>
+          <GamesGrid>
+            <NewsCard href="/match-pairs">
+              <NewsBadge>Game</NewsBadge>
+              <NewsTitle>Match Pairs</NewsTitle>
+              <NewsDescription>
+                Test your speed and memory by matching Japanese characters with their meanings or readings in this fast-paced game.
+              </NewsDescription>
+            </NewsCard>
+            <NewsCard href="/daily-quiz">
+              <NewsBadge>Challenge</NewsBadge>
+              <NewsTitle>Daily Quiz</NewsTitle>
+              <NewsDescription>
+                A new set of questions every day to keep your mind sharp and earn bonus EXP.
+              </NewsDescription>
+            </NewsCard>
+            <NewsCard href="/reverse-quiz">
+              <NewsBadge>Mastery</NewsBadge>
+              <NewsTitle>Reverse Quiz</NewsTitle>
+              <NewsDescription>
+                Think you know your characters? Try identifying them from their meanings in reverse!
+              </NewsDescription>
+            </NewsCard>
+          </GamesGrid>
+        </GamesSection>
+
         <BenefitsSection>
           <SectionTitle><span>Why Learn Japanese?</span></SectionTitle>
           <BenefitsGrid>
@@ -850,7 +907,7 @@ export default function Home() {
                 </BenefitIcon>
                 <BenefitText>
                   <h3>Travel with Confidence</h3>
-                  <p>Navigate Tokyo's streets, order food like a local, and make meaningful connections during your travels.</p>
+                  <p>Navigate Tokyo&apos;s streets, order food like a local, and make meaningful connections during your travels.</p>
                 </BenefitText>
               </BenefitItem>
               <BenefitItem>
@@ -862,7 +919,7 @@ export default function Home() {
                 </BenefitIcon>
                 <BenefitText>
                   <h3>Career Opportunities</h3>
-                  <p>Open doors to one of the world's largest economies and stand out in the job market.</p>
+                  <p>Open doors to one of the world&apos;s largest economies and stand out in the job market.</p>
                 </BenefitText>
               </BenefitItem>
             </BenefitContent>
@@ -935,6 +992,13 @@ export default function Home() {
                 Kanji flashcards and drawing exercises.
               </CardDescription>
             </Card>
+            <Card>
+              <CardIcon>📖</CardIcon>
+              <CardTitle>Integrated Dictionary</CardTitle>
+              <CardDescription>
+                Quickly look up meanings, readings, and example sentences for any Japanese word or character.
+              </CardDescription>
+            </Card>
           </Grid>
         </FeaturesSection>
 
@@ -967,7 +1031,7 @@ export default function Home() {
           <TestimonialsGrid>
             <TestimonialCard>
               <TestimonialText>
-                "I struggled with Kanji for years until I found this app. The clean interface and daily quizzes kept me coming back. I finally passed N3!"
+                &quot;I struggled with Kanji for years until I found this app. The clean interface and daily quizzes kept me coming back. I finally passed N3!&quot;
               </TestimonialText>
               <UserInfo>
                 <Avatar>JD</Avatar>
@@ -979,7 +1043,7 @@ export default function Home() {
             </TestimonialCard>
             <TestimonialCard>
               <TestimonialText>
-                "The best way to learn Kana. I memorized Hiragana in just a week using the visualization tools. Highly recommended for beginners."
+                &quot;The best way to learn Kana. I memorized Hiragana in just a week using the visualization tools. Highly recommended for beginners.&quot;
               </TestimonialText>
               <UserInfo>
                 <Avatar>AS</Avatar>
@@ -991,7 +1055,7 @@ export default function Home() {
             </TestimonialCard>
             <TestimonialCard>
               <TestimonialText>
-                "Simple, effective, and beautiful. It cuts out the noise and focuses on what matters: learning the characters. Love the dark mode."
+                &quot;Simple, effective, and beautiful. It cuts out the noise and focuses on what matters: learning the characters. Love the dark mode.&quot;
               </TestimonialText>
               <UserInfo>
                 <Avatar>MK</Avatar>
@@ -1013,7 +1077,7 @@ export default function Home() {
             </FAQItem>
             <FAQItem>
               <Question>Is this suitable for absolute beginners?</Question>
-              <Answer>Absolutely. We recommend starting with the "Hiragana & Katakana" section to master the alphabets before moving on to Kanji.</Answer>
+              <Answer>Absolutely. We recommend starting with the &quot;Hiragana &amp; Katakana&quot; section to master the alphabets before moving on to Kanji.</Answer>
             </FAQItem>
             <FAQItem>
               <Question>Do I need to create an account?</Question>
