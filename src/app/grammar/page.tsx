@@ -38,7 +38,7 @@ const Title = styled.h1`
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
   }
 `;
 
@@ -50,7 +50,7 @@ const Subtitle = styled.p`
   line-height: 1.6;
 
   @media (max-width: 768px) {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 `;
 
@@ -59,6 +59,12 @@ const LevelSelector = styled.div`
   gap: 1rem;
   margin-bottom: 3rem;
   justify-content: center;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
 `;
 
 const LevelButton = styled.button<{ $active: boolean }>`
@@ -70,10 +76,18 @@ const LevelButton = styled.button<{ $active: boolean }>`
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 
   &:hover {
     border-color: var(--primary);
     color: var(--primary);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: calc(33.33% - 0.5rem);
   }
 `;
 
@@ -103,6 +117,11 @@ const GrammarCard = styled(Link)`
     box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.15);
   }
 
+  @media (max-width: 768px) {
+    padding: 1.75rem;
+    gap: 1rem;
+  }
+
   &::before {
     content: '';
     position: absolute;
@@ -124,6 +143,10 @@ const CardTitle = styled.h3`
   font-size: 1.75rem;
   font-weight: 700;
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const CardMeaning = styled.p`
