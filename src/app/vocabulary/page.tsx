@@ -58,6 +58,12 @@ const LevelSelector = styled.div`
   gap: 1rem;
   margin-bottom: 3rem;
   justify-content: center;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
 `;
 
 const LevelButton = styled.button<{ $active: boolean }>`
@@ -69,10 +75,18 @@ const LevelButton = styled.button<{ $active: boolean }>`
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 
   &:hover {
     border-color: var(--primary);
     color: var(--primary);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: calc(33.33% - 0.5rem);
   }
 `;
 
@@ -95,8 +109,10 @@ const VocabCard = styled.div`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 1rem;
-    text-align: center;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    text-align: left;
+    align-items: flex-start;
   }
 
   &:hover {
@@ -109,6 +125,10 @@ const Word = styled.div`
   font-size: 2rem;
   font-weight: 700;
   color: var(--foreground);
+
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+  }
 `;
 
 const Reading = styled.div`
