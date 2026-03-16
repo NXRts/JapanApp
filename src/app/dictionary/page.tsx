@@ -11,6 +11,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 4rem 2rem;
   min-height: 90vh;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1rem;
+  }
 `;
 
 const Header = styled.div`
@@ -26,6 +30,10 @@ const Title = styled.h1`
   -webkit-text-fill-color: transparent;
   margin: 0;
   margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    font-size: 2.25rem;
+  }
 `;
 
 const Subtitle = styled.p`
@@ -34,11 +42,19 @@ const Subtitle = styled.p`
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const SearchBarWrapper = styled.div`
   margin-bottom: 3rem;
   padding: 1rem 0;
+
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const SearchInputContainer = styled.div`
@@ -57,6 +73,11 @@ const SearchInputContainer = styled.div`
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
     transform: translateY(-2px);
   }
+
+  @media (max-width: 768px) {
+    padding: 0.6rem 1.25rem;
+    gap: 0.75rem;
+  }
 `;
 
 const Input = styled.input`
@@ -66,6 +87,7 @@ const Input = styled.input`
   color: var(--foreground);
   font-size: 1.5rem;
   font-weight: 500;
+  width: 100%;
   
   &:focus {
     outline: none;
@@ -73,6 +95,10 @@ const Input = styled.input`
 
   &::placeholder {
     opacity: 0.5;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
   }
 `;
 
@@ -82,6 +108,19 @@ const FilterSection = styled.div`
   margin-bottom: 3rem;
   flex-wrap: wrap;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 const FilterChip = styled.button<{ $active: boolean }>`
@@ -93,10 +132,16 @@ const FilterChip = styled.button<{ $active: boolean }>`
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
   
   &:hover {
     border-color: var(--primary);
     color: var(--primary);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.85rem;
   }
 `;
 
@@ -131,12 +176,24 @@ const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
 `;
 
 const MainText = styled.div`
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--foreground);
+  word-break: break-word;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const ReadingText = styled.div`
