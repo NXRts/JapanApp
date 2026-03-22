@@ -287,6 +287,14 @@ export default function PracticePage() {
           </CardDescription>
         </Card>
 
+        <Card href="/practice/smart-flashcards" style={{ border: '2px solid var(--primary)' }}>
+          <IconWrapper>✨</IconWrapper>
+          <CardTitle>Smart Flashcards</CardTitle>
+          <CardDescription>
+            Tinder-style swipeable vocabulary flashcards with native pronunciation and active recall scoring.
+          </CardDescription>
+        </Card>
+
         <Card href="/practice/kanji">
           <IconWrapper>✍️</IconWrapper>
           <CardTitle>Kanji Flashcards</CardTitle>
