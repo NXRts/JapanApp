@@ -29,6 +29,8 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 200;
 `;
 
 const BackLink = styled(Link)`
@@ -174,6 +176,110 @@ const ActionBtn = styled.button`
   }
 `;
 
+const DropdownContainer = styled.div`
+  position: relative;
+  display: inline-block;
+  min-width: 140px;
+`;
+
+const DropdownTrigger = styled.button<{ $isOpen: boolean }>`
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  outline: none;
+
+  &:hover {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  }
+
+  svg {
+    transition: transform 0.2s;
+    transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0)')};
+    color: var(--text-secondary);
+  }
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: 50;
+  animation: fadeIn 0.2s ease-out;
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+
+const DropdownItem = styled.div<{ $isActive: boolean }>`
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: ${({ $isActive }) => ($isActive ? 'var(--primary)' : 'var(--foreground)')};
+  background: ${({ $isActive }) => ($isActive ? 'rgba(79, 70, 229, 0.05)' : 'transparent')};
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(79, 70, 229, 0.05);
+    color: var(--primary);
+  }
+`;
+
+function CustomDropdown({ value, onChange }: { value: string, onChange: (val: string) => void }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const options = ['All Levels', 'N5', 'N4', 'N3', 'N2', 'N1'];
+  const displayValue = value === 'All' ? 'All Levels' : value;
+  
+  return (
+    <DropdownContainer>
+      <DropdownTrigger $isOpen={isOpen} onClick={() => setIsOpen(!isOpen)}>
+        {displayValue}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </DropdownTrigger>
+      {isOpen && (
+        <DropdownMenu>
+          {options.map(opt => {
+            const actualVal = opt === 'All Levels' ? 'All' : opt;
+            return (
+              <DropdownItem 
+                key={opt}
+                $isActive={value === actualVal}
+                onClick={() => {
+                  onChange(actualVal);
+                  setIsOpen(false);
+                }}
+              >
+                {opt}
+              </DropdownItem>
+            );
+          })}
+        </DropdownMenu>
+      )}
+    </DropdownContainer>
+  );
+}
+
 import { allVocabulary } from '@/lib/dictionary';
 
 interface DeckCard extends FlashcardData {
@@ -260,31 +366,21 @@ export default function SmartFlashcardsPage() {
             Back to Practice
           </BackLink>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <select 
-              value={levelFilter}
-              onChange={(e) => setLevelFilter(e.target.value)}
-              style={{
-                padding: '0.4rem 1rem',
-                borderRadius: '999px',
-                border: '1px solid var(--border)',
-                background: 'var(--surface)',
-                color: 'var(--foreground)',
-                fontWeight: 600,
-                outline: 'none',
-                cursor: 'pointer',
-                boxShadow: 'var(--shadow-sm)'
-              }}
-            >
-              <option value="All">All Levels</option>
-              <option value="N5">N5</option>
-              <option value="N4">N4</option>
-              <option value="N3">N3</option>
-              <option value="N2">N2</option>
-              <option value="N1">N1</option>
-            </select>
-            <div style={{ fontWeight: 700, color: 'var(--text-secondary)' }}>
+            <div style={{ 
+              fontWeight: 700, 
+              color: 'var(--primary)',
+              background: 'rgba(79, 70, 229, 0.1)',
+              padding: '0.5rem 1.25rem',
+              fontSize: '1rem',
+              borderRadius: '999px',
+              border: '1px solid rgba(79, 70, 229, 0.2)'
+            }}>
               Remaining: {deck.length}
             </div>
+            <CustomDropdown 
+              value={levelFilter}
+              onChange={(val) => setLevelFilter(val)}
+            />
             <button 
               onClick={restart} 
               title="Refresh / Shuffle Deck"
