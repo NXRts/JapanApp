@@ -43,6 +43,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     root.style.setProperty('--primary-light', theme.primaryLight);
     root.style.setProperty('--primary-dark', theme.primaryDark);
 
+    // Convert hex to RGB for alpha channel support
+    const hex = theme.primary.replace('#', '');
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    root.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`);
+
     if (mode === 'dark') {
       root.style.setProperty('--background', '#0F172A');
       root.style.setProperty('--surface', '#1E293B');
@@ -51,6 +58,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty('--border', '#334155');
       root.style.setProperty('--shadow-sm', '0 1px 2px 0 rgb(0 0 0 / 0.3)');
       root.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.3)');
+      root.style.setProperty('--dot-color', 'rgba(255, 255, 255, 0.05)');
       root.style.setProperty('--navbar-bg', 'rgba(15, 23, 42, 0.85)');
       root.style.setProperty('--navbar-border', 'rgba(255, 255, 255, 0.05)');
 
