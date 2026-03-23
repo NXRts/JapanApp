@@ -13,15 +13,15 @@ const PageContainer = styled.div`
   gap: 2rem;
   padding: 2rem;
   min-height: 100vh;
-  backgroundColor: #0f121d;
-  backgroundImage: radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
-  backgroundSize: 40px 40px;
-  color: #fff;
+  // background-color: var(--background);
+  background-image: radial-gradient(var(--dot-color) 1.2px, transparent 1.2px);
+  background-size: 32px 32px;
+  color: var(--foreground);
 
   @media (max-width: 1024px) {
     flex-direction: column;
     padding: 1rem;
-    gap: 1rem;
+    gap: 1.5rem;
   }
 `;
 
@@ -38,19 +38,22 @@ const Sidebar = styled.aside`
 `;
 
 const SidebarSection = styled.div`
-  background: #1a1e2e;
-  border-radius: 16px;
+  background: var(--surface);
+  border-radius: 20px;
   padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
 `;
 
 const SectionTitle = styled.h3`
-  font-size: 1rem;
-  font-weight: 700;
-  color: #94a3b8;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   margin-bottom: 1.25rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border);
 `;
 
 const RadioGroup = styled.div`
@@ -66,20 +69,21 @@ const RadioLabel = styled.label<{ $active: boolean }>`
   padding: 0.75rem 1rem;
   border-radius: 12px;
   cursor: pointer;
-  background: ${({ $active }) => $active ? 'rgba(225, 29, 72, 0.15)' : 'transparent'};
-  color: ${({ $active }) => $active ? '#f43f5e' : '#94a3b8'};
+  background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent'};
+  color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
   font-weight: ${({ $active }) => $active ? '700' : '500'};
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    background: rgba(225, 29, 72, 0.08);
+    background: rgba(var(--primary-rgb), 0.05);
+    color: var(--primary);
   }
 
   input {
     appearance: none;
     width: 18px;
     height: 18px;
-    border: 2px solid ${({ $active }) => $active ? '#f43f5e' : 'rgba(255, 255, 255, 0.2)'};
+    border: 2px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
     border-radius: 50%;
     position: relative;
     
@@ -91,7 +95,7 @@ const RadioLabel = styled.label<{ $active: boolean }>`
       transform: translate(-50%, -50%);
       width: 8px;
       height: 8px;
-      background: #f43f5e;
+      background: var(--primary);
       border-radius: 50%;
       opacity: ${({ $active }) => $active ? 1 : 0};
       transition: opacity 0.2s;
@@ -117,27 +121,29 @@ const ActionButtonsGrid = styled.div`
 `;
 
 const ActionButton = styled.button`
-  background: #3b82f6;
-  color: white;
-  padding: 1rem;
-  border-radius: 16px;
+  background: var(--primary);
+  color: #fff;
+  padding: 1.25rem;
+  border-radius: 20px;
   border: none;
-  font-weight: 700;
+  font-weight: 800;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-md);
 
   &:hover {
-    background: #2563eb;
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    filter: brightness(1.1);
   }
 
   svg {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
   }
 `;
 
@@ -145,43 +151,49 @@ const ListToolbar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #1a1e2e;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--surface);
+  padding: 1rem 1.75rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
 
   @media (max-width: 768px) {
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
     align-items: flex-start;
+    padding: 1.25rem;
   }
 `;
 
 const CheckboxGroup = styled.div`
   display: flex;
   gap: 1.5rem;
+  flex-wrap: wrap;
 `;
 
 const CheckboxLabel = styled.label`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-  color: #fff;
+  gap: 0.6rem;
+  font-weight: 700;
+  color: var(--foreground);
   cursor: pointer;
+  font-size: 0.95rem;
 
   input {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
     appearance: none;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--border);
+    background: var(--background);
     cursor: pointer;
     position: relative;
+    transition: all 0.2s;
     
     &:checked {
-      background: #f43f5e;
-      border-color: #f43f5e;
+      background: var(--primary);
+      border-color: var(--primary);
       
       &::after {
         content: '✓';
@@ -190,110 +202,126 @@ const CheckboxLabel = styled.label`
         left: 50%;
         transform: translate(-50%, -50%);
         color: white;
-        font-size: 10px;
+        font-size: 12px;
+        font-weight: 900;
       }
+    }
+
+    &:hover {
+      border-color: var(--primary);
     }
   }
 `;
 
 const ToolbarIcons = styled.div`
   display: flex;
-  gap: 0.75rem;
-  color: #94a3b8;
+  gap: 0.5rem;
+  color: var(--text-secondary);
 
   button {
     background: none;
     border: none;
-    padding: 0.5rem;
+    padding: 0.6rem;
     color: inherit;
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 10px;
+    transition: all 0.2s;
     
     &:hover {
-      background: rgba(255, 255, 255, 0.05);
-      color: #f43f5e;
+      background: var(--background);
+      color: var(--primary);
     }
   }
 `;
 
 const ItemCard = styled.div`
-  background: #1a1e2e;
-  border-radius: 16px;
-  padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 1.75rem;
+  border: 1px solid var(--border);
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 1.5rem;
   align-items: flex-start;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    border-color: #f43f5e;
-    background: #23283b;
+    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
   }
 
   @media (max-width: 640px) {
     grid-template-columns: 1fr auto;
-    gap: 1rem;
+    padding: 1.25rem;
   }
 `;
 
 const SpeakerButton = styled.button`
-  background: none;
+  background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
   border: none;
-  color: #f43f5e;
+  color: var(--primary);
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
   
   &:hover {
-    background: rgba(244, 63, 94, 0.1);
+    background: var(--primary);
+    color: #fff;
+    transform: scale(1.05);
   }
 `;
 
 const ItemContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.35rem;
 `;
 
 const KanjiText = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.75rem;
+  font-weight: 800;
   margin: 0;
-  color: #fff;
+  color: var(--foreground);
 `;
 
 const ReadingText = styled.p`
-  color: #94a3b8;
-  font-size: 1rem;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  font-weight: 500;
   margin: 0;
 `;
 
 const MeaningText = styled.p`
-  margin: 0.5rem 0 0 0;
-  font-size: 1.1rem;
-  line-height: 1.5;
-  color: #cbd5e1;
+  margin: 0.75rem 0 0 0;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--foreground);
+  opacity: 0.9;
 `;
 
 const AddButton = styled.button`
-  background: #f43f5e;
+  background: var(--primary);
   color: white;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 1.25rem;
-  transition: transform 0.2s;
+  font-size: 1.5rem;
+  transition: all 0.2s;
 
   &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+    transform: scale(1.15) rotate(90deg);
+    box-shadow: 0 0 15px rgba(var(--primary-rgb, 0, 0, 0), 0.3);
   }
 `;
 
@@ -302,34 +330,37 @@ const Pagination = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.75rem;
-  margin-top: 3rem;
-  padding-bottom: 3rem;
+  margin-top: 3.5rem;
+  padding-bottom: 4rem;
+  flex-wrap: wrap;
 `;
 
 const PageButton = styled.button<{ $active?: boolean }>`
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: none;
-  background: ${({ $active }) => $active ? '#e11d48' : '#fff'};
-  color: ${({ $active }) => $active ? '#fff' : '#0f172a'};
+  border: 1px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
+  background: ${({ $active }) => $active ? 'var(--primary)' : 'var(--surface)'};
+  color: ${({ $active }) => $active ? '#fff' : 'var(--foreground)'};
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-sm);
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+    color: ${({ $active }) => $active ? '#fff' : 'var(--primary)'};
   }
 
   &:disabled {
     opacity: 0.4;
-    cursor: default;
+    cursor: not-allowed;
   }
 `;
 
@@ -422,9 +453,9 @@ export default function DictionaryPage() {
   const browseData = React.useMemo(() => {
     return allVocabulary
       .filter(v => v.id.startsWith('lib-'))
-      .map(v => ({ 
-        ...v, 
-        type: 'vocabulary' as const, 
+      .map(v => ({
+        ...v,
+        type: 'vocabulary' as const,
         source: 'kamus' as const
       }));
   }, []);
@@ -456,10 +487,10 @@ export default function DictionaryPage() {
               { id: 'kanji', label: 'Kanji' }
             ].map(item => (
               <RadioLabel key={item.id} $active={activeCategory === item.id}>
-                <input 
-                  type="radio" 
-                  checked={activeCategory === item.id} 
-                  onChange={() => setActiveCategory(item.id as any)} 
+                <input
+                  type="radio"
+                  checked={activeCategory === item.id}
+                  onChange={() => setActiveCategory(item.id as any)}
                 />
                 {item.label}
               </RadioLabel>
@@ -472,10 +503,10 @@ export default function DictionaryPage() {
           <RadioGroup>
             {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
               <RadioLabel key={lvl} $active={activeLevel === lvl}>
-                <input 
-                  type="radio" 
-                  checked={activeLevel === lvl} 
-                  onChange={() => setActiveLevel(lvl as any)} 
+                <input
+                  type="radio"
+                  checked={activeLevel === lvl}
+                  onChange={() => setActiveLevel(lvl as any)}
                 />
                 {lvl}
               </RadioLabel>
@@ -487,19 +518,19 @@ export default function DictionaryPage() {
       <MainContent>
         <ActionButtonsGrid>
           <ActionButton>
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/></svg>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" /></svg>
             Kartu Flash
           </ActionButton>
           <ActionButton>
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" /></svg>
             Kuis
           </ActionButton>
           <ActionButton>
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" /></svg>
             Berlatih
           </ActionButton>
           <ActionButton>
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" /></svg>
             Tes Mini
           </ActionButton>
         </ActionButtonsGrid>
@@ -510,8 +541,8 @@ export default function DictionaryPage() {
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.3-4.3" />
             </svg>
-            <Input 
-              placeholder="Cari kata, kana, romaji (misal: taberu)..." 
+            <Input
+              placeholder="Cari kata, kana, romaji (misal: taberu)..."
               value={query}
               onChange={handleInputChange}
             />
@@ -526,9 +557,9 @@ export default function DictionaryPage() {
               { id: 'arti', label: 'Arti' }
             ].map(item => (
               <CheckboxLabel key={item.id}>
-                <input 
-                  type="checkbox" 
-                  checked={showConfig[item.id as keyof typeof showConfig]} 
+                <input
+                  type="checkbox"
+                  checked={showConfig[item.id as keyof typeof showConfig]}
                   onChange={() => setShowConfig(prev => ({ ...prev, [item.id]: !prev[item.id as keyof typeof showConfig] }))}
                 />
                 {item.label}
@@ -536,9 +567,9 @@ export default function DictionaryPage() {
             ))}
           </CheckboxGroup>
           <ToolbarIcons>
-            <button title="Download"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
-            <button title="Play"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
-            <button title="Shuffle"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5"/></svg></button>
+            <button title="Download"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></button>
+            <button title="Play"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></button>
+            <button title="Shuffle"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5" /></svg></button>
           </ToolbarIcons>
         </ListToolbar>
 
@@ -550,7 +581,7 @@ export default function DictionaryPage() {
               {displayData.map((item: any, idx) => (
                 <ItemCard key={`${item.source}-${item.type}-${item.level}-${item.id || idx}`}>
                   <SpeakerButton>
-                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
                   </SpeakerButton>
                   <ItemContent>
                     {showConfig.kata && <KanjiText>{item.word || item.title}</KanjiText>}
@@ -566,8 +597,8 @@ export default function DictionaryPage() {
               <Pagination>
                 <PageButton onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}>&lt;</PageButton>
                 {[...Array(Math.min(5, totalPages))].map((_, i) => (
-                  <PageButton 
-                    key={i + 1} 
+                  <PageButton
+                    key={i + 1}
                     $active={currentPage === i + 1}
                     onClick={() => setCurrentPage(i + 1)}
                   >
@@ -576,7 +607,7 @@ export default function DictionaryPage() {
                 ))}
                 {totalPages > 5 && <span>...</span>}
                 {totalPages > 5 && (
-                   <PageButton 
+                  <PageButton
                     $active={currentPage === totalPages}
                     onClick={() => setCurrentPage(totalPages)}
                   >
