@@ -3,80 +3,352 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { toKana, isRomaji } from 'wanakana';
-import { searchDictionary, DictionaryResult, allVocabulary, allGrammar, allNumbers } from '@/lib/dictionary';
+import { searchDictionary, DictionaryResult, allVocabulary } from '@/lib/dictionary';
 import Link from 'next/link';
 
-const Container = styled.div`
-  max-width: 1200px;
+const PageContainer = styled.div`
+  display: flex;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 4rem 2rem;
-  min-height: 90vh;
+  gap: 2rem;
+  padding: 2rem;
+  min-height: 100vh;
+  backgroundColor: #0f121d;
+  backgroundImage: radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
+  backgroundSize: 40px 40px;
+  color: #fff;
 
-  @media (max-width: 768px) {
-    padding: 2rem 1rem;
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
   }
 `;
 
-const Header = styled.div`
-  margin-bottom: 4rem;
-  text-align: center;
+const Sidebar = styled.aside`
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+  }
 `;
 
-const Title = styled.h1`
-  font-size: 3.5rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+const SidebarSection = styled.div`
+  background: #1a1e2e;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+`;
+
+const SectionTitle = styled.h3`
+  font-size: 1rem;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+`;
+
+const RadioGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const RadioLabel = styled.label<{ $active: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  background: ${({ $active }) => $active ? 'rgba(225, 29, 72, 0.15)' : 'transparent'};
+  color: ${({ $active }) => $active ? '#f43f5e' : '#94a3b8'};
+  font-weight: ${({ $active }) => $active ? '700' : '500'};
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(225, 29, 72, 0.08);
+  }
+
+  input {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid ${({ $active }) => $active ? '#f43f5e' : 'rgba(255, 255, 255, 0.2)'};
+    border-radius: 50%;
+    position: relative;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      background: #f43f5e;
+      border-radius: 50%;
+      opacity: ${({ $active }) => $active ? 1 : 0};
+      transition: opacity 0.2s;
+    }
+  }
+`;
+
+const MainContent = styled.main`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const ActionButtonsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const ActionButton = styled.button`
+  background: #3b82f6;
+  color: white;
+  padding: 1rem;
+  border-radius: 16px;
+  border: none;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+const ListToolbar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1e2e;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+`;
+
+const CheckboxGroup = styled.div`
+  display: flex;
+  gap: 1.5rem;
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+
+  input {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    appearance: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    position: relative;
+    
+    &:checked {
+      background: #f43f5e;
+      border-color: #f43f5e;
+      
+      &::after {
+        content: '✓';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: 10px;
+      }
+    }
+  }
+`;
+
+const ToolbarIcons = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  color: #94a3b8;
+
+  button {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    color: inherit;
+    cursor: pointer;
+    border-radius: 8px;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #f43f5e;
+    }
+  }
+`;
+
+const ItemCard = styled.div`
+  background: #1a1e2e;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.5rem;
+  align-items: flex-start;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: #f43f5e;
+    background: #23283b;
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+  }
+`;
+
+const SpeakerButton = styled.button`
+  background: none;
+  border: none;
+  color: #f43f5e;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  
+  &:hover {
+    background: rgba(244, 63, 94, 0.1);
+  }
+`;
+
+const ItemContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`;
+
+const KanjiText = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 700;
   margin: 0;
-  margin-bottom: 1rem;
+  color: #fff;
+`;
 
-  @media (max-width: 768px) {
-    font-size: 2.25rem;
+const ReadingText = styled.p`
+  color: #94a3b8;
+  font-size: 1rem;
+  margin: 0;
+`;
+
+const MeaningText = styled.p`
+  margin: 0.5rem 0 0 0;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+`;
+
+const AddButton = styled.button`
+  background: #f43f5e;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.25rem;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
   }
 `;
 
-const Subtitle = styled.p`
-  font-size: 1.25rem;
-  color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
+const Pagination = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 3rem;
+  padding-bottom: 3rem;
+`;
 
-  @media (max-width: 768px) {
-    font-size: 1rem;
+const PageButton = styled.button<{ $active?: boolean }>`
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: ${({ $active }) => $active ? '#e11d48' : '#fff'};
+  color: ${({ $active }) => $active ? '#fff' : '#0f172a'};
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
   }
 `;
 
 const SearchBarWrapper = styled.div`
-  margin-bottom: 3rem;
-  padding: 1rem 0;
-
-  @media (max-width: 768px) {
-    margin-bottom: 1.5rem;
-  }
+  margin-bottom: 2rem;
 `;
 
 const SearchInputContainer = styled.div`
-  background: var(--surface);
-  border: none;
-  border-radius: 24px;
-  padding: 0.75rem 2rem;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 1rem;
+  background: var(--surface);
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
   
   &:focus-within {
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 768px) {
-    padding: 0.6rem 1.25rem;
-    gap: 0.75rem;
   }
 `;
 
@@ -84,155 +356,14 @@ const Input = styled.input`
   flex: 1;
   background: none;
   border: none;
+  font-size: 1.1rem;
   color: var(--foreground);
-  font-size: 1.5rem;
-  font-weight: 500;
-  width: 100%;
-  
-  &:focus {
-    outline: none;
-  }
+  outline: none;
 
   &::placeholder {
-    opacity: 0.5;
+    color: var(--text-secondary);
+    opacity: 0.6;
   }
-
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
-  }
-`;
-
-const FilterSection = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
-  justify-content: center;
-
-  @media (max-width: 768px) {
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 1rem;
-    margin-bottom: 2rem;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-`;
-
-const FilterChip = styled.button<{ $active: boolean }>`
-  padding: 0.6rem 1.5rem;
-  border-radius: 99px;
-  border: 1px solid ${({ $active }) => ($active ? 'var(--primary)' : 'var(--border)')};
-  background: ${({ $active }) => ($active ? 'rgba(79, 70, 229, 0.1)' : 'var(--surface)')};
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-  
-  &:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-
-  @media (max-width: 768px) {
-    padding: 0.5rem 1.25rem;
-    font-size: 0.85rem;
-  }
-`;
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const Card = styled.div`
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 1.5rem;
-  transition: all 0.2s;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  
-  &:hover {
-    border-color: var(--primary);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-sm);
-  }
-`;
-
-const CardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-`;
-
-const MainText = styled.div`
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--foreground);
-  word-break: break-word;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-`;
-
-const ReadingText = styled.div`
-  font-size: 1rem;
-  color: var(--text-secondary);
-`;
-
-const Badge = styled.span<{ $type?: string }>`
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 0.25rem 0.75rem;
-  border-radius: 99px;
-  background: ${({ $type }) => 
-    $type === 'grammar' ? 'rgba(16, 185, 129, 0.1)' : 
-    $type === 'jisho' ? 'rgba(234, 179, 8, 0.1)' : 
-    $type === 'kamus' ? 'rgba(59, 130, 246, 0.1)' :
-    'rgba(255, 255, 255, 0.05)'};
-  color: ${({ $type }) => 
-    $type === 'grammar' ? '#10b981' : 
-    $type === 'jisho' ? '#eab308' : 
-    $type === 'kamus' ? '#3b82f6' :
-    'var(--text-secondary)'};
-`;
-
-const MeaningText = styled.p`
-  margin: 0;
-  line-height: 1.5;
-  color: var(--text-secondary);
-  flex: 1;
-`;
-
-const StatsInfo = styled.div`
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
 `;
 
 const LoadingSpinner = styled.div`
@@ -251,11 +382,13 @@ const LoadingSpinner = styled.div`
 
 export default function DictionaryPage() {
   const [query, setQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState<'all' | 'vocabulary' | 'grammar' | 'kamus' | 'angka'>('all');
-  const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('all');
+  const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('N5');
+  const [activeCategory, setActiveCategory] = useState<'kata' | 'tata-bahasa' | 'kanji'>('kata');
+  const [showConfig, setShowConfig] = useState({ kata: true, ejaan: true, arti: true });
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     setIsMounted(true);
@@ -267,8 +400,9 @@ export default function DictionaryPage() {
       if (query.trim()) {
         setIsLoading(true);
         const results = await searchDictionary(query);
-        setSearchResults(results);
+        setSearchResults(results.filter(r => r.source === 'kamus' || r.source === 'jisho'));
         setIsLoading(false);
+        setCurrentPage(1);
       } else {
         setSearchResults(null);
       }
@@ -285,164 +419,182 @@ export default function DictionaryPage() {
     setQuery(val);
   };
 
-  // Pre-filtered internal data for "browse" view
   const browseData = React.useMemo(() => {
-    const data = [
-      ...allVocabulary.map(v => ({ 
+    return allVocabulary
+      .filter(v => v.id.startsWith('lib-'))
+      .map(v => ({ 
         ...v, 
         type: 'vocabulary' as const, 
-        source: (v.id.startsWith('lib-') ? 'kamus' : 'local') as 'local' | 'kamus' | 'angka'
-      })),
-      ...allGrammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const })),
-      ...allNumbers
-    ].filter(item => {
-      // Filter by category
-      if (activeFilter === 'kamus' && item.source !== 'kamus') return false;
-      if (activeFilter === 'angka' && item.source !== 'angka') return false;
-      if (activeFilter !== 'all' && activeFilter !== 'kamus' && activeFilter !== 'angka' && (item as any).type !== activeFilter) return false;
-      
-      return true;
-    });
+        source: 'kamus' as const
+      }));
+  }, []);
 
-    return data;
-  }, [activeFilter]);
-
-  const displayData = React.useMemo(() => {
-    const filtered = (searchResults || browseData).filter(item => {
-      // Apply level filter
+  const filteredData = React.useMemo(() => {
+    return (searchResults || browseData).filter(item => {
       if (activeLevel !== 'all' && item.level !== activeLevel) return false;
       return true;
-    }).slice(0, (searchResults && activeLevel === 'all') ? 100 : 100);
+    });
+  }, [searchResults, browseData, activeLevel]);
 
-    // If viewing without search, shuffle a bit if no specific filter is selected
-    // Only shuffle when mounted (client-side) to avoid hydration mismatch
-    if (isMounted && !searchResults && activeLevel === 'all' && activeFilter === 'all') {
-      filtered.sort(() => Math.random() - 0.5);
-    }
-    return filtered;
-  }, [searchResults, browseData, activeLevel, activeFilter, isMounted]);
+  const displayData = React.useMemo(() => {
+    const itemsPerPage = 12;
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredData.slice(start, start + itemsPerPage);
+  }, [filteredData, currentPage]);
+
+  const totalPages = Math.ceil(filteredData.length / 12);
 
   return (
-    <Container>
-      <Header>
-        <Title>Library Kamus</Title>
-        <Subtitle>
-          Jelajahi ribuan kosakata dan tata bahasa Jepang. Gunakan pencarian untuk mencari kata kapan saja.
-        </Subtitle>
-      </Header>
+    <PageContainer>
+      <Sidebar>
+        <SidebarSection>
+          <SectionTitle>Pilih jenis kata</SectionTitle>
+          <RadioGroup>
+            {[
+              { id: 'kata', label: 'Kata' },
+              { id: 'tata-bahasa', label: 'Tata bahasa' },
+              { id: 'kanji', label: 'Kanji' }
+            ].map(item => (
+              <RadioLabel key={item.id} $active={activeCategory === item.id}>
+                <input 
+                  type="radio" 
+                  checked={activeCategory === item.id} 
+                  onChange={() => setActiveCategory(item.id as any)} 
+                />
+                {item.label}
+              </RadioLabel>
+            ))}
+          </RadioGroup>
+        </SidebarSection>
 
-      <SearchBarWrapper>
-        <SearchInputContainer>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.3-4.3" />
-          </svg>
-          <Input 
-            placeholder="Cari kata, kana, romaji (misal: taberu)..." 
-            value={query}
-            onChange={handleInputChange}
-          />
-          {query && (
-            <button onClick={() => setQuery('')} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: '0.5rem' }}>
-              ✕
-            </button>
-          )}
-        </SearchInputContainer>
-      </SearchBarWrapper>
+        <SidebarSection>
+          <SectionTitle>Pilih tingkat</SectionTitle>
+          <RadioGroup>
+            {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
+              <RadioLabel key={lvl} $active={activeLevel === lvl}>
+                <input 
+                  type="radio" 
+                  checked={activeLevel === lvl} 
+                  onChange={() => setActiveLevel(lvl as any)} 
+                />
+                {lvl}
+              </RadioLabel>
+            ))}
+          </RadioGroup>
+        </SidebarSection>
+      </Sidebar>
 
-      <FilterSection>
-        <FilterChip 
-          $active={activeFilter === 'all'} 
-          onClick={() => setActiveFilter('all')}
-        >
-          Semua
-        </FilterChip>
-        <FilterChip 
-          $active={activeFilter === 'vocabulary'} 
-          onClick={() => setActiveFilter('vocabulary')}
-        >
-          Kosakata
-        </FilterChip>
-        <FilterChip 
-          $active={activeFilter === 'grammar'} 
-          onClick={() => setActiveFilter('grammar')}
-        >
-          Tata Bahasa
-        </FilterChip>
-        <FilterChip 
-          $active={activeFilter === 'kamus'} 
-          onClick={() => {
-            setActiveFilter('kamus');
-            setActiveLevel('all');
-          }}
-        >
-          Kamus
-        </FilterChip>
-        <FilterChip 
-          $active={activeFilter === 'angka'} 
-          onClick={() => setActiveFilter('angka')}
-        >
-          Angka
-        </FilterChip>
-      </FilterSection>
+      <MainContent>
+        <ActionButtonsGrid>
+          <ActionButton>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z"/></svg>
+            Kartu Flash
+          </ActionButton>
+          <ActionButton>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+            Kuis
+          </ActionButton>
+          <ActionButton>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+            Berlatih
+          </ActionButton>
+          <ActionButton>
+            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg>
+            Tes Mini
+          </ActionButton>
+        </ActionButtonsGrid>
 
-      {activeFilter !== 'angka' && (
-        <FilterSection style={{ marginBottom: '2rem', gap: '0.5rem' }}>
-          {['all', 'N1', 'N2', 'N3', 'N4', 'N5'].map((lvl) => (
-            <FilterChip 
-              key={lvl}
-              $active={activeLevel === lvl}
-              onClick={() => setActiveLevel(lvl as any)}
-              style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }}
-            >
-              {lvl === 'all' ? 'Semua Level' : lvl}
-            </FilterChip>
-          ))}
-        </FilterSection>
-      )}
+        <SearchBarWrapper style={{ marginBottom: '1.5rem', marginTop: '0.5rem' }}>
+          <SearchInputContainer>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            <Input 
+              placeholder="Cari kata, kana, romaji (misal: taberu)..." 
+              value={query}
+              onChange={handleInputChange}
+            />
+          </SearchInputContainer>
+        </SearchBarWrapper>
 
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <Grid>
-          {displayData.map((item: any, idx) => (
-            <Card key={`${item.source}-${item.type}-${item.level}-${item.id || idx}`}>
-              <CardHeader>
-                <div>
-                  <MainText>{item.word || item.title}</MainText>
-                  {item.reading && <ReadingText>{item.reading}</ReadingText>}
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
-                  <Badge $type={item.source}>
-                    {item.source === 'jisho' ? 'Jisho API' : item.source === 'kamus' ? 'Kamus' : item.source === 'angka' ? 'Angka' : 'Internal'}
-                  </Badge>
-                  <Badge $type={item.type}>{item.type}</Badge>
-                </div>
-              </CardHeader>
-              
-              <MeaningText>{item.meaning}</MeaningText>
-              
-              <StatsInfo>
-                <span>{item.source === 'angka' ? 'Category' : 'Level'}: <strong>{item.level || '?'}</strong></span>
-                {item.source === 'local' && (
-                   <Link 
-                    href={item.type === 'vocabulary' ? '/vocabulary' : `/grammar/${item.id}`}
-                    style={{ color: 'var(--primary)', fontWeight: 700, textDecoration: 'none' }}
+        <ListToolbar>
+          <CheckboxGroup>
+            {[
+              { id: 'kata', label: 'Kata' },
+              { id: 'ejaan', label: 'Ejaan' },
+              { id: 'arti', label: 'Arti' }
+            ].map(item => (
+              <CheckboxLabel key={item.id}>
+                <input 
+                  type="checkbox" 
+                  checked={showConfig[item.id as keyof typeof showConfig]} 
+                  onChange={() => setShowConfig(prev => ({ ...prev, [item.id]: !prev[item.id as keyof typeof showConfig] }))}
+                />
+                {item.label}
+              </CheckboxLabel>
+            ))}
+          </CheckboxGroup>
+          <ToolbarIcons>
+            <button title="Download"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></button>
+            <button title="Play"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+            <button title="Shuffle"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5"/></svg></button>
+          </ToolbarIcons>
+        </ListToolbar>
+
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(450px, 1fr))', gap: '1rem' }}>
+              {displayData.map((item: any, idx) => (
+                <ItemCard key={`${item.source}-${item.type}-${item.level}-${item.id || idx}`}>
+                  <SpeakerButton>
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                  </SpeakerButton>
+                  <ItemContent>
+                    {showConfig.kata && <KanjiText>{item.word || item.title}</KanjiText>}
+                    {showConfig.ejaan && item.reading && <ReadingText>{item.reading}</ReadingText>}
+                    {showConfig.arti && <MeaningText>{item.meaning}</MeaningText>}
+                  </ItemContent>
+                  <AddButton>+</AddButton>
+                </ItemCard>
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <Pagination>
+                <PageButton onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}>&lt;</PageButton>
+                {[...Array(Math.min(5, totalPages))].map((_, i) => (
+                  <PageButton 
+                    key={i + 1} 
+                    $active={currentPage === i + 1}
+                    onClick={() => setCurrentPage(i + 1)}
                   >
-                    Detail →
-                  </Link>
+                    {i + 1}
+                  </PageButton>
+                ))}
+                {totalPages > 5 && <span>...</span>}
+                {totalPages > 5 && (
+                   <PageButton 
+                    $active={currentPage === totalPages}
+                    onClick={() => setCurrentPage(totalPages)}
+                  >
+                    {totalPages}
+                  </PageButton>
                 )}
-              </StatsInfo>
-            </Card>
-          ))}
-        </Grid>
-      )}
+                <PageButton onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}>&gt;</PageButton>
+              </Pagination>
+            )}
 
-      {!isLoading && displayData.length === 0 && (
-        <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
-          <p style={{ fontSize: '1.25rem' }}>Tidak ada hasil ditemukan untuk "{query}".</p>
-        </div>
-      )}
-    </Container>
+            {displayData.length === 0 && (
+              <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
+                <p style={{ fontSize: '1.25rem' }}>Tidak ada hasil ditemukan.</p>
+              </div>
+            )}
+          </>
+        )}
+      </MainContent>
+    </PageContainer>
   );
 }
