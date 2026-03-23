@@ -185,7 +185,7 @@ const FULL_DECK: DeckCard[] = allVocabulary.map((item: any) => ({
   id: item.id || `word-${Math.random()}`,
   front: item.word || item.reading || '?',
   romaji: item.romaji || `[Level: ${item.level}]`,
-  meaning: item.meaning || 'No definition',
+  meaning: item.meaning ? item.meaning.split(',')[0].trim() : 'No definition',
   audioText: item.reading || item.word || '',
   level: item.level || '?'
 }));
