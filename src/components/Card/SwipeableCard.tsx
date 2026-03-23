@@ -200,38 +200,7 @@ export default function SwipeableCard({ card, active, index, onSwipe }: Swipeabl
   const [leaveAnim, setLeaveAnim] = useState(false);
   const [flipped, setFlipped] = useState(false);
   
-  const [fetchedMeaning, setFetchedMeaning] = useState(card.meaning);
-  const [fetchedRomaji, setFetchedRomaji] = useState(card.romaji);
-  const [isLoadingJisho, setIsLoadingJisho] = useState(false);
-
   const startPos = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    // Sync state when card changes
-    setFetchedMeaning(card.meaning);
-    setFetchedRomaji(card.romaji);
-  }, [card]);
-
-  useEffect(() => {
-    if (flipped && card.meaning === 'Arti di Jisho' && fetchedMeaning === 'Arti di Jisho' && !isLoadingJisho) {
-      setIsLoadingJisho(true);
-      fetch(`/api/proxy/jisho?keyword=${encodeURIComponent(card.front)}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.data && data.data.length > 0) {
-            const firstElement = data.data[0];
-            const meaning = firstElement.senses?.[0]?.english_definitions?.join(', ') || 'Definition not found';
-            const reading = firstElement.japanese?.[0]?.reading || '';
-            setFetchedMeaning(meaning);
-            if (reading) setFetchedRomaji(reading);
-          } else {
-            setFetchedMeaning('Definition not found');
-          }
-        })
-        .catch(() => setFetchedMeaning('Error fetching definition'))
-        .finally(() => setIsLoadingJisho(false));
-    }
-  }, [flipped, card.meaning, card.front, fetchedMeaning, isLoadingJisho]);
   
   const playAudio = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -350,10 +319,10 @@ export default function SwipeableCard({ card, active, index, onSwipe }: Swipeabl
             </ActionOverlay>
             
             <BackContent>
-              <MeaningText style={{ fontSize: isLoadingJisho || fetchedMeaning.length > 20 ? '1.5rem' : '2.5rem' }}>
-                {isLoadingJisho ? 'Fetching Jisho...' : fetchedMeaning}
+              <MeaningText style={{ fontSize: card.meaning && card.meaning.length > 20 ? '1.5rem' : '2.5rem' }}>
+                {card.meaning}
               </MeaningText>
-              <ReadingText>{fetchedRomaji}</ReadingText>
+              <ReadingText>{card.romaji}</ReadingText>
               <AudioBtn onClick={playAudio} style={{ marginTop: '1rem' }}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
