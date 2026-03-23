@@ -1,4 +1,4 @@
-import jlptWordsData from '../../public/JLPT_Vocabulary/data/results/JLPTWords.json';
+import jlptWordsData from '../../public/JLPT_Vocabulary/data/results/JLPTWordsEnriched.json';
 import numbersData from '../../public/JLPT_Vocabulary/data/Angka.json';
 import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
 import { n4Vocabulary } from '@/data/jlpt/n4/vocabulary';
@@ -24,13 +24,13 @@ export interface DictionaryResult {
   source: 'local' | 'jisho' | 'kamus' | 'angka';
 }
 
-const libraryVocabulary = Object.entries(jlptWordsData).map(([word, level]) => ({
-  id: `lib-${word}`,
-  word,
-  reading: '',
-  romaji: '',
-  meaning: 'See Jisho for definition',
-  level: level as string,
+const libraryVocabulary = Object.values(jlptWordsData).map((item: any) => ({
+  id: `lib-${item.id}`,
+  word: item.word,
+  reading: item.reading,
+  romaji: item.reading,  // We'll use kana reading as the romaji fallback
+  meaning: item.indonesian && item.indonesian !== 'Tidak ada arti' ? item.indonesian : (item.english || 'No definition'),
+  level: item.level as string,
 }));
 
 export const allVocabulary = [
