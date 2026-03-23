@@ -167,8 +167,15 @@ const BackContent = styled.div`
 const MeaningText = styled.h2`
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--primary);
+  color: #818cf8; /* Light indigo, highly legible in dark mode */
+  text-align: center;
   margin: 0;
+  line-height: 1.4;
+  padding: 0 1rem;
+  
+  @media (max-width: 600px) {
+    font-size: 2rem;
+  }
 `;
 
 const ReadingText = styled.p`
