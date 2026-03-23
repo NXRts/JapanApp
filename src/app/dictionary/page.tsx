@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { toKana, isRomaji } from 'wanakana';
 import { searchDictionary, DictionaryResult, allVocabulary, allGrammar, allNumbers } from '@/lib/dictionary';
@@ -255,6 +255,11 @@ export default function DictionaryPage() {
   const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('all');
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Debounce search
   useEffect(() => {
@@ -281,7 +286,7 @@ export default function DictionaryPage() {
   };
 
   // Pre-filtered internal data for "browse" view
-  const browseData = (() => {
+  const browseData = React.useMemo(() => {
     const data = [
       ...allVocabulary.map(v => ({ 
         ...v, 
@@ -291,25 +296,31 @@ export default function DictionaryPage() {
       ...allGrammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const })),
       ...allNumbers
     ].filter(item => {
-      if (activeFilter === 'all') return true;
-      if (activeFilter === 'kamus') {
-        const isKamus = item.source === 'kamus';
-        const matchesLevel = activeLevel === 'all' || item.level === activeLevel;
-        return isKamus && matchesLevel;
-      }
-      if (activeFilter === 'angka') return item.source === 'angka';
-      return (item as any).type === activeFilter;
+      // Filter by category
+      if (activeFilter === 'kamus' && item.source !== 'kamus') return false;
+      if (activeFilter === 'angka' && item.source !== 'angka') return false;
+      if (activeFilter !== 'all' && activeFilter !== 'kamus' && activeFilter !== 'angka' && (item as any).type !== activeFilter) return false;
+      
+      return true;
     });
 
-    // If viewing Kamus with no specific level, shuffle to show a mix
-    if (activeFilter === 'kamus' && activeLevel === 'all') {
-      return [...data].sort(() => Math.random() - 0.5).slice(0, 100);
+    return data;
+  }, [activeFilter]);
+
+  const displayData = React.useMemo(() => {
+    const filtered = (searchResults || browseData).filter(item => {
+      // Apply level filter
+      if (activeLevel !== 'all' && item.level !== activeLevel) return false;
+      return true;
+    }).slice(0, (searchResults && activeLevel === 'all') ? 100 : 100);
+
+    // If viewing without search, shuffle a bit if no specific filter is selected
+    // Only shuffle when mounted (client-side) to avoid hydration mismatch
+    if (isMounted && !searchResults && activeLevel === 'all' && activeFilter === 'all') {
+      filtered.sort(() => Math.random() - 0.5);
     }
-
-    return data.slice(0, 100);
-  })();
-
-  const displayData = searchResults || browseData;
+    return filtered;
+  }, [searchResults, browseData, activeLevel, activeFilter, isMounted]);
 
   return (
     <Container>
@@ -375,7 +386,7 @@ export default function DictionaryPage() {
         </FilterChip>
       </FilterSection>
 
-      {activeFilter === 'kamus' && (
+      {activeFilter !== 'angka' && (
         <FilterSection style={{ marginBottom: '2rem', gap: '0.5rem' }}>
           {['all', 'N1', 'N2', 'N3', 'N4', 'N5'].map((lvl) => (
             <FilterChip 
