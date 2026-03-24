@@ -1,0 +1,632 @@
+[
+  {
+    "id": "wa-desu",
+    "level": "N5",
+    "title": "A は B です",
+    "meaning": "A adalah B",
+    "structure": "[Noun A] は [Noun B] です",
+    "explanation": "Partikel は menandai subjek topik, sedangkan です digunakan sebagai penutup kalimat sopan untuk menyimpulkan sebuah pernyataan afirmatif.",
+    "examples": [
+      {
+        "japanese": "私は学生です。",
+        "romaji": "Watashi wa gakusei desu.",
+        "english": "Saya adalah seorang murid."
+      }
+    ]
+  },
+  {
+    "id": "mo",
+    "level": "N5",
+    "title": "～も (~mo)",
+    "meaning": "juga",
+    "structure": "[Noun] も",
+    "explanation": "Menggantikan peran partikel は/が/を untuk menyatakan kesamaan dengan apa yang telah disebutkan sebelumnya.",
+    "examples": [
+      {
+        "japanese": "彼も日本人です。",
+        "romaji": "Kare mo nihonjin desu.",
+        "english": "Dia juga orang Jepang."
+      }
+    ]
+  },
+  {
+    "id": "no",
+    "level": "N5",
+    "title": "～の (~no)",
+    "meaning": "kepemilikan / dari",
+    "structure": "[Noun 1] の [Noun 2]",
+    "explanation": "Menyatakan bahwa Noun 1 memiliki atau menjelaskan Noun 2. Atau bisa diartikan sebagai 'kepunyaan'.",
+    "examples": [
+      {
+        "japanese": "これは私の本です。",
+        "romaji": "Kore wa watashi no hon desu.",
+        "english": "Ini adalah buku milik saya."
+      }
+    ]
+  },
+  {
+    "id": "wo",
+    "level": "N5",
+    "title": "～を (~wo)",
+    "meaning": "partikel objek",
+    "structure": "[Noun] を [Verb transitif]",
+    "explanation": "Menandai objek langsung dari sebuah kata kerja. Menunjukkan apa yang dikenai tindakan.",
+    "examples": [
+      {
+        "japanese": "ご飯を食べます。",
+        "romaji": "Gohan o tabemasu.",
+        "english": "Makan nasi."
+      }
+    ]
+  },
+  {
+    "id": "ni-arimasu",
+    "level": "N5",
+    "title": "～にあります (~ni arimasu)",
+    "meaning": "Ada di... (Benda mati)",
+    "structure": "[Tempat] に [Benda] があります",
+    "explanation": "Menyatakan keberadaan benda mati atau tanaman di suatu lokasi tertentu.",
+    "examples": [
+      {
+        "japanese": "机の上に本があります。",
+        "romaji": "Tsukue no ue ni hon ga arimasu.",
+        "english": "Ada buku di atas meja."
+      }
+    ]
+  },
+  {
+    "id": "ni-imasu",
+    "level": "N5",
+    "title": "～にいます (~ni imasu)",
+    "meaning": "Ada di... (Mahluk hidup)",
+    "structure": "[Tempat] に [Orang/Hewan] がいます",
+    "explanation": "Menyatakan keberadaan mahluk hidup yang bisa bergerak (orang atau hewan).",
+    "examples": [
+      {
+        "japanese": "庭に犬がいます。",
+        "romaji": "Niwa ni inu ga imasu.",
+        "english": "Ada anjing di taman."
+      }
+    ]
+  },
+  {
+    "id": "ni-iku",
+    "level": "N5",
+    "title": "～に行きます (~ni ikimasu)",
+    "meaning": "Pergi ke...",
+    "structure": "[Tempat] に/へ 行きます",
+    "explanation": "Menandai arah tujuan dari suatu perpindahan atau perjalanan.",
+    "examples": [
+      {
+        "japanese": "明日、東京に行きます。",
+        "romaji": "Ashita, toukyou ni ikimasu.",
+        "english": "Besok, saya akan pergi ke Tokyo."
+      }
+    ]
+  },
+  {
+    "id": "kara-made",
+    "level": "N5",
+    "title": "～から～まで (~kara ~made)",
+    "meaning": "Dari ... sampai ...",
+    "structure": "[Waktu/Tempat 1] から [Waktu/Tempat 2] まで",
+    "explanation": "Titik awal (kara) hingga titik akhir (made) dari sebuah durasi atau jarak spasial.",
+    "examples": [
+      {
+        "japanese": "月曜日から金曜日まで働きます。",
+        "romaji": "Getsuyoubi kara kinyoubi made hatarakimasu.",
+        "english": "Bekerja dari hari Senin sampai Jumat."
+      }
+    ]
+  },
+  {
+    "id": "mashou",
+    "level": "N5",
+    "title": "～ましょう (~mashou)",
+    "meaning": "Mari kita...",
+    "structure": "[Kata kerja masu stem] + ましょう",
+    "explanation": "Sebuah ajakan antusias kepada pendengar untuk melakukan sesuatu bersama-sama.",
+    "examples": [
+      {
+        "japanese": "一緒に食べましょう。",
+        "romaji": "Issho ni tabemashou.",
+        "english": "Mari kita makan bersama."
+      }
+    ]
+  },
+  {
+    "id": "te-kudasai",
+    "level": "N5",
+    "title": "～てください (~te kudasai)",
+    "meaning": "Tolong...",
+    "structure": "[Kata kerja -te] + ください",
+    "explanation": "Perintah sopan atau permohonan agar seseorang melakukan suatu tindakan.",
+    "examples": [
+      {
+        "japanese": "ちょっと待ってください。",
+        "romaji": "Chotto matte kudasai.",
+        "english": "Tolong tunggu sebentar."
+      }
+    ]
+  },
+  {
+    "id": "te-mo-ii",
+    "level": "N4",
+    "title": "～てもいいです (~te mo ii desu)",
+    "meaning": "Boleh...",
+    "structure": "[Kata kerja -te] + もいいです",
+    "explanation": "Menyatakan izin atau konsesi bahwa suatu tindakan tidak dipermasalahkan apabila dilakukan.",
+    "examples": [
+      {
+        "japanese": "ここで写真を撮ってもいいです。",
+        "romaji": "Koko de shashin o tottemo ii desu.",
+        "english": "Boleh mengambil foto di sini."
+      }
+    ]
+  },
+  {
+    "id": "te-wa-ikemasen",
+    "level": "N4",
+    "title": "～てはいけません (~te wa ikemasen)",
+    "meaning": "Tidak boleh... / Dilarang...",
+    "structure": "[Kata kerja -te] + はいけません",
+    "explanation": "Larangan keras terhadap sebuah tindakan yang biasanya melanggar aturan.",
+    "examples": [
+      {
+        "japanese": "ここに駐車してはいけません。",
+        "romaji": "Koko ni chuusha shite wa ikemasen.",
+        "english": "Dilarang parkir di sini."
+      }
+    ]
+  },
+  {
+    "id": "nagara",
+    "level": "N4",
+    "title": "～ながら (~nagara)",
+    "meaning": "Sambil...",
+    "structure": "[Kata kerja stem] + ながら",
+    "explanation": "Satu subjek melakukan dua aksi secara paralel dalam waktu yang bersamaan.",
+    "examples": [
+      {
+        "japanese": "音楽を聞きながら勉強します。",
+        "romaji": "Ongaku o kikinagara benkyou shimasu.",
+        "english": "Belajar sambil mendengarkan musik."
+      }
+    ]
+  },
+  {
+    "id": "ba-ii",
+    "level": "N4",
+    "title": "～ばいい (~ba ii)",
+    "meaning": "Sebaiknya... / Akan bagus jika...",
+    "structure": "[Kata kerja kondisional -ba] + いい(です)",
+    "explanation": "Memberikan saran atau menanyakan arahan apa yang sebaiknya dilakukan.",
+    "examples": [
+      {
+        "japanese": "どうすればいいですか。",
+        "romaji": "Dou sureba ii desu ka.",
+        "english": "Bagaimana sebaiknya saya bertindak?"
+      }
+    ]
+  },
+  {
+    "id": "nakereba-naranai",
+    "level": "N4",
+    "title": "～なければならない (~nakereba naranai)",
+    "meaning": "Harus...",
+    "structure": "[Kata kerja negatif -nai] buang 'i' + ければならない",
+    "explanation": "Sesuatu yang hukumnya wajib dilakukan tanpa terkecuali.",
+    "examples": [
+      {
+        "japanese": "明日早く起きなければなりません。",
+        "romaji": "Ashita hayaku okinakereba narimasen.",
+        "english": "Besok saya harus bangun cepat."
+      }
+    ]
+  },
+  {
+    "id": "tari-tari",
+    "level": "N4",
+    "title": "～たり～たりする (~tari ~tari suru)",
+    "meaning": "Kadang melakukan X, kadang Y",
+    "structure": "[Kata kerja lampau -ta] + り, [Kata kerja lampau -ta] + りする",
+    "explanation": "Menyebutkan beberapa contoh kegiatan dari banyaknya kegiatan lainnya yang dilakukan.",
+    "examples": [
+      {
+        "japanese": "日曜日は本を読んだり、映画を見たりします。",
+        "romaji": "Nichiyoubi wa hon o yondari, eiga o mitari shimasu.",
+        "english": "Pada hari minggu saya membaca buku dan menonton film (dan lainnya)."
+      }
+    ]
+  },
+  {
+    "id": "koto-ga-dekiru",
+    "level": "N4",
+    "title": "～ことができる (~koto ga dekiru)",
+    "meaning": "Bisa / Mampu melakukan...",
+    "structure": "[Kata kerja kamus] + ことができる",
+    "explanation": "Mengubah kalimat verba menjadi status kemampuan/potensi (formal).",
+    "examples": [
+      {
+        "japanese": "私はピアノを弾くことができます。",
+        "romaji": "Watashi wa piano o hiku koto ga dekimasu.",
+        "english": "Saya bisa bermain piano."
+      }
+    ]
+  },
+  {
+    "id": "mae-ni",
+    "level": "N4",
+    "title": "～前に (~mae ni)",
+    "meaning": "Sebelum...",
+    "structure": "[Kata kerja kamus / Noun + の] + 前に",
+    "explanation": "Sesuatu yang terjadi terlebih dahulu dari aksi utama.",
+    "examples": [
+      {
+        "japanese": "寝る前に歯を磨きます。",
+        "romaji": "Neru mae ni ha o migakimasu.",
+        "english": "Sikat gigi sebelum tidur."
+      }
+    ]
+  },
+  {
+    "id": "te-kara",
+    "level": "N4",
+    "title": "～てから (~te kara)",
+    "meaning": "Setelah melakukan...",
+    "structure": "[Kata kerja -te] + から",
+    "explanation": "Urutan kejadian di mana aksi A selesai mutlak, barulah aksi B dilakukan.",
+    "examples": [
+      {
+        "japanese": "手を洗ってから、ご飯を食べます。",
+        "romaji": "Te o aratte kara, gohan o tabemasu.",
+        "english": "Setelah cuci tangan, barulah makan."
+      }
+    ]
+  },
+  {
+    "id": "to-omoimasu",
+    "level": "N4",
+    "title": "～と思います (~to omoimasu)",
+    "meaning": "Menurut saya...",
+    "structure": "[Kalimat Biasa / Plain Form] + と思います",
+    "explanation": "Untuk memberikan opini, gagasan, atau tebakan pribadi (I think that...).",
+    "examples": [
+      {
+        "japanese": "明日は晴れると思います。",
+        "romaji": "Ashita wa hareru to omoimasu.",
+        "english": "Menurut saya besok cerah."
+      }
+    ]
+  },
+  {
+    "id": "kamo-shirenai",
+    "level": "N3",
+    "title": "～かもしれない (~kamo shirenai)",
+    "meaning": "Bisa jadi / Mungkin saja...",
+    "structure": "[Bentuk Biasa/Na-Adj/Noun] + かもしれない",
+    "explanation": "Probabilitas tebakan sekitar 50% bahwa hal itu mungkin terjadi.",
+    "examples": [
+      {
+        "japanese": "午後は雨が降るかもしれない。",
+        "romaji": "Gogo wa ame ga furu kamo shirenai.",
+        "english": "Bisa jadi siang ini hujan turun."
+      }
+    ]
+  },
+  {
+    "id": "hazu-da",
+    "level": "N3",
+    "title": "～はずだ (~hazu da)",
+    "meaning": "Seharusnya (pasti)...",
+    "structure": "[Kalimat Biasa / Noun + の] + はずだ / はずです",
+    "explanation": "Keyakinan kuat (di atas 80%) yang didasarkan pada logika atau bukti kuat yang ada.",
+    "examples": [
+      {
+        "japanese": "彼はもう車に乗ったから、すぐ着くはずだ。",
+        "romaji": "Kare wa mou kuruma ni notta kara, sugu tsuku hazu da.",
+        "english": "Dia sudah naik mobil, jadi seharusnya segera sampai."
+      }
+    ]
+  },
+  {
+    "id": "you-ni",
+    "level": "N3",
+    "title": "～ように (~you ni)",
+    "meaning": "Biar / Agar...",
+    "structure": "[Kata kerja kamus / Kata kerja negatif -nai] + ように",
+    "explanation": "Menunjukkan sebuah tujuan akhir/kondisi ideal (bukan tindakan langsung).",
+    "examples": [
+      {
+        "japanese": "忘れないように、メモをとります。",
+        "romaji": "Wasurenai you ni, memo o torimasu.",
+        "english": "Supaya tidak lupa, saya mencatatnya."
+      }
+    ]
+  },
+  {
+    "id": "tame-ni",
+    "level": "N3",
+    "title": "～ために (~tame ni)",
+    "meaning": "Demi / Untuk...",
+    "structure": "[Kata kerja kamus / Noun + の] + ために",
+    "explanation": "Pengorbanan atau kehendak kuat demi mencapai target benda atau aksi tersebut.",
+    "examples": [
+      {
+        "japanese": "家族のために、毎日働いています。",
+        "romaji": "Kazoku no tame ni, mainichi hataraite imasu.",
+        "english": "Demi keluarga saya, saya bekerja keras setiap hari."
+      }
+    ]
+  },
+  {
+    "id": "bakari",
+    "level": "N3",
+    "title": "～ばかり (~bakari)",
+    "meaning": "Hanya / Terus-terusan...",
+    "structure": "[Kata benda / Kata kerja -te] + ばかり / ばかりいる",
+    "explanation": "Mengkritik atau mengeluhkan sebuah tindakan yang dilakukan terus-menerus tiasa henti.",
+    "examples": [
+      {
+        "japanese": "弟はゲームをしてばかりいる。",
+        "romaji": "Otouto wa geemu o shite bakari iru.",
+        "english": "Adik laki-laki saya hanya main game terus-terusan."
+      }
+    ]
+  },
+  {
+    "id": "tokoro-da",
+    "level": "N3",
+    "title": "～ところだ (~tokoro da)",
+    "meaning": "Baru saja akan / Sedang / Baru saja selesai...",
+    "structure": "[Kata kerja Kamus / -te iru / -ta] + ところだ",
+    "explanation": "Fokus pada satu titik waktu (sebelum, saat, atau persis sesudah) tindakan itu terjadi.",
+    "examples": [
+      {
+        "japanese": "今、出かけるところです。",
+        "romaji": "Ima, dekakeru tokoro desu.",
+        "english": "Saya baru saja akan berangkat sekarang."
+      }
+    ]
+  },
+  {
+    "id": "hodo-nai",
+    "level": "N3",
+    "title": "～ほど～ない (~hodo ~nai)",
+    "meaning": "Tidak se- [Kata Sifat]...",
+    "structure": "[Noun] ほど + [Bentuk Negaif]",
+    "explanation": "Komparatif negatif (Bahwa Noun A tidak mencapai level Noun B yang disebutkan).",
+    "examples": [
+      {
+        "japanese": "今年は去年ほど寒くない。",
+        "romaji": "Kotoshi wa kyonen hodo samukunai.",
+        "english": "Tahun ini tidak sedingin tahun lalu."
+      }
+    ]
+  },
+  {
+    "id": "ni-yoru-to",
+    "level": "N3",
+    "title": "～によると (~ni yoru to)",
+    "meaning": "Menurut... (Sumber Berita)",
+    "structure": "[Kata Benda] + によると / によれば",
+    "explanation": "Memberitahukan sumber kutipan atau informasi sebelum menyampaikan rumor (sou desu).",
+    "examples": [
+      {
+        "japanese": "天気予報によると、明日は雨だそうです。",
+        "romaji": "Tenki yohou ni yoru to, ashita wa ame da sou desu.",
+        "english": "Menurut prakiraan cuaca, besok katanya akan hujan."
+      }
+    ]
+  },
+  {
+    "id": "beki-da",
+    "level": "N3",
+    "title": "～べきだ (~beki da)",
+    "meaning": "Seharusnya... (Nasihat Moral)",
+    "structure": "[Kata kerja kamus] + べきだ",
+    "explanation": "Tindakan yang ideal secara moral/sosial, sangat dianjurkan (kewajiban tidak tertulis).",
+    "examples": [
+      {
+        "japanese": "約束は守るべきだ。",
+        "romaji": "Yakusoku wa mamoru beki da.",
+        "english": "Janji itu seharusnya ditepati."
+      }
+    ]
+  },
+  {
+    "id": "koto-ni-narimashita",
+    "level": "N3",
+    "title": "～ことになりました (~koto ni narimashita)",
+    "meaning": "Telah diputuskan bahwa...",
+    "structure": "[Kata kerja kamus/negatif] + ことになりました",
+    "explanation": "Keputusan yang telah disetujui bersama oleh pihak luar/organisasi/kebijaksanaan (bukan sepihak).",
+    "examples": [
+      {
+        "japanese": "来月、転勤することになりました。",
+        "romaji": "Raigetsu, tenkin suru koto ni narimashita.",
+        "english": "Telah diputuskan bahwa bulan depan saya akan dipindahtugaskan."
+      }
+    ]
+  },
+  {
+    "id": "o-towazu",
+    "level": "N2",
+    "title": "～を問わず (~o towazu)",
+    "meaning": "Tanpa memandang... / Bebas (dari kriteria)...",
+    "structure": "[Noun] + を問わず",
+    "explanation": "Berlaku untuk semua hal terkait tanpa mempermasalahkan elemen detail seperti gender, siang-malam, cuaca.",
+    "examples": [
+      {
+        "japanese": "経験の有無を問わず、誰でも応募できます。",
+        "romaji": "Keiken no umu o towazu, daredemo oubo dekimasu.",
+        "english": "Siapapun dapat melamar, tanpa memandang memiliki pengalaman atau tidak."
+      }
+    ]
+  },
+  {
+    "id": "ni-mo-kakawarazu",
+    "level": "N2",
+    "title": "～にもかかわらず (~ni mo kakawarazu)",
+    "meaning": "Meskipun / Padahal (kejadiannya anomali)",
+    "structure": "[Bentuk Biasa/Na-adj/Noun] + にもかかわらず",
+    "explanation": "Mirip dengan 'noni', menunjukkan kerancuan, komplain, atau hal yang di luar ekspektasi normal.",
+    "examples": [
+      {
+        "japanese": "雨が降っているにもかかわらず、試合は続行された。",
+        "romaji": "Ame ga futte iru ni mo kakawarazu, shiai wa zukkou sareta.",
+        "english": "Meskipun hujan turun, pertandingan tetap dilanjutkan."
+      }
+    ]
+  },
+  {
+    "id": "ni-sotte",
+    "level": "N2",
+    "title": "～に沿って (~ni sotte)",
+    "meaning": "Sesuai dengan... / Sepanjang rute...",
+    "structure": "[Kata Benda] + に沿って / に沿い",
+    "explanation": "Mengikuti arahan pedoman (manual) ekspektasi, atau secara fisik bergerak di sepanjang garis (seperti sungai/rel).",
+    "examples": [
+      {
+        "japanese": "マニュアルに沿って、作業を進めてください。",
+        "romaji": "Manyuaru ni sotte, sagyou o susumete kudasai.",
+        "english": "Tolong kerjakan sesuai dengan buku panduan."
+      }
+    ]
+  },
+  {
+    "id": "zaruo-enai",
+    "level": "N2",
+    "title": "～ざるを得ない (~zaru o enai)",
+    "meaning": "Terpaksa harus...",
+    "structure": "[Bentuk Negatif -Nai buang 'nai'] + ざるを得ない (Khusus suru -> se-zaru o enai)",
+    "explanation": "Karena tekanan situasi/kondisi tertentu, tidak ada pilihan selain melakukannya walau sebenarnya berat hati.",
+    "examples": [
+      {
+        "japanese": "台風が来ているので、中止せざるを得ない。",
+        "romaji": "Taifuu ga kite iru node, chuushi sezaru o enai.",
+        "english": "Karena ada topan, kita terpaksa harus membatalkannya."
+      }
+    ]
+  },
+  {
+    "id": "tsutsu-aru",
+    "level": "N2",
+    "title": "～つつある (~tsutsu aru)",
+    "meaning": "Sedang (terus berangsur-angsur)...",
+    "structure": "[Kata kerja stem masu] + つつある",
+    "explanation": "Menunjukkan proses transisi yang berkesinambungan dan bertahap seiring berjalannya waktu.",
+    "examples": [
+      {
+        "japanese": "日本の人口は減りつつある。",
+        "romaji": "Nihon no jinkou wa heri tsutsu aru.",
+        "english": "Populasi penduduk Jepang sedang berangsur-angsur menyusut."
+      }
+    ]
+  },
+  {
+    "id": "mono-da",
+    "level": "N2",
+    "title": "～ものだ / ものではない (~mono da / mono dewa nai)",
+    "meaning": "Wajarnya... / (Tidak) Seharusnya...",
+    "structure": "[Kata Kerja Kamus] + ものだ",
+    "explanation": "Menyampaikan generalisasi kebenaran yang diyakini bersama secara turun-temurun, atau mengenang masa lalu.",
+    "examples": [
+      {
+        "japanese": "人の話はちゃんと聞くものだ。",
+        "romaji": "Hito no hanashi wa chanto kiku mono da.",
+        "english": "Sudah wajarnya (seharusnya) kita mengamati perkataan orang lain."
+      }
+    ]
+  },
+  {
+    "id": "igai-ni",
+    "level": "N2",
+    "title": "～以外に (~igai ni)",
+    "meaning": "Kecuali / Selain...",
+    "structure": "[Noun] + 以外に(は)",
+    "explanation": "Mengecualikan sebuah hal dan menyatakan bahwa tidak ada yang lain selain benda itu.",
+    "examples": [
+      {
+        "japanese": "この秘密を知っているのは、私以外には誰もいない。",
+        "romaji": "Kono himitsu o shitte iru no wa, watashi igai ni wa daremo inai.",
+        "english": "Tidak ada seorangpun yang tahu rahasia ini selain saya."
+      }
+    ]
+  },
+  {
+    "id": "nari-nari",
+    "level": "N1",
+    "title": "～なり～なり (~nari ~nari)",
+    "meaning": "Entah itu ... atau ...",
+    "structure": "[Kata Benda/Verb] + なり",
+    "explanation": "Memberikan saran bahwa setidaknya lakukanlah salah satu opsi, memuat perintah menuntut keputusan.",
+    "examples": [
+      {
+        "japanese": "わからない時は、先生に聞くなり辞書を引くなりしなさい。",
+        "romaji": "Wakaranai toki wa, sensei ni kiku nari jisho o hiku nari shinasai.",
+        "english": "Jika tak paham, entah itu tanya ke guru atau cari kamus, lakukanlah."
+      }
+    ]
+  },
+  {
+    "id": "subeku",
+    "level": "N1",
+    "title": "～すべく (~su beku)",
+    "meaning": "Agar / Dengan niat mutlak demi...",
+    "structure": "[Kata kerja kamus] + すべく",
+    "explanation": "Sebuah tekad sungguh-sungguh untuk meraih tujuan spesifik (suru menjadi su beku). Bahasa yang sangat tulisan.",
+    "examples": [
+      {
+        "japanese": "彼は試験に合格すべく、昼夜寝ずに勉強した。",
+        "romaji": "Kare wa shiken ni goukaku su beku, chuuya nezu ni benkyou shita.",
+        "english": "Demi lulus ujian, dia belajar siang malam tanpa tidur."
+      }
+    ]
+  },
+  {
+    "id": "ni-shite-wa",
+    "level": "N1",
+    "title": "～にしては (~ni shite wa)",
+    "meaning": "Untuk ukuran...",
+    "structure": "[Noun / Kalimat Biasa] + にしては",
+    "explanation": "Mengekspresikan pujian atau ejekan yang berbanding terbalik dengan kriteria wajarnya hal tersebut.",
+    "examples": [
+      {
+        "japanese": "初めて作ったにしては、美味しいですね。",
+        "romaji": "Hajimete tsukutta ni shite wa, oishii desu ne.",
+        "english": "Untuk ukuran pembuat baru pertama kali, rasanya enak ya."
+      }
+    ]
+  },
+  {
+    "id": "o-kinjienai",
+    "level": "N1",
+    "title": "～を禁じ得ない (~o kinjienai)",
+    "meaning": "Tak kuasa menahan (rasa)...",
+    "structure": "[Noun Abstrak (emosi)] + を禁じ得ない",
+    "explanation": "Gejolak emosi di dalam hati yang sangat kuat hingga tak bisa dibendung (seperti simpati, amarah, ketakutan).",
+    "examples": [
+      {
+        "japanese": "その悲惨なニュースを聞いて、同情を禁じ得ない。",
+        "romaji": "Sono hisan na nyuusu o kiite, doujou o kinjienai.",
+        "english": "Mendengar berita tragis itu, saya tak kuasa menahan rasa simpati."
+      }
+    ]
+  },
+  {
+    "id": "naramikau",
+    "level": "N1",
+    "title": "～ともなく (~to mo naku)",
+    "meaning": "Tanpa sengaja / Entah bagaimana...",
+    "structure": "[Kata Kerja / Kata Tanya] + ともなく",
+    "explanation": "Lain tujuan atau tanpa arah konkret, tapi secara ajaib terjadi (seperti mendengar tanpa berniat nguping).",
+    "examples": [
+      {
+        "japanese": "ラジオを見るともなく見ていたら、彼の名前が出た。",
+        "romaji": "Rajio o miru to mo naku miteitara, kare no namae ga deta.",
+        "english": "Aku cuma melihat TV tanpa sengaja, eh tiba-tiba namanya muncul."
+      }
+    ]
+  }
+]

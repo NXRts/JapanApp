@@ -1,6 +1,7 @@
 import jlptWordsData from '../../public/JLPT_Vocabulary/data/results/JLPTWordsEnriched.json';
 import numbersData from '../../public/JLPT_Vocabulary/data/Angka.json';
 import kanjiData from '../../public/JLPT_Vocabulary/data/results/KanjiDictionary.json';
+import grammarData from '../../public/JLPT_Vocabulary/data/results/GrammarDictionary.json';
 import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
 import { n4Vocabulary } from '@/data/jlpt/n4/vocabulary';
 import { n3Vocabulary } from '@/data/jlpt/n3/vocabulary';
@@ -51,13 +52,11 @@ export const allVocabulary = [
   ...libraryVocabulary,
 ];
 
-export const allGrammar = [
-  ...n5Grammar,
-  ...n4Grammar,
-  ...n3Grammar,
-  ...n2Grammar,
-  ...n1Grammar,
-];
+export const allGrammar: DictionaryResult[] = Object.values(grammarData).map((item: any) => ({
+  ...item,
+  type: 'grammar',
+  source: 'local'
+}));
 
 export const allKanji: DictionaryResult[] = Object.values(kanjiData).map((item: any) => ({
   id: `kanji-${item.kanji}`,
@@ -132,7 +131,7 @@ export async function searchDictionary(query: string, category: 'kata' | 'tata-b
   if (category === 'tata-bahasa' || category === 'all') {
     allGrammar.forEach((item) => {
       if (
-        item.title.toLowerCase().includes(normalizedQuery) ||
+        (item.title && item.title.toLowerCase().includes(normalizedQuery)) ||
         item.meaning.toLowerCase().includes(normalizedQuery)
       ) {
         localResults.push({

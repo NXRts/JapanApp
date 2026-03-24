@@ -454,7 +454,11 @@ export default function DictionaryPage() {
     if (activeCategory === 'kanji') {
       return allKanji;
     } else if (activeCategory === 'tata-bahasa') {
-      return allGrammar;
+      return allGrammar.map(g => ({
+        ...g,
+        type: 'grammar' as const,
+        source: 'local' as const
+      }));
     } else {
       return allVocabulary
         .filter(v => v.id.startsWith('lib-'))
@@ -489,8 +493,8 @@ export default function DictionaryPage() {
           <RadioGroup>
             {[
               { id: 'kata', label: 'Kata' },
+              { id: 'kanji', label: 'Kanji' },
               { id: 'tata-bahasa', label: 'Tata bahasa' },
-              { id: 'kanji', label: 'Kanji' }
             ].map(item => (
               <RadioLabel key={item.id} $active={activeCategory === item.id}>
                 <input
@@ -616,7 +620,7 @@ export default function DictionaryPage() {
                             {item.stroke_count} strokes • {item.level}
                           </div>
                         )}
-                        
+
                         {item.type === 'grammar' && (
                           <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.95rem' }}>
                             {item.structure && (
