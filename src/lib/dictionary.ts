@@ -26,6 +26,9 @@ export interface DictionaryResult {
   stroke_count?: number; // For kanji
   grade?: number; // For kanji
   meaning: string;
+  structure?: string; // For grammar
+  explanation?: string; // For grammar
+  examples?: any[]; // For grammar
   romaji?: string;
   source: 'local' | 'jisho' | 'kamus' | 'angka' | 'kanji-db';
 }
@@ -138,6 +141,9 @@ export async function searchDictionary(query: string, category: 'kata' | 'tata-b
           level: item.level,
           title: item.title,
           meaning: item.meaning,
+          structure: item.structure,
+          explanation: item.explanation,
+          examples: item.examples,
           source: 'local',
         });
       }
