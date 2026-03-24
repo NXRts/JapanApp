@@ -1,5 +1,6 @@
 import jlptWordsData from '../../public/JLPT_Vocabulary/data/results/JLPTWordsEnriched.json';
 import numbersData from '../../public/JLPT_Vocabulary/data/Angka.json';
+import kanjiData from '../../public/JLPT_Vocabulary/data/results/KanjiDictionary.json';
 import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
 import { n4Vocabulary } from '@/data/jlpt/n4/vocabulary';
 import { n3Vocabulary } from '@/data/jlpt/n3/vocabulary';
@@ -14,14 +15,19 @@ import { n1Grammar } from '@/data/jlpt/n1/grammar';
 
 export interface DictionaryResult {
   id: string;
-  type: 'vocabulary' | 'grammar';
+  type: 'vocabulary' | 'grammar' | 'kanji';
   level: string;
   word?: string; // For vocabulary
   title?: string; // For grammar
+  kanji?: string; // For kanji
   reading?: string; // For vocabulary
+  onyomi?: string[]; // For kanji
+  kunyomi?: string[]; // For kanji
+  stroke_count?: number; // For kanji
+  grade?: number; // For kanji
   meaning: string;
   romaji?: string;
-  source: 'local' | 'jisho' | 'kamus' | 'angka';
+  source: 'local' | 'jisho' | 'kamus' | 'angka' | 'kanji-db';
 }
 
 const libraryVocabulary = Object.values(jlptWordsData).map((item: any) => ({
@@ -50,6 +56,19 @@ export const allGrammar = [
   ...n1Grammar,
 ];
 
+export const allKanji: DictionaryResult[] = Object.values(kanjiData).map((item: any) => ({
+  id: `kanji-${item.kanji}`,
+  type: 'kanji',
+  level: item.jlpt ? `N${item.jlpt}` : 'Hyogai',
+  kanji: item.kanji,
+  onyomi: item.onyomi || [],
+  kunyomi: item.kunyomi || [],
+  stroke_count: item.stroke_count,
+  grade: item.grade,
+  meaning: item.indonesian && item.indonesian !== 'Tidak ada arti' ? item.indonesian : (item.english || 'No definition'),
+  source: 'kanji-db',
+}));
+
 export const allNumbers = Object.entries(numbersData).flatMap(([category, items]) => 
   Object.entries(items).map(([num, data]: [string, any]) => ({
     id: `num-${num}`,
@@ -63,49 +82,72 @@ export const allNumbers = Object.entries(numbersData).flatMap(([category, items]
   }))
 );
 
-export async function searchDictionary(query: string): Promise<DictionaryResult[]> {
+export async function searchDictionary(query: string, category: 'kata' | 'tata-bahasa' | 'kanji' | 'all' = 'all'): Promise<DictionaryResult[]> {
   const normalizedQuery = query.toLowerCase().trim();
   if (!normalizedQuery) return [];
 
   const localResults: DictionaryResult[] = [];
 
+  // Search local Kanji
+  if (category === 'kanji' || category === 'all') {
+    allKanji.forEach((item) => {
+      if (
+        (item.kanji && item.kanji.includes(normalizedQuery)) ||
+        item.onyomi?.some(r => r.includes(normalizedQuery) || r.toLowerCase().includes(normalizedQuery)) ||
+        item.kunyomi?.some(r => r.includes(normalizedQuery) || r.toLowerCase().includes(normalizedQuery)) ||
+        item.meaning.toLowerCase().includes(normalizedQuery)
+      ) {
+        localResults.push(item);
+      }
+    });
+  }
+
   // Search local Vocabulary
-  allVocabulary.forEach((item) => {
-    if (
-      item.word.toLowerCase().includes(normalizedQuery) ||
-      (item.reading && item.reading.toLowerCase().includes(normalizedQuery)) ||
-      (item.romaji && item.romaji.toLowerCase().includes(normalizedQuery)) ||
-      (item.meaning && item.meaning.toLowerCase().includes(normalizedQuery))
-    ) {
-      localResults.push({
-        id: item.id,
-        type: 'vocabulary',
-        level: item.level,
-        word: item.word,
-        reading: item.reading,
-        meaning: item.meaning,
-        romaji: item.romaji,
-        source: item.id.startsWith('lib-') ? 'kamus' : 'local',
-      });
-    }
-  });
+  if (category === 'kata' || category === 'all') {
+    allVocabulary.forEach((item) => {
+      if (
+        item.word.toLowerCase().includes(normalizedQuery) ||
+        (item.reading && item.reading.toLowerCase().includes(normalizedQuery)) ||
+        (item.romaji && item.romaji.toLowerCase().includes(normalizedQuery)) ||
+        (item.meaning && item.meaning.toLowerCase().includes(normalizedQuery))
+      ) {
+        localResults.push({
+          id: item.id,
+          type: 'vocabulary',
+          level: item.level,
+          word: item.word,
+          reading: item.reading,
+          meaning: item.meaning,
+          romaji: item.romaji,
+          source: item.id.startsWith('lib-') ? 'kamus' : 'local',
+        });
+      }
+    });
+  }
 
   // Search local Grammar
-  allGrammar.forEach((item) => {
-    if (
-      item.title.toLowerCase().includes(normalizedQuery) ||
-      item.meaning.toLowerCase().includes(normalizedQuery)
-    ) {
-      localResults.push({
-        id: item.id,
-        type: 'grammar',
-        level: item.level,
-        title: item.title,
-        meaning: item.meaning,
-        source: 'local',
-      });
-    }
-  });
+  if (category === 'tata-bahasa' || category === 'all') {
+    allGrammar.forEach((item) => {
+      if (
+        item.title.toLowerCase().includes(normalizedQuery) ||
+        item.meaning.toLowerCase().includes(normalizedQuery)
+      ) {
+        localResults.push({
+          id: item.id,
+          type: 'grammar',
+          level: item.level,
+          title: item.title,
+          meaning: item.meaning,
+          source: 'local',
+        });
+      }
+    });
+  }
+
+  // If we only want Kanji or Grammar, we can skip fetching Jisho
+  if (category === 'kanji' || category === 'tata-bahasa') {
+    return localResults.slice(0, 15);
+  }
 
   // Fetch from Jisho API Proxy
   try {
@@ -123,8 +165,8 @@ export async function searchDictionary(query: string): Promise<DictionaryResult[
     }));
 
     // Filter out duplicates (if word already in localResults)
-    const localWords = new Set(localResults.map(r => r.word || r.title));
-    const uniqueJishoResults = jishoResults.filter(r => !localWords.has(r.word || r.title));
+    const localWords = new Set(localResults.map(r => r.word || r.title || r.kanji));
+    const uniqueJishoResults = jishoResults.filter(r => !localWords.has(r.word || r.title || r.kanji));
 
     return [...localResults, ...uniqueJishoResults].slice(0, 15);
   } catch (error) {

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { toKana, isRomaji } from 'wanakana';
-import { searchDictionary, DictionaryResult, allVocabulary } from '@/lib/dictionary';
+import { searchDictionary, DictionaryResult, allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
 import Link from 'next/link';
 
 const PageContainer = styled.div`
@@ -430,8 +430,8 @@ export default function DictionaryPage() {
     const timer = setTimeout(async () => {
       if (query.trim()) {
         setIsLoading(true);
-        const results = await searchDictionary(query);
-        setSearchResults(results.filter(r => r.source === 'kamus' || r.source === 'jisho'));
+        const results = await searchDictionary(query, activeCategory);
+        setSearchResults(results.filter(r => r.source === 'kamus' || r.source === 'jisho' || r.source === 'kanji-db' || r.source === 'local'));
         setIsLoading(false);
         setCurrentPage(1);
       } else {
@@ -440,7 +440,7 @@ export default function DictionaryPage() {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, activeCategory]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
@@ -451,14 +451,20 @@ export default function DictionaryPage() {
   };
 
   const browseData = React.useMemo(() => {
-    return allVocabulary
-      .filter(v => v.id.startsWith('lib-'))
-      .map(v => ({
-        ...v,
-        type: 'vocabulary' as const,
-        source: 'kamus' as const
-      }));
-  }, []);
+    if (activeCategory === 'kanji') {
+      return allKanji;
+    } else if (activeCategory === 'tata-bahasa') {
+      return allGrammar;
+    } else {
+      return allVocabulary
+        .filter(v => v.id.startsWith('lib-'))
+        .map(v => ({
+          ...v,
+          type: 'vocabulary' as const,
+          source: 'kamus' as const
+        }));
+    }
+  }, [activeCategory]);
 
   const filteredData = React.useMemo(() => {
     return (searchResults || browseData).filter(item => {
@@ -584,9 +590,33 @@ export default function DictionaryPage() {
                     <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
                   </SpeakerButton>
                   <ItemContent>
-                    {showConfig.kata && <KanjiText>{item.word || item.title}</KanjiText>}
-                    {showConfig.ejaan && item.reading && <ReadingText>{item.reading}</ReadingText>}
-                    {showConfig.arti && <MeaningText>{item.meaning}</MeaningText>}
+                    {showConfig.kata && (
+                      <KanjiText>
+                        {item.type === 'kanji' ? item.kanji : (item.word || item.title)}
+                      </KanjiText>
+                    )}
+                    {showConfig.ejaan && (
+                      <>
+                        {item.type === 'kanji' ? (
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.2rem' }}>
+                            {item.onyomi && item.onyomi.length > 0 && <ReadingText><strong>On:</strong> {item.onyomi.join(', ')}</ReadingText>}
+                            {item.kunyomi && item.kunyomi.length > 0 && <ReadingText><strong>Kun:</strong> {item.kunyomi.join(', ')}</ReadingText>}
+                          </div>
+                        ) : (
+                          item.reading && <ReadingText>{item.reading}</ReadingText>
+                        )}
+                      </>
+                    )}
+                    {showConfig.arti && (
+                      <>
+                        <MeaningText>{item.meaning}</MeaningText>
+                        {item.type === 'kanji' && item.stroke_count && (
+                          <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                            {item.stroke_count} strokes • {item.level}
+                          </div>
+                        )}
+                      </>
+                    )}
                   </ItemContent>
                   <AddButton>+</AddButton>
                 </ItemCard>
