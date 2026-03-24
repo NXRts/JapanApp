@@ -610,9 +610,39 @@ export default function DictionaryPage() {
                     {showConfig.arti && (
                       <>
                         <MeaningText>{item.meaning}</MeaningText>
+                        
                         {item.type === 'kanji' && item.stroke_count && (
                           <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
                             {item.stroke_count} strokes • {item.level}
+                          </div>
+                        )}
+                        
+                        {item.type === 'grammar' && (
+                          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.95rem' }}>
+                            {item.structure && (
+                              <div style={{ padding: '0.4rem 0.6rem', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', borderLeft: '3px solid var(--accent-color)' }}>
+                                <strong>Struktur:</strong> {item.structure}
+                              </div>
+                            )}
+                            {item.explanation && (
+                              <div style={{ color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+                                {item.explanation}
+                              </div>
+                            )}
+                            {item.examples && item.examples.length > 0 && (
+                              <div style={{ marginTop: '0.5rem' }}>
+                                <strong>Contoh:</strong>
+                                <ul style={{ listStyleType: 'none', padding: 0, margin: '0.4rem 0 0 0', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                                  {item.examples.map((ex: any, i: number) => (
+                                    <li key={i} style={{ borderBottom: i !== item.examples.length - 1 ? '1px dashed rgba(255,255,255,0.1)' : 'none', paddingBottom: i !== item.examples.length - 1 ? '0.6rem' : '0' }}>
+                                      <div style={{ color: 'var(--text-primary)' }}>{ex.japanese}</div>
+                                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{ex.romaji}</div>
+                                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontStyle: 'italic', marginTop: '0.2rem' }}>&quot;{ex.english}&quot;</div>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
                           </div>
                         )}
                       </>
