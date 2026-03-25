@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { searchDictionary, allVocabulary, allKanji, allGrammar, DictionaryResult } from '@/lib/dictionary';
 
 // --- Styled Components ---
@@ -88,47 +88,55 @@ const NavArrow = styled.button`
   }
 `;
 
-const Flashcard = styled.div`
+const FlashcardContainer = styled.div` 
+  width: 100%;
+  max-width: 600px;
+  min-height: 450px; /* Base height for the card */
+  perspective: 1000px;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 640px) {
+    min-height: 420px;
+  }
+`;
+
+const FlashcardInner = styled.div<{ $isFlipped: boolean }>`
+  position: relative;
+  width: 100%;
+  flex: 1;
+  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transform-style: preserve-3d;
+  transform: ${({ $isFlipped }) => ($isFlipped ? 'rotateY(180deg)' : 'rotateY(0)')};
+`;
+
+const FlashcardSide = styled.div`
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   background: var(--surface);
   border-radius: 20px;
   box-shadow: var(--shadow-md), 0 10px 40px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--border);
-  width: 100%;
-  max-width: 600px;
-  min-height: 400px;
   padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  flex: 1;
-  min-width: 0;
 
   @media (max-width: 640px) {
     padding: 3rem 1rem 4.5rem 1rem;
-    min-height: 380px;
   }
 `;
 
-const TopRightText = styled.span`
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  font-weight: 600;
-  background: var(--background);
-  padding: 0.4rem 1rem;
-  border-radius: 99px;
-  border: 1px solid var(--border);
-
-  @media (max-width: 640px) {
-    top: 1rem;
-    right: 1rem;
-    padding: 0.3rem 0.8rem;
-    font-size: 0.8rem;
-  }
+const FlashcardBack = styled(FlashcardSide)`
+  transform: rotateY(180deg);
+  justify-content: center;
 `;
+
+
 
 const BottomLeftText = styled.span`
   position: absolute;
@@ -300,6 +308,120 @@ const ActionCircle = styled.button<{ $color: string }>`
   }
 `;
 
+// --- Dropdown Components ---
+const DropdownContainer = styled.div`
+  position: relative;
+  display: inline-block;
+  min-width: 120px;
+  z-index: 20;
+`;
+
+const DropdownTrigger = styled.button<{ $isOpen: boolean }>`
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  outline: none;
+
+  &:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+
+  svg {
+    transition: transform 0.2s;
+    transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0)')};
+  }
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  z-index: 50;
+  animation: fadeIn 0.2s ease-out;
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+
+const DropdownItem = styled.div<{ $isActive: boolean }>`
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: ${({ $isActive }) => ($isActive ? 'var(--primary)' : 'var(--foreground)')};
+  background: ${({ $isActive }) => ($isActive ? 'rgba(var(--primary-rgb, 79, 70, 229), 0.05)' : 'transparent')};
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.05);
+    color: var(--primary);
+  }
+`;
+
+function FilterDropdown({ value, onChange, options }: { value: string, onChange: (val: string) => void, options: string[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  useEffect(() => {
+    const handleClickOutside = () => setIsOpen(false);
+    if(isOpen) {
+      setTimeout(() => document.addEventListener('click', handleClickOutside), 0);
+    }
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isOpen]);
+
+  const displayValue = value === 'All' ? options[0] : value;
+  
+  return (
+    <DropdownContainer onClick={(e) => e.stopPropagation()}>
+      <DropdownTrigger $isOpen={isOpen} onClick={() => setIsOpen(!isOpen)}>
+        {displayValue}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </DropdownTrigger>
+      {isOpen && (
+        <DropdownMenu>
+          {options.map(opt => {
+            const actualVal = opt === 'Semua' ? 'All' : opt;
+            return (
+              <DropdownItem 
+                key={opt}
+                $isActive={value === actualVal}
+                onClick={() => {
+                  onChange(actualVal);
+                  setIsOpen(false);
+                }}
+              >
+                {opt}
+              </DropdownItem>
+            );
+          })}
+        </DropdownMenu>
+      )}
+    </DropdownContainer>
+  );
+}
+
 // Detail Modal Overlay
 const ModalOverlay = styled.div`
   position: fixed;
@@ -412,6 +534,9 @@ const ExampleBlock = styled.div`
 
 function FlashcardContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  
   const q = searchParams.get('q') || '';
   const activeCategory = searchParams.get('category') || 'kata';
   const activeLevel = searchParams.get('level') || 'All';
@@ -420,6 +545,21 @@ function FlashcardContent() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  
+  useEffect(() => {
+    setCurrentIndex(0);
+    setIsFlipped(false);
+  }, [activeCategory, activeLevel]);
+
+  const handleLevelChange = (level: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (level === 'All') {
+      params.delete('level');
+    } else {
+      params.set('level', level);
+    }
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  };
   
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -475,10 +615,14 @@ function FlashcardContent() {
           <Breadcrumbs>
              <Link href="/jlpt">JLPT</Link> / Kartu Flash
           </Breadcrumbs>
-          <Flashcard style={{ justifyContent: 'center' }}>
-            <h2 style={{ color: 'var(--text-secondary)' }}>Data kosong.</h2>
-            <Link href="/jlpt" style={{ marginTop: '1rem', color: 'var(--primary)' }}>Kembali ke JLPT</Link>
-          </Flashcard>
+          <FlashcardContainer>
+            <FlashcardSide style={{ position: 'relative', justifyContent: 'center' }}>
+              <div style={{ margin: 'auto', textAlign: 'center' }}>
+                <h2 style={{ color: 'var(--text-secondary)', marginBottom: '0' }}>Data kosong.</h2>
+                <Link href="/jlpt" style={{ marginTop: '1rem', color: 'var(--primary)', display: 'inline-block' }}>Kembali ke JLPT</Link>
+              </div>
+            </FlashcardSide>
+          </FlashcardContainer>
         </Container>
       </PageWrapper>
     );
@@ -513,50 +657,75 @@ function FlashcardContent() {
           <Link href="/jlpt">JLPT</Link> / Kartu Flash
         </Breadcrumbs>
 
-        <h3 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-secondary)', textTransform: 'capitalize' }}>
-          {activeCategory.replace('-', ' ')}
-        </h3>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '600px', marginBottom: '1.5rem', padding: '0 0.5rem' }}>
+          <h3 style={{ margin: 0, color: 'var(--text-secondary)', textTransform: 'capitalize' }}>
+            {activeCategory.replace('-', ' ')}
+          </h3>
+          <FilterDropdown 
+            value={activeLevel}
+            onChange={handleLevelChange}
+            options={['Semua', 'N5', 'N4', 'N3', 'N2', 'N1']}
+          />
+        </div>
 
         <CardArea>
           <NavArrow onClick={handlePrev} disabled={currentIndex === 0}>
             <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6" /></svg>
           </NavArrow>
           
-          <Flashcard>
-            <TopRightText>Semua ⌄</TopRightText>
-            
-            <SpeakerIcon>
-               <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
-            </SpeakerIcon>
+          <FlashcardContainer>
+            <FlashcardInner $isFlipped={isFlipped}>
+              {/* --- FRONT SIDE --- */}
+              <FlashcardSide>
+                <SpeakerIcon>
+                   <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                </SpeakerIcon>
 
-            <MainWord>{!isFlipped ? resolveTargetWord() : meaning}</MainWord>
-            
-            {!isFlipped && (
-              <Readings>
-                {targetKana.length > 0 ? `「 ${targetKana.join(' 」 「 ')} 」` : ''}
-              </Readings>
-            )}
-            
-            {!isFlipped && romaji && (
-              <div style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginTop: '0.25rem' }}>{romaji}</div>
-            )}
+                <MainWord>{resolveTargetWord()}</MainWord>
+                
+                <Readings>
+                  {targetKana.length > 0 ? `「 ${targetKana.join(' 」 「 ')} 」` : ''}
+                </Readings>
+                
+                {romaji && (
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginTop: '0.25rem' }}>{romaji}</div>
+                )}
 
-            {!isFlipped && (
-              <DetailsBtn onClick={() => setShowDetailModal(true)}>
-                Lihat detailnya
-              </DetailsBtn>
-            )}
+                <DetailsBtn onClick={(e) => { e.stopPropagation(); setShowDetailModal(true); }}>
+                  Lihat detailnya
+                </DetailsBtn>
 
-            <BottomLeftText>{currentIndex + 1} / {filteredData.length}</BottomLeftText>
-            
-            <FlipBtn onClick={() => setIsFlipped(!isFlipped)}>
-              Kembali
-              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
-                <path d="M3 3v5h5" />
-              </svg>
-            </FlipBtn>
-          </Flashcard>
+                <BottomLeftText>{currentIndex + 1} / {filteredData.length}</BottomLeftText>
+                
+                <FlipBtn onClick={() => setIsFlipped(true)}>
+                  Kembali
+                  <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                  </svg>
+                </FlipBtn>
+              </FlashcardSide>
+
+              {/* --- BACK SIDE --- */}
+              <FlashcardBack>
+                <SpeakerIcon>
+                   <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                </SpeakerIcon>
+
+                <MainWord>{meaning}</MainWord>
+
+                <BottomLeftText>{currentIndex + 1} / {filteredData.length}</BottomLeftText>
+                
+                <FlipBtn onClick={() => setIsFlipped(false)}>
+                  Kembali
+                  <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
+                    <path d="M3 3v5h5" />
+                  </svg>
+                </FlipBtn>
+              </FlashcardBack>
+            </FlashcardInner>
+          </FlashcardContainer>
           
           <NavArrow onClick={handleNext} disabled={currentIndex === filteredData.length - 1}>
             <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" /></svg>
