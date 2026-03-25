@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { toKana, isRomaji } from 'wanakana';
 import { searchDictionary, DictionaryResult, allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
 import Link from 'next/link';
+import DictionaryFlashcardModal from '@/components/DictionaryFlashcardModal';
 
 const PageContainer = styled.div`
   display: flex;
@@ -421,6 +422,9 @@ export default function DictionaryPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isFlashcardOpen, setIsFlashcardOpen] = useState(false);
+
+  const itemsPerPage = 15; // Moved from hardcoded value to a constant
 
   useEffect(() => {
     setIsMounted(true);
@@ -479,12 +483,11 @@ export default function DictionaryPage() {
   }, [searchResults, browseData, activeLevel]);
 
   const displayData = React.useMemo(() => {
-    const itemsPerPage = 12;
     const start = (currentPage - 1) * itemsPerPage;
     return filteredData.slice(start, start + itemsPerPage);
-  }, [filteredData, currentPage]);
+  }, [filteredData, currentPage, itemsPerPage]);
 
-  const totalPages = Math.ceil(filteredData.length / 12);
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   return (
     <PageContainer>
@@ -528,9 +531,9 @@ export default function DictionaryPage() {
 
       <MainContent>
         <ActionButtonsGrid>
-          <ActionButton>
+          <ActionButton onClick={() => setIsFlashcardOpen(true)}>
             <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" /></svg>
-            Kartu Flash
+            Flashcards
           </ActionButton>
           <ActionButton>
             <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" /></svg>
@@ -691,6 +694,13 @@ export default function DictionaryPage() {
           </>
         )}
       </MainContent>
+
+      {isFlashcardOpen && (
+        <DictionaryFlashcardModal 
+          data={filteredData} 
+          onClose={() => setIsFlashcardOpen(false)} 
+        />
+      )}
     </PageContainer>
   );
 }
