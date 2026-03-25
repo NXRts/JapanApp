@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { toKana, isRomaji } from 'wanakana';
 import { searchDictionary, DictionaryResult, allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
 import Link from 'next/link';
-import DictionaryFlashcardModal from '@/components/DictionaryFlashcardModal';
 
 const PageContainer = styled.div`
   display: flex;
@@ -422,7 +421,6 @@ export default function DictionaryPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isFlashcardOpen, setIsFlashcardOpen] = useState(false);
 
   const itemsPerPage = 15; // Moved from hardcoded value to a constant
 
@@ -531,7 +529,7 @@ export default function DictionaryPage() {
 
       <MainContent>
         <ActionButtonsGrid>
-          <ActionButton onClick={() => setIsFlashcardOpen(true)}>
+          <ActionButton as={Link} href={`/dictionary/flashcards?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
             <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" /></svg>
             Flashcards
           </ActionButton>
@@ -694,13 +692,6 @@ export default function DictionaryPage() {
           </>
         )}
       </MainContent>
-
-      {isFlashcardOpen && (
-        <DictionaryFlashcardModal 
-          data={filteredData} 
-          onClose={() => setIsFlashcardOpen(false)} 
-        />
-      )}
     </PageContainer>
   );
 }
