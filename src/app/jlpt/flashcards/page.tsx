@@ -414,7 +414,7 @@ export function FlashcardContent() {
       <PageWrapper>
         <Container>
           <Breadcrumbs>
-             <Link href="/dictionary">JLPT</Link> / Kartu Flash
+             <Link href="/jlpt">JLPT</Link> / Kartu Flash
           </Breadcrumbs>
           <div style={{ textAlign: 'center', marginTop: '4rem', color: 'var(--text-secondary)' }}>Memuat kartu flash...</div>
         </Container>
@@ -427,11 +427,11 @@ export function FlashcardContent() {
       <PageWrapper>
         <Container>
           <Breadcrumbs>
-             <Link href="/dictionary">JLPT</Link> / Kartu Flash
+             <Link href="/jlpt">JLPT</Link> / Kartu Flash
           </Breadcrumbs>
           <Flashcard style={{ justifyContent: 'center' }}>
             <h2 style={{ color: 'var(--text-secondary)' }}>Data kosong.</h2>
-            <Link href="/dictionary" style={{ marginTop: '1rem', color: 'var(--primary)' }}>Kembali ke Kamus</Link>
+            <Link href="/jlpt" style={{ marginTop: '1rem', color: 'var(--primary)' }}>Kembali ke JLPT</Link>
           </Flashcard>
         </Container>
       </PageWrapper>
@@ -464,7 +464,7 @@ export function FlashcardContent() {
     <PageWrapper>
       <Container>
         <Breadcrumbs>
-          <Link href="/dictionary">JLPT</Link> / Kartu Flash
+          <Link href="/jlpt">JLPT</Link> / Kartu Flash
         </Breadcrumbs>
 
         <h3 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--text-secondary)', textTransform: 'capitalize' }}>

@@ -208,7 +208,7 @@ export default function MateriHubPage() {
         </HubCardLink>
 
         {/* Dictionary Hub */}
-        <HubCardLink href="/dictionary">
+        <HubCardLink href="/jlpt">
           <CardContent>
             <IconWrapper $color="234, 179, 8"> {/* Amber color */}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -216,12 +216,12 @@ export default function MateriHubPage() {
                 <path d="m21 21-4.3-4.3" />
               </svg>
             </IconWrapper>
-            <CardTitle>Kamus (Dictionary)</CardTitle>
+            <CardTitle>JLPT</CardTitle>
             <CardDescription>
               Akses cepat ribuan kosakata dan tata bahasa Jepang secara instan melalui sistem pencarian cerdas kami.
             </CardDescription>
             <ActionButton $color="234, 179, 8">
-              Buka Kamus
+              Buka JLPT
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>

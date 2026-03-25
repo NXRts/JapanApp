@@ -264,7 +264,7 @@ export function Navbar() {
               <StyledLink href="/materi" $active={pathname.startsWith('/materi')}>Materi</StyledLink>
             </NavItem>
             <NavItem>
-              <StyledLink href="/dictionary" $active={pathname.startsWith('/dictionary')}>Kamus</StyledLink>
+              <StyledLink href="/jlpt" $active={pathname.startsWith('/jlpt')}>JLPT</StyledLink>
             </NavItem>
             <NavItem>
               <StyledLink href="/game" $active={pathname.startsWith('/game')}>Game</StyledLink>
@@ -335,8 +335,8 @@ export function Navbar() {
             Materi
             <span>→</span>
           </MobileLink>
-          <MobileLink href="/dictionary" $active={pathname.startsWith('/dictionary')} onClick={() => setIsMobileMenuOpen(false)}>
-            Kamus (Library)
+          <MobileLink href="/jlpt" $active={pathname.startsWith('/jlpt')} onClick={() => setIsMobileMenuOpen(false)}>
+            JLPT (Library)
             <span>→</span>
           </MobileLink>
           <MobileLink href="/game" $active={pathname.startsWith('/game')} onClick={() => setIsMobileMenuOpen(false)}>
@@ -383,7 +383,7 @@ export function Navbar() {
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.3-4.3" />
             </svg>
-            Kamus (Jisho)
+            JLPT (Jisho)
           </div>
         </MobileMenu>
       </NavRoot>
