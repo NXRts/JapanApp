@@ -52,11 +52,12 @@ const CardArea = styled.div`
   margin-bottom: 2.5rem;
 
   @media (max-width: 640px) {
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 `;
 
 const NavArrow = styled.button`
+  flex-shrink: 0;
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
@@ -82,8 +83,8 @@ const NavArrow = styled.button`
   }
 
   @media (max-width: 640px) {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
   }
 `;
 
@@ -100,6 +101,13 @@ const Flashcard = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+  flex: 1;
+  min-width: 0;
+
+  @media (max-width: 640px) {
+    padding: 3rem 1rem 4.5rem 1rem;
+    min-height: 380px;
+  }
 `;
 
 const TopRightText = styled.span`
@@ -113,6 +121,13 @@ const TopRightText = styled.span`
   padding: 0.4rem 1rem;
   border-radius: 99px;
   border: 1px solid var(--border);
+
+  @media (max-width: 640px) {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+  }
 `;
 
 const BottomLeftText = styled.span`
@@ -125,6 +140,13 @@ const BottomLeftText = styled.span`
   background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
   padding: 0.4rem 1rem;
   border-radius: 99px;
+
+  @media (max-width: 640px) {
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.8rem;
+  }
 `;
 
 const SpeakerIcon = styled.button`
@@ -147,6 +169,7 @@ const MainWord = styled.h1`
   color: var(--primary);
   text-align: center;
   line-height: 1.2;
+  word-break: break-word;
 
   @media (max-width: 640px) {
     font-size: 3.5rem;
@@ -214,12 +237,27 @@ const FlipBtn = styled.button`
   &:hover {
     background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
   }
+
+  @media (max-width: 640px) {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    gap: 0.3rem;
+  }
 `;
 
 const BottomActions = styled.div`
   display: flex;
   gap: 2rem;
   align-items: center;
+
+  @media (max-width: 640px) {
+    gap: 1rem;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 `;
 
 const ActionCircle = styled.button<{ $color: string }>`
@@ -251,6 +289,14 @@ const ActionCircle = styled.button<{ $color: string }>`
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     border-color: ${({ $color }) => $color};
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
   }
 `;
 
