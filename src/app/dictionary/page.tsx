@@ -252,8 +252,9 @@ const ItemCard = styled.div`
   }
 
   @media (max-width: 640px) {
-    grid-template-columns: 1fr auto;
-    padding: 1.25rem;
+    grid-template-columns: auto 1fr auto;
+    padding: 1.25rem 1rem;
+    gap: 1rem;
   }
 `;
 
