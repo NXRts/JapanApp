@@ -258,6 +258,16 @@ const ItemCard = styled.div`
   }
 `;
 
+const ItemsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 const SpeakerButton = styled.button`
   background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
   border: none;
@@ -606,7 +616,7 @@ export default function DictionaryPage() {
           <LoadingSpinner />
         ) : (
           <>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(450px, 1fr))', gap: '1rem' }}>
+            <ItemsGrid>
               {displayData.map((item: any, idx) => (
                 <ItemCard key={`${item.source}-${item.type}-${item.level}-${item.id || idx}`}>
                   <SpeakerButton onClick={(e) => playAudio(e, item.type === 'kanji' ? item.kanji : (item.word || item.title))}>
@@ -674,7 +684,7 @@ export default function DictionaryPage() {
                   <AddButton>+</AddButton>
                 </ItemCard>
               ))}
-            </div>
+            </ItemsGrid>
 
             {totalPages > 1 && (
               <Pagination>
