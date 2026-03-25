@@ -364,7 +364,7 @@ const ExampleBlock = styled.div`
   }
 `;
 
-export function FlashcardContent() {
+function FlashcardContent() {
   const searchParams = useSearchParams();
   const q = searchParams.get('q') || '';
   const activeCategory = searchParams.get('category') || 'kata';
