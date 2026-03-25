@@ -244,10 +244,9 @@ const DropdownItem = styled.div<{ $isActive: boolean }>`
   }
 `;
 
-function CustomDropdown({ value, onChange }: { value: string, onChange: (val: string) => void }) {
+function CustomDropdown({ value, onChange, options }: { value: string, onChange: (val: string) => void, options: string[] }) {
   const [isOpen, setIsOpen] = useState(false);
-  const options = ['All Levels', 'N5', 'N4', 'N3', 'N2', 'N1'];
-  const displayValue = value === 'All' ? 'All Levels' : value;
+  const displayValue = value === 'All' ? options[0] : value;
   
   return (
     <DropdownContainer>
@@ -280,21 +279,45 @@ function CustomDropdown({ value, onChange }: { value: string, onChange: (val: st
   );
 }
 
-import { allVocabulary } from '@/lib/dictionary';
+import { allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
 
 interface DeckCard extends FlashcardData {
   level: string;
+  category: string;
 }
 
-// Map all vocabulary (which internally includes JLPTWords.json) to Flashcard format
-const FULL_DECK: DeckCard[] = allVocabulary.map((item: any) => ({
+// Map all vocabulary, kanji, and grammar to Flashcard format
+const VOCAB_DECK: DeckCard[] = allVocabulary.map((item: any) => ({
   id: item.id || `word-${Math.random()}`,
   front: item.word || item.reading || '?',
   romaji: item.romaji || `[Level: ${item.level}]`,
   meaning: item.meaning ? item.meaning.split(',')[0].trim() : 'No definition',
   audioText: item.reading || item.word || '',
-  level: item.level || '?'
+  level: item.level || '?',
+  category: 'Kosakata'
 }));
+
+const KANJI_DECK: DeckCard[] = allKanji.map((item: any) => ({
+  id: item.id || `kanji-${Math.random()}`,
+  front: item.kanji || '?',
+  romaji: item.onyomi?.join(', ') || item.kunyomi?.join(', ') || `[Level: ${item.level}]`,
+  meaning: item.indonesian || item.english || 'No definition',
+  audioText: item.kanji || '',
+  level: item.level || '?',
+  category: 'Kanji'
+}));
+
+const GRAMMAR_DECK: DeckCard[] = allGrammar.map((item: any) => ({
+  id: item.id || `grammar-${Math.random()}`,
+  front: item.title || '?',
+  romaji: item.structure || `[Level: ${item.level}]`,
+  meaning: item.meaning || 'No definition',
+  audioText: item.title || '',
+  level: item.level || '?',
+  category: 'Tata Bahasa'
+}));
+
+const FULL_DECK: DeckCard[] = [...VOCAB_DECK, ...KANJI_DECK, ...GRAMMAR_DECK];
 
 export default function SmartFlashcardsPage() {
   const [deck, setDeck] = useState<DeckCard[]>([]);
@@ -302,11 +325,12 @@ export default function SmartFlashcardsPage() {
   const [studyCount, setStudyCount] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [levelFilter, setLevelFilter] = useState('All');
+  const [categoryFilter, setCategoryFilter] = useState('Kosakata');
 
-  const loadDeck = (filter: string) => {
-    let pool = FULL_DECK;
-    if (filter !== 'All') {
-      pool = FULL_DECK.filter(card => card.level === filter);
+  const loadDeck = (lvl: string, cat: string) => {
+    let pool = FULL_DECK.filter(card => card.category === cat);
+    if (lvl !== 'All') {
+      pool = pool.filter(card => card.level === lvl);
     }
     
     // Shuffle and cap at 10 items
@@ -318,8 +342,8 @@ export default function SmartFlashcardsPage() {
   };
 
   useEffect(() => {
-    loadDeck(levelFilter);
-  }, [levelFilter]);
+    loadDeck(levelFilter, categoryFilter);
+  }, [levelFilter, categoryFilter]);
 
   const handleSwipe = (dir: 'left' | 'right', card: FlashcardData) => {
     if (dir === 'right') {
@@ -352,7 +376,7 @@ export default function SmartFlashcardsPage() {
   };
 
   const restart = () => {
-    loadDeck(levelFilter);
+    loadDeck(levelFilter, categoryFilter);
   };
 
   return (
@@ -378,8 +402,14 @@ export default function SmartFlashcardsPage() {
               Remaining: {deck.length}
             </div>
             <CustomDropdown 
+              value={categoryFilter}
+              onChange={(val) => setCategoryFilter(val)}
+              options={['Kosakata', 'Kanji', 'Tata Bahasa']}
+            />
+            <CustomDropdown 
               value={levelFilter}
               onChange={(val) => setLevelFilter(val)}
+              options={['All Levels', 'N5', 'N4', 'N3', 'N2', 'N1']}
             />
             <button 
               onClick={restart} 
