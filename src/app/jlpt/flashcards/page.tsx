@@ -641,6 +641,7 @@ const KanjiStrokeImage = styled.img`
   width: 85%;
   height: 85%;
   object-fit: contain;
+  filter: none !important;
 `;
 
 const getKanjiVgUrl = (kanji: string) => {
@@ -663,6 +664,28 @@ function FlashcardContent() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [reviewStatus, setReviewStatus] = useState<Record<string, 'remembered' | 'not-remembered'>>({});
+  
+  // Prevent body scrolling when modal is open & handle Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowDetailModal(false);
+      }
+    };
+
+    if (showDetailModal) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showDetailModal]);
   
   useEffect(() => {
     const saved = localStorage.getItem('jlpt-flashcards-status');
