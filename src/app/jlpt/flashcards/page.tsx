@@ -512,7 +512,54 @@ const CloseModalBtn = styled.button`
 `;
 
 const ModalBody = styled.div`
+  /* replaced by ModalLayout */
+`;
+
+const ModalLayout = styled.div`
+  display: flex;
+  gap: 2rem;
   padding: 2rem;
+  
+  @media (max-width: 800px) {
+    flex-direction: column;
+    padding: 1rem;
+  }
+`;
+
+const MainContent = styled.div`
+  flex: 1;
+  min-width: 0;
+`;
+
+const SidePanelWrapper = styled.div`
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+  @media (max-width: 800px) {
+    width: 100%;
+  }
+`;
+
+const PanelCard = styled.div`
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+`;
+
+const PanelHeader = styled.div`
+  padding: 1rem 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+  border-bottom: 1px solid var(--border);
+  background: rgba(120, 120, 120, 0.05);
+`;
+
+const PanelBody = styled.div`
+  padding: 1.25rem;
 `;
 
 const PartOfSpeechTag = styled.div`
@@ -537,22 +584,69 @@ const ExampleBlock = styled.div`
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-size: 1.05rem;
   }
   
   .japanese {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 500;
     color: var(--foreground);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.4rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    line-height: 1.5;
   }
   
   .translation {
     color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
   }
 `;
+
+const KanjiStrokeBox = styled.div`
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 220px;
+  margin: 1.5rem auto;
+  background: #ffffff; /* Use white to contrast the black SVGs */
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.1);
+  overflow: hidden;
+  
+  /* Dashed crosshairs */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    border-left: 2px dashed rgba(0,0,0,0.15);
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    border-top: 2px dashed rgba(0,0,0,0.15);
+  }
+`;
+
+const KanjiStrokeImage = styled.img`
+  position: relative;
+  z-index: 2;
+  width: 85%;
+  height: 85%;
+  object-fit: contain;
+`;
+
+const getKanjiVgUrl = (kanji: string) => {
+  const hex = kanji.charCodeAt(0).toString(16).padStart(5, '0');
+  return `https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${hex}.svg`;
+};
 
 function FlashcardContent() {
   const searchParams = useSearchParams();
@@ -597,6 +691,18 @@ function FlashcardContent() {
       utterance.rate = 0.8;
       window.speechSynthesis.speak(utterance);
     }
+  };
+
+  const handleNext = () => {
+    if (!filteredData || currentIndex >= filteredData.length - 1) return;
+    setIsFlipped(false);
+    setCurrentIndex(prev => prev + 1);
+  };
+
+  const handlePrev = () => {
+    if (currentIndex <= 0) return;
+    setIsFlipped(false);
+    setCurrentIndex(prev => prev - 1);
   };
 
   useEffect(() => {
@@ -662,6 +768,75 @@ function FlashcardContent() {
     });
   }, [searchResults, browseData, activeLevel, activeStatus, reviewStatus]);
 
+  const currentItem = filteredData && filteredData.length > 0 ? filteredData[currentIndex] as any : null;
+
+  const resolveTargetWord = () => currentItem?.word || currentItem?.kanji || currentItem?.title || '?';
+  const targetWordForDetails = resolveTargetWord();
+  const kanaArr = [currentItem?.reading, ...(currentItem?.onyomi || []), ...(currentItem?.kunyomi || [])].filter(Boolean);
+  const targetKana = Array.from(new Set(kanaArr));
+  const romaji = currentItem?.romaji;
+  const meaning = currentItem?.meaning || currentItem?.indonesian || currentItem?.english || 'No definition';
+  
+  // Dynamic Kanji & Related Words (must be called before early returns to preserve Hook order)
+  const kanjisInWord = useMemo(() => {
+    if (!targetWordForDetails || targetWordForDetails === '?') return [];
+    return String(targetWordForDetails).split('').filter((char: string) => char >= '\u4e00' && char <= '\u9faf');
+  }, [targetWordForDetails]);
+
+  const relatedKanjis = useMemo(() => {
+    if (kanjisInWord.length === 0) return [];
+    return allKanji.filter(k => k.kanji && kanjisInWord.includes(k.kanji));
+  }, [kanjisInWord]);
+
+  const relatedWords = useMemo(() => {
+    if (!targetWordForDetails || targetWordForDetails === '?') return [];
+    return allVocabulary
+      .filter(v => v.word && v.word.includes(targetWordForDetails) && v.word !== targetWordForDetails)
+      .slice(0, 5);
+  }, [targetWordForDetails]);
+
+  const synonyms = useMemo(() => {
+    if (!meaning || meaning === 'No definition') return [];
+    const meaningTokens = meaning.toLowerCase().split(/[;,/\u3002]/).map((t: string) => t.trim()).filter((t: string) => t.length > 3);
+    if (meaningTokens.length === 0) return [];
+    return allVocabulary.filter(v => {
+      if (v.word === targetWordForDetails) return false;
+      const vMeaning = (v.meaning || '').toLowerCase();
+      return meaningTokens.some((token: string) => vMeaning.includes(token));
+    }).slice(0, 6);
+  }, [meaning, targetWordForDetails]);
+
+  const usageInPractice = useMemo(() => {
+    if (!targetWordForDetails || targetWordForDetails === '?') return [];
+    const sentences = new Set<string>();
+    const results: any[] = [];
+    
+    const extractFrom = (dictionaryList: any[]) => {
+      for (const item of dictionaryList) {
+        if (item.examples && Array.isArray(item.examples)) {
+          for (const ex of item.examples) {
+            if (ex.japanese && ex.japanese.includes(targetWordForDetails)) {
+              const strJa = String(ex.japanese);
+              if (!sentences.has(strJa)) {
+                 sentences.add(strJa);
+                 results.push(ex);
+              }
+            }
+          }
+        }
+      }
+    };
+    
+    extractFrom(allVocabulary);
+    extractFrom(allGrammar);
+    
+    // Filter out if it's already in the main examples
+    return results.filter(ex => {
+       if (!currentItem?.examples) return true;
+       return !currentItem.examples.some((cx: any) => cx.japanese === ex.japanese);
+    }).slice(0, 3);
+  }, [targetWordForDetails, currentItem]);
+
   if (isLoading) {
     return (
       <PageWrapper>
@@ -723,28 +898,6 @@ function FlashcardContent() {
     );
   }
 
-  const currentItem = filteredData[currentIndex] as any;
-
-  const handleNext = () => {
-    if (currentIndex < filteredData.length - 1) {
-      setIsFlipped(false);
-      setCurrentIndex(prev => prev + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setIsFlipped(false);
-      setCurrentIndex(prev => prev - 1);
-    }
-  };
-
-  const resolveTargetWord = () => currentItem.word || currentItem.kanji || currentItem.title || '?';
-  const kanaArr = [currentItem.reading, ...(currentItem.onyomi || []), ...(currentItem.kunyomi || [])].filter(Boolean);
-  const targetKana = Array.from(new Set(kanaArr));
-  const romaji = currentItem.romaji;
-  const meaning = currentItem.meaning || currentItem.indonesian || currentItem.english || 'No definition';
-  
   return (
     <PageWrapper>
       <Container>
@@ -887,51 +1040,160 @@ function FlashcardContent() {
               <ModalTab disabled>Tata bahasa</ModalTab>
               <CloseModalBtn onClick={() => setShowDetailModal(false)}>✕</CloseModalBtn>
             </ModalHeader>
-            <ModalBody>
-               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                 <MainWord style={{ fontSize: '3rem', textAlign: 'left', color: 'var(--primary)' }}>
+            <ModalLayout>
+              <MainContent>
+                 <MainWord style={{ fontSize: '3.5rem', textAlign: 'left', color: '#3b82f6', marginBottom: '0.5rem', fontWeight: 800 }}>
                    {resolveTargetWord()}
                  </MainWord>
-                 <SpeakerIcon style={{ margin: 0, opacity: 0.5 }} onClick={(e) => playAudio(e, resolveTargetWord())}>
-                   <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
-                 </SpeakerIcon>
-               </div>
-               
-               <Readings style={{ justifyContent: 'flex-start', marginBottom: '0.5rem' }}>
-                 {targetKana.length > 0 ? `「 ${targetKana.join(' 」 「 ')} 」` : ''}
-               </Readings>
-               
-               {romaji && (
-                 <div style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', marginBottom: '2rem' }}>{romaji}</div>
-               )}
-
-               <PartOfSpeechTag>
-                 ☆ {currentItem.category === 'kata' ? 'Noun' : currentItem.level} ({activeCategory})
-               </PartOfSpeechTag>
-
-               <ExampleBlock>
-                 <div className="title">◆ Pengertian Utama</div>
-                 <div className="japanese">{meaning}</div>
-                 {currentItem.explanation && (
-                   <div className="translation" style={{ marginTop: '0.5rem' }}>{currentItem.explanation}</div>
-                 )}
-               </ExampleBlock>
-
-               {currentItem.examples && currentItem.examples.length > 0 && currentItem.examples.map((ex: any, idx: number) => (
-                 <ExampleBlock key={idx}>
-                   <div className="title">◆ Contoh {idx + 1}</div>
-                   <div className="japanese">
-                     {ex.japanese}
-                     <SpeakerIcon style={{ padding: 0, margin: 0, width: 20, opacity: 0.5 }} onClick={(e) => playAudio(e, ex.japanese)}>
-                       <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+                 
+                 <Readings style={{ justifyContent: 'flex-start', marginBottom: '0.75rem', fontSize: '1.25rem', color: 'var(--foreground)' }}>
+                   {targetKana.length > 0 ? `「 ${targetKana.join(' 」 「 ')} 」` : ''}
+                 </Readings>
+                 
+                 {romaji && (
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: 'var(--foreground)' }}>
+                     <SpeakerIcon style={{ margin: 0, opacity: 0.7, cursor: 'pointer', padding: 0, width: 24, height: 24 }} onClick={(e) => playAudio(e, resolveTargetWord())}>
+                       <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
                      </SpeakerIcon>
+                     <span style={{ fontSize: '1.15rem', letterSpacing: '0.05em' }}>{romaji}</span>
                    </div>
-                   <div className="translation">{ex.romaji}</div>
-                   <div className="translation" style={{ fontStyle: 'italic', marginTop: '0.2rem' }}>{ex.indonesian || ex.english}</div>
-                 </ExampleBlock>
-               ))}
-               
-            </ModalBody>
+                 )}
+
+                 <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1.5rem 0' }} />
+
+                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', fontSize: '1rem', fontWeight: 600 }}>
+                   Tingkat: 
+                   <span style={{ background: '#10b981', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem' }}>
+                     {currentItem?.level?.includes('JLPT') ? currentItem.level : `JLPT ${currentItem?.level || 'N?'}`}
+                   </span>
+                 </div>
+
+                 <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1.5rem 0' }} />
+
+                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ef4444', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '1rem' }}>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
+                    {currentItem?.category === 'kata' ? 'Noun' : currentItem?.category || 'Vocabulary'}
+                 </div>
+
+                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                   <div style={{ color: '#3b82f6', fontSize: '1.5rem', lineHeight: 1 }}>•</div>
+                   <div style={{ fontSize: '1.1rem', color: '#3b82f6', fontWeight: 600, paddingTop: '0.1rem' }}>
+                     {meaning}
+                   </div>
+                 </div>
+
+                 {currentItem?.explanation && (
+                   <div style={{ paddingLeft: '2.25rem', marginBottom: '1.5rem', color: 'var(--text-secondary)' }}>
+                     {currentItem.explanation}
+                   </div>
+                 )}
+
+                 {currentItem?.examples && currentItem.examples.length > 0 && currentItem.examples.map((ex: any, idx: number) => (
+                   <div key={`ex-${idx}`} style={{ paddingLeft: '2.25rem', marginBottom: '2rem' }}>
+                     <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                       <span>{ex.japanese}</span>
+                       <SpeakerIcon style={{ margin: 0, padding: 0, width: 22, height: 22, opacity: 0.5, cursor: 'pointer' }} onClick={(e) => playAudio(e, ex.japanese)}>
+                         <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+                       </SpeakerIcon>
+                     </div>
+                     {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '0.4rem', fontFamily: 'monospace' }}>{ex.romaji}</div>}
+                     <div style={{ color: 'var(--foreground)', fontSize: '1rem' }}>{ex.indonesian || ex.english}</div>
+                   </div>
+                 ))}
+
+                 {synonyms.length > 0 && (
+                   <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
+                     <div style={{ fontSize: '1.2rem', color: 'var(--foreground)', fontWeight: 600, marginBottom: '1rem' }}>
+                       Sinonim dari <span style={{ color: '#10b981' }}>{resolveTargetWord()}</span>
+                     </div>
+                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingLeft: '0.5rem' }}>
+                       {synonyms.map(syn => (
+                         <div key={`syn-${syn.id}`} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#3b82f6', fontSize: '1rem' }}>
+                           <div style={{ padding: '0.2rem', background: '#3b82f6', borderRadius: '50%', transform: 'scale(0.5)' }}></div>
+                           <span style={{ fontWeight: 600, width: '4rem', color: 'var(--foreground)' }}>{syn.word}</span>
+                           <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>; {syn.meaning.split(/[,;]/)[0]}</span>
+                         </div>
+                       ))}
+                     </div>
+                   </div>
+                 )}
+
+                 {usageInPractice.length > 0 && (
+                   <div style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
+                     <div style={{ fontSize: '1.2rem', color: 'var(--foreground)', fontWeight: 600, marginBottom: '1.5rem' }}>
+                       <span style={{ color: 'var(--foreground)' }}>{resolveTargetWord()}</span> digunakan dalam praktik
+                     </div>
+                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                       {usageInPractice.map((u, idx) => (
+                         <div key={`prac-${idx}`} style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', background: 'rgba(0,0,0,0.02)', padding: '1rem', borderRadius: '12px' }}>
+                           <img 
+                             src={`https://picsum.photos/seed/japan-${targetWordForDetails}-${idx}/120/80`} 
+                             alt="Contextual thumbnail" 
+                             style={{ flexShrink: 0, width: '120px', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)' }} 
+                           />
+                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                             {u.romaji && <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{u.romaji}</div>}
+                             <div style={{ fontSize: '1.1rem', color: 'var(--foreground)', lineHeight: 1.4 }}>{u.japanese}</div>
+                             <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>{u.indonesian || u.english}</div>
+                           </div>
+                         </div>
+                       ))}
+                     </div>
+                   </div>
+                 )}
+              </MainContent>
+
+              <SidePanelWrapper>
+                {/* Related Kanji Section */}
+                {relatedKanjis.length > 0 && (
+                  <PanelCard>
+                    <PanelHeader>Kanji dari {resolveTargetWord()}</PanelHeader>
+                    <PanelBody style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                      {relatedKanjis.map(k => (
+                        <div key={k.id}>
+                           <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: '1rem' }}>
+                             <div style={{ fontSize: '2rem', color: 'var(--primary)', lineHeight: 1 }}>{k.kanji}</div>
+                             <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                               {k.onyomi && k.onyomi.length > 0 && <div><strong>On:</strong> {k.onyomi.join(', ')}</div>}
+                               {k.kunyomi && k.kunyomi.length > 0 && <div><strong>Kun:</strong> {k.kunyomi.join(', ')}</div>}
+                             </div>
+                           </div>
+                           
+                           {k.kanji && (
+                             <KanjiStrokeBox>
+                               <KanjiStrokeImage src={getKanjiVgUrl(k.kanji)} alt={k.kanji} loading="lazy" />
+                             </KanjiStrokeBox>
+                           )}
+                           
+                           <div style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: 'var(--foreground)' }}>
+                             <div style={{ marginBottom: '0.25rem' }}><strong>Arti:</strong> {k.meaning}</div>
+                             {k.stroke_count && <div style={{ marginBottom: '0.25rem' }}><strong>Stroke:</strong> {k.stroke_count}</div>}
+                             {k.level && <div><strong>Level:</strong> {k.level}</div>}
+                           </div>
+                        </div>
+                      ))}
+                    </PanelBody>
+
+                  </PanelCard>
+                )}
+
+                {/* Related Words Section */}
+                {relatedWords.length > 0 && (
+                  <PanelCard>
+                    <PanelHeader>Kata terkait dengan {resolveTargetWord()}</PanelHeader>
+                    <PanelBody style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                      {relatedWords.map(w => (
+                        <div key={w.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>
+                          <div style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '1.1rem' }}>{w.word}</div>
+                          {w.reading && <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '0.25rem' }}>「 {w.reading} 」</div>}
+                          <div style={{ fontSize: '0.9rem', color: 'var(--foreground)' }}>{w.meaning}</div>
+                        </div>
+                      ))}
+                    </PanelBody>
+                  </PanelCard>
+                )}
+              </SidePanelWrapper>
+            </ModalLayout>
           </ModalContent>
         </ModalOverlay>
       )}
