@@ -384,13 +384,17 @@ const SearchInputContainer = styled.div`
   align-items: center;
   gap: 1rem;
   background: var(--surface);
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  padding: 1rem 1.75rem;
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
   
   &:focus-within {
     border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb, 79, 70, 229), 0.15), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
   }
 `;
 
@@ -398,13 +402,53 @@ const Input = styled.input`
   flex: 1;
   background: none;
   border: none;
-  font-size: 1.1rem;
   color: var(--foreground);
-  outline: none;
-
+  font-size: 1.15rem;
+  font-family: inherit;
+  
+  &:focus {
+    outline: none;
+  }
+  
   &::placeholder {
     color: var(--text-secondary);
-    opacity: 0.6;
+    opacity: 0.8;
+  }
+`;
+
+const ShortcutHint = styled.kbd`
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-family: monospace;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: opacity 0.2s;
+`;
+
+const ClearButton = styled.button`
+  background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  
+  &:hover {
+    background: var(--primary);
+    color: #fff;
+    transform: scale(1.1);
   }
 `;
 
@@ -433,7 +477,20 @@ export default function DictionaryPage() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 15; // Moved from hardcoded value to a constant
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+K or Cmd+K
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+    };
+    
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
   useEffect(() => {
     setIsMounted(true);
     return () => {
@@ -460,7 +517,7 @@ export default function DictionaryPage() {
     const timer = setTimeout(async () => {
       if (query.trim()) {
         setIsLoading(true);
-        const results = await searchDictionary(query, activeCategory);
+        const results = await searchDictionary(query, activeCategory, activeLevel);
         setSearchResults(results.filter(r => r.source === 'kamus' || r.source === 'jisho' || r.source === 'kanji-db' || r.source === 'local'));
         setIsLoading(false);
         setCurrentPage(1);
@@ -470,7 +527,7 @@ export default function DictionaryPage() {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [query, activeCategory]);
+  }, [query, activeCategory, activeLevel]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
@@ -557,7 +614,10 @@ export default function DictionaryPage() {
       <MainContent>
         <ActionButtonsGrid>
           <ActionButton as={Link} href={`/jlpt/flashcards?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" /></svg>
+            <svg fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+              <rect x="4" y="8" width="16" height="12" rx="2" />
+              <path d="M8 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2" />
+            </svg>
             Flashcards
           </ActionButton>
           <ActionButton>
@@ -576,15 +636,25 @@ export default function DictionaryPage() {
 
         <SearchBarWrapper style={{ marginBottom: '1.5rem', marginTop: '0.5rem' }}>
           <SearchInputContainer>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)' }}>
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.3-4.3" />
             </svg>
             <Input
+              ref={inputRef}
               placeholder="Cari kata, kana, romaji (misal: taberu)..."
               value={query}
               onChange={handleInputChange}
             />
+            {query.length > 0 ? (
+              <ClearButton onClick={() => setQuery('')} aria-label="Clear search">
+                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </ClearButton>
+            ) : (
+              <ShortcutHint>Ctrl K</ShortcutHint>
+            )}
           </SearchInputContainer>
         </SearchBarWrapper>
 
