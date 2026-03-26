@@ -171,6 +171,60 @@ const SecondaryButton = styled(Link)`
   }
 `;
 
+const JLPTButton = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.5rem;
+  background: rgba(0, 212, 255, 0.05); /* Neon blue tint */
+  backdrop-filter: blur(10px);
+  color: #00d4ff; /* Neon blue */
+  font-weight: 800;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  /* Neon blue dot indicator */
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #00d4ff;
+    border-radius: 50%;
+    margin-right: 0.6rem;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    transition: all 0.4s ease;
+  }
+
+  &:hover {
+    background: #00d4ff;
+    color: white;
+    transform: translateY(-4px) scale(1.02);
+    border-color: transparent;
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.4), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+    
+    &::before {
+      background-color: white;
+      box-shadow: 0 0 10px white;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.98);
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    font-size: 1rem;
+  }
+`;
+
 const FeaturesSection = styled.section`
   padding: 4rem 2rem;
   max-width: 1200px;
@@ -824,6 +878,7 @@ export default function Home() {
           </Subtitle>
           <ButtonGroup>
             <PrimaryButton href="/kana">Hiragana & Katakana</PrimaryButton>
+            <JLPTButton href="/jlpt">JLPT</JLPTButton>
             <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
             <SecondaryButton href="/materi">Materi</SecondaryButton>
             <SecondaryButton href="/practice">Start Practicing</SecondaryButton>
