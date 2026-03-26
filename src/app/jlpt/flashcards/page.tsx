@@ -157,6 +157,28 @@ const BottomLeftText = styled.span`
   }
 `;
 
+const StatusIndicator = styled.div<{ $status: 'remembered' | 'not-remembered' | null }>`
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: ${({ $status }) => 
+    $status === 'remembered' ? '#22c55e' : 
+    $status === 'not-remembered' ? '#ef4444' : 'transparent'};
+  box-shadow: ${({ $status }) => 
+    $status === 'remembered' ? '0 0 12px rgba(34, 197, 94, 0.6)' : 
+    $status === 'not-remembered' ? '0 0 12px rgba(239, 68, 68, 0.6)' : 'none'};
+  z-index: 10;
+  transition: all 0.3s ease;
+
+  @media (max-width: 640px) {
+    top: 1rem;
+    left: 1rem;
+  }
+`;
+
 const SpeakerIcon = styled.button`
   background: none;
   border: none;
@@ -540,11 +562,30 @@ function FlashcardContent() {
   const q = searchParams.get('q') || '';
   const activeCategory = searchParams.get('category') || 'kata';
   const activeLevel = searchParams.get('level') || 'All';
+  const activeStatus = searchParams.get('status') || 'All';
 
   // State
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [reviewStatus, setReviewStatus] = useState<Record<string, 'remembered' | 'not-remembered'>>({});
+  
+  useEffect(() => {
+    const saved = localStorage.getItem('jlpt-flashcards-status');
+    if (saved) {
+      try {
+        setReviewStatus(JSON.parse(saved));
+      } catch (e) {}
+    }
+  }, []);
+
+  const getItemKey = (item: any) => item?.id || `${item?.source}-${item?.type}-${item?.level}-${item?.word || item?.kanji || item?.title}`;
+
+  const saveStatus = (id: string, status: 'remembered' | 'not-remembered') => {
+    const newStatus = { ...reviewStatus, [id]: status };
+    setReviewStatus(newStatus);
+    localStorage.setItem('jlpt-flashcards-status', JSON.stringify(newStatus));
+  };
   
   const playAudio = (e: React.MouseEvent, text: string) => {
     e.preventDefault();
@@ -610,10 +651,16 @@ function FlashcardContent() {
 
   const filteredData = useMemo(() => {
     return (searchResults || browseData).filter((item: DictionaryResult) => {
-      if (activeLevel === 'All') return true;
-      return item.level === activeLevel;
+      if (activeLevel !== 'All' && item.level !== activeLevel) return false;
+      
+      const key = getItemKey(item);
+      const itemStatus = reviewStatus[key];
+      if (activeStatus === 'remembered' && itemStatus !== 'remembered') return false;
+      if (activeStatus === 'not-remembered' && itemStatus !== 'not-remembered') return false;
+      
+      return true;
     });
-  }, [searchResults, browseData, activeLevel]);
+  }, [searchResults, browseData, activeLevel, activeStatus, reviewStatus]);
 
   if (isLoading) {
     return (
@@ -633,16 +680,44 @@ function FlashcardContent() {
       <PageWrapper>
         <Container>
           <Breadcrumbs>
-             <Link href="/jlpt">JLPT</Link> / Kartu Flash
+            <Link href="/jlpt">JLPT</Link> / Kartu Flash
           </Breadcrumbs>
-          <FlashcardContainer>
-            <FlashcardSide style={{ position: 'relative', justifyContent: 'center' }}>
-              <div style={{ margin: 'auto', textAlign: 'center' }}>
-                <h2 style={{ color: 'var(--text-secondary)', marginBottom: '0' }}>Data kosong.</h2>
-                <Link href="/jlpt" style={{ marginTop: '1rem', color: 'var(--primary)', display: 'inline-block' }}>Kembali ke JLPT</Link>
-              </div>
-            </FlashcardSide>
-          </FlashcardContainer>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '600px', marginBottom: '1.5rem', padding: '0 0.5rem' }}>
+            <h3 style={{ margin: 0, color: 'var(--text-secondary)', textTransform: 'capitalize' }}>
+              {activeCategory.replace('-', ' ')}
+            </h3>
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+              <FilterDropdown 
+                value={activeStatus === 'remembered' ? 'Teringat' : activeStatus === 'not-remembered' ? 'Tidak diingat' : 'Semua'}
+                onChange={(val) => {
+                  const params = new URLSearchParams(searchParams.toString());
+                  const mapped = val === 'Teringat' ? 'remembered' : val === 'Tidak diingat' ? 'not-remembered' : 'All';
+                  if (mapped === 'All') params.delete('status');
+                  else params.set('status', mapped);
+                  router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+                }}
+                options={['Semua', 'Teringat', 'Tidak diingat']}
+              />
+              <FilterDropdown 
+                value={activeLevel}
+                onChange={handleLevelChange}
+                options={['Semua', 'N5', 'N4', 'N3', 'N2', 'N1']}
+              />
+            </div>
+          </div>
+
+          <CardArea>
+            <FlashcardContainer>
+              <FlashcardSide style={{ position: 'relative', justifyContent: 'center' }}>
+                <div style={{ margin: 'auto', textAlign: 'center' }}>
+                  <h2 style={{ color: 'var(--text-secondary)', marginBottom: '0' }}>Data kosong.</h2>
+                  <Link href="/jlpt" style={{ marginTop: '1rem', color: 'var(--primary)', display: 'inline-block' }}>Kembali ke JLPT</Link>
+                </div>
+              </FlashcardSide>
+            </FlashcardContainer>
+          </CardArea>
+          
         </Container>
       </PageWrapper>
     );
@@ -681,11 +756,24 @@ function FlashcardContent() {
           <h3 style={{ margin: 0, color: 'var(--text-secondary)', textTransform: 'capitalize' }}>
             {activeCategory.replace('-', ' ')}
           </h3>
-          <FilterDropdown 
-            value={activeLevel}
-            onChange={handleLevelChange}
-            options={['Semua', 'N5', 'N4', 'N3', 'N2', 'N1']}
-          />
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+            <FilterDropdown 
+              value={activeStatus === 'remembered' ? 'Teringat' : activeStatus === 'not-remembered' ? 'Tidak diingat' : 'Semua'}
+              onChange={(val) => {
+                const params = new URLSearchParams(searchParams.toString());
+                const mapped = val === 'Teringat' ? 'remembered' : val === 'Tidak diingat' ? 'not-remembered' : 'All';
+                if (mapped === 'All') params.delete('status');
+                else params.set('status', mapped);
+                router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+              }}
+              options={['Semua', 'Teringat', 'Tidak diingat']}
+            />
+            <FilterDropdown 
+              value={activeLevel}
+              onChange={handleLevelChange}
+              options={['Semua', 'N5', 'N4', 'N3', 'N2', 'N1']}
+            />
+          </div>
         </div>
 
         <CardArea>
@@ -697,6 +785,10 @@ function FlashcardContent() {
             <FlashcardInner $isFlipped={isFlipped}>
               {/* --- FRONT SIDE --- */}
               <FlashcardSide>
+                {reviewStatus[getItemKey(currentItem)] && (
+                  <StatusIndicator $status={reviewStatus[getItemKey(currentItem)]} />
+                )}
+                
                 <SpeakerIcon onClick={(e) => playAudio(e, resolveTargetWord())}>
                    <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
                 </SpeakerIcon>
@@ -728,6 +820,10 @@ function FlashcardContent() {
 
               {/* --- BACK SIDE --- */}
               <FlashcardBack>
+                {reviewStatus[getItemKey(currentItem)] && (
+                  <StatusIndicator $status={reviewStatus[getItemKey(currentItem)]} />
+                )}
+
                 <SpeakerIcon onClick={(e) => playAudio(e, resolveTargetWord())}>
                    <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
                 </SpeakerIcon>
@@ -753,13 +849,25 @@ function FlashcardContent() {
         </CardArea>
 
         <BottomActions>
-          <ActionCircle $color="#22c55e" onClick={handleNext}>
+          <ActionCircle 
+            $color="#22c55e" 
+            onClick={() => {
+              saveStatus(getItemKey(currentItem), 'remembered');
+              setTimeout(() => handleNext(), 150);
+            }}
+          >
              <div className="icon-wrapper">
                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" /></svg>
              </div>
              Teringat
           </ActionCircle>
-          <ActionCircle $color="#ef4444" onClick={() => setIsFlipped(true)}>
+          <ActionCircle 
+            $color="#ef4444" 
+            onClick={() => {
+              saveStatus(getItemKey(currentItem), 'not-remembered');
+              if (!isFlipped) setIsFlipped(true);
+            }}
+          >
              <div className="icon-wrapper">
                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" /></svg>
              </div>
