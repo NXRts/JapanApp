@@ -84,7 +84,11 @@ export const allNumbers = Object.entries(numbersData).flatMap(([category, items]
   }))
 );
 
-export async function searchDictionary(query: string, category: 'kata' | 'tata-bahasa' | 'kanji' | 'all' = 'all'): Promise<DictionaryResult[]> {
+export async function searchDictionary(
+  query: string, 
+  category: 'kata' | 'tata-bahasa' | 'kanji' | 'all' = 'all',
+  levelFilter: string = 'all'
+): Promise<DictionaryResult[]> {
   const normalizedQuery = query.toLowerCase().trim();
   if (!normalizedQuery) return [];
 
@@ -93,6 +97,7 @@ export async function searchDictionary(query: string, category: 'kata' | 'tata-b
   // Search local Kanji
   if (category === 'kanji' || category === 'all') {
     allKanji.forEach((item) => {
+      if (levelFilter !== 'all' && item.level !== levelFilter) return;
       if (
         (item.kanji && item.kanji.includes(normalizedQuery)) ||
         item.onyomi?.some(r => r.includes(normalizedQuery) || r.toLowerCase().includes(normalizedQuery)) ||
@@ -107,6 +112,7 @@ export async function searchDictionary(query: string, category: 'kata' | 'tata-b
   // Search local Vocabulary
   if (category === 'kata' || category === 'all') {
     allVocabulary.forEach((item) => {
+      if (levelFilter !== 'all' && item.level !== levelFilter) return;
       if (
         item.word.toLowerCase().includes(normalizedQuery) ||
         (item.reading && item.reading.toLowerCase().includes(normalizedQuery)) ||
@@ -130,6 +136,7 @@ export async function searchDictionary(query: string, category: 'kata' | 'tata-b
   // Search local Grammar
   if (category === 'tata-bahasa' || category === 'all') {
     allGrammar.forEach((item) => {
+      if (levelFilter !== 'all' && item.level !== levelFilter) return;
       if (
         (item.title && item.title.toLowerCase().includes(normalizedQuery)) ||
         item.meaning.toLowerCase().includes(normalizedQuery)
@@ -151,7 +158,7 @@ export async function searchDictionary(query: string, category: 'kata' | 'tata-b
 
   // If we only want Kanji or Grammar, we can skip fetching Jisho
   if (category === 'kanji' || category === 'tata-bahasa') {
-    return localResults.slice(0, 15);
+    return localResults.slice(0, 100);
   }
 
   // Fetch from Jisho API Proxy
@@ -171,11 +178,16 @@ export async function searchDictionary(query: string, category: 'kata' | 'tata-b
 
     // Filter out duplicates (if word already in localResults)
     const localWords = new Set(localResults.map(r => r.word || r.title || r.kanji));
-    const uniqueJishoResults = jishoResults.filter(r => !localWords.has(r.word || r.title || r.kanji));
+    let uniqueJishoResults = jishoResults.filter(r => !localWords.has(r.word || r.title || r.kanji));
+    
+    // Apply level filter to Jisho results as well
+    if (levelFilter !== 'all') {
+      uniqueJishoResults = uniqueJishoResults.filter(r => r.level === levelFilter);
+    }
 
-    return [...localResults, ...uniqueJishoResults].slice(0, 15);
+    return [...localResults, ...uniqueJishoResults].slice(0, 100);
   } catch (error) {
     console.error('Search yield error:', error);
-    return localResults.slice(0, 10);
+    return localResults.slice(0, 50);
   }
 }
