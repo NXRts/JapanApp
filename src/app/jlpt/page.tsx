@@ -377,25 +377,35 @@ const PageButton = styled.button<{ $active?: boolean }>`
 `;
 
 const SearchBarWrapper = styled.div`
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 0.75rem 0.75rem 0.5rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   margin-bottom: 2rem;
+  margin-top: 0.5rem;
+  position: relative;
 `;
 
 const SearchInputContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
-  background: var(--surface);
-  padding: 1rem 1.75rem;
-  border-radius: 16px;
-  border: 2px solid var(--border);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+  background: var(--background);
+  border-radius: 10px;
+  padding: 0.4rem 0.4rem 0.4rem 1rem;
+  border: 1px solid transparent;
+  transition: all 0.2s;
   
   &:focus-within {
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(var(--primary-rgb, 79, 70, 229), 0.15), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 79, 70, 229), 0.2);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.3rem 0.3rem 0.3rem 0.6rem;
   }
 `;
 
@@ -404,52 +414,146 @@ const Input = styled.input`
   background: none;
   border: none;
   color: var(--foreground);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-family: inherit;
-  
-  &:focus {
-    outline: none;
-  }
+  outline: none;
+  padding: 0.2rem 0.4rem;
   
   &::placeholder {
     color: var(--text-secondary);
-    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    min-width: 80px;
   }
 `;
 
 const ShortcutHint = styled.kbd`
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.35rem 0.6rem;
+  background: transparent;
+  border: none;
+  padding: 0 0.8rem;
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-secondary);
+  opacity: 0.6;
   font-family: monospace;
   pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-sm);
-  transition: opacity 0.2s;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
-const ClearButton = styled.button`
-  background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
-  border: none;
-  color: var(--primary);
-  cursor: pointer;
-  padding: 0.4rem;
-  border-radius: 50%;
+const IconGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.8rem;
+  border-right: 1px solid var(--border);
+  margin-right: 0.6rem;
+
+  @media (max-width: 768px) {
+    gap: 0.25rem;
+    padding: 0 0.4rem;
+    margin-right: 0.4rem;
+  }
+`;
+
+const IconButton = styled.button<{ $active?: boolean }>`
+  background: ${({ $active }) => $active ? 'var(--primary)' : 'rgba(255, 255, 255, 0.03)'};
+  color: ${({ $active }) => $active ? '#fff' : 'var(--text-secondary)'};
+  border: 1px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   transition: all 0.2s;
   
   &:hover {
-    background: var(--primary);
-    color: #fff;
-    transform: scale(1.1);
+    background: ${({ $active }) => $active ? 'var(--primary)' : 'rgba(255, 255, 255, 0.08)'};
+    color: var(--foreground);
+    border-color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
+  }
+  
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  @media (max-width: 768px) {
+    width: 28px;
+    height: 28px;
+    
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+`;
+
+const DictSelect = styled.button`
+  background: rgba(var(--primary-rgb, 79, 70, 229), 0.15);
+  color: var(--primary);
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+  height: stretch;
+  
+  &:hover {
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.25);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    
+    span {
+      display: none;
+    }
+  }
+`;
+
+const ModesRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.25rem;
+  overflow-x: auto;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const ModeBtn = styled.button<{ $active?: boolean }>`
+  background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb, 79, 70, 229), 0.15)' : 'transparent'};
+  color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+  
+  &:hover {
+    color: var(--foreground);
+    background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb, 79, 70, 229), 0.2)' : 'rgba(255, 255, 255, 0.05)'};
   }
 `;
 
@@ -646,39 +750,67 @@ export default function DictionaryPage() {
           </ActionButton>
         </ActionButtonsGrid>
 
-        <SearchBarWrapper style={{ marginBottom: '1.5rem', marginTop: '0.5rem', position: 'relative' }}>
+        <SearchBarWrapper>
           <SearchInputContainer>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)' }}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '0.4rem' }}>
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.3-4.3" />
             </svg>
             <Input
               ref={inputRef}
-              placeholder="Cari kata, kana, romaji (misal: taberu)..."
+              placeholder="日本, nihon, Jepang"
               value={query}
               onChange={handleInputChange}
             />
-            {query.length > 0 ? (
-              <ClearButton onClick={() => setQuery('')} aria-label="Clear search">
-                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            {query.length === 0 && <ShortcutHint>Ctrl K</ShortcutHint>}
+            {query.length > 0 && (
+              <IconButton onClick={() => setQuery('')} aria-label="Clear search" style={{ marginRight: '0.5rem', width: '28px', height: '28px', background: 'transparent', border: 'none' }}>
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
-              </ClearButton>
-            ) : (
-              <ShortcutHint>Ctrl K</ShortcutHint>
+              </IconButton>
             )}
-            <ClearButton onClick={() => setShowKeyboard(!showKeyboard)} title="Toggle Kana Keyboard" style={{ background: showKeyboard ? 'var(--primary)' : '', color: showKeyboard ? '#fff' : '' }}>
-               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                 <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
-                 <path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/><path d="M18 8h.01"/>
-                 <path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/>
-                 <path d="M7 16h10"/>
-               </svg>
-            </ClearButton>
+
+            <IconGroup>
+              <IconButton title="Draw (Coming soon)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+              </IconButton>
+              <IconButton $active={showKeyboard} onClick={() => setShowKeyboard(!showKeyboard)} title="Kana Keyboard">
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                   <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+                   <path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/><path d="M18 8h.01"/>
+                   <path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/>
+                   <path d="M7 16h10"/>
+                 </svg>
+              </IconButton>
+              <IconButton title="Voice (Coming soon)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+              </IconButton>
+              <IconButton title="OCR Image (Coming soon)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+              </IconButton>
+            </IconGroup>
+
+            <DictSelect>
+              <span>Jepang - Ind...</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            </DictSelect>
           </SearchInputContainer>
 
+          <ModesRow>
+            <ModeBtn>
+              Mode AI 
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginLeft: '2px' }}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            </ModeBtn>
+            <ModeBtn $active>Kata</ModeBtn>
+            <ModeBtn>Kanji</ModeBtn>
+            <ModeBtn>Kalimat</ModeBtn>
+            <ModeBtn>Tata bahasa</ModeBtn>
+            <ModeBtn>Jepang - Jepang</ModeBtn>
+          </ModesRow>
+
           {showKeyboard && (
-             <div style={{ position: 'absolute', zIndex: 100, marginTop: '0.5rem', width: '100%' }}>
+             <div style={{ position: 'absolute', zIndex: 100, top: 'calc(100% + 0.5rem)', left: 0, width: '100%' }}>
                <KanaKeyboard 
                  onType={handleKeyboardType} 
                  onBackspace={handleKeyboardBackspace} 
