@@ -646,7 +646,7 @@ export default function DictionaryPage() {
           </ActionButton>
         </ActionButtonsGrid>
 
-        <SearchBarWrapper style={{ marginBottom: '1.5rem', marginTop: '0.5rem' }}>
+        <SearchBarWrapper style={{ marginBottom: '1.5rem', marginTop: '0.5rem', position: 'relative' }}>
           <SearchInputContainer>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)' }}>
               <circle cx="11" cy="11" r="8" />
@@ -678,7 +678,7 @@ export default function DictionaryPage() {
           </SearchInputContainer>
 
           {showKeyboard && (
-             <div style={{ position: 'absolute', zIndex: 100, marginTop: '0.5rem', width: '100%', maxWidth: '600px' }}>
+             <div style={{ position: 'absolute', zIndex: 100, marginTop: '0.5rem', width: '100%' }}>
                <KanaKeyboard 
                  onType={handleKeyboardType} 
                  onBackspace={handleKeyboardBackspace} 
