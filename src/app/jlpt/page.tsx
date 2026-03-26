@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { toKana, isRomaji } from 'wanakana';
 import { searchDictionary, DictionaryResult, allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
 import Link from 'next/link';
+import KanaKeyboard from '@/components/KanaKeyboard';
 
 const PageContainer = styled.div`
   display: flex;
@@ -468,6 +469,7 @@ const LoadingSpinner = styled.div`
 
 export default function DictionaryPage() {
   const [query, setQuery] = useState('');
+  const [showKeyboard, setShowKeyboard] = useState(false);
   const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('N5');
   const [activeCategory, setActiveCategory] = useState<'kata' | 'tata-bahasa' | 'kanji'>('kata');
   const [showConfig, setShowConfig] = useState({ kata: true, ejaan: true, arti: true });
@@ -478,6 +480,16 @@ export default function DictionaryPage() {
 
   const itemsPerPage = 15; // Moved from hardcoded value to a constant
   const inputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleKeyboardType = (char: string) => {
+    setQuery(prev => prev + char);
+    inputRef.current?.focus();
+  };
+
+  const handleKeyboardBackspace = () => {
+    setQuery(prev => prev.slice(0, -1));
+    inputRef.current?.focus();
+  };
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
@@ -655,7 +667,25 @@ export default function DictionaryPage() {
             ) : (
               <ShortcutHint>Ctrl K</ShortcutHint>
             )}
+            <ClearButton onClick={() => setShowKeyboard(!showKeyboard)} title="Toggle Kana Keyboard" style={{ background: showKeyboard ? 'var(--primary)' : '', color: showKeyboard ? '#fff' : '' }}>
+               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                 <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+                 <path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/><path d="M18 8h.01"/>
+                 <path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/>
+                 <path d="M7 16h10"/>
+               </svg>
+            </ClearButton>
           </SearchInputContainer>
+
+          {showKeyboard && (
+             <div style={{ position: 'absolute', zIndex: 100, marginTop: '0.5rem', width: '100%', maxWidth: '600px' }}>
+               <KanaKeyboard 
+                 onType={handleKeyboardType} 
+                 onBackspace={handleKeyboardBackspace} 
+                 onClose={() => setShowKeyboard(false)} 
+               />
+             </div>
+          )}
         </SearchBarWrapper>
 
         <ListToolbar>
