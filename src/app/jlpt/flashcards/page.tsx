@@ -666,6 +666,8 @@ function FlashcardContent() {
   const [reviewStatus, setReviewStatus] = useState<Record<string, 'remembered' | 'not-remembered'>>({});
   const [activeTab, setActiveTab] = useState<'kata' | 'kanji' | 'kalimat' | 'tata-bahasa'>('kata');
   const [activeSelectedKanjiIndex, setActiveSelectedKanjiIndex] = useState(0);
+  const [externalSentences, setExternalSentences] = useState<any[]>([]);
+  const [isFetchingSentences, setIsFetchingSentences] = useState(false);
   
   // Prevent body scrolling when modal is open & handle Escape key
   useEffect(() => {
@@ -864,11 +866,10 @@ function FlashcardContent() {
     extractFrom(allVocabulary);
     extractFrom(allGrammar);
     
-    // Filter out if it's already in the main examples
     return results.filter(ex => {
        if (!currentItem?.examples) return true;
        return !currentItem.examples.some((cx: any) => cx.japanese === ex.japanese);
-    }).slice(0, 3);
+    }).slice(0, 50);
   }, [targetWordForDetails, currentItem]);
 
   const kanjiRelatedWords = useMemo(() => {
@@ -929,6 +930,30 @@ function FlashcardContent() {
      });
      return unique.slice(0, 10);
   }, [activeTab, relatedKanjis, activeSelectedKanjiIndex, currentItem, usageInPractice]);
+
+  useEffect(() => {
+    if (activeTab === 'kalimat' && targetWordForDetails && targetWordForDetails !== '?') {
+      const allCombinedExamples = [...(currentItem?.examples || []), ...usageInPractice];
+      if (allCombinedExamples.length < 5) {
+        setIsFetchingSentences(true);
+        fetch(`/api/proxy/sentences?keyword=${encodeURIComponent(targetWordForDetails)}`)
+          .then(res => res.json())
+          .then(data => {
+             if (data && data.data) {
+                const existing = new Set(allCombinedExamples.map(e => e.japanese));
+                const newSentences = data.data.filter((s:any) => !existing.has(s.japanese));
+                setExternalSentences(newSentences);
+             }
+          })
+          .catch(err => console.error("Failed to fetch external sentences", err))
+          .finally(() => setIsFetchingSentences(false));
+      } else {
+        setExternalSentences([]);
+      }
+    } else {
+      setExternalSentences([]);
+    }
+  }, [activeTab, targetWordForDetails, currentItem, usageInPractice]);
 
   if (isLoading) {
     return (
@@ -1423,49 +1448,43 @@ function FlashcardContent() {
                   </div>
                 )}
 
-                {activeTab === 'kalimat' && (
-                  <div>
-                    <h2 style={{ fontSize: '1.75rem', color: 'var(--foreground)', marginBottom: '1.5rem', fontWeight: 700 }}>Contoh Kalimat</h2>
-                    {((currentItem?.examples || []).length === 0 && usageInPractice.length === 0) ? (
-                      <div style={{ color: 'var(--text-secondary)', padding: '2rem', textAlign: 'center', background: 'rgba(0,0,0,0.02)', borderRadius: '12px' }}>Tidak ada contoh kalimat untuk kata ini.</div>
-                    ) : (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                        {currentItem?.examples && currentItem.examples.length > 0 && currentItem.examples.map((ex: any, idx: number) => (
-                          <div key={`tab-ex-${idx}`} style={{ background: 'rgba(0,0,0,0.02)', padding: '1.25rem', borderRadius: '12px', borderLeft: '4px solid #3b82f6' }}>
-                             <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', fontWeight: '500' }}>
-                               <span>{ex.japanese}</span>
-                               <SpeakerIcon style={{ margin: 0, padding: 0, width: 22, height: 22, opacity: 0.5, cursor: 'pointer' }} onClick={(e) => playAudio(e, ex.japanese)}>
-                                 <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
-                               </SpeakerIcon>
-                             </div>
-                             {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '0.5rem', fontFamily: 'monospace' }}>{ex.romaji}</div>}
-                             <div style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>{ex.indonesian || ex.english}</div>
+                {activeTab === 'kalimat' && (() => {
+                  const allCombinedExamples = [...(currentItem?.examples || []), ...usageInPractice, ...externalSentences];
+                  return (
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                        <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--foreground)' }}>
+                          Hasil pencarian contoh kalimat untuk <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
+                        </h3>
+                        {isFetchingSentences && (
+                          <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <div className="spinner" style={{ width: '16px', height: '16px', border: '2px solid rgba(59,130,246,0.3)', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                            Mencari contoh...
                           </div>
-                        ))}
-                        
-                        {usageInPractice.map((u, idx) => (
-                           <div key={`tab-prac-${idx}`} style={{ display: 'flex', alignItems: 'flex-start', gap: '1.25rem', background: 'rgba(0,0,0,0.02)', padding: '1.25rem', borderRadius: '12px', borderLeft: '4px solid #10b981' }}>
-                             <img 
-                               src={`https://picsum.photos/seed/japan-${targetWordForDetails}-${idx}/120/80`} 
-                               alt="Contextual thumbnail" 
-                               style={{ flexShrink: 0, width: '120px', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)' }} 
-                             />
-                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', width: '100%' }}>
-                               {u.romaji && <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{u.romaji}</div>}
-                               <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', lineHeight: 1.4, display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500' }}>
-                                 {u.japanese}
-                                 <SpeakerIcon style={{ margin: 0, padding: 0, width: 20, height: 20, opacity: 0.5, cursor: 'pointer' }} onClick={(e) => playAudio(e, u.japanese)}>
+                        )}
+                      </div>
+                      
+                      {allCombinedExamples.length === 0 && !isFetchingSentences ? (
+                        <div style={{ color: 'var(--text-secondary)', padding: '2rem 0', textAlign: 'center' }}>Tidak ada contoh kalimat untuk kata ini.</div>
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                          {allCombinedExamples.map((ex, idx) => (
+                            <div key={`all-ex-${idx}`} style={{ borderBottom: idx < allCombinedExamples.length - 1 ? '1px solid var(--border)' : 'none', paddingBottom: idx < allCombinedExamples.length - 1 ? '1.25rem' : '0' }}>
+                               <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', fontWeight: '500' }}>
+                                 <span>{ex.japanese}</span>
+                                 <SpeakerIcon style={{ margin: 0, padding: 0, width: 22, height: 22, opacity: 0.5, cursor: 'pointer' }} onClick={(e) => playAudio(e, ex.japanese)}>
                                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
                                  </SpeakerIcon>
                                </div>
-                               <div style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginTop: '0.3rem' }}>{u.indonesian || u.english}</div>
-                             </div>
-                           </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
+                               {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '0.5rem', fontFamily: 'monospace' }}>{ex.romaji}</div>}
+                               <div style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>{ex.indonesian || ex.english}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
               </MainContent>
 
               <SidePanelWrapper>
