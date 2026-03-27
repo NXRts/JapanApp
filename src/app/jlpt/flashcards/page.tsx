@@ -664,12 +664,14 @@ function FlashcardContent() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [reviewStatus, setReviewStatus] = useState<Record<string, 'remembered' | 'not-remembered'>>({});
+  const [activeTab, setActiveTab] = useState<'kata' | 'kanji' | 'kalimat' | 'tata-bahasa'>('kata');
   
   // Prevent body scrolling when modal is open & handle Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setShowDetailModal(false);
+        setTimeout(() => setActiveTab('kata'), 200);
       }
     };
 
@@ -1054,116 +1056,223 @@ function FlashcardContent() {
 
       {/* --- Detail Modal --- */}
       {showDetailModal && (
-        <ModalOverlay onClick={(e) => e.target === e.currentTarget && setShowDetailModal(false)}>
+        <ModalOverlay onClick={(e) => {
+          if (e.target === e.currentTarget) {
+             setShowDetailModal(false);
+             setTimeout(() => setActiveTab('kata'), 200);
+          }
+        }}>
           <ModalContent>
             <ModalHeader>
-              <ModalTab $active>Kata</ModalTab>
-              <ModalTab disabled>Kanji</ModalTab>
-              <ModalTab disabled>Kalimat</ModalTab>
+              <ModalTab $active={activeTab === 'kata'} onClick={() => setActiveTab('kata')}>Kata</ModalTab>
+              <ModalTab $active={activeTab === 'kanji'} onClick={() => setActiveTab('kanji')}>Kanji</ModalTab>
+              <ModalTab $active={activeTab === 'kalimat'} onClick={() => setActiveTab('kalimat')}>Kalimat</ModalTab>
               <ModalTab disabled>Tata bahasa</ModalTab>
-              <CloseModalBtn onClick={() => setShowDetailModal(false)}>✕</CloseModalBtn>
+              <CloseModalBtn onClick={() => {
+                setShowDetailModal(false);
+                setTimeout(() => setActiveTab('kata'), 200);
+              }}>✕</CloseModalBtn>
             </ModalHeader>
             <ModalLayout>
               <MainContent>
-                 <MainWord style={{ fontSize: '3.5rem', textAlign: 'left', color: '#3b82f6', marginBottom: '0.5rem', fontWeight: 800 }}>
-                   {resolveTargetWord()}
-                 </MainWord>
-                 
-                 <Readings style={{ justifyContent: 'flex-start', marginBottom: '0.75rem', fontSize: '1.25rem', color: 'var(--foreground)' }}>
-                   {targetKana.length > 0 ? `「 ${targetKana.join(' 」 「 ')} 」` : ''}
-                 </Readings>
-                 
-                 {romaji && (
-                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: 'var(--foreground)' }}>
-                     <SpeakerIcon style={{ margin: 0, opacity: 0.7, cursor: 'pointer', padding: 0, width: 24, height: 24 }} onClick={(e) => playAudio(e, resolveTargetWord())}>
-                       <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
-                     </SpeakerIcon>
-                     <span style={{ fontSize: '1.15rem', letterSpacing: '0.05em' }}>{romaji}</span>
-                   </div>
-                 )}
+                {activeTab === 'kata' && (
+                  <>
+                    <MainWord style={{ fontSize: '3.5rem', textAlign: 'left', color: '#3b82f6', marginBottom: '0.5rem', fontWeight: 800 }}>
+                      {resolveTargetWord()}
+                    </MainWord>
+                    
+                    <Readings style={{ justifyContent: 'flex-start', marginBottom: '0.75rem', fontSize: '1.25rem', color: 'var(--foreground)' }}>
+                      {targetKana.length > 0 ? `「 ${targetKana.join(' 」 「 ')} 」` : ''}
+                    </Readings>
+                    
+                    {romaji && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: 'var(--foreground)' }}>
+                        <SpeakerIcon style={{ margin: 0, opacity: 0.7, cursor: 'pointer', padding: 0, width: 24, height: 24 }} onClick={(e) => playAudio(e, resolveTargetWord())}>
+                          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                        </SpeakerIcon>
+                        <span style={{ fontSize: '1.15rem', letterSpacing: '0.05em' }}>{romaji}</span>
+                      </div>
+                    )}
 
-                 <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1.5rem 0' }} />
+                    <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1.5rem 0' }} />
 
-                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', fontSize: '1rem', fontWeight: 600 }}>
-                   Tingkat: 
-                   <span style={{ background: '#10b981', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem' }}>
-                     {currentItem?.level?.includes('JLPT') ? currentItem.level : `JLPT ${currentItem?.level || 'N?'}`}
-                   </span>
-                 </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', fontSize: '1rem', fontWeight: 600 }}>
+                      Tingkat: 
+                      <span style={{ background: '#10b981', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem' }}>
+                        {currentItem?.level?.includes('JLPT') ? currentItem.level : `JLPT ${currentItem?.level || 'N?'}`}
+                      </span>
+                    </div>
 
-                 <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1.5rem 0' }} />
+                    <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1.5rem 0' }} />
 
-                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ef4444', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '1rem' }}>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
-                    {currentItem?.category === 'kata' ? 'Noun' : currentItem?.category || 'Vocabulary'}
-                 </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ef4444', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '1rem' }}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
+                        {currentItem?.category === 'kata' ? 'Noun' : currentItem?.category || 'Vocabulary'}
+                    </div>
 
-                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '1.5rem' }}>
-                   <div style={{ color: '#3b82f6', fontSize: '1.5rem', lineHeight: 1 }}>•</div>
-                   <div style={{ fontSize: '1.1rem', color: '#3b82f6', fontWeight: 600, paddingTop: '0.1rem' }}>
-                     {meaning}
-                   </div>
-                 </div>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                      <div style={{ color: '#3b82f6', fontSize: '1.5rem', lineHeight: 1 }}>•</div>
+                      <div style={{ fontSize: '1.1rem', color: '#3b82f6', fontWeight: 600, paddingTop: '0.1rem' }}>
+                        {meaning}
+                      </div>
+                    </div>
 
-                 {currentItem?.explanation && (
-                   <div style={{ paddingLeft: '2.25rem', marginBottom: '1.5rem', color: 'var(--text-secondary)' }}>
-                     {currentItem.explanation}
-                   </div>
-                 )}
+                    {currentItem?.explanation && (
+                      <div style={{ paddingLeft: '2.25rem', marginBottom: '1.5rem', color: 'var(--text-secondary)' }}>
+                        {currentItem.explanation}
+                      </div>
+                    )}
 
-                 {currentItem?.examples && currentItem.examples.length > 0 && currentItem.examples.map((ex: any, idx: number) => (
-                   <div key={`ex-${idx}`} style={{ paddingLeft: '2.25rem', marginBottom: '2rem' }}>
-                     <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
-                       <span>{ex.japanese}</span>
-                       <SpeakerIcon style={{ margin: 0, padding: 0, width: 22, height: 22, opacity: 0.5, cursor: 'pointer' }} onClick={(e) => playAudio(e, ex.japanese)}>
-                         <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
-                       </SpeakerIcon>
-                     </div>
-                     {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '0.4rem', fontFamily: 'monospace' }}>{ex.romaji}</div>}
-                     <div style={{ color: 'var(--foreground)', fontSize: '1rem' }}>{ex.indonesian || ex.english}</div>
-                   </div>
-                 ))}
+                    {currentItem?.examples && currentItem.examples.length > 0 && currentItem.examples.map((ex: any, idx: number) => (
+                      <div key={`ex-${idx}`} style={{ paddingLeft: '2.25rem', marginBottom: '2rem' }}>
+                        <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                          <span>{ex.japanese}</span>
+                          <SpeakerIcon style={{ margin: 0, padding: 0, width: 22, height: 22, opacity: 0.5, cursor: 'pointer' }} onClick={(e) => playAudio(e, ex.japanese)}>
+                            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+                          </SpeakerIcon>
+                        </div>
+                        {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '0.4rem', fontFamily: 'monospace' }}>{ex.romaji}</div>}
+                        <div style={{ color: 'var(--foreground)', fontSize: '1rem' }}>{ex.indonesian || ex.english}</div>
+                      </div>
+                    ))}
 
-                 {synonyms.length > 0 && (
-                   <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
-                     <div style={{ fontSize: '1.2rem', color: 'var(--foreground)', fontWeight: 600, marginBottom: '1rem' }}>
-                       Sinonim dari <span style={{ color: '#10b981' }}>{resolveTargetWord()}</span>
-                     </div>
-                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingLeft: '0.5rem' }}>
-                       {synonyms.map(syn => (
-                         <div key={`syn-${syn.id}`} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#3b82f6', fontSize: '1rem' }}>
-                           <div style={{ padding: '0.2rem', background: '#3b82f6', borderRadius: '50%', transform: 'scale(0.5)' }}></div>
-                           <span style={{ fontWeight: 600, width: '4rem', color: 'var(--foreground)' }}>{syn.word}</span>
-                           <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>; {syn.meaning.split(/[,;]/)[0]}</span>
-                         </div>
-                       ))}
-                     </div>
-                   </div>
-                 )}
+                    {synonyms.length > 0 && (
+                      <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
+                        <div style={{ fontSize: '1.2rem', color: 'var(--foreground)', fontWeight: 600, marginBottom: '1rem' }}>
+                          Sinonim dari <span style={{ color: '#10b981' }}>{resolveTargetWord()}</span>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingLeft: '0.5rem' }}>
+                          {synonyms.map(syn => (
+                            <div key={`syn-${syn.id}`} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#3b82f6', fontSize: '1rem' }}>
+                              <div style={{ padding: '0.2rem', background: '#3b82f6', borderRadius: '50%', transform: 'scale(0.5)' }}></div>
+                              <span style={{ fontWeight: 600, width: '4rem', color: 'var(--foreground)' }}>{syn.word}</span>
+                              <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>; {syn.meaning.split(/[,;]/)[0]}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
 
-                 {usageInPractice.length > 0 && (
-                   <div style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
-                     <div style={{ fontSize: '1.2rem', color: 'var(--foreground)', fontWeight: 600, marginBottom: '1.5rem' }}>
-                       <span style={{ color: 'var(--foreground)' }}>{resolveTargetWord()}</span> digunakan dalam praktik
-                     </div>
-                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                       {usageInPractice.map((u, idx) => (
-                         <div key={`prac-${idx}`} style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', background: 'rgba(0,0,0,0.02)', padding: '1rem', borderRadius: '12px' }}>
-                           <img 
-                             src={`https://picsum.photos/seed/japan-${targetWordForDetails}-${idx}/120/80`} 
-                             alt="Contextual thumbnail" 
-                             style={{ flexShrink: 0, width: '120px', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)' }} 
-                           />
-                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                             {u.romaji && <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{u.romaji}</div>}
-                             <div style={{ fontSize: '1.1rem', color: 'var(--foreground)', lineHeight: 1.4 }}>{u.japanese}</div>
-                             <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>{u.indonesian || u.english}</div>
+                    {usageInPractice.length > 0 && (
+                      <div style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
+                        <div style={{ fontSize: '1.2rem', color: 'var(--foreground)', fontWeight: 600, marginBottom: '1.5rem' }}>
+                          <span style={{ color: 'var(--foreground)' }}>{resolveTargetWord()}</span> digunakan dalam praktik
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                          {usageInPractice.map((u, idx) => (
+                            <div key={`prac-${idx}`} style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', background: 'rgba(0,0,0,0.02)', padding: '1rem', borderRadius: '12px' }}>
+                              <img 
+                                src={`https://picsum.photos/seed/japan-${targetWordForDetails}-${idx}/120/80`} 
+                                alt="Contextual thumbnail" 
+                                style={{ flexShrink: 0, width: '120px', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)' }} 
+                              />
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                                {u.romaji && <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{u.romaji}</div>}
+                                <div style={{ fontSize: '1.1rem', color: 'var(--foreground)', lineHeight: 1.4 }}>{u.japanese}</div>
+                                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>{u.indonesian || u.english}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {activeTab === 'kanji' && (
+                  <div>
+                    <h2 style={{ fontSize: '1.75rem', color: 'var(--foreground)', marginBottom: '1.5rem', fontWeight: 700 }}>Kanji dalam kata ini</h2>
+                    {relatedKanjis.length === 0 ? (
+                      <div style={{ color: 'var(--text-secondary)', padding: '2rem', textAlign: 'center', background: 'rgba(0,0,0,0.02)', borderRadius: '12px' }}>Tidak ada data kanji untuk kata ini.</div>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                        {relatedKanjis.map(k => (
+                          <div key={`tab-kanji-${k.id}`} style={{ display: 'flex', gap: '2rem', background: 'rgba(0,0,0,0.02)', padding: '1.5rem', borderRadius: '16px', alignItems: 'flex-start' }}>
+                            <div style={{ flexShrink: 0, textAlign: 'center' }}>
+                               <div style={{ fontSize: '2.5rem', color: 'var(--primary)', lineHeight: 1, marginBottom: '1rem', fontWeight: 'bold' }}>{k.kanji}</div>
+                               {k.kanji && (
+                                 <KanjiStrokeBox style={{ width: '110px', height: '110px', margin: '0' }}>
+                                   <KanjiStrokeImage src={getKanjiVgUrl(k.kanji)} alt={k.kanji} loading="lazy" />
+                                 </KanjiStrokeBox>
+                               )}
+                            </div>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--foreground)', marginBottom: '1rem', lineHeight: 1.4 }}>{k.meaning}</div>
+                              
+                              {k.onyomi && k.onyomi.length > 0 && (
+                                <div style={{ marginBottom: '0.5rem', fontSize: '1rem', display: 'flex', gap: '0.5rem' }}>
+                                  <strong style={{ color: '#ef4444', minWidth: '70px' }}>Onyomi:</strong> <span style={{ color: 'var(--foreground)' }}>{k.onyomi.join(', ')}</span>
+                                </div>
+                              )}
+                              {k.kunyomi && k.kunyomi.length > 0 && (
+                                <div style={{ marginBottom: '0.5rem', fontSize: '1rem', display: 'flex', gap: '0.5rem' }}>
+                                  <strong style={{ color: '#3b82f6', minWidth: '70px' }}>Kunyomi:</strong> <span style={{ color: 'var(--foreground)' }}>{k.kunyomi.join(', ')}</span>
+                                </div>
+                              )}
+                              
+                              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem', flexWrap: 'wrap' }}>
+                                {k.level && (
+                                  <span style={{ background: '#10b981', color: 'white', padding: '0.3rem 0.8rem', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 'bold' }}>
+                                    {k.level.includes('JLPT') ? k.level : `JLPT ${k.level}`}
+                                  </span>
+                                )}
+                                {k.stroke_count && (
+                                  <span style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-secondary)', padding: '0.3rem 0.8rem', borderRadius: '6px', fontSize: '0.85rem', fontWeight: '600' }}>
+                                    {k.stroke_count} strokes
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'kalimat' && (
+                  <div>
+                    <h2 style={{ fontSize: '1.75rem', color: 'var(--foreground)', marginBottom: '1.5rem', fontWeight: 700 }}>Contoh Kalimat</h2>
+                    {((currentItem?.examples || []).length === 0 && usageInPractice.length === 0) ? (
+                      <div style={{ color: 'var(--text-secondary)', padding: '2rem', textAlign: 'center', background: 'rgba(0,0,0,0.02)', borderRadius: '12px' }}>Tidak ada contoh kalimat untuk kata ini.</div>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        {currentItem?.examples && currentItem.examples.length > 0 && currentItem.examples.map((ex: any, idx: number) => (
+                          <div key={`tab-ex-${idx}`} style={{ background: 'rgba(0,0,0,0.02)', padding: '1.25rem', borderRadius: '12px', borderLeft: '4px solid #3b82f6' }}>
+                             <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', fontWeight: '500' }}>
+                               <span>{ex.japanese}</span>
+                               <SpeakerIcon style={{ margin: 0, padding: 0, width: 22, height: 22, opacity: 0.5, cursor: 'pointer' }} onClick={(e) => playAudio(e, ex.japanese)}>
+                                 <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+                               </SpeakerIcon>
+                             </div>
+                             {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '0.5rem', fontFamily: 'monospace' }}>{ex.romaji}</div>}
+                             <div style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>{ex.indonesian || ex.english}</div>
+                          </div>
+                        ))}
+                        
+                        {usageInPractice.map((u, idx) => (
+                           <div key={`tab-prac-${idx}`} style={{ display: 'flex', alignItems: 'flex-start', gap: '1.25rem', background: 'rgba(0,0,0,0.02)', padding: '1.25rem', borderRadius: '12px', borderLeft: '4px solid #10b981' }}>
+                             <img 
+                               src={`https://picsum.photos/seed/japan-${targetWordForDetails}-${idx}/120/80`} 
+                               alt="Contextual thumbnail" 
+                               style={{ flexShrink: 0, width: '120px', height: '80px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--border)' }} 
+                             />
+                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', width: '100%' }}>
+                               {u.romaji && <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{u.romaji}</div>}
+                               <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', lineHeight: 1.4, display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '500' }}>
+                                 {u.japanese}
+                                 <SpeakerIcon style={{ margin: 0, padding: 0, width: 20, height: 20, opacity: 0.5, cursor: 'pointer' }} onClick={(e) => playAudio(e, u.japanese)}>
+                                   <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+                                 </SpeakerIcon>
+                               </div>
+                               <div style={{ fontSize: '1rem', color: 'var(--text-secondary)', marginTop: '0.3rem' }}>{u.indonesian || u.english}</div>
+                             </div>
                            </div>
-                         </div>
-                       ))}
-                     </div>
-                   </div>
-                 )}
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </MainContent>
 
               <SidePanelWrapper>
