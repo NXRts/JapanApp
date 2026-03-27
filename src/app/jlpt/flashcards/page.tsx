@@ -871,6 +871,65 @@ function FlashcardContent() {
     }).slice(0, 3);
   }, [targetWordForDetails, currentItem]);
 
+  const kanjiRelatedWords = useMemo(() => {
+    if (activeTab !== 'kanji' || relatedKanjis.length === 0) return [];
+    const kanjiObj = relatedKanjis[activeSelectedKanjiIndex];
+    if (!kanjiObj || !kanjiObj.kanji) return [];
+    return allVocabulary.filter(v => v.word && v.word.includes(kanjiObj.kanji) && v.word !== targetWordForDetails).slice(0, 15);
+  }, [activeTab, relatedKanjis, activeSelectedKanjiIndex, targetWordForDetails]);
+
+  const categorizedWords = useMemo(() => {
+    const kWords: any[] = [];
+    const oWords: any[] = [];
+    if (!relatedKanjis[activeSelectedKanjiIndex]) return { kWords, oWords };
+    const kanjiObj = relatedKanjis[activeSelectedKanjiIndex];
+    const kunyomis = kanjiObj.kunyomi ? kanjiObj.kunyomi.map(r => r.replace(/[-]/g, '')) : [];
+    const onyomis = kanjiObj.onyomi ? kanjiObj.onyomi.map(r => r.replace(/[-]/g, '')) : [];
+    
+    kanjiRelatedWords.forEach(w => {
+       const reading = w.reading || w.romaji || '';
+       let matchedKun = false;
+       for (const kr of kunyomis) {
+         if (kr && reading.includes(kr)) {
+            matchedKun = true; break;
+         }
+       }
+       if (matchedKun) kWords.push(w);
+       else {
+         let matchedOn = false;
+         for (const or_katakana of onyomis) {
+            if (!or_katakana) continue;
+            const hiraganaOr = [...or_katakana].map(ch => ch.charCodeAt(0) >= 0x30a1 && ch.charCodeAt(0) <= 0x30f6 ? String.fromCharCode(ch.charCodeAt(0) - 0x0060) : ch).join('');
+            if (reading.includes(hiraganaOr)) {
+               matchedOn = true; break;
+            }
+         }
+         if (matchedOn) oWords.push(w);
+         else {
+            kWords.push(w);
+         }
+       }
+    });
+
+    return { kWords, oWords };
+  }, [kanjiRelatedWords, relatedKanjis, activeSelectedKanjiIndex]);
+
+  const kanjiExamples = useMemo(() => {
+     if (activeTab !== 'kanji') return [];
+     const kanjiObj = relatedKanjis[activeSelectedKanjiIndex];
+     if (!kanjiObj || !kanjiObj.kanji) return [];
+     const allExamples = [...(currentItem?.examples || []), ...usageInPractice];
+     const unique: any[] = [];
+     const seen = new Set();
+     allExamples.forEach(ex => {
+       if (ex.japanese && ex.japanese.includes(kanjiObj.kanji) && !seen.has(ex.japanese)) {
+         seen.add(ex.japanese);
+         unique.push(ex);
+       }
+     });
+     return unique.slice(0, 10);
+  }, [activeTab, relatedKanjis, activeSelectedKanjiIndex, currentItem, usageInPractice]);
+
   if (isLoading) {
     return (
       <PageWrapper>
@@ -1269,14 +1328,30 @@ function FlashcardContent() {
                             <div style={{ marginBottom: '1.5rem' }}>
                                <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '1rem' }}>Putar audio</h3>
                                
-                               <div style={{ marginBottom: '1rem' }}>
+                               <div style={{ marginBottom: '1.5rem' }}>
                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--foreground)', fontWeight: 500, marginBottom: '0.4rem' }}>
                                    <div style={{ width: '8px', height: '8px', background: '#3b82f6', transform: 'rotate(45deg)' }}></div>
                                    Kunyomi
                                  </div>
-                                 <div style={{ color: '#3b82f6', fontSize: '1.1rem', paddingLeft: '1.rem' }}>
+                                 <div style={{ color: '#3b82f6', fontSize: '1.1rem', paddingLeft: '1rem', marginBottom: '1rem' }}>
                                    {relatedKanjis[activeSelectedKanjiIndex].kunyomi && relatedKanjis[activeSelectedKanjiIndex].kunyomi.length > 0 ? relatedKanjis[activeSelectedKanjiIndex].kunyomi.join(' ; ') : '-'}
                                  </div>
+                                 
+                                 {categorizedWords.kWords.length > 0 && (
+                                   <div style={{ paddingLeft: '1rem', marginBottom: '1rem' }}>
+                                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                                       <tbody>
+                                         {categorizedWords.kWords.map((w, idx) => (
+                                           <tr key={`kword-${idx}`} style={{ borderBottom: '1px solid var(--border)' }}>
+                                              <td style={{ padding: '0.8rem 0.5rem', fontWeight: 500, width: '25%', color: 'var(--foreground)' }}>{w.word}</td>
+                                              <td style={{ padding: '0.8rem 0.5rem', color: 'var(--text-secondary)', width: '25%' }}>{w.reading || w.romaji}</td>
+                                              <td style={{ padding: '0.8rem 0.5rem', color: 'var(--text-secondary)' }}>{w.indonesian || w.english || w.meaning}</td>
+                                           </tr>
+                                         ))}
+                                       </tbody>
+                                     </table>
+                                   </div>
+                                 )}
                                </div>
 
                                <div>
@@ -1284,29 +1359,57 @@ function FlashcardContent() {
                                    <div style={{ width: '8px', height: '8px', background: '#ef4444', transform: 'rotate(45deg)' }}></div>
                                    Onyomi
                                  </div>
-                                 <div style={{ color: '#ef4444', fontSize: '1.1rem', paddingLeft: '1.rem' }}>
+                                 <div style={{ color: '#ef4444', fontSize: '1.1rem', paddingLeft: '1rem', marginBottom: '1rem' }}>
                                    {relatedKanjis[activeSelectedKanjiIndex].onyomi && relatedKanjis[activeSelectedKanjiIndex].onyomi.length > 0 ? relatedKanjis[activeSelectedKanjiIndex].onyomi.join(' ; ') : '-'}
                                  </div>
+                                 
+                                 {categorizedWords.oWords.length > 0 && (
+                                   <div style={{ paddingLeft: '1rem', marginBottom: '1rem' }}>
+                                     <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                                       <tbody>
+                                         {categorizedWords.oWords.map((w, idx) => (
+                                           <tr key={`oword-${idx}`} style={{ borderBottom: '1px solid var(--border)' }}>
+                                              <td style={{ padding: '0.8rem 0.5rem', fontWeight: 500, width: '25%', color: 'var(--foreground)' }}>{w.word}</td>
+                                              <td style={{ padding: '0.8rem 0.5rem', color: 'var(--text-secondary)', width: '25%' }}>{w.reading || w.romaji}</td>
+                                              <td style={{ padding: '0.8rem 0.5rem', color: 'var(--text-secondary)' }}>{w.indonesian || w.english || w.meaning}</td>
+                                           </tr>
+                                         ))}
+                                       </tbody>
+                                     </table>
+                                   </div>
+                                 )}
                                </div>
                             </div>
 
                             <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1rem 0 1.5rem', opacity: 0.5 }} />
 
-                            {/* Meanings */}
+                            {/* Contoh */}
                             <div>
-                               <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '1rem' }}>Arti</h3>
-                               <div style={{ paddingLeft: '1rem' }}>
-                                 <ul style={{ margin: 0, padding: 0, paddingLeft: '1.2rem', color: 'var(--foreground)', lineHeight: 1.6 }}>
-                                   <li style={{ marginBottom: '0.5rem' }}>
-                                     {relatedKanjis[activeSelectedKanjiIndex].meaning}
-                                   </li>
-                                 </ul>
-                               </div>
+                               <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '1rem' }}>Contoh</h3>
+                               
+                               {kanjiExamples.length === 0 ? (
+                                 <div style={{ color: 'var(--text-secondary)' }}>Tidak ada contoh kalimat untuk kanji ini.</div>
+                               ) : (
+                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                                   {kanjiExamples.map((ex, idx) => (
+                                      <div key={`k-ex-${idx}`} style={{ borderBottom: idx < kanjiExamples.length - 1 ? '1px solid var(--border)' : 'none', paddingBottom: idx < kanjiExamples.length - 1 ? '1.25rem' : '0' }}>
+                                         <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', fontWeight: '500' }}>
+                                           <span>{ex.japanese}</span>
+                                           <SpeakerIcon style={{ margin: 0, padding: 0, width: 22, height: 22, opacity: 0.5, cursor: 'pointer' }} onClick={(e) => playAudio(e, ex.japanese)}>
+                                             <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+                                           </SpeakerIcon>
+                                         </div>
+                                         {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '0.5rem', fontFamily: 'monospace' }}>{ex.romaji}</div>}
+                                         <div style={{ color: 'var(--text-secondary)', fontSize: '1rem' }}>{ex.indonesian || ex.english}</div>
+                                      </div>
+                                   ))}
+                                 </div>
+                               )}
                             </div>
 
                             {/* Optional Stroke Animation (at the bottom) */}
                             {relatedKanjis[activeSelectedKanjiIndex].kanji && (
-                              <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
+                              <div style={{ marginTop: '2.5rem', display: 'flex', justifyContent: 'center' }}>
                                 <KanjiStrokeBox style={{ width: '160px', height: '160px', margin: '0' }}>
                                   <KanjiStrokeImage src={getKanjiVgUrl(relatedKanjis[activeSelectedKanjiIndex].kanji)} alt={relatedKanjis[activeSelectedKanjiIndex].kanji} loading="lazy" />
                                 </KanjiStrokeBox>
