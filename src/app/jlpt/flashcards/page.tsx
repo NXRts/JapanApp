@@ -665,13 +665,17 @@ function FlashcardContent() {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [reviewStatus, setReviewStatus] = useState<Record<string, 'remembered' | 'not-remembered'>>({});
   const [activeTab, setActiveTab] = useState<'kata' | 'kanji' | 'kalimat' | 'tata-bahasa'>('kata');
+  const [activeSelectedKanjiIndex, setActiveSelectedKanjiIndex] = useState(0);
   
   // Prevent body scrolling when modal is open & handle Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setShowDetailModal(false);
-        setTimeout(() => setActiveTab('kata'), 200);
+        setTimeout(() => {
+          setActiveTab('kata');
+          setActiveSelectedKanjiIndex(0);
+        }, 200);
       }
     };
 
@@ -741,7 +745,12 @@ function FlashcardContent() {
   useEffect(() => {
     setCurrentIndex(0);
     setIsFlipped(false);
+    setActiveSelectedKanjiIndex(0);
   }, [activeCategory, activeLevel]);
+
+  useEffect(() => {
+    setActiveSelectedKanjiIndex(0);
+  }, [currentIndex]);
 
   const handleLevelChange = (level: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -1059,7 +1068,10 @@ function FlashcardContent() {
         <ModalOverlay onClick={(e) => {
           if (e.target === e.currentTarget) {
              setShowDetailModal(false);
-             setTimeout(() => setActiveTab('kata'), 200);
+             setTimeout(() => {
+               setActiveTab('kata');
+               setActiveSelectedKanjiIndex(0);
+             }, 200);
           }
         }}>
           <ModalContent>
@@ -1070,7 +1082,10 @@ function FlashcardContent() {
               <ModalTab disabled>Tata bahasa</ModalTab>
               <CloseModalBtn onClick={() => {
                 setShowDetailModal(false);
-                setTimeout(() => setActiveTab('kata'), 200);
+                setTimeout(() => {
+                  setActiveTab('kata');
+                  setActiveSelectedKanjiIndex(0);
+                }, 200);
               }}>✕</CloseModalBtn>
             </ModalHeader>
             <ModalLayout>
@@ -1181,50 +1196,125 @@ function FlashcardContent() {
 
                 {activeTab === 'kanji' && (
                   <div>
-                    <h2 style={{ fontSize: '1.75rem', color: 'var(--foreground)', marginBottom: '1.5rem', fontWeight: 700 }}>Kanji dalam kata ini</h2>
                     {relatedKanjis.length === 0 ? (
                       <div style={{ color: 'var(--text-secondary)', padding: '2rem', textAlign: 'center', background: 'rgba(0,0,0,0.02)', borderRadius: '12px' }}>Tidak ada data kanji untuk kata ini.</div>
                     ) : (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                        {relatedKanjis.map(k => (
-                          <div key={`tab-kanji-${k.id}`} style={{ display: 'flex', gap: '2rem', background: 'rgba(0,0,0,0.02)', padding: '1.5rem', borderRadius: '16px', alignItems: 'flex-start' }}>
-                            <div style={{ flexShrink: 0, textAlign: 'center' }}>
-                               <div style={{ fontSize: '2.5rem', color: 'var(--primary)', lineHeight: 1, marginBottom: '1rem', fontWeight: 'bold' }}>{k.kanji}</div>
-                               {k.kanji && (
-                                 <KanjiStrokeBox style={{ width: '110px', height: '110px', margin: '0' }}>
-                                   <KanjiStrokeImage src={getKanjiVgUrl(k.kanji)} alt={k.kanji} loading="lazy" />
-                                 </KanjiStrokeBox>
-                               )}
-                            </div>
-                            <div style={{ flex: 1, minWidth: 0 }}>
-                              <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--foreground)', marginBottom: '1rem', lineHeight: 1.4 }}>{k.meaning}</div>
-                              
-                              {k.onyomi && k.onyomi.length > 0 && (
-                                <div style={{ marginBottom: '0.5rem', fontSize: '1rem', display: 'flex', gap: '0.5rem' }}>
-                                  <strong style={{ color: '#ef4444', minWidth: '70px' }}>Onyomi:</strong> <span style={{ color: 'var(--foreground)' }}>{k.onyomi.join(', ')}</span>
-                                </div>
-                              )}
-                              {k.kunyomi && k.kunyomi.length > 0 && (
-                                <div style={{ marginBottom: '0.5rem', fontSize: '1rem', display: 'flex', gap: '0.5rem' }}>
-                                  <strong style={{ color: '#3b82f6', minWidth: '70px' }}>Kunyomi:</strong> <span style={{ color: 'var(--foreground)' }}>{k.kunyomi.join(', ')}</span>
-                                </div>
-                              )}
-                              
-                              <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem', flexWrap: 'wrap' }}>
-                                {k.level && (
-                                  <span style={{ background: '#10b981', color: 'white', padding: '0.3rem 0.8rem', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 'bold' }}>
-                                    {k.level.includes('JLPT') ? k.level : `JLPT ${k.level}`}
-                                  </span>
-                                )}
-                                {k.stroke_count && (
-                                  <span style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-secondary)', padding: '0.3rem 0.8rem', borderRadius: '6px', fontSize: '0.85rem', fontWeight: '600' }}>
-                                    {k.stroke_count} strokes
-                                  </span>
-                                )}
-                              </div>
-                            </div>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        {/* Kanji Selector Tab Strip */}
+                        {relatedKanjis.length > 1 && (
+                          <div style={{ display: 'flex', gap: '1.5rem', borderBottom: '1px solid var(--border)', marginBottom: '1.5rem', justifyContent: 'center' }}>
+                            {relatedKanjis.map((k, index) => (
+                              <button
+                                key={`selector-${k.id}`}
+                                onClick={() => setActiveSelectedKanjiIndex(index)}
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  fontSize: '1.25rem',
+                                  color: activeSelectedKanjiIndex === index ? '#3b82f6' : 'var(--text-secondary)',
+                                  padding: '0.5rem 1rem',
+                                  borderBottom: activeSelectedKanjiIndex === index ? '2px solid #3b82f6' : '2px solid transparent',
+                                  cursor: 'pointer',
+                                  fontWeight: activeSelectedKanjiIndex === index ? 700 : 500
+                                }}
+                              >
+                                {k.kanji}
+                              </button>
+                            ))}
                           </div>
-                        ))}
+                        )}
+
+                        {/* Active Kanji Display */}
+                        {relatedKanjis[activeSelectedKanjiIndex] && (
+                          <div style={{ display: 'flex', flexDirection: 'column', padding: '0 1rem' }}>
+                            {/* Top row: Kanji huge + Actions */}
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+                               <div style={{ fontSize: '4.5rem', color: '#3b82f6', lineHeight: 1, fontWeight: 'normal', fontFamily: '"Noto Sans JP", sans-serif' }}>
+                                 {relatedKanjis[activeSelectedKanjiIndex].kanji}
+                               </div>
+                               <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                 <button style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                                   <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                 </button>
+                                 <button style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                                   <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                                 </button>
+                                 <button style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                                   <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"></path></svg>
+                                 </button>
+                               </div>
+                            </div>
+                            
+                            {/* Metadata Pills */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
+                               <div style={{ display: 'flex', alignItems: 'center' }}>
+                                  <span style={{ background: 'rgba(0,0,0,0.05)', color: 'var(--text-secondary)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem', width: '90px' }}>Pukulan</span>
+                                  <span style={{ marginLeft: '1rem', color: 'var(--foreground)', fontWeight: 500 }}>{relatedKanjis[activeSelectedKanjiIndex].stroke_count || '-'}</span>
+                               </div>
+                               <div style={{ display: 'flex', alignItems: 'center' }}>
+                                  <span style={{ background: 'rgba(0,0,0,0.05)', color: 'var(--text-secondary)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem', width: '90px' }}>JLPT</span>
+                                  <span style={{ marginLeft: '1rem', color: 'var(--foreground)', fontWeight: 500 }}>{relatedKanjis[activeSelectedKanjiIndex].level ? relatedKanjis[activeSelectedKanjiIndex].level.replace('JLPT ', '') : '-'}</span>
+                               </div>
+                               <div style={{ display: 'flex', alignItems: 'center' }}>
+                                  <span style={{ background: 'rgba(0,0,0,0.05)', color: 'var(--text-secondary)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem', width: '90px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                    Frekuensi <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4m0-4h.01"></path></svg>
+                                  </span>
+                                  <span style={{ marginLeft: '1rem', color: 'var(--foreground)', fontWeight: 500 }}>{relatedKanjis[activeSelectedKanjiIndex].grade ? `#${relatedKanjis[activeSelectedKanjiIndex].grade}/2500` : '-'}</span>
+                               </div>
+                            </div>
+
+                            <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1rem 0 1.5rem', opacity: 0.5 }} />
+
+                            {/* Audio & Readings */}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                               <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '1rem' }}>Putar audio</h3>
+                               
+                               <div style={{ marginBottom: '1rem' }}>
+                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--foreground)', fontWeight: 500, marginBottom: '0.4rem' }}>
+                                   <div style={{ width: '8px', height: '8px', background: '#3b82f6', transform: 'rotate(45deg)' }}></div>
+                                   Kunyomi
+                                 </div>
+                                 <div style={{ color: '#3b82f6', fontSize: '1.1rem', paddingLeft: '1.rem' }}>
+                                   {relatedKanjis[activeSelectedKanjiIndex].kunyomi && relatedKanjis[activeSelectedKanjiIndex].kunyomi.length > 0 ? relatedKanjis[activeSelectedKanjiIndex].kunyomi.join(' ; ') : '-'}
+                                 </div>
+                               </div>
+
+                               <div>
+                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--foreground)', fontWeight: 500, marginBottom: '0.4rem' }}>
+                                   <div style={{ width: '8px', height: '8px', background: '#ef4444', transform: 'rotate(45deg)' }}></div>
+                                   Onyomi
+                                 </div>
+                                 <div style={{ color: '#ef4444', fontSize: '1.1rem', paddingLeft: '1.rem' }}>
+                                   {relatedKanjis[activeSelectedKanjiIndex].onyomi && relatedKanjis[activeSelectedKanjiIndex].onyomi.length > 0 ? relatedKanjis[activeSelectedKanjiIndex].onyomi.join(' ; ') : '-'}
+                                 </div>
+                               </div>
+                            </div>
+
+                            <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1rem 0 1.5rem', opacity: 0.5 }} />
+
+                            {/* Meanings */}
+                            <div>
+                               <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '1rem' }}>Arti</h3>
+                               <div style={{ paddingLeft: '1rem' }}>
+                                 <ul style={{ margin: 0, padding: 0, paddingLeft: '1.2rem', color: 'var(--foreground)', lineHeight: 1.6 }}>
+                                   <li style={{ marginBottom: '0.5rem' }}>
+                                     {relatedKanjis[activeSelectedKanjiIndex].meaning}
+                                   </li>
+                                 </ul>
+                               </div>
+                            </div>
+
+                            {/* Optional Stroke Animation (at the bottom) */}
+                            {relatedKanjis[activeSelectedKanjiIndex].kanji && (
+                              <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'center' }}>
+                                <KanjiStrokeBox style={{ width: '160px', height: '160px', margin: '0' }}>
+                                  <KanjiStrokeImage src={getKanjiVgUrl(relatedKanjis[activeSelectedKanjiIndex].kanji)} alt={relatedKanjis[activeSelectedKanjiIndex].kanji} loading="lazy" />
+                                </KanjiStrokeBox>
+                              </div>
+                            )}
+
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
