@@ -469,6 +469,7 @@ const ModalContent = styled.div`
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
 `;
 
@@ -481,6 +482,15 @@ const ModalHeader = styled.div`
   background: var(--surface);
   z-index: 10;
   padding: 0 1rem;
+  
+  @media (max-width: 640px) {
+    padding: 0 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 const ModalTab = styled.button<{ $active?: boolean }>`
@@ -491,9 +501,16 @@ const ModalTab = styled.button<{ $active?: boolean }>`
   color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
   border-bottom: 2px solid ${({ $active }) => $active ? 'var(--primary)' : 'transparent'};
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   
   &:hover:not(:disabled) {
     color: var(--primary);
+  }
+
+  @media (max-width: 640px) {
+    padding: 1rem 0.6rem;
+    font-size: 0.85rem;
   }
 `;
 
@@ -505,9 +522,18 @@ const CloseModalBtn = styled.button`
   color: var(--text-secondary);
   cursor: pointer;
   padding: 1rem;
+  flex-shrink: 0;
   
   &:hover {
     color: var(--foreground);
+  }
+  
+  @media (max-width: 640px) {
+    position: sticky;
+    right: 0;
+    background: var(--surface);
+    padding: 1rem 0.5rem;
+    box-shadow: -10px 0 15px -10px var(--surface);
   }
 `;
 
