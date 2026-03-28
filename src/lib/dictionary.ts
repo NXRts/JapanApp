@@ -16,12 +16,12 @@ import { n1Grammar } from '@/data/jlpt/n1/grammar';
 
 export interface DictionaryResult {
   id: string;
-  type: 'vocabulary' | 'grammar' | 'kanji';
+  type: 'vocabulary' | 'grammar' | 'kanji' | 'kalimat' | 'jpjp';
   level: string;
   word?: string; // For vocabulary
   title?: string; // For grammar
   kanji?: string; // For kanji
-  reading?: string; // For vocabulary
+  reading?: string; // For vocabulary/jpjp
   onyomi?: string[]; // For kanji
   kunyomi?: string[]; // For kanji
   stroke_count?: number; // For kanji
@@ -29,9 +29,11 @@ export interface DictionaryResult {
   meaning: string;
   structure?: string; // For grammar
   explanation?: string; // For grammar
-  examples?: any[]; // For grammar
+  examples?: any[]; // For grammar/jpjp
   romaji?: string;
-  source: 'local' | 'jisho' | 'kamus' | 'angka' | 'kanji-db';
+  partOfSpeech?: string; // For jpjp
+  meanings?: string[]; // For jpjp
+  source: 'local' | 'jisho' | 'kamus' | 'angka' | 'kanji-db' | 'tatoeba' | 'wiktionary';
 }
 
 const libraryVocabulary = Object.values(jlptWordsData).map((item: any) => ({
@@ -86,11 +88,59 @@ export const allNumbers = Object.entries(numbersData).flatMap(([category, items]
 
 export async function searchDictionary(
   query: string, 
-  category: 'kata' | 'tata-bahasa' | 'kanji' | 'all' = 'all',
+  category: 'kata' | 'tata-bahasa' | 'kanji' | 'kalimat' | 'jpjp' | 'ai' | 'all' = 'all',
   levelFilter: string = 'all'
 ): Promise<DictionaryResult[]> {
   const normalizedQuery = query.toLowerCase().trim();
   if (!normalizedQuery) return [];
+
+  // Handle specialized proxy searches first
+  if (category === 'ai') {
+    // For now, AI mode can fallback to a general search or we can implement specific AI logic 
+    // In many apps, AI mode might use a different endpoint.
+    // Defaulting to 'all' behavior for now but tagged as category 'ai'.
+    category = 'all';
+  }
+  if (category === 'kalimat') {
+    try {
+      const response = await fetch(`/api/proxy/sentences?keyword=${encodeURIComponent(normalizedQuery)}`);
+      const data = await response.json();
+      return (data.data || []).map((item: any, idx: number) => ({
+        id: `sentence-${idx}`,
+        type: 'kalimat',
+        level: '?',
+        word: item.japanese,
+        meaning: item.indonesian || item.english,
+        romaji: item.romaji,
+        source: 'tatoeba'
+      }));
+    } catch (e) {
+      console.error('Sentence search error:', e);
+      return [];
+    }
+  }
+
+  if (category === 'jpjp') {
+    try {
+      const response = await fetch(`/api/proxy/jpjp?keyword=${encodeURIComponent(normalizedQuery)}`);
+      const data = await response.json();
+      return (data.data || []).map((item: any, idx: number) => ({
+        id: `jpjp-${idx}`,
+        type: 'jpjp',
+        level: '?',
+        word: item.word,
+        reading: item.reading,
+        partOfSpeech: item.partOfSpeech,
+        meaning: item.meanings.join(', '),
+        meanings: item.meanings,
+        examples: item.examples,
+        source: 'wiktionary'
+      }));
+    } catch (e) {
+      console.error('JPJP search error:', e);
+      return [];
+    }
+  }
 
   const localResults: DictionaryResult[] = [];
 
@@ -161,7 +211,7 @@ export async function searchDictionary(
     return localResults.slice(0, 100);
   }
 
-  // Fetch from Jisho API Proxy
+  // Fetch from Jisho API Proxy for general vocabulary search
   try {
     const response = await fetch(`/api/proxy/jisho?keyword=${encodeURIComponent(normalizedQuery)}`);
     const data = await response.json();
