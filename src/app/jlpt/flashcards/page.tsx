@@ -1555,18 +1555,53 @@ function FlashcardContent() {
                           const lvlColor = levelColors[grammar.level || 'N5'] || '#3b82f6';
                           
                           return (
-                            <div key={`grammar-${grammar.id || idx}`} style={{ borderBottom: idx < relatedGrammar.length - 1 ? '1px solid var(--border)' : 'none', paddingBottom: '1rem', marginBottom: '1rem' }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.2rem' }}>
-                                <span style={{ background: lvlColor, color: 'white', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700 }}>
+                            <div key={`grammar-${grammar.id || idx}`} style={{ borderBottom: idx < relatedGrammar.length - 1 ? '1px dashed var(--border)' : 'none', paddingBottom: '2rem', marginBottom: '2rem' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
+                                <span style={{ background: lvlColor, color: 'white', padding: '0.2rem 0.6rem', borderRadius: '6px', fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.5px' }}>
                                   {grammar.level?.replace('JLPT ', '') || 'N?'}
                                 </span>
+                                <h4 style={{ fontSize: '1.4rem', color: 'var(--primary)', fontWeight: 700, margin: 0 }}>
+                                  {grammar.title}
+                                </h4>
                               </div>
-                              <div style={{ fontSize: '1.1rem', color: '#3b82f6', fontWeight: 600, marginBottom: '0.2rem' }}>
-                                {grammar.title}
-                              </div>
-                              <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                              <div style={{ fontSize: '1.1rem', color: 'var(--foreground)', fontWeight: 500, marginBottom: '1.25rem' }}>
                                 {grammar.meaning}
                               </div>
+
+                              {grammar.structure && (
+                                <div style={{ background: 'rgba(59, 130, 246, 0.08)', borderLeft: '4px solid #3b82f6', padding: '0.85rem 1.25rem', borderRadius: '0 8px 8px 0', marginBottom: '1.25rem' }}>
+                                  <strong style={{ display: 'block', color: '#3b82f6', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.4rem' }}>STRUKTUR PENGGUNAAN</strong>
+                                  <div style={{ color: 'var(--foreground)', fontSize: '1rem', fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{grammar.structure}</div>
+                                </div>
+                              )}
+
+                              {grammar.explanation && (
+                                <div style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: 1.6, marginBottom: '1.5rem', textAlign: 'justify' }}>
+                                  {grammar.explanation}
+                                </div>
+                              )}
+
+                              {grammar.examples && grammar.examples.length > 0 && (
+                                <div>
+                                  <strong style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--foreground)', fontSize: '1rem', marginBottom: '1rem' }}>
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                    Contoh Kalimat:
+                                  </strong>
+                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                    {grammar.examples.map((ex: any, i: number) => (
+                                      <div key={i} style={{ background: 'var(--surface)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border)', boxShadow: '0 2px 8px rgba(0,0,0,0.02)' }}>
+                                        <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', marginBottom: '0.5rem', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                          {ex.japanese}
+                                        </div>
+                                        {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontFamily: 'monospace', marginBottom: '0.4rem' }}>{ex.romaji}</div>}
+                                        <div style={{ color: 'var(--foreground)', fontSize: '0.95rem', borderTop: '1px dashed var(--border)', paddingTop: '0.5rem', marginTop: '0.5rem' }}>
+                                          {ex.indonesian || ex.english}
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           );
                         })}
