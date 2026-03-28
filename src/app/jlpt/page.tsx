@@ -575,7 +575,7 @@ export default function DictionaryPage() {
   const [query, setQuery] = useState('');
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('N5');
-  const [activeCategory, setActiveCategory] = useState<'kata' | 'tata-bahasa' | 'kanji'>('kata');
+  const [activeCategory, setActiveCategory] = useState<'kata' | 'tata-bahasa' | 'kanji' | 'kalimat' | 'jpjp' | 'ai'>('kata');
   const [showConfig, setShowConfig] = useState({ kata: true, ejaan: true, arti: true });
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -634,7 +634,7 @@ export default function DictionaryPage() {
       if (query.trim()) {
         setIsLoading(true);
         const results = await searchDictionary(query, activeCategory, activeLevel);
-        setSearchResults(results.filter(r => r.source === 'kamus' || r.source === 'jisho' || r.source === 'kanji-db' || r.source === 'local'));
+        setSearchResults(results);
         setIsLoading(false);
         setCurrentPage(1);
       } else {
@@ -662,6 +662,8 @@ export default function DictionaryPage() {
         type: 'grammar' as const,
         source: 'local' as const
       }));
+    } else if (activeCategory === 'kalimat' || activeCategory === 'jpjp') {
+      return []; // These are dynamic searches only
     } else {
       return allVocabulary
         .filter(v => v.id.startsWith('lib-'))
@@ -696,7 +698,9 @@ export default function DictionaryPage() {
             {[
               { id: 'kata', label: 'Kata' },
               { id: 'kanji', label: 'Kanji' },
+              { id: 'kalimat', label: 'Kalimat' },
               { id: 'tata-bahasa', label: 'Tata bahasa' },
+              { id: 'jpjp', label: 'Jepang - Jepang' },
             ].map(item => (
               <RadioLabel key={item.id} $active={activeCategory === item.id}>
                 <input
@@ -798,15 +802,27 @@ export default function DictionaryPage() {
           </SearchInputContainer>
 
           <ModesRow>
-            <ModeBtn>
-              Mode AI 
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginLeft: '2px' }}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-            </ModeBtn>
-            <ModeBtn $active>Kata</ModeBtn>
-            <ModeBtn>Kanji</ModeBtn>
-            <ModeBtn>Kalimat</ModeBtn>
-            <ModeBtn>Tata bahasa</ModeBtn>
-            <ModeBtn>Jepang - Jepang</ModeBtn>
+            {[
+              { id: 'ai', label: 'Mode AI' },
+              { id: 'kata', label: 'Kata' },
+              { id: 'kanji', label: 'Kanji' },
+              { id: 'kalimat', label: 'Kalimat' },
+              { id: 'tata-bahasa', label: 'Tata bahasa' },
+              { id: 'jpjp', label: 'Jepang - Jepang' },
+            ].map(mode => (
+              <ModeBtn 
+                key={mode.id} 
+                $active={activeCategory === mode.id}
+                onClick={() => setActiveCategory(mode.id as any)}
+              >
+                {mode.id === 'ai' ? (
+                   <>
+                     {mode.label} 
+                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginLeft: '2px' }}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                   </>
+                ) : mode.label}
+              </ModeBtn>
+            ))}
           </ModesRow>
 
           {showKeyboard && (
@@ -868,7 +884,7 @@ export default function DictionaryPage() {
                             {item.kunyomi && item.kunyomi.length > 0 && <ReadingText><strong>Kun:</strong> {item.kunyomi.join(', ')}</ReadingText>}
                           </div>
                         ) : (
-                          item.reading && <ReadingText>{item.reading}</ReadingText>
+                          (item.reading || item.romaji) && <ReadingText>{item.reading || item.romaji}</ReadingText>
                         )}
                       </>
                     )}
@@ -880,6 +896,12 @@ export default function DictionaryPage() {
                           <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
                             {item.stroke_count} strokes • {item.level}
                           </div>
+                        )}
+
+                        {item.type === 'jpjp' && item.partOfSpeech && (
+                           <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: 'bold', marginTop: '0.25rem' }}>
+                              {item.partOfSpeech}
+                           </div>
                         )}
 
                         {item.type === 'grammar' && (
@@ -894,20 +916,21 @@ export default function DictionaryPage() {
                                 {item.explanation}
                               </div>
                             )}
-                            {item.examples && item.examples.length > 0 && (
-                              <div style={{ marginTop: '0.5rem' }}>
-                                <strong>Contoh:</strong>
-                                <ul style={{ listStyleType: 'none', padding: 0, margin: '0.4rem 0 0 0', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                                  {item.examples.map((ex: any, i: number) => (
-                                    <li key={i} style={{ borderBottom: i !== item.examples.length - 1 ? '1px dashed rgba(255,255,255,0.1)' : 'none', paddingBottom: i !== item.examples.length - 1 ? '0.6rem' : '0' }}>
-                                      <div style={{ color: 'var(--text-primary)' }}>{ex.japanese}</div>
-                                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{ex.romaji}</div>
-                                      <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontStyle: 'italic', marginTop: '0.2rem' }}>&quot;{ex.english}&quot;</div>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
+                          </div>
+                        )}
+
+                        {(item.type === 'grammar' || item.type === 'jpjp') && item.examples && item.examples.length > 0 && (
+                          <div style={{ marginTop: '0.75rem' }}>
+                            <strong>Contoh:</strong>
+                            <ul style={{ listStyleType: 'none', padding: 0, margin: '0.4rem 0 0 0', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                              {item.examples.map((ex: any, i: number) => (
+                                <li key={i} style={{ borderBottom: i !== item.examples.length - 1 ? '1px dashed rgba(255,255,255,0.1)' : 'none', paddingBottom: i !== item.examples.length - 1 ? '0.6rem' : '0' }}>
+                                  <div style={{ color: 'var(--text-primary)' }}>{ex.japanese}</div>
+                                  {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{ex.romaji}</div>}
+                                  {ex.english && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontStyle: 'italic', marginTop: '0.2rem' }}>&quot;{ex.english}&quot;</div>}
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         )}
                       </>
