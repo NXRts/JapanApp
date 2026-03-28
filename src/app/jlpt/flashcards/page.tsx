@@ -690,12 +690,14 @@ function FlashcardContent() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [reviewStatus, setReviewStatus] = useState<Record<string, 'remembered' | 'not-remembered'>>({});
-  const [activeTab, setActiveTab] = useState<'kata' | 'kanji' | 'kalimat' | 'tata-bahasa'>('kata');
+  const [activeTab, setActiveTab] = useState<'kata' | 'kanji' | 'kalimat' | 'tata-bahasa' | 'jpjp'>('kata');
   const [activeSelectedKanjiIndex, setActiveSelectedKanjiIndex] = useState(0);
   const [externalSentences, setExternalSentences] = useState<any[]>([]);
   const [isFetchingSentences, setIsFetchingSentences] = useState(false);
   const [activeGrammarLevel, setActiveGrammarLevel] = useState('All');
   const [copiedKanji, setCopiedKanji] = useState<string | null>(null);
+  const [jpjpData, setJpjpData] = useState<any[]>([]);
+  const [isFetchingJpjp, setIsFetchingJpjp] = useState(false);
   
   // Prevent body scrolling when modal is open & handle Escape key
   useEffect(() => {
@@ -1007,6 +1009,24 @@ function FlashcardContent() {
     }
   }, [activeTab, targetWordForDetails, currentItem, usageInPractice]);
 
+  // Fetch Japanese-Japanese definitions
+  useEffect(() => {
+    if (activeTab === 'jpjp' && targetWordForDetails && targetWordForDetails !== '?') {
+      setIsFetchingJpjp(true);
+      fetch(`/api/proxy/jpjp?keyword=${encodeURIComponent(targetWordForDetails)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.data) {
+            setJpjpData(data.data);
+          }
+        })
+        .catch(err => console.error('Failed to fetch JP-JP definitions', err))
+        .finally(() => setIsFetchingJpjp(false));
+    } else {
+      setJpjpData([]);
+    }
+  }, [activeTab, targetWordForDetails]);
+
   if (isLoading) {
     return (
       <PageWrapper>
@@ -1217,6 +1237,7 @@ function FlashcardContent() {
               <ModalTab $active={activeTab === 'kanji'} onClick={() => setActiveTab('kanji')}>Kanji</ModalTab>
               <ModalTab $active={activeTab === 'kalimat'} onClick={() => setActiveTab('kalimat')}>Kalimat</ModalTab>
               <ModalTab $active={activeTab === 'tata-bahasa'} onClick={() => setActiveTab('tata-bahasa')}>Tata bahasa</ModalTab>
+              <ModalTab $active={activeTab === 'jpjp'} onClick={() => setActiveTab('jpjp')}>Jepang - Jepang</ModalTab>
               <CloseModalBtn onClick={() => {
                 setShowDetailModal(false);
                 setTimeout(() => {
@@ -1668,6 +1689,80 @@ function FlashcardContent() {
                             </div>
                           );
                         })}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {activeTab === 'jpjp' && (
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+                      <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--foreground)' }}>
+                        Hasil pencarian bahasa Jepang untuk kata <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
+                      </h3>
+                      {isFetchingJpjp && (
+                        <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
+                          <div style={{ flexShrink: 0, width: '16px', height: '16px', minWidth: '16px', minHeight: '16px', border: '2px solid rgba(59,130,246,0.3)', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                          <span>Mencari definisi...</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {jpjpData.length === 0 && !isFetchingJpjp ? (
+                      <div style={{ color: 'var(--text-secondary)', padding: '2rem 0', textAlign: 'center' }}>Tidak ada definisi Jepang-Jepang untuk kata ini.</div>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        {jpjpData.map((entry, idx) => (
+                          <div key={`jpjp-${idx}`} style={{ borderBottom: idx < jpjpData.length - 1 ? '1px solid var(--border)' : 'none', paddingBottom: idx < jpjpData.length - 1 ? '1.25rem' : '0' }}>
+                            {/* Meanings / Definitions */}
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                              {entry.meanings.map((meaning: string, mIdx: number) => (
+                                <div key={`m-${mIdx}`} style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                                  <div style={{ fontSize: '1.15rem', color: 'var(--foreground)', lineHeight: 1.5, fontWeight: '500' }}>
+                                    {meaning}
+                                  </div>
+                                  
+                                  {/* Supplement info for the first meaning of each entry: POS and Reading */}
+                                  {mIdx === 0 && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                                      <span style={{
+                                        color: '#3b82f6',
+                                        fontSize: '0.85rem',
+                                        fontWeight: 600,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.5px'
+                                      }}>
+                                        {entry.partOfSpeech || '品詞不明'}
+                                      </span>
+                                      {entry.reading && (
+                                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+                                          「{entry.reading}」
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Example Sentences */}
+                            {entry.examples && entry.examples.length > 0 && (
+                              <div style={{ marginTop: '1.25rem', paddingLeft: '0.5rem', borderLeft: '3px solid rgba(59,130,246,0.3)', paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>
+                                <div style={{ fontSize: '0.85rem', color: '#3b82f6', fontWeight: 600, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>用例 (Contoh Penggunaan)</div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                  {entry.examples.map((ex: any, eIdx: number) => (
+                                    <div key={`jpex-${eIdx}`} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                      <span style={{ fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{ex.japanese}</span>
+                                      <SpeakerIcon style={{ margin: 0, padding: 0, width: 22, height: 22, opacity: 0.4, cursor: 'pointer', flexShrink: 0 }} onClick={(e) => playAudio(e, ex.japanese)}>
+                                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+                                      </SpeakerIcon>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     )}
                   </div>
