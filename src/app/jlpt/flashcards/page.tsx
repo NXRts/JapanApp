@@ -694,6 +694,7 @@ function FlashcardContent() {
   const [activeSelectedKanjiIndex, setActiveSelectedKanjiIndex] = useState(0);
   const [externalSentences, setExternalSentences] = useState<any[]>([]);
   const [isFetchingSentences, setIsFetchingSentences] = useState(false);
+  const [activeGrammarLevel, setActiveGrammarLevel] = useState('All');
   
   // Prevent body scrolling when modal is open & handle Escape key
   useEffect(() => {
@@ -703,6 +704,7 @@ function FlashcardContent() {
         setTimeout(() => {
           setActiveTab('kata');
           setActiveSelectedKanjiIndex(0);
+          setActiveGrammarLevel('All');
         }, 200);
       }
     };
@@ -900,13 +902,26 @@ function FlashcardContent() {
 
   const relatedGrammar = useMemo(() => {
     if (!targetWordForDetails || targetWordForDetails === '?') return [];
-    if (currentItem?.type === 'grammar') return [currentItem];
-    return allGrammar.filter(g => {
-      const matchTitle = g.title && g.title.includes(targetWordForDetails);
-      const matchExamples = g.examples && g.examples.some((ex: any) => ex.japanese && ex.japanese.includes(targetWordForDetails));
-      return matchTitle || matchExamples;
-    });
-  }, [targetWordForDetails, currentItem]);
+    
+    let baseList = [];
+    if (currentItem?.type === 'grammar') {
+      baseList = [currentItem];
+    } else {
+      baseList = allGrammar.filter(g => {
+        const matchTitle = g.title && g.title.includes(targetWordForDetails);
+        const matchExamples = g.examples && g.examples.some((ex: any) => ex.japanese && ex.japanese.includes(targetWordForDetails));
+        return matchTitle || matchExamples;
+      });
+    }
+
+    if (activeGrammarLevel !== 'All') {
+      return baseList.filter(g => {
+        const lvl = g.level?.replace('JLPT ', '') || '';
+        return lvl === activeGrammarLevel;
+      });
+    }
+    return baseList;
+  }, [targetWordForDetails, currentItem, activeGrammarLevel]);
 
   const kanjiRelatedWords = useMemo(() => {
     if (activeTab !== 'kanji' || relatedKanjis.length === 0) return [];
@@ -1191,6 +1206,7 @@ function FlashcardContent() {
              setTimeout(() => {
                setActiveTab('kata');
                setActiveSelectedKanjiIndex(0);
+               setActiveGrammarLevel('All');
              }, 200);
           }
         }}>
@@ -1205,6 +1221,7 @@ function FlashcardContent() {
                 setTimeout(() => {
                   setActiveTab('kata');
                   setActiveSelectedKanjiIndex(0);
+                  setActiveGrammarLevel('All');
                 }, 200);
               }}>✕</CloseModalBtn>
             </ModalHeader>
@@ -1529,9 +1546,9 @@ function FlashcardContent() {
                         Hasil pencarian tata bahasa untuk <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
                       </h3>
                       <FilterDropdown 
-                        value="Tingkat: Semua"
-                        onChange={() => {}}
-                        options={['Tingkat: Semua']}
+                        value={activeGrammarLevel}
+                        onChange={(val) => setActiveGrammarLevel(val)}
+                        options={['Semua', 'N5', 'N4', 'N3', 'N2', 'N1']}
                       />
                     </div>
                     
