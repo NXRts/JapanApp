@@ -69,4 +69,4 @@ Berikut adalah analisis mengenai fitur-fitur yang sudah tersedia (diimplementasi
 8. **Simulasi Ujian JLPT (Mock Test)**
    - Latihan soal dengan batas waktu sungguhan (Timer) yang dirancang persis seperti ujian JLPT asli, mencakup *Reading*, *Vocabulary*, dan *Listening* (jika dipadukan dengan fitur audio).
 
-Co-authored-by: OUT-1 <samsung02@gmail.com>
+Co-authored-by: OUT-1 <[EMAIL_ADDRESS]>

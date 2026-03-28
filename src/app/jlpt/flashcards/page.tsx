@@ -898,6 +898,16 @@ function FlashcardContent() {
     }).slice(0, 50);
   }, [targetWordForDetails, currentItem]);
 
+  const relatedGrammar = useMemo(() => {
+    if (!targetWordForDetails || targetWordForDetails === '?') return [];
+    if (currentItem?.type === 'grammar') return [currentItem];
+    return allGrammar.filter(g => {
+      const matchTitle = g.title && g.title.includes(targetWordForDetails);
+      const matchExamples = g.examples && g.examples.some((ex: any) => ex.japanese && ex.japanese.includes(targetWordForDetails));
+      return matchTitle || matchExamples;
+    });
+  }, [targetWordForDetails, currentItem]);
+
   const kanjiRelatedWords = useMemo(() => {
     if (activeTab !== 'kanji' || relatedKanjis.length === 0) return [];
     const kanjiObj = relatedKanjis[activeSelectedKanjiIndex];
@@ -1189,7 +1199,7 @@ function FlashcardContent() {
               <ModalTab $active={activeTab === 'kata'} onClick={() => setActiveTab('kata')}>Kata</ModalTab>
               <ModalTab $active={activeTab === 'kanji'} onClick={() => setActiveTab('kanji')}>Kanji</ModalTab>
               <ModalTab $active={activeTab === 'kalimat'} onClick={() => setActiveTab('kalimat')}>Kalimat</ModalTab>
-              <ModalTab disabled>Tata bahasa</ModalTab>
+              <ModalTab $active={activeTab === 'tata-bahasa'} onClick={() => setActiveTab('tata-bahasa')}>Tata bahasa</ModalTab>
               <CloseModalBtn onClick={() => {
                 setShowDetailModal(false);
                 setTimeout(() => {
@@ -1511,6 +1521,59 @@ function FlashcardContent() {
                     </div>
                   );
                 })()}
+
+                {activeTab === 'tata-bahasa' && (
+                  <div>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
+                      <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--foreground)', margin: 0 }}>
+                        Hasil pencarian tata bahasa untuk <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
+                      </h3>
+                      <FilterDropdown 
+                        value="Tingkat: Semua"
+                        onChange={() => {}}
+                        options={['Tingkat: Semua']}
+                      />
+                    </div>
+                    
+                    {relatedGrammar.length === 0 ? (
+                      <div style={{ color: 'var(--text-secondary)', padding: '2rem 0', textAlign: 'center' }}>Tidak ada tata bahasa terkait untuk kata ini.</div>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        {relatedGrammar.map((grammar, idx) => {
+                          const levelColors: Record<string, string> = {
+                            'N5': '#10b981',
+                            'N4': '#3b82f6',
+                            'N3': '#f59e0b',
+                            'N2': '#ef4444',
+                            'N1': '#8b5cf6',
+                            'JLPT N5': '#10b981',
+                            'JLPT N4': '#3b82f6',
+                            'JLPT N3': '#f59e0b',
+                            'JLPT N2': '#ef4444',
+                            'JLPT N1': '#8b5cf6',
+                          };
+                          const lvlColor = levelColors[grammar.level || 'N5'] || '#3b82f6';
+                          
+                          return (
+                            <div key={`grammar-${grammar.id || idx}`} style={{ borderBottom: idx < relatedGrammar.length - 1 ? '1px solid var(--border)' : 'none', paddingBottom: '1rem', marginBottom: '1rem' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.2rem' }}>
+                                <span style={{ background: lvlColor, color: 'white', padding: '0.15rem 0.4rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 700 }}>
+                                  {grammar.level?.replace('JLPT ', '') || 'N?'}
+                                </span>
+                              </div>
+                              <div style={{ fontSize: '1.1rem', color: '#3b82f6', fontWeight: 600, marginBottom: '0.2rem' }}>
+                                {grammar.title}
+                              </div>
+                              <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                                {grammar.meaning}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
               </MainContent>
 
               <SidePanelWrapper>

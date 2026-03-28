@@ -628,5 +628,530 @@
         "english": "Aku cuma melihat TV tanpa sengaja, eh tiba-tiba namanya muncul."
       }
     ]
+  },
+  {
+    "id": "te-wa-ikenai",
+    "level": "N4",
+    "title": "～てはいけない",
+    "meaning": "Tidak boleh melakukan...",
+    "structure": "[Kata kerja bentuk -te] + は + いけない",
+    "explanation": "Pola tata bahasa ini digunakan untuk menyatakan larangan atau ketidakbolehan melakukan suatu tindakan. Ini adalah bentuk larangan yang kuat, sering digunakan oleh orang tua kepada anak, guru kepada murid, atau dalam peraturan. Mirip dengan ～てはだめです atau ～てはいけません, tetapi ～てはいけない adalah bentuk yang lebih kasual atau langsung.",
+    "examples": [
+      {
+        "japanese": "ここでタバコを吸ってはいけない。",
+        "romaji": "Koko de tabako o sutte wa ikenai.",
+        "english": "Tidak boleh merokok di sini."
+      },
+      {
+        "japanese": "授業中に携帯電話を使ってはいけない。",
+        "romaji": "Jugyō-chū ni keitai denwa o tsukatte wa ikenai.",
+        "english": "Tidak boleh menggunakan ponsel selama pelajaran."
+      },
+      {
+        "japanese": "嘘をついてはいけないよ。",
+        "romaji": "Uso o tsuite wa ikenai yo.",
+        "english": "Jangan berbohong, ya."
+      }
+    ]
+  },
+  {
+    "id": "tsumori-da",
+    "level": "N4",
+    "title": "～つもりだ",
+    "meaning": "Bermaksud untuk..., Berencana untuk..., Berniat untuk...",
+    "structure": "[Kata kerja bentuk kamus] + つもりだ / [Kata kerja bentuk ない] + つもりだ",
+    "explanation": "Pola tata bahasa \"つもりだ\" (tsumori da) digunakan untuk menyatakan niat, rencana, atau keputusan yang sudah dibuat oleh pembicara. Ini menunjukkan bahwa seseorang \"bermaksud untuk\", \"berencana untuk\", atau \"berniat untuk\" melakukan sesuatu. Ini adalah ekspresi yang lebih tegas dibandingkan dengan \"～ようと思う\" (you to omou) yang bisa berarti niat yang lebih tentatif. \"つもりだ\" juga bisa digunakan untuk menyatakan keyakinan kuat seseorang, meskipun untuk level N4 fokus utamanya adalah niat dan rencana.",
+    "examples": [
+      {
+        "japanese": "来年、日本へ留学するつもりです。",
+        "romaji": "Rainen, Nihon e ryūgaku suru tsumori desu.",
+        "english": "Tahun depan, saya berencana untuk belajar di Jepang."
+      },
+      {
+        "japanese": "今日は残業しないつもりです。",
+        "romaji": "Kyō wa zangyō shinai tsumori desu.",
+        "english": "Hari ini, saya tidak berniat lembur."
+      },
+      {
+        "japanese": "この仕事は、私が最後まで責任を持つつもりです。",
+        "romaji": "Kono shigoto wa, watashi ga saigo made sekinin o motsu tsumori desu.",
+        "english": "Saya bermaksud bertanggung jawab atas pekerjaan ini sampai akhir."
+      }
+    ]
+  },
+  {
+    "id": "yotei-da",
+    "level": "N4",
+    "title": "～予定だ",
+    "meaning": "Berencana untuk... / Dijadwalkan untuk...",
+    "structure": "[Kata kerja bentuk kamus/ta-kei] + 予定だ / [Kata benda] + の + 予定だ",
+    "explanation": "「予定だ (yotei da)」digunakan untuk menyatakan rencana, jadwal, atau ekspektasi yang sudah ditetapkan atau diputuskan. Ini menunjukkan bahwa suatu tindakan atau peristiwa akan terjadi di masa depan sesuai dengan rencana. Bisa digunakan untuk rencana pribadi maupun jadwal umum. Bentuk lampau adalah 「予定だった (yotei datta)」yang berarti \"seharusnya berencana untuk...\" atau \"sudah direncanakan untuk...\", seringkali dengan implikasi bahwa rencana tersebut tidak terlaksana.",
+    "examples": [
+      {
+        "japanese": "来週、日本へ行く予定です。",
+        "romaji": "Raishuu, Nihon e iku yotei desu.",
+        "english": "Minggu depan, saya berencana pergi ke Jepang."
+      },
+      {
+        "japanese": "会議は午前10時に始まる予定です。",
+        "romaji": "Kaigi wa gozen juuji ni hajimaru yotei desu.",
+        "english": "Rapat dijadwalkan mulai pukul 10 pagi."
+      },
+      {
+        "japanese": "彼は来月結婚する予定だそうです。",
+        "romaji": "Kare wa raigetsu kekkon suru yotei da sou desu.",
+        "english": "Katanya dia berencana menikah bulan depan."
+      }
+    ]
+  },
+  {
+    "id": "he",
+    "level": "N5",
+    "title": "へ",
+    "meaning": "Ke; Menuju",
+    "structure": "[Kata benda (tempat/arah)] + へ",
+    "explanation": "Partikel \"へ\" (dibaca 'e') digunakan untuk menunjukkan arah atau tujuan suatu gerakan. Mirip dengan partikel \"に\" ketika menunjukkan tujuan, tetapi \"へ\" lebih menekankan pada arah pergerakan itu sendiri, sedangkan \"に\" lebih menekankan pada titik tujuan akhir. \"へ\" sering digunakan dengan kata kerja yang menunjukkan pergerakan seperti 行く (iku - pergi), 来る (kuru - datang), 帰る (kaeru - pulang), 向かう (mukau - menuju), dll. Selain tempat, bisa juga digunakan untuk menunjukkan penerima sesuatu (misalnya surat atau hadiah) meskipun \"に\" lebih umum.",
+    "examples": [
+      {
+        "japanese": "私は日本へ行きます。",
+        "romaji": "Watashi wa Nihon e ikimasu.",
+        "english": "Saya pergi ke Jepang."
+      },
+      {
+        "japanese": "彼は会社へ向かっています。",
+        "romaji": "Kare wa kaisha e mukaatte imasu.",
+        "english": "Dia sedang menuju ke kantor."
+      },
+      {
+        "japanese": "手紙を家族へ送りました。",
+        "romaji": "Tegami o kazoku e okurimashita.",
+        "english": "Saya mengirim surat kepada keluarga."
+      }
+    ]
+  },
+  {
+    "id": "ya",
+    "level": "N5",
+    "title": "～や～",
+    "meaning": "dan lain-lain; seperti... dan...",
+    "structure": "[Kata benda] + や + [Kata benda]",
+    "explanation": "Partikel \"や\" digunakan untuk menyebutkan beberapa contoh dari suatu kategori, menyiratkan bahwa ada contoh lain yang tidak disebutkan. Ini mirip dengan \"と\" (dan), tetapi \"と\" digunakan untuk daftar lengkap, sedangkan \"や\" digunakan untuk daftar yang tidak lengkap atau representatif. Seringkali diikuti oleh \"など\" (nado) untuk lebih menekankan bahwa daftar tersebut tidak lengkap, yang berarti \"dan lain-lain\" atau \"seperti...\".",
+    "examples": [
+      {
+        "japanese": "スーパーでりんごやみかんを買いました。",
+        "romaji": "Sūpā de ringo ya mikan o kaimashita.",
+        "english": "Saya membeli apel dan jeruk di supermarket (dan lain-lain)."
+      },
+      {
+        "japanese": "私の部屋には本やペンがあります。",
+        "romaji": "Watashi no heya ni wa hon ya pen ga arimasu.",
+        "english": "Di kamar saya ada buku dan pulpen (dan lain-lain)."
+      },
+      {
+        "japanese": "私はサッカーやバスケットボールなどのスポーツが好きです。",
+        "romaji": "Watashi wa sakkā ya basukettobōru nado no supōtsu ga suki desu.",
+        "english": "Saya suka olahraga seperti sepak bola dan bola basket."
+      }
+    ]
+  },
+  {
+    "id": "masen-ka",
+    "level": "N5",
+    "title": "～ませんか",
+    "meaning": "Maukah Anda...? / Mengapa tidak...? / Mari kita...? (Ajakan, tawaran, atau saran)",
+    "structure": "[Kata kerja bentuk -masu (tanpa -masu)] + ませんか",
+    "explanation": "「～ませんか」digunakan untuk mengajak seseorang melakukan sesuatu bersama, menawarkan bantuan, atau memberikan saran secara sopan. Ini adalah bentuk pertanyaan negatif dari 「～ます」yang berfungsi sebagai ajakan atau tawaran. Ketika digunakan sebagai ajakan, seringkali mengharapkan jawaban positif.",
+    "examples": [
+      {
+        "japanese": "週末、一緒に映画を見に行きませんか。",
+        "romaji": "Shūmatsu, issho ni eiga o mi ni ikimasen ka.",
+        "english": "Akhir pekan ini, maukah kita pergi menonton film bersama?"
+      },
+      {
+        "japanese": "よかったら、この本を読みませんか。",
+        "romaji": "Yokattara, kono hon o yomimasen ka.",
+        "english": "Kalau mau, mengapa tidak membaca buku ini?"
+      },
+      {
+        "japanese": "疲れていませんか。少し休憩しませんか。",
+        "romaji": "Tsukarete imasen ka. Sukoshi kyūkei shimasen ka.",
+        "english": "Anda tidak lelah? Maukah kita istirahat sebentar?"
+      }
+    ]
+  },
+  {
+    "id": "tai",
+    "level": "N5",
+    "title": "～たい",
+    "meaning": "Ingin melakukan...",
+    "structure": "[Kata kerja bentuk ます (tanpa ます)] + たい",
+    "explanation": "Pola tata bahasa ini digunakan untuk menyatakan keinginan pembicara untuk melakukan suatu tindakan. Ini adalah bentuk keinginan dari kata kerja. Biasanya digunakan untuk orang pertama (saya/kami). Untuk menyatakan keinginan orang ketiga (dia/mereka), biasanya digunakan pola \"～たがっている\".",
+    "examples": [
+      {
+        "japanese": "私は日本へ行きたいです。",
+        "romaji": "Watashi wa Nihon e ikitai desu.",
+        "english": "Saya ingin pergi ke Jepang."
+      },
+      {
+        "japanese": "ケーキを食べたいですか。",
+        "romaji": "Keeki o tabetai desu ka.",
+        "english": "Apakah kamu ingin makan kue?"
+      },
+      {
+        "japanese": "週末は家でゆっくり休みたい。",
+        "romaji": "Shuumatsu wa ie de yukkuri yasumitai.",
+        "english": "Saya ingin beristirahat dengan santai di rumah pada akhir pekan."
+      }
+    ]
+  },
+  {
+    "id": "te-iru",
+    "level": "N5",
+    "title": "～ている",
+    "meaning": "Sedang melakukan...; Telah melakukan... (kondisi); Berada dalam kondisi...",
+    "structure": "[Kata kerja bentuk -te] + いる",
+    "explanation": "Tata bahasa \"～ている\" memiliki beberapa fungsi utama:\n1.  Menyatakan tindakan yang sedang berlangsung (continuous action), mirip dengan \"-ing\" dalam bahasa Inggris. Contoh: \"食べている\" (sedang makan).\n2.  Menyatakan hasil dari suatu tindakan yang telah selesai dan kondisinya masih bertahan (state resulting from an action). Contoh: \"結婚している\" (sudah menikah - kondisi setelah menikah), \"窓が開いている\" (jendela terbuka - kondisi setelah dibuka).\n3.  Menyatakan kebiasaan atau tindakan yang dilakukan secara rutin. Contoh: \"毎日日本語を勉強している\" (setiap hari belajar bahasa Jepang).\nDalam percakapan kasual, \"～ている\" sering disingkat menjadi \"～てる\" (misalnya, \"食べてる\").",
+    "examples": [
+      {
+        "japanese": "今、ご飯を食べています。",
+        "romaji": "Ima, gohan o tabete imasu.",
+        "english": "Sekarang, saya sedang makan nasi."
+      },
+      {
+        "japanese": "彼は結婚しています。",
+        "romaji": "Kare wa kekkon shite imasu.",
+        "english": "Dia (laki-laki) sudah menikah."
+      },
+      {
+        "japanese": "私は毎日、会社で働いています。",
+        "romaji": "Watashi wa mainichi, kaisha de hataraite imasu.",
+        "english": "Saya setiap hari bekerja di perusahaan."
+      }
+    ]
+  },
+  {
+    "id": "naide-kudasai",
+    "level": "N5",
+    "title": "～ないでください",
+    "meaning": "Tolong jangan... / Mohon jangan...",
+    "structure": "[Kata kerja bentuk ない] + でください",
+    "explanation": "Pola tata bahasa ini digunakan untuk membuat permintaan atau perintah negatif yang sopan. Ini berarti \"tolong jangan lakukan [kata kerja]\". Bentuk ini lebih sopan daripada hanya menggunakan bentuk negatif dari kata kerja (misalnya, 食べないで vs 食べないでください). Digunakan untuk melarang atau meminta seseorang untuk tidak melakukan sesuatu dengan cara yang sopan.",
+    "examples": [
+      {
+        "japanese": "ここで写真を撮らないでください。",
+        "romaji": "Koko de shashin o toranaide kudasai.",
+        "english": "Tolong jangan mengambil foto di sini."
+      },
+      {
+        "japanese": "授業中に寝ないでください。",
+        "romaji": "Jugyō-chū ni nenaide kudasai.",
+        "english": "Tolong jangan tidur selama pelajaran."
+      },
+      {
+        "japanese": "遅れないでください。",
+        "romaji": "Okurenaide kudasai.",
+        "english": "Tolong jangan terlambat."
+      }
+    ]
+  },
+  {
+    "id": "suru-no-ga-suki",
+    "level": "N5",
+    "title": "～するのが好き",
+    "meaning": "Suka melakukan...",
+    "structure": "[Kata kerja bentuk kamus] + のが好き",
+    "explanation": "Pola tata bahasa ini digunakan untuk menyatakan bahwa seseorang menyukai suatu tindakan atau aktivitas. Dengan menambahkan の (no) setelah kata kerja bentuk kamus, kata kerja tersebut diubah menjadi frasa nomina (nominalisasi), sehingga dapat diikuti oleh が好き (ga suki) yang berarti \"suka\". Secara harfiah, ini berarti \"suka akan hal melakukan [kata kerja]\".",
+    "examples": [
+      {
+        "japanese": "私は本を読むのが好きです。",
+        "romaji": "Watashi wa hon o yomu no ga suki desu.",
+        "english": "Saya suka membaca buku."
+      },
+      {
+        "japanese": "彼はサッカーをするのが好きです。",
+        "romaji": "Kare wa sakkaa o suru no ga suki desu.",
+        "english": "Dia (laki-laki) suka bermain sepak bola."
+      },
+      {
+        "japanese": "週末は料理を作るのが好きです。",
+        "romaji": "Shuumatsu wa ryouri o tsukuru no ga suki desu.",
+        "english": "Saya suka memasak di akhir pekan."
+      }
+    ]
+  },
+  {
+    "id": "no-ga-jouzu",
+    "level": "N4",
+    "title": "～のが上手",
+    "meaning": "Pandai/Mahir dalam melakukan...",
+    "structure": "[Kata kerja bentuk kamus] + のが上手だ",
+    "explanation": "Pola tata bahasa ini digunakan untuk menyatakan bahwa seseorang pandai atau mahir dalam melakukan suatu tindakan. Partikel \"の\" berfungsi untuk mengubah frasa kata kerja menjadi frasa benda (nominalisasi), sehingga dapat diikuti oleh \"が上手だ\" yang berarti \"pandai/mahir\". Ini menekankan kemampuan atau keahlian seseorang dalam suatu aktivitas.",
+    "examples": [
+      {
+        "japanese": "彼は日本語を話すのが上手です。",
+        "romaji": "Kare wa Nihongo o hanasu no ga jouzu desu.",
+        "english": "Dia pandai berbicara bahasa Jepang."
+      },
+      {
+        "japanese": "彼女は料理を作るのがとても上手だ。",
+        "romaji": "Kanojo wa ryouri o tsukuru no ga totemo jouzu da.",
+        "english": "Dia sangat pandai memasak."
+      },
+      {
+        "japanese": "うちの猫は高いところに登るのが上手です。",
+        "romaji": "Uchi no neko wa takai tokoro ni noboru no ga jouzu desu.",
+        "english": "Kucing kami pandai memanjat tempat tinggi."
+      }
+    ]
+  },
+  {
+    "id": "no-ga-heta",
+    "level": "N4",
+    "title": "～のが下手",
+    "meaning": "Tidak pandai dalam...; Kurang terampil dalam...",
+    "structure": "[Kata kerja bentuk kamus/bentuk nai] + のが下手",
+    "explanation": "Pola tata bahasa ini digunakan untuk menyatakan bahwa seseorang tidak pandai atau kurang terampil dalam melakukan suatu tindakan. Partikel \"の\" berfungsi untuk menominalkan kata kerja yang mendahuluinya, mengubahnya menjadi frasa kata benda, sehingga bisa diikuti oleh \"が下手\" (tidak pandai/kurang terampil). Ini sering digunakan untuk membicarakan kelemahan atau kekurangan seseorang dalam suatu kemampuan.",
+    "examples": [
+      {
+        "japanese": "彼は料理するのが下手です。",
+        "romaji": "Kare wa ryouri suru no ga heta desu.",
+        "english": "Dia tidak pandai memasak."
+      },
+      {
+        "japanese": "私は歌うのが下手なので、カラオケは苦手です。",
+        "romaji": "Watashi wa utau no ga heta nano de, karaoke wa nigate desu.",
+        "english": "Karena saya tidak pandai menyanyi, saya tidak suka karaoke."
+      },
+      {
+        "japanese": "彼女は絵を描くのが下手だと言っていましたが、実はとても上手です。",
+        "romaji": "Kanojo wa e o kaku no ga heta da to itte imashita ga, jitsu wa totemo jouzu desu.",
+        "english": "Dia bilang dia tidak pandai menggambar, tapi sebenarnya dia sangat mahir."
+      }
+    ]
+  },
+  {
+    "id": "ni-naru",
+    "level": "N5",
+    "title": "～になる",
+    "meaning": "Menjadi...",
+    "structure": "[Kata benda] + になる / [Kata sifat -na (hilangkan な)] + になる",
+    "explanation": "Tata bahasa \"～になる\" digunakan untuk menyatakan perubahan atau transformasi dari satu keadaan, kondisi, atau identitas menjadi yang lain. Ini menunjukkan hasil dari suatu proses atau tindakan. Dapat digunakan dengan kata benda (untuk menjadi sesuatu) atau kata sifat -na (untuk menjadi dalam kondisi tertentu). Untuk kata sifat -i, bentuknya adalah \"～くなる\".",
+    "examples": [
+      {
+        "japanese": "彼は来年、大学生になります。",
+        "romaji": "Kare wa rainen, daigakusei ni narimasu.",
+        "english": "Dia akan menjadi mahasiswa tahun depan."
+      },
+      {
+        "japanese": "部屋がとてもきれいになりました。",
+        "romaji": "Heya ga totemo kirei ni narimashita.",
+        "english": "Kamar menjadi sangat bersih."
+      },
+      {
+        "japanese": "もうすぐ25歳になります。",
+        "romaji": "Mou sugu nijuu-go sai ni narimasu.",
+        "english": "Saya akan segera berusia 25 tahun."
+      }
+    ]
+  },
+  {
+    "id": "ni-suru",
+    "level": "N5",
+    "title": "～にする",
+    "meaning": "Memutuskan untuk; Memilih; Membuat menjadi",
+    "structure": "[Kata benda] + にする\n[Kata kerja bentuk kamus/ない形] + ことにする\n[Kata sifat-i (hapus い, tambah く)] + する\n[Kata sifat-na (hapus な, tambah に)] + する",
+    "explanation": "「～にする」 adalah pola tata bahasa yang digunakan untuk menyatakan keputusan, pilihan, atau tindakan mengubah sesuatu menjadi suatu keadaan atau bentuk tertentu.\n\n1.  **Memilih/Memutuskan (Kata Benda)**: Digunakan ketika memilih atau memutuskan suatu benda dari beberapa pilihan yang tersedia. Contoh: memilih kopi, memutuskan warna.\n2.  **Memutuskan untuk Melakukan (Kata Kerja)**: Digunakan dalam bentuk 「～ことにする」 untuk menyatakan keputusan yang dibuat oleh pembicara untuk melakukan atau tidak melakukan suatu tindakan.\n3.  **Membuat Menjadi (Kata Sifat)**: Digunakan untuk mengubah keadaan suatu benda menjadi sifat tertentu. Untuk kata sifat-i, \"い\" diganti dengan \"く\" sebelum \"する\". Untuk kata sifat-na, \"な\" diganti dengan \"に\" sebelum \"する\".",
+    "examples": [
+      {
+        "japanese": "昼ごはんは何にしますか？私はラーメンにします。",
+        "romaji": "Hirugohan wa nani ni shimasu ka? Watashi wa ramen ni shimasu.",
+        "english": "Makan siang mau apa? Saya pilih ramen."
+      },
+      {
+        "japanese": "健康のために、毎日ジョギングすることにしました。",
+        "romaji": "Kenkou no tame ni, mainichi jogingu suru koto ni shimashita.",
+        "english": "Demi kesehatan, saya memutuskan untuk jogging setiap hari."
+      },
+      {
+        "japanese": "部屋が汚いので、きれいにします。",
+        "romaji": "Heya ga kitanai node, kirei ni shimasu.",
+        "english": "Karena kamar kotor, saya akan membersihkannya (membuatnya bersih)."
+      }
+    ]
+  },
+  {
+    "id": "kusu-suru",
+    "level": "N5",
+    "title": "～くする",
+    "meaning": "Membuat menjadi... / Menjadikan...",
+    "structure": "[い形容詞 (i-keiyoushi) -い] + くする",
+    "explanation": "Tata bahasa ini digunakan untuk mengubah kata sifat-i menjadi kata kerja yang berarti \"membuat sesuatu menjadi [kata sifat]\". Ini menunjukkan tindakan mengubah keadaan atau sifat suatu objek. Misalnya, \"大きい\" (besar) menjadi \"大きくする\" (membesarkan/membuat menjadi besar), \"短い\" (pendek) menjadi \"短くする\" (memendekkan/membuat menjadi pendek).",
+    "examples": [
+      {
+        "japanese": "部屋を広くする。",
+        "romaji": "Heya o hiroku suru.",
+        "english": "Membuat ruangan menjadi luas."
+      },
+      {
+        "japanese": "髪を短くしました。",
+        "romaji": "Kami o mijikaku shimashita.",
+        "english": "Saya memotong rambut menjadi pendek."
+      },
+      {
+        "japanese": "テレビの音を大きくしてください。",
+        "romaji": "Terebi no oto o ookiku shite kudasai.",
+        "english": "Tolong keraskan suara TV."
+      }
+    ]
+  },
+  {
+    "id": "yori-houga",
+    "level": "N5",
+    "title": "～より～ほうが",
+    "meaning": "Lebih ... daripada ... / Dibandingkan ..., lebih ...",
+    "structure": "[Kata benda 1] より [Kata benda 2] のほうが [Kata sifat/Kata kerja]",
+    "explanation": "Tata bahasa ini digunakan untuk membandingkan dua hal (Kata benda 1 dan Kata benda 2) dan menyatakan bahwa Kata benda 2 lebih unggul, lebih disukai, atau memiliki karakteristik tertentu yang lebih menonjol dibandingkan Kata benda 1. Struktur ini secara harfiah berarti \"dibandingkan dengan Kata benda 1, Kata benda 2 lebih...\". Kata sifat atau kata kerja yang mengikuti のほうが menjelaskan aspek perbandingan tersebut. Ini adalah cara dasar untuk menyatakan perbandingan preferensi atau kualitas dalam bahasa Jepang.",
+    "examples": [
+      {
+        "japanese": "私は犬より猫のほうが好きです。",
+        "romaji": "Watashi wa inu yori neko no hou ga suki desu.",
+        "english": "Saya lebih suka kucing daripada anjing."
+      },
+      {
+        "japanese": "夏より冬のほうが涼しいです。",
+        "romaji": "Natsu yori fuyu no hou ga suzushii desu.",
+        "english": "Musim dingin lebih sejuk daripada musim panas."
+      },
+      {
+        "japanese": "電車よりバスのほうが安いです。",
+        "romaji": "Densha yori basu no hou ga yasui desu.",
+        "english": "Bus lebih murah daripada kereta."
+      }
+    ]
+  },
+  {
+    "id": "no-naka-de-ichiban",
+    "level": "N4",
+    "title": "～の中で一番",
+    "meaning": "Yang paling... di antara...",
+    "structure": "[Kata benda (kelompok/kategori)] + の中で一番 + [Kata sifat/Kata kerja]",
+    "explanation": "Pola tata bahasa \"～の中で一番\" digunakan untuk menyatakan tingkat superlatif, yaitu \"yang paling\" atau \"yang terbaik\" di antara suatu kelompok atau kategori tertentu. Frasa \"～の中で\" (no naka de) berarti \"di antara ~\" atau \"di dalam ~\", yang berfungsi untuk menentukan lingkup perbandingan. Setelah itu, \"一番\" (ichiban) berarti \"yang paling\" atau \"nomor satu\", diikuti oleh kata sifat atau kata kerja yang ingin ditekankan sebagai yang paling menonjol dalam kelompok tersebut. Ini digunakan untuk memilih satu item sebagai yang paling unggul atau paling menonjol dari satu set yang didefinisikan.",
+    "examples": [
+      {
+        "japanese": "四つの季節の中で、どれが一番好きですか。",
+        "romaji": "Yottsu no kisetsu no naka de, dore ga ichiban suki desu ka.",
+        "english": "Di antara empat musim, yang mana yang paling kamu suka?"
+      },
+      {
+        "japanese": "全ての科目の中で、数学が一番難しいです。",
+        "romaji": "Subete no kamoku no naka de, sūgaku ga ichiban muzukashii desu.",
+        "english": "Di antara semua mata pelajaran, matematika adalah yang paling sulit."
+      },
+      {
+        "japanese": "日本の都市の中で、京都が一番美しいです。",
+        "romaji": "Nihon no toshi no naka de, Kyōto ga ichiban utsukushii desu.",
+        "english": "Di antara kota-kota di Jepang, Kyoto adalah yang paling indah."
+      }
+    ]
+  },
+  {
+    "id": "ta-koto-ga-aru",
+    "level": "N4",
+    "title": "～たことがある",
+    "meaning": "Pernah melakukan/mengalami...",
+    "structure": "[Kata kerja bentuk -ta] + ことがある",
+    "explanation": "Tata bahasa ini digunakan untuk menyatakan pengalaman yang pernah dilakukan atau dialami di masa lalu. Ini menunjukkan bahwa subjek memiliki pengalaman tertentu setidaknya sekali. Sering digunakan untuk menanyakan atau menceritakan pengalaman hidup.",
+    "examples": [
+      {
+        "japanese": "富士山に登ったことがありますか。",
+        "romaji": "Fujisan ni nobotta koto ga arimasu ka.",
+        "english": "Apakah Anda pernah mendaki Gunung Fuji?"
+      },
+      {
+        "japanese": "私は日本料理を食べたことがあります。",
+        "romaji": "Watashi wa Nihon ryōri o tabeta koto ga arimasu.",
+        "english": "Saya pernah makan masakan Jepang."
+      },
+      {
+        "japanese": "彼は一度も海外に行ったことがありません。",
+        "romaji": "Kare wa ichido mo kaigai ni itta koto ga arimasen.",
+        "english": "Dia belum pernah pergi ke luar negeri sekalipun."
+      }
+    ]
+  },
+  {
+    "id": "ta-hou-ga-ii",
+    "level": "N4",
+    "title": "～たほうがいい",
+    "meaning": "Sebaiknya... / Lebih baik...",
+    "structure": "[Kata kerja bentuk Ta] + ほうがいい",
+    "explanation": "Tata bahasa ini digunakan untuk memberikan saran atau rekomendasi kepada seseorang. Ini menunjukkan bahwa melakukan tindakan yang disarankan akan lebih baik atau lebih menguntungkan, dan seringkali menyiratkan bahwa ada konsekuensi negatif jika saran tersebut tidak diikuti. Ini adalah bentuk yang lebih lembut daripada perintah langsung dan sering digunakan dalam percakapan sehari-hari.",
+    "examples": [
+      {
+        "japanese": "毎日運動したほうがいいですよ。",
+        "romaji": "Mainichi undou shita hou ga ii desu yo.",
+        "english": "Sebaiknya kamu berolahraga setiap hari."
+      },
+      {
+        "japanese": "疲れているなら、少し休んだほうがいい。",
+        "romaji": "Tsukarete iru nara, sukoshi yasunda hou ga ii.",
+        "english": "Jika kamu lelah, sebaiknya kamu istirahat sebentar."
+      },
+      {
+        "japanese": "試験の前に、もっと勉強したほうがいいでしょう。",
+        "romaji": "Shiken no mae ni, motto benkyou shita hou ga ii deshou.",
+        "english": "Sebelum ujian, sebaiknya kamu belajar lebih banyak."
+      }
+    ]
+  },
+  {
+    "id": "deshou",
+    "level": "N5",
+    "title": "～でしょう",
+    "meaning": "Mungkin/Sepertinya (prediksi), atau Benar, kan? (konfirmasi)",
+    "structure": "[Kata kerja bentuk kamus/ない形/た形] + でしょう\n[Kata sifat -i bentuk kamus] + でしょう\n[Kata sifat -na bentuk kamus] + でしょう\n[Kata benda] + でしょう",
+    "explanation": "「～でしょう」digunakan untuk menyatakan prediksi atau dugaan tentang suatu kejadian atau keadaan di masa depan, atau tentang sesuatu yang tidak pasti. Ini adalah bentuk yang lebih sopan dari 「～だろう」. Selain itu, dengan intonasi naik, 「～でしょう」juga dapat digunakan untuk meminta konfirmasi atau persetujuan dari lawan bicara, mirip dengan \"bukan?\" atau \"kan?\".",
+    "examples": [
+      {
+        "japanese": "明日は雨が降るでしょう。",
+        "romaji": "Ashita wa ame ga furu deshou.",
+        "english": "Besok sepertinya akan turun hujan."
+      },
+      {
+        "japanese": "彼はもうすぐ来るでしょう。",
+        "romaji": "Kare wa mou sugu kuru deshou.",
+        "english": "Dia mungkin akan segera datang."
+      },
+      {
+        "japanese": "このケーキ、美味しいでしょう？",
+        "romaji": "Kono keeki, oishii deshou?",
+        "english": "Kue ini enak, kan?"
+      }
+    ]
+  },
+  {
+    "id": "darou",
+    "level": "N3",
+    "title": "～だろう",
+    "meaning": "Mungkin; Barangkali; Sepertinya",
+    "structure": "[Kata kerja bentuk biasa] + だろう\n[Kata sifat -i bentuk biasa] + だろう\n[Kata sifat -na (tanpa な)] + だろう\n[Kata benda] + だろう",
+    "explanation": "「～だろう」digunakan untuk menyatakan dugaan atau perkiraan pembicara tentang suatu hal. Ini adalah bentuk kasual dari 「～でしょう」. Digunakan ketika pembicara memiliki dasar untuk dugaannya, tetapi tidak sepenuhnya yakin. Seringkali digunakan dalam percakapan sehari-hari, tulisan, atau pidato untuk menyampaikan kemungkinan atau probabilitas. Bisa juga digunakan untuk bertanya secara retoris atau untuk mengkonfirmasi sesuatu dengan diri sendiri.",
+    "examples": [
+      {
+        "japanese": "明日は雨が降るだろう。",
+        "romaji": "Ashita wa ame ga furu darou.",
+        "english": "Besok mungkin akan turun hujan."
+      },
+      {
+        "japanese": "彼はもう家に着いただろう。",
+        "romaji": "Kare wa mou ie ni tsuita darou.",
+        "english": "Dia mungkin sudah sampai di rumah."
+      },
+      {
+        "japanese": "この問題は難しいだろう。",
+        "romaji": "Kono mondai wa muzukashii darou.",
+        "english": "Masalah ini sepertinya sulit."
+      }
+    ]
   }
 ]
