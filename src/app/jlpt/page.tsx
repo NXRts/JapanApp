@@ -6,6 +6,9 @@ import { toKana, isRomaji } from 'wanakana';
 import { searchDictionary, DictionaryResult, allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
 import Link from 'next/link';
 import KanaKeyboard from '@/components/KanaKeyboard';
+import { HandwritingModal } from '@/components/dictionary/HandwritingModal';
+import { VoiceSearchModal } from '@/components/dictionary/VoiceSearchModal';
+import { ImageSearchModal } from '@/components/dictionary/ImageSearchModal';
 
 const PageContainer = styled.div`
   display: flex;
@@ -582,8 +585,16 @@ export default function DictionaryPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Search extra controls
+  const [showDrawModal, setShowDrawModal] = useState(false);
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [selectedDict, setSelectedDict] = useState<'JA-ID' | 'JA-EN' | 'JA-JA'>('JA-ID');
+  const [showDictDropdown, setShowDictDropdown] = useState(false);
+
   const itemsPerPage = 15; // Moved from hardcoded value to a constant
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   const handleKeyboardType = (char: string) => {
     setQuery(prev => prev + char);
@@ -609,7 +620,16 @@ export default function DictionaryPage() {
   }, []);
   useEffect(() => {
     setIsMounted(true);
+    
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDictDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+
     return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
       if (typeof window !== 'undefined' && window.speechSynthesis) {
         window.speechSynthesis.cancel();
       }
@@ -633,8 +653,23 @@ export default function DictionaryPage() {
     const timer = setTimeout(async () => {
       if (query.trim()) {
         setIsLoading(true);
+        // Pass selected dictionary target if needed. 
+        // We'll update searchDictionary to handle selectedDict later. 
         const results = await searchDictionary(query, activeCategory, activeLevel);
-        setSearchResults(results);
+        
+        // Filter out ID/EN based on dict
+        let filtered = results;
+        if (selectedDict === 'JA-EN') {
+           filtered = results.filter(r => r.source === 'jisho' || r.source === 'kanji-db');
+        } else if (selectedDict === 'JA-ID') {
+           filtered = results.filter(r => r.source === 'kamus' || r.source === 'local' || r.source === 'angka' || r.source === 'kanji-db');
+        } else if (selectedDict === 'JA-JA') {
+           // We might just show all or just jpjp. If jpjp is selected, it handles it already.
+           // However, if category isn't jpjp we probably shouldn't show it here.
+           // We'll respect the ActiveCategory primary function for now.
+        }
+
+        setSearchResults(filtered);
         setIsLoading(false);
         setCurrentPage(1);
       } else {
@@ -643,7 +678,7 @@ export default function DictionaryPage() {
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [query, activeCategory, activeLevel]);
+  }, [query, activeCategory, activeLevel, selectedDict]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
@@ -776,7 +811,7 @@ export default function DictionaryPage() {
             )}
 
             <IconGroup>
-              <IconButton title="Draw (Coming soon)">
+              <IconButton title="Draw" onClick={() => setShowDrawModal(true)}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
               </IconButton>
               <IconButton $active={showKeyboard} onClick={() => setShowKeyboard(!showKeyboard)} title="Kana Keyboard">
@@ -787,18 +822,27 @@ export default function DictionaryPage() {
                    <path d="M7 16h10"/>
                  </svg>
               </IconButton>
-              <IconButton title="Voice (Coming soon)">
+              <IconButton title="Voice" onClick={() => setShowVoiceModal(true)}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
               </IconButton>
-              <IconButton title="OCR Image (Coming soon)">
+              <IconButton title="OCR Image" onClick={() => setShowImageModal(true)}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
               </IconButton>
             </IconGroup>
 
-            <DictSelect>
-              <span>Jepang - Ind...</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-            </DictSelect>
+            <div style={{ position: 'relative' }} ref={dropdownRef}>
+              <DictSelect onClick={() => setShowDictDropdown(!showDictDropdown)}>
+                <span>{selectedDict === 'JA-ID' ? 'Jepang - Ind...' : selectedDict === 'JA-EN' ? 'Jepang - Eng...' : 'Jepang - Jep...'}</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+              </DictSelect>
+              {showDictDropdown && (
+                <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '0.5rem', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', zIndex: 50, display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', minWidth: '180px' }}>
+                   <button onClick={() => { setSelectedDict('JA-ID'); setShowDictDropdown(false); if(activeCategory === 'jpjp') setActiveCategory('kata'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-ID' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-ID' ? 'bold' : 'normal' }}>Jepang - Indonesia</button>
+                   <button onClick={() => { setSelectedDict('JA-EN'); setShowDictDropdown(false); if(activeCategory === 'jpjp') setActiveCategory('kata'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-EN' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-EN' ? 'bold' : 'normal' }}>Jepang - English</button>
+                   <button onClick={() => { setSelectedDict('JA-JA'); setShowDictDropdown(false); setActiveCategory('jpjp'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-JA' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', fontWeight: selectedDict === 'JA-JA' ? 'bold' : 'normal' }}>Jepang - Jepang</button>
+                </div>
+              )}
+            </div>
           </SearchInputContainer>
 
           <ModesRow>
@@ -974,6 +1018,25 @@ export default function DictionaryPage() {
           </>
         )}
       </MainContent>
+
+      <HandwritingModal 
+        isOpen={showDrawModal} 
+        onClose={() => setShowDrawModal(false)}
+        onSelect={(char) => { setQuery(prev => prev + char); setShowDrawModal(false); inputRef.current?.focus(); }}
+      />
+
+      <VoiceSearchModal 
+        isOpen={showVoiceModal} 
+        onClose={() => setShowVoiceModal(false)}
+        onResult={(text) => { setQuery(text); setShowVoiceModal(false); inputRef.current?.focus(); }}
+      />
+
+      <ImageSearchModal 
+        isOpen={showImageModal} 
+        onClose={() => setShowImageModal(false)}
+        onResult={(text) => { setQuery(text); setShowImageModal(false); inputRef.current?.focus(); }}
+      />
+
     </PageContainer>
   );
 }

@@ -104,6 +104,7 @@ export async function searchDictionary(
   if (category === 'kalimat') {
     try {
       const response = await fetch(`/api/proxy/sentences?keyword=${encodeURIComponent(normalizedQuery)}`);
+      if (!response.ok) return [];
       const data = await response.json();
       return (data.data || []).map((item: any, idx: number) => ({
         id: `sentence-${idx}`,
@@ -115,7 +116,7 @@ export async function searchDictionary(
         source: 'tatoeba'
       }));
     } catch (e) {
-      console.error('Sentence search error:', e);
+      console.warn('Sentence search error:', e);
       return [];
     }
   }
@@ -123,6 +124,7 @@ export async function searchDictionary(
   if (category === 'jpjp') {
     try {
       const response = await fetch(`/api/proxy/jpjp?keyword=${encodeURIComponent(normalizedQuery)}`);
+      if (!response.ok) return [];
       const data = await response.json();
       return (data.data || []).map((item: any, idx: number) => ({
         id: `jpjp-${idx}`,
@@ -137,7 +139,7 @@ export async function searchDictionary(
         source: 'wiktionary'
       }));
     } catch (e) {
-      console.error('JPJP search error:', e);
+      console.warn('JPJP search error:', e);
       return [];
     }
   }
@@ -214,6 +216,9 @@ export async function searchDictionary(
   // Fetch from Jisho API Proxy for general vocabulary search
   try {
     const response = await fetch(`/api/proxy/jisho?keyword=${encodeURIComponent(normalizedQuery)}`);
+    if (!response.ok) {
+       return localResults.slice(0, 100);
+    }
     const data = await response.json();
     
     const jishoResults: DictionaryResult[] = (data.data || []).map((item: any) => ({
@@ -237,7 +242,7 @@ export async function searchDictionary(
 
     return [...localResults, ...uniqueJishoResults].slice(0, 100);
   } catch (error) {
-    console.error('Search yield error:', error);
-    return localResults.slice(0, 50);
+    console.warn('Search yield warning (fetch failed):', error);
+    return localResults.slice(0, 100);
   }
 }
