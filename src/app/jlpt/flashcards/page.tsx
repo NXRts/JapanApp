@@ -695,6 +695,7 @@ function FlashcardContent() {
   const [externalSentences, setExternalSentences] = useState<any[]>([]);
   const [isFetchingSentences, setIsFetchingSentences] = useState(false);
   const [activeGrammarLevel, setActiveGrammarLevel] = useState('All');
+  const [copiedKanji, setCopiedKanji] = useState<string | null>(null);
   
   // Prevent body scrolling when modal is open & handle Escape key
   useEffect(() => {
@@ -1370,15 +1371,60 @@ function FlashcardContent() {
                                  {relatedKanjis[activeSelectedKanjiIndex].kanji}
                                </div>
                                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                 <button style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                                 <button 
+                                   onClick={() => alert('Fitur latihan menulis kanji akan segera hadir!')}
+                                   title="Latihan Menulis (Segera Hadir)"
+                                   style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: 'var(--text-secondary)', cursor: 'pointer', transition: 'all 0.2s' }}
+                                   onMouseOver={(e) => e.currentTarget.style.color = '#3b82f6'}
+                                   onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}>
                                    <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                  </button>
-                                 <button style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
-                                   <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                                 <button 
+                                   onClick={() => {
+                                      const k = relatedKanjis[activeSelectedKanjiIndex].kanji || '';
+                                      if (k) {
+                                        navigator.clipboard.writeText(k);
+                                        setCopiedKanji(k);
+                                        setTimeout(() => setCopiedKanji(null), 2000);
+                                      }
+                                   }}
+                                   title="Salin Kanji"
+                                   style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: copiedKanji === relatedKanjis[activeSelectedKanjiIndex].kanji ? '#10b981' : 'var(--text-secondary)', cursor: 'pointer', transition: 'all 0.2s' }}
+                                   onMouseOver={(e) => { if (copiedKanji !== relatedKanjis[activeSelectedKanjiIndex].kanji) e.currentTarget.style.color = '#3b82f6'; }}
+                                   onMouseOut={(e) => { if (copiedKanji !== relatedKanjis[activeSelectedKanjiIndex].kanji) e.currentTarget.style.color = 'var(--text-secondary)'; }}>
+                                   {copiedKanji === relatedKanjis[activeSelectedKanjiIndex].kanji ? (
+                                      <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                   ) : (
+                                      <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                                   )}
                                  </button>
-                                 <button style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
-                                   <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"></path></svg>
-                                 </button>
+                                 {(() => {
+                                    const activeK = relatedKanjis[activeSelectedKanjiIndex];
+                                    const activeKItem = { ...activeK, type: 'kanji', source: 'kamus' };
+                                    const kKey = getItemKey(activeKItem);
+                                    const isRemembered = reviewStatus[kKey] === 'remembered';
+                                    
+                                    return (
+                                      <button 
+                                        onClick={() => {
+                                          if (isRemembered) {
+                                            saveStatus(kKey, 'not-remembered');
+                                          } else {
+                                            saveStatus(kKey, 'remembered');
+                                          }
+                                        }}
+                                        title={isRemembered ? "Hapus dari daftar ingat" : "Tandai sudah diingat"}
+                                        style={{ background: isRemembered ? '#10b981' : 'var(--surface)', border: isRemembered ? '1px solid #10b981' : '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: isRemembered ? 'white' : 'var(--text-secondary)', cursor: 'pointer', transition: 'all 0.2s' }}
+                                        onMouseOver={(e) => { if (!isRemembered) e.currentTarget.style.color = '#3b82f6'; }}
+                                        onMouseOut={(e) => { if (!isRemembered) e.currentTarget.style.color = 'var(--text-secondary)'; }}>
+                                        {isRemembered ? (
+                                           <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path></svg>
+                                        ) : (
+                                           <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14"></path></svg>
+                                        )}
+                                      </button>
+                                    );
+                                 })()}
                                </div>
                             </div>
                             
@@ -1510,9 +1556,9 @@ function FlashcardContent() {
                           Hasil pencarian contoh kalimat untuk <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
                         </h3>
                         {isFetchingSentences && (
-                          <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <div className="spinner" style={{ width: '16px', height: '16px', border: '2px solid rgba(59,130,246,0.3)', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-                            Mencari contoh...
+                          <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
+                            <div className="spinner" style={{ flexShrink: 0, width: '16px', height: '16px', minWidth: '16px', minHeight: '16px', border: '2px solid rgba(59,130,246,0.3)', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+                            <span style={{ display: 'inline-block' }}>Mencari contoh...</span>
                           </div>
                         )}
                       </div>
@@ -1554,7 +1600,7 @@ function FlashcardContent() {
                     
                     {relatedGrammar.length === 0 ? (
                       <div style={{ color: 'var(--text-secondary)', padding: '2rem 0', textAlign: 'center' }}>Tidak ada tata bahasa terkait untuk kata ini.</div>
-                    ) : (
+                    ) : ( 
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         {relatedGrammar.map((grammar, idx) => {
                           const levelColors: Record<string, string> = {
