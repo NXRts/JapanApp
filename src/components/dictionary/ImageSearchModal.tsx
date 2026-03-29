@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import Tesseract from 'tesseract.js';
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -119,6 +120,7 @@ const Loader = styled.div`
 export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolean, onClose: () => void, onResult: (text: string) => void }) {
   const [isDragActive, setIsDragActive] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [progressText, setProgressText] = useState('Extracting text...');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -158,22 +160,44 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
     }
   };
 
-  const processFile = (file: File) => {
-    // Validate file type
+  const processFile = async (file: File) => {
     if (!file.type.startsWith('image/')) {
         alert('Please upload an image file.');
         return;
     }
 
     setIsProcessing(true);
+    setProgressText('Menyiapkan Mesin OCR...');
 
-    // Mock OCR processing time
-    // In a real implementation we would send this file to an API (like Google Cloud Vision or Tesseract.js)
-    setTimeout(() => {
-        setIsProcessing(false);
-        // Mock result
-        onResult('日本語'); 
-    }, 2500);
+    try {
+      const { data: { text } } = await Tesseract.recognize(
+        file,
+        'jpn', // 'jpn' ensures accuracy for Japanese Characters 
+        {
+          logger: m => {
+            if (m.status === 'recognizing text') {
+              setProgressText(`Membaca teks: ${Math.round(m.progress * 100)}%`);
+            } else if (m.status === 'loading tesseract core') {
+              setProgressText('Memuat inti memori...');
+            } else if (m.status === 'loading language traineddata') {
+                setProgressText('Mengunduh data bahasa (Hanya 1x Pertama)');
+            } else {
+              setProgressText('Memproses gambar...');
+            }
+          }
+        }
+      );
+
+      // Clean up text: remove spaces and newlines
+      const cleanText = text.replace(/[\s\n\r]/g, '');
+
+      setIsProcessing(false);
+      onResult(cleanText);
+    } catch (error) {
+      console.error(error);
+      alert('Gagal mendeteksi teks pada gambar.');
+      setIsProcessing(false);
+    }
   };
 
   const handleClick = () => {
@@ -193,7 +217,7 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
         {isProcessing ? (
            <DropZone $isDragActive={false} style={{ cursor: 'wait' }}>
               <Loader />
-              <TextPrimary>Processing Image...</TextPrimary>
+              <TextPrimary>{progressText}</TextPrimary>
               <TextSecondary>Extracting text using OCR. This might take a moment.</TextSecondary>
            </DropZone>
         ) : (
