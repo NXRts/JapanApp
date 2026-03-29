@@ -380,14 +380,9 @@ const PageButton = styled.button<{ $active?: boolean }>`
 `;
 
 const SearchBarWrapper = styled.div`
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 0.75rem 0.75rem 0.5rem 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   margin-bottom: 2rem;
   margin-top: 0.5rem;
   position: relative;
@@ -396,19 +391,22 @@ const SearchBarWrapper = styled.div`
 const SearchInputContainer = styled.div`
   display: flex;
   align-items: center;
-  background: var(--background);
-  border-radius: 10px;
-  padding: 0.4rem 0.4rem 0.4rem 1rem;
-  border: 1px solid transparent;
+  background: var(--surface);
+  border-radius: 99px;
+  padding: 0.35rem 0.5rem 0.35rem 1.25rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   transition: all 0.2s;
   
   &:focus-within {
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 79, 70, 229), 0.2);
+    box-shadow: 0 4px 25px rgba(var(--primary-rgb, 79, 70, 229), 0.15);
   }
 
   @media (max-width: 768px) {
-    padding: 0.3rem 0.3rem 0.3rem 0.6rem;
+    border-radius: 20px;
+    padding: 0.4rem 0.4rem 0.4rem 1rem;
+    flex-wrap: wrap;
   }
 `;
 
@@ -417,10 +415,10 @@ const Input = styled.input`
   background: none;
   border: none;
   color: var(--foreground);
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-family: inherit;
   outline: none;
-  padding: 0.2rem 0.4rem;
+  padding: 0.5rem 0.5rem;
   
   &::placeholder {
     color: var(--text-secondary);
@@ -450,25 +448,23 @@ const ShortcutHint = styled.kbd`
 const IconGroup = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0 0.8rem;
-  border-right: 1px solid var(--border);
-  margin-right: 0.6rem;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  margin-right: 0.25rem;
 
   @media (max-width: 768px) {
-    gap: 0.25rem;
-    padding: 0 0.4rem;
-    margin-right: 0.4rem;
+    gap: 0.15rem;
+    padding: 0 0.25rem;
   }
 `;
 
 const IconButton = styled.button<{ $active?: boolean }>`
-  background: ${({ $active }) => $active ? 'var(--primary)' : 'rgba(255, 255, 255, 0.03)'};
-  color: ${({ $active }) => $active ? '#fff' : 'var(--text-secondary)'};
-  border: 1px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
-  border-radius: 6px;
-  width: 32px;
-  height: 32px;
+  background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent'};
+  color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -476,61 +472,61 @@ const IconButton = styled.button<{ $active?: boolean }>`
   transition: all 0.2s;
   
   &:hover {
-    background: ${({ $active }) => $active ? 'var(--primary)' : 'rgba(255, 255, 255, 0.08)'};
-    color: var(--foreground);
-    border-color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
+    background: rgba(var(--primary-rgb), 0.08);
+    color: var(--primary);
   }
   
   svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
   }
 
   @media (max-width: 768px) {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     
     svg {
-      width: 14px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
     }
   }
 `;
 
 const DictSelect = styled.button`
-  background: rgba(var(--primary-rgb, 79, 70, 229), 0.15);
-  color: var(--primary);
+  background: var(--primary);
+  color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  font-weight: 600;
+  border-radius: 99px;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 0.4rem;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.2s;
+  transition: all 0.2s;
   height: stretch;
   
   &:hover {
-    background: rgba(var(--primary-rgb, 79, 70, 229), 0.25);
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.3);
   }
 
   @media (max-width: 768px) {
-    padding: 0.4rem 0.6rem;
+    padding: 0.4rem 0.8rem;
     font-size: 0.85rem;
-    
-    span {
-      display: none;
-    }
+    margin-top: 0.4rem;
+    width: 100%;
+    justify-content: center;
   }
 `;
 
 const ModesRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   padding: 0 0.25rem;
   overflow-x: auto;
   
@@ -540,25 +536,82 @@ const ModesRow = styled.div`
 `;
 
 const ModeBtn = styled.button<{ $active?: boolean }>`
-  background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb, 79, 70, 229), 0.15)' : 'transparent'};
-  color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  background: ${({ $active }) => $active ? 'var(--primary)' : 'var(--surface)'};
+  color: ${({ $active }) => $active ? '#fff' : 'var(--text-secondary)'};
+  border: 1px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  font-size: 0.95rem;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
   transition: all 0.2s;
+  box-shadow: ${({ $active }) => $active ? '0 4px 10px rgba(var(--primary-rgb), 0.2)' : 'none'};
   
   &:hover {
-    color: var(--foreground);
-    background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb, 79, 70, 229), 0.2)' : 'rgba(255, 255, 255, 0.05)'};
+    border-color: var(--primary);
+    color: ${({ $active }) => $active ? '#fff' : 'var(--primary)'};
+    transform: translateY(-1px);
   }
 `;
+
+const AutocompleteDropdown = styled.div`
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 100;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`;
+
+const AutocompleteItem = styled.div`
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+  }
+`;
+
+const AutocompleteText = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+`;
+
+const AutocompleteWord = styled.span`
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 1.05rem;
+`;
+
+const AutocompleteMeaning = styled.span`
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+`;
+
 
 const LoadingSpinner = styled.div`
   width: 40px;
@@ -591,10 +644,12 @@ export default function DictionaryPage() {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedDict, setSelectedDict] = useState<'JA-ID' | 'JA-EN' | 'JA-JA'>('JA-ID');
   const [showDictDropdown, setShowDictDropdown] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   const itemsPerPage = 15; // Moved from hardcoded value to a constant
   const inputRef = React.useRef<HTMLInputElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
+  const searchWrapperRef = React.useRef<HTMLDivElement>(null);
 
   const handleKeyboardType = (char: string) => {
     setQuery(prev => prev + char);
@@ -624,6 +679,9 @@ export default function DictionaryPage() {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowDictDropdown(false);
+      }
+      if (searchWrapperRef.current && !searchWrapperRef.current.contains(event.target as Node)) {
+        setIsInputFocused(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -789,7 +847,7 @@ export default function DictionaryPage() {
           </ActionButton>
         </ActionButtonsGrid>
 
-        <SearchBarWrapper>
+        <SearchBarWrapper ref={searchWrapperRef}>
           <SearchInputContainer>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '0.4rem' }}>
               <circle cx="11" cy="11" r="8" />
@@ -800,6 +858,13 @@ export default function DictionaryPage() {
               placeholder="日本, nihon, Jepang"
               value={query}
               onChange={handleInputChange}
+              onFocus={() => setIsInputFocused(true)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  inputRef.current?.blur();
+                  setIsInputFocused(false);
+                }
+              }}
             />
             {query.length === 0 && <ShortcutHint>Ctrl K</ShortcutHint>}
             {query.length > 0 && (
@@ -832,7 +897,7 @@ export default function DictionaryPage() {
 
             <div style={{ position: 'relative' }} ref={dropdownRef}>
               <DictSelect onClick={() => setShowDictDropdown(!showDictDropdown)}>
-                <span>{selectedDict === 'JA-ID' ? 'Jepang - Ind...' : selectedDict === 'JA-EN' ? 'Jepang - Eng...' : 'Jepang - Jep...'}</span>
+                <span>{selectedDict === 'JA-ID' ? 'Jepang - Indonesia' : selectedDict === 'JA-EN' ? 'Jepang - English' : 'Jepang - Jepang'}</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
               </DictSelect>
               {showDictDropdown && (
@@ -868,6 +933,40 @@ export default function DictionaryPage() {
               </ModeBtn>
             ))}
           </ModesRow>
+
+          {isInputFocused && query.length > 0 && searchResults && searchResults.length > 0 && (
+            <AutocompleteDropdown>
+               {searchResults.slice(0, 8).map(res => (
+                  <AutocompleteItem 
+                    key={`auto-${res.source}-${res.type}-${res.id}`}
+                    onMouseDown={(e) => {
+                       // Prevent blurring the input so that an onClick can correctly fire
+                       e.preventDefault();
+                    }}
+                    onClick={() => {
+                       setQuery(res.word || res.title || res.kanji || '');
+                       setIsInputFocused(false);
+                    }}
+                  >
+                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                     </svg>
+                     <AutocompleteText>
+                       <AutocompleteWord>
+                         {res.word || res.title || res.kanji}
+                         {res.reading && (
+                            <span style={{ fontSize: '0.8rem', fontWeight: 400, marginLeft: '0.5rem', opacity: 0.7 }}>
+                              ({res.reading})
+                            </span>
+                         )}
+                       </AutocompleteWord>
+                       <AutocompleteMeaning>{res.meaning}</AutocompleteMeaning>
+                     </AutocompleteText>
+                  </AutocompleteItem>
+               ))}
+            </AutocompleteDropdown>
+          )}
 
           {showKeyboard && (
              <div style={{ position: 'absolute', zIndex: 100, top: 'calc(100% + 0.5rem)', left: 0, width: '100%' }}>
@@ -906,6 +1005,10 @@ export default function DictionaryPage() {
 
         {isLoading ? (
           <LoadingSpinner />
+        ) : isInputFocused && query.trim().length > 0 ? (
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+             Mencari rekomendasi... Tekan Enter atau klik layar untuk memuat hasil lengkap.
+          </div>
         ) : (
           <>
             <ItemsGrid>
