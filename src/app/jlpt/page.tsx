@@ -2,13 +2,36 @@
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { toKana, isRomaji } from 'wanakana';
+import { toKana, isRomaji, toRomaji } from 'wanakana';
 import { searchDictionary, DictionaryResult, allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
 import Link from 'next/link';
 import KanaKeyboard from '@/components/KanaKeyboard';
 import { HandwritingModal } from '@/components/dictionary/HandwritingModal';
 import { VoiceSearchModal } from '@/components/dictionary/VoiceSearchModal';
 import { ImageSearchModal } from '@/components/dictionary/ImageSearchModal';
+
+const KANA_LIST = [
+  'あ', 'い', 'う', 'え', 'お',
+  'か', 'き', 'く', 'け', 'こ',
+  'さ', 'し', 'す', 'せ', 'そ',
+  'た', 'ち', 'つ', 'て', 'と',
+  'な', 'に', 'ぬ', 'ね', 'の',
+  'は', 'ひ', 'ふ', 'へ', 'ほ',
+  'ま', 'み', 'む', 'め', 'も',
+  'や', 'ゆ', 'よ',
+  'ら', 'り', 'る', 'れ', 'ろ',
+  'わ', 'を', 'ん',
+  'ア', 'イ', 'ウ', 'エ', 'オ',
+  'カ', 'キ', 'ク', 'ケ', 'コ',
+  'サ', 'シ', 'ス', 'セ', 'ソ',
+  'タ', 'チ', 'ツ', 'テ', 'ト',
+  'ナ', 'ニ', 'ヌ', 'ネ', 'ノ',
+  'ハ', 'ヒ', 'フ', 'ヘ', 'ホ',
+  'マ', 'ミ', 'ム', 'メ', 'モ',
+  'ヤ', 'ユ', 'ヨ',
+  'ラ', 'リ', 'ル', 'レ', 'ロ',
+  'ワ', 'ヲ', 'ン'
+];
 
 const PageContainer = styled.div`
   display: flex;
@@ -527,7 +550,7 @@ const ModesRow = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0 0.25rem;
+  padding: 0.5rem 0.25rem;
   overflow-x: auto;
   
   &::-webkit-scrollbar {
@@ -631,7 +654,7 @@ export default function DictionaryPage() {
   const [query, setQuery] = useState('');
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('N5');
-  const [activeCategory, setActiveCategory] = useState<'kata' | 'tata-bahasa' | 'kanji' | 'kalimat' | 'jpjp' | 'ai'>('kata');
+  const [activeCategory, setActiveCategory] = useState<'kata' | 'tata-bahasa' | 'kanji' | 'kalimat' | 'jpjp' | 'ai' | 'kana'>('kata');
   const [showConfig, setShowConfig] = useState({ kata: true, ejaan: true, arti: true });
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -713,7 +736,7 @@ export default function DictionaryPage() {
         setIsLoading(true);
         // Pass selected dictionary target if needed. 
         // We'll update searchDictionary to handle selectedDict later. 
-        const results = await searchDictionary(query, activeCategory, activeLevel);
+        const results = await searchDictionary(query, activeCategory as any, activeLevel);
         
         // Filter out ID/EN based on dict
         let filtered = results;
@@ -755,8 +778,19 @@ export default function DictionaryPage() {
         type: 'grammar' as const,
         source: 'local' as const
       }));
+    } else if (activeCategory === 'kana') {
+      return KANA_LIST.map((char, index) => ({
+        id: `kana-${index}`,
+        type: 'vocabulary' as const,
+        level: 'N5',
+        word: char,
+        reading: toRomaji(char),
+        romaji: toRomaji(char),
+        meaning: `Huruf ${index < 46 ? 'Hiragana' : 'Katakana'}: ${toRomaji(char).toUpperCase()}`,
+        source: 'local' as const
+      }));
     } else if (activeCategory === 'kalimat' || activeCategory === 'jpjp') {
-      return []; // These are dynamic searches only
+      return []; // These are dynamic searches or self-rendering components
     } else {
       return allVocabulary
         .filter(v => v.id.startsWith('lib-'))
@@ -791,6 +825,7 @@ export default function DictionaryPage() {
             {[
               { id: 'kata', label: 'Kata' },
               { id: 'kanji', label: 'Kanji' },
+              { id: 'kana', label: 'Kana' },
               { id: 'kalimat', label: 'Kalimat' },
               { id: 'tata-bahasa', label: 'Tata bahasa' },
               { id: 'jpjp', label: 'Jepang - Jepang' },
@@ -915,6 +950,7 @@ export default function DictionaryPage() {
               { id: 'ai', label: 'Mode AI' },
               { id: 'kata', label: 'Kata' },
               { id: 'kanji', label: 'Kanji' },
+              { id: 'kana', label: 'Kana' },
               { id: 'kalimat', label: 'Kalimat' },
               { id: 'tata-bahasa', label: 'Tata bahasa' },
               { id: 'jpjp', label: 'Jepang - Jepang' },
@@ -979,147 +1015,148 @@ export default function DictionaryPage() {
           )}
         </SearchBarWrapper>
 
-        <ListToolbar>
-          <CheckboxGroup>
-            {[
-              { id: 'kata', label: 'Kata' },
-              { id: 'ejaan', label: 'Ejaan' },
-              { id: 'arti', label: 'Arti' }
-            ].map(item => (
-              <CheckboxLabel key={item.id}>
-                <input
-                  type="checkbox"
-                  checked={showConfig[item.id as keyof typeof showConfig]}
-                  onChange={() => setShowConfig(prev => ({ ...prev, [item.id]: !prev[item.id as keyof typeof showConfig] }))}
-                />
-                {item.label}
-              </CheckboxLabel>
-            ))}
-          </CheckboxGroup>
-          <ToolbarIcons>
-            <button title="Download"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></button>
-            <button title="Play"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></button>
-            <button title="Shuffle"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5" /></svg></button>
-          </ToolbarIcons>
-        </ListToolbar>
 
-        {isLoading ? (
-          <LoadingSpinner />
-        ) : isInputFocused && query.trim().length > 0 ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-             Mencari rekomendasi... Tekan Enter atau klik layar untuk memuat hasil lengkap.
-          </div>
-        ) : (
-          <>
-            <ItemsGrid>
-              {displayData.map((item: any, idx) => (
-                <ItemCard key={`${item.source}-${item.type}-${item.level}-${item.id || idx}`}>
-                  <SpeakerButton onClick={(e) => playAudio(e, item.type === 'kanji' ? item.kanji : (item.word || item.title))}>
-                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
-                  </SpeakerButton>
-                  <ItemContent>
-                    {showConfig.kata && (
-                      <KanjiText>
-                        {item.type === 'kanji' ? item.kanji : (item.word || item.title)}
-                      </KanjiText>
-                    )}
-                    {showConfig.ejaan && (
-                      <>
-                        {item.type === 'kanji' ? (
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.2rem' }}>
-                            {item.onyomi && item.onyomi.length > 0 && <ReadingText><strong>On:</strong> {item.onyomi.join(', ')}</ReadingText>}
-                            {item.kunyomi && item.kunyomi.length > 0 && <ReadingText><strong>Kun:</strong> {item.kunyomi.join(', ')}</ReadingText>}
-                          </div>
-                        ) : (
-                          (item.reading || item.romaji) && <ReadingText>{item.reading || item.romaji}</ReadingText>
-                        )}
-                      </>
-                    )}
-                    {showConfig.arti && (
-                      <>
-                        <MeaningText>{item.meaning}</MeaningText>
-                        
-                        {item.type === 'kanji' && item.stroke_count && (
-                          <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                            {item.stroke_count} strokes • {item.level}
-                          </div>
-                        )}
+        <ListToolbar style={{ marginTop: '-1.5rem' }}>
+            <CheckboxGroup>
+              {[
+                { id: 'kata', label: 'Kata' },
+                { id: 'ejaan', label: 'Ejaan' },
+                { id: 'arti', label: 'Arti' }
+              ].map(item => (
+                <CheckboxLabel key={item.id}>
+                      <input
+                        type="checkbox"
+                        checked={showConfig[item.id as keyof typeof showConfig]}
+                        onChange={() => setShowConfig(prev => ({ ...prev, [item.id]: !prev[item.id as keyof typeof showConfig] }))}
+                      />
+                      {item.label}
+                    </CheckboxLabel>
+                  ))}
+                </CheckboxGroup>
+                <ToolbarIcons>
+                  <button title="Download"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></button>
+                  <button title="Play"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></button>
+                  <button title="Shuffle"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5" /></svg></button>
+                </ToolbarIcons>
+              </ListToolbar>
 
-                        {item.type === 'jpjp' && item.partOfSpeech && (
-                           <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: 'bold', marginTop: '0.25rem' }}>
-                              {item.partOfSpeech}
-                           </div>
-                        )}
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : isInputFocused && query.trim().length > 0 ? (
+                <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                   Mencari rekomendasi... Tekan Enter atau klik layar untuk memuat hasil lengkap.
+                </div>
+              ) : (
+                <>
+                  <ItemsGrid>
+                    {displayData.map((item: any, idx) => (
+                      <ItemCard key={`${item.source}-${item.type}-${item.level}-${item.id || idx}`}>
+                        <SpeakerButton onClick={(e) => playAudio(e, item.type === 'kanji' ? item.kanji : (item.word || item.title))}>
+                          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                        </SpeakerButton>
+                        <ItemContent>
+                          {showConfig.kata && (
+                            <KanjiText>
+                              {item.type === 'kanji' ? item.kanji : (item.word || item.title)}
+                            </KanjiText>
+                          )}
+                          {showConfig.ejaan && (
+                            <>
+                              {item.type === 'kanji' ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.2rem' }}>
+                                  {item.onyomi && item.onyomi.length > 0 && <ReadingText><strong>On:</strong> {item.onyomi.join(', ')}</ReadingText>}
+                                  {item.kunyomi && item.kunyomi.length > 0 && <ReadingText><strong>Kun:</strong> {item.kunyomi.join(', ')}</ReadingText>}
+                                </div>
+                              ) : (
+                                (item.reading || item.romaji) && <ReadingText>{item.reading || item.romaji}</ReadingText>
+                              )}
+                            </>
+                          )}
+                          {showConfig.arti && (
+                            <>
+                              <MeaningText>{item.meaning}</MeaningText>
+                              
+                              {item.type === 'kanji' && item.stroke_count && (
+                                <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                                  {item.stroke_count} strokes • {item.level}
+                                </div>
+                              )}
 
-                        {item.type === 'grammar' && (
-                          <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.95rem' }}>
-                            {item.structure && (
-                              <div style={{ padding: '0.4rem 0.6rem', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', borderLeft: '3px solid var(--accent-color)' }}>
-                                <strong>Struktur:</strong> {item.structure}
-                              </div>
-                            )}
-                            {item.explanation && (
-                              <div style={{ color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-                                {item.explanation}
-                              </div>
-                            )}
-                          </div>
-                        )}
+                              {item.type === 'jpjp' && item.partOfSpeech && (
+                                 <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: 'bold', marginTop: '0.25rem' }}>
+                                    {item.partOfSpeech}
+                                 </div>
+                              )}
 
-                        {(item.type === 'grammar' || item.type === 'jpjp') && item.examples && item.examples.length > 0 && (
-                          <div style={{ marginTop: '0.75rem' }}>
-                            <strong>Contoh:</strong>
-                            <ul style={{ listStyleType: 'none', padding: 0, margin: '0.4rem 0 0 0', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                              {item.examples.map((ex: any, i: number) => (
-                                <li key={i} style={{ borderBottom: i !== item.examples.length - 1 ? '1px dashed rgba(255,255,255,0.1)' : 'none', paddingBottom: i !== item.examples.length - 1 ? '0.6rem' : '0' }}>
-                                  <div style={{ color: 'var(--text-primary)' }}>{ex.japanese}</div>
-                                  {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{ex.romaji}</div>}
-                                  {ex.english && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontStyle: 'italic', marginTop: '0.2rem' }}>&quot;{ex.english}&quot;</div>}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </ItemContent>
-                  <AddButton>+</AddButton>
-                </ItemCard>
-              ))}
-            </ItemsGrid>
+                              {item.type === 'grammar' && (
+                                <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.95rem' }}>
+                                  {item.structure && (
+                                    <div style={{ padding: '0.4rem 0.6rem', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', borderLeft: '3px solid var(--accent-color)' }}>
+                                      <strong>Struktur:</strong> {item.structure}
+                                    </div>
+                                  )}
+                                  {item.explanation && (
+                                    <div style={{ color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+                                      {item.explanation}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
 
-            {totalPages > 1 && (
-              <Pagination>
-                <PageButton onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}>&lt;</PageButton>
-                {[...Array(Math.min(5, totalPages))].map((_, i) => (
-                  <PageButton
-                    key={i + 1}
-                    $active={currentPage === i + 1}
-                    onClick={() => setCurrentPage(i + 1)}
-                  >
-                    {i + 1}
-                  </PageButton>
-                ))}
-                {totalPages > 5 && <span>...</span>}
-                {totalPages > 5 && (
-                  <PageButton
-                    $active={currentPage === totalPages}
-                    onClick={() => setCurrentPage(totalPages)}
-                  >
-                    {totalPages}
-                  </PageButton>
-                )}
-                <PageButton onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}>&gt;</PageButton>
-              </Pagination>
-            )}
+                              {(item.type === 'grammar' || item.type === 'jpjp') && item.examples && item.examples.length > 0 && (
+                                <div style={{ marginTop: '0.75rem' }}>
+                                  <strong>Contoh:</strong>
+                                  <ul style={{ listStyleType: 'none', padding: 0, margin: '0.4rem 0 0 0', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                                    {item.examples.map((ex: any, i: number) => (
+                                      <li key={i} style={{ borderBottom: i !== item.examples.length - 1 ? '1px dashed rgba(255,255,255,0.1)' : 'none', paddingBottom: i !== item.examples.length - 1 ? '0.6rem' : '0' }}>
+                                        <div style={{ color: 'var(--text-primary)' }}>{ex.japanese}</div>
+                                        {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{ex.romaji}</div>}
+                                        {ex.english && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontStyle: 'italic', marginTop: '0.2rem' }}>&quot;{ex.english}&quot;</div>}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </ItemContent>
+                        <AddButton>+</AddButton>
+                      </ItemCard>
+                    ))}
+                  </ItemsGrid>
 
-            {displayData.length === 0 && (
-              <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
-                <p style={{ fontSize: '1.25rem' }}>Tidak ada hasil ditemukan.</p>
-              </div>
-            )}
-          </>
-        )}
+                  {totalPages > 1 && (
+                    <Pagination>
+                      <PageButton onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}>&lt;</PageButton>
+                      {[...Array(Math.min(5, totalPages))].map((_, i) => (
+                        <PageButton
+                          key={i + 1}
+                          $active={currentPage === i + 1}
+                          onClick={() => setCurrentPage(i + 1)}
+                        >
+                          {i + 1}
+                        </PageButton>
+                      ))}
+                      {totalPages > 5 && <span>...</span>}
+                      {totalPages > 5 && (
+                        <PageButton
+                          $active={currentPage === totalPages}
+                          onClick={() => setCurrentPage(totalPages)}
+                        >
+                          {totalPages}
+                        </PageButton>
+                      )}
+                      <PageButton onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}>&gt;</PageButton>
+                    </Pagination>
+                  )}
+
+                  {displayData.length === 0 && (
+                    <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
+                      <p style={{ fontSize: '1.25rem' }}>Tidak ada hasil ditemukan.</p>
+                    </div>
+                  )}
+                </>
+              )}
       </MainContent>
 
       <HandwritingModal 
