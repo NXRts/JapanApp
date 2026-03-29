@@ -184,11 +184,10 @@ const ListToolbar = styled.div`
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 
-  @media (max-width: 768px) {
+  @media (max-width: 640px) {
     flex-direction: column;
-    gap: 1.25rem;
-    align-items: flex-start;
-    padding: 1.25rem;
+    padding: 0;
+    overflow: hidden;
   }
 `;
 
@@ -196,6 +195,15 @@ const CheckboxGroup = styled.div`
   display: flex;
   gap: 1.5rem;
   flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    padding: 1rem;
+    justify-content: center;
+    gap: 1.25rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(var(--foreground-rgb, 255, 255, 255), 0.02);
+  }
 `;
 
 const CheckboxLabel = styled.label`
@@ -244,6 +252,12 @@ const ToolbarIcons = styled.div`
   display: flex;
   gap: 0.5rem;
   color: var(--text-secondary);
+
+  @media (max-width: 640px) {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    justify-content: space-around;
+  }
 
   button {
     background: none;
