@@ -261,16 +261,20 @@ const ToolbarIcons = styled.div`
   }
 `;
 
-const ItemCard = styled.div`
+const ItemCard = styled.div<{ $isPlaying?: boolean }>`
   background: var(--surface);
   border-radius: 20px;
   padding: 1.75rem;
-  border: 1px solid var(--border);
+  border: 1px solid ${({ $isPlaying }) => $isPlaying ? 'var(--primary)' : 'var(--border)'};
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 1.5rem;
   align-items: flex-start;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  ${({ $isPlaying }) => $isPlaying && `
+    box-shadow: 0 0 15px rgba(var(--primary-rgb, 79, 70, 229), 0.3);
+    transform: translateY(-4px);
+  `}
 
   &:hover {
     border-color: var(--primary);
@@ -668,6 +672,9 @@ export default function DictionaryPage() {
   const [selectedDict, setSelectedDict] = useState<'JA-ID' | 'JA-EN' | 'JA-JA'>('JA-ID');
   const [showDictDropdown, setShowDictDropdown] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
+  const [isPlayingAll, setIsPlayingAll] = useState(false);
+  const [shuffleSeed, setShuffleSeed] = useState(0);
+  const [currentlyPlayingId, setCurrentlyPlayingId] = useState<string | null>(null);
 
   const itemsPerPage = 15; // Moved from hardcoded value to a constant
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -717,7 +724,7 @@ export default function DictionaryPage() {
     };
   }, []);
 
-  const playAudio = (e: React.MouseEvent, text: string) => {
+  const playAudio = (e: React.MouseEvent, text: string, itemId?: string) => {
     e.preventDefault();
     e.stopPropagation();
     if (typeof window !== 'undefined' && window.speechSynthesis) {
@@ -725,8 +732,107 @@ export default function DictionaryPage() {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'ja-JP';
       utterance.rate = 0.8;
+      
+      if (itemId) {
+        setCurrentlyPlayingId(itemId);
+        const clearPlaying = () => setCurrentlyPlayingId(null);
+        utterance.onend = clearPlaying;
+        utterance.onerror = clearPlaying;
+      }
+      
       window.speechSynthesis.speak(utterance);
     }
+  };
+
+  useEffect(() => {
+    setShuffleSeed(0);
+  }, [activeCategory, activeLevel, query]);
+
+  const handleDownloadCSV = () => {
+    if (!filteredData || filteredData.length === 0) return;
+    
+    // Konfirmasi pengguna
+    const isConfirmed = window.confirm(`Apakah Anda yakin ingin mengunduh ${filteredData.length} item ini dalam format CSV?`);
+    if (!isConfirmed) return;
+
+    let csvContent = "Word,Reading,Meaning,Type,Level\n";
+    filteredData.forEach(item => {
+      const word = item.type === 'kanji' ? item.kanji : (item.word || (item as any).title);
+      const reading = item.type === 'kanji' 
+        ? `On: ${item.onyomi?.join(', ')} | Kun: ${item.kunyomi?.join(', ')}`
+        : (item.reading || item.romaji || '');
+      const meaning = item.meaning || '';
+      const escapeCell = (str: string) => `"${(str || '').toString().replace(/"/g, '""')}"`;
+      
+      csvContent += `${escapeCell(word)},${escapeCell(reading)},${escapeCell(meaning)},${escapeCell(item.type)},${escapeCell(item.level || '')}\n`;
+    });
+    
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `jlpt_${activeCategory}_${activeLevel}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handlePlayAll = () => {
+    if (!displayData || displayData.length === 0) return;
+    
+    if (isPlayingAll) {
+      window.speechSynthesis.cancel();
+      setIsPlayingAll(false);
+      setCurrentlyPlayingId(null);
+      return;
+    }
+    
+    window.speechSynthesis.cancel();
+    setIsPlayingAll(true);
+    
+    let utteranceEndCount = 0;
+    const itemsWithContent = displayData.filter(i => (i.type === 'kanji' ? i.kanji : (i.word || (i as any).title)));
+    
+    if (itemsWithContent.length === 0) {
+      setIsPlayingAll(false);
+      return;
+    }
+    
+    const handleSpeechCancel = () => {
+      setIsPlayingAll(false);
+      setCurrentlyPlayingId(null);
+    };
+
+    itemsWithContent.forEach((item, idx) => {
+      const text = item.type === 'kanji' ? item.kanji : (item.word || (item as any).title);
+      const itemId = `${item.source}-${item.type}-${item.level}-${item.id || idx}`;
+      
+      if (text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'ja-JP';
+        utterance.rate = 0.8;
+        
+        utterance.onstart = () => {
+          setCurrentlyPlayingId(itemId);
+        };
+        
+        const finishUtterance = () => {
+          utteranceEndCount++;
+          if (utteranceEndCount === itemsWithContent.length) {
+            setIsPlayingAll(false);
+            setCurrentlyPlayingId(null);
+          }
+        };
+        
+        utterance.onend = finishUtterance;
+        utterance.onerror = handleSpeechCancel;
+        window.speechSynthesis.speak(utterance);
+      }
+    });
+  };
+
+  const handleShuffle = () => {
+    setShuffleSeed(prev => prev + 1);
+    setCurrentPage(1);
   };
 
   // Debounce search
@@ -803,11 +909,22 @@ export default function DictionaryPage() {
   }, [activeCategory]);
 
   const filteredData = React.useMemo(() => {
-    return (searchResults || browseData).filter(item => {
+    let result = (searchResults || browseData).filter(item => {
       if (activeLevel !== 'all' && item.level !== activeLevel) return false;
       return true;
     });
-  }, [searchResults, browseData, activeLevel]);
+
+    if (shuffleSeed > 0) {
+      const shuffled = [...result];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    return result;
+  }, [searchResults, browseData, activeLevel, shuffleSeed]);
 
   const displayData = React.useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
@@ -823,9 +940,9 @@ export default function DictionaryPage() {
           <SectionTitle>Pilih jenis kata</SectionTitle>
           <RadioGroup>
             {[
+              { id: 'kana', label: 'Kana' },
               { id: 'kata', label: 'Kata' },
               { id: 'kanji', label: 'Kanji' },
-              { id: 'kana', label: 'Kana' },
               { id: 'kalimat', label: 'Kalimat' },
               { id: 'tata-bahasa', label: 'Tata bahasa' },
               { id: 'jpjp', label: 'Jepang - Jepang' },
@@ -948,9 +1065,9 @@ export default function DictionaryPage() {
           <ModesRow>
             {[
               { id: 'ai', label: 'Mode AI' },
+              { id: 'kana', label: 'Kana' },
               { id: 'kata', label: 'Kata' },
               { id: 'kanji', label: 'Kanji' },
-              { id: 'kana', label: 'Kana' },
               { id: 'kalimat', label: 'Kalimat' },
               { id: 'tata-bahasa', label: 'Tata bahasa' },
               { id: 'jpjp', label: 'Jepang - Jepang' },
@@ -1034,9 +1151,15 @@ export default function DictionaryPage() {
                   ))}
                 </CheckboxGroup>
                 <ToolbarIcons>
-                  <button title="Download"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></button>
-                  <button title="Play"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></button>
-                  <button title="Shuffle"><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5" /></svg></button>
+                  <button title="Download CSV" onClick={handleDownloadCSV}><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></button>
+                  <button title={isPlayingAll ? "Stop Playback" : "Play All on Page"} onClick={handlePlayAll} style={{ color: isPlayingAll ? 'var(--primary)' : 'inherit' }}>
+                    {isPlayingAll ? (
+                      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                    ) : (
+                      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                    )}
+                  </button>
+                  <button title="Shuffle List" onClick={handleShuffle}><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5" /></svg></button>
                 </ToolbarIcons>
               </ListToolbar>
 
@@ -1049,11 +1172,13 @@ export default function DictionaryPage() {
               ) : (
                 <>
                   <ItemsGrid>
-                    {displayData.map((item: any, idx) => (
-                      <ItemCard key={`${item.source}-${item.type}-${item.level}-${item.id || idx}`}>
-                        <SpeakerButton onClick={(e) => playAudio(e, item.type === 'kanji' ? item.kanji : (item.word || item.title))}>
-                          <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
-                        </SpeakerButton>
+                    {displayData.map((item: any, idx) => {
+                      const itemId = `${item.source}-${item.type}-${item.level}-${item.id || idx}`;
+                      return (
+                        <ItemCard key={itemId} $isPlaying={currentlyPlayingId === itemId}>
+                          <SpeakerButton onClick={(e) => playAudio(e, item.type === 'kanji' ? item.kanji : (item.word || item.title), itemId)}>
+                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                          </SpeakerButton>
                         <ItemContent>
                           {showConfig.kata && (
                             <KanjiText>
@@ -1122,7 +1247,8 @@ export default function DictionaryPage() {
                         </ItemContent>
                         <AddButton>+</AddButton>
                       </ItemCard>
-                    ))}
+                      );
+                    })}
                   </ItemsGrid>
 
                   {totalPages > 1 && (
