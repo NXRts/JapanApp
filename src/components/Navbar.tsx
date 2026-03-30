@@ -112,10 +112,12 @@ const SettingsBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0.8;
 
   &:hover {
     color: var(--primary);
-    background: rgba(var(--primary-rgb), 0.1);
+    background: rgba(var(--primary-rgb), 0.15);
+    opacity: 1;
   }
 
   svg {
@@ -185,7 +187,7 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   
   /* Force a completely solid, dark background in modern browsers to prevent overlap bleed */
   @supports (backdrop-filter: blur(20px)) {
-    background: #0f172a; /* Slate 900 for a solid dark theme */
+    background: var(--background); /* Use the theme background instead of hardcoded slate */
   }
   
   @media (min-width: 769px) {
