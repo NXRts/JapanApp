@@ -30,15 +30,13 @@ const Container = styled.div`
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 3rem;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+  width: 100%;
 
   @media (max-width: 600px) {
     flex-direction: column;
     gap: 1.5rem;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 2rem;
   }
 `;
 
@@ -46,25 +44,37 @@ const HeaderRight = styled.div`
   text-align: right;
   
   @media (max-width: 600px) {
-    text-align: center;
+    text-align: left;
   }
 `;
 
-const BackButton = styled(Link)`
-  color: var(--text-secondary);
-  text-decoration: none;
+const Breadcrumbs = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-  transition: all 0.2s;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  gap: 0.6rem;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
 
-  &:hover {
-    color: var(--primary);
-    background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+  a {
+    color: var(--foreground);
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: var(--primary);
+    }
+  }
+
+  span.separator {
+    opacity: 0.3;
+    font-weight: 300;
+  }
+
+  span.current {
+    font-weight: 400;
+    opacity: 0.8;
   }
 `;
 
@@ -410,12 +420,10 @@ function QuizContent() {
     <PageWrapper>
       <Container>
         <Header>
-          <BackButton href="/jlpt">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            JLPT
-          </BackButton>
+          <Breadcrumbs>
+            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Kuis</span>
+          </Breadcrumbs>
+          
           <HeaderRight>
               <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   JLPT Custom Quiz
@@ -428,7 +436,7 @@ function QuizContent() {
         
         {quizState === 'loading' && (
           <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-            <p>Menyiapkan Kuis...</p>
+            <p>Menyiapkan Kuis {activeLevel !== 'All' ? activeLevel : ''}...</p>
           </div>
         )}
         

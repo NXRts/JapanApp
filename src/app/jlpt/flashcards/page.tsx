@@ -27,18 +27,54 @@ const Container = styled.div`
   }
 `;
 
-const Breadcrumbs = styled.div`
-  width: 100%;
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
+const Header = styled.div`
   display: flex;
-  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2.5rem;
+  width: 100%;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+`;
+
+const HeaderRight = styled.div`
+  text-align: right;
   
+  @media (max-width: 600px) {
+    text-align: left;
+  }
+`;
+
+const Breadcrumbs = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+
   a {
     color: var(--foreground);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    transition: color 0.2s;
+    
+    &:hover {
+      color: var(--primary);
+    }
+  }
+
+  span.separator {
+    opacity: 0.3;
+    font-weight: 300;
+  }
+
+  span.current {
+    font-weight: 400;
+    opacity: 0.8;
   }
 `;
 
@@ -1031,9 +1067,19 @@ function FlashcardContent() {
     return (
       <PageWrapper>
         <Container>
-          <Breadcrumbs>
-             <Link href="/jlpt">JLPT</Link> / Kartu Flash
-          </Breadcrumbs>
+          <Header>
+            <Breadcrumbs>
+               <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Kartu Flash</span>
+            </Breadcrumbs>
+            <HeaderRight>
+                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    JLPT Flashcards
+                </div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                    Level {activeLevel !== 'All' ? activeLevel : 'Semua'} • {activeCategory.replace('-', ' ').toUpperCase()}
+                </div>
+            </HeaderRight>
+          </Header>
           <div style={{ textAlign: 'center', marginTop: '4rem', color: 'var(--text-secondary)' }}>Memuat kartu flash...</div>
         </Container>
       </PageWrapper>
@@ -1044,9 +1090,19 @@ function FlashcardContent() {
     return (
       <PageWrapper>
         <Container>
-          <Breadcrumbs>
-            <Link href="/jlpt">JLPT</Link> / Kartu Flash
-          </Breadcrumbs>
+          <Header>
+            <Breadcrumbs>
+              <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Kartu Flash</span>
+            </Breadcrumbs>
+            <HeaderRight>
+                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    JLPT Flashcards
+                </div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                    Level {activeLevel !== 'All' ? activeLevel : 'Semua'} • {activeCategory.replace('-', ' ').toUpperCase()}
+                </div>
+            </HeaderRight>
+          </Header>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '600px', marginBottom: '1.5rem', padding: '0 0.5rem' }}>
             <h3 style={{ margin: 0, color: 'var(--text-secondary)', textTransform: 'capitalize' }}>
@@ -1091,9 +1147,19 @@ function FlashcardContent() {
   return (
     <PageWrapper>
       <Container>
-        <Breadcrumbs>
-          <Link href="/jlpt">JLPT</Link> / Kartu Flash
-        </Breadcrumbs>
+        <Header>
+          <Breadcrumbs>
+            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Kartu Flash</span>
+          </Breadcrumbs>
+          <HeaderRight>
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                  JLPT Flashcards
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                  Level {activeLevel !== 'All' ? activeLevel : 'Semua'} • {activeCategory.replace('-', ' ').toUpperCase()}
+              </div>
+          </HeaderRight>
+        </Header>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', maxWidth: '600px', marginBottom: '1.5rem', padding: '0 0.5rem' }}>
           <h3 style={{ margin: 0, color: 'var(--text-secondary)', textTransform: 'capitalize' }}>
