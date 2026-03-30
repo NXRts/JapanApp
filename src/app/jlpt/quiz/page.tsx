@@ -16,82 +16,143 @@ const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 4rem 2rem;
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(var(--primary-rgb, 79, 70, 229), 0.05) 0%, transparent 70%);
 
   @media (max-width: 640px) {
     padding: 2rem 1rem;
   }
 `;
 
-const Breadcrumbs = styled.div`
-  width: 100%;
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
+const Header = styled.div`
   display: flex;
-  gap: 0.5rem;
-  
-  a {
-    color: var(--foreground);
-    text-decoration: none;
-    font-weight: 600;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 2rem;
   }
 `;
 
-const QuizBox = styled.div`
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: var(--shadow-md);
-  padding: 3rem 2rem;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
+const HeaderRight = styled.div`
+  text-align: right;
+  
+  @media (max-width: 600px) {
+    text-align: center;
+  }
 `;
 
-const QuestionText = styled.h2`
-  font-size: 3.5rem;
-  font-weight: 800;
-  color: var(--primary);
-  margin: 1.5rem 0 2.5rem 0;
-  text-align: center;
-  line-height: 1.2;
+const BackButton = styled(Link)`
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
 
-  @media (max-width: 640px) {
+  &:hover {
+    color: var(--primary);
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+  }
+`;
+
+const QuizCard = styled.div`
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 32px;
+  border: 1px solid var(--border);
+  padding: 4rem 3rem;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease;
+
+  @media (max-width: 600px) {
+    padding: 2.5rem 1.5rem;
+    border-radius: 24px;
+  }
+`;
+
+const ProgressInfo = styled.div`
+  position: absolute;
+  top: 45px;
+  right: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+
+  @media (max-width: 600px) {
+    top: 40px;
+    right: 20px;
+    font-size: 0.85rem;
+  }
+`;
+
+const QuestionText = styled.div`
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 3.5rem;
+  line-height: 1.2;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
+  
+  @media (max-width: 600px) {
     font-size: 2.5rem;
+    margin-bottom: 2rem;
   }
 `;
 
 const OptionsGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
 
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr; 
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
-const OptionButton = styled.button<{ $state?: 'correct' | 'wrong' | 'default' }>`
-  background: ${({ $state }) => 
-    $state === 'correct' ? 'rgba(34, 197, 94, 0.1)' : 
-    $state === 'wrong' ? 'rgba(239, 68, 68, 0.1)' : 'var(--background)'};
-  border: 2px solid ${({ $state }) => 
-    $state === 'correct' ? '#22c55e' : 
-    $state === 'wrong' ? '#ef4444' : 'var(--border)'};
-  color: var(--foreground);
-  padding: 1.25rem;
-  border-radius: 12px;
+const OptionButton = styled.button<{ $state?: 'correct' | 'incorrect' | 'neutral' }>`
+  padding: 1.5rem;
+  border-radius: 20px;
+  border: 2px solid ${({ $state }) =>
+        $state === 'correct' ? '#10b981' :
+            $state === 'incorrect' ? '#ef4444' :
+                'var(--border)'};
+  background: ${({ $state }) =>
+        $state === 'correct' ? 'rgba(16, 185, 129, 0.1)' :
+            $state === 'incorrect' ? 'rgba(239, 68, 68, 0.1)' :
+                'var(--surface)'};
+  color: ${({ $state }) =>
+        $state === 'correct' ? '#10b981' :
+            $state === 'incorrect' ? '#ef4444' :
+                'var(--foreground)'};
   font-size: 1.1rem;
   font-weight: 600;
-  cursor: ${({ $state }) => $state === 'default' ? 'pointer' : 'default'};
-  transition: all 0.2s;
-  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: ${({ $state }) => $state && $state !== 'neutral' ? 'none' : 'auto'};
+  box-shadow: ${({ $state }) =>
+        $state === 'neutral' ? '0 4px 6px -1px rgba(0, 0, 0, 0.05)' : 'none'};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -99,10 +160,8 @@ const OptionButton = styled.button<{ $state?: 'correct' | 'wrong' | 'default' }>
   gap: 0.4rem;
 
   &:hover {
-    ${({ $state }) => $state === 'default' && `
-      border-color: var(--primary);
-      transform: translateY(-2px);
-    `}
+    transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-3px)' : 'none'};
+    border-color: ${({ $state }) => $state === 'neutral' ? 'var(--primary)' : ''};
   }
   
   span.option-reading {
@@ -110,69 +169,113 @@ const OptionButton = styled.button<{ $state?: 'correct' | 'wrong' | 'default' }>
     color: var(--text-secondary);
     font-weight: 400;
   }
-`;
-
-const ScoreHeader = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-`;
-
-const NextButton = styled.button`
-  background: var(--primary);
-  color: white;
-  border: none;
-  padding: 1rem 3rem;
-  border-radius: 99px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-top: 2.5rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
-
-  &:hover {
-    filter: brightness(1.1);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.4);
+  
+  @media (max-width: 600px) {
+    padding: 1rem 0.5rem;
   }
 `;
 
-const ResultsContainer = styled(QuizBox)`
-  gap: 1.5rem;
-  padding: 4rem 2rem;
-  text-align: center;
+const ProgressBarContainer = styled.div`
+  width: 100%;
+  height: 6px;
+  background: var(--border);
+  border-radius: 99px;
+  margin-top: 1rem;
+  overflow: hidden;
 `;
 
-const ResultScore = styled.div`
-  font-size: 4.5rem;
-  font-weight: 900;
-  color: var(--primary);
-  margin: 1rem 0;
+const ProgressFill = styled.div<{ $percent: number }>`
+  height: 100%;
+  width: ${({ $percent }) => `${$percent}%`};
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark, #4f46e5));
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 99px;
+`;
+
+const ResultOverlay = styled.div`
+  text-align: center;
+  animation: fadeIn 0.8s ease-out;
+  padding: 4rem 3rem;
+  background: var(--surface);
+  border-radius: 32px;
+  border: 1px solid var(--border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+
+  @media (max-width: 600px) {
+    padding: 2.5rem 1.5rem;
+  }
 `;
 
 const ActionButtonParams = styled(Link)`
-  background: var(--surface);
-  color: var(--foreground);
-  border: 2px solid var(--border);
-  padding: 1rem 2rem;
-  border-radius: 99px;
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark, #4338ca) 100%);
+  color: white;
+  border: none;
+  border-radius: 999px;
   font-size: 1.1rem;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.2s;
-
+  transition: all 0.3s;
+  box-shadow: 0 10px 15px -3px rgba(var(--primary-rgb, 79, 70, 229), 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  
   &:hover {
-    border-color: var(--primary);
-    color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 25px -5px rgba(var(--primary-rgb, 79, 70, 229), 0.4);
   }
 `;
+
+const RestartButton = styled.button`
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark, #4338ca) 100%);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 10px 15px -3px rgba(var(--primary-rgb, 79, 70, 229), 0.3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 25px -5px rgba(var(--primary-rgb, 79, 70, 229), 0.4);
+  }
+`;
+
+const ActionSecondary = styled(Link)`
+  padding: 1rem 3rem;
+  background: var(--surface);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+`;
+
 
 // --- Logic ---
 interface QuizQuestion {
@@ -257,16 +360,18 @@ function QuizContent() {
     if (selectedOptionIndex !== null) return; 
     
     setSelectedOptionIndex(idx);
-    if (isCorrect) setScore(prev => prev + 1);
-  };
-  
-  const handleNext = () => {
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex(prev => prev + 1);
-      setSelectedOptionIndex(null);
-    } else {
-      setQuizState('results');
+    if (isCorrect) {
+      setScore(prev => prev + 1);
     }
+
+    setTimeout(() => {
+      if (currentIndex < questions.length - 1) {
+        setCurrentIndex(prev => prev + 1);
+        setSelectedOptionIndex(null);
+      } else {
+        setQuizState('results');
+      }
+    }, 1500);
   };
   
   const handleRestart = () => {
@@ -304,9 +409,22 @@ function QuizContent() {
   return (
     <PageWrapper>
       <Container>
-        <Breadcrumbs>
-          <Link href="/jlpt">JLPT</Link> / <span>Kuis</span>
-        </Breadcrumbs>
+        <Header>
+          <BackButton href="/jlpt">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+            JLPT
+          </BackButton>
+          <HeaderRight>
+              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                  JLPT Custom Quiz
+              </div>
+              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                  Level {activeLevel !== 'All' ? activeLevel : 'Semua'} • {activeCategory.replace('-', ' ').toUpperCase()}
+              </div>
+          </HeaderRight>
+        </Header>
         
         {quizState === 'loading' && (
           <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
@@ -315,34 +433,33 @@ function QuizContent() {
         )}
         
         {quizState === 'error' && (
-          <QuizBox>
+          <QuizCard>
             <h2 style={{ color: 'var(--foreground)' }}>Tidak Cukup Data</h2>
-            <p style={{ marginTop: '1rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-              Maaf, data yang tersedia untuk filter ini (Kategori: {activeCategory}, Level: {activeLevel}) kurang dari 4 item.<br/> Silakan sesuaikan kembali filter Anda di halaman JLPT untuk membuat Kuis.
+            <p style={{ marginTop: '1rem', textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+              Maaf, data yang tersedia untuk filter ini kurang dari 4 item.<br/> Silakan sesuaikan kembali filter Anda di halaman JLPT untuk membuat Kuis.
             </p>
-            <ActionButtonParams href="/jlpt" style={{ marginTop: '2rem' }}>
+            <ActionButtonParams href="/jlpt">
               Kembali ke JLPT
             </ActionButtonParams>
-          </QuizBox>
+          </QuizCard>
         )}
         
         {quizState === 'playing' && questions.length > 0 && (
-          <QuizBox>
-            <ScoreHeader>
-              <span>Soal {currentIndex + 1} / {questions.length}</span>
-              <span>Skor Sementara: {score}</span>
-            </ScoreHeader>
+          <QuizCard>
+            <ProgressInfo>
+                {currentIndex + 1} / {questions.length}
+            </ProgressInfo>
             
             <QuestionText>{getQuestionText(questions[currentIndex].item)}</QuestionText>
             
             <OptionsGrid>
               {questions[currentIndex].options.map((opt, idx) => {
                 const isCorrect = opt.id === questions[currentIndex].item.id;
-                let state: 'default' | 'correct' | 'wrong' = 'default';
+                let state: 'neutral' | 'correct' | 'incorrect' = 'neutral';
                 
                 if (selectedOptionIndex !== null) {
                   if (isCorrect) state = 'correct';
-                  else if (idx === selectedOptionIndex) state = 'wrong';
+                  else if (idx === selectedOptionIndex) state = 'incorrect';
                 }
                 
                 const texts = getSubTextConfig(opt);
@@ -360,27 +477,28 @@ function QuizContent() {
               })}
             </OptionsGrid>
             
-            {selectedOptionIndex !== null && (
-              <NextButton onClick={handleNext}>
-                {currentIndex < questions.length - 1 ? 'Soal Selanjutnya' : 'Lihat Hasil Akhir'}
-              </NextButton>
-            )}
-          </QuizBox>
+            <ProgressBarContainer>
+                <ProgressFill $percent={((currentIndex + 1) / questions.length) * 100} />
+            </ProgressBarContainer>
+          </QuizCard>
         )}
         
         {quizState === 'results' && (
-          <ResultsContainer>
+          <ResultOverlay>
+            <div style={{ fontSize: '3rem', margin: '0 0 1rem 0' }}>🏆</div>
             <h2>Kuis Selesai!</h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem' }}>Skor Akhir Anda</p>
-            <ResultScore>{score} / {questions.length}</ResultScore>
+            <p style={{ fontSize: '1.25rem', marginBottom: '0.5rem', marginTop: '1rem' }}>Anda mencetak skor <strong>{score}</strong> dari <strong>{questions.length}</strong></p>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+                {score === questions.length ? "Luar biasa! Skor Anda sempurna!" : "Kerja bagus! Teruslah berlatih."}
+            </p>
             
-            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <NextButton onClick={handleRestart} style={{ marginTop: 0 }}>Coba Lagi</NextButton>
-              <ActionButtonParams href="/jlpt">
+            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <RestartButton onClick={handleRestart}>Coba Lagi</RestartButton>
+              <ActionSecondary href="/jlpt">
                 Kembali ke JLPT
-              </ActionButtonParams>
+              </ActionSecondary>
             </div>
-          </ResultsContainer>
+          </ResultOverlay>
         )}
 
       </Container>
