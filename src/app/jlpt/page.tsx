@@ -35,6 +35,8 @@ const KANA_LIST = [
 
 const PageContainer = styled.div`
   display: flex;
+  flex-direction: column;
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   gap: 2rem;
@@ -61,6 +63,17 @@ const Sidebar = styled.aside`
 
   @media (max-width: 1024px) {
     width: 100%;
+  }
+`;
+
+const LayoutRow = styled.div`
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    gap: 1.5rem;
   }
 `;
 
@@ -385,6 +398,7 @@ const Pagination = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   gap: 0.75rem;
   margin-top: 3.5rem;
   padding-bottom: 4rem;
@@ -713,13 +727,13 @@ export default function DictionaryPage() {
         inputRef.current?.focus();
       }
     };
-    
+
     window.addEventListener('keydown', handleGlobalKeyDown);
     return () => window.removeEventListener('keydown', handleGlobalKeyDown);
   }, []);
   useEffect(() => {
     setIsMounted(true);
-    
+
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowDictDropdown(false);
@@ -746,14 +760,14 @@ export default function DictionaryPage() {
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'ja-JP';
       utterance.rate = 0.8;
-      
+
       if (itemId) {
         setCurrentlyPlayingId(itemId);
         const clearPlaying = () => setCurrentlyPlayingId(null);
         utterance.onend = clearPlaying;
         utterance.onerror = clearPlaying;
       }
-      
+
       window.speechSynthesis.speak(utterance);
     }
   };
@@ -764,7 +778,7 @@ export default function DictionaryPage() {
 
   const handleDownloadCSV = () => {
     if (!filteredData || filteredData.length === 0) return;
-    
+
     // Konfirmasi pengguna
     const isConfirmed = window.confirm(`Apakah Anda yakin ingin mengunduh ${filteredData.length} item ini dalam format CSV?`);
     if (!isConfirmed) return;
@@ -772,15 +786,15 @@ export default function DictionaryPage() {
     let csvContent = "Word,Reading,Meaning,Type,Level\n";
     filteredData.forEach(item => {
       const word = item.type === 'kanji' ? item.kanji : (item.word || (item as any).title);
-      const reading = item.type === 'kanji' 
+      const reading = item.type === 'kanji'
         ? `On: ${item.onyomi?.join(', ')} | Kun: ${item.kunyomi?.join(', ')}`
         : (item.reading || item.romaji || '');
       const meaning = item.meaning || '';
       const escapeCell = (str: string) => `"${(str || '').toString().replace(/"/g, '""')}"`;
-      
+
       csvContent += `${escapeCell(word)},${escapeCell(reading)},${escapeCell(meaning)},${escapeCell(item.type)},${escapeCell(item.level || '')}\n`;
     });
-    
+
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -792,25 +806,25 @@ export default function DictionaryPage() {
 
   const handlePlayAll = () => {
     if (!displayData || displayData.length === 0) return;
-    
+
     if (isPlayingAll) {
       window.speechSynthesis.cancel();
       setIsPlayingAll(false);
       setCurrentlyPlayingId(null);
       return;
     }
-    
+
     window.speechSynthesis.cancel();
     setIsPlayingAll(true);
-    
+
     let utteranceEndCount = 0;
     const itemsWithContent = displayData.filter(i => (i.type === 'kanji' ? i.kanji : (i.word || (i as any).title)));
-    
+
     if (itemsWithContent.length === 0) {
       setIsPlayingAll(false);
       return;
     }
-    
+
     const handleSpeechCancel = () => {
       setIsPlayingAll(false);
       setCurrentlyPlayingId(null);
@@ -819,16 +833,16 @@ export default function DictionaryPage() {
     itemsWithContent.forEach((item, idx) => {
       const text = item.type === 'kanji' ? item.kanji : (item.word || (item as any).title);
       const itemId = `${item.source}-${item.type}-${item.level}-${item.id || idx}`;
-      
+
       if (text) {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'ja-JP';
         utterance.rate = 0.8;
-        
+
         utterance.onstart = () => {
           setCurrentlyPlayingId(itemId);
         };
-        
+
         const finishUtterance = () => {
           utteranceEndCount++;
           if (utteranceEndCount === itemsWithContent.length) {
@@ -836,7 +850,7 @@ export default function DictionaryPage() {
             setCurrentlyPlayingId(null);
           }
         };
-        
+
         utterance.onend = finishUtterance;
         utterance.onerror = handleSpeechCancel;
         window.speechSynthesis.speak(utterance);
@@ -857,17 +871,17 @@ export default function DictionaryPage() {
         // Pass selected dictionary target if needed. 
         // We'll update searchDictionary to handle selectedDict later. 
         const results = await searchDictionary(query, activeCategory as any, activeLevel);
-        
+
         // Filter out ID/EN based on dict
         let filtered = results;
         if (selectedDict === 'JA-EN') {
-           filtered = results.filter(r => r.source === 'jisho' || r.source === 'kanji-db');
+          filtered = results.filter(r => r.source === 'jisho' || r.source === 'kanji-db');
         } else if (selectedDict === 'JA-ID') {
-           filtered = results.filter(r => r.source === 'kamus' || r.source === 'local' || r.source === 'angka' || r.source === 'kanji-db');
+          filtered = results.filter(r => r.source === 'kamus' || r.source === 'local' || r.source === 'angka' || r.source === 'kanji-db');
         } else if (selectedDict === 'JA-JA') {
-           // We might just show all or just jpjp. If jpjp is selected, it handles it already.
-           // However, if category isn't jpjp we probably shouldn't show it here.
-           // We'll respect the ActiveCategory primary function for now.
+          // We might just show all or just jpjp. If jpjp is selected, it handles it already.
+          // However, if category isn't jpjp we probably shouldn't show it here.
+          // We'll respect the ActiveCategory primary function for now.
         }
 
         setSearchResults(filtered);
@@ -949,205 +963,206 @@ export default function DictionaryPage() {
 
   return (
     <PageContainer>
-      <Sidebar>
-        <SidebarSection>
-          <SectionTitle>Pilih jenis kata</SectionTitle>
-          <RadioGroup>
-            {[
-              { id: 'kana', label: 'Kana' },
-              { id: 'kata', label: 'Kata' },
-              { id: 'kanji', label: 'Kanji' },
-              { id: 'kalimat', label: 'Kalimat' },
-              { id: 'tata-bahasa', label: 'Tata bahasa' },
-              { id: 'jpjp', label: 'Jepang - Jepang' },
-            ].map(item => (
-              <RadioLabel key={item.id} $active={activeCategory === item.id}>
-                <input
-                  type="radio"
-                  checked={activeCategory === item.id}
-                  onChange={() => setActiveCategory(item.id as any)}
-                />
-                {item.label}
-              </RadioLabel>
-            ))}
-          </RadioGroup>
-        </SidebarSection>
+      <LayoutRow>
+        <Sidebar>
+          <SidebarSection>
+            <SectionTitle>Pilih jenis kata</SectionTitle>
+            <RadioGroup>
+              {[
+                { id: 'kana', label: 'Kana' },
+                { id: 'kata', label: 'Kata' },
+                { id: 'kanji', label: 'Kanji' },
+                { id: 'kalimat', label: 'Kalimat' },
+                { id: 'tata-bahasa', label: 'Tata bahasa' },
+                { id: 'jpjp', label: 'Jepang - Jepang' },
+              ].map(item => (
+                <RadioLabel key={item.id} $active={activeCategory === item.id}>
+                  <input
+                    type="radio"
+                    checked={activeCategory === item.id}
+                    onChange={() => setActiveCategory(item.id as any)}
+                  />
+                  {item.label}
+                </RadioLabel>
+              ))}
+            </RadioGroup>
+          </SidebarSection>
 
-        <SidebarSection>
-          <SectionTitle>Pilih tingkat</SectionTitle>
-          <RadioGroup>
-            {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
-              <RadioLabel key={lvl} $active={activeLevel === lvl}>
-                <input
-                  type="radio"
-                  checked={activeLevel === lvl}
-                  onChange={() => setActiveLevel(lvl as any)}
-                />
-                {lvl}
-              </RadioLabel>
-            ))}
-          </RadioGroup>
-        </SidebarSection>
-      </Sidebar>
+          <SidebarSection>
+            <SectionTitle>Pilih tingkat</SectionTitle>
+            <RadioGroup>
+              {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
+                <RadioLabel key={lvl} $active={activeLevel === lvl}>
+                  <input
+                    type="radio"
+                    checked={activeLevel === lvl}
+                    onChange={() => setActiveLevel(lvl as any)}
+                  />
+                  {lvl}
+                </RadioLabel>
+              ))}
+            </RadioGroup>
+          </SidebarSection>
+        </Sidebar>
 
-      <MainContent>
-        <ActionButtonsGrid>
-          <ActionButton as={Link} href={`/jlpt/flashcards?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
-            <svg fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-              <rect x="4" y="8" width="16" height="12" rx="2" />
-              <path d="M8 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2" />
-            </svg>
-            Flashcards
-          </ActionButton>
-          <ActionButton>
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" /></svg>
-            Kuis
-          </ActionButton>
-          <ActionButton>
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" /></svg>
-            Berlatih
-          </ActionButton>
-          <ActionButton>
-            <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" /></svg>
-            Tes Mini
-          </ActionButton>
-        </ActionButtonsGrid>
+        <MainContent>
+          <ActionButtonsGrid>
+            <ActionButton as={Link} href={`/jlpt/flashcards?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
+              <svg fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                <rect x="4" y="8" width="16" height="12" rx="2" />
+                <path d="M8 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2" />
+              </svg>
+              Flashcards
+            </ActionButton>
+            <ActionButton>
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" /></svg>
+              Kuis
+            </ActionButton>
+            <ActionButton>
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" /></svg>
+              Berlatih
+            </ActionButton>
+            <ActionButton>
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" /></svg>
+              Tes Mini
+            </ActionButton>
+          </ActionButtonsGrid>
 
-        <SearchBarWrapper ref={searchWrapperRef}>
-          <SearchInputContainer>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '0.4rem' }}>
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-            <Input
-              ref={inputRef}
-              placeholder="日本, nihon, Jepang"
-              value={query}
-              onChange={handleInputChange}
-              onFocus={() => setIsInputFocused(true)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  inputRef.current?.blur();
-                  setIsInputFocused(false);
-                }
-              }}
-            />
-            {query.length === 0 && <ShortcutHint>Ctrl K</ShortcutHint>}
-            {query.length > 0 && (
-              <IconButton onClick={() => setQuery('')} aria-label="Clear search" style={{ marginRight: '0.5rem', width: '28px', height: '28px', background: 'transparent', border: 'none' }}>
-                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </IconButton>
-            )}
-
-            <IconGroup>
-              <IconButton title="Draw" onClick={() => setShowDrawModal(true)}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
-              </IconButton>
-              <IconButton $active={showKeyboard} onClick={() => setShowKeyboard(!showKeyboard)} title="Kana Keyboard">
-                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                   <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
-                   <path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/><path d="M18 8h.01"/>
-                   <path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/>
-                   <path d="M7 16h10"/>
-                 </svg>
-              </IconButton>
-              <IconButton title="Voice" onClick={() => setShowVoiceModal(true)}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
-              </IconButton>
-              <IconButton title="OCR Image" onClick={() => setShowImageModal(true)}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-              </IconButton>
-            </IconGroup>
-
-            <div style={{ position: 'relative' }} ref={dropdownRef}>
-              <DictSelect onClick={() => setShowDictDropdown(!showDictDropdown)}>
-                <span>{selectedDict === 'JA-ID' ? 'Jepang - Indonesia' : selectedDict === 'JA-EN' ? 'Jepang - English' : 'Jepang - Jepang'}</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              </DictSelect>
-              {showDictDropdown && (
-                <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '0.5rem', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', zIndex: 50, display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', minWidth: '180px' }}>
-                   <button onClick={() => { setSelectedDict('JA-ID'); setShowDictDropdown(false); if(activeCategory === 'jpjp') setActiveCategory('kata'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-ID' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-ID' ? 'bold' : 'normal' }}>Jepang - Indonesia</button>
-                   <button onClick={() => { setSelectedDict('JA-EN'); setShowDictDropdown(false); if(activeCategory === 'jpjp') setActiveCategory('kata'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-EN' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-EN' ? 'bold' : 'normal' }}>Jepang - English</button>
-                   <button onClick={() => { setSelectedDict('JA-JA'); setShowDictDropdown(false); setActiveCategory('jpjp'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-JA' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', fontWeight: selectedDict === 'JA-JA' ? 'bold' : 'normal' }}>Jepang - Jepang</button>
-                </div>
+          <SearchBarWrapper ref={searchWrapperRef}>
+            <SearchInputContainer>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '0.4rem' }}>
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+              <Input
+                ref={inputRef}
+                placeholder="日本, nihon, Jepang"
+                value={query}
+                onChange={handleInputChange}
+                onFocus={() => setIsInputFocused(true)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    inputRef.current?.blur();
+                    setIsInputFocused(false);
+                  }
+                }}
+              />
+              {query.length === 0 && <ShortcutHint>Ctrl K</ShortcutHint>}
+              {query.length > 0 && (
+                <IconButton onClick={() => setQuery('')} aria-label="Clear search" style={{ marginRight: '0.5rem', width: '28px', height: '28px', background: 'transparent', border: 'none' }}>
+                  <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </IconButton>
               )}
-            </div>
-          </SearchInputContainer>
 
-          <ModesRow>
-            {[
-              { id: 'ai', label: 'Mode AI' },
-              { id: 'kana', label: 'Kana' },
-              { id: 'kata', label: 'Kata' },
-              { id: 'kanji', label: 'Kanji' },
-              { id: 'kalimat', label: 'Kalimat' },
-              { id: 'tata-bahasa', label: 'Tata bahasa' },
-              { id: 'jpjp', label: 'Jepang - Jepang' },
-            ].map(mode => (
-              <ModeBtn 
-                key={mode.id} 
-                $active={activeCategory === mode.id}
-                onClick={() => setActiveCategory(mode.id as any)}
-              >
-                {mode.id === 'ai' ? (
-                   <>
-                     {mode.label} 
-                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginLeft: '2px' }}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-                   </>
-                ) : mode.label}
-              </ModeBtn>
-            ))}
-          </ModesRow>
+              <IconGroup>
+                <IconButton title="Draw" onClick={() => setShowDrawModal(true)}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 19l7-7 3 3-7 7-3-3z" /><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" /><path d="M2 2l7.586 7.586" /><circle cx="11" cy="11" r="2" /></svg>
+                </IconButton>
+                <IconButton $active={showKeyboard} onClick={() => setShowKeyboard(!showKeyboard)} title="Kana Keyboard">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" ry="2" />
+                    <path d="M6 8h.01" /><path d="M10 8h.01" /><path d="M14 8h.01" /><path d="M18 8h.01" />
+                    <path d="M8 12h.01" /><path d="M12 12h.01" /><path d="M16 12h.01" />
+                    <path d="M7 16h10" />
+                  </svg>
+                </IconButton>
+                <IconButton title="Voice" onClick={() => setShowVoiceModal(true)}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" x2="12" y1="19" y2="22" /></svg>
+                </IconButton>
+                <IconButton title="OCR Image" onClick={() => setShowImageModal(true)}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>
+                </IconButton>
+              </IconGroup>
 
-          {isInputFocused && query.length > 0 && searchResults && searchResults.length > 0 && (
-            <AutocompleteDropdown>
-               {searchResults.slice(0, 8).map(res => (
-                  <AutocompleteItem 
+              <div style={{ position: 'relative' }} ref={dropdownRef}>
+                <DictSelect onClick={() => setShowDictDropdown(!showDictDropdown)}>
+                  <span>{selectedDict === 'JA-ID' ? 'Jepang - Indonesia' : selectedDict === 'JA-EN' ? 'Jepang - English' : 'Jepang - Jepang'}</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                </DictSelect>
+                {showDictDropdown && (
+                  <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '0.5rem', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', zIndex: 50, display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', minWidth: '180px' }}>
+                    <button onClick={() => { setSelectedDict('JA-ID'); setShowDictDropdown(false); if (activeCategory === 'jpjp') setActiveCategory('kata'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-ID' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-ID' ? 'bold' : 'normal' }}>Jepang - Indonesia</button>
+                    <button onClick={() => { setSelectedDict('JA-EN'); setShowDictDropdown(false); if (activeCategory === 'jpjp') setActiveCategory('kata'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-EN' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-EN' ? 'bold' : 'normal' }}>Jepang - English</button>
+                    <button onClick={() => { setSelectedDict('JA-JA'); setShowDictDropdown(false); setActiveCategory('jpjp'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-JA' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', fontWeight: selectedDict === 'JA-JA' ? 'bold' : 'normal' }}>Jepang - Jepang</button>
+                  </div>
+                )}
+              </div>
+            </SearchInputContainer>
+
+            <ModesRow>
+              {[
+                { id: 'ai', label: 'Mode AI' },
+                { id: 'kana', label: 'Kana' },
+                { id: 'kata', label: 'Kata' },
+                { id: 'kanji', label: 'Kanji' },
+                { id: 'kalimat', label: 'Kalimat' },
+                { id: 'tata-bahasa', label: 'Tata bahasa' },
+                { id: 'jpjp', label: 'Jepang - Jepang' },
+              ].map(mode => (
+                <ModeBtn
+                  key={mode.id}
+                  $active={activeCategory === mode.id}
+                  onClick={() => setActiveCategory(mode.id as any)}
+                >
+                  {mode.id === 'ai' ? (
+                    <>
+                      {mode.label}
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginLeft: '2px' }}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" /></svg>
+                    </>
+                  ) : mode.label}
+                </ModeBtn>
+              ))}
+            </ModesRow>
+
+            {isInputFocused && query.length > 0 && searchResults && searchResults.length > 0 && (
+              <AutocompleteDropdown>
+                {searchResults.slice(0, 8).map(res => (
+                  <AutocompleteItem
                     key={`auto-${res.source}-${res.type}-${res.id}`}
                     onMouseDown={(e) => {
-                       // Prevent blurring the input so that an onClick can correctly fire
-                       e.preventDefault();
+                      // Prevent blurring the input so that an onClick can correctly fire
+                      e.preventDefault();
                     }}
                     onClick={() => {
-                       setQuery(res.word || res.title || res.kanji || '');
-                       setIsInputFocused(false);
+                      setQuery(res.word || res.title || res.kanji || '');
+                      setIsInputFocused(false);
                     }}
                   >
-                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.3-4.3"></path>
-                     </svg>
-                     <AutocompleteText>
-                       <AutocompleteWord>
-                         {res.word || res.title || res.kanji}
-                         {res.reading && (
-                            <span style={{ fontSize: '0.8rem', fontWeight: 400, marginLeft: '0.5rem', opacity: 0.7 }}>
-                              ({res.reading})
-                            </span>
-                         )}
-                       </AutocompleteWord>
-                       <AutocompleteMeaning>{res.meaning}</AutocompleteMeaning>
-                     </AutocompleteText>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                    <AutocompleteText>
+                      <AutocompleteWord>
+                        {res.word || res.title || res.kanji}
+                        {res.reading && (
+                          <span style={{ fontSize: '0.8rem', fontWeight: 400, marginLeft: '0.5rem', opacity: 0.7 }}>
+                            ({res.reading})
+                          </span>
+                        )}
+                      </AutocompleteWord>
+                      <AutocompleteMeaning>{res.meaning}</AutocompleteMeaning>
+                    </AutocompleteText>
                   </AutocompleteItem>
-               ))}
-            </AutocompleteDropdown>
-          )}
+                ))}
+              </AutocompleteDropdown>
+            )}
 
-          {showKeyboard && (
-             <div style={{ position: 'absolute', zIndex: 100, top: 'calc(100% + 0.5rem)', left: 0, width: '100%' }}>
-               <KanaKeyboard 
-                 onType={handleKeyboardType} 
-                 onBackspace={handleKeyboardBackspace} 
-                 onClose={() => setShowKeyboard(false)} 
-               />
-             </div>
-          )}
-        </SearchBarWrapper>
+            {showKeyboard && (
+              <div style={{ position: 'absolute', zIndex: 100, top: 'calc(100% + 0.5rem)', left: 0, width: '100%' }}>
+                <KanaKeyboard
+                  onType={handleKeyboardType}
+                  onBackspace={handleKeyboardBackspace}
+                  onClose={() => setShowKeyboard(false)}
+                />
+              </div>
+            )}
+          </SearchBarWrapper>
 
 
-        <ListToolbar style={{ marginTop: '-1.5rem' }}>
+          <ListToolbar style={{ marginTop: '-1.5rem' }}>
             <CheckboxGroup>
               {[
                 { id: 'kata', label: 'Kata' },
@@ -1155,164 +1170,165 @@ export default function DictionaryPage() {
                 { id: 'arti', label: 'Arti' }
               ].map(item => (
                 <CheckboxLabel key={item.id}>
-                      <input
-                        type="checkbox"
-                        checked={showConfig[item.id as keyof typeof showConfig]}
-                        onChange={() => setShowConfig(prev => ({ ...prev, [item.id]: !prev[item.id as keyof typeof showConfig] }))}
-                      />
-                      {item.label}
-                    </CheckboxLabel>
+                  <input
+                    type="checkbox"
+                    checked={showConfig[item.id as keyof typeof showConfig]}
+                    onChange={() => setShowConfig(prev => ({ ...prev, [item.id]: !prev[item.id as keyof typeof showConfig] }))}
+                  />
+                  {item.label}
+                </CheckboxLabel>
+              ))}
+            </CheckboxGroup>
+            <ToolbarIcons>
+              <button title="Download CSV" onClick={handleDownloadCSV}><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></button>
+              <button title={isPlayingAll ? "Stop Playback" : "Play All on Page"} onClick={handlePlayAll} style={{ color: isPlayingAll ? 'var(--primary)' : 'inherit' }}>
+                {isPlayingAll ? (
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                ) : (
+                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                )}
+              </button>
+              <button title="Shuffle List" onClick={handleShuffle}><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5" /></svg></button>
+            </ToolbarIcons>
+          </ListToolbar>
+
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : isInputFocused && query.trim().length > 0 ? (
+            <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
+              Mencari rekomendasi... Tekan Enter atau klik layar untuk memuat hasil lengkap.
+            </div>
+          ) : (
+            <>
+              <ItemsGrid>
+                {displayData.map((item: any, idx) => {
+                  const itemId = `${item.source}-${item.type}-${item.level}-${item.id || idx}`;
+                  return (
+                    <ItemCard key={itemId} $isPlaying={currentlyPlayingId === itemId}>
+                      <SpeakerButton onClick={(e) => playAudio(e, item.type === 'kanji' ? item.kanji : (item.word || item.title), itemId)}>
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                      </SpeakerButton>
+                      <ItemContent>
+                        {showConfig.kata && (
+                          <KanjiText>
+                            {item.type === 'kanji' ? item.kanji : (item.word || item.title)}
+                          </KanjiText>
+                        )}
+                        {showConfig.ejaan && (
+                          <>
+                            {item.type === 'kanji' ? (
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.2rem' }}>
+                                {item.onyomi && item.onyomi.length > 0 && <ReadingText><strong>On:</strong> {item.onyomi.join(', ')}</ReadingText>}
+                                {item.kunyomi && item.kunyomi.length > 0 && <ReadingText><strong>Kun:</strong> {item.kunyomi.join(', ')}</ReadingText>}
+                              </div>
+                            ) : (
+                              (item.reading || item.romaji) && <ReadingText>{item.reading || item.romaji}</ReadingText>
+                            )}
+                          </>
+                        )}
+                        {showConfig.arti && (
+                          <>
+                            <MeaningText>{item.meaning}</MeaningText>
+
+                            {item.type === 'kanji' && item.stroke_count && (
+                              <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                                {item.stroke_count} strokes • {item.level}
+                              </div>
+                            )}
+
+                            {item.type === 'jpjp' && item.partOfSpeech && (
+                              <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: 'bold', marginTop: '0.25rem' }}>
+                                {item.partOfSpeech}
+                              </div>
+                            )}
+
+                            {item.type === 'grammar' && (
+                              <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.95rem' }}>
+                                {item.structure && (
+                                  <div style={{ padding: '0.4rem 0.6rem', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', borderLeft: '3px solid var(--accent-color)' }}>
+                                    <strong>Struktur:</strong> {item.structure}
+                                  </div>
+                                )}
+                                {item.explanation && (
+                                  <div style={{ color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+                                    {item.explanation}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
+                            {(item.type === 'grammar' || item.type === 'jpjp') && item.examples && item.examples.length > 0 && (
+                              <div style={{ marginTop: '0.75rem' }}>
+                                <strong>Contoh:</strong>
+                                <ul style={{ listStyleType: 'none', padding: 0, margin: '0.4rem 0 0 0', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                                  {item.examples.map((ex: any, i: number) => (
+                                    <li key={i} style={{ borderBottom: i !== item.examples.length - 1 ? '1px dashed rgba(255,255,255,0.1)' : 'none', paddingBottom: i !== item.examples.length - 1 ? '0.6rem' : '0' }}>
+                                      <div style={{ color: 'var(--text-primary)' }}>{ex.japanese}</div>
+                                      {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{ex.romaji}</div>}
+                                      {ex.english && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontStyle: 'italic', marginTop: '0.2rem' }}>&quot;{ex.english}&quot;</div>}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </ItemContent>
+                      <AddButton>+</AddButton>
+                    </ItemCard>
+                  );
+                })}
+              </ItemsGrid>
+
+              {totalPages > 1 && (
+                <Pagination>
+                  <PageButton onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}>&lt;</PageButton>
+                  {[...Array(Math.min(5, totalPages))].map((_, i) => (
+                    <PageButton
+                      key={i + 1}
+                      $active={currentPage === i + 1}
+                      onClick={() => setCurrentPage(i + 1)}
+                    >
+                      {i + 1}
+                    </PageButton>
                   ))}
-                </CheckboxGroup>
-                <ToolbarIcons>
-                  <button title="Download CSV" onClick={handleDownloadCSV}><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></button>
-                  <button title={isPlayingAll ? "Stop Playback" : "Play All on Page"} onClick={handlePlayAll} style={{ color: isPlayingAll ? 'var(--primary)' : 'inherit' }}>
-                    {isPlayingAll ? (
-                      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
-                    ) : (
-                      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                    )}
-                  </button>
-                  <button title="Shuffle List" onClick={handleShuffle}><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5" /></svg></button>
-                </ToolbarIcons>
-              </ListToolbar>
-
-              {isLoading ? (
-                <LoadingSpinner />
-              ) : isInputFocused && query.trim().length > 0 ? (
-                <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                   Mencari rekomendasi... Tekan Enter atau klik layar untuk memuat hasil lengkap.
-                </div>
-              ) : (
-                <>
-                  <ItemsGrid>
-                    {displayData.map((item: any, idx) => {
-                      const itemId = `${item.source}-${item.type}-${item.level}-${item.id || idx}`;
-                      return (
-                        <ItemCard key={itemId} $isPlaying={currentlyPlayingId === itemId}>
-                          <SpeakerButton onClick={(e) => playAudio(e, item.type === 'kanji' ? item.kanji : (item.word || item.title), itemId)}>
-                            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
-                          </SpeakerButton>
-                        <ItemContent>
-                          {showConfig.kata && (
-                            <KanjiText>
-                              {item.type === 'kanji' ? item.kanji : (item.word || item.title)}
-                            </KanjiText>
-                          )}
-                          {showConfig.ejaan && (
-                            <>
-                              {item.type === 'kanji' ? (
-                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.2rem' }}>
-                                  {item.onyomi && item.onyomi.length > 0 && <ReadingText><strong>On:</strong> {item.onyomi.join(', ')}</ReadingText>}
-                                  {item.kunyomi && item.kunyomi.length > 0 && <ReadingText><strong>Kun:</strong> {item.kunyomi.join(', ')}</ReadingText>}
-                                </div>
-                              ) : (
-                                (item.reading || item.romaji) && <ReadingText>{item.reading || item.romaji}</ReadingText>
-                              )}
-                            </>
-                          )}
-                          {showConfig.arti && (
-                            <>
-                              <MeaningText>{item.meaning}</MeaningText>
-                              
-                              {item.type === 'kanji' && item.stroke_count && (
-                                <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
-                                  {item.stroke_count} strokes • {item.level}
-                                </div>
-                              )}
-
-                              {item.type === 'jpjp' && item.partOfSpeech && (
-                                 <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: 'bold', marginTop: '0.25rem' }}>
-                                    {item.partOfSpeech}
-                                 </div>
-                              )}
-
-                              {item.type === 'grammar' && (
-                                <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.95rem' }}>
-                                  {item.structure && (
-                                    <div style={{ padding: '0.4rem 0.6rem', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', borderLeft: '3px solid var(--accent-color)' }}>
-                                      <strong>Struktur:</strong> {item.structure}
-                                    </div>
-                                  )}
-                                  {item.explanation && (
-                                    <div style={{ color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-                                      {item.explanation}
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-
-                              {(item.type === 'grammar' || item.type === 'jpjp') && item.examples && item.examples.length > 0 && (
-                                <div style={{ marginTop: '0.75rem' }}>
-                                  <strong>Contoh:</strong>
-                                  <ul style={{ listStyleType: 'none', padding: 0, margin: '0.4rem 0 0 0', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                                    {item.examples.map((ex: any, i: number) => (
-                                      <li key={i} style={{ borderBottom: i !== item.examples.length - 1 ? '1px dashed rgba(255,255,255,0.1)' : 'none', paddingBottom: i !== item.examples.length - 1 ? '0.6rem' : '0' }}>
-                                        <div style={{ color: 'var(--text-primary)' }}>{ex.japanese}</div>
-                                        {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{ex.romaji}</div>}
-                                        {ex.english && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontStyle: 'italic', marginTop: '0.2rem' }}>&quot;{ex.english}&quot;</div>}
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </ItemContent>
-                        <AddButton>+</AddButton>
-                      </ItemCard>
-                      );
-                    })}
-                  </ItemsGrid>
-
-                  {totalPages > 1 && (
-                    <Pagination>
-                      <PageButton onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}>&lt;</PageButton>
-                      {[...Array(Math.min(5, totalPages))].map((_, i) => (
-                        <PageButton
-                          key={i + 1}
-                          $active={currentPage === i + 1}
-                          onClick={() => setCurrentPage(i + 1)}
-                        >
-                          {i + 1}
-                        </PageButton>
-                      ))}
-                      {totalPages > 5 && <span>...</span>}
-                      {totalPages > 5 && (
-                        <PageButton
-                          $active={currentPage === totalPages}
-                          onClick={() => setCurrentPage(totalPages)}
-                        >
-                          {totalPages}
-                        </PageButton>
-                      )}
-                      <PageButton onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}>&gt;</PageButton>
-                    </Pagination>
+                  {totalPages > 5 && <span style={{ color: 'var(--text-secondary)' }}>...</span>}
+                  {totalPages > 5 && (
+                    <PageButton
+                      $active={currentPage === totalPages}
+                      onClick={() => setCurrentPage(totalPages)}
+                    >
+                      {totalPages}
+                    </PageButton>
                   )}
-
-                  {displayData.length === 0 && (
-                    <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
-                      <p style={{ fontSize: '1.25rem' }}>Tidak ada hasil ditemukan.</p>
-                    </div>
-                  )}
-                </>
+                  <PageButton onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}>&gt;</PageButton>
+                </Pagination>
               )}
-      </MainContent>
 
-      <HandwritingModal 
-        isOpen={showDrawModal} 
+              {displayData.length === 0 && (
+                <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
+                  <p style={{ fontSize: '1.25rem' }}>Tidak ada hasil ditemukan.</p>
+                </div>
+              )}
+            </>
+          )}
+        </MainContent>
+      </LayoutRow>
+
+      <HandwritingModal
+        isOpen={showDrawModal}
         onClose={() => setShowDrawModal(false)}
         onSelect={(char) => { setQuery(prev => prev + char); setShowDrawModal(false); inputRef.current?.focus(); }}
       />
 
-      <VoiceSearchModal 
-        isOpen={showVoiceModal} 
+      <VoiceSearchModal
+        isOpen={showVoiceModal}
         onClose={() => setShowVoiceModal(false)}
         onResult={(text) => { setQuery(text); setShowVoiceModal(false); inputRef.current?.focus(); }}
       />
 
-      <ImageSearchModal 
-        isOpen={showImageModal} 
+      <ImageSearchModal
+        isOpen={showImageModal}
         onClose={() => setShowImageModal(false)}
         onResult={(text) => { setQuery(text); setShowImageModal(false); inputRef.current?.focus(); }}
       />
