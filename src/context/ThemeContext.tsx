@@ -51,21 +51,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     root.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`);
 
     if (mode === 'dark') {
-      root.style.setProperty('--background', '#0F172A');
-      root.style.setProperty('--surface', '#1E293B');
+      root.style.setProperty('--background', '#0B1121'); /* Deeper Navy */
+      root.style.setProperty('--surface', '#172133');    /* Richer Navy surface */
       root.style.setProperty('--foreground', '#F8FAFC');
-      root.style.setProperty('--text-secondary', '#94A3B8');
-      root.style.setProperty('--border', '#334155');
-      root.style.setProperty('--shadow-sm', '0 1px 2px 0 rgb(0 0 0 / 0.3)');
-      root.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.3)');
+      root.style.setProperty('--text-secondary', '#CBD5E1'); /* Brighter secondary text */
+      root.style.setProperty('--border', 'rgba(255, 255, 255, 0.1)');
+      root.style.setProperty('--shadow-sm', '0 1px 2px 0 rgb(0 0 0 / 0.4)');
+      root.style.setProperty('--shadow-md', '0 4px 6px -1px rgb(0 0 0 / 0.4)');
       root.style.setProperty('--dot-color', 'rgba(255, 255, 255, 0.05)');
-      root.style.setProperty('--navbar-bg', 'rgba(15, 23, 42, 0.85)');
-      root.style.setProperty('--navbar-border', 'rgba(255, 255, 255, 0.05)');
+      root.style.setProperty('--navbar-bg', 'rgba(11, 17, 33, 0.85)'); /* Match background */
+      root.style.setProperty('--navbar-border', 'rgba(255, 255, 255, 0.08)');
 
       /* Dark: Glassy transparent */
-      root.style.setProperty('--btn-secondary-bg', 'rgba(255, 255, 255, 0.1)');
-      root.style.setProperty('--btn-secondary-text', '#FFFFFF');
-      root.style.setProperty('--btn-secondary-border', 'rgba(255, 255, 255, 0.2)');
+      root.style.setProperty('--btn-secondary-bg', 'rgba(255, 255, 255, 0.05)');
+      root.style.setProperty('--btn-secondary-text', '#F8FAFC');
+      root.style.setProperty('--btn-secondary-border', 'rgba(255, 255, 255, 0.1)');
     } else {
       root.style.setProperty('--background', '#F8FAFC');
       root.style.setProperty('--surface', '#FFFFFF');

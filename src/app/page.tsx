@@ -471,7 +471,8 @@ const Card = styled.div`
 const CardIcon = styled.div`
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15), rgba(var(--primary-rgb), 0.05));
+  border: 1px solid rgba(var(--primary-rgb), 0.1);
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -479,6 +480,7 @@ const CardIcon = styled.div`
   margin-bottom: 1.5rem;
   color: var(--primary);
   font-size: 1.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const CardTitle = styled.h3`
@@ -568,7 +570,8 @@ const BenefitIcon = styled.div`
   min-width: 80px;
   height: 80px;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15), rgba(var(--primary-rgb), 0.05));
+  border: 1px solid rgba(var(--primary-rgb), 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -755,14 +758,14 @@ const GamesGrid = styled.div`
 
 const NewsCard = styled(Link)`
   background: var(--surface);
-  padding: 2rem;
-  border-radius: 20px;
+  padding: 2.5rem; /* Increased padding */
+  border-radius: 24px; /* Smoother radius */
   border: 1px solid var(--border);
   text-decoration: none;
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   
   &::before {
@@ -776,9 +779,9 @@ const NewsCard = styled(Link)`
   }
   
   &:hover {
-    transform: translateY(-5px);
-    border-color: var(--primary-light);
-    box-shadow: 0 10px 30px -10px rgba(79, 70, 229, 0.15);
+    transform: translateY(-8px);
+    border-color: rgba(var(--primary-rgb), 0.3);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(var(--primary-rgb), 0.1);
     
     &::before {
       transform: scaleX(1);
@@ -788,16 +791,17 @@ const NewsCard = styled(Link)`
 
 const NewsBadge = styled.span`
   align-self: flex-start;
-  background: rgba(16, 185, 129, 0.1);
-  color: #10b981; 
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  padding: 0.25rem 0.75rem;
+  background: rgba(var(--primary-rgb), 0.15);
+  color: var(--primary-light); 
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
+  padding: 0.35rem 0.85rem;
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 0.7rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 1.25rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
 const NewsTitle = styled.h3`
