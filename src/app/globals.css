@@ -59,9 +59,14 @@ body {
   line-height: 1.5;
 
   /* Flex Layout for Sticky Footer */
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 button {

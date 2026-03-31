@@ -170,8 +170,17 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }));
   };
 
+  const contextValue = React.useMemo(() => ({
+    progress,
+    updateMastery,
+    recordQuizResult,
+    checkStreak,
+    updateSRS,
+    addExp
+  }), [progress]);
+
   return (
-    <ProgressContext.Provider value={{ progress, updateMastery, recordQuizResult, checkStreak, updateSRS, addExp }}>
+    <ProgressContext.Provider value={contextValue}>
       {children}
     </ProgressContext.Provider>
   );
