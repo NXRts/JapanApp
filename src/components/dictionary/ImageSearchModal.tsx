@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import Tesseract from 'tesseract.js';
+
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -170,6 +170,7 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
     setProgressText('Menyiapkan Mesin OCR...');
 
     try {
+      const Tesseract = (await import('tesseract.js')).default;
       const { data: { text } } = await Tesseract.recognize(
         file,
         'jpn', // 'jpn' ensures accuracy for Japanese Characters 
