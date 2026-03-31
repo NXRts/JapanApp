@@ -7,7 +7,6 @@ import { useProgress } from '@/context/ProgressContext';
 
 // Immediate imports for above-the-fold content
 import { HeroSection } from '@/components/home/HeroSection';
-import { StatsSection } from '@/components/home/StatsSection';
 import { GamesSection } from '@/components/home/GamesSection';
 
 // Dynamic imports for below-the-fold components to improve initial load
@@ -75,7 +74,6 @@ export default function Home() {
       />
       <Container>
         <HeroSection isDailyCompleted={isDailyCompleted} />
-        <StatsSection />
         <GamesSection />
         <BenefitsSection />
         <WhatsNewSection />
