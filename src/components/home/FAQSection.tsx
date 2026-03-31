@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 
 const Section = styled.section`
-  padding: 6rem 2rem;
+  padding: 4rem 2rem;
   background: var(--surface);
   width: 100%;
 `;

@@ -9,7 +9,7 @@ const Section = styled.section`
   width: 90%;
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   border-radius: 32px;
-  padding: 5rem 2rem;
+  padding: 3rem 2rem;
   text-align: center;
   color: white;
   position: relative;

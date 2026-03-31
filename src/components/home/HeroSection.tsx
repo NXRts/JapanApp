@@ -15,11 +15,11 @@ const Section = styled.section`
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 8rem 1rem 6rem;
+  padding: 4rem 1rem 4rem;
   margin-top: -2rem; /* Offset navbar margin */
   
   @media (max-width: 768px) {
-    padding: 8rem 1rem 6rem;
+    padding: 4rem 1rem 4rem;
     min-height: auto;
   }
 `;

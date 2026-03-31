@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 
 const Section = styled.section`
-  padding: 5rem 2rem;
+  padding: 3rem 2rem;
   background: linear-gradient(to bottom, transparent, rgba(16, 185, 129, 0.03), transparent);
   width: 100%;
 `;
