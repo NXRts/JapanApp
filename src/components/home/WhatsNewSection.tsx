@@ -116,14 +116,14 @@ export function WhatsNewSection() {
           <Badge>New Mini-Games</Badge>
           <Title>Interactive Learning Challenges</Title>
           <Description>
-            Master Japanese through fun! We've added <strong>Memory Match</strong>, <strong>Sentence Builder</strong>, and <strong>Speed Typing</strong> games to make learning addictive.
+            Master Japanese through fun! We've added <b>Memory Match</b>, <b>Sentence Builder</b>, and <b>Speed Typing</b> games to make learning addictive.
           </Description>
         </Card>
         <Card href="/dictionary">
           <Badge>Powerful Search</Badge>
           <Title>Multi-Source Dictionary</Title>
           <Description>
-            Get the most accurate definitions with integrated <strong>Jisho</strong>, <strong>Wiktionary</strong>, and <strong>Native Examples</strong>. Now with Image and Voice lookup.
+            Get the most accurate definitions with integrated <b>Jisho</b>, <b>Wiktionary</b>, and <b>Native Examples</b>. Now with Image and Voice lookup.
           </Description>
         </Card>
         <Card href="/blog">
