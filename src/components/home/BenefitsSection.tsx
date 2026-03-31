@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Image from 'next/image';
 
 const Section = styled.section`
-  padding: 6rem 2rem;
+  padding: 4rem 2rem;
   background: var(--surface);
   position: relative;
   overflow: hidden;

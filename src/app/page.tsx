@@ -22,8 +22,8 @@ const CTASection = dynamic(() => import('@/components/home/CTASection').then(mod
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4rem;
-  padding-bottom: 4rem;
+  gap: 0;
+  padding-bottom: 2rem;
 `;
 
 export default function Home() {
