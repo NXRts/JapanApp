@@ -134,8 +134,8 @@ export function FeaturesSection() {
           <CardIcon>📸</CardIcon>
           <CardTitle>Kamus AI & Kamera</CardTitle>
           <CardDescription>
-            Bukan sekadar teks. Cari arti kata menggunakan fitur <strong>OCR Kamera</strong>, 
-            <strong>Tulisan Tangan</strong>, atau <strong>Pencarian Suara</strong> yang sangat akurat.
+            Bukan sekadar teks. Cari arti kata menggunakan fitur <b>OCR Kamera</b>, 
+            <b>Tulisan Tangan</b>, atau <b>Pencarian Suara</b> yang sangat akurat.
           </CardDescription>
         </Card>
         <Card>
@@ -143,7 +143,7 @@ export function FeaturesSection() {
           <CardTitle>Game Interaktif</CardTitle>
           <CardDescription>
             Belajar jadi tidak membosankan. Uji kemampuan memori Anda dengan game 
-            <strong>Match Pairs</strong>, <strong>Sentence Builder</strong>, dan tantangan <strong>Speed Typing</strong>.
+            <b>Match Pairs</b>, <b>Sentence Builder</b>, dan tantangan <b>Speed Typing</b>.
           </CardDescription>
         </Card>
         <Card>
@@ -158,7 +158,7 @@ export function FeaturesSection() {
           <CardIcon>🔄</CardIcon>
           <CardTitle>Sistem Progres SRS</CardTitle>
           <CardDescription>
-            Teknologi <strong>Spaced Repetition System</strong> kami memprediksi waktu terbaik untuk Anda 
+            Teknologi <b>Spaced Repetition System</b> kami memprediksi waktu terbaik untuk Anda 
             mengingat kembali, memastikan hafalan tersimpan di memori jangka panjang.
           </CardDescription>
         </Card>

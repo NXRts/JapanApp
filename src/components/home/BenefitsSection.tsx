@@ -145,7 +145,7 @@ export function BenefitsSection() {
             </BenefitIcon>
             <BenefitText>
               <h3>Scientific Retention (SRS)</h3>
-              <p>Forget the forgetting curve. Our **SRS technology** ensures you memorize characters for life by predicting your brain's optimal review time.</p>
+              <p>Forget the forgetting curve. Our <b>SRS technology</b> ensures you memorize characters for life by predicting your brain's optimal review time.</p>
             </BenefitText>
           </BenefitItem>
           <BenefitItem>
@@ -156,7 +156,7 @@ export function BenefitsSection() {
             </BenefitIcon>
             <BenefitText>
               <h3>OCR & AI Dictionary</h3>
-              <p>Found a word in the real world? Point your camera or draw it on our canvas. Our **AI tools** identify characters instantly.</p>
+              <p>Found a word in the real world? Point your camera or draw it on our canvas. Our <b>AI tools</b> identify characters instantly.</p>
             </BenefitText>
           </BenefitItem>
           <BenefitItem>
@@ -168,7 +168,7 @@ export function BenefitsSection() {
             </BenefitIcon>
             <BenefitText>
               <h3>Gamified Career Paths</h3>
-              <p>Open career doors by mastering JLPT. Earn **EXP**, climb ranks, and prepare for the job market with our professional resources.</p>
+              <p>Open career doors by mastering JLPT. Earn <b>EXP</b>, climb ranks, and prepare for the job market with our professional resources.</p>
             </BenefitText>
           </BenefitItem>
         </BenefitContent>
