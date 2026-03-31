@@ -14,36 +14,6 @@ const Section = styled.section`
   }
 `;
 
-const SectionTitle = styled.h2`
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 4rem;
-  color: var(--foreground);
-  
-  span {
-    position: relative;
-    z-index: 1;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 4px;
-      background: var(--primary);
-      border-radius: 2px;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    font-size: 1.75rem;
-    margin-bottom: 2rem;
-  }
-`;
-
 const BenefitsGrid = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -99,7 +69,7 @@ const BenefitIcon = styled.div`
 
 const BenefitText = styled.div`
   h3 {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
     color: var(--foreground);
@@ -108,11 +78,11 @@ const BenefitText = styled.div`
   p {
     color: var(--text-secondary);
     line-height: 1.6;
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 `;
 
-const MapContainer = styled.div`
+const BenefitsMapContainer = styled.div`
   position: relative;
   border-radius: 24px;
   overflow: hidden;
@@ -121,6 +91,8 @@ const MapContainer = styled.div`
   align-items: center;
   justify-content: center;
   background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
   
   @media (max-width: 768px) {
     height: 250px;
@@ -129,10 +101,40 @@ const MapContainer = styled.div`
   }
 `;
 
+const SectionTitle = styled.h2`
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: var(--foreground);
+  
+  span {
+    position: relative;
+    z-index: 1;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 2px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+  }
+`;
+
 export function BenefitsSection() {
   return (
     <Section>
-      <SectionTitle><span>Why Learn Japanese?</span></SectionTitle>
+      <SectionTitle><span>Why Learn with Japan App?</span></SectionTitle>
       <BenefitsGrid>
         <BenefitContent>
           <BenefitItem>
@@ -142,8 +144,8 @@ export function BenefitsSection() {
               </svg>
             </BenefitIcon>
             <BenefitText>
-              <h3>Unlock a Rich Culture</h3>
-              <p>Understand your favorite anime, manga, and music in their original language. Connect with history and tradition.</p>
+              <h3>Scientific Retention (SRS)</h3>
+              <p>Forget the forgetting curve. Our **SRS technology** ensures you memorize characters for life by predicting your brain's optimal review time.</p>
             </BenefitText>
           </BenefitItem>
           <BenefitItem>
@@ -153,8 +155,8 @@ export function BenefitsSection() {
               </svg>
             </BenefitIcon>
             <BenefitText>
-              <h3>Travel with Confidence</h3>
-              <p>Navigate Tokyo&apos;s streets, order food like a local, and make meaningful connections during your travels.</p>
+              <h3>OCR & AI Dictionary</h3>
+              <p>Found a word in the real world? Point your camera or draw it on our canvas. Our **AI tools** identify characters instantly.</p>
             </BenefitText>
           </BenefitItem>
           <BenefitItem>
@@ -165,24 +167,23 @@ export function BenefitsSection() {
               </svg>
             </BenefitIcon>
             <BenefitText>
-              <h3>Career Opportunities</h3>
-              <p>Open doors to one of the world&apos;s largest economies and stand out in the job market.</p>
+              <h3>Gamified Career Paths</h3>
+              <p>Open career doors by mastering JLPT. Earn **EXP**, climb ranks, and prepare for the job market with our professional resources.</p>
             </BenefitText>
           </BenefitItem>
         </BenefitContent>
-        <MapContainer>
+        <BenefitsMapContainer>
           <Image
             src="/jp.svg"
             alt="Map of Japan"
             fill
             style={{ objectFit: 'contain', padding: '2rem', opacity: 0.8 }}
-            sizes="(max-width: 768px) 100vw, 50vw"
           />
           <div style={{ position: 'absolute', bottom: '2rem', textAlign: 'center', width: '100%', zIndex: 2 }}>
             <p style={{ fontWeight: '800', fontSize: '1.5rem', color: 'var(--foreground)', textShadow: '0 2px 4px var(--surface)' }}>Your Gateway</p>
-            <p style={{ color: 'var(--text-secondary)', fontWeight: '600' }}>to Japan</p>
+            <p style={{ color: 'var(--text-secondary)', fontWeight: '600' }}>to Japanese Fluency</p>
           </div>
-        </MapContainer>
+        </BenefitsMapContainer>
       </BenefitsGrid>
     </Section>
   );

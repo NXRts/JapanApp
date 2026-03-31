@@ -112,25 +112,25 @@ export function WhatsNewSection() {
     <Section>
       <SectionTitle><span>What's New</span></SectionTitle>
       <WhatsNewGrid>
+        <Card href="/game">
+          <Badge>New Mini-Games</Badge>
+          <Title>Interactive Learning Challenges</Title>
+          <Description>
+            Master Japanese through fun! We've added <strong>Memory Match</strong>, <strong>Sentence Builder</strong>, and <strong>Speed Typing</strong> games to make learning addictive.
+          </Description>
+        </Card>
+        <Card href="/dictionary">
+          <Badge>Powerful Search</Badge>
+          <Title>Multi-Source Dictionary</Title>
+          <Description>
+            Get the most accurate definitions with integrated <strong>Jisho</strong>, <strong>Wiktionary</strong>, and <strong>Native Examples</strong>. Now with Image and Voice lookup.
+          </Description>
+        </Card>
         <Card href="/blog">
-          <Badge>New Feature</Badge>
+          <Badge>New Insights</Badge>
           <Title>Japanese Culture Blog</Title>
           <Description>
-            Explore our brand new blog featuring a gorgeous UI, immersive reading experience, and tips on learning Japanese effectively.
-          </Description>
-        </Card>
-        <Card href="/practice">
-          <Badge>Enhanced</Badge>
-          <Title>Flashcard Animations</Title>
-          <Description>
-            Learning is now smoother with intuitive swipe gestures and randomized learning modes for Kana and Vocabulary flashcards.
-          </Description>
-        </Card>
-        <Card href="/">
-          <Badge>Support Us</Badge>
-          <Title>Donation Feature</Title>
-          <Description>
-            You can now support the development of Japan App. Help us keep the app free and growing with more exciting features!
+            Explore deep dives into Japanese culture, daily life tips, and language learning strategies with our newly updated blog experience.
           </Description>
         </Card>
       </WhatsNewGrid>
