@@ -40,7 +40,7 @@ const SectionTitle = styled.h2`
 `;
 
 const GamesGrid = styled.div`
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -116,21 +116,42 @@ export function GamesSection() {
           <Badge>Game</Badge>
           <Title>Match Pairs</Title>
           <Description>
-            Test your speed and memory by matching Japanese characters with their meanings or readings in this fast-paced game.
+            Uji kecepatan memori Anda dengan mencocokkan karakter Jepang dan artinya dalam game yang seru.
+          </Description>
+        </Card>
+        <Card href="/game/sentence-builder">
+          <Badge>New</Badge>
+          <Title>Sentence Builder</Title>
+          <Description>
+            Latih tata bahasa Anda dengan menyusun pola kalimat Jepang secara tepat dan interaktif.
+          </Description>
+        </Card>
+        <Card href="/game/speed-typing">
+          <Badge>Featured</Badge>
+          <Title>Speed Typing</Title>
+          <Description>
+            Tingkatkan refleks dan kecepatan mengetik karakter Kana & Kanji dalam tantangan waktu.
           </Description>
         </Card>
         <Card href="/daily-quiz">
-          <Badge>Challenge</Badge>
+          <Badge>Daily</Badge>
           <Title>Daily Quiz</Title>
           <Description>
-            A new set of questions every day to keep your mind sharp and earn bonus EXP.
+            Tantangan harian untuk menjaga ketajaman ingatan Anda dan mendapatkan bonus EXP setiap hari.
+          </Description>
+        </Card>
+        <Card href="/practice/smart-flashcards">
+          <Badge>Smart</Badge>
+          <Title>Smart Flashcards</Title>
+          <Description>
+            Sesi belajar pintar berbasis algoritma SRS yang dipersonalisasi sesuai kebutuhan memori Anda.
           </Description>
         </Card>
         <Card href="/reverse-quiz">
           <Badge>Mastery</Badge>
           <Title>Reverse Quiz</Title>
           <Description>
-            Think you know your characters? Try identifying them from their meanings in reverse!
+            Tantang ingatan Anda dengan mengidentifikasi karakter dari artinya dalam urutan terbalik.
           </Description>
         </Card>
       </GamesGrid>

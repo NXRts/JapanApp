@@ -150,7 +150,7 @@ export function FeaturesSection() {
           <CardIcon>🎓</CardIcon>
           <CardTitle>Materi JLPT Komprehensif</CardTitle>
           <CardDescription>
-            Kurikulum terstruktur mulai dari **N5 hingga N1**. Mencakup Tata Bahasa, 
+            Kurikulum terstruktur mulai dari <b>N5 hingga N1</b>. Mencakup Tata Bahasa, 
             Kumpulan Pola Kalimat, dan Kosakata standar ujian resmi.
           </CardDescription>
         </Card>
