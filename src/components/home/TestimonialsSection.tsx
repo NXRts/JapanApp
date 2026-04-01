@@ -72,27 +72,32 @@ const MarqueeTrack = styled.div`
   &:hover {
     animation-play-state: paused;
   }
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+    padding: 1rem 0;
+  }
 `;
 
 const Card = styled.div`
-  background: #0f172a; /* Solid Slate-950/Dark Background */
+  background: #0f172a; /* Solid Opaque Dark Background */
   padding: 2.5rem;
   border-radius: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle solid border */
+  border: 1px solid rgba(255, 255, 255, 0.08);
   position: relative;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 480px;
-  min-height: 320px; /* Ensure full content visibility */
+  min-height: 320px;
   flex-shrink: 0;
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
   
   &:hover {
     transform: translateY(-10px);
     border-color: var(--primary-light);
-    background: #1e293b; /* Slightly lighter on hover */
+    background: #1e293b;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(var(--primary-rgb), 0.1);
   }
   
@@ -109,9 +114,9 @@ const Card = styled.div`
   }
   
   @media (max-width: 768px) {
-    width: 320px;
-    padding: 2rem;
-    min-height: 280px;
+    width: 280px;
+    padding: 1.5rem;
+    min-height: 250px;
   }
 `;
 
@@ -121,10 +126,15 @@ const Rating = styled.div`
   margin-bottom: 1.5rem;
   color: #fbbf24;
   font-size: 1.15rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
 `;
 
-const Text = styled.p`
-  color: #e2e8f0; /* Higher contrast text */
+const TestimonialText = styled.p`
+  color: #e2e8f0;
   line-height: 1.8;
   font-size: 1.1rem;
   margin-bottom: 2rem;
@@ -133,8 +143,9 @@ const Text = styled.p`
   z-index: 1;
   
   @media (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.6;
+    margin-bottom: 1.5rem;
   }
 `;
 
@@ -158,6 +169,13 @@ const Avatar = styled.div<{ $gradient: string }>`
   font-weight: 800;
   font-size: 1rem;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 768px) {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    font-size: 0.9rem;
+  }
 `;
 
 const UserMeta = styled.div`
@@ -169,12 +187,20 @@ const UserMeta = styled.div`
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
   }
   
   span {
     font-size: 0.85rem;
     color: var(--text-secondary);
     font-weight: 600;
+
+    @media (max-width: 768px) {
+      font-size: 0.75rem;
+    }
   }
 `;
 
@@ -237,7 +263,7 @@ export function TestimonialsSection() {
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
                 <div>
                   <Rating>{'★'.repeat(t.rating)}</Rating>
-                  <Text>&ldquo;{t.text}&rdquo;</Text>
+                  <TestimonialText>&ldquo;{t.text}&rdquo;</TestimonialText>
                 </div>
                 <UserInfo>
                   <Avatar $gradient={t.gradient}>{t.initial}</Avatar>
