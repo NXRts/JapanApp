@@ -52,15 +52,16 @@ const AccordionItem = styled.div<{ $isOpen: boolean }>`
   margin-bottom: 1.25rem;
   border-radius: 24px;
   overflow: hidden;
-  background: #0f172a;
-  border: 1px solid ${props => props.$isOpen ? 'rgba(79, 70, 229, 0.3)' : 'rgba(255, 255, 255, 0.08)'};
+  background: var(--surface);
+  border: 1px solid ${props => props.$isOpen ? 'rgba(var(--primary-rgb), 0.3)' : 'var(--border)'};
   border-left: 4px solid ${props => props.$isOpen ? 'var(--primary-light)' : 'transparent'};
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: ${props => props.$isOpen ? '0 10px 40px -10px rgba(79, 70, 229, 0.2)' : 'none'};
+  box-shadow: ${props => props.$isOpen ? '0 10px 40px -10px rgba(var(--primary-rgb), 0.2)' : 'none'};
 
   &:hover {
     border-color: rgba(var(--primary-rgb), 0.3);
-    background: #1e293b;
+    background: var(--surface);
+    filter: brightness(1.05);
     transform: translateX(5px);
   }
 `;
@@ -75,7 +76,7 @@ const QuestionButton = styled.button<{ $isOpen: boolean }>`
   justify-content: space-between;
   text-align: left;
   cursor: pointer;
-  color: ${props => props.$isOpen ? 'var(--primary-light)' : 'white'};
+  color: ${props => props.$isOpen ? 'var(--primary-light)' : 'var(--foreground)'};
   transition: color 0.3s ease;
   
   h3 {
@@ -111,20 +112,22 @@ const Chevron = styled.div<{ $isOpen: boolean }>`
 `;
 
 const AnswerWrapper = styled.div<{ $isOpen: boolean }>`
-  max-height: ${props => props.$isOpen ? '300px' : '0'};
+  max-height: ${props => props.$isOpen ? '350px' : '0'};
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.04, 0.62, 0.23, 0.98);
   opacity: ${props => props.$isOpen ? '1' : '0'};
 `;
 
-const AnswerContent = styled.div`
-  padding: 0 2rem 2rem;
+const AnswerContent = styled.div<{ $isOpen: boolean }>`
+  padding: 0 2rem 2.25rem;
   color: var(--text-secondary);
-  line-height: 1.7;
+  line-height: 1.8;
   font-size: 1.05rem;
+  transform: translateY(${props => props.$isOpen ? '0' : '15px'});
+  transition: transform 0.6s cubic-bezier(0.04, 0.62, 0.23, 0.98), opacity 0.4s ease;
   
   @media (max-width: 768px) {
-    padding: 0 1.5rem 1.5rem;
+    padding: 0 1.5rem 1.75rem;
     font-size: 0.95rem;
   }
 `;
@@ -182,7 +185,7 @@ export function FAQSection() {
               </Chevron>
             </QuestionButton>
             <AnswerWrapper $isOpen={openIndex === index}>
-              <AnswerContent>
+              <AnswerContent $isOpen={openIndex === index}>
                 {faq.answer}
               </AnswerContent>
             </AnswerWrapper>

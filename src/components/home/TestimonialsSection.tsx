@@ -80,25 +80,25 @@ const MarqueeTrack = styled.div`
 `;
 
 const Card = styled.div`
-  background: #0f172a; /* Solid Opaque Dark Background */
+  background: var(--surface);
   padding: 2.5rem;
   border-radius: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
   position: relative;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 480px;
-  min-height: 320px;
+  min-height: 320px; /* Ensure full content visibility */
   flex-shrink: 0;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-md);
   
   &:hover {
     transform: translateY(-10px);
     border-color: var(--primary-light);
-    background: #1e293b;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(var(--primary-rgb), 0.1);
+    filter: brightness(1.05);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2), 0 0 20px rgba(var(--primary-rgb), 0.1);
   }
   
   &::before {
@@ -134,13 +134,14 @@ const Rating = styled.div`
 `;
 
 const TestimonialText = styled.p`
-  color: #e2e8f0;
+  color: var(--foreground);
   line-height: 1.8;
   font-size: 1.1rem;
   margin-bottom: 2rem;
   flex-grow: 1;
   position: relative;
   z-index: 1;
+  opacity: 0.9;
   
   @media (max-width: 768px) {
     font-size: 0.95rem;
