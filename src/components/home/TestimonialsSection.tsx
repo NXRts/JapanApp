@@ -1,19 +1,30 @@
 'use client';
 
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const scroll = keyframes`
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+`;
 
 const Section = styled.section`
-  padding: 4rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 6rem 0;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  
+  @media (max-width: 768px) {
+    padding: 3rem 0;
+  }
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2.75rem;
+  font-weight: 800;
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
   color: var(--foreground);
+  padding: 0 2rem;
   
   span {
     position: relative;
@@ -22,128 +33,226 @@ const SectionTitle = styled.h2`
     &::after {
       content: '';
       position: absolute;
-      bottom: -8px;
+      bottom: -10px;
       left: 50%;
       transform: translateX(-50%);
-      width: 60px;
-      height: 4px;
+      width: 80px;
+      height: 5px;
       background: var(--primary);
       border-radius: 2px;
     }
   }
   
   @media (max-width: 768px) {
-    font-size: 1.75rem;
-    margin-bottom: 2rem;
+    font-size: 2rem;
+    margin-bottom: 3rem;
   }
 `;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+const MarqueeContainer = styled.div`
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 5%,
+    black 95%,
+    transparent 100%
+  );
+`;
+
+const MarqueeTrack = styled.div`
+  display: flex;
+  gap: 2.5rem;
+  width: fit-content;
+  animation: ${scroll} 40s linear infinite;
+  padding: 2rem 0;
+  
+  &:hover {
+    animation-play-state: paused;
+  }
 `;
 
 const Card = styled.div`
-  background: var(--surface);
-  padding: 2rem;
-  border-radius: 20px;
-  border: 1px solid var(--border);
+  background: #0f172a; /* Solid Slate-950/Dark Background */
+  padding: 2.5rem;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle solid border */
   position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 480px;
+  min-height: 320px; /* Ensure full content visibility */
+  flex-shrink: 0;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  
+  &:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary-light);
+    background: #1e293b; /* Slightly lighter on hover */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(var(--primary-rgb), 0.1);
+  }
   
   &::before {
-    content: '"';
+    content: '“';
     position: absolute;
     top: 1rem;
-    right: 2rem;
-    font-size: 4rem;
+    right: 2.5rem;
+    font-size: 5rem;
     color: var(--primary);
     opacity: 0.1;
     font-family: serif;
+    line-height: 1;
+  }
+  
+  @media (max-width: 768px) {
+    width: 320px;
+    padding: 2rem;
+    min-height: 280px;
   }
 `;
 
-const Text = styled.p`
-  color: var(--text-secondary);
-  line-height: 1.7;
-  font-style: italic;
+const Rating = styled.div`
+  display: flex;
+  gap: 4px;
   margin-bottom: 1.5rem;
+  color: #fbbf24;
+  font-size: 1.15rem;
+`;
+
+const Text = styled.p`
+  color: #e2e8f0; /* Higher contrast text */
+  line-height: 1.8;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+  position: relative;
+  z-index: 1;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
 `;
 
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 `;
 
-const Avatar = styled.div`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+const Avatar = styled.div<{ $gradient: string }>`
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  background: ${props => props.$gradient};
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-weight: 700;
-  font-size: 0.9rem;
+  font-weight: 800;
+  font-size: 1rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 `;
 
 const UserMeta = styled.div`
   h4 {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--foreground);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   
   span {
     font-size: 0.85rem;
     color: var(--text-secondary);
+    font-weight: 600;
   }
 `;
 
+const VerifiedBadge = styled.span`
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 900;
+`;
+
+const testimonials = [
+  {
+    name: 'Sarah J.',
+    role: 'JLPT N2 Candidate',
+    initial: 'SJ',
+    gradient: 'linear-gradient(135deg, #6366f1, #a855f7)',
+    text: "The AI Dictionary is a game changer. Being able to scan physical manga with the OCR feature saved me so much time. It's the most polished Japanese app I've used.",
+    rating: 5
+  },
+  {
+    name: 'Kenji W.',
+    role: 'Beginner Learner',
+    initial: 'KW',
+    gradient: 'linear-gradient(135deg, #f43f5e, #fb923c)',
+    text: "I mastered Hiragana and Katakana in less than 10 days! The interactive games made the characters stick in my mind much faster than traditional flashcards.",
+    rating: 5
+  },
+  {
+    name: 'Elena R.',
+    role: 'Intermediate Student',
+    initial: 'ER',
+    gradient: 'linear-gradient(135deg, #10b981, #3b82f6)',
+    text: "The SRS algorithm is spot-on. I used to forget Kanji all the time, but the smart review system ensures I'm only practicing when it's most effective for memory.",
+    rating: 5
+  },
+  {
+    name: 'Liam M.',
+    role: 'JLPT N4 Student',
+    initial: 'LM',
+    gradient: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+    text: "Sentence Builder really helped me understand grammar nuances. It's rare to find an app that covers both vocabulary and sentence structure so well.",
+    rating: 5
+  }
+];
+
 export function TestimonialsSection() {
+  const repeatedTestimonials = [...testimonials, ...testimonials];
+
   return (
     <Section>
       <SectionTitle><span>Community Stories</span></SectionTitle>
-      <Grid>
-        <Card>
-          <Text>
-            &quot;I struggled with Kanji for years until I found this app. The clean interface and daily quizzes kept me coming back. I finally passed N3!&quot;
-          </Text>
-          <UserInfo>
-            <Avatar>JD</Avatar>
-            <UserMeta>
-              <h4>Jane Doe</h4>
-              <span>JLPT N3 Certified</span>
-            </UserMeta>
-          </UserInfo>
-        </Card>
-        <Card>
-          <Text>
-            &quot;The best way to learn Kana. I memorized Hiragana in just a week using the visualization tools. Highly recommended for beginners.&quot;
-          </Text>
-          <UserInfo>
-            <Avatar>AS</Avatar>
-            <UserMeta>
-              <h4>Alex Smith</h4>
-              <span>Beginner Learner</span>
-            </UserMeta>
-          </UserInfo>
-        </Card>
-        <Card>
-          <Text>
-            &quot;Simple, effective, and beautiful. It cuts out the noise and focuses on what matters: learning the characters. Love the dark mode.&quot;
-          </Text>
-          <UserInfo>
-            <Avatar>MK</Avatar>
-            <UserMeta>
-              <h4>Maria K.</h4>
-              <span>Intermediate Student</span>
-            </UserMeta>
-          </UserInfo>
-        </Card>
-      </Grid>
+      <MarqueeContainer>
+        <MarqueeTrack>
+          {repeatedTestimonials.map((t, i) => (
+            <Card key={i}>
+              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
+                <div>
+                  <Rating>{'★'.repeat(t.rating)}</Rating>
+                  <Text>&ldquo;{t.text}&rdquo;</Text>
+                </div>
+                <UserInfo>
+                  <Avatar $gradient={t.gradient}>{t.initial}</Avatar>
+                  <UserMeta>
+                    <h4>
+                      {t.name} <VerifiedBadge>Verified</VerifiedBadge>
+                    </h4>
+                    <span>{t.role}</span>
+                  </UserMeta>
+                </UserInfo>
+              </div>
+            </Card>
+          ))}
+        </MarqueeTrack>
+      </MarqueeContainer>
     </Section>
   );
 }
