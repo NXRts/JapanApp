@@ -231,7 +231,7 @@ export function HeroSection({ isDailyCompleted }: HeroSectionProps) {
           <PrimaryButton href="/kana">Hiragana & Katakana</PrimaryButton>
           <SpecialtyButton href="/jlpt">JLPT Challenge</SpecialtyButton>
           <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
-          <SecondaryButton href="/materi">Materi</SecondaryButton>
+          <SecondaryButton href="/materi">Lessons</SecondaryButton>
           <SecondaryButton href="/practice">Start Practicing</SecondaryButton>
           <SecondaryButton 
             href="/daily-quiz" 
