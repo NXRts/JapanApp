@@ -112,54 +112,54 @@ const CardDescription = styled.p`
 export function FeaturesSection() {
   return (
     <Section>
-      <SectionTitle><span>Fitur Unggulan</span></SectionTitle>
+      <SectionTitle><span>Key Features</span></SectionTitle>
       <Grid>
         <Card>
           <CardIcon>字</CardIcon>
           <CardTitle>2136+ Joyo Kanji</CardTitle>
           <CardDescription>
-            Perpustakaan Kanji terlengkap untuk semua level JLPT. Dilengkapi info Cara Baca, 
-            Arti, Urutan Goresan, dan contoh kata yang mendalam.
+            The most complete Kanji library for all JLPT levels. Includes <b>Readings</b>, 
+            <b>Meanings</b>, <b>Stroke Order</b>, and in-depth word examples.
           </CardDescription>
         </Card>
         <Card>
           <CardIcon>あ</CardIcon>
           <CardTitle>Hiragana & Katakana</CardTitle>
           <CardDescription>
-            Pondasi dasar untuk pemula. Visualisasi interaktif tiap karakter membantu Anda 
-            menguasai kedua alfabet dasar dalam waktu singkat.
+            The essential foundation for beginners. Interactive visualizations help you 
+            master both Japanese alphabets in record time.
           </CardDescription>
         </Card>
         <Card>
           <CardIcon>📸</CardIcon>
-          <CardTitle>Kamus AI & Kamera</CardTitle>
+          <CardTitle>AI Dictionary & Camera</CardTitle>
           <CardDescription>
-            Bukan sekadar teks. Cari arti kata menggunakan fitur <b>OCR Kamera</b>, 
-            <b>Tulisan Tangan</b>, atau <b>Pencarian Suara</b> yang sangat akurat.
+            Beyond simple text. Search for meanings using <b>OCR Camera</b>, 
+            <b>Handwriting</b>, or highly accurate <b>Voice Search</b> features.
           </CardDescription>
         </Card>
         <Card>
           <CardIcon>🎮</CardIcon>
-          <CardTitle>Game Interaktif</CardTitle>
+          <CardTitle>Interactive Games</CardTitle>
           <CardDescription>
-            Belajar jadi tidak membosankan. Uji kemampuan memori Anda dengan game 
-            <b>Match Pairs</b>, <b>Sentence Builder</b>, dan tantangan <b>Speed Typing</b>.
+            Learning made addictive. Test your memory with <b>Match Pairs</b>, 
+            <b>Sentence Builder</b>, and fast-paced <b>Speed Typing</b> challenges.
           </CardDescription>
         </Card>
         <Card>
           <CardIcon>🎓</CardIcon>
-          <CardTitle>Materi JLPT Komprehensif</CardTitle>
+          <CardTitle>Comprehensive JLPT</CardTitle>
           <CardDescription>
-            Kurikulum terstruktur mulai dari <b>N5 hingga N1</b>. Mencakup Tata Bahasa, 
-            Kumpulan Pola Kalimat, dan Kosakata standar ujian resmi.
+            Structured curriculum from <b>N5 to N1</b>. Covers Grammar, 
+            Sentence Patterns, and official exam vocabulary lists.
           </CardDescription>
         </Card>
         <Card>
           <CardIcon>🔄</CardIcon>
-          <CardTitle>Sistem Progres SRS</CardTitle>
+          <CardTitle>SRS Mastery System</CardTitle>
           <CardDescription>
-            Teknologi <b>Spaced Repetition System</b> kami memprediksi waktu terbaik untuk Anda 
-            mengingat kembali, memastikan hafalan tersimpan di memori jangka panjang.
+            Our <b>Spaced Repetition System</b> technology predicts the best time for you 
+            to review, ensuring long-term memory retention.
           </CardDescription>
         </Card>
       </Grid>

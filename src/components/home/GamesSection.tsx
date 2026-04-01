@@ -116,42 +116,42 @@ export function GamesSection() {
           <Badge>Game</Badge>
           <Title>Match Pairs</Title>
           <Description>
-            Uji kecepatan memori Anda dengan mencocokkan karakter Jepang dan artinya dalam game yang seru.
+            Test your memory speed by matching Japanese characters and their meanings in this exciting game.
           </Description>
         </Card>
         <Card href="/game/sentence-builder">
           <Badge>New</Badge>
           <Title>Sentence Builder</Title>
           <Description>
-            Latih tata bahasa Anda dengan menyusun pola kalimat Jepang secara tepat dan interaktif.
+            Practice your grammar by constructing Japanese sentence patterns accurately and interactively.
           </Description>
         </Card>
         <Card href="/game/speed-typing">
           <Badge>Featured</Badge>
           <Title>Speed Typing</Title>
           <Description>
-            Tingkatkan refleks dan kecepatan mengetik karakter Kana & Kanji dalam tantangan waktu.
+            Improve your reflexes and typing speed for Kana & Kanji characters in a timed challenge.
           </Description>
         </Card>
         <Card href="/daily-quiz">
           <Badge>Daily</Badge>
           <Title>Daily Quiz</Title>
           <Description>
-            Tantangan harian untuk menjaga ketajaman ingatan Anda dan mendapatkan bonus EXP setiap hari.
+            Daily challenges to keep your mind sharp and earn bonus EXP every single day.
           </Description>
         </Card>
         <Card href="/practice/smart-flashcards">
           <Badge>Smart</Badge>
           <Title>Smart Flashcards</Title>
           <Description>
-            Sesi belajar pintar berbasis algoritma SRS yang dipersonalisasi sesuai kebutuhan memori Anda.
+            Intelligent study sessions based on the SRS algorithm, personalized to your memory needs.
           </Description>
         </Card>
         <Card href="/reverse-quiz">
           <Badge>Mastery</Badge>
           <Title>Reverse Quiz</Title>
           <Description>
-            Tantang ingatan Anda dengan mengidentifikasi karakter dari artinya dalam urutan terbalik.
+            Challenge your memory by identifying characters from their meanings in reverse order.
           </Description>
         </Card>
       </GamesGrid>

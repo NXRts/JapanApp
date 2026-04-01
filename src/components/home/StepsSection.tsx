@@ -172,15 +172,15 @@ const StepDescription = styled.p`
 export function StepsSection() {
   return (
     <Section>
-      <SectionTitle><span>Cara Kerjanya</span></SectionTitle>
+      <SectionTitle><span>How It Works</span></SectionTitle>
       <TimelineWrapper>
         <StepNode>
           <Dot className="dot">1</Dot>
           <ContentCard className="content">
             <IconWrapper>🎯</IconWrapper>
-            <StepTitle>Pilih Levelmu</StepTitle>
+            <StepTitle>Choose Your Level</StepTitle>
             <StepDescription>
-              Tentukan tantanganmu dari <b>Hiragana</b> dasar hingga level master <b>Kanji N1</b> yang mendalam.
+              Start your journey from the basic <b>Hiragana</b> to the deep challenges of <b>Kanji N1</b> mastery.
             </StepDescription>
           </ContentCard>
         </StepNode>
@@ -189,9 +189,9 @@ export function StepsSection() {
           <Dot className="dot">2</Dot>
           <ContentCard className="content">
             <IconWrapper>📖</IconWrapper>
-            <StepTitle>Pelajari Detailnya</StepTitle>
+            <StepTitle>Learn the Details</StepTitle>
             <StepDescription>
-              Kuasai urutan goresan, cara baca <b>Onyomi/Kunyomi</b>, dan ribuan contoh kata dalam kalimat nyata.
+              Master stroke orders, <b>Onyomi/Kunyomi</b> readings, and thousands of example words in real contexts.
             </StepDescription>
           </ContentCard>
         </StepNode>
@@ -200,9 +200,9 @@ export function StepsSection() {
           <Dot className="dot">3</Dot>
           <ContentCard className="content">
             <IconWrapper>⚔️</IconWrapper>
-            <StepTitle>Uji Kemampuanmu</StepTitle>
+            <StepTitle>Test Your Skills</StepTitle>
             <StepDescription>
-              Pertajam hafalan melalui <b>Kuis Interaktif</b>, Game seru, dan latihan menulis yang menantang.
+              Sharpen your memory through <b>Interactive Quizzes</b>, fun games, and challenging writing practices.
             </StepDescription>
           </ContentCard>
         </StepNode>
