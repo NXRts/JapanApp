@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import { CameraIcon, GamepadIcon, GraduationIcon, RefreshIcon } from '../icons/AppIcons';
 
 const Section = styled.section`
   padding: 4rem 2rem;
@@ -94,6 +95,11 @@ const CardIcon = styled.div`
   color: var(--primary);
   font-size: 1.75rem;
   box-shadow: 0 8px 16px -4px rgba(var(--primary-rgb), 0.1);
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
 `;
 
 const CardTitle = styled.h3`
@@ -131,7 +137,7 @@ export function FeaturesSection() {
           </CardDescription>
         </Card>
         <Card>
-          <CardIcon>📸</CardIcon>
+          <CardIcon><CameraIcon size={28} /></CardIcon>
           <CardTitle>AI Dictionary & Camera</CardTitle>
           <CardDescription>
             Beyond simple text. Search for meanings using <b>OCR Camera</b>, 
@@ -139,7 +145,7 @@ export function FeaturesSection() {
           </CardDescription>
         </Card>
         <Card>
-          <CardIcon>🎮</CardIcon>
+          <CardIcon><GamepadIcon size={28} /></CardIcon>
           <CardTitle>Interactive Games</CardTitle>
           <CardDescription>
             Learning made addictive. Test your memory with <b>Match Pairs</b>, 
@@ -147,7 +153,7 @@ export function FeaturesSection() {
           </CardDescription>
         </Card>
         <Card>
-          <CardIcon>🎓</CardIcon>
+          <CardIcon><GraduationIcon size={28} /></CardIcon>
           <CardTitle>Comprehensive JLPT</CardTitle>
           <CardDescription>
             Structured curriculum from <b>N5 to N1</b>. Covers Grammar, 
@@ -155,7 +161,7 @@ export function FeaturesSection() {
           </CardDescription>
         </Card>
         <Card>
-          <CardIcon>🔄</CardIcon>
+          <CardIcon><RefreshIcon size={28} /></CardIcon>
           <CardTitle>SRS Mastery System</CardTitle>
           <CardDescription>
             Our <b>Spaced Repetition System</b> technology predicts the best time for you 
