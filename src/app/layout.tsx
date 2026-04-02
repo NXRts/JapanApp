@@ -78,7 +78,7 @@ export default function RootLayout({
           <ProgressProvider>
             <StyledRegistry>
               <Navbar />
-              <main style={{ flex: 1, paddingBottom: '40px', position: 'relative' }}>
+              <main style={{ flex: 1, position: 'relative' }}>
                 {children}
               </main>
               <Footer />

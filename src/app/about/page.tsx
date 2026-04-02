@@ -17,7 +17,6 @@ const waveMove = keyframes`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding-bottom: 4rem;
   min-height: 80vh;
   overflow-x: hidden;
 `;
@@ -301,13 +300,13 @@ const ValueCard = styled.div<ValueIconProps>`
     width: 60px;
     height: 60px;
     background: ${props => {
-      const rgb = props.$variant === 'secondary' ? 'var(--secondary-rgb)' : props.$variant === 'accent' ? 'var(--accent-rgb)' : 'var(--primary-rgb)';
-      return `linear-gradient(135deg, rgba(${rgb}, 0.15), rgba(${rgb}, 0.05))`;
-    }};
+    const rgb = props.$variant === 'secondary' ? 'var(--secondary-rgb)' : props.$variant === 'accent' ? 'var(--accent-rgb)' : 'var(--primary-rgb)';
+    return `linear-gradient(135deg, rgba(${rgb}, 0.15), rgba(${rgb}, 0.05))`;
+  }};
     border: 1px solid ${props => {
-      const rgb = props.$variant === 'secondary' ? 'var(--secondary-rgb)' : props.$variant === 'accent' ? 'var(--accent-rgb)' : 'var(--primary-rgb)';
-      return `rgba(${rgb}, 0.1)`;
-    }};
+    const rgb = props.$variant === 'secondary' ? 'var(--secondary-rgb)' : props.$variant === 'accent' ? 'var(--accent-rgb)' : 'var(--primary-rgb)';
+    return `rgba(${rgb}, 0.1)`;
+  }};
     color: ${props => props.$variant === 'secondary' ? 'var(--secondary)' : props.$variant === 'accent' ? 'var(--accent)' : 'var(--primary)'};
     border-radius: 18px;
     display: flex;
@@ -315,9 +314,9 @@ const ValueCard = styled.div<ValueIconProps>`
     justify-content: center;
     margin-bottom: 2rem;
     box-shadow: 0 8px 16px -4px ${props => {
-      const rgb = props.$variant === 'secondary' ? 'var(--secondary-rgb)' : props.$variant === 'accent' ? 'var(--accent-rgb)' : 'var(--primary-rgb)';
-      return `rgba(${rgb}, 0.1)`;
-    }};
+    const rgb = props.$variant === 'secondary' ? 'var(--secondary-rgb)' : props.$variant === 'accent' ? 'var(--accent-rgb)' : 'var(--primary-rgb)';
+    return `rgba(${rgb}, 0.1)`;
+  }};
     
     svg { width: 28px; height: 28px; }
   }
@@ -337,10 +336,10 @@ const ValueCard = styled.div<ValueIconProps>`
 `;
 
 const JourneySection = styled.section`
-  padding: 5rem 2rem;
-  background: rgba(var(--primary-rgb), 0.02);
+  padding: 5rem 2rem 2rem;
   border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
 `;
 
 const Timeline = styled.div`
@@ -387,20 +386,22 @@ const TimelineItem = styled.div<TimelineItemProps>`
   &::after {
     content: '';
     position: absolute;
-    left: 11px;
+    left: 21px;
     top: 0;
-    width: 20px;
-    height: 20px;
-    background: var(--surface);
-    border: 4px solid var(--primary);
+    width: 22px;
+    height: 22px;
+    background: #0F172A; /* Match navy background */
+    border: 4px solid var(--accent);
     border-radius: 50%;
     z-index: 10;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(244, 63, 94, 0.2);
   }
 
   @media (min-width: 768px) {
     &::after {
-      left: ${props => props.$side === 'right' ? '-10px' : 'auto'};
-      right: ${props => props.$side === 'left' ? '-10px' : 'auto'};
+      left: ${props => props.$side === 'right' ? '0' : '100%'};
+      right: auto;
     }
   }
 
@@ -434,9 +435,81 @@ const TimelineItem = styled.div<TimelineItemProps>`
 `;
 
 const CTASection = styled.section`
-  padding: 6rem 2rem 2rem;
+  padding: 4rem 2rem;
   text-align: center;
-  background: linear-gradient(to bottom, transparent, rgba(79, 70, 229, 0.05));
+  position: relative;
+  z-index: 1;
+`;
+
+const Divider = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  opacity: 0.8;
+`;
+
+const CTACard = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, var(--primary) 0%, #8B5CF6 50%, var(--accent) 100%);
+  padding: 5rem 2rem;
+  border-radius: 32px;
+  box-shadow: 0 25px 50px -12px rgba(79, 70, 229, 0.4);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent);
+    pointer-events: none;
+  }
+`;
+
+const CTAButtonGroup = styled.div`
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+`;
+
+const DarkButton = styled(Link)`
+  padding: 1rem 2.5rem;
+  background: #FFFFFF;
+  color: var(--primary);
+  font-weight: 700;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    background: #F8FAFC;
+  }
+`;
+
+const OutlineButton = styled(Link)`
+  padding: 1rem 2.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: 14px;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-3px);
+  }
 `;
 
 const PrimaryButton = styled(Link)`
@@ -472,18 +545,18 @@ export default function AboutPage() {
         </Title>
         <JpTitle>アプリについて</JpTitle>
         <HeroSubtitle>
-          Bridging the gap between culture and technology. 
+          Bridging the gap between culture and technology.
           We're building the future of Japanese language mastery through immersive, beautiful, and data-driven learning experiences.
         </HeroSubtitle>
         <PrimaryButton href="/practice" style={{ marginBottom: '4rem' }}>
           Start Your Journey
         </PrimaryButton>
-        
+
         <HeroImageWrapper>
-          <Image 
-            src="/images/about_hero.png" 
-            alt="Japan Learning App Hero" 
-            fill 
+          <Image
+            src="/images/about_hero.png"
+            alt="Japan Learning App Hero"
+            fill
             priority
           />
         </HeroImageWrapper>
@@ -509,28 +582,28 @@ export default function AboutPage() {
           <TextBlock>
             <BlockTitle>Our Story</BlockTitle>
             <BlockParagraph>
-              The Japanese language is incredibly rich and challenging, especially when it comes to mastering its unique writing systems. 
-              Japan Learning App was born out of a passion for the language and a desire to build a tool that feels less like a chore and more 
+              The Japanese language is incredibly rich and challenging, especially when it comes to mastering its unique writing systems.
+              Japan Learning App was born out of a passion for the language and a desire to build a tool that feels less like a chore and more
               like a natural part of your daily routine.
             </BlockParagraph>
             <BlockParagraph>
-              We noticed that many traditional learning resources were either too rigid or visually unappealing, making the 
-              process of memorizing thousands of characters daunting. We wanted to build something different&mdash;a modern, beautiful, 
-              and highly interactive platform tailored for learners at all levels, from complete beginners tackling Hiragana to advanced students 
+              We noticed that many traditional learning resources were either too rigid or visually unappealing, making the
+              process of memorizing thousands of characters daunting. We wanted to build something different&mdash;a modern, beautiful,
+              and highly interactive platform tailored for learners at all levels, from complete beginners tackling Hiragana to advanced students
               preparing for the JLPT N1.
             </BlockParagraph>
           </TextBlock>
-          
+
           <TextBlock>
             <BlockTitle>Our Learning Approach</BlockTitle>
             <BlockParagraph>
-              We believe that effective learning comes from consistent, engaging practice. That&#39;s why we&#39;ve built our platform around 
-              proven educational methods. Our interactive flashcards employ spaced repetition principles and randomized modes to 
+              We believe that effective learning comes from consistent, engaging practice. That&#39;s why we&#39;ve built our platform around
+              proven educational methods. Our interactive flashcards employ spaced repetition principles and randomized modes to
               ensure that characters move into your long-term memory.
             </BlockParagraph>
             <BlockParagraph>
-              Beyond rote memorization, we emphasize context and culture. With features like stroke-order animations, native audio pronunciation, 
-              and our immersive Japanese Culture Blog, we provide a holistic learning experience. We don&#39;t just want you to pass a test; 
+              Beyond rote memorization, we emphasize context and culture. With features like stroke-order animations, native audio pronunciation,
+              and our immersive Japanese Culture Blog, we provide a holistic learning experience. We don&#39;t just want you to pass a test;
               we want you to connect with the language and the culture it represents.
             </BlockParagraph>
           </TextBlock>
@@ -552,11 +625,11 @@ export default function AboutPage() {
             </div>
             <h3>Simplicity First</h3>
             <p>
-              Learning Japanese is complex enough. Our UI is designed to be clean, distraction-free, and effortlessly intuitive. 
+              Learning Japanese is complex enough. Our UI is designed to be clean, distraction-free, and effortlessly intuitive.
               We prioritize common sense design over complexity, ensuring you focus 100% of your energy on the characters, not the navigation.
             </p>
           </ValueCard>
-          
+
           <ValueCard $variant="secondary">
             <div className="icon">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -565,7 +638,7 @@ export default function AboutPage() {
             </div>
             <h3>Dynamic Learning</h3>
             <p>
-              We move beyond static lists. Our platform uses Spaced Repetition (SRS) to ensure you remember what you&#39;ve learned 
+              We move beyond static lists. Our platform uses Spaced Repetition (SRS) to ensure you remember what you&#39;ve learned
               at just the right time. Our algorithms adapt to your progress, helping you master Kanji faster than traditional methods.
             </p>
           </ValueCard>
@@ -578,7 +651,7 @@ export default function AboutPage() {
             </div>
             <h3>Cultural Depth</h3>
             <p>
-              Language is culture. We integrate cultural context, native pronunciations, and stroke-order history into every lesson. 
+              Language is culture. We integrate cultural context, native pronunciations, and stroke-order history into every lesson.
               Our blog dive deeper into the rich heritage of Japan, making your learning experience holistic and meaningful.
             </p>
           </ValueCard>
@@ -627,11 +700,22 @@ export default function AboutPage() {
       </JourneySection>
 
       <CTASection>
-        <SectionTitle>Ready to <span>Master Japanese?</span></SectionTitle>
-        <SectionSubtitle style={{ marginBottom: '3.5rem' }}>Join thousands of learners and start your journey today with our interactive tools.</SectionSubtitle>
-        <PrimaryButton href="/practice">
-          Get Started for Free
-        </PrimaryButton>
+        <CTACard>
+          <SectionTitle style={{ color: '#FFFFFF', marginBottom: '1.5rem' }}>
+            Ready to Master Japanese?
+          </SectionTitle>
+          <SectionSubtitle style={{ color: 'rgba(255, 255, 255, 0.9)', maxWidth: '700px' }}>
+            Join thousands of students using our AI-powered SRS Mastery to crush their JLPT goals. Start your journey today!
+          </SectionSubtitle>
+          <CTAButtonGroup>
+            <DarkButton href="/jlpt">
+              Start JLPT Challenge
+            </DarkButton>
+            <OutlineButton href="/practice">
+              Try Practice Mode
+            </OutlineButton>
+          </CTAButtonGroup>
+        </CTACard>
       </CTASection>
     </Container>
   );
