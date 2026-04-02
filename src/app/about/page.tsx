@@ -164,12 +164,22 @@ const StatCard = styled.div`
 `;
 
 const ContentSection = styled.section`
-  padding: 6rem 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
+  padding: 8rem 2rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  
+  & > div {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
   
   @media (max-width: 768px) {
-    padding: 4rem 1.5rem;
+    padding: 5rem 1.5rem;
   }
 `;
 
@@ -327,9 +337,8 @@ const ValueCard = styled.div<ValueIconProps>`
 `;
 
 const JourneySection = styled.section`
-  padding: 6rem 2rem;
+  padding: 5rem 2rem;
   background: rgba(var(--primary-rgb), 0.02);
-  margin-top: 6rem;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 `;
@@ -425,7 +434,7 @@ const TimelineItem = styled.div<TimelineItemProps>`
 `;
 
 const CTASection = styled.section`
-  padding: 8rem 2rem;
+  padding: 6rem 2rem 2rem;
   text-align: center;
   background: linear-gradient(to bottom, transparent, rgba(79, 70, 229, 0.05));
 `;
@@ -528,7 +537,7 @@ export default function AboutPage() {
         </GridContainer>
       </ContentSection>
 
-      <WaveSection style={{ padding: '8rem 0' }}>
+      <WaveSection style={{ padding: '6rem 0 4rem' }}>
         <SectionHeader>
           <SectionTitle>Our Core <span>Values</span></SectionTitle>
           <SectionSubtitle>Essential principles that guide everything we build for our community of learners.</SectionSubtitle>
