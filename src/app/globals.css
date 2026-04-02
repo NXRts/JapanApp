@@ -11,6 +11,9 @@
   /* Emerald 500 */
   --accent: #F43F5E;
   /* Rose 500 */
+  --primary-rgb: 79, 70, 229;
+  --secondary-rgb: 16, 185, 129;
+  --accent-rgb: 244, 63, 94;
 
   /* Neutral Colors */
   --background: #F1F5F9;
