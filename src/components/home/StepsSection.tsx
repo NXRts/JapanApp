@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import { TargetIcon, BookIcon, SwordsIcon } from '../icons/AppIcons';
 
 const Section = styled.section`
   padding: 4rem 2rem;
@@ -150,9 +151,12 @@ const ContentCard = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  font-size: 2.5rem;
+  height: 48px;
   margin-bottom: 1rem;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-light);
   filter: drop-shadow(0 0 10px rgba(var(--primary-rgb), 0.2));
 `;
 
@@ -177,7 +181,7 @@ export function StepsSection() {
         <StepNode>
           <Dot className="dot">1</Dot>
           <ContentCard className="content">
-            <IconWrapper>🎯</IconWrapper>
+            <IconWrapper><TargetIcon size={32} /></IconWrapper>
             <StepTitle>Choose Your Level</StepTitle>
             <StepDescription>
               Start your journey from the basic <b>Hiragana</b> to the deep challenges of <b>Kanji N1</b> mastery.
@@ -188,7 +192,7 @@ export function StepsSection() {
         <StepNode>
           <Dot className="dot">2</Dot>
           <ContentCard className="content">
-            <IconWrapper>📖</IconWrapper>
+            <IconWrapper><BookIcon size={32} /></IconWrapper>
             <StepTitle>Learn the Details</StepTitle>
             <StepDescription>
               Master stroke orders, <b>Onyomi/Kunyomi</b> readings, and thousands of example words in real contexts.
@@ -199,7 +203,7 @@ export function StepsSection() {
         <StepNode>
           <Dot className="dot">3</Dot>
           <ContentCard className="content">
-            <IconWrapper>⚔️</IconWrapper>
+            <IconWrapper><SwordsIcon size={32} /></IconWrapper>
             <StepTitle>Test Your Skills</StepTitle>
             <StepDescription>
               Sharpen your memory through <b>Interactive Quizzes</b>, fun games, and challenging writing practices.

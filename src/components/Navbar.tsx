@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { useProgress } from '@/context/ProgressContext';
 import { isItemDue } from '@/lib/srs';
+import { ArrowRightIcon } from './icons/AppIcons';
 
 const SettingsModal = dynamic(() => import('./SettingsModal').then((mod) => mod.SettingsModal), { ssr: false });
 const DictionarySearchOverlay = dynamic(() => import('./dictionary/DictionarySearchOverlay'), { ssr: false });
@@ -319,51 +320,51 @@ export function Navbar() {
         <MobileMenu $isOpen={isMobileMenuOpen}>
           <MobileLink href="/" $active={pathname === '/'} onClick={() => setIsMobileMenuOpen(false)}>
             Home
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/practice" $active={pathname.startsWith('/practice')} onClick={() => setIsMobileMenuOpen(false)}>
             Practice
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/review" $active={pathname.startsWith('/review')} onClick={() => setIsMobileMenuOpen(false)}>
             Review {dueItemsCount > 0 && <Badge>{dueItemsCount}</Badge>}
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/quiz" $active={pathname.startsWith('/quiz')} onClick={() => setIsMobileMenuOpen(false)}>
             Quiz
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/materi" $active={pathname.startsWith('/materi')} onClick={() => setIsMobileMenuOpen(false)}>
             Materi
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/jlpt" $active={pathname.startsWith('/jlpt')} onClick={() => setIsMobileMenuOpen(false)}>
             JLPT (Library)
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/game" $active={pathname.startsWith('/game')} onClick={() => setIsMobileMenuOpen(false)}>
             Game
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/blog" $active={pathname.startsWith('/blog')} onClick={() => setIsMobileMenuOpen(false)}>
             Blog
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           {/* <MobileLink href="/careers" $active={pathname === '/careers'} onClick={() => setIsMobileMenuOpen(false)}>
             Careers
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink> */}
           <MobileLink href="/stats" $active={pathname === '/stats'} onClick={() => setIsMobileMenuOpen(false)}>
             Stats
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/about" $active={pathname === '/about'} onClick={() => setIsMobileMenuOpen(false)}>
             About
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/contact" $active={pathname === '/contact'} onClick={() => setIsMobileMenuOpen(false)}>
             Contact
-            <span>→</span>
+            <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <div 
             onClick={() => { setIsDictionaryOpen(true); setIsMobileMenuOpen(false); }}

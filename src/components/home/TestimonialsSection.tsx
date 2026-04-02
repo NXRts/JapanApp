@@ -1,6 +1,7 @@
 'use client';
 
 import styled, { keyframes } from 'styled-components';
+import { StarIcon } from '../icons/AppIcons';
 
 const scroll = keyframes`
   0% { transform: translateX(0); }
@@ -263,7 +264,11 @@ export function TestimonialsSection() {
             <Card key={i}>
               <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
                 <div>
-                  <Rating>{'★'.repeat(t.rating)}</Rating>
+                  <Rating>
+                    {[...Array(t.rating)].map((_, index) => (
+                      <StarIcon key={index} size={16} />
+                    ))}
+                  </Rating>
                   <TestimonialText>&ldquo;{t.text}&rdquo;</TestimonialText>
                 </div>
                 <UserInfo>

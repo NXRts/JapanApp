@@ -2,6 +2,7 @@
 
 import styled, { keyframes } from 'styled-components';
 import Link from 'next/link';
+import { CheckIcon } from '../icons/AppIcons';
 
 const float = keyframes`
   0% { transform: translateY(0px); }
@@ -149,7 +150,6 @@ const SpecialtyButton = styled(NavButton)`
   }
 `;
 
-// Integrated Stats Styles
 const StatsContainer = styled.div`
   max-width: 1000px;
   width: 100%;
@@ -238,10 +238,14 @@ export function HeroSection({ isDailyCompleted }: HeroSectionProps) {
             style={{ 
               borderColor: isDailyCompleted ? 'var(--border)' : '#10b981', 
               color: isDailyCompleted ? 'var(--text-secondary)' : '#10b981',
-              opacity: isDailyCompleted ? 0.8 : 1
+              opacity: isDailyCompleted ? 0.8 : 1,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem'
             }}
           >
-            {isDailyCompleted ? '✓ Daily Quiz Done' : 'Daily Quiz'}
+            {isDailyCompleted ? <><CheckIcon size={18} /> Daily Quiz Done</> : 'Daily Quiz'}
           </SecondaryButton>
         </ButtonGroup>
       </HeroContent>
