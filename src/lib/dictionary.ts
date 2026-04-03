@@ -13,6 +13,7 @@ import { n4Grammar } from '@/data/jlpt/n4/grammar';
 import { n3Grammar } from '@/data/jlpt/n3/grammar';
 import { n2Grammar } from '@/data/jlpt/n2/grammar';
 import { n1Grammar } from '@/data/jlpt/n1/grammar';
+import { toRomaji } from 'wanakana';
 
 export interface DictionaryResult {
   id: string;
@@ -88,7 +89,7 @@ export const allNumbers = Object.entries(numbersData).flatMap(([category, items]
 
 export async function searchDictionary(
   query: string, 
-  category: 'kata' | 'tata-bahasa' | 'kanji' | 'kalimat' | 'jpjp' | 'ai' | 'all' = 'all',
+  category: 'kata' | 'tata-bahasa' | 'kanji' | 'kalimat' | 'jpjp' | 'ai' | 'all' | 'kana' = 'all',
   levelFilter: string = 'all'
 ): Promise<DictionaryResult[]> {
   const normalizedQuery = query.toLowerCase().trim();
@@ -145,6 +146,54 @@ export async function searchDictionary(
   }
 
   const localResults: DictionaryResult[] = [];
+
+  // Search local Kana (Hiragana/Katakana characters)
+  if (category === 'kana' || category === 'all') {
+     const KANA_LIST = [
+      'あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ',
+      'た', 'ち', 'つ', 'て', 'と', 'な', 'に', 'ぬ', 'ね', 'の', 'は', 'ひ', 'ふ', 'へ', 'ほ',
+      'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 'ら', 'り', 'る', 'れ', 'ろ', 'わ', 'を', 'ん',
+      'ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ',
+      'タ', 'チ', 'ツ', 'テ', 'ト', 'ナ', 'ニ', 'ヌ', 'ネ', 'ノ', 'ハ', 'ヒ', 'フ', 'ヘ', 'ほ',
+      'マ', 'ミ', 'ム', 'メ', 'モ', 'ヤ', 'ユ', 'ヨ', 'ラ', 'リ', 'る', 'レ', 'ロ', 'ワ', 'ヲ', 'ン'
+    ];
+    
+    // We'll search in a way similar to browseData in page.tsx
+    KANA_LIST.forEach((char, index) => {
+      const charRomaji = toRomaji(char).toLowerCase();
+      // Since toRomaji isn't easily available in this lib without imports, 
+      // we'll just check if the query matches the character itself or its romaji.
+      if (char === normalizedQuery || charRomaji.includes(normalizedQuery)) {
+        localResults.push({
+          id: `kana-search-${index}`,
+          type: 'vocabulary',
+          level: 'N5',
+          word: char,
+          reading: charRomaji,
+          meaning: `Huruf ${index < 46 ? 'Hiragana' : 'Katakana'}: ${charRomaji.toUpperCase()}`,
+          source: 'local'
+        });
+      }
+    });
+
+    // Also include any vocabulary that matches the kana query if searching under kana category
+    if (category === 'kana') {
+        allVocabulary.forEach((item) => {
+          if (item.word === normalizedQuery || item.reading === normalizedQuery) {
+            localResults.push({
+              id: item.id,
+              type: 'vocabulary',
+              level: item.level,
+              word: item.word,
+              reading: item.reading,
+              meaning: item.meaning,
+              romaji: item.romaji,
+              source: item.id.startsWith('lib-') ? 'kamus' : 'local',
+            });
+          }
+        });
+    }
+  }
 
   // Search local Kanji
   if (category === 'kanji' || category === 'all') {
