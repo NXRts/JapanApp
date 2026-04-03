@@ -703,6 +703,7 @@ export default function DictionaryPage() {
   const [isPlayingAll, setIsPlayingAll] = useState(false);
   const [shuffleSeed, setShuffleSeed] = useState(0);
   const [currentlyPlayingId, setCurrentlyPlayingId] = useState<string | null>(null);
+  const [autoKana, setAutoKana] = useState(false);
 
   const itemsPerPage = 15; // Moved from hardcoded value to a constant
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -893,7 +894,7 @@ export default function DictionaryPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value;
-    if (isRomaji(val) && val.length > 0) {
+    if (autoKana && isRomaji(val) && val.length > 0) {
       val = toKana(val, { IMEMode: true });
     }
     setQuery(val);
@@ -1037,7 +1038,7 @@ export default function DictionaryPage() {
               </svg>
               <Input
                 ref={inputRef}
-                placeholder="日本, nihon, Jepang"
+                placeholder={autoKana ? "nihon, sensei, kuruma" : "Jepang, book, gunung, 日本"}
                 value={query}
                 onChange={handleInputChange}
                 onFocus={() => setIsInputFocused(true)}
@@ -1074,6 +1075,12 @@ export default function DictionaryPage() {
                 </IconButton>
                 <IconButton title="OCR Image" onClick={() => setShowImageModal(true)}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>
+                </IconButton>
+                <IconButton $active={autoKana} onClick={() => setAutoKana(!autoKana)} title={autoKana ? "Auto-Kana: On" : "Auto-Kana: Off"}>
+                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '0.85rem', fontWeight: 800, fontFamily: 'monospace', position: 'relative', width: '100%', height: '100%', justifyContent: 'center' }}>
+                    <span style={{ position: 'absolute', left: '4px', top: '6px', color: autoKana ? 'var(--primary)' : 'inherit', opacity: autoKana ? 1 : 0.5 }}>A</span>
+                    <span style={{ position: 'absolute', right: '4px', bottom: '6px', color: autoKana ? 'var(--primary)' : 'inherit' }}>あ</span>
+                  </div>
                 </IconButton>
               </IconGroup>
 
