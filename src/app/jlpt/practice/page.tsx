@@ -54,9 +54,14 @@ const Header = styled.div`
 `;
 
 const HeaderRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
   text-align: right;
   
   @media (max-width: 600px) {
+    align-items: flex-start;
     text-align: left;
   }
 `;
@@ -108,6 +113,72 @@ const PracticeCard = styled.div`
   @media (max-width: 600px) {
     padding: 2.5rem 1.5rem;
     border-radius: 24px;
+  }
+`;
+
+const SetupTitle = styled.h2`
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 2.5rem;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
+const SelectionGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 3rem;
+`;
+
+const SelectionLabel = styled.label`
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-bottom: 1rem;
+  text-align: left;
+`;
+
+const LevelGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
+const OptionButton = styled.button<{ $active: boolean }>`
+  background: ${({ $active }) => ($active ? 'var(--primary)' : 'rgba(var(--foreground-rgb), 0.03)')};
+  color: ${({ $active }) => ($active ? 'white' : 'var(--foreground)')};
+  border: 1px solid ${({ $active }) => ($active ? 'var(--primary)' : 'var(--border)')};
+  padding: 0.85rem;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    color: ${({ $active }) => ($active ? 'white' : 'var(--primary)')};
+    box-shadow: var(--shadow-sm);
+  }
+`;
+
+const CategoryGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
   }
 `;
 
@@ -222,11 +293,10 @@ const BaseButton = styled.button`
   }
 `;
 
-const RevealButton = styled(BaseButton)`
+const PrimaryButton = styled(BaseButton)`
   background: var(--primary);
   color: white;
   width: 100%;
-  margin-top: 2rem;
   box-shadow: 0 10px 15px -3px rgba(var(--primary-rgb, 79, 70, 229), 0.3);
 `;
 
@@ -330,57 +400,52 @@ function shuffleArray(array: any[]) {
 
 function PracticeContent() {
   const searchParams = useSearchParams();
-  const query = searchParams.get('q') || '';
-  const activeCategory = searchParams.get('category') || 'kata';
-  const activeLevel = searchParams.get('level') || 'All';
+  const initialQuery = searchParams.get('q') || '';
+  const initialCategory = (searchParams.get('category') as any) || 'kata';
+  const initialLevel = searchParams.get('level') || 'N5';
 
   const [items, setItems] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
-  const [sessionState, setSessionState] = useState<'loading' | 'practicing' | 'completed' | 'error'>('loading');
+  const [sessionState, setSessionState] = useState<'setup' | 'loading' | 'practicing' | 'completed' | 'error'>('setup');
   const [stats, setStats] = useState({ remembered: 0, forgotten: 0 });
+  
+  // Setup state
+  const [setupLevel, setSetupLevel] = useState(initialLevel);
+  const [setupCategory, setSetupCategory] = useState(initialCategory);
 
-  useEffect(() => {
-    let isMounted = true;
-    
-    const prepareData = async () => {
-      setSessionState('loading');
-      try {
-        let baseData: any[] = [];
+  const startSession = async () => {
+    setSessionState('loading');
+    try {
+      let baseData: any[] = [];
+      
+      if (initialQuery && initialQuery.trim() !== '') {
+        baseData = await searchDictionary(initialQuery, setupCategory as any, setupLevel);
+      } else {
+        if (setupCategory === 'kanji') baseData = allKanji;
+        else if (setupCategory === 'tata-bahasa') baseData = allGrammar;
+        else baseData = allVocabulary.filter(v => v.id.startsWith('lib-'));
         
-        if (query && query.trim() !== '') {
-          baseData = await searchDictionary(query, activeCategory as any, activeLevel);
-        } else {
-          if (activeCategory === 'kanji') baseData = allKanji;
-          else if (activeCategory === 'tata-bahasa') baseData = allGrammar;
-          else baseData = allVocabulary.filter(v => v.id.startsWith('lib-'));
-          
-          if (activeLevel !== 'All' && activeLevel !== 'all') {
-            baseData = baseData.filter(item => item.level === activeLevel);
-          }
+        if (setupLevel !== 'Semua' && setupLevel !== 'All') {
+          baseData = baseData.filter(item => item.level === setupLevel);
         }
-        
-        if (!isMounted) return;
-        
-        if (baseData.length === 0) {
-          setSessionState('error');
-          return;
-        }
-        
-        const shuffled = shuffleArray(baseData);
-        setItems(shuffled.slice(0, 20)); // Limit to 20 items per session
-        setSessionState('practicing');
-        setCurrentIndex(0);
-        setIsRevealed(false);
-        setStats({ remembered: 0, forgotten: 0 });
-      } catch (err) {
-        if (isMounted) setSessionState('error');
       }
-    };
-    
-    prepareData();
-    return () => { isMounted = false; };
-  }, [query, activeCategory, activeLevel]);
+      
+      if (baseData.length === 0) {
+        setSessionState('error');
+        return;
+      }
+      
+      const shuffled = shuffleArray(baseData);
+      setItems(shuffled.slice(0, 20)); // Limit to 20 items per session
+      setSessionState('practicing');
+      setCurrentIndex(0);
+      setIsRevealed(false);
+      setStats({ remembered: 0, forgotten: 0 });
+    } catch (err) {
+      setSessionState('error');
+    }
+  };
 
   const handleReveal = () => setIsRevealed(true);
 
@@ -430,14 +495,62 @@ function PracticeContent() {
           </Breadcrumbs>
           
           <HeaderRight>
-              <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
-                  Sesi Berlatih
-              </div>
+            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+                Sesi Berlatih
+            </div>
+            {sessionState === 'practicing' && (
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>
-                  {activeLevel !== 'All' ? activeLevel : 'Semua Level'} • {activeCategory.replace('-', ' ').toUpperCase()}
+                  {setupLevel} • {setupCategory.charAt(0).toUpperCase() + setupCategory.slice(1).replace('-', ' ')}
               </div>
+            )}
           </HeaderRight>
         </Header>
+
+        {sessionState === 'setup' && (
+          <PracticeCard>
+            <SetupTitle>Mulai Berlatih</SetupTitle>
+            <SelectionGroup>
+              <div>
+                <SelectionLabel>Pilih Level</SelectionLabel>
+                <LevelGrid>
+                  {['Semua', 'N1', 'N2', 'N3', 'N4', 'N5'].map((l) => (
+                    <OptionButton 
+                      key={l} 
+                      $active={setupLevel === l} 
+                      onClick={() => setSetupLevel(l)}
+                    >
+                      {l}
+                    </OptionButton>
+                  ))}
+                </LevelGrid>
+              </div>
+
+              <div>
+                <SelectionLabel>Pilih Kategori</SelectionLabel>
+                <CategoryGrid>
+                  {[
+                    { id: 'kata', label: 'Kosakata' },
+                    { id: 'kanji', label: 'Kanji' },
+                    { id: 'tata-bahasa', label: 'Grammar' }
+                  ].map((c) => (
+                    <OptionButton 
+                      key={c.id} 
+                      $active={setupCategory === c.id} 
+                      onClick={() => setSetupCategory(c.id as any)}
+                    >
+                      {c.label}
+                    </OptionButton>
+                  ))}
+                </CategoryGrid>
+              </div>
+            </SelectionGroup>
+
+            <PrimaryButton onClick={startSession}>
+              Mulai Sesi
+              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </PrimaryButton>
+          </PracticeCard>
+        )}
 
         {sessionState === 'loading' && (
           <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
@@ -451,11 +564,16 @@ function PracticeContent() {
             <p style={{ marginTop: '1rem', textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2.5rem' }}>
               Maaf, kami tidak menemukan data yang sesuai dengan filter Anda untuk sesi berlatih.
             </p>
-            <Link href="/jlpt" style={{ textDecoration: 'none' }}>
-              <BaseButton style={{ background: 'var(--primary)', color: 'white', width: '100%' }}>
-                Kembali ke JLPT
+            <FinalActions>
+              <BaseButton onClick={() => setSessionState('setup')} style={{ background: 'var(--primary)', color: 'white', flex: 1 }}>
+                Ubah Pengaturan
               </BaseButton>
-            </Link>
+              <Link href="/jlpt" style={{ textDecoration: 'none', flex: 1 }}>
+                <BaseButton style={{ background: 'transparent', color: 'var(--foreground)', border: '1px solid var(--border)', width: '100%' }}>
+                  Kembali
+                </BaseButton>
+              </Link>
+            </FinalActions>
           </PracticeCard>
         )}
 
@@ -474,10 +592,10 @@ function PracticeContent() {
               <MainText>{getDisplayMain(currentItem)}</MainText>
 
               {!isRevealed ? (
-                <RevealButton onClick={handleReveal}>
+                <PrimaryButton onClick={handleReveal} style={{ marginTop: '2rem' }}>
                   Tampilkan Jawaban
                   <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                </RevealButton>
+                </PrimaryButton>
               ) : (
                 <RevealSection $isVisible={isRevealed}>
                   <ReadingText>{getDisplayReading(currentItem)}</ReadingText>
@@ -530,9 +648,12 @@ function PracticeContent() {
                 }} style={{ background: 'var(--primary)', color: 'white', flex: 1, minWidth: '160px' }}>
                 Ulangi Sesi
               </BaseButton>
-              <Link href="/jlpt" style={{ textDecoration: 'none', flex: 1, minWidth: '160px' }}>
-                <BaseButton style={{ background: 'transparent', color: 'var(--foreground)', border: '1px solid var(--border)', width: '100%' }}>
-                  Selesai
+              <BaseButton onClick={() => setSessionState('setup')} style={{ background: 'transparent', color: 'var(--foreground)', border: '1px solid var(--border)', flex: 1, minWidth: '160px' }}>
+                Ubah Pengaturan
+              </BaseButton>
+              <Link href="/jlpt" style={{ textDecoration: 'none', width: '100%' }}>
+                <BaseButton style={{ background: 'transparent', color: 'var(--text-secondary)', border: 'none', width: '100%', fontSize: '0.95rem' }}>
+                  Kembali ke JLPT
                 </BaseButton>
               </Link>
             </FinalActions>
