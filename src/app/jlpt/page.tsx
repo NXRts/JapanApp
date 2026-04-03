@@ -687,7 +687,7 @@ export default function DictionaryPage() {
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('N5');
   const [activeCategory, setActiveCategory] = useState<'kata' | 'tata-bahasa' | 'kanji' | 'kalimat' | 'jpjp' | 'ai' | 'kana'>('kata');
-  const [showConfig, setShowConfig] = useState({ kata: true, ejaan: true, arti: true });
+  const [showConfig, setShowConfig] = useState({ kata: true, ejaan: true, arti: true, rekomendasi: true });
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -867,21 +867,17 @@ export default function DictionaryPage() {
   useEffect(() => {
     const timer = setTimeout(async () => {
       if (query.trim()) {
-        setIsLoading(true);
-        // Pass selected dictionary target if needed. 
-        // We'll update searchDictionary to handle selectedDict later. 
-        const results = await searchDictionary(query, activeCategory as any, activeLevel);
+        // results are found across all JLPT levels. 
+        const results = await searchDictionary(query, activeCategory as any, 'all');
 
         // Filter out ID/EN based on dict
         let filtered = results;
         if (selectedDict === 'JA-EN') {
           filtered = results.filter(r => r.source === 'jisho' || r.source === 'kanji-db');
         } else if (selectedDict === 'JA-ID') {
-          filtered = results.filter(r => r.source === 'kamus' || r.source === 'local' || r.source === 'angka' || r.source === 'kanji-db');
+          filtered = results.filter(r => r.source === 'kamus' || r.source === 'local' || r.source === 'angka' || r.source === 'kanji-db' || r.source === 'tatoeba' || r.source === 'wiktionary');
         } else if (selectedDict === 'JA-JA') {
-          // We might just show all or just jpjp. If jpjp is selected, it handles it already.
-          // However, if category isn't jpjp we probably shouldn't show it here.
-          // We'll respect the ActiveCategory primary function for now.
+          filtered = results.filter(r => r.source === 'wiktionary' || r.source === 'local');
         }
 
         setSearchResults(filtered);
@@ -890,7 +886,7 @@ export default function DictionaryPage() {
       } else {
         setSearchResults(null);
       }
-    }, 400);
+    }, 300);
 
     return () => clearTimeout(timer);
   }, [query, activeCategory, activeLevel, selectedDict]);
@@ -938,6 +934,11 @@ export default function DictionaryPage() {
 
   const filteredData = React.useMemo(() => {
     let result = (searchResults || browseData).filter(item => {
+      // If we are actively searching (searchResults is not null), we bypass the level filter 
+      // to show all relevant matches across all JLPT levels. 
+      // If we are just browsing (searchResults is null), we respect the level filter.
+      if (searchResults) return true; 
+
       if (activeLevel !== 'all' && item.level !== activeLevel) return false;
       return true;
     });
@@ -1116,7 +1117,7 @@ export default function DictionaryPage() {
               ))}
             </ModesRow>
 
-            {isInputFocused && query.length > 0 && searchResults && searchResults.length > 0 && (
+            {showConfig.rekomendasi && isInputFocused && query.length > 0 && searchResults && searchResults.length > 0 && (
               <AutocompleteDropdown>
                 {searchResults.slice(0, 8).map(res => (
                   <AutocompleteItem
@@ -1167,7 +1168,8 @@ export default function DictionaryPage() {
               {[
                 { id: 'kata', label: 'Kata' },
                 { id: 'ejaan', label: 'Ejaan' },
-                { id: 'arti', label: 'Arti' }
+                { id: 'arti', label: 'Arti' },
+                { id: 'rekomendasi', label: 'Rekomendasi' }
               ].map(item => (
                 <CheckboxLabel key={item.id}>
                   <input
@@ -1194,10 +1196,6 @@ export default function DictionaryPage() {
 
           {isLoading ? (
             <LoadingSpinner />
-          ) : isInputFocused && query.trim().length > 0 ? (
-            <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-              Mencari rekomendasi... Tekan Enter atau klik layar untuk memuat hasil lengkap.
-            </div>
           ) : (
             <>
               <ItemsGrid>
