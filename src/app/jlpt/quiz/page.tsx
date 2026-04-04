@@ -421,7 +421,7 @@ function QuizContent() {
       <Container>
         <Header>
           <Breadcrumbs>
-            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Kuis</span>
+            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Quiz</span>
           </Breadcrumbs>
           
           <HeaderRight>
@@ -429,25 +429,25 @@ function QuizContent() {
                   JLPT Custom Quiz
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                  Level {activeLevel !== 'All' ? activeLevel : 'Semua'} • {activeCategory.replace('-', ' ').toUpperCase()}
+                  Level {activeLevel !== 'All' ? activeLevel : 'All'} • {activeCategory.replace('-', ' ').toUpperCase()}
               </div>
           </HeaderRight>
         </Header>
         
         {quizState === 'loading' && (
           <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-            <p>Menyiapkan Kuis {activeLevel !== 'All' ? activeLevel : ''}...</p>
+            <p>Preparing Quiz {activeLevel !== 'All' ? activeLevel : ''}...</p>
           </div>
         )}
         
         {quizState === 'error' && (
           <QuizCard>
-            <h2 style={{ color: 'var(--foreground)' }}>Tidak Cukup Data</h2>
+            <h2 style={{ color: 'var(--foreground)' }}>Not Enough Data</h2>
             <p style={{ marginTop: '1rem', textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-              Maaf, data yang tersedia untuk filter ini kurang dari 4 item.<br/> Silakan sesuaikan kembali filter Anda di halaman JLPT untuk membuat Kuis.
+              Sorry, available data for this filter is less than 4 items.<br/> Please adjust your filters on the JLPT page to generate a Quiz.
             </p>
             <ActionButtonParams href="/jlpt">
-              Kembali ke JLPT
+              Back to JLPT
             </ActionButtonParams>
           </QuizCard>
         )}
@@ -494,16 +494,16 @@ function QuizContent() {
         {quizState === 'results' && (
           <ResultOverlay>
             <div style={{ fontSize: '3rem', margin: '0 0 1rem 0' }}>🏆</div>
-            <h2>Kuis Selesai!</h2>
-            <p style={{ fontSize: '1.25rem', marginBottom: '0.5rem', marginTop: '1rem' }}>Anda mencetak skor <strong>{score}</strong> dari <strong>{questions.length}</strong></p>
+            <h2>Quiz Complete!</h2>
+            <p style={{ fontSize: '1.25rem', marginBottom: '0.5rem', marginTop: '1rem' }}>You scored <strong>{score}</strong> out of <strong>{questions.length}</strong></p>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                {score === questions.length ? "Luar biasa! Skor Anda sempurna!" : "Kerja bagus! Teruslah berlatih."}
+                {score === questions.length ? "Amazing! Your score is perfect!" : "Good job! Keep practicing."}
             </p>
             
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-              <RestartButton onClick={handleRestart}>Coba Lagi</RestartButton>
+              <RestartButton onClick={handleRestart}>Try Again</RestartButton>
               <ActionSecondary href="/jlpt">
-                Kembali ke JLPT
+                Back to JLPT
               </ActionSecondary>
             </div>
           </ResultOverlay>
@@ -516,7 +516,7 @@ function QuizContent() {
 
 export default function QuizPage() {
   return (
-    <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center' }}>Memuat...</div>}>
+    <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center' }}>Loading...</div>}>
       <QuizContent />
     </Suspense>
   );

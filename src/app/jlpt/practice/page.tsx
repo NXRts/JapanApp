@@ -426,7 +426,7 @@ function PracticeContent() {
         else if (setupCategory === 'tata-bahasa') baseData = allGrammar;
         else baseData = allVocabulary.filter(v => v.id.startsWith('lib-'));
         
-        if (setupLevel !== 'Semua' && setupLevel !== 'All') {
+        if (setupLevel !== 'All') {
           baseData = baseData.filter(item => item.level === setupLevel);
         }
       }
@@ -491,12 +491,12 @@ function PracticeContent() {
       <Container>
         <Header>
           <Breadcrumbs>
-            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Berlatih</span>
+            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Practice</span>
           </Breadcrumbs>
           
           <HeaderRight>
             <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
-                Sesi Berlatih
+                Practice Session
             </div>
             {sessionState === 'practicing' && (
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>
@@ -508,12 +508,12 @@ function PracticeContent() {
 
         {sessionState === 'setup' && (
           <PracticeCard>
-            <SetupTitle>Mulai Berlatih</SetupTitle>
+            <SetupTitle>Start Practice</SetupTitle>
             <SelectionGroup>
               <div>
-                <SelectionLabel>Pilih Level</SelectionLabel>
+                <SelectionLabel>Select Level</SelectionLabel>
                 <LevelGrid>
-                  {['Semua', 'N1', 'N2', 'N3', 'N4', 'N5'].map((l) => (
+                  {['All', 'N1', 'N2', 'N3', 'N4', 'N5'].map((l) => (
                     <OptionButton 
                       key={l} 
                       $active={setupLevel === l} 
@@ -526,10 +526,10 @@ function PracticeContent() {
               </div>
 
               <div>
-                <SelectionLabel>Pilih Kategori</SelectionLabel>
+                <SelectionLabel>Select Category</SelectionLabel>
                 <CategoryGrid>
                   {[
-                    { id: 'kata', label: 'Kosakata' },
+                    { id: 'kata', label: 'Vocabulary' },
                     { id: 'kanji', label: 'Kanji' },
                     { id: 'tata-bahasa', label: 'Grammar' }
                   ].map((c) => (
@@ -546,7 +546,7 @@ function PracticeContent() {
             </SelectionGroup>
 
             <PrimaryButton onClick={startSession}>
-              Mulai Sesi
+              Start Session
               <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
             </PrimaryButton>
           </PracticeCard>
@@ -554,23 +554,23 @@ function PracticeContent() {
 
         {sessionState === 'loading' && (
           <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-            <p style={{ fontSize: '1.1rem' }}>Mempersiapkan materi berlatih...</p>
+            <p style={{ fontSize: '1.1rem' }}>Preparing practice materials...</p>
           </div>
         )}
 
         {sessionState === 'error' && (
           <PracticeCard>
-            <h2 style={{ color: 'var(--foreground)' }}>Data Tidak Mencukupi</h2>
+            <h2 style={{ color: 'var(--foreground)' }}>Insufficient Data</h2>
             <p style={{ marginTop: '1rem', textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2.5rem' }}>
-              Maaf, kami tidak menemukan data yang sesuai dengan filter Anda untuk sesi berlatih.
+              Sorry, we couldn't find data matching your filters for this practice session.
             </p>
             <FinalActions>
               <BaseButton onClick={() => setSessionState('setup')} style={{ background: 'var(--primary)', color: 'white', flex: 1 }}>
-                Ubah Pengaturan
+                Change Settings
               </BaseButton>
               <Link href="/jlpt" style={{ textDecoration: 'none', flex: 1 }}>
                 <BaseButton style={{ background: 'transparent', color: 'var(--foreground)', border: '1px solid var(--border)', width: '100%' }}>
-                  Kembali
+                  Back
                 </BaseButton>
               </Link>
             </FinalActions>
@@ -585,7 +585,7 @@ function PracticeContent() {
                 {currentIndex + 1} / {items.length}
               </ProgressInfo>
 
-              <SpeakerButton onClick={() => playAudio(getDisplayMain(currentItem))} title="Putar Suara">
+              <SpeakerButton onClick={() => playAudio(getDisplayMain(currentItem))} title="Play Audio">
                 <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
               </SpeakerButton>
 
@@ -593,7 +593,7 @@ function PracticeContent() {
 
               {!isRevealed ? (
                 <PrimaryButton onClick={handleReveal} style={{ marginTop: '2rem' }}>
-                  Tampilkan Jawaban
+                  Show Answer
                   <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                 </PrimaryButton>
               ) : (
@@ -604,11 +604,11 @@ function PracticeContent() {
                   <ActionGrid>
                     <ConfidenceButton onClick={() => handleConfidence(false)}>
                       <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" /></svg>
-                      Lupa
+                      Forgot
                     </ConfidenceButton>
                     <ConfidenceButton $success onClick={() => handleConfidence(true)}>
                       <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" /></svg>
-                      Ingat
+                      Remembered
                     </ConfidenceButton>
                   </ActionGrid>
                 </RevealSection>
@@ -624,16 +624,16 @@ function PracticeContent() {
         {sessionState === 'completed' && (
           <PracticeCard style={{ animation: `${slideIn} 0.8s ease-out` }}>
             <StatsHeader>🎉</StatsHeader>
-            <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>Sesi Selesai!</h2>
-            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Anda telah menyelesaikan target berlatih kali ini.</p>
+            <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>Session Complete!</h2>
+            <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>You have completed your practice session.</p>
             
             <StatsGrid>
               <StatItem $color="var(--secondary)">
-                <div className="label">Ingat</div>
+                <div className="label">Remembered</div>
                 <div className="value">{stats.remembered}</div>
               </StatItem>
               <StatItem $color="var(--accent)">
-                <div className="label">Perlu Review</div>
+                <div className="label">Needs Review</div>
                 <div className="value">{stats.forgotten}</div>
               </StatItem>
             </StatsGrid>
@@ -646,14 +646,14 @@ function PracticeContent() {
                   setStats({ remembered: 0, forgotten: 0 });
                   setSessionState('practicing');
                 }} style={{ background: 'var(--primary)', color: 'white', flex: 1, minWidth: '160px' }}>
-                Ulangi Sesi
+                Repeat Session
               </BaseButton>
               <BaseButton onClick={() => setSessionState('setup')} style={{ background: 'transparent', color: 'var(--foreground)', border: '1px solid var(--border)', flex: 1, minWidth: '160px' }}>
-                Ubah Pengaturan
+                Change Settings
               </BaseButton>
               <Link href="/jlpt" style={{ textDecoration: 'none', width: '100%' }}>
                 <BaseButton style={{ background: 'transparent', color: 'var(--text-secondary)', border: 'none', width: '100%', fontSize: '0.95rem' }}>
-                  Kembali ke JLPT
+                  Back to JLPT
                 </BaseButton>
               </Link>
             </FinalActions>
@@ -666,7 +666,7 @@ function PracticeContent() {
 
 export default function PracticePage() {
   return (
-    <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center' }}>Memuat Sesi...</div>}>
+    <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center' }}>Loading Session...</div>}>
       <PracticeContent />
     </Suspense>
   );
