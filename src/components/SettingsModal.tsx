@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { useTheme, themes } from '@/context/ThemeContext';
 import { useEffect, useState } from 'react';
+import { useProgress } from '@/context/ProgressContext';
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -103,6 +104,41 @@ const CloseButton = styled.button`
     color: var(--foreground);
   }
 `;
+/** New Styled Components for Reset Feature */
+const DangerButton = styled.button<{ $isConfirming?: boolean }>`
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid ${({ $isConfirming }) => ($isConfirming ? 'var(--accent)' : 'var(--border)')};
+  background: ${({ $isConfirming }) => ($isConfirming ? 'rgba(var(--accent-rgb), 0.1)' : 'var(--background)')};
+  color: ${({ $isConfirming }) => ($isConfirming ? 'var(--accent)' : 'var(--text-secondary)')};
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: rgba(var(--accent-rgb), 0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const ResetMsg = styled.p`
+  font-size: 0.85rem;
+  color: var(--secondary);
+  text-align: center;
+  margin-top: 0.75rem;
+  font-weight: 600;
+`;
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -111,6 +147,9 @@ interface SettingsModalProps {
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const { color, setColor, mode, setMode } = useTheme();
+  const { resetProgress } = useProgress();
+  const [confirmReset, setConfirmReset] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState(false);
 
   // Prevent scroll when modal is open
   useEffect(() => {
@@ -148,6 +187,27 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             <span>{mode === 'light' ? 'Light Mode' : 'Dark Mode'}</span>
             <span>{mode === 'light' ? '☀️' : '🌙'}</span>
           </ModeToggle>
+        </Section>
+
+        <Section>
+          <Label>Learning Data</Label>
+          <DangerButton 
+            $isConfirming={confirmReset}
+            onClick={() => {
+              if (confirmReset) {
+                resetProgress();
+                setResetSuccess(true);
+                setConfirmReset(false);
+                setTimeout(() => setResetSuccess(false), 3000);
+              } else {
+                setConfirmReset(true);
+                setTimeout(() => setConfirmReset(false), 4000); // Reset confirmation state after 4s
+              }
+            }}
+          >
+            {confirmReset ? '⚠ Confirm Reset?' : '🗑 Reset Progress'}
+          </DangerButton>
+          {resetSuccess && <ResetMsg>✅ Progress has been reset!</ResetMsg>}
         </Section>
       </Modal>
     </Overlay>

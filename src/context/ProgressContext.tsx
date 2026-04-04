@@ -31,6 +31,7 @@ interface ProgressContextType {
   checkStreak: () => void;
   updateSRS: (char: string, quality: number) => void;
   addExp: (amount: number) => void;
+  resetProgress: () => void;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
@@ -176,7 +177,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     recordQuizResult,
     checkStreak,
     updateSRS,
-    addExp
+    addExp,
+    resetProgress: () => {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('user-progress');
+        setProgress(INITIAL_DATA);
+      }
+    }
   }), [progress]);
 
   return (
