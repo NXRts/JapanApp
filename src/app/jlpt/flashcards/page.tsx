@@ -460,7 +460,7 @@ function FilterDropdown({ value, onChange, options }: { value: string, onChange:
       {isOpen && (
         <DropdownMenu>
           {options.map(opt => {
-            const actualVal = opt === 'Semua' ? 'All' : opt;
+            const actualVal = opt === 'All' ? 'All' : opt;
             return (
               <DropdownItem 
                 key={opt}
@@ -1069,18 +1069,18 @@ function FlashcardContent() {
         <Container>
           <Header>
             <Breadcrumbs>
-               <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Kartu Flash</span>
+               <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Flashcards</span>
             </Breadcrumbs>
             <HeaderRight>
                 <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                     JLPT Flashcards
                 </div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                    Level {activeLevel !== 'All' ? activeLevel : 'Semua'} • {activeCategory.replace('-', ' ').toUpperCase()}
+                    Level {activeLevel !== 'All' ? activeLevel : 'All'} • {activeCategory.replace('-', ' ').toUpperCase()}
                 </div>
             </HeaderRight>
           </Header>
-          <div style={{ textAlign: 'center', marginTop: '4rem', color: 'var(--text-secondary)' }}>Memuat kartu flash...</div>
+          <div style={{ textAlign: 'center', marginTop: '4rem', color: 'var(--text-secondary)' }}>Loading flashcards...</div>
         </Container>
       </PageWrapper>
     );
@@ -1092,14 +1092,14 @@ function FlashcardContent() {
         <Container>
           <Header>
             <Breadcrumbs>
-              <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Kartu Flash</span>
+              <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Flashcards</span>
             </Breadcrumbs>
             <HeaderRight>
                 <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                     JLPT Flashcards
                 </div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                    Level {activeLevel !== 'All' ? activeLevel : 'Semua'} • {activeCategory.replace('-', ' ').toUpperCase()}
+                    Level {activeLevel !== 'All' ? activeLevel : 'All'} • {activeCategory.replace('-', ' ').toUpperCase()}
                 </div>
             </HeaderRight>
           </Header>
@@ -1110,20 +1110,20 @@ function FlashcardContent() {
             </h3>
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
               <FilterDropdown 
-                value={activeStatus === 'remembered' ? 'Teringat' : activeStatus === 'not-remembered' ? 'Tidak diingat' : 'Semua'}
+                value={activeStatus === 'remembered' ? 'Remembered' : activeStatus === 'not-remembered' ? 'Forgot' : 'All'}
                 onChange={(val) => {
                   const params = new URLSearchParams(searchParams.toString());
-                  const mapped = val === 'Teringat' ? 'remembered' : val === 'Tidak diingat' ? 'not-remembered' : 'All';
+                  const mapped = val === 'Remembered' ? 'remembered' : val === 'Forgot' ? 'not-remembered' : 'All';
                   if (mapped === 'All') params.delete('status');
                   else params.set('status', mapped);
                   router.replace(`${pathname}?${params.toString()}`, { scroll: false });
                 }}
-                options={['Semua', 'Teringat', 'Tidak diingat']}
+                options={['All', 'Remembered', 'Forgot']}
               />
               <FilterDropdown 
-                value={activeLevel}
+                value={activeLevel === 'All' ? 'All' : activeLevel}
                 onChange={handleLevelChange}
-                options={['Semua', 'N5', 'N4', 'N3', 'N2', 'N1']}
+                options={['All', 'N5', 'N4', 'N3', 'N2', 'N1']}
               />
             </div>
           </div>
@@ -1132,8 +1132,8 @@ function FlashcardContent() {
             <FlashcardContainer>
               <FlashcardSide style={{ position: 'relative', justifyContent: 'center' }}>
                 <div style={{ margin: 'auto', textAlign: 'center' }}>
-                  <h2 style={{ color: 'var(--text-secondary)', marginBottom: '0' }}>Data kosong.</h2>
-                  <Link href="/jlpt" style={{ marginTop: '1rem', color: 'var(--primary)', display: 'inline-block' }}>Kembali ke JLPT</Link>
+                  <h2 style={{ color: 'var(--text-secondary)', marginBottom: '0' }}>No data available.</h2>
+                  <Link href="/jlpt" style={{ marginTop: '1rem', color: 'var(--primary)', display: 'inline-block' }}>Back to JLPT</Link>
                 </div>
               </FlashcardSide>
             </FlashcardContainer>
@@ -1149,14 +1149,14 @@ function FlashcardContent() {
       <Container>
         <Header>
           <Breadcrumbs>
-            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Kartu Flash</span>
+            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Flashcards</span>
           </Breadcrumbs>
           <HeaderRight>
               <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   JLPT Flashcards
               </div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                  Level {activeLevel !== 'All' ? activeLevel : 'Semua'} • {activeCategory.replace('-', ' ').toUpperCase()}
+                  Level {activeLevel !== 'All' ? activeLevel : 'All'} • {activeCategory.replace('-', ' ').toUpperCase()}
               </div>
           </HeaderRight>
         </Header>
@@ -1167,20 +1167,20 @@ function FlashcardContent() {
           </h3>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
             <FilterDropdown 
-              value={activeStatus === 'remembered' ? 'Teringat' : activeStatus === 'not-remembered' ? 'Tidak diingat' : 'Semua'}
+              value={activeStatus === 'remembered' ? 'Remembered' : activeStatus === 'not-remembered' ? 'Forgot' : 'All'}
               onChange={(val) => {
                 const params = new URLSearchParams(searchParams.toString());
-                const mapped = val === 'Teringat' ? 'remembered' : val === 'Tidak diingat' ? 'not-remembered' : 'All';
+                const mapped = val === 'Remembered' ? 'remembered' : val === 'Forgot' ? 'not-remembered' : 'All';
                 if (mapped === 'All') params.delete('status');
                 else params.set('status', mapped);
                 router.replace(`${pathname}?${params.toString()}`, { scroll: false });
               }}
-              options={['Semua', 'Teringat', 'Tidak diingat']}
+              options={['All', 'Remembered', 'Forgot']}
             />
             <FilterDropdown 
-              value={activeLevel}
+              value={activeLevel === 'All' ? 'All' : activeLevel}
               onChange={handleLevelChange}
-              options={['Semua', 'N5', 'N4', 'N3', 'N2', 'N1']}
+              options={['All', 'N5', 'N4', 'N3', 'N2', 'N1']}
             />
           </div>
         </div>
@@ -1213,13 +1213,13 @@ function FlashcardContent() {
                 )}
 
                 <DetailsBtn onClick={(e) => { e.stopPropagation(); setShowDetailModal(true); }}>
-                  Lihat detailnya
+                  View details
                 </DetailsBtn>
 
                 <BottomLeftText>{currentIndex + 1} / {filteredData.length}</BottomLeftText>
                 
                 <FlipBtn onClick={() => setIsFlipped(true)}>
-                  Kembali
+                  Flip
                   <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
                     <path d="M3 3v5h5" />
@@ -1242,7 +1242,7 @@ function FlashcardContent() {
                 <BottomLeftText>{currentIndex + 1} / {filteredData.length}</BottomLeftText>
                 
                 <FlipBtn onClick={() => setIsFlipped(false)}>
-                  Kembali
+                  Back
                   <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
                     <path d="M3 3v5h5" />
@@ -1268,7 +1268,7 @@ function FlashcardContent() {
              <div className="icon-wrapper">
                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" /></svg>
              </div>
-             Teringat
+             Remembered
           </ActionCircle>
           <ActionCircle 
             $color="#ef4444" 
@@ -1280,7 +1280,7 @@ function FlashcardContent() {
              <div className="icon-wrapper">
                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" /></svg>
              </div>
-             Tidak diingat
+             Forgot
           </ActionCircle>
         </BottomActions>
       </Container>
@@ -1299,11 +1299,11 @@ function FlashcardContent() {
         }}>
           <ModalContent>
             <ModalHeader>
-              <ModalTab $active={activeTab === 'kata'} onClick={() => setActiveTab('kata')}>Kata</ModalTab>
+              <ModalTab $active={activeTab === 'kata'} onClick={() => setActiveTab('kata')}>Words</ModalTab>
               <ModalTab $active={activeTab === 'kanji'} onClick={() => setActiveTab('kanji')}>Kanji</ModalTab>
-              <ModalTab $active={activeTab === 'kalimat'} onClick={() => setActiveTab('kalimat')}>Kalimat</ModalTab>
-              <ModalTab $active={activeTab === 'tata-bahasa'} onClick={() => setActiveTab('tata-bahasa')}>Tata bahasa</ModalTab>
-              <ModalTab $active={activeTab === 'jpjp'} onClick={() => setActiveTab('jpjp')}>Jepang - Jepang</ModalTab>
+              <ModalTab $active={activeTab === 'kalimat'} onClick={() => setActiveTab('kalimat')}>Sentences</ModalTab>
+              <ModalTab $active={activeTab === 'tata-bahasa'} onClick={() => setActiveTab('tata-bahasa')}>Grammar</ModalTab>
+              <ModalTab $active={activeTab === 'jpjp'} onClick={() => setActiveTab('jpjp')}>Japanese - Japanese</ModalTab>
               <CloseModalBtn onClick={() => {
                 setShowDetailModal(false);
                 setTimeout(() => {
@@ -1337,7 +1337,7 @@ function FlashcardContent() {
                     <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1.5rem 0' }} />
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', fontSize: '1rem', fontWeight: 600 }}>
-                      Tingkat: 
+                      Level: 
                       <span style={{ background: '#10b981', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem' }}>
                         {currentItem?.level?.includes('JLPT') ? currentItem.level : `JLPT ${currentItem?.level || 'N?'}`}
                       </span>
@@ -1379,7 +1379,7 @@ function FlashcardContent() {
                     {synonyms.length > 0 && (
                       <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
                         <div style={{ fontSize: '1.2rem', color: 'var(--foreground)', fontWeight: 600, marginBottom: '1rem' }}>
-                          Sinonim dari <span style={{ color: '#10b981' }}>{resolveTargetWord()}</span>
+                          Synonyms of <span style={{ color: '#10b981' }}>{resolveTargetWord()}</span>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingLeft: '0.5rem' }}>
                           {synonyms.map(syn => (
@@ -1396,7 +1396,7 @@ function FlashcardContent() {
                     {usageInPractice.length > 0 && (
                       <div style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
                         <div style={{ fontSize: '1.2rem', color: 'var(--foreground)', fontWeight: 600, marginBottom: '1.5rem' }}>
-                          <span style={{ color: 'var(--foreground)' }}>{resolveTargetWord()}</span> digunakan dalam praktik
+                          <span style={{ color: 'var(--foreground)' }}>{resolveTargetWord()}</span> used in practice
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                           {usageInPractice.map((u, idx) => (
@@ -1422,7 +1422,7 @@ function FlashcardContent() {
                 {activeTab === 'kanji' && (
                   <div>
                     {relatedKanjis.length === 0 ? (
-                      <div style={{ color: 'var(--text-secondary)', padding: '2rem', textAlign: 'center', background: 'rgba(0,0,0,0.02)', borderRadius: '12px' }}>Tidak ada data kanji untuk kata ini.</div>
+                      <div style={{ color: 'var(--text-secondary)', padding: '2rem', textAlign: 'center', background: 'rgba(0,0,0,0.02)', borderRadius: '12px' }}>No kanji data for this word.</div>
                     ) : (
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         {/* Kanji Selector Tab Strip */}
@@ -1459,8 +1459,8 @@ function FlashcardContent() {
                                </div>
                                <div style={{ display: 'flex', gap: '0.5rem' }}>
                                  <button 
-                                   onClick={() => alert('Fitur latihan menulis kanji akan segera hadir!')}
-                                   title="Latihan Menulis (Segera Hadir)"
+                                   onClick={() => alert('Kanji writing practice feature coming soon!')}
+                                   title="Writing Practice (Coming Soon)"
                                    style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: 'var(--text-secondary)', cursor: 'pointer', transition: 'all 0.2s' }}
                                    onMouseOver={(e) => e.currentTarget.style.color = '#3b82f6'}
                                    onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}>
@@ -1475,7 +1475,7 @@ function FlashcardContent() {
                                         setTimeout(() => setCopiedKanji(null), 2000);
                                       }
                                    }}
-                                   title="Salin Kanji"
+                                   title="Copy Kanji"
                                    style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: copiedKanji === relatedKanjis[activeSelectedKanjiIndex].kanji ? '#10b981' : 'var(--text-secondary)', cursor: 'pointer', transition: 'all 0.2s' }}
                                    onMouseOver={(e) => { if (copiedKanji !== relatedKanjis[activeSelectedKanjiIndex].kanji) e.currentTarget.style.color = '#3b82f6'; }}
                                    onMouseOut={(e) => { if (copiedKanji !== relatedKanjis[activeSelectedKanjiIndex].kanji) e.currentTarget.style.color = 'var(--text-secondary)'; }}>
@@ -1500,7 +1500,7 @@ function FlashcardContent() {
                                             saveStatus(kKey, 'remembered');
                                           }
                                         }}
-                                        title={isRemembered ? "Hapus dari daftar ingat" : "Tandai sudah diingat"}
+                                        title={isRemembered ? "Remove from remembered" : "Mark as remembered"}
                                         style={{ background: isRemembered ? '#10b981' : 'var(--surface)', border: isRemembered ? '1px solid #10b981' : '1px solid var(--border)', borderRadius: '8px', padding: '0.4rem', color: isRemembered ? 'white' : 'var(--text-secondary)', cursor: 'pointer', transition: 'all 0.2s' }}
                                         onMouseOver={(e) => { if (!isRemembered) e.currentTarget.style.color = '#3b82f6'; }}
                                         onMouseOut={(e) => { if (!isRemembered) e.currentTarget.style.color = 'var(--text-secondary)'; }}>
@@ -1518,7 +1518,7 @@ function FlashcardContent() {
                             {/* Metadata Pills */}
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                  <span style={{ background: 'rgba(0,0,0,0.05)', color: 'var(--text-secondary)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem', width: '90px' }}>Pukulan</span>
+                                  <span style={{ background: 'rgba(0,0,0,0.05)', color: 'var(--text-secondary)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem', width: '90px' }}>Strokes</span>
                                   <span style={{ marginLeft: '1rem', color: 'var(--foreground)', fontWeight: 500 }}>{relatedKanjis[activeSelectedKanjiIndex].stroke_count || '-'}</span>
                                </div>
                                <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -1527,7 +1527,7 @@ function FlashcardContent() {
                                </div>
                                <div style={{ display: 'flex', alignItems: 'center' }}>
                                   <span style={{ background: 'rgba(0,0,0,0.05)', color: 'var(--text-secondary)', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.85rem', width: '90px', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                                    Frekuensi <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4m0-4h.01"></path></svg>
+                                    Frequency <svg width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4m0-4h.01"></path></svg>
                                   </span>
                                   <span style={{ marginLeft: '1rem', color: 'var(--foreground)', fontWeight: 500 }}>{relatedKanjis[activeSelectedKanjiIndex].grade ? `#${relatedKanjis[activeSelectedKanjiIndex].grade}/2500` : '-'}</span>
                                </div>
@@ -1537,7 +1537,7 @@ function FlashcardContent() {
 
                             {/* Audio & Readings */}
                             <div style={{ marginBottom: '1.5rem' }}>
-                               <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '1rem' }}>Putar audio</h3>
+                               <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '1rem' }}>Play audio</h3>
                                
                                <div style={{ marginBottom: '1.5rem' }}>
                                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--foreground)', fontWeight: 500, marginBottom: '0.4rem' }}>
@@ -1594,12 +1594,12 @@ function FlashcardContent() {
 
                             <hr style={{ border: 'none', borderTop: '1px solid var(--border)', margin: '1rem 0 1.5rem', opacity: 0.5 }} />
 
-                            {/* Contoh */}
+                            {/* Examples */}
                             <div>
-                               <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '1rem' }}>Contoh</h3>
+                               <h3 style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--foreground)', marginBottom: '1rem' }}>Examples</h3>
                                
                                {kanjiExamples.length === 0 ? (
-                                 <div style={{ color: 'var(--text-secondary)' }}>Tidak ada contoh kalimat untuk kanji ini.</div>
+                                 <div style={{ color: 'var(--text-secondary)' }}>No example sentences for this kanji.</div>
                                ) : (
                                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                                    {kanjiExamples.map((ex, idx) => (
@@ -1640,18 +1640,18 @@ function FlashcardContent() {
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
                         <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--foreground)' }}>
-                          Hasil pencarian contoh kalimat untuk <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
+                          Example sentences for <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
                         </h3>
                         {isFetchingSentences && (
                           <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
                             <div className="spinner" style={{ flexShrink: 0, width: '16px', height: '16px', minWidth: '16px', minHeight: '16px', border: '2px solid rgba(59,130,246,0.3)', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-                            <span style={{ display: 'inline-block' }}>Mencari contoh...</span>
+                            <span style={{ display: 'inline-block' }}>Searching examples...</span>
                           </div>
                         )}
                       </div>
                       
                       {allCombinedExamples.length === 0 && !isFetchingSentences ? (
-                        <div style={{ color: 'var(--text-secondary)', padding: '2rem 0', textAlign: 'center' }}>Tidak ada contoh kalimat untuk kata ini.</div>
+                        <div style={{ color: 'var(--text-secondary)', padding: '2rem 0', textAlign: 'center' }}>No example sentences for this word.</div>
                       ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                           {allCombinedExamples.map((ex, idx) => (
@@ -1676,17 +1676,17 @@ function FlashcardContent() {
                   <div>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
                       <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--foreground)', margin: 0 }}>
-                        Hasil pencarian tata bahasa untuk <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
+                        Grammar search results for <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
                       </h3>
                       <FilterDropdown 
-                        value={activeGrammarLevel}
+                        value={activeGrammarLevel === 'All' ? 'All' : activeGrammarLevel}
                         onChange={(val) => setActiveGrammarLevel(val)}
-                        options={['Semua', 'N5', 'N4', 'N3', 'N2', 'N1']}
+                        options={['All', 'N5', 'N4', 'N3', 'N2', 'N1']}
                       />
                     </div>
                     
                     {relatedGrammar.length === 0 ? (
-                      <div style={{ color: 'var(--text-secondary)', padding: '2rem 0', textAlign: 'center' }}>Tidak ada tata bahasa terkait untuk kata ini.</div>
+                      <div style={{ color: 'var(--text-secondary)', padding: '2rem 0', textAlign: 'center' }}>No related grammar for this word.</div>
                     ) : ( 
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         {relatedGrammar.map((grammar, idx) => {
@@ -1720,7 +1720,7 @@ function FlashcardContent() {
 
                               {grammar.structure && (
                                 <div style={{ background: 'rgba(59, 130, 246, 0.08)', borderLeft: '4px solid #3b82f6', padding: '0.85rem 1.25rem', borderRadius: '0 8px 8px 0', marginBottom: '1.25rem' }}>
-                                  <strong style={{ display: 'block', color: '#3b82f6', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.4rem' }}>STRUKTUR PENGGUNAAN</strong>
+                                  <strong style={{ display: 'block', color: '#3b82f6', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.4rem' }}>USAGE STRUCTURE</strong>
                                   <div style={{ color: 'var(--foreground)', fontSize: '1rem', fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{grammar.structure}</div>
                                 </div>
                               )}
@@ -1735,7 +1735,7 @@ function FlashcardContent() {
                                 <div>
                                   <strong style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--foreground)', fontSize: '1rem', marginBottom: '1rem' }}>
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                                    Contoh Kalimat:
+                                    Example Sentences:
                                   </strong>
                                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                     {grammar.examples.map((ex: any, i: number) => (
@@ -1764,18 +1764,18 @@ function FlashcardContent() {
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
                       <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--foreground)' }}>
-                        Hasil pencarian bahasa Jepang untuk kata <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
+                        Japanese definitions for <span style={{ color: '#3b82f6' }}>{targetWordForDetails}</span>
                       </h3>
                       {isFetchingJpjp && (
                         <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap' }}>
                           <div style={{ flexShrink: 0, width: '16px', height: '16px', minWidth: '16px', minHeight: '16px', border: '2px solid rgba(59,130,246,0.3)', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
-                          <span>Mencari definisi...</span>
+                          <span>Searching definition...</span>
                         </div>
                       )}
                     </div>
 
                     {jpjpData.length === 0 && !isFetchingJpjp ? (
-                      <div style={{ color: 'var(--text-secondary)', padding: '2rem 0', textAlign: 'center' }}>Tidak ada definisi Jepang-Jepang untuk kata ini.</div>
+                      <div style={{ color: 'var(--text-secondary)', padding: '2rem 0', textAlign: 'center' }}>No Japanese-Japanese definitions for this word.</div>
                     ) : (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                         {jpjpData.map((entry, idx) => (
@@ -1814,7 +1814,7 @@ function FlashcardContent() {
                             {/* Example Sentences */}
                             {entry.examples && entry.examples.length > 0 && (
                               <div style={{ marginTop: '1.25rem', paddingLeft: '0.5rem', borderLeft: '3px solid rgba(59,130,246,0.3)', paddingTop: '0.5rem', paddingBottom: '0.5rem' }}>
-                                <div style={{ fontSize: '0.85rem', color: '#3b82f6', fontWeight: 600, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>用例 (Contoh Penggunaan)</div>
+                                <div style={{ fontSize: '0.85rem', color: '#3b82f6', fontWeight: 600, marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>USAGE EXAMPLES</div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                   {entry.examples.map((ex: any, eIdx: number) => (
                                     <div key={`jpex-${eIdx}`} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -1839,7 +1839,7 @@ function FlashcardContent() {
                 {/* Related Kanji Section */}
                 {relatedKanjis.length > 0 && (
                   <PanelCard>
-                    <PanelHeader>Kanji dari {resolveTargetWord()}</PanelHeader>
+                    <PanelHeader>Kanji from {resolveTargetWord()}</PanelHeader>
                     <PanelBody style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                       {relatedKanjis.map(k => (
                         <div key={k.id}>
@@ -1858,8 +1858,8 @@ function FlashcardContent() {
                            )}
                            
                            <div style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: 'var(--foreground)' }}>
-                             <div style={{ marginBottom: '0.25rem' }}><strong>Arti:</strong> {k.meaning}</div>
-                             {k.stroke_count && <div style={{ marginBottom: '0.25rem' }}><strong>Stroke:</strong> {k.stroke_count}</div>}
+                             <div style={{ marginBottom: '0.25rem' }}><strong>Meaning:</strong> {k.meaning}</div>
+                             {k.stroke_count && <div style={{ marginBottom: '0.25rem' }}><strong>Strokes:</strong> {k.stroke_count}</div>}
                              {k.level && <div><strong>Level:</strong> {k.level}</div>}
                            </div>
                         </div>
@@ -1872,7 +1872,7 @@ function FlashcardContent() {
                 {/* Related Words Section */}
                 {relatedWords.length > 0 && (
                   <PanelCard>
-                    <PanelHeader>Kata terkait dengan {resolveTargetWord()}</PanelHeader>
+                    <PanelHeader>Words related to {resolveTargetWord()}</PanelHeader>
                     <PanelBody style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                       {relatedWords.map(w => (
                         <div key={w.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border)' }}>

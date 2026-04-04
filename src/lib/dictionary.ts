@@ -42,7 +42,7 @@ const libraryVocabulary = Object.values(jlptWordsData).map((item: any) => ({
   word: item.word,
   reading: item.reading,
   romaji: item.reading,  // We'll use kana reading as the romaji fallback
-  meaning: item.indonesian && item.indonesian !== 'Tidak ada arti' ? item.indonesian : (item.english || 'No definition'),
+  meaning: item.english && item.english !== 'No definition' ? item.english : (item.indonesian || 'No definition'),
   level: item.level as string,
 }));
 
@@ -70,7 +70,7 @@ export const allKanji: DictionaryResult[] = Object.values(kanjiData).map((item: 
   kunyomi: item.kunyomi || [],
   stroke_count: item.stroke_count,
   grade: item.grade,
-  meaning: item.indonesian && item.indonesian !== 'Tidak ada arti' ? item.indonesian : (item.english || 'No definition'),
+  meaning: item.english && item.english !== 'No definition' ? item.english : (item.indonesian || 'No definition'),
   source: 'kanji-db',
 }));
 
@@ -112,7 +112,7 @@ export async function searchDictionary(
         type: 'kalimat',
         level: '?',
         word: item.japanese,
-        meaning: item.indonesian || item.english,
+        meaning: item.english || item.indonesian,
         romaji: item.romaji,
         source: 'tatoeba'
       }));
@@ -155,7 +155,7 @@ export async function searchDictionary(
       'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 'ら', 'り', 'る', 'れ', 'ろ', 'わ', 'を', 'ん',
       'ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ',
       'タ', 'チ', 'ツ', 'テ', 'ト', 'ナ', 'ニ', 'ヌ', 'ネ', 'ノ', 'ハ', 'ヒ', 'フ', 'ヘ', 'ほ',
-      'マ', 'ミ', 'ム', 'メ', 'モ', 'ヤ', 'ユ', 'ヨ', 'ラ', 'リ', 'る', 'レ', 'ロ', 'ワ', 'ヲ', 'ン'
+      'マ', 'ミ', 'む', 'メ', 'モ', 'ヤ', 'ユ', 'ヨ', 'ラ', 'リ', 'る', 'レ', 'ロ', 'ワ', 'ヲ', 'ン'
     ];
     
     // We'll search in a way similar to browseData in page.tsx
@@ -170,7 +170,7 @@ export async function searchDictionary(
           level: 'N5',
           word: char,
           reading: charRomaji,
-          meaning: `Huruf ${index < 46 ? 'Hiragana' : 'Katakana'}: ${charRomaji.toUpperCase()}`,
+          meaning: `${index < 46 ? 'Hiragana' : 'Katakana'} Character: ${charRomaji.toUpperCase()}`,
           source: 'local'
         });
       }
