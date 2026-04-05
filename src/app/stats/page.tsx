@@ -1,32 +1,60 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useProgress } from '@/context/ProgressContext';
 import { Heatmap } from '@/components/gamification/Heatmap';
 
 const Container = styled.div`
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 4rem 2rem;
   min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 
   @media (max-width: 768px) {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.25rem;
+    gap: 2rem;
+  }
+`;
+
+const Section = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &::before {
+    content: '';
+    width: 4px;
+    height: 1.5rem;
+    background: var(--primary);
+    border-radius: 2px;
   }
 `;
 
 const Header = styled.div`
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 `;
 
 const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 800;
+  font-size: 2.75rem;
+  font-weight: 850;
   margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
 
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: 2.25rem;
   }
 `;
 
@@ -37,103 +65,396 @@ const Subtitle = styled.p`
 
 const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
-`;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
 
-const StatCard = styled.div`
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  transition: transform 0.2s;
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-  &:hover {
-    transform: translateY(-5px);
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
   }
 `;
 
-const StatValue = styled.div`
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--primary);
+const MainStatCard = styled.div`
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-light);
+  }
 `;
 
 const StatLabel = styled.div`
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
 `;
 
-const LevelProgress = styled.div`
-  width: 100%;
-  height: 8px;
-  background: var(--border);
-  border-radius: 4px;
+const StatValue = styled.div`
+  font-size: 3rem;
+  font-weight: 850;
+  color: var(--foreground);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+
+  span {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+`;
+
+const ProgressInfo = styled.div`
   margin-top: 1rem;
-  overflow: hidden;
 `;
 
-const ProgressBar = styled.div<{ $width: number }>`
+const LevelProgressBar = styled.div`
+  width: 100%;
+  height: 10px;
+  background: var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+`;
+
+const ProgressBarFill = styled.div<{ $width: number }>`
   height: 100%;
   width: ${({ $width }) => $width}%;
-  background: var(--primary);
-  border-radius: 4px;
-  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+  border-radius: 5px;
+  transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+`;
+
+const ChartCard = styled(MainStatCard)`
+  grid-column: span 2;
+  min-height: 300px;
+
+  @media (max-width: 1024px) {
+    grid-column: span 2;
+  }
+
+  @media (max-width: 640px) {
+    grid-column: span 1;
+  }
+`;
+
+const BarChartContainer = styled.div`
+  height: 180px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+`;
+
+const BarWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+`;
+
+const Bar = styled.div<{ $height: number }>`
+  width: 100%;
+  max-width: 40px;
+  height: ${({ $height }) => Math.max($height, 4)}%;
+  background: ${({ $height }) => $height > 0 ? 'var(--primary)' : 'var(--border)'};
+  border-radius: 8px 8px 4px 4px;
+  transition: height 1s ease-out;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--primary-light);
+    filter: brightness(1.1);
+  }
+`;
+
+const DayLabel = styled.span`
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+`;
+
+const SRSDistribution = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const SRSLegend = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  font-size: 0.8rem;
+`;
+
+const LegendItem = styled.div<{ $color: string }>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+
+  &::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: ${({ $color }) => $color};
+  }
+`;
+
+const MultiProgressBar = styled.div`
+  width: 100%;
+  height: 24px;
+  background: var(--border);
+  border-radius: 12px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+`;
+
+const ProgressSegment = styled.div<{ $width: number, $color: string }>`
+  width: ${({ $width }) => $width}%;
+  height: 100%;
+  background: ${({ $color }) => $color};
+  transition: width 1s ease-in-out;
+`;
+
+const ActivityList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+const ActivityItem = styled.div`
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: var(--primary-light);
+    transform: translateX(4px);
+  }
+`;
+
+const ActivityInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ActivityType = styled.span`
+  font-weight: 700;
+  color: var(--foreground);
+`;
+
+const ActivityDate = styled.span`
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+`;
+
+const ActivityScore = styled.div<{ $perfect: boolean }>`
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: ${({ $perfect }) => $perfect ? 'var(--secondary)' : 'var(--primary)'};
+  background: ${({ $perfect }) => $perfect ? 'rgba(var(--secondary-rgb), 0.1)' : 'rgba(var(--primary-rgb), 0.1)'};
+  padding: 0.4rem 1rem;
+  border-radius: 10px;
 `;
 
 export default function StatsPage() {
   const { progress } = useProgress();
 
-  // Basic Leveling Formula: Level = floor(sqrt(exp/100)) + 1
+  // 1. Leveling Logic
   const level = Math.floor(Math.sqrt(progress.exp / 100)) + 1;
   const currentLevelExp = Math.pow(level - 1, 2) * 100;
   const nextLevelExp = Math.pow(level, 2) * 100;
   const progressToNext = ((progress.exp - currentLevelExp) / (nextLevelExp - currentLevelExp)) * 100;
 
+  // 2. Weekly Activity Data
+  const weeklyData = useMemo(() => {
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split('T')[0];
+      const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
+      days.push({
+        label: dayName,
+        value: progress.activityLog[dateStr] || 0
+      });
+    }
+    const maxExp = Math.max(...days.map(d => d.value), 100);
+    return days.map(d => ({ ...d, percent: (d.value / maxExp) * 100 }));
+  }, [progress.activityLog]);
+
+  // 3. SRS Distribution
+  const srsStats = useMemo(() => {
+    const counts = { learning: 0, guru: 0, master: 0, enlightened: 0, burned: 0 };
+    Object.values(progress.srs).forEach(item => {
+      const reps = item.repetitions;
+      if (reps < 4) counts.learning++;
+      else if (reps < 8) counts.guru++;
+      else if (reps < 12) counts.master++;
+      else if (reps < 16) counts.enlightened++;
+      else counts.burned++;
+    });
+    
+    const total = Object.values(progress.srs).length || 1;
+    return {
+      learning: (counts.learning / total) * 100,
+      guru: (counts.guru / total) * 100,
+      master: (counts.master / total) * 100,
+      enlightened: (counts.enlightened / total) * 100,
+      burned: (counts.burned / total) * 100,
+      counts
+    };
+  }, [progress.srs]);
+
+  // 4. Accuracy Logic
+  const overallAccuracy = useMemo(() => {
+    let correct = 0;
+    let total = 0;
+    Object.values(progress.mastery).forEach(m => {
+      correct += m.correct;
+      total += (m.correct + m.incorrect);
+    });
+    return total === 0 ? 0 : Math.round((correct / total) * 100);
+  }, [progress.mastery]);
+
   return (
     <Container>
       <Header>
-        <Title>Language Mastery</Title>
-        <Subtitle>Track your Japanese learning journey and consistency.</Subtitle>
+        <StatLabel>Overview</StatLabel>
+        <Title>Mastery Dashboard</Title>
+        <Subtitle>Your Japanese journey at a glance.</Subtitle>
       </Header>
 
       <StatsGrid>
-        <StatCard>
+        <MainStatCard>
           <StatLabel>Current Level</StatLabel>
           <StatValue>{level}</StatValue>
-          <LevelProgress>
-            <ProgressBar $width={progressToNext} />
-          </LevelProgress>
-          <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
-            {progress.exp} / {nextLevelExp} EXP to next level
-          </div>
-        </StatCard>
+          <ProgressInfo>
+            <LevelProgressBar>
+              <ProgressBarFill $width={progressToNext} />
+            </LevelProgressBar>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', justifyContent: 'space-between' }}>
+              <span>{progress.exp} total EXP</span>
+              <span>{nextLevelExp - progress.exp} to Level {level + 1}</span>
+            </div>
+          </ProgressInfo>
+        </MainStatCard>
 
-        <StatCard>
-          <StatLabel>Day Streak</StatLabel>
-          <StatValue>{progress.streak} 🔥</StatValue>
-          <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-            Keep it up! Don't break the chain.
+        <MainStatCard>
+          <StatLabel>Daily Streak</StatLabel>
+          <StatValue>{progress.streak} <span>days</span></StatValue>
+          <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '1rem' }}>
+            {progress.streak > 0 ? "You're on fire! Keep it up." : "Start your streak today!"}
           </div>
-        </StatCard>
+        </MainStatCard>
 
-        <StatCard>
-          <StatLabel>Total Lessons</StatLabel>
-          <StatValue>{progress.quizHistory.length}</StatValue>
-          <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-            Quizzes and games completed.
+        <MainStatCard>
+          <StatLabel>Overall Accuracy</StatLabel>
+          <StatValue>{overallAccuracy}<span>%</span></StatValue>
+          <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '1rem' }}>
+            Based on {Object.values(progress.mastery).length} total characters.
           </div>
-        </StatCard>
+        </MainStatCard>
+
+        <ChartCard>
+          <StatLabel>Weekly Performance (EXP)</StatLabel>
+          <BarChartContainer>
+            {weeklyData.map((day, i) => (
+              <BarWrapper key={i}>
+                <div style={{ fontSize: '0.7rem', fontWeight: 700, color: day.value > 0 ? 'var(--primary)' : 'transparent' }}>
+                  {day.value}
+                </div>
+                <Bar $height={day.percent} title={`${day.label}: ${day.value} EXP`} />
+                <DayLabel>{day.label}</DayLabel>
+              </BarWrapper>
+            ))}
+          </BarChartContainer>
+        </ChartCard>
+
+        <MainStatCard style={{ gridColumn: 'span 1' }}>
+          <StatLabel>SRS Distribution</StatLabel>
+          <SRSDistribution>
+            <MultiProgressBar>
+              <ProgressSegment $width={srsStats.learning} $color="#94a3b8" />
+              <ProgressSegment $width={srsStats.guru} $color="#10b981" />
+              <ProgressSegment $width={srsStats.master} $color="#3b82f6" />
+              <ProgressSegment $width={srsStats.enlightened} $color="#8b5cf6" />
+              <ProgressSegment $width={srsStats.burned} $color="#f43f5e" />
+            </MultiProgressBar>
+            <SRSLegend>
+              <LegendItem $color="#94a3b8">Learning: {srsStats.counts.learning}</LegendItem>
+              <LegendItem $color="#10b981">Guru: {srsStats.counts.guru}</LegendItem>
+              <LegendItem $color="#3b82f6">Master: {srsStats.counts.master}</LegendItem>
+              <LegendItem $color="#8b5cf6">Enlightened: {srsStats.counts.enlightened}</LegendItem>
+              <LegendItem $color="#f43f5e">Burned: {srsStats.counts.burned}</LegendItem>
+            </SRSLegend>
+          </SRSDistribution>
+        </MainStatCard>
       </StatsGrid>
 
-      <Heatmap activityLog={progress.activityLog} />
+      <Section>
+        <SectionTitle>Consistency</SectionTitle>
+        <Heatmap activityLog={progress.activityLog} />
+      </Section>
+
+      <Section>
+        <SectionTitle>Recent Activity</SectionTitle>
+        <ActivityList>
+          {progress.quizHistory.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)', background: 'var(--surface)', borderRadius: '20px', border: '1px dashed var(--border)' }}>
+              No recent activity found. Start a quiz to see your progress!
+            </div>
+          ) : (
+            progress.quizHistory.slice(0, 5).map((item, i) => {
+              const date = new Date(item.date).toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+              });
+              const percent = Math.round((item.score / item.total) * 100);
+              return (
+                <ActivityItem key={i}>
+                  <ActivityInfo>
+                    <ActivityType>{item.type.charAt(0).toUpperCase() + item.type.slice(1)} Quiz</ActivityType>
+                    <ActivityDate>{date}</ActivityDate>
+                  </ActivityInfo>
+                  <ActivityScore $perfect={percent === 100}>
+                    {item.score}/{item.total} ({percent}%)
+                  </ActivityScore>
+                </ActivityItem>
+              );
+            })
+          )}
+        </ActivityList>
+      </Section>
     </Container>
   );
 }
