@@ -391,8 +391,8 @@ export default function ContactPage() {
       <HeroSection>
         <Title>Say Konnichiwa!</Title>
         <Subtitle>
-          Ada pertanyaan tentang materi, quiz, atau sekadar ingin menyapa? 
-          Kami selalu senang mendengar dari komunitas pembelajar kami.
+          Have questions about materials, quizzes, or just want to say hi? 
+          We always love to hear from our learning community.
         </Subtitle>
       </HeroSection>
 
@@ -430,7 +430,7 @@ export default function ContactPage() {
 
           <ResponseBadge>
             <ClockIcon />
-            Waktu respon biasanya kurang dari 24 jam
+            Usually responds in less than 24 hours
           </ResponseBadge>
         </InfoSection>
 
@@ -442,41 +442,41 @@ export default function ContactPage() {
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
               </SuccessIcon>
-              <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>Pesan Terkirim!</h2>
+              <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>Message Sent!</h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-                Terima kasih telah menghubungi kami. Tim kami akan segera meninjau pesan Anda dan membalas secepat mungkin.
+                Thank you for contacting us. Our team will review your message and reply as soon as possible.
               </p>
               <SubmitButton 
                 onClick={() => setSubmitted(false)} 
                 style={{ marginTop: '1rem', width: 'auto', padding: '0.9rem 2rem' }}
               >
-                Kirim Pesan Lain
+                Send Another Message
               </SubmitButton>
             </SuccessOverlay>
           ) : (
             <Form onSubmit={handleSubmit}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                 <FormGroup>
-                  <Label>Nama Lengkap</Label>
-                  <Input type="text" placeholder="Masukkan nama Anda" required />
+                  <Label>Full Name</Label>
+                  <Input type="text" placeholder="Enter your name" required />
                 </FormGroup>
                 <FormGroup>
-                  <Label>Alamat Email</Label>
-                  <Input type="email" placeholder="nama@email.com" required />
+                  <Label>Email Address</Label>
+                  <Input type="email" placeholder="name@email.com" required />
                 </FormGroup>
               </div>
               <FormGroup>
-                <Label>Subjek (Opsional)</Label>
-                <Input type="text" placeholder="Apa yang ingin Anda bicarakan?" />
+                <Label>Subject (Optional)</Label>
+                <Input type="text" placeholder="What would you like to talk about?" />
               </FormGroup>
               <FormGroup>
-                <Label>Pesan Anda</Label>
-                <TextArea placeholder="Tuliskan detail pertanyaan atau masukan Anda di sini..." required />
+                <Label>Your Message</Label>
+                <TextArea placeholder="Write the details of your question or feedback here..." required />
               </FormGroup>
               <SubmitButton type="submit" disabled={loading}>
-                {loading ? 'Mengirim...' : (
+                {loading ? 'Sending...' : (
                   <>
-                    Kirim Pesan <SendIcon />
+                    Send Message <SendIcon />
                   </>
                 )}
               </SubmitButton>
@@ -489,16 +489,16 @@ export default function ContactPage() {
         <FaqTitle>Frequently Asked Questions</FaqTitle>
         <FaqGrid>
           <FaqCard>
-            <h3>Bagaimana cara reset progres belajar?</h3>
-            <p>Anda bisa melakukannya melalui menu Settings &gt; Learning Data &gt; Reset Progress. Hati-hati, tindakan ini tidak bisa dibatalkan.</p>
+            <h3>How do I reset my learning progress?</h3>
+            <p>You can do it through Settings &gt; Learning Data &gt; Reset Progress. Be careful, this action cannot be undone.</p>
           </FaqCard>
           <FaqCard>
-            <h3>Apakah aplikasi ini sepenuhnya gratis?</h3>
-            <p>Ya, fitur utama materi dan quiz tersedia gratis untuk semua orang. Kami mengandalkan dukungan komunitas untuk operasional server.</p>
+            <h3>Is this app completely free?</h3>
+            <p>Yes, the main material and quiz features are available for free to everyone. We rely on community support for server operations.</p>
           </FaqCard>
           <FaqCard>
-            <h3>Bagaimana cara melaporkan error pada materi?</h3>
-            <p>Gunakan formulir di atas dengan subjek "Laporan Kesalahan" atau hubungi kami langsung via Discord untuk respon lebih cepat.</p>
+            <h3>How do I report an error in the material?</h3>
+            <p>Use the form above with the subject "Error Report" or contact us directly via Discord for a faster response.</p>
           </FaqCard>
         </FaqGrid>
       </FaqSection>

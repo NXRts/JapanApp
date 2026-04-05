@@ -253,8 +253,8 @@ export default function DictionaryFlashcardModal({ data, onClose }: FlashcardMod
             <button className="close-btn" onClick={onClose}>✕</button>
           </Header>
           <EmptyStateContainer style={{ position: 'relative' }}>
-            <h3 style={{ color: 'var(--text-secondary)' }}>Tidak ada data yang tersedia untuk flashcard ini.</h3>
-            <ActionBtn style={{ marginTop: '2rem' }} onClick={onClose}>Tutup</ActionBtn>
+            <h3 style={{ color: 'var(--text-secondary)' }}>No data available for this flashcard session.</h3>
+            <ActionBtn style={{ marginTop: '2rem' }} onClick={onClose}>Close</ActionBtn>
           </EmptyStateContainer>
         </Container>
       </Overlay>
@@ -300,7 +300,7 @@ export default function DictionaryFlashcardModal({ data, onClose }: FlashcardMod
                  <SubText>{currentItem.structure}</SubText>
               )}
               <div style={{ position: 'absolute', bottom: '1.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem', opacity: 0.6, fontWeight: 500 }}>
-                Ketuk untuk membalik
+                Tap to flip
               </div>
             </CardFront>
 
@@ -319,10 +319,10 @@ export default function DictionaryFlashcardModal({ data, onClose }: FlashcardMod
 
         <Controls>
           <ActionBtn onClick={handlePrev} disabled={currentIndex === 0}>
-            ← Sebelumnya
+            ← Previous
           </ActionBtn>
           <ActionBtn onClick={handleNext} disabled={currentIndex === data.length - 1} style={{ background: currentIndex === data.length - 1 ? 'var(--surface)' : 'var(--primary)', color: currentIndex === data.length - 1 ? 'var(--foreground)' : 'white' }}>
-            {currentIndex === data.length - 1 ? 'Selesai' : 'Berikutnya →'}
+            {currentIndex === data.length - 1 ? 'Finished' : 'Next →'}
           </ActionBtn>
         </Controls>
       </Container>
