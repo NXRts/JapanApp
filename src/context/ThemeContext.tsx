@@ -24,7 +24,7 @@ export const themes: Record<ThemeColor, { primary: string; primaryLight: string;
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [color, setColor] = useState<ThemeColor>('indigo');
-  const [mode, setMode] = useState<ThemeMode>('light');
+  const [mode, setMode] = useState<ThemeMode>('dark');
 
   // Load from local storage on mount
   useEffect(() => {
