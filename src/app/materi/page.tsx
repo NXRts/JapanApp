@@ -156,9 +156,9 @@ export default function MateriHubPage() {
   return (
     <Container>
       <Header>
-        <Title>Materi Belajar</Title>
+        <Title>Learning Materials</Title>
         <Subtitle>
-          Kuasai Bahasa Jepang secara terstruktur melalui materi Tata Bahasa dan Kosakata pilihan.
+          Master Japanese in a structured way through selected Grammar and Vocabulary materials.
         </Subtitle>
       </Header>
 
@@ -172,12 +172,12 @@ export default function MateriHubPage() {
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
               </svg>
             </IconWrapper>
-            <CardTitle>Tata Bahasa (Grammar)</CardTitle>
+            <CardTitle>Grammar</CardTitle>
             <CardDescription>
-              Pelajari struktur kalimat, partikel, dan pola bahasa Jepang dari level N5 hingga N4 dengan penjelasan mendalam.
+              Learn sentence structures, particles, and Japanese patterns from N5 to N4 levels with in-depth explanations.
             </CardDescription>
             <ActionButton $color="59, 130, 246">
-              Mulai Belajar
+              Start Learning
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
@@ -194,12 +194,12 @@ export default function MateriHubPage() {
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
               </svg>
             </IconWrapper>
-            <CardTitle>Kosakata (Vocabulary)</CardTitle>
+            <CardTitle>Vocabulary</CardTitle>
             <CardDescription>
-              Perkaya perbendaharaan kata Anda dengan ribuan kosakata yang disertai contoh kalimat dan audio cara pengucapan.
+              Enrich your vocabulary with thousands of words accompanied by example sentences and pronunciation audio.
             </CardDescription>
             <ActionButton $color="16, 185, 129">
-              Perkaya Kosakata
+              Enrich Vocabulary
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
@@ -218,10 +218,10 @@ export default function MateriHubPage() {
             </IconWrapper>
             <CardTitle>JLPT</CardTitle>
             <CardDescription>
-              Akses cepat ribuan kosakata dan tata bahasa Jepang secara instan melalui sistem pencarian cerdas kami.
+              Quickly access thousands of Japanese vocabulary and grammar instantly through our smart search system.
             </CardDescription>
             <ActionButton $color="234, 179, 8">
-              Buka JLPT
+              Open JLPT
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>

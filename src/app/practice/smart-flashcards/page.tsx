@@ -294,7 +294,7 @@ const VOCAB_DECK: DeckCard[] = allVocabulary.map((item: any) => ({
   meaning: item.meaning ? item.meaning.split(',')[0].trim() : 'No definition',
   audioText: item.reading || item.word || '',
   level: item.level || '?',
-  category: 'Kosakata'
+  category: 'Vocabulary'
 }));
 
 const KANJI_DECK: DeckCard[] = allKanji.map((item: any) => ({
@@ -314,7 +314,7 @@ const GRAMMAR_DECK: DeckCard[] = allGrammar.map((item: any) => ({
   meaning: item.meaning || 'No definition',
   audioText: item.title || '',
   level: item.level || '?',
-  category: 'Tata Bahasa'
+  category: 'Grammar'
 }));
 
 const FULL_DECK: DeckCard[] = [...VOCAB_DECK, ...KANJI_DECK, ...GRAMMAR_DECK];
@@ -325,7 +325,7 @@ export default function SmartFlashcardsPage() {
   const [studyCount, setStudyCount] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [levelFilter, setLevelFilter] = useState('All');
-  const [categoryFilter, setCategoryFilter] = useState('Kosakata');
+  const [categoryFilter, setCategoryFilter] = useState('Vocabulary');
 
   const loadDeck = (lvl: string, cat: string) => {
     let pool = FULL_DECK.filter(card => card.category === cat);
@@ -404,7 +404,7 @@ export default function SmartFlashcardsPage() {
             <CustomDropdown 
               value={categoryFilter}
               onChange={(val) => setCategoryFilter(val)}
-              options={['Kosakata', 'Kanji', 'Tata Bahasa']}
+              options={['Vocabulary', 'Kanji', 'Grammar']}
             />
             <CustomDropdown 
               value={levelFilter}

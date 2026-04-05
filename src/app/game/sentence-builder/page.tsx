@@ -31,7 +31,7 @@ interface SentenceLevel {
 const ALL_SENTENCES: SentenceLevel[] = [
   {
     id: 1,
-    translation: "Saya makan apel.",
+    translation: "I eat an apple.",
     romajiHint: "Watashi wa ringo o tabemasu.",
     items: [
       { id: "w1-1", kana: "私", romaji: "watashi" },
@@ -43,7 +43,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 2,
-    translation: "Dia (laki-laki) pergi ke sekolah.",
+    translation: "He goes to school.",
     romajiHint: "Kare wa gakkō ni ikimasu.",
     items: [
       { id: "w2-1", kana: "彼", romaji: "kare" },
@@ -55,7 +55,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 3,
-    translation: "Kemarin saya membaca buku.",
+    translation: "I read a book yesterday.",
     romajiHint: "Kinō watashi wa hon o yomimashita.",
     items: [
       { id: "w3-1", kana: "昨日", romaji: "kinō" },
@@ -68,7 +68,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 4,
-    translation: "Kucing ada di bawah meja.",
+    translation: "The cat is under the table.",
     romajiHint: "Neko wa tsukue no shita ni imasu.",
     items: [
       { id: "w4-1", kana: "猫", romaji: "neko" },
@@ -82,7 +82,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 5,
-    translation: "Apakah kamu suka bahasa Jepang?",
+    translation: "Do you like Japanese?",
     romajiHint: "Nihongo ga suki desu ka?",
     items: [
       { id: "w5-1", kana: "日本語", romaji: "nihongo" },
@@ -94,7 +94,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 6,
-    translation: "Saya minum air.",
+    translation: "I drink water.",
     romajiHint: "Watashi wa mizu o nomimasu.",
     items: [
       { id: "w6-1", kana: "私", romaji: "watashi" },
@@ -106,7 +106,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 7,
-    translation: "Buku ini mahal.",
+    translation: "This book is expensive.",
     romajiHint: "Kono hon wa takai desu.",
     items: [
       { id: "w7-1", kana: "この", romaji: "kono" },
@@ -118,7 +118,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 8,
-    translation: "Hari ini cuaca cerah/bagus.",
+    translation: "The weather is good today.",
     romajiHint: "Kyō wa tenki ga ii desu.",
     items: [
       { id: "w8-1", kana: "今日", romaji: "kyō" },
@@ -131,7 +131,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 9,
-    translation: "Saya tidak pergi ke universitas.",
+    translation: "I don't go to the university.",
     romajiHint: "Watashi wa daigaku ni ikimasen.",
     items: [
       { id: "w9-1", kana: "私", romaji: "watashi" },
@@ -143,7 +143,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 10,
-    translation: "Tolong ucapkan sekali lagi.",
+    translation: "Please say it once more.",
     romajiHint: "Mō ichido itte kudasai.",
     items: [
       { id: "w10-1", kana: "もう", romaji: "mō" },
@@ -154,7 +154,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 11,
-    translation: "Kopi ini sangat panas.",
+    translation: "This coffee is very hot.",
     romajiHint: "Kono kōhī wa totemo atsui desu.",
     items: [
       { id: "w11-1", kana: "この", romaji: "kono" },
@@ -167,7 +167,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 12,
-    translation: "Kucing sedang makan ikan.",
+    translation: "The cat is eating fish.",
     romajiHint: "Neko wa sakana o tabete imasu.",
     items: [
       { id: "w12-1", kana: "猫", romaji: "neko" },
@@ -180,7 +180,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 13,
-    translation: "Restoran itu enak dan murah.",
+    translation: "That restaurant is delicious and cheap.",
     romajiHint: "Ano resutoran wa oishikute yasui desu.",
     items: [
       { id: "w13-1", kana: "あの", romaji: "ano" },
@@ -193,7 +193,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 14,
-    translation: "Jam berapa sekarang?",
+    translation: "What time is it now?",
     romajiHint: "Ima, nan-ji desu ka?",
     items: [
       { id: "w14-1", kana: "今", romaji: "ima" },
@@ -204,7 +204,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 15,
-    translation: "Setiap hari saya bangun jam 7.",
+    translation: "I wake up at 7 o'clock every day.",
     romajiHint: "Mainichi shichi-ji ni okimasu.",
     items: [
       { id: "w15-1", kana: "毎日", romaji: "mainichi" },
@@ -215,7 +215,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 16,
-    translation: "Bolehkah saya mengambil foto?",
+    translation: "May I take a photo?",
     romajiHint: "Shashin o totte mo ii desu ka?",
     items: [
       { id: "w16-1", kana: "写真", romaji: "shashin" },
@@ -229,7 +229,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 17,
-    translation: "Saya ingin liburan musim panas.",
+    translation: "I want a summer vacation.",
     romajiHint: "Natsuyasumi ga hoshii desu.",
     items: [
       { id: "w17-1", kana: "夏休み", romaji: "natsuyasumi" },
@@ -240,7 +240,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 18,
-    translation: "Kamar saya sempit tapi bersih.",
+    translation: "My room is small but clean.",
     romajiHint: "Watashi no heya wa semai desu ga kirei desu.",
     items: [
       { id: "w18-1", kana: "私", romaji: "watashi" },
@@ -255,7 +255,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 19,
-    translation: "Buku ini tidak begitu menarik.",
+    translation: "This book is not so interesting.",
     romajiHint: "Kono hon wa amari omoshiroku nai desu.",
     items: [
       { id: "w19-1", kana: "この", romaji: "kono" },
@@ -269,7 +269,7 @@ const ALL_SENTENCES: SentenceLevel[] = [
   },
   {
     id: 20,
-    translation: "Silakan tunggu sebentar.",
+    translation: "Please wait a moment.",
     romajiHint: "Chotto matte kudasai.",
     items: [
       { id: "w20-1", kana: "ちょっと", romaji: "chotto" },

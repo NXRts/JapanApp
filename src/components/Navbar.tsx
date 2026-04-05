@@ -264,7 +264,7 @@ export function Navbar() {
               <StyledLink href="/quiz" $active={pathname.startsWith('/quiz')}>Quiz</StyledLink>
             </NavItem>
             <NavItem>
-              <StyledLink href="/materi" $active={pathname.startsWith('/materi')}>Materi</StyledLink>
+              <StyledLink href="/materi" $active={pathname.startsWith('/materi')}>Materials</StyledLink>
             </NavItem>
             <NavItem>
               <StyledLink href="/jlpt" $active={pathname.startsWith('/jlpt')}>JLPT</StyledLink>
@@ -335,7 +335,7 @@ export function Navbar() {
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/materi" $active={pathname.startsWith('/materi')} onClick={() => setIsMobileMenuOpen(false)}>
-            Materi
+            Materials
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/jlpt" $active={pathname.startsWith('/jlpt')} onClick={() => setIsMobileMenuOpen(false)}>
