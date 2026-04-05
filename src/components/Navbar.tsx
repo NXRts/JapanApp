@@ -21,6 +21,12 @@ const NavRoot = styled.nav`
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--navbar-border);
   transition: all 0.3s ease;
+
+  @media (max-width: 768px) {
+    background: var(--surface); /* Solid white/surface color on mobile */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 `;
 
 const NavContainer = styled.div`
@@ -102,7 +108,7 @@ const StyledLink = styled(Link) <{ $active?: boolean }>`
   }
 `;
 
-const SettingsBtn = styled.button`
+const SettingsBtn = styled.button<{ $isOpen?: boolean }>`
   background: transparent;
   border: none;
   cursor: pointer;
@@ -114,6 +120,10 @@ const SettingsBtn = styled.button`
   align-items: center;
   justify-content: center;
   opacity: 0.8;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
 
   &:hover {
     color: var(--primary);
@@ -170,47 +180,98 @@ const Badge = styled.span`
 
 const MobileMenu = styled.div<{ $isOpen: boolean }>`
   position: fixed;
-  top: 0;
+  top: 70px; /* Precise alignment below the navbar */
   left: 0;
   width: 100%;
-  height: 100dvh;
-  background: var(--background); /* Fallback to a solid background */
+  height: calc(100dvh - 70px);
+  background: var(--surface); /* Solid background to match navbar */
   z-index: 101;
-  padding: 6rem 2rem 2rem;
+  padding: 2rem 2.5rem; /* Balanced internal padding */
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 0.75rem;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   transform: ${({ $isOpen }) => ($isOpen ? 'translateY(0)' : 'translateY(-100%)')};
   opacity: ${({ $isOpen }) => ($isOpen ? '1' : '0')};
   pointer-events: ${({ $isOpen }) => ($isOpen ? 'all' : 'none')};
   overflow-y: auto;
-  
-  /* Force a completely solid, dark background in modern browsers to prevent overlap bleed */
-  @supports (backdrop-filter: blur(20px)) {
-    background: var(--background); /* Use the theme background instead of hardcoded slate */
-  }
   
   @media (min-width: 769px) {
     display: none;
   }
 `;
 
-const MobileLink = styled(Link) <{ $active?: boolean }>`
-  font-size: 1.5rem;
+const MobileLink = styled(Link) <{ $active?: boolean; $isOpen: boolean; $delay: number }>`
+  font-size: 1.4rem;
   font-weight: ${({ $active }) => ($active ? '700' : '600')};
-  color: ${({ $active }) => ($active ? 'var(--primary-light)' : '#f1f5f9')}; /* Use light text on dark bg */
+  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--foreground)')};
   text-decoration: none;
-  padding: 0.5rem 0;
-  transition: all 0.2s;
+  padding: 1rem 0.5rem; /* Increased vertical padding for better tap targets and layout */
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--navbar-border);
   
+  /* Staggered animation */
+  opacity: 0;
+  transform: translateY(20px);
+  ${({ $isOpen }) => $isOpen && `
+    opacity: 1;
+    transform: translateY(0);
+  `}
+  transition-property: opacity, transform, color, padding, border;
+  transition-delay: ${({ $delay }) => $delay}s;
+  
   &:hover {
-    color: var(--primary-light);
-    padding-left: 10px;
+    color: var(--primary);
+    padding-left: 1rem;
+    border-bottom-color: var(--primary);
+  }
+
+  span {
+    opacity: 0.5;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover span {
+    transform: translateX(5px);
+    opacity: 1;
+  }
+`;
+
+const MobileDictBtn = styled.div<{ $isOpen: boolean; $delay: number }>`
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  color: var(--primary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  
+  /* Staggered animation */
+  opacity: 0;
+  transform: translateY(20px);
+  ${({ $isOpen }) => $isOpen && `
+    opacity: 1;
+    transform: translateY(0);
+  `}
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: ${({ $delay }) => $delay}s;
+
+  &:hover {
+    background: rgba(79, 70, 229, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.2);
+  }
+
+  svg {
+    stroke-width: 2.5;
   }
 `;
 
@@ -290,14 +351,14 @@ export function Navbar() {
           </NavList>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 102 }}>
-            <SearchBtn onClick={() => setIsDictionaryOpen(true)} title="Dictionary (Jisho)">
+            <SearchBtn $isOpen={isMobileMenuOpen} onClick={() => setIsDictionaryOpen(true)} title="Dictionary (Jisho)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.3-4.3" />
               </svg>
             </SearchBtn>
 
-            <SettingsBtn onClick={() => setIsSettingsOpen(true)} title="Settings">
+            <SettingsBtn $isOpen={isMobileMenuOpen} onClick={() => setIsSettingsOpen(true)} title="Settings">
               <svg viewBox="0 0 24 24">
                 <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
               </svg>
@@ -318,76 +379,57 @@ export function Navbar() {
         </NavContainer>
 
         <MobileMenu $isOpen={isMobileMenuOpen}>
-          <MobileLink href="/" $active={pathname === '/'} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/" $active={pathname === '/'} $isOpen={isMobileMenuOpen} $delay={0.1} onClick={() => setIsMobileMenuOpen(false)}>
             Home
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/practice" $active={pathname.startsWith('/practice')} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/practice" $active={pathname.startsWith('/practice')} $isOpen={isMobileMenuOpen} $delay={0.15} onClick={() => setIsMobileMenuOpen(false)}>
             Practice
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/review" $active={pathname.startsWith('/review')} onClick={() => setIsMobileMenuOpen(false)}>
-            Review {dueItemsCount > 0 && <Badge>{dueItemsCount}</Badge>}
-            <span><ArrowRightIcon size={18} /></span>
-          </MobileLink>
-          <MobileLink href="/quiz" $active={pathname.startsWith('/quiz')} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/quiz" $active={pathname.startsWith('/quiz')} $isOpen={isMobileMenuOpen} $delay={0.2} onClick={() => setIsMobileMenuOpen(false)}>
             Quiz
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/materi" $active={pathname.startsWith('/materi')} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/materi" $active={pathname.startsWith('/materi')} $isOpen={isMobileMenuOpen} $delay={0.25} onClick={() => setIsMobileMenuOpen(false)}>
             Materials
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/jlpt" $active={pathname.startsWith('/jlpt')} onClick={() => setIsMobileMenuOpen(false)}>
-            JLPT (Library)
+          <MobileLink href="/jlpt" $active={pathname.startsWith('/jlpt')} $isOpen={isMobileMenuOpen} $delay={0.3} onClick={() => setIsMobileMenuOpen(false)}>
+            JLPT
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/game" $active={pathname.startsWith('/game')} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/game" $active={pathname.startsWith('/game')} $isOpen={isMobileMenuOpen} $delay={0.35} onClick={() => setIsMobileMenuOpen(false)}>
             Game
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/blog" $active={pathname.startsWith('/blog')} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/blog" $active={pathname.startsWith('/blog')} $isOpen={isMobileMenuOpen} $delay={0.4} onClick={() => setIsMobileMenuOpen(false)}>
             Blog
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          {/* <MobileLink href="/careers" $active={pathname === '/careers'} onClick={() => setIsMobileMenuOpen(false)}>
-            Careers
-            <span><ArrowRightIcon size={18} /></span>
-          </MobileLink> */}
-          <MobileLink href="/stats" $active={pathname === '/stats'} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/stats" $active={pathname === '/stats'} $isOpen={isMobileMenuOpen} $delay={0.45} onClick={() => setIsMobileMenuOpen(false)}>
             Stats
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/about" $active={pathname === '/about'} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/about" $active={pathname === '/about'} $isOpen={isMobileMenuOpen} $delay={0.5} onClick={() => setIsMobileMenuOpen(false)}>
             About
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/contact" $active={pathname === '/contact'} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/contact" $active={pathname === '/contact'} $isOpen={isMobileMenuOpen} $delay={0.55} onClick={() => setIsMobileMenuOpen(false)}>
             Contact
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <div 
+          <MobileDictBtn 
+            $isOpen={isMobileMenuOpen} 
+            $delay={0.65}
             onClick={() => { setIsDictionaryOpen(true); setIsMobileMenuOpen(false); }}
-            style={{ 
-              marginTop: '1rem',
-              padding: '1.25rem',
-              borderRadius: '20px',
-              background: 'rgba(79, 70, 229, 0.1)',
-              color: 'var(--primary-light)',
-              fontWeight: '700',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '0.75rem',
-              cursor: 'pointer'
-            }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.3-4.3" />
             </svg>
-            JLPT (Jisho)
-          </div>
+            Dictionary (Jisho)
+          </MobileDictBtn>
         </MobileMenu>
       </NavRoot>
 
