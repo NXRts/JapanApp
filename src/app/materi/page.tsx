@@ -3,13 +3,15 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 
+import { LightBulbIcon } from '@/components/icons/AppIcons';
+
 // Styled Components
 const Container = styled.div`
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 4rem 2rem;
   min-height: 90vh;
-
+  
   @media (max-width: 768px) {
     padding: 2rem 1.5rem;
   }
@@ -158,7 +160,7 @@ export default function MateriHubPage() {
       <Header>
         <Title>Learning Materials</Title>
         <Subtitle>
-          Master Japanese in a structured way through selected Grammar and Vocabulary materials.
+          Master Japanese in a structured way through selected Grammar, Vocabulary, and Study Strategies.
         </Subtitle>
       </Header>
 
@@ -222,6 +224,25 @@ export default function MateriHubPage() {
             </CardDescription>
             <ActionButton $color="234, 179, 8">
               Open JLPT
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </ActionButton>
+          </CardContent>
+        </HubCardLink>
+
+        {/* Tips & Tricks Hub */}
+        <HubCardLink href="/tips">
+          <CardContent>
+            <IconWrapper $color="139, 92, 246"> {/* Purple/Violet color */}
+              <LightBulbIcon size={32} />
+            </IconWrapper>
+            <CardTitle>Learning Tips</CardTitle>
+            <CardDescription>
+              Discover professional strategies and psychological tricks to accelerate your Japanese acquisition journey.
+            </CardDescription>
+            <ActionButton $color="139, 92, 246">
+              View Strategies
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
