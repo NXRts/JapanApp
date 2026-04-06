@@ -336,6 +336,9 @@ export function Navbar() {
             <NavItem>
               <StyledLink href="/blog" $active={pathname.startsWith('/blog')}>Blog</StyledLink>
             </NavItem>
+            <NavItem>
+              <StyledLink href="/tips" $active={pathname.startsWith('/tips')}>Tips</StyledLink>
+            </NavItem>
             {/* <NavItem>
               <StyledLink href="/careers" $active={pathname === '/careers'}>Careers</StyledLink>
             </NavItem> */}
@@ -407,21 +410,25 @@ export function Navbar() {
             Blog
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/stats" $active={pathname === '/stats'} $isOpen={isMobileMenuOpen} $delay={0.45} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/tips" $active={pathname.startsWith('/tips')} $isOpen={isMobileMenuOpen} $delay={0.45} onClick={() => setIsMobileMenuOpen(false)}>
+            Tips
+            <span><ArrowRightIcon size={18} /></span>
+          </MobileLink>
+          <MobileLink href="/stats" $active={pathname === '/stats'} $isOpen={isMobileMenuOpen} $delay={0.5} onClick={() => setIsMobileMenuOpen(false)}>
             Stats
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/about" $active={pathname === '/about'} $isOpen={isMobileMenuOpen} $delay={0.5} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/about" $active={pathname === '/about'} $isOpen={isMobileMenuOpen} $delay={0.55} onClick={() => setIsMobileMenuOpen(false)}>
             About
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/contact" $active={pathname === '/contact'} $isOpen={isMobileMenuOpen} $delay={0.55} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/contact" $active={pathname === '/contact'} $isOpen={isMobileMenuOpen} $delay={0.6} onClick={() => setIsMobileMenuOpen(false)}>
             Contact
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileDictBtn 
             $isOpen={isMobileMenuOpen} 
-            $delay={0.65}
+            $delay={0.7}
             onClick={() => { setIsDictionaryOpen(true); setIsMobileMenuOpen(false); }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
