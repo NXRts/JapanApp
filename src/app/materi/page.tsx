@@ -5,6 +5,8 @@ import Link from 'next/link';
 
 import { LightBulbIcon } from '@/components/icons/AppIcons';
 
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+
 // Styled Components
 const Container = styled.div`
   max-width: 1200px;
@@ -157,6 +159,7 @@ const ActionButton = styled.div<{ $color: string }>`
 export default function MateriHubPage() {
   return (
     <Container>
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Materials" />
       <Header>
         <Title>Learning Materials</Title>
         <Subtitle>

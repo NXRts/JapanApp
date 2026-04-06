@@ -2,6 +2,7 @@
 
 import styled from 'styled-components';
 import Link from 'next/link';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 // Styled Components
 const Container = styled.div`
@@ -138,6 +139,7 @@ const PlayButton = styled.div<{ $color: string }>`
 export default function GamesHubPage() {
   return (
     <Container>
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Game Hub" />
       <Header>
         <Title>Games Hub</Title>
         <Subtitle>

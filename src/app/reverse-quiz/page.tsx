@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { toRomaji } from 'wanakana';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 // Styled Components
 const Container = styled.div`
@@ -314,8 +315,15 @@ export default function ReverseQuizPage() {
     if (loading || questions.length === 0) {
         return (
             <Container>
-                <div style={{ textAlign: 'center', fontSize: '1.25rem', color: 'var(--text-secondary)' }}>
-                    Loading today's challenge...
+                <Breadcrumbs 
+                    items={[
+                        { label: 'Home', href: '/' },
+                        { label: 'Quiz Hub', href: '/quiz' }
+                    ]} 
+                    current="Reverse Quiz" 
+                />
+                <div style={{ textAlign: 'center', fontSize: '1.25rem', color: 'var(--text-secondary)', marginTop: '4rem' }}>
+                    Loading Today's Challenge...
                 </div>
             </Container>
         );
@@ -324,6 +332,13 @@ export default function ReverseQuizPage() {
     if (isFinished) {
         return (
             <Container>
+                <Breadcrumbs 
+                    items={[
+                        { label: 'Home', href: '/' },
+                        { label: 'Quiz Hub', href: '/quiz' }
+                    ]} 
+                    current="Reverse Quiz" 
+                />
                 <ResultOverlay>
                     <h2>Reverse Quiz Complete!</h2>
                     <p>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
@@ -343,13 +358,14 @@ export default function ReverseQuizPage() {
 
     return (
         <Container>
+            <Breadcrumbs 
+                items={[
+                    { label: 'Home', href: '/' },
+                    { label: 'Quiz Hub', href: '/quiz' }
+                ]} 
+                current="Reverse Quiz" 
+            />
             <Header>
-                <BackButton href="/quiz">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                    </svg>
-                    Quiz Hub
-                </BackButton>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <ResetButton onClick={generateQuiz} title="New Questions">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
