@@ -1068,9 +1068,13 @@ function FlashcardContent() {
       <PageWrapper>
         <Container>
           <Header>
-            <Breadcrumbs>
-              <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Flashcards</span>
-            </Breadcrumbs>
+          <Breadcrumbs 
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'JLPT Mastery', href: '/jlpt' }
+            ]} 
+            current="Flashcards" 
+          />
             <HeaderRight>
                 <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                     JLPT Flashcards
@@ -1125,9 +1129,13 @@ function FlashcardContent() {
     <PageWrapper>
       <Container>
         <Header>
-          <Breadcrumbs>
-            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Flashcards</span>
-          </Breadcrumbs>
+          <Breadcrumbs 
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'JLPT Mastery', href: '/jlpt' }
+            ]} 
+            current="Flashcards" 
+          />
           <HeaderRight>
               <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                   JLPT Flashcards
