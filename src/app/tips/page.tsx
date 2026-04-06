@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styled from 'styled-components';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { SparklesIcon, GraduationIcon, BookIcon, LightBulbIcon, FireIcon, ChartBarIcon, ArrowRightIcon } from '@/components/icons/AppIcons';
 
 // Styled Components
@@ -245,6 +246,13 @@ export default function TipsPage() {
 
   return (
     <Container>
+      <Breadcrumbs 
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Materials', href: '/materi' }
+        ]} 
+        current="Tips & Tricks" 
+      />
       <Header>
         <Title>Language Mastery Hub</Title>
         <Subtitle>

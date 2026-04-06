@@ -2,6 +2,7 @@
 
 import styled from 'styled-components';
 import { useState } from 'react';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
 import { n4Vocabulary } from '@/data/jlpt/n4/vocabulary';
 import { n3Vocabulary } from '@/data/jlpt/n3/vocabulary';
@@ -209,6 +210,13 @@ export default function VocabularyPage() {
 
   return (
     <Container>
+      <Breadcrumbs 
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Materials', href: '/materi' }
+        ]} 
+        current="Vocabulary" 
+      />
       <Header>
         <Title>Vocabulary</Title>
         <Subtitle>

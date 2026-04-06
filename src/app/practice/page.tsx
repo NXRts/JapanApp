@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 import Link from 'next/link';
 import styled from 'styled-components';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -238,6 +239,7 @@ export default function PracticePage() {
 
   return (
     <Container>
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Practice Hub" />
       <Header>
         <Title>Practice <span>Mode</span></Title>
         <Subtitle>

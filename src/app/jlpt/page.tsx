@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { toKana, isRomaji, toRomaji } from 'wanakana';
 import { searchDictionary, DictionaryResult, allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
 import Link from 'next/link';
@@ -965,6 +966,7 @@ export default function DictionaryPage() {
 
   return (
     <PageContainer>
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="JLPT Mastery" />
       <LayoutRow>
         <Sidebar>
           <SidebarSection>

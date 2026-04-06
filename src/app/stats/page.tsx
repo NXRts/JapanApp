@@ -284,6 +284,8 @@ const ActivityScore = styled.div<{ $perfect: boolean }>`
   border-radius: 10px;
 `;
 
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+
 export default function StatsPage() {
   const { progress } = useProgress();
 
@@ -346,6 +348,7 @@ export default function StatsPage() {
 
   return (
     <Container>
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Mastery Dashboard" />
       <Header>
         <StatLabel>Overview</StatLabel>
         <Title>Mastery Dashboard</Title>

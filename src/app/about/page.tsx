@@ -3,6 +3,7 @@
 import styled, { keyframes } from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
@@ -539,6 +540,9 @@ const PrimaryButton = styled(Link)`
 export default function AboutPage() {
   return (
     <Container>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 2rem 0', width: '100%' }}>
+        <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="About" />
+      </div>
       <HeroSection>
         <Title>
           About <span>Japan Learning App</span>

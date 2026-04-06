@@ -2,6 +2,7 @@
 
 import styled from 'styled-components';
 import Link from 'next/link';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { useState } from 'react';
 import { n5Grammar } from '@/data/jlpt/n5/grammar';
 import { n4Grammar } from '@/data/jlpt/n4/grammar';
@@ -169,6 +170,13 @@ export default function GrammarPage() {
 
   return (
     <Container>
+      <Breadcrumbs 
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Materials', href: '/materi' }
+        ]} 
+        current="Grammar" 
+      />
       <Header>
         <Title>Grammar Guide</Title>
         <Subtitle>

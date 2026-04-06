@@ -2,6 +2,7 @@
 
 import styled from 'styled-components';
 import Link from 'next/link';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 // Styled Components
 const Container = styled.div`
@@ -138,6 +139,7 @@ const PlayButton = styled.div<{ $color: string }>`
 export default function QuizHubPage() {
   return (
     <Container>
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Quiz Hub" />
       <Header>
         <Title>Quiz Hub</Title>
         <Subtitle>

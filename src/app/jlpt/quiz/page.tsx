@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { useSearchParams } from 'next/navigation';
 import { searchDictionary, allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
 
@@ -48,35 +49,7 @@ const HeaderRight = styled.div`
   }
 `;
 
-const Breadcrumbs = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 1.2rem;
-  color: var(--text-secondary);
 
-  a {
-    color: var(--foreground);
-    text-decoration: none;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    transition: color 0.2s;
-    
-    &:hover {
-      color: var(--primary);
-    }
-  }
-
-  span.separator {
-    opacity: 0.3;
-    font-weight: 300;
-  }
-
-  span.current {
-    font-weight: 400;
-    opacity: 0.8;
-  }
-`;
 
 const QuizCard = styled.div`
   background: var(--surface);
@@ -419,10 +392,14 @@ function QuizContent() {
   return (
     <PageWrapper>
       <Container>
+        <Breadcrumbs 
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'JLPT Mastery', href: '/jlpt' }
+          ]} 
+          current="Quiz" 
+        />
         <Header>
-          <Breadcrumbs>
-            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span> <span className="current">Quiz</span>
-          </Breadcrumbs>
           
           <HeaderRight>
               <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>

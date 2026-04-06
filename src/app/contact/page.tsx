@@ -372,6 +372,8 @@ const FaqCard = styled.div`
 `;
 
 // --- Components ---
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -388,6 +390,7 @@ export default function ContactPage() {
 
   return (
     <PageContainer>
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Contact" />
       <HeroSection>
         <Title>Say Konnichiwa!</Title>
         <Subtitle>

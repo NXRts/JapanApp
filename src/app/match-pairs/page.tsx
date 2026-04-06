@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { toRomaji } from 'wanakana';
 
 // Styled Components
@@ -358,7 +359,14 @@ export default function MatchPairsPage() {
     if (loading || questions.length === 0) {
         return (
             <Container>
-                <div style={{ textAlign: 'center', fontSize: '1.25rem', color: 'var(--text-secondary)' }}>
+                <Breadcrumbs 
+                    items={[
+                        { label: 'Home', href: '/' },
+                        { label: 'Quiz Hub', href: '/quiz' }
+                    ]} 
+                    current="Match Pairs" 
+                />
+                <div style={{ textAlign: 'center', fontSize: '1.25rem', color: 'var(--text-secondary)', marginTop: '4rem' }}>
                     Loading cards...
                 </div>
             </Container>
@@ -368,6 +376,13 @@ export default function MatchPairsPage() {
     if (isFinished) {
         return (
             <Container>
+                <Breadcrumbs 
+                    items={[
+                        { label: 'Home', href: '/' },
+                        { label: 'Quiz Hub', href: '/quiz' }
+                    ]} 
+                    current="Match Pairs" 
+                />
                 <ResultOverlay>
                     <h2>{gameOver ? 'Game Over!' : 'Round Complete!'}</h2>
                     <p>
@@ -390,13 +405,14 @@ export default function MatchPairsPage() {
 
     return (
         <Container>
+            <Breadcrumbs 
+                items={[
+                    { label: 'Home', href: '/' },
+                    { label: 'Quiz Hub', href: '/quiz' }
+                ]} 
+                current="Match Pairs" 
+            />
             <Header>
-                <BackButton href="/quiz">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M19 12H5M12 19l-7-7 7-7" />
-                    </svg>
-                    Quiz Hub
-                </BackButton>
                 <TitleBadge>Match the Pairs</TitleBadge>
             </Header>
 
