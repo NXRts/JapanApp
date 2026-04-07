@@ -8,6 +8,10 @@ const SectionWrapper = styled.section`
   width: 100%;
   display: flex;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    padding: 4rem 1rem 5rem;
+  }
 `;
 
 const CTAContainer = styled.div`
@@ -21,6 +25,11 @@ const CTAContainer = styled.div`
   position: relative;
   overflow: hidden;
   box-shadow: 0 30px 60px -12px rgba(79, 70, 229, 0.4);
+  
+  @media (max-width: 768px) {
+    padding: 3.5rem 1.5rem;
+    border-radius: 32px;
+  }
   
   &::before {
     content: '';
@@ -90,6 +99,7 @@ const ActionGroup = styled.div`
   @media (max-width: 640px) {
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
   }
 `;
 
@@ -116,6 +126,13 @@ const PrimaryButton = styled(Link)`
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.2);
   animation: glow 3s infinite;
+  box-sizing: border-box;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    padding: 1.1rem 1.5rem;
+    font-size: 1.1rem;
+  }
 
   &:hover {
     transform: translateY(-5px) scale(1.05);
@@ -142,6 +159,13 @@ const SecondaryButton = styled(Link)`
   text-decoration: none;
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
+  box-sizing: border-box;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    padding: 1.1rem 1.5rem;
+    font-size: 1.1rem;
+  }
 
   &:hover {
     background: rgba(255, 255, 255, 0.2);

@@ -10,7 +10,7 @@ const Section = styled.section`
   overflow: hidden;
 
   @media (max-width: 768px) {
-    padding: 3rem 1rem;
+    padding: 3rem 1.5rem;
   }
 `;
 
@@ -38,11 +38,17 @@ const BenefitItem = styled.div`
   display: flex;
   gap: 1.5rem;
   align-items: flex-start;
+  
+  @media (max-width: 768px) {
+    gap: 1rem;
+  }
 `;
 
 const BenefitIcon = styled.div`
   min-width: 80px;
+  width: 80px;
   height: 80px;
+  flex-shrink: 0;
   border-radius: 20px;
   background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15), rgba(var(--primary-rgb), 0.05));
   border: 1px solid rgba(var(--primary-rgb), 0.1);
@@ -50,10 +56,10 @@ const BenefitIcon = styled.div`
   align-items: center;
   justify-content: center;
   color: var(--primary);
-  margin-top: 5px;
 
   @media (max-width: 768px) {
     min-width: 60px;
+    width: 60px;
     height: 60px;
     border-radius: 16px;
   }
@@ -64,6 +70,11 @@ const BenefitIcon = styled.div`
     stroke: currentColor;
     stroke-width: 2;
     fill: none;
+    
+    @media (max-width: 768px) {
+      width: 28px;
+      height: 28px;
+    }
   }
 `;
 
@@ -73,12 +84,24 @@ const BenefitText = styled.div`
     font-weight: 700;
     margin-bottom: 0.5rem;
     color: var(--foreground);
+    line-height: 1.3;
   }
   
   p {
     color: var(--text-secondary);
     line-height: 1.6;
     font-size: 1.05rem;
+  }
+  
+  @media (max-width: 768px) {
+    h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.25rem;
+    }
+    p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
   }
 `;
 
@@ -107,27 +130,30 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin-bottom: 4rem;
   color: var(--foreground);
+  position: relative;
+  padding-bottom: 1.25rem;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
   
   span {
     position: relative;
     z-index: 1;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 4px;
-      background: var(--primary);
-      border-radius: 2px;
-    }
   }
   
   @media (max-width: 768px) {
     font-size: 1.75rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
   }
 `;
 
