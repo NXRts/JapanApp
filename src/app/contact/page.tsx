@@ -86,6 +86,10 @@ const Subtitle = styled.p`
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const ContentGrid = styled.div`
@@ -119,6 +123,11 @@ const ContactCard = styled.a`
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-sm);
 
+  @media (max-width: 768px) {
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+  }
+
   &:hover {
     transform: translateX(8px);
     border-color: var(--primary);
@@ -130,6 +139,7 @@ const ContactCard = styled.a`
 const IconWrapper = styled.div<{ $color: string }>`
   width: 54px;
   height: 54px;
+  flex-shrink: 0;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -137,6 +147,12 @@ const IconWrapper = styled.div<{ $color: string }>`
   background: ${props => `rgba(${props.$color}, 0.1)`};
   color: ${props => `rgb(${props.$color})`};
   transition: transform 0.3s ease;
+  
+  @media (max-width: 768px) {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+  }
 
   ${ContactCard}:hover & {
     transform: scale(1.1) rotate(5deg);
@@ -147,6 +163,7 @@ const CardContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  overflow: hidden;
 `;
 
 const CardLabel = styled.span`
@@ -155,11 +172,22 @@ const CardLabel = styled.span`
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const CardValue = styled.span`
   font-size: 1.1rem;
   font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const ResponseBadge = styled.div`
@@ -175,6 +203,11 @@ const ResponseBadge = styled.div`
   margin-top: 1rem;
   width: fit-content;
   border: 1px solid rgba(var(--secondary-rgb), 0.2);
+  
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+  }
 `;
 
 const FormContainer = styled.div`
@@ -208,6 +241,16 @@ const Form = styled.form`
   gap: 1.5rem;
   position: relative;
   z-index: 1;
+`;
+
+const FormRow = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const FormGroup = styled.div`
@@ -337,11 +380,16 @@ const FaqTitle = styled.h2`
   margin-bottom: 2rem;
   text-align: center;
   color: var(--foreground);
+  
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const FaqGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
 `;
 
@@ -458,7 +506,7 @@ export default function ContactPage() {
             </SuccessOverlay>
           ) : (
             <Form onSubmit={handleSubmit}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <FormRow>
                 <FormGroup>
                   <Label>Full Name</Label>
                   <Input type="text" placeholder="Enter your name" required />
@@ -467,7 +515,7 @@ export default function ContactPage() {
                   <Label>Email Address</Label>
                   <Input type="email" placeholder="name@email.com" required />
                 </FormGroup>
-              </div>
+              </FormRow>
               <FormGroup>
                 <Label>Subject (Optional)</Label>
                 <Input type="text" placeholder="What would you like to talk about?" />
