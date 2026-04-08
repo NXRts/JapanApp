@@ -12,7 +12,7 @@ import { useProgress } from '@/context/ProgressContext';
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;

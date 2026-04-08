@@ -8,7 +8,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 const Container = styled.div`
   max-width: 1000px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2.5rem 2rem;
   min-height: 90vh;
 `;
 

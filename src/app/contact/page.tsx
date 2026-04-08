@@ -51,7 +51,7 @@ const shiroGlow = keyframes`
 const PageContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -59,7 +59,7 @@ const PageContainer = styled.div`
   animation: ${fadeIn} 0.6s ease-out;
 
   @media (max-width: 768px) {
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
     gap: 2.5rem;
   }
 `;

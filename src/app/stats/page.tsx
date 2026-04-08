@@ -8,14 +8,14 @@ import { Heatmap } from '@/components/gamification/Heatmap';
 const Container = styled.div`
   max-width: 1100px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
   gap: 3rem;
 
   @media (max-width: 768px) {
-    padding: 2rem 1.25rem;
+    padding: 1.5rem 1.25rem;
     gap: 2rem;
   }
 `;

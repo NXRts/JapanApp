@@ -9,12 +9,12 @@ import { mockPosts } from '@/data/blog';
 
 const Container = styled.div`
   min-height: 100vh;
-  padding: 8rem 2rem 4rem;
+  padding: 2.5rem 2rem 4rem;
   max-width: 1200px;
   margin: 0 auto;
 
   @media (max-width: 768px) {
-    padding: 6rem 1.5rem 3rem;
+    padding: 1.5rem 1.5rem 3rem;
   }
 `;
 

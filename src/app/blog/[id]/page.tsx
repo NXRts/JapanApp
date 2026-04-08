@@ -30,7 +30,7 @@ const pulseGlow = keyframes`
 
 const Container = styled.div`
   min-height: 100vh;
-  padding: 8rem 2rem 6rem;
+  padding: 2.5rem 2rem 6rem;
   max-width: 850px;
   margin: 0 auto;
 `;
