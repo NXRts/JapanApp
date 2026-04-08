@@ -14,13 +14,13 @@ export const mockPosts: BlogPost[] = [
     {
         id: '18',
         title: 'The JLPT July Exam Preparation Strategy',
-        excerpt: 'With the July JLPT exam approaching, it\\'s time to solidify your study plan. Here is a month-by-month guide.',
+        excerpt: "With the July JLPT exam approaching, it's time to solidify your study plan. Here is a month-by-month guide.",
         date: 'April 5, 2026',
         author: 'Mike Chen',
         category: 'learning-tips',
         readTime: '8 min read',
         content: [
-            'As we enter April, the July JLPT is just a few months away. If you haven\\'t started your intensive prep, now is the time!',
+            "As we enter April, the July JLPT is just a few months away. If you haven't started your intensive prep, now is the time!",
             '<strong>April: Content Mastery</strong><br/>Focus heavily on absorbing new grammar and vocabulary. Use flashcards daily and start reading articles at your target level.',
             '<strong>May: Practice Tests</strong><br/>Shift your focus to practice tests. Try to complete one full mock exam every weekend under timed conditions to build your stamina.',
             '<strong>June: Weakness Targeting</strong><br/>Analyze your mock test results. Are you struggling with listening or reading comprehension? Spend this month doing targeted exercises on your weak points.',
@@ -37,11 +37,11 @@ export const mockPosts: BlogPost[] = [
         readTime: '6 min read',
         content: [
             'If you visit Osaka, Kyoto, or Kobe, you will quickly notice that the Japanese sounds different. This is Kansai-ben (Kansai dialect), known for its energetic and casual tone.',
-            '<strong>1. Ookini (Thank you)</strong><br/>Instead of "Arigatou," you will often hear "Ookini." It\\'s a staple of Kansai hospitality.',
+            `<strong>1. Ookini (Thank you)</strong><br/>Instead of "Arigatou," you will often hear "Ookini." It's a staple of Kansai hospitality.`,
             '<strong>2. Meccha (Very)</strong><br/>While standard Japanese uses "Totemo" or "Sugoku," Kansai locals use "Meccha." Example: "Meccha oishii!" (Very delicious!).',
-            '<strong>3. Akan (No good / Don\\'t do it)</strong><br/>This replaces "Dame" in standard Japanese.',
+            `<strong>3. Akan (No good / Don't do it)</strong><br/>This replaces "Dame" in standard Japanese.`,
             '<strong>4. Yanen</strong><br/>You will hear this attached to the end of many sentences instead of "N da" or "Desu." It adds a distinctive Kansai flavor.',
-            'Using a few of these phrases will definitely bring a smile to the locals\\' faces!'
+            "Using a few of these phrases will definitely bring a smile to the locals' faces!"
         ]
     },
     {
@@ -56,7 +56,7 @@ export const mockPosts: BlogPost[] = [
             'Living in a digital world means you need to know how to navigate technology in Japanese. While many words are borrowed from English, they are often abbreviated or use specific kanji.',
             '<strong>1. 設定 (Settei - Settings)</strong><br/>This is the gear icon on almost every app. Memorize these two kanji immediately!',
             '<strong>2. 検索 (Kensaku - Search)</strong><br/>Found next to the magnifying glass icon. Used for looking up information on the web.',
-            '<strong>3. 保存 (Hozon - Save)</strong><br/>Crucial for making sure you don\\'t lose your work. The first kanji means to preserve.',
+            `<strong>3. 保存 (Hozon - Save)</strong><br/>Crucial for making sure you don't lose your work. The first kanji means to preserve.`,
             '<strong>4. 削除 (Sakujo - Delete)</strong><br/>Be careful not to click this by mistake! It means to erase or delete.',
             '<strong>5. パスワード (Pasuwaado - Password)</strong><br/>Many tech terms are simply Katakana loanwords. However, knowing the native kanji equivalents is vital for serious computing.'
         ]
