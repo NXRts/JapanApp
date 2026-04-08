@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useState } from 'react';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 import { mockPosts } from '@/data/blog';
 
@@ -265,6 +266,7 @@ export default function BlogPage() {
 
   return (
     <Container>
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Blog" />
       <Header>
         <Title>Latest Insights</Title>
         <Subtitle>
