@@ -4,6 +4,7 @@ import styled, { keyframes } from 'styled-components';
 import { useParams, useRouter } from 'next/navigation';
 import { mockPosts } from '@/data/blog';
 import { useEffect, useState } from 'react';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(20px); }
@@ -324,6 +325,9 @@ export default function BlogPostPage() {
   if (!post) {
     return (
       <NotFoundContainer>
+        <div style={{ alignSelf: 'flex-start', width: '100%' }}>
+          <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/blog' }]} current="Post Not Found" />
+        </div>
         <Title>Post Not Found</Title>
 
       </NotFoundContainer>
@@ -332,8 +336,7 @@ export default function BlogPostPage() {
 
   return (
     <Container>
-
-
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/blog' }]} current={post.title} />
       <HeaderBanner $category={post.category}>
         <FloatingIcon>
           {post.category === 'kanji' && '字'}
