@@ -18,13 +18,13 @@ const PageWrapper = styled.div`
 const Container = styled.div`
   max-width: 900px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   @media (max-width: 640px) {
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
   }
 `;
 

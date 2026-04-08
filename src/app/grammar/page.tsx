@@ -13,11 +13,11 @@ import { n1Grammar } from '@/data/jlpt/n1/grammar';
 const Container = styled.div`
   max-width: 1000px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2.5rem 2rem;
   min-height: 90vh;
 
   @media (max-width: 768px) {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1.5rem;
   }
 `;
 
