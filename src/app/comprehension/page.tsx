@@ -44,45 +44,64 @@ const CategoryCard = styled(Link)`
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 24px;
-  padding: 3rem 2.5rem;
+  padding: 2.5rem;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
+  color: var(--foreground);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  
-  &:hover {
-    transform: translateY(-8px);
-    border-color: var(--primary);
-    box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.2);
-    
-    .icon-wrapper {
-      transform: scale(1.1) rotate(5deg);
-    }
-  }
+  display: flex;
+  flex-direction: column;
 
   &::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05), transparent 50%);
-    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.06), transparent 40%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 0;
+  }
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary);
+
+    &::before {
+      opacity: 1;
+    }
   }
 `;
 
-const IconWrapper = styled.div`
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
+
+const CardContent = styled.div`
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
+const IconWrapper = styled.div<{ $color: string }>`
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  background: rgba(79, 70, 229, 0.1);
-  color: var(--primary);
+  background: ${({ $color }) => `rgba(${$color}, 0.1)`};
+  color: ${({ $color }) => `rgb(${$color})`};
+
+  svg {
+    width: 32px;
+    height: 32px;
+  }
 `;
 
 const CardTitle = styled.h2`
@@ -96,6 +115,32 @@ const CardDescription = styled.p`
   color: var(--text-secondary);
   font-size: 1.1rem;
   line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+`;
+
+const PlayButton = styled.div<{ $color: string }>`
+  align-self: flex-start;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  background: ${({ $color }) => `rgba(${$color}, 0.1)`};
+  color: ${({ $color }) => `rgb(${$color})`};
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  ${CategoryCard}:hover & {
+    background: ${({ $color }) => `rgb(${$color})`};
+    color: white;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 `;
 
 export default function ComprehensionHub() {
@@ -112,23 +157,45 @@ export default function ComprehensionHub() {
 
       <Grid>
         <CategoryCard href="/comprehension/reading">
-          <IconWrapper className="icon-wrapper">
-            📖
-          </IconWrapper>
-          <CardTitle>Reading Comprehension</CardTitle>
-          <CardDescription>
-            Practice reading full Japanese passages graded by JLPT level. Includes furigana toggles and comprehension quizzes.
-          </CardDescription>
+          <CardContent>
+            <IconWrapper $color="79, 70, 229" className="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+            </IconWrapper>
+            <CardTitle>Reading Comprehension</CardTitle>
+            <CardDescription>
+              Practice reading full Japanese passages graded by JLPT level. Includes furigana toggles and comprehension quizzes.
+            </CardDescription>
+            <PlayButton $color="79, 70, 229">
+              Start Reading
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
         </CategoryCard>
 
-        <CategoryCard href="/comprehension/listening" style={{ borderLeft: '4px solid #3b82f6' }}>
-          <IconWrapper className="icon-wrapper" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6' }}>
-            🎧
-          </IconWrapper>
-          <CardTitle>Listening Comprehension</CardTitle>
-          <CardDescription>
-            Simulate real-life Japanese conversations with interactive AI audio players. Train your ears and answer blind quizzes.
-          </CardDescription>
+        <CategoryCard href="/comprehension/listening">
+          <CardContent>
+            <IconWrapper $color="59, 130, 246" className="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
+              </svg>
+            </IconWrapper>
+            <CardTitle>Listening Comprehension</CardTitle>
+            <CardDescription>
+              Simulate real-life Japanese conversations with interactive AI audio players. Train your ears and answer blind quizzes.
+            </CardDescription>
+            <PlayButton $color="59, 130, 246">
+              Start Listening
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
         </CategoryCard>
       </Grid>
     </Container>
