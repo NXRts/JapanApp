@@ -299,7 +299,7 @@ export default function ReadingDetailPage() {
   if (!passage) {
     return (
       <Container>
-        <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Reading', href: '/practice/reading' }]} current="Not Found" />
+        <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Reading', href: '/comprehension/reading' }]} current="Not Found" />
         <Title>Passage Not Found</Title>
       </Container>
     );
@@ -307,7 +307,7 @@ export default function ReadingDetailPage() {
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Reading', href: '/practice/reading' }]} current={passage.title} />
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Reading', href: '/comprehension/reading' }]} current={passage.title} />
       
       <ControlsContainer>
         <div>
