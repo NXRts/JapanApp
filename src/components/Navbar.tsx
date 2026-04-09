@@ -313,7 +313,10 @@ export function Navbar() {
               <StyledLink href="/" $active={pathname === '/'}>Home</StyledLink>
             </NavItem>
             <NavItem>
-              <StyledLink href="/practice" $active={pathname.startsWith('/practice')}>Practice</StyledLink>
+              <StyledLink href="/practice" $active={pathname.startsWith('/practice') && !pathname.startsWith('/practice/reading')}>Practice</StyledLink>
+            </NavItem>
+            <NavItem>
+              <StyledLink href="/practice/reading" $active={pathname.startsWith('/practice/reading')}>Reading</StyledLink>
             </NavItem>
             {/* <NavItem>
               <StyledLink href="/review" $active={pathname.startsWith('/review')}>
@@ -383,8 +386,12 @@ export function Navbar() {
             Home
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/practice" $active={pathname.startsWith('/practice')} $isOpen={isMobileMenuOpen} $delay={0.15} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/practice" $active={pathname.startsWith('/practice') && !pathname.startsWith('/practice/reading')} $isOpen={isMobileMenuOpen} $delay={0.15} onClick={() => setIsMobileMenuOpen(false)}>
             Practice
+            <span><ArrowRightIcon size={18} /></span>
+          </MobileLink>
+          <MobileLink href="/practice/reading" $active={pathname.startsWith('/practice/reading')} $isOpen={isMobileMenuOpen} $delay={0.17} onClick={() => setIsMobileMenuOpen(false)}>
+            Reading
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
           <MobileLink href="/quiz" $active={pathname.startsWith('/quiz')} $isOpen={isMobileMenuOpen} $delay={0.2} onClick={() => setIsMobileMenuOpen(false)}>
