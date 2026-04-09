@@ -273,6 +273,14 @@ export default function PracticePage() {
           </CardDescription>
         </Card>
 
+        <Card href="/practice/reading" style={{ border: '1px solid var(--primary)' }}>
+          <IconWrapper style={{ background: 'rgba(79, 70, 229, 0.15)', color: 'var(--primary)' }}>📚</IconWrapper>
+          <CardTitle>Reading Practice</CardTitle>
+          <CardDescription>
+            Practice JLPT-style reading comprehension (Dokkai) with graded stories and furigana toggles.
+          </CardDescription>
+        </Card>
+
         <Card href="/practice/kana">
           <IconWrapper>あ</IconWrapper>
           <CardTitle>Kana Quiz</CardTitle>
