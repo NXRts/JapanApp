@@ -126,24 +126,28 @@ const Card = styled(Link)`
   }
 `;
 
-const IconWrapper = styled.div`
+const IconWrapper = styled.div<{ $color: string }>`
   width: 90px;
   height: 90px;
   border-radius: 24px;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(79, 70, 229, 0.05));
-  color: var(--primary);
+  background: ${({ $color }) => `rgba(${$color}, 0.1)`};
+  color: ${({ $color }) => `rgb(${$color})`};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
   margin-bottom: 2rem;
-  transition: transform 0.4s ease;
-  box-shadow: inset 0 0 0 1px rgba(79, 70, 229, 0.1);
+  transition: all 0.4s ease;
+  box-shadow: inset 0 0 0 1px ${({ $color }) => `rgba(${$color}, 0.1)`};
 
   ${Card}:hover & {
     transform: scale(1.1) rotate(5deg);
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    background: ${({ $color }) => `rgb(${$color})`};
     color: white;
+  }
+
+  svg {
+    width: 42px;
+    height: 42px;
   }
 `;
 
@@ -264,7 +268,14 @@ export default function PracticePage() {
 
       <Grid>
         <Card href="/daily-quiz">
-          <IconWrapper>📅</IconWrapper>
+          <IconWrapper $color="245, 158, 11">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </IconWrapper>
           <CardTitle>Daily Challenge</CardTitle>
           <CardDescription>
             {isDailyCompleted 
@@ -277,7 +288,13 @@ export default function PracticePage() {
 
 
         <Card href="/practice/kana">
-          <IconWrapper>あ</IconWrapper>
+          <IconWrapper $color="59, 130, 246">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="m2 17 10 5 10-5"></path>
+              <path d="m2 12 10 5 10-5"></path>
+            </svg>
+          </IconWrapper>
           <CardTitle>Kana Quiz</CardTitle>
           <CardDescription>
             Test your reflex and memory of Hiragana and Katakana with quick-fire multiple choice questions.
@@ -285,7 +302,13 @@ export default function PracticePage() {
         </Card>
 
         <Card href="/practice/kana-flashcards">
-          <IconWrapper>🎴</IconWrapper>
+          <IconWrapper $color="99, 102, 241">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <path d="M3 9h18"></path>
+              <path d="M9 21V9"></path>
+            </svg>
+          </IconWrapper>
           <CardTitle>Kana Flashcards</CardTitle>
           <CardDescription>
             Focus on mastering individual Kana characters (Hiragana, Katakana, Dakuten) with interactive flip cards.
@@ -293,7 +316,11 @@ export default function PracticePage() {
         </Card>
 
         <Card href="/practice/smart-flashcards" style={{ border: '2px solid var(--primary)' }}>
-          <IconWrapper>✨</IconWrapper>
+          <IconWrapper $color="168, 85, 247">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m12 3 1.912 5.885L20 10.796l-4.544 4.427L16.528 21 12 18.204 7.472 21l1.072-5.777L4 10.796l6.088-1.911L12 3z"></path>
+            </svg>
+          </IconWrapper>
           <CardTitle>Smart Flashcards</CardTitle>
           <CardDescription>
             Tinder-style swipeable vocabulary flashcards with native pronunciation and active recall scoring.
@@ -301,7 +328,14 @@ export default function PracticePage() {
         </Card>
 
         <Card href="/practice/kanji">
-          <IconWrapper>✍️</IconWrapper>
+          <IconWrapper $color="16, 185, 129">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+              <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+              <path d="m2 2 5 2"></path>
+              <path d="m2 2 2 5"></path>
+            </svg>
+          </IconWrapper>
           <CardTitle>Kanji Flashcards</CardTitle>
           <CardDescription>
             Practice writing Kanji strokes and memorize meanings with our digital self-check flashcards.
@@ -309,7 +343,12 @@ export default function PracticePage() {
         </Card>
 
         <Card href="/practice/vocabulary">
-          <IconWrapper>📖</IconWrapper>
+          <IconWrapper $color="249, 115, 22">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+          </IconWrapper>
           <CardTitle>Vocabulary Flashcards</CardTitle>
           <CardDescription>
             Learn and memorize Japanese vocabulary meanings and readings without the pressure of scoring.
