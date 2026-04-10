@@ -23,7 +23,7 @@ export const mockPosts: BlogPost[] = [
             "As we enter April, the July JLPT is just a few months away. If you haven't started your intensive prep, now is the time!",
             '<strong>April: Content Mastery</strong><br/>Focus heavily on absorbing new grammar and vocabulary. Use flashcards daily and start reading articles at your target level.',
             '<strong>May: Practice Tests</strong><br/>Shift your focus to practice tests. Try to complete one full mock exam every weekend under timed conditions to build your stamina.',
-            '<strong>June: Weakness Targeting</strong><br/>Analyze your mock test results. Are you struggling with listening or reading comprehension? Spend this month doing targeted exercises on your weak points.',
+            '<strong>June: Weakness Targeting</strong><br/>Analyze your mock test results. Are you struggling with listening or reading study? Spend this month doing targeted exercises on your weak points.',
             'Consistency is more important than cramming. Study a little bit every day, and you will be ready!'
         ]
     },

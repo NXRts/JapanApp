@@ -355,7 +355,7 @@ export default function ListeningDetailPage() {
   if (!exercise) {
     return (
       <Container>
-        <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Listening', href: '/comprehension/listening' }]} current="Not Found" />
+        <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Listening', href: '/study/listening' }]} current="Not Found" />
         <Title>Exercise Not Found</Title>
       </Container>
     );
@@ -403,7 +403,7 @@ export default function ListeningDetailPage() {
 
   return (
     <Container>
-       <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Listening', href: '/comprehension/listening' }]} current={exercise.title} />
+       <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Listening', href: '/study/listening' }]} current={exercise.title} />
        
        <ControlsContainer>
          <div>
