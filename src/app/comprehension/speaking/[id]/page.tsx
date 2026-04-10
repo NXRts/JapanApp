@@ -102,8 +102,7 @@ const ControlsArea = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  position: sticky;
-  bottom: 2rem;
+  margin-top: auto;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 `;
 
