@@ -275,6 +275,14 @@ export default function PracticePage() {
 
 
 
+        <Card href="/practice/speaking" style={{ border: '1px solid var(--primary)' }}>
+          <IconWrapper style={{ background: 'rgba(79, 70, 229, 0.15)', color: 'var(--primary)' }}>🗣️</IconWrapper>
+          <CardTitle>Speaking Roleplay</CardTitle>
+          <CardDescription>
+            Practice real-life Japanese conversations by shadowing AI dialogue with your microphone.
+          </CardDescription>
+        </Card>
+
         <Card href="/practice/kana">
           <IconWrapper>あ</IconWrapper>
           <CardTitle>Kana Quiz</CardTitle>
