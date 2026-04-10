@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 const PageWrapper = styled.div`
   min-height: 90vh;
@@ -478,13 +479,14 @@ export default function KanaFlashcards() {
   return (
     <PageWrapper>
       <Container>
+        <Breadcrumbs 
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Practice', href: '/practice' }
+          ]} 
+          current="Kana Flashcards" 
+        />
         <Header>
-          <BackLink href="/practice">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            Back
-          </BackLink>
           <Controls>
             <ToggleBtn
               $active={isRandom}
