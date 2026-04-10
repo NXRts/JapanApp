@@ -397,10 +397,10 @@ export default function KanaQuizPage() {
 
     return (
         <Container>
-            <Breadcrumbs 
+        <Breadcrumbs 
                 items={[
                     { label: 'Home', href: '/' },
-                    { label: 'Quiz Hub', href: '/quiz' }
+                    { label: 'Practice', href: '/practice' }
                 ]} 
                 current="Daily Challenge" 
             />
