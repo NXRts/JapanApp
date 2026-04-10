@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 2.5rem 2rem 4rem;
   min-height: 90vh;
@@ -17,10 +17,10 @@ const Header = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 3.5rem;
+  font-size: 3rem;
   font-weight: 800;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, var(--foreground), var(--primary));
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -35,9 +35,8 @@ const Subtitle = styled.p`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2.5rem;
-  margin-top: 4rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
 `;
 
 const CategoryCard = styled(Link)`
@@ -191,6 +190,26 @@ export default function ComprehensionHub() {
             </CardDescription>
             <PlayButton $color="59, 130, 246">
               Start Listening
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </CategoryCard>
+
+        <CategoryCard href="/comprehension/speaking">
+          <CardContent>
+            <IconWrapper $color="16, 185, 129" className="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </IconWrapper>
+            <CardTitle>Speaking Roleplay</CardTitle>
+            <CardDescription>
+              Practice real-life Japanese conversations by shadowing AI dialogue with your microphone.
+            </CardDescription>
+            <PlayButton $color="16, 185, 129">
+              Start Speaking
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>

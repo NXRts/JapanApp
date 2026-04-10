@@ -296,7 +296,7 @@ export default function KaiwaRoleplayPage() {
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Practice', href: '/practice' }, { label: 'Speaking', href: '/practice/speaking' }]} current={exercise.title} />
+      <Breadcrumbs items={[{ label: 'Study', href: '/comprehension' }, { label: 'Speaking', href: '/comprehension/speaking' }]} current={exercise.title} />
       
       <Header>
         <Title>{exercise.title}</Title>

@@ -82,7 +82,7 @@ const ScenarioText = styled.p`
 export default function SpeakingHub() {
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Practice', href: '/practice' }]} current="Speaking Roleplay" />
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Study', href: '/comprehension' }]} current="Speaking Roleplay" />
       
       <Header>
         <Title>Speaking Roleplay 🗣️</Title>
@@ -93,7 +93,7 @@ export default function SpeakingHub() {
 
       <Grid>
         {speakingExercises.map(exercise => (
-          <CategoryCard key={exercise.id} href={`/practice/speaking/${exercise.id}`}>
+          <CategoryCard key={exercise.id} href={`/comprehension/speaking/${exercise.id}`}>
             <CardHeader>
               <LevelBadge $level={exercise.level}>{exercise.level}</LevelBadge>
               <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontWeight: 600 }}>⏱ {exercise.estimatedTime}</span>
