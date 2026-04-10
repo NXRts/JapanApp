@@ -142,20 +142,20 @@ const PlayButton = styled.div<{ $color: string }>`
   }
 `;
 
-export default function ComprehensionHub() {
+export default function StudyHub() {
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Comprehension" />
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Study" />
       
       <Header>
-        <Title>Comprehension</Title>
+        <Title>Study Hub</Title>
         <Subtitle>
-          Master your Japanese comprehension skills. Choose between Reading (Dokkai) and Listening (Choukai) practice to prepare for the JLPT.
+          Master your Japanese study skills. Choose between Reading (Dokkai) and Listening (Choukai) practice to prepare for the JLPT.
         </Subtitle>
       </Header>
 
       <Grid>
-        <CategoryCard href="/comprehension/reading">
+        <CategoryCard href="/study/reading">
           <CardContent>
             <IconWrapper $color="79, 70, 229" className="icon-wrapper">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -165,7 +165,7 @@ export default function ComprehensionHub() {
             </IconWrapper>
             <CardTitle>Reading Comprehension</CardTitle>
             <CardDescription>
-              Practice reading full Japanese passages graded by JLPT level. Includes furigana toggles and comprehension quizzes.
+              Practice reading full Japanese passages graded by JLPT level. Includes furigana toggles and study quizzes.
             </CardDescription>
             <PlayButton $color="79, 70, 229">
               Start Reading
@@ -176,7 +176,7 @@ export default function ComprehensionHub() {
           </CardContent>
         </CategoryCard>
 
-        <CategoryCard href="/comprehension/listening">
+        <CategoryCard href="/study/listening">
           <CardContent>
             <IconWrapper $color="59, 130, 246" className="icon-wrapper">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -197,7 +197,7 @@ export default function ComprehensionHub() {
           </CardContent>
         </CategoryCard>
 
-        <CategoryCard href="/comprehension/speaking">
+        <CategoryCard href="/study/speaking">
           <CardContent>
             <IconWrapper $color="16, 185, 129" className="icon-wrapper">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

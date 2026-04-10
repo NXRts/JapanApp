@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { readingPassages } from '@/data/reading';
+import { listeningExercises } from '@/data/listening';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -30,7 +30,7 @@ const Grid = styled.div`
   gap: 2rem;
 `;
 
-const ArticleCard = styled(Link)`
+const ExerciseCard = styled(Link)`
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -39,11 +39,21 @@ const ArticleCard = styled(Link)`
   transition: all 0.3s;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
   
   &:hover {
     transform: translateY(-5px);
-    border-color: var(--primary);
-    box-shadow: 0 10px 30px -10px rgba(79, 70, 229, 0.3);
+    border-color: #3b82f6;
+    box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.3);
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent 50%);
+    pointer-events: none;
   }
 `;
 
@@ -56,19 +66,26 @@ const LevelBadge = styled.span<{ $level: string }>`
   font-weight: 700;
 `;
 
-const ArticleHeader = styled.div`
+const ExerciseHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
 `;
 
-const ArticleTitle = styled.h2`
+const ExerciseTitle = styled.h2`
   font-size: 1.6rem;
   color: var(--foreground);
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   font-weight: 800;
   line-height: 1.4;
+`;
+
+const ScenarioText = styled.p`
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
 `;
 
 const Tags = styled.div`
@@ -91,7 +108,7 @@ const FilterBtn = styled.button<{ $active: boolean }>`
   padding: 0.6rem 1.75rem;
   border-radius: 99px;
   border: ${props => props.$active ? 'none' : '1px solid var(--border)'};
-  background: ${props => props.$active ? 'var(--primary)' : 'var(--surface)'};
+  background: ${props => props.$active ? '#3b82f6' : 'var(--surface)'};
   color: ${props => props.$active ? 'white' : 'var(--foreground)'};
   font-weight: 700;
   cursor: pointer;
@@ -99,27 +116,27 @@ const FilterBtn = styled.button<{ $active: boolean }>`
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.$active ? '0 5px 15px rgba(79, 70, 229, 0.3)' : '0 5px 15px rgba(0,0,0,0.05)'};
+    box-shadow: ${props => props.$active ? '0 5px 15px rgba(59, 130, 246, 0.3)' : '0 5px 15px rgba(0,0,0,0.05)'};
   }
 `;
 
-export default function ReadingHub() {
+export default function ListeningHub() {
   const [filter, setFilter] = useState<string>('All');
   
-  const filteredPassages = filter === 'All' 
-    ? readingPassages 
-    : readingPassages.filter(p => p.level === filter);
+  const filteredExercises = filter === 'All' 
+    ? listeningExercises 
+    : listeningExercises.filter(e => e.level === filter);
 
   const levels = ['All', 'N5', 'N4', 'N3', 'N2', 'N1'];
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Comprehension', href: '/comprehension' }]} current="Reading" />
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Study', href: '/study' }]} current="Listening" />
       
       <Header>
-        <Title>Reading Comprehension</Title>
+        <Title>Listening Comprehension 🎧</Title>
         <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-          Improve your Japanese reading speed and comprehension with JLPT-graded stories.
+          Simulate JLPT Choukai. Listen to the audio and answer without reading the text.
         </p>
         
         <div style={{ marginTop: '3rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -136,19 +153,20 @@ export default function ReadingHub() {
       </Header>
 
       <Grid>
-        {filteredPassages.map(passage => (
-          <ArticleCard key={passage.id} href={`/comprehension/reading/${passage.id}`}>
-            <ArticleHeader>
-              <LevelBadge $level={passage.level}>{passage.level}</LevelBadge>
-              <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontWeight: 600 }}>⏱ {passage.estimatedTime}</span>
-            </ArticleHeader>
-            <ArticleTitle>{passage.title}</ArticleTitle>
+        {filteredExercises.map(exercise => (
+          <ExerciseCard key={exercise.id} href={`/study/listening/${exercise.id}`}>
+            <ExerciseHeader>
+              <LevelBadge $level={exercise.level}>{exercise.level}</LevelBadge>
+              <span style={{ fontSize: '1.2rem' }}>🔊</span>
+            </ExerciseHeader>
+            <ExerciseTitle>{exercise.title}</ExerciseTitle>
+            <ScenarioText>{exercise.scenario}</ScenarioText>
             <Tags>
-              {passage.tags.map(tag => (
+              {exercise.tags.map(tag => (
                 <Tag key={tag}>#{tag}</Tag>
               ))}
             </Tags>
-          </ArticleCard>
+          </ExerciseCard>
         ))}
       </Grid>
     </Container>
