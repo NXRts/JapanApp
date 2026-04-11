@@ -27,7 +27,7 @@ const Header = styled.div`
   width: 100%;
   max-width: 800px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 2rem;
   position: relative;
