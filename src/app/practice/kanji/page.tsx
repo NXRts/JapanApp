@@ -16,7 +16,7 @@ const PageWrapper = styled.div`
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,9 +31,9 @@ const Header = styled.div`
   max-width: 1000px;
 `;
 
-const BackLink = styled(Link)`
-  text-decoration: none;
+const BackButton = styled(Link)`
   color: var(--text-secondary);
+  text-decoration: none;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -41,10 +41,11 @@ const BackLink = styled(Link)`
   transition: all 0.2s;
   padding: 0.5rem 1rem;
   border-radius: 999px;
+  background: rgba(255,255,255,0.05);
 
   &:hover {
     color: var(--primary);
-    background: rgba(79, 70, 229, 0.05);
+    background: rgba(79, 70, 229, 0.1);
   }
 `;
 

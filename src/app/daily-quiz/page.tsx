@@ -16,7 +16,6 @@ const Container = styled.div`
   min-height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   background: radial-gradient(circle at center, rgba(16, 185, 129, 0.05) 0%, transparent 70%); /* Green tint for Daily */
 `;
 
