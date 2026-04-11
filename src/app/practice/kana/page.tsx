@@ -9,11 +9,10 @@ import { toRomaji } from 'wanakana';
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 2.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   /* Premium radial background */
   background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
 `;
