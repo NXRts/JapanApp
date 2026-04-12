@@ -105,11 +105,11 @@ const NavList = styled.ul`
   display: flex;
   align-items: center;
   list-style: none;
-  gap: 2rem;
+  gap: 1.25rem;
   margin: 0;
   padding: 0;
   
-  @media (max-width: 768px) {
+  @media (max-width: 1100px) {
     display: none;
   }
 `;
@@ -190,7 +190,7 @@ const HamburgerBtn = styled.button<{ $isOpen: boolean }>`
   padding: 0.5rem;
   z-index: 102; /* Above mobile menu */
   
-  @media (max-width: 768px) {
+  @media (max-width: 1100px) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -236,7 +236,7 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   pointer-events: ${({ $isOpen }) => ($isOpen ? 'all' : 'none')};
   overflow-y: auto;
   
-  @media (min-width: 769px) {
+  @media (min-width: 1101px) {
     display: none;
   }
 `;
@@ -394,10 +394,12 @@ export function Navbar() {
           </NavList>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 102 }}>
+            {/* 
             <AuthButtonGroup>
               <LoginLink href="/login">Log In</LoginLink>
               <RegisterButton href="/register">Sign Up</RegisterButton>
-            </AuthButtonGroup>
+            </AuthButtonGroup> 
+            */}
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <SearchBtn $isOpen={isMobileMenuOpen} onClick={() => setIsDictionaryOpen(true)} title="Dictionary (Jisho)">
@@ -473,6 +475,7 @@ export function Navbar() {
             Contact
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
+          {/* 
           <MobileLink href="/login" $isOpen={isMobileMenuOpen} $delay={0.6} onClick={() => setIsMobileMenuOpen(false)} style={{ color: 'var(--primary)', fontWeight: 800 }}>
             Log In
             <span><ArrowRightIcon size={18} /></span>
@@ -480,7 +483,8 @@ export function Navbar() {
           <MobileLink href="/register" $isOpen={isMobileMenuOpen} $delay={0.65} onClick={() => setIsMobileMenuOpen(false)} style={{ background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)', fontWeight: 800, borderRadius: '12px' }}>
             Get Started
             <span><ArrowRightIcon size={18} /></span>
-          </MobileLink>
+          </MobileLink> 
+          */}
           <MobileDictBtn 
             $isOpen={isMobileMenuOpen} 
             $delay={0.75}
