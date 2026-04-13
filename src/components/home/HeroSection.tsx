@@ -214,6 +214,20 @@ interface HeroSectionProps {
   isDailyCompleted: boolean;
 }
 
+const RoadmapButton = styled(PrimaryButton)`
+  background: linear-gradient(135deg, var(--rm-purple) 0%, #4C1D95 100%);
+  box-shadow: 0 10px 20px -5px rgba(109, 40, 217, 0.4);
+  min-width: 220px;
+  
+  &:hover {
+    box-shadow: 0 15px 30px -5px rgba(109, 40, 217, 0.5);
+  }
+`;
+
+const MainPrimaryButton = styled(PrimaryButton)`
+  min-width: 220px;
+`;
+
 export function HeroSection({ isDailyCompleted }: HeroSectionProps) {
   return (
     <Section>
@@ -226,17 +240,20 @@ export function HeroSection({ isDailyCompleted }: HeroSectionProps) {
           The most effective way to learn, practice, and memorize Japanese characters.
           Start your journey to fluency today.
         </Subtitle>
-        
+
         <ButtonGroup>
-          <PrimaryButton href="/kana">Hiragana & Katakana</PrimaryButton>
+          <RoadmapButton href="/roadmap">
+            Learning Path
+          </RoadmapButton>
+          <MainPrimaryButton href="/kana">Hiragana & Katakana</MainPrimaryButton>
           <SpecialtyButton href="/jlpt">JLPT Challenge</SpecialtyButton>
           <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
           <SecondaryButton href="/materi">Lessons</SecondaryButton>
           <SecondaryButton href="/practice">Start Practicing</SecondaryButton>
-          <SecondaryButton 
-            href="/daily-quiz" 
-            style={{ 
-              borderColor: isDailyCompleted ? 'var(--border)' : '#10b981', 
+          <SecondaryButton
+            href="/daily-quiz"
+            style={{
+              borderColor: isDailyCompleted ? 'var(--border)' : '#10b981',
               color: isDailyCompleted ? 'var(--text-secondary)' : '#10b981',
               opacity: isDailyCompleted ? 0.8 : 1,
               display: 'inline-flex',

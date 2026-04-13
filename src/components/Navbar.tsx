@@ -321,7 +321,7 @@ export function Navbar() {
   const [isDictionaryOpen, setIsDictionaryOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { progress } = useProgress();
-  
+
   const dueItemsCount = Object.values(progress.srs).filter(isItemDue).length;
 
   // Prevent background scrolling when mobile menu is open
@@ -349,9 +349,6 @@ export function Navbar() {
           </Logo>
 
           <NavList>
-            <NavItem>
-              <StyledLink href="/roadmap" $active={pathname === '/roadmap'} style={{ color: 'var(--primary)', fontWeight: '700' }}>Roadmap</StyledLink>
-            </NavItem>
             <NavItem>
               <StyledLink href="/" $active={pathname === '/'}>Home</StyledLink>
             </NavItem>
@@ -434,10 +431,6 @@ export function Navbar() {
         </NavContainer>
 
         <MobileMenu $isOpen={isMobileMenuOpen}>
-          <MobileLink href="/roadmap" $active={pathname === '/roadmap'} $isOpen={isMobileMenuOpen} $delay={0.05} onClick={() => setIsMobileMenuOpen(false)} style={{ color: 'var(--primary)', fontWeight: '800' }}>
-            Roadmap 🗺️
-            <span><ArrowRightIcon size={18} /></span>
-          </MobileLink>
           <MobileLink href="/" $active={pathname === '/'} $isOpen={isMobileMenuOpen} $delay={0.1} onClick={() => setIsMobileMenuOpen(false)}>
             Home
             <span><ArrowRightIcon size={18} /></span>
@@ -492,8 +485,8 @@ export function Navbar() {
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink> 
           */}
-          <MobileDictBtn 
-            $isOpen={isMobileMenuOpen} 
+          <MobileDictBtn
+            $isOpen={isMobileMenuOpen}
             $delay={0.75}
             onClick={() => { setIsDictionaryOpen(true); setIsMobileMenuOpen(false); }}
           >
