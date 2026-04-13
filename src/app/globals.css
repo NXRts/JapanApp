@@ -37,6 +37,12 @@
   --btn-secondary-bg: rgba(255, 255, 255, 0.1);
   --btn-secondary-text: #FFFFFF;
   --btn-secondary-border: rgba(255, 255, 255, 0.2);
+
+  /* Roadmap Level Colors (Matched to Reference) */
+  --rm-purple: #6D28D9;
+  --rm-pink: #BE185D;
+  --rm-orange: #F97316;
+  --rm-blue: #2563EB;
 }
 
 * {

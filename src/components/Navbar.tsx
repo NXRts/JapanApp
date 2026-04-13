@@ -350,6 +350,9 @@ export function Navbar() {
 
           <NavList>
             <NavItem>
+              <StyledLink href="/roadmap" $active={pathname === '/roadmap'} style={{ color: 'var(--primary)', fontWeight: '700' }}>Roadmap</StyledLink>
+            </NavItem>
+            <NavItem>
               <StyledLink href="/" $active={pathname === '/'}>Home</StyledLink>
             </NavItem>
             <NavItem>
@@ -431,6 +434,10 @@ export function Navbar() {
         </NavContainer>
 
         <MobileMenu $isOpen={isMobileMenuOpen}>
+          <MobileLink href="/roadmap" $active={pathname === '/roadmap'} $isOpen={isMobileMenuOpen} $delay={0.05} onClick={() => setIsMobileMenuOpen(false)} style={{ color: 'var(--primary)', fontWeight: '800' }}>
+            Roadmap 🗺️
+            <span><ArrowRightIcon size={18} /></span>
+          </MobileLink>
           <MobileLink href="/" $active={pathname === '/'} $isOpen={isMobileMenuOpen} $delay={0.1} onClick={() => setIsMobileMenuOpen(false)}>
             Home
             <span><ArrowRightIcon size={18} /></span>
