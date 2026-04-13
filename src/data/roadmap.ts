@@ -22,7 +22,7 @@ export const ROADMAP_DATA: RoadmapChapter[] = [
         id: 'hiragana-intro',
         title: 'Hiragana Basics',
         description: 'Learn the first 46 characters of the Japanese alphabet.',
-        link: '/materi/hiragana',
+        link: '/materi',
         type: 'writing',
         xpReward: 50
       },
@@ -38,7 +38,7 @@ export const ROADMAP_DATA: RoadmapChapter[] = [
         id: 'katakana-intro',
         title: 'Katakana Intro',
         description: 'Learn Katakana, used for foreign loanwords.',
-        link: '/materi/katakana',
+        link: '/materi',
         type: 'writing',
         xpReward: 50
       }
@@ -52,7 +52,7 @@ export const ROADMAP_DATA: RoadmapChapter[] = [
         id: 'daily-greetings',
         title: 'Daily Greetings',
         description: 'Ohayou, Konnichiwa, and more common phrases.',
-        link: '/vocabulary/greetings',
+        link: '/vocabulary',
         type: 'survival',
         xpReward: 75
       },
@@ -60,7 +60,7 @@ export const ROADMAP_DATA: RoadmapChapter[] = [
         id: 'self-intro',
         title: 'Self Introductions',
         description: 'How to introduce yourself in Japanese.',
-        link: '/vocabulary/introductions',
+        link: '/vocabulary',
         type: 'survival',
         xpReward: 100
       }
@@ -74,7 +74,7 @@ export const ROADMAP_DATA: RoadmapChapter[] = [
         id: 'numbers-1-100',
         title: 'Counting (1-100)',
         description: 'Master Japanese numbers and counters.',
-        link: '/vocabulary/numbers',
+        link: '/vocabulary',
         type: 'vocabulary',
         xpReward: 80
       },
@@ -82,7 +82,7 @@ export const ROADMAP_DATA: RoadmapChapter[] = [
         id: 'telling-time',
         title: 'Telling Time',
         description: 'Learn how to ask and tell the time.',
-        link: '/vocabulary/time',
+        link: '/vocabulary',
         type: 'vocabulary',
         xpReward: 100
       }
@@ -96,7 +96,7 @@ export const ROADMAP_DATA: RoadmapChapter[] = [
         id: 'particle-wa',
         title: 'The Particle は',
         description: 'Introduction to sentence topics and "desu".',
-        link: '/grammar/basic-topic',
+        link: '/grammar',
         type: 'grammar',
         xpReward: 150
       },
@@ -104,7 +104,7 @@ export const ROADMAP_DATA: RoadmapChapter[] = [
         id: 'question-ka',
         title: 'Asking Questions',
         description: 'Transform statements into questions with か.',
-        link: '/grammar/questions',
+        link: '/grammar',
         type: 'grammar',
         xpReward: 150
       }
