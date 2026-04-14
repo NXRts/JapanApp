@@ -552,7 +552,7 @@ export default function AboutPage() {
           Bridging the gap between culture and technology.
           We're building the future of Japanese language mastery through immersive, beautiful, and data-driven learning experiences.
         </HeroSubtitle>
-        <PrimaryButton href="/practice" style={{ marginBottom: '4rem' }}>
+        <PrimaryButton href="/study" style={{ marginBottom: '4rem' }}>
           Start Your Journey
         </PrimaryButton>
 
@@ -715,8 +715,8 @@ export default function AboutPage() {
             <DarkButton href="/jlpt">
               Start JLPT Challenge
             </DarkButton>
-            <OutlineButton href="/practice">
-              Try Practice Mode
+            <OutlineButton href="/study">
+              Start Studying Mode
             </OutlineButton>
           </CTAButtonGroup>
         </CTACard>

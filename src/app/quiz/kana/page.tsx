@@ -395,7 +395,7 @@ export default function KanaQuizPage() {
           <p>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
           <ButtonGroup>
             <Button onClick={generateQuiz}>Try Again</Button>
-            <ActionLink href="/practice">
+            <ActionLink href="/quiz">
               <SecondaryButton>Exit</SecondaryButton>
             </ActionLink>
           </ButtonGroup>

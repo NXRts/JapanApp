@@ -186,8 +186,8 @@ export function CTASection() {
             <PrimaryButton href="/jlpt">
               Start JLPT Challenge
             </PrimaryButton>
-            <SecondaryButton href="/practice">
-              Try Practice Mode
+            <SecondaryButton href="/study">
+              Start Studying
             </SecondaryButton>
           </ActionGroup>
         </TitleBuffer>
