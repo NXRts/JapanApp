@@ -498,7 +498,7 @@ export default function VocabularyFlashcards() {
         <Breadcrumbs 
           items={[
             { label: 'Home', href: '/' },
-            { label: 'Practice', href: '/practice' }
+            { label: 'Study', href: '/study' }
           ]} 
           current="Vocabulary Flashcards" 
         />
