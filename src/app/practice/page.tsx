@@ -267,52 +267,10 @@ export default function PracticePage() {
       </StatsSummary>
 
       <Grid>
-        <Card href="/daily-quiz">
-          <IconWrapper $color="245, 158, 11">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-          </IconWrapper>
-          <CardTitle>Daily Challenge</CardTitle>
-          <CardDescription>
-            {isDailyCompleted 
-              ? "✓ You've completed today's official challenge! Come back tomorrow." 
-              : "Take today's official 10-question challenge and maintain your streak."}
-          </CardDescription>
-        </Card>
-
-
-
-
-        <Card href="/practice/kana">
-          <IconWrapper $color="59, 130, 246">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-              <path d="m2 17 10 5 10-5"></path>
-              <path d="m2 12 10 5 10-5"></path>
-            </svg>
-          </IconWrapper>
-          <CardTitle>Kana Quiz</CardTitle>
-          <CardDescription>
-            Test your reflex and memory of Hiragana and Katakana with quick-fire multiple choice questions.
-          </CardDescription>
-        </Card>
-
-        <Card href="/practice/grammar-drills">
-          <IconWrapper $color="236, 72, 153">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 20h9"></path>
-              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-            </svg>
-          </IconWrapper>
-          <CardTitle>Particle Drills</CardTitle>
-          <CardDescription>
-            Master Japanese particles (は, が, を, に, で) with contextual fill-in-the-blank exercises.
-          </CardDescription>
-        </Card>
+        <div style={{ textAlign: 'center', gridColumn: '1 / -1', padding: '3rem', color: 'var(--text-secondary)' }}>
+          All practice features have been migrated. <br/>
+          Please visit the <strong><Link href="/study" style={{color: 'var(--primary)', textDecoration: 'none'}}>Study Hub</Link></strong> for flashcards and drills, or the <strong><Link href="/quiz" style={{color: 'var(--primary)', textDecoration: 'none'}}>Quiz Hub</Link></strong> for challenges.
+        </div>
       </Grid>
     </Container>
   );
