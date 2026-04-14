@@ -215,12 +215,15 @@ interface HeroSectionProps {
 }
 
 const RoadmapButton = styled(PrimaryButton)`
-  background: linear-gradient(135deg, var(--rm-purple) 0%, #4C1D95 100%);
-  box-shadow: 0 10px 20px -5px rgba(109, 40, 217, 0.4);
+  background: linear-gradient(135deg, #4338CA 0%, #059669 100%); /* Indigo to Emerald/Teal */
+  box-shadow: 0 10px 20px -5px rgba(5, 150, 105, 0.3);
   min-width: 220px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   
   &:hover {
-    box-shadow: 0 15px 30px -5px rgba(109, 40, 217, 0.5);
+    background: linear-gradient(135deg, #4F46E5 0%, #10B981 100%);
+    box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.4);
+    transform: translateY(-3px);
   }
 `;
 
