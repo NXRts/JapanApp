@@ -301,32 +301,6 @@ export default function PracticePage() {
           </CardDescription>
         </Card>
 
-        <Card href="/practice/kana-flashcards">
-          <IconWrapper $color="99, 102, 241">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <path d="M3 9h18"></path>
-              <path d="M9 21V9"></path>
-            </svg>
-          </IconWrapper>
-          <CardTitle>Kana Flashcards</CardTitle>
-          <CardDescription>
-            Focus on mastering individual Kana characters (Hiragana, Katakana, Dakuten) with interactive flip cards.
-          </CardDescription>
-        </Card>
-
-        <Card href="/practice/smart-flashcards" style={{ border: '2px solid var(--primary)' }}>
-          <IconWrapper $color="168, 85, 247">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="m12 3 1.912 5.885L20 10.796l-4.544 4.427L16.528 21 12 18.204 7.472 21l1.072-5.777L4 10.796l6.088-1.911L12 3z"></path>
-            </svg>
-          </IconWrapper>
-          <CardTitle>Smart Flashcards</CardTitle>
-          <CardDescription>
-            Tinder-style swipeable vocabulary flashcards with native pronunciation and active recall scoring.
-          </CardDescription>
-        </Card>
-
         <Card href="/practice/grammar-drills">
           <IconWrapper $color="236, 72, 153">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -337,34 +311,6 @@ export default function PracticePage() {
           <CardTitle>Particle Drills</CardTitle>
           <CardDescription>
             Master Japanese particles (は, が, を, に, で) with contextual fill-in-the-blank exercises.
-          </CardDescription>
-        </Card>
-
-        <Card href="/practice/kanji">
-          <IconWrapper $color="16, 185, 129">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
-              <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
-              <path d="m2 2 5 2"></path>
-              <path d="m2 2 2 5"></path>
-            </svg>
-          </IconWrapper>
-          <CardTitle>Kanji Flashcards</CardTitle>
-          <CardDescription>
-            Practice writing Kanji strokes and memorize meanings with our digital self-check flashcards.
-          </CardDescription>
-        </Card>
-
-        <Card href="/practice/vocabulary">
-          <IconWrapper $color="249, 115, 22">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-            </svg>
-          </IconWrapper>
-          <CardTitle>Vocabulary Flashcards</CardTitle>
-          <CardDescription>
-            Learn and memorize Japanese vocabulary meanings and readings without the pressure of scoring.
           </CardDescription>
         </Card>
       </Grid>

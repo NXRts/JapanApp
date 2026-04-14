@@ -365,7 +365,7 @@ export default function KanjiFlashcards() {
         <Breadcrumbs 
           items={[
             { label: 'Home', href: '/' },
-            { label: 'Practice', href: '/practice' }
+            { label: 'Study', href: '/study' }
           ]} 
           current="Kanji Flashcards" 
         />

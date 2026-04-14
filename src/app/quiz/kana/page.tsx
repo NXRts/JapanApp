@@ -411,7 +411,7 @@ export default function KanaQuizPage() {
       <Breadcrumbs 
         items={[
           { label: 'Home', href: '/' },
-          { label: 'Practice', href: '/practice' }
+          { label: 'Quiz', href: '/quiz' }
         ]} 
         current="Kana Quiz" 
       />

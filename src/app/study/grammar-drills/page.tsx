@@ -350,7 +350,7 @@ export default function GrammarDrillsPage() {
       <Breadcrumbs 
         items={[
           { label: 'Home', href: '/' },
-          { label: 'Practice', href: '/practice' }
+          { label: 'Study', href: '/study' }
         ]} 
         current="Particle Drills" 
       />

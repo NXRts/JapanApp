@@ -216,6 +216,92 @@ export default function StudyHub() {
             </PlayButton>
           </CardContent>
         </CategoryCard>
+
+        <CategoryCard href="/study/kana-flashcards">
+          <CardContent>
+            <IconWrapper $color="99, 102, 241" className="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <path d="M3 9h18"></path>
+                <path d="M9 21V9"></path>
+              </svg>
+            </IconWrapper>
+            <CardTitle>Kana Flashcards</CardTitle>
+            <CardDescription>
+              Focus on mastering individual Kana characters (Hiragana, Katakana, Dakuten) with interactive flip cards.
+            </CardDescription>
+            <PlayButton $color="99, 102, 241">
+              Start Studying
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </CategoryCard>
+
+        <CategoryCard href="/study/smart-flashcards">
+          <CardContent>
+            <IconWrapper $color="168, 85, 247" className="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m12 3 1.912 5.885L20 10.796l-4.544 4.427L16.528 21 12 18.204 7.472 21l1.072-5.777L4 10.796l6.088-1.911L12 3z"></path>
+              </svg>
+            </IconWrapper>
+            <CardTitle>Smart Flashcards</CardTitle>
+            <CardDescription>
+              Tinder-style swipeable vocabulary flashcards with native pronunciation and active recall scoring.
+            </CardDescription>
+            <PlayButton $color="168, 85, 247">
+              Start Studying
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </CategoryCard>
+
+        <CategoryCard href="/study/kanji">
+          <CardContent>
+            <IconWrapper $color="16, 185, 129" className="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                <path d="m2 2 5 2"></path>
+                <path d="m2 2 2 5"></path>
+              </svg>
+            </IconWrapper>
+            <CardTitle>Kanji Flashcards</CardTitle>
+            <CardDescription>
+              Practice writing Kanji strokes and memorize meanings with our digital self-check flashcards.
+            </CardDescription>
+            <PlayButton $color="16, 185, 129">
+              Start Studying
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </CategoryCard>
+
+        <CategoryCard href="/study/vocabulary">
+          <CardContent>
+            <IconWrapper $color="249, 115, 22" className="icon-wrapper">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+            </IconWrapper>
+            <CardTitle>Vocabulary Flashcards</CardTitle>
+            <CardDescription>
+              Learn and memorize Japanese vocabulary meanings and readings without the pressure of scoring.
+            </CardDescription>
+            <PlayButton $color="249, 115, 22">
+              Start Studying
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </CategoryCard>
       </Grid>
     </Container>
   );
