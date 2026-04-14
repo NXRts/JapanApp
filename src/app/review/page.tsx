@@ -213,7 +213,7 @@ export default function ReviewPage() {
         <EmptyState>
           <h2>You're all caught up! 🎉</h2>
           <p>There are no items due for review right now. Come back later or learn some new items.</p>
-          <PrimaryButton href="/practice">Learn New Items</PrimaryButton>
+          <PrimaryButton href="/study">Learn New Items</PrimaryButton>
         </EmptyState>
       </Container>
     );

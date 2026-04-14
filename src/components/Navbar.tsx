@@ -352,9 +352,7 @@ export function Navbar() {
             <NavItem>
               <StyledLink href="/" $active={pathname === '/'}>Home</StyledLink>
             </NavItem>
-            <NavItem>
-              <StyledLink href="/practice" $active={pathname.startsWith('/practice')}>Practice</StyledLink>
-            </NavItem>
+
             <NavItem>
               <StyledLink href="/study" $active={pathname.startsWith('/study')}>Study</StyledLink>
             </NavItem>
@@ -435,10 +433,7 @@ export function Navbar() {
             Home
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/practice" $active={pathname.startsWith('/practice')} $isOpen={isMobileMenuOpen} $delay={0.15} onClick={() => setIsMobileMenuOpen(false)}>
-            Practice
-            <span><ArrowRightIcon size={18} /></span>
-          </MobileLink>
+
           <MobileLink href="/study" $active={pathname.startsWith('/study')} $isOpen={isMobileMenuOpen} $delay={0.17} onClick={() => setIsMobileMenuOpen(false)}>
             Study
             <span><ArrowRightIcon size={18} /></span>

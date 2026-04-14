@@ -314,7 +314,7 @@ export default function GrammarDrillsPage() {
           <p>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
           <ButtonGroup>
             <Button onClick={generateQuiz}>Try Again</Button>
-            <Link href="/practice" style={{ textDecoration: 'none', display: 'flex', width: '100%' }}>
+            <Link href="/study" style={{ textDecoration: 'none', display: 'flex', width: '100%' }}>
               <SecondaryButton style={{ width: '100%' }}>Exit</SecondaryButton>
             </Link>
           </ButtonGroup>

@@ -252,7 +252,7 @@ export function HeroSection({ isDailyCompleted }: HeroSectionProps) {
           <SpecialtyButton href="/jlpt">JLPT Challenge</SpecialtyButton>
           <SecondaryButton href="/kanji">Browse Kanji</SecondaryButton>
           <SecondaryButton href="/materi">Lessons</SecondaryButton>
-          <SecondaryButton href="/practice">Start Practicing</SecondaryButton>
+          <SecondaryButton href="/study">Start Studying</SecondaryButton>
           <SecondaryButton
             href="/daily-quiz"
             style={{

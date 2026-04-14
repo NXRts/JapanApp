@@ -354,7 +354,6 @@ export function Footer() {
           <ColumnTitle>Learn</ColumnTitle>
           <FooterLink href="/kanji">Kanji Library</FooterLink>
           <FooterLink href="/kana">Hiragana & Katakana</FooterLink>
-          <FooterLink href="/practice">Practice Mode <Badge>PRO</Badge></FooterLink>
           <FooterLink href="/daily-quiz">Daily Quiz</FooterLink>
         </FooterColumn>
 
