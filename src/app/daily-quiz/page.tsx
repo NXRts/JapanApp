@@ -380,8 +380,8 @@ export default function KanaQuizPage() {
                         {score === TOTAL_QUESTIONS ? "Perfect! You're mastering Japanese!" : "Great effort! Come back tomorrow for a new set."}
                     </p>
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <Link href="/practice" style={{ textDecoration: 'none' }}>
-                            <Button>Back to Practice</Button>
+                        <Link href="/quiz" style={{ textDecoration: 'none' }}>
+                            <Button>Back to Quizzes</Button>
                         </Link>
                         <Link href="/quiz" style={{ textDecoration: 'none' }}>
                             <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none' }}>Other Quizzes</Button>
@@ -399,7 +399,7 @@ export default function KanaQuizPage() {
         <Breadcrumbs 
                 items={[
                     { label: 'Home', href: '/' },
-                    { label: 'Practice', href: '/practice' }
+                    { label: 'Quiz Hub', href: '/quiz' }
                 ]} 
                 current="Daily Challenge" 
             />
