@@ -327,6 +327,19 @@ export default function PracticePage() {
           </CardDescription>
         </Card>
 
+        <Card href="/practice/grammar-drills">
+          <IconWrapper $color="236, 72, 153">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+          </IconWrapper>
+          <CardTitle>Particle Drills</CardTitle>
+          <CardDescription>
+            Master Japanese particles (は, が, を, に, で) with contextual fill-in-the-blank exercises.
+          </CardDescription>
+        </Card>
+
         <Card href="/practice/kanji">
           <IconWrapper $color="16, 185, 129">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
