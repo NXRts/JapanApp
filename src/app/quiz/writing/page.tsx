@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
@@ -62,6 +62,38 @@ const DropdownTrigger = styled.button`
     border-color: var(--primary);
   }
 `;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 0.5rem;
+  background: #1e293b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  z-index: 50;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+`;
+
+const DropdownItem = styled.button<{ $active?: boolean }>`
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: ${props => props.$active ? 'rgba(99, 102, 241, 0.2)' : 'transparent'};
+  color: ${props => props.$active ? '#818cf8' : 'white'};
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+`;
+
 
 const ContentGrid = styled.div`
   flex: 1;
@@ -256,34 +288,92 @@ const ScoreBadge = styled.div`
   height: 42px; /* Match dropdown height */
 `;
 
-// --- Quiz Data ---
-
-const kanjiData = [
-  { kanji: '山', meaning: 'mountain' },
-  { kanji: '水', meaning: 'water' },
-  { kanji: '火', meaning: 'fire' },
-  { kanji: '木', meaning: 'tree' },
-  { kanji: '川', meaning: 'river' },
-  { kanji: '月', meaning: 'moon' },
-  { kanji: '日', meaning: 'sun' },
-  { kanji: '人', meaning: 'person' }
-];
-
 // --- Component ---
 
 export default function KanjiWritingQuizPage() {
+  const [level, setLevel] = useState('n5');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [kanjiList, setKanjiList] = useState<string[]>([]);
+  const [loadingList, setLoadingList] = useState(true);
+  
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentItemDetailed, setCurrentItemDetailed] = useState<{kanji: string, meaning: string} | null>(null);
+
   const [flipped, setFlipped] = useState(false);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [clearTrigger, setClearTrigger] = useState(0);
   const [isGuideVisible, setIsGuideVisible] = useState(true);
   
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<DrawingCanvasRef>(null);
-  const currentItem = kanjiData[currentIndex];
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Fetch Kanji List based on level
+  useEffect(() => {
+    let active = true;
+    setLoadingList(true);
+    fetch(`/api/kanji/${level}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!active) return;
+        if (Array.isArray(data)) {
+          setKanjiList(data.sort(() => 0.5 - Math.random()));
+          setCurrentIndex(0);
+          setFlipped(false);
+          setScore(0);
+          setIsFinished(false);
+          setClearTrigger(prev => prev + 1);
+        }
+      })
+      .finally(() => {
+        if (active) setLoadingList(false);
+      });
+      
+    return () => { active = false; };
+  }, [level]);
+
+  // Fetch Details for current Kanji
+  useEffect(() => {
+    let active = true;
+    const currentKanji = kanjiList[currentIndex];
+    if (!currentKanji) {
+        setCurrentItemDetailed(null);
+        return;
+    }
+    
+    setCurrentItemDetailed(null); // Reset to show loading state if you prefer
+    
+    fetch(`https://kanjiapi.dev/v1/kanji/${currentKanji}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!active) return;
+        setCurrentItemDetailed({
+          kanji: currentKanji,
+          meaning: data.meanings && data.meanings.length > 0 
+            ? data.meanings.slice(0, 2).join(', ') 
+            : 'Unknown'
+        });
+      })
+      .catch(() => {
+        if (active) setCurrentItemDetailed({ kanji: currentKanji, meaning: 'Unknown' });
+      });
+      
+      return () => { active = false; };
+  }, [currentIndex, kanjiList]);
 
   const handleNext = () => {
-    if (currentIndex < kanjiData.length - 1) {
+    if (currentIndex < kanjiList.length - 1) {
       setFlipped(false);
       setClearTrigger(prev => prev + 1);
       setTimeout(() => {
@@ -358,13 +448,29 @@ export default function KanjiWritingQuizPage() {
         />
         <ToolbarHeader>
           <ScoreBadge>Score: {score}</ScoreBadge>
-          <DropdownContainer>
-            <DropdownTrigger>
-              Level N5
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <DropdownContainer ref={dropdownRef}>
+            <DropdownTrigger onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+              Level {level.toUpperCase()}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ transform: isDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
             </DropdownTrigger>
+            {isDropdownOpen && (
+              <DropdownMenu>
+                {['n5', 'n4', 'n3', 'n2', 'n1'].map(l => (
+                  <DropdownItem 
+                    key={l} 
+                    $active={level === l}
+                    onClick={() => {
+                      setLevel(l);
+                      setIsDropdownOpen(false);
+                    }}
+                  >
+                    Level {l.toUpperCase()}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            )}
           </DropdownContainer>
         </ToolbarHeader>
       </Header>
@@ -374,16 +480,22 @@ export default function KanjiWritingQuizPage() {
         <div>
           <SectionHeader>. PRACTICE WRITING .</SectionHeader>
           <GlassCard>
-            <DrawingCanvas
-              ref={canvasRef}
-              width={320}
-              height={320}
-              char={currentItem.kanji}
-              clearTrigger={clearTrigger}
-              hideToolbar={true}
-              onComplete={onCanvasComplete}
-              onSkip={handleNext}
-            />
+            {loadingList || !currentItemDetailed ? (
+               <div style={{ height: '320px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                 Loading Kanji...
+               </div>
+            ) : (
+                <DrawingCanvas
+                  ref={canvasRef}
+                  width={320}
+                  height={320}
+                  char={currentItemDetailed.kanji}
+                  clearTrigger={clearTrigger}
+                  hideToolbar={true}
+                  onComplete={onCanvasComplete}
+                  onSkip={handleNext}
+                />
+            )}
             
             <ToolBar>
               <ToolButton onClick={handleToggleGuide}>
@@ -420,14 +532,18 @@ export default function KanjiWritingQuizPage() {
                 </div>
                 
                 <Label>MEANING</Label>
-                <CardMeaning>{currentItem.meaning}</CardMeaning>
+                <CardMeaning>
+                  {loadingList || !currentItemDetailed ? "..." : currentItemDetailed.meaning}
+                </CardMeaning>
                 
                 <FlipHint>Tap to Flip ⟳</FlipHint>
               </CardFace>
 
               <CardBack>
                 <Label>KANJI</Label>
-                <BigKanji>{currentItem.kanji}</BigKanji>
+                <BigKanji>
+                  {loadingList || !currentItemDetailed ? "..." : currentItemDetailed.kanji}
+                </BigKanji>
                 <div style={{ marginTop: '2rem' }}>
                    <Label>PRECISION CHECK</Label>
                    <p style={{ marginTop: '0.5rem', fontWeight: 600, color: 'var(--primary)' }}>Latihan presisi penulisan aktif!</p>
