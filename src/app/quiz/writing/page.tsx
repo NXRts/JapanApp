@@ -42,10 +42,11 @@ const DropdownContainer = styled.div`
 
 const DropdownTrigger = styled.button`
   width: 100%;
-  padding: 0.6rem 1rem;
-  border-radius: 12px;
+  padding: 0 1.25rem;
+  height: 42px;
+  border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(30, 41, 59, 0.8);
   color: white;
   font-size: 0.9rem;
   font-weight: 600;
@@ -241,13 +242,18 @@ const RevealBtn = styled.button`
 `;
 
 const ScoreBadge = styled.div`
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 800;
   color: #10b981;
   background: rgba(16, 185, 129, 0.1);
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.25rem;
   border-radius: 999px;
   border: 1px solid rgba(16, 185, 129, 0.2);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px; /* Match dropdown height */
 `;
 
 // --- Quiz Data ---
