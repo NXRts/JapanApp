@@ -22,17 +22,29 @@ const Header = styled.div`
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem 2rem;
+  padding: 2.5rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 10;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
 `;
 
 const ToolbarHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: flex-end;
+  }
 `;
 
 const DropdownContainer = styled.div`
@@ -109,6 +121,7 @@ const ContentGrid = styled.div`
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
     gap: 2rem;
+    padding: 1rem;
   }
 `;
 
@@ -133,6 +146,11 @@ const GlassCard = styled.div`
   align-items: center;
   position: relative;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 600px) {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
 `;
 
 const ToolBar = styled.div`
