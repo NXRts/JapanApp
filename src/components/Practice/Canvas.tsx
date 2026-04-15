@@ -344,7 +344,7 @@ export const DrawingCanvas = forwardRef<DrawingCanvasRef, {
         setScore(finalScore);
 
         // Auto-advance if score is good
-        if (finalScore >= 70 && onComplete) {
+        if (finalScore >= 60 && onComplete) {
             setTimeout(() => {
                 onComplete();
             }, 1000); // 1s delay to see the score
@@ -378,11 +378,11 @@ export const DrawingCanvas = forwardRef<DrawingCanvasRef, {
                         alignItems: 'center',
                         borderRadius: '12px'
                     }}>
-                        <div style={{ fontSize: '3rem', fontWeight: 800, color: score > 70 ? '#10b981' : '#f59e0b' }}>
+                        <div style={{ fontSize: '3rem', fontWeight: 800, color: score >= 60 ? '#10b981' : '#f59e0b' }}>
                             {score}%
                         </div>
                         <div style={{ color: '#64748b', fontWeight: 600 }}>
-                            {score >= 70 ? 'Excellent!' : 'Try Again'}
+                            {score >= 60 ? 'Excellent!' : 'Try Again'}
                         </div>
                     </div>
                 )}
