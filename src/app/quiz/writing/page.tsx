@@ -307,6 +307,7 @@ export default function KanjiWritingQuizPage() {
   
   const dropdownRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<DrawingCanvasRef>(null);
+  const advanceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -373,6 +374,11 @@ export default function KanjiWritingQuizPage() {
   }, [currentIndex, kanjiList]);
 
   const handleNext = () => {
+    if (advanceTimerRef.current) {
+        clearTimeout(advanceTimerRef.current);
+        advanceTimerRef.current = null;
+    }
+    
     if (currentIndex < kanjiList.length - 1) {
       setFlipped(false);
       setClearTrigger(prev => prev + 1);
@@ -412,6 +418,12 @@ export default function KanjiWritingQuizPage() {
     setTimeout(() => {
         setFlipped(true);
     }, 500);
+
+    // Auto-advance after 5 seconds
+    if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
+    advanceTimerRef.current = setTimeout(() => {
+        handleNext();
+    }, 5000);
   };
 
   if (isFinished) {
