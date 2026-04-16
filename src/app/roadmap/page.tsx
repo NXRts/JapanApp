@@ -48,6 +48,12 @@ const StatsStrip = styled.div`
   margin-bottom: 3rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--border);
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: space-between;
+  }
 `;
 
 const StatItem = styled.div`

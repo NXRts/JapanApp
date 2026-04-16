@@ -26,8 +26,16 @@ const Card = styled.div<{ $color: string }>`
   }
 
   @media (max-width: 768px) {
-    width: 120px;
+    width: 100%;
+    height: auto;
+    min-height: 70px;
+    flex-direction: row;
+    position: relative;
+    padding: 1rem;
+    justify-content: flex-start;
     gap: 1rem;
+    border-radius: 16px;
+    margin-bottom: 0.5rem;
   }
 `;
 

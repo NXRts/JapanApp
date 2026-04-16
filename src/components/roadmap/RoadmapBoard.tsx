@@ -8,10 +8,12 @@ import { ROADMAP_DATA } from '@/data/roadmap';
 
 const BoardContainer = styled.div`
   width: 100%;
+  max-width: 100vw;
   overflow-x: auto;
   padding: 2rem 0 4rem;
   scrollbar-width: thin;
   scrollbar-color: var(--primary) transparent;
+  -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
     height: 8px;
@@ -51,6 +53,18 @@ const Grid = styled.div`
     justify-content: start;
     padding-left: 2rem;
   }
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    min-width: 100%;
+    gap: 1.5rem;
+    padding-left: 0;
+
+    &::before {
+      display: none;
+    }
+  }
 `;
 
 const HeaderCell = styled.div`
@@ -59,6 +73,10 @@ const HeaderCell = styled.div`
   gap: 0.5rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--border);
+
+  @media (max-width: 768px) {
+    display: none; /* Hide grid headers on mobile */
+  }
 `;
 
 const HeaderLabel = styled.span`
@@ -77,14 +95,25 @@ const HeaderValue = styled.span`
 
 const LaneContainer = styled.div`
   display: contents; /* Allows children to participate in parent grid */
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: rgba(255,255,255,0.02);
+    border-radius: 24px;
+    padding: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
 `;
 
-const NodeCell = styled.div`
+const NodeCell = styled.div<{ $isEmpty?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   min-height: 200px;
+  width: 100%;
   
   /* Horizontal line */
   &::after {
@@ -96,6 +125,15 @@ const NodeCell = styled.div`
     height: 2px;
     background: var(--border);
     z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    min-height: auto;
+    ${({ $isEmpty }) => $isEmpty && 'display: none;'}
+    
+    &::after {
+      display: none; /* Hide connecting lines on mobile stack */
+    }
   }
 `;
 
@@ -132,10 +170,10 @@ export function RoadmapBoard({ userProgress }: RoadmapBoardProps) {
     <BoardContainer>
       <Grid>
         {/* Empty top-left cell */}
-        <div style={{ padding: '1rem' }}>
+        <HeaderCell style={{ padding: '1rem', borderBottom: 'none' }}>
           <HeaderLabel>Overview</HeaderLabel>
           <HeaderValue>Path</HeaderValue>
-        </div>
+        </HeaderCell>
 
         {/* Level Headers */}
         {[1, 2, 3].map(level => (
@@ -155,7 +193,7 @@ export function RoadmapBoard({ userProgress }: RoadmapBoardProps) {
               const lessons = getLessonsByType(lane.type);
               const lesson = lessons[colIndex];
               
-              if (!lesson) return <NodeCell key={colIndex} />;
+              if (!lesson) return <NodeCell key={colIndex} $isEmpty={true} />;
               
               const isCompleted = userProgress[lesson.id];
               const isAvailable = colIndex === 0 || userProgress[lessons[colIndex-1]?.id];
