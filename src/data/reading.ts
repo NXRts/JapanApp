@@ -550,5 +550,203 @@ export const readingPassages: ReadingPassage[] = [
         explanation: 'The text points to the cultivation of diverse human resources and the introduction of flexible working styles (多様な人材の育成と、柔軟な働き方の導入が不可欠).'
       }
     ]
+  },
+  {
+    id: 'n5-family',
+    title: '私の家族 (My Family)',
+    level: 'N5',
+    tags: ['Family', 'Daily Life'],
+    estimatedTime: '2 mins',
+    paragraphs: [
+      {
+        japanese: 'わたしの<ruby>家族<rt>かぞく</rt></ruby>は４<ruby>人<rt>にん</rt></ruby>です。<ruby>父<rt>ちち</rt></ruby>と<ruby>母<rt>はは</rt></ruby>と<ruby>姉<rt>あね</rt></ruby>とわたしです。',
+        english: 'There are four people in my family. My father, my mother, my older sister, and me.'
+      },
+      {
+        japanese: '<ruby>父<rt>ちち</rt></ruby>は<ruby>会社員<rt>かいしゃいん</rt></ruby>で、<ruby>母<rt>はは</rt></ruby>は<ruby>先生<rt>せんせい</rt></ruby>です。<ruby>姉<rt>あね</rt></ruby>は<ruby>大学生<rt>だいがくせい</rt></ruby>です。<ruby>毎日<rt>まいにち</rt></ruby>にぎやかです。',
+        english: 'My father is an office worker, and my mother is a teacher. My older sister is a university student. It is lively every day.'
+      }
+    ],
+    quizzes: [
+      {
+        question: 'How many people are in the author\'s family?',
+        options: ['Three', 'Four', 'Five', 'Six'],
+        correctAnswerIndex: 1,
+        explanation: 'The text says "わたしの家族は４人です" (There are four people in my family).'
+      },
+      {
+        question: 'What is the mother\'s job?',
+        options: ['Office worker', 'University student', 'Teacher', 'Doctor'],
+        correctAnswerIndex: 2,
+        explanation: 'The text says "母は先生です" (My mother is a teacher).'
+      }
+    ]
+  },
+  {
+    id: 'n4-hot-spring',
+    title: '温泉旅行 (Hot Spring Trip)',
+    level: 'N4',
+    tags: ['Travel', 'Culture'],
+    estimatedTime: '3 mins',
+    paragraphs: [
+      {
+        japanese: '<ruby>冬休<rt>ふゆやす</rt></ruby>みに、<ruby>家族<rt>かぞく</rt></ruby>と<ruby>箱根<rt>はこね</rt></ruby>の<ruby>温泉<rt>おんせん</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きました。<ruby>雪<rt>ゆき</rt></ruby>が<ruby>降<rt>ふ</rt></ruby>っていて、とても<ruby>寒<rt>さむ</rt></ruby>かったです。',
+        english: 'During winter vacation, I went to a hot spring in Hakone with my family. It was snowing, and it was very cold.'
+      },
+      {
+        japanese: 'しかし、<ruby>温<rt>あたた</rt></ruby>かい<ruby>温泉<rt>おんせん</rt></ruby>に<ruby>入<rt>はい</rt></ruby>って、おいしい<ruby>料理<rt>りょうり</rt></ruby>を<ruby>食<rt>た</rt></ruby>べたので、とてもリラックスできました。',
+        english: 'However, because we entered the warm hot spring and ate delicious food, I was able to relax very much.'
+      }
+    ],
+    quizzes: [
+      {
+        question: 'When did the author go to Hakone?',
+        options: ['Summer vacation', 'Winter vacation', 'Spring vacation', 'Golden Week'],
+        correctAnswerIndex: 1,
+        explanation: 'The text says "冬休みに" (During winter vacation).'
+      },
+      {
+        question: 'How was the weather during the trip?',
+        options: ['Sunny', 'Raining', 'Snowing and cold', 'Hot and humid'],
+        correctAnswerIndex: 2,
+        explanation: 'The text says "雪が降っていて、とても寒かったです" (It was snowing, and it was very cold).'
+      }
+    ]
+  },
+  {
+    id: 'n4-japanese-festivals',
+    title: '日本のお祭り (Japanese Festivals)',
+    level: 'N4',
+    tags: ['Culture', 'Events'],
+    estimatedTime: '3 mins',
+    paragraphs: [
+      {
+        japanese: '<ruby>夏<rt>なつ</rt></ruby>になると、<ruby>日本<rt>にほん</rt></ruby>のいろいろな<ruby>町<rt>まち</rt></ruby>でお<ruby>祭<rt>まつ</rt></ruby>りがあります。',
+        english: 'When summer comes, there are festivals in various towns in Japan.'
+      },
+      {
+        japanese: '<ruby>浴衣<rt>ゆかた</rt></ruby>を<ruby>着<rt>き</rt></ruby>て、たこ<ruby>焼<rt>や</rt></ruby>きや<ruby>焼<rt>や</rt></ruby>きそばを<ruby>買<rt>か</rt></ruby>って<ruby>食<rt>た</rt></ruby>べます。<ruby>夜<rt>よる</rt></ruby>はきれいな<ruby>花火<rt>はなび</rt></ruby>を<ruby>見<rt>み</rt></ruby>ることもできます。',
+        english: 'People wear yukata, buy takoyaki and yakisoba, and eat them. At night, you can also see beautiful fireworks.'
+      }
+    ],
+    quizzes: [
+      {
+        question: 'What do people wear to Japanese summer festivals according to the text?',
+        options: ['Kimono', 'Yukata', 'Suits', 'T-shirts'],
+        correctAnswerIndex: 1,
+        explanation: 'The text says "浴衣を着て" (Wear yukata).'
+      },
+      {
+        question: 'What can you see at night during the festival?',
+        options: ['Stars', 'Movies', 'Fireworks', 'Concerts'],
+        correctAnswerIndex: 2,
+        explanation: 'The text mentions "きれいな花火を見ることもできます" (you can also see beautiful fireworks).'
+      }
+    ]
+  },
+  {
+    id: 'n3-using-keigo',
+    title: '敬語の使い方 (How to use Keigo)',
+    level: 'N3',
+    tags: ['Language', 'Business'],
+    estimatedTime: '4 mins',
+    paragraphs: [
+      {
+        japanese: '<ruby>日本<rt>にほん</rt></ruby>の<ruby>会社<rt>かいしゃ</rt></ruby>で<ruby>働<rt>はたら</rt></ruby>く<ruby>時<rt>とき</rt></ruby>、「<ruby>敬語<rt>けいご</rt></ruby>」を<ruby>正<rt>ただ</rt></ruby>しく<ruby>使<rt>つか</rt></ruby>うことはとても<ruby>大切<rt>たいせつ</rt></ruby>です。',
+        english: 'When working at a Japanese company, using "Keigo" correctly is very important.'
+      },
+      {
+        japanese: '<ruby>尊敬語<rt>そんけいご</rt></ruby>は<ruby>目上<rt>めうえ</rt></ruby>の<ruby>人<rt>ひと</rt></ruby>の<ruby>行動<rt>こうどう</rt></ruby>に<ruby>使<rt>つか</rt></ruby>い、<ruby>謙譲語<rt>けんじょうご</rt></ruby>は<ruby>自分<rt>じぶん</rt></ruby>の<ruby>行動<rt>こうどう</rt></ruby>をへりくだって<ruby>言<rt>い</rt></ruby>う<ruby>時<rt>とき</rt></ruby>に<ruby>使<rt>つか</rt></ruby>います。',
+        english: 'Sonkeigo (respectful language) is used for the actions of superiors, and kenjougo (humble language) is used when speaking humbly about one\'s own actions.'
+      },
+      {
+        japanese: '<ruby>最初<rt>さいしょ</rt></ruby>は<ruby>難<rt>むずか</rt></ruby>しいですが、<ruby>慣<rt>な</rt></ruby>れるとスムーズに<ruby>話<rt>はな</rt></ruby>せるようになります。',
+        english: 'It is difficult at first, but once you get used to it, you will be able to speak smoothly.'
+      }
+    ],
+    quizzes: [
+      {
+        question: 'When is Sonkeigo (respectful language) used?',
+        options: ['For one\'s own actions', 'For the actions of superiors', 'For talking to children', 'For talking to animals'],
+        correctAnswerIndex: 1,
+        explanation: 'The text says "尊敬語は目上の人の行動に使い" (Sonkeigo is used for the actions of superiors).'
+      },
+      {
+        question: 'How is learning Keigo described in the text?',
+        options: ['Impossible to learn', 'Easy from the start', 'Difficult at first but gets smoother', 'Only for native speakers'],
+        correctAnswerIndex: 2,
+        explanation: 'The text says "最初は難しいですが、慣れるとスムーズに話せるようになります" (It is difficult at first, but gets smoother once you are used to it).'
+      }
+    ]
+  },
+  {
+    id: 'n2-cross-cultural',
+    title: '異文化コミュニケーション (Cross-cultural Communication)',
+    level: 'N2',
+    tags: ['Society', 'Communication'],
+    estimatedTime: '5 mins',
+    paragraphs: [
+      {
+        japanese: 'グローバル<ruby>化<rt>か</rt></ruby>が<ruby>進<rt>すす</rt></ruby>む<ruby>現代<rt>げんだい</rt></ruby>において、<ruby>異文化<rt>いぶんか</rt></ruby>コミュニケーションの<ruby>重要性<rt>じゅうようせい</rt></ruby>はますます<ruby>高<rt>たか</rt></ruby>まっている。',
+        english: 'In modern times where globalization is advancing, the importance of cross-cultural communication is increasing more and more.'
+      },
+      {
+        japanese: '<ruby>異<rt>こと</rt></ruby>なる<ruby>文化<rt>ぶんか</rt></ruby>の<ruby>背景<rt>はいけい</rt></ruby>を<ruby>持<rt>も</rt></ruby>つ<ruby>人<rt>ひと</rt></ruby>々と<ruby>円滑<rt>えんかつ</rt></ruby>に<ruby>交流<rt>こうりゅう</rt></ruby>するためには、<ruby>言葉<rt>ことば</rt></ruby>の<ruby>壁<rt>かべ</rt></ruby>だけでなく、<ruby>価値観<rt>かちかん</rt></ruby>や<ruby>習慣<rt>しゅうかん</rt></ruby>の<ruby>違<rt>ちが</rt></ruby>いを<ruby>理解<rt>りかい</rt></ruby>し、<ruby>尊重<rt>そんちょう</rt></ruby>する<ruby>態度<rt>たいど</rt></ruby>が<ruby>不可欠<rt>ふかけつ</rt></ruby>である。',
+        english: 'To smoothly interact with people who have different cultural backgrounds, it is essential not only to overcome the language barrier, but also to have an attitude of understanding and respecting differences in values and customs.'
+      },
+      {
+        japanese: '<ruby>自分<rt>じぶん</rt></ruby>の<ruby>常識<rt>じょうしき</rt></ruby>を<ruby>相手<rt>あいて</rt></ruby>に<ruby>押<rt>お</rt></ruby>し<ruby>付<rt>つ</rt></ruby>けず、オープンな<ruby>心<rt>こころ</rt></ruby>で<ruby>対話<rt>たいわ</rt></ruby>することが<ruby>相互理解<rt>そうごりかい</rt></ruby>への<ruby>第一歩<rt>だいいっぽ</rt></ruby>となる。',
+        english: 'Not forcing one\'s own common sense onto others and having dialogues with an open heart becomes the first step towards mutual understanding.'
+      }
+    ],
+    quizzes: [
+      {
+        question: 'According to the passage, what is increasing in importance?',
+        options: ['Studying foreign languages', 'Cross-cultural communication', 'Traveling abroad', 'Learning computer programming'],
+        correctAnswerIndex: 1,
+        explanation: 'The text states "異文化コミュニケーションの重要性はますます高まっている" (the importance of cross-cultural communication is increasing).'
+      },
+      {
+        question: 'What is described as the first step towards mutual understanding?',
+        options: ['Forcing your common sense on others', 'Speaking very loudly', 'Having dialogues with an open heart without forcing your common sense', 'Ignoring cultural differences'],
+        correctAnswerIndex: 2,
+        explanation: 'The text mentions "自分の常識を相手に押し付けず、オープンな心で対話することが相互理解への第一歩となる".'
+      }
+    ]
+  },
+  {
+    id: 'n1-regional-revitalization',
+    title: '地方創生と移住 (Regional Revitalization and Migration)',
+    level: 'N1',
+    tags: ['Society', 'Geography', 'Advanced'],
+    estimatedTime: '6 mins',
+    paragraphs: [
+      {
+        japanese: '<ruby>都市部<rt>としぶ</rt></ruby>への<ruby>人口集中<rt>じんこうしゅうちゅう</rt></ruby>が<ruby>加速<rt>かそく</rt></ruby>する<ruby>一方<rt>いっぽう</rt></ruby>で、<ruby>過疎化<rt>かそか</rt></ruby>に<ruby>悩<rt>なや</rt></ruby>む<ruby>地方自治体<rt>ちほうじちたい</rt></ruby>は「<ruby>地方創生<rt>ちほうそうせい</rt></ruby>」を<ruby>掲<rt>かか</rt></ruby>げ、<ruby>移住者<rt>いじゅうしゃ</rt></ruby>の<ruby>誘致<rt>ゆうち</rt></ruby>に<ruby>力<rt>ちから</rt></ruby>を<ruby>入<rt>い</rt></ruby>れている。',
+        english: 'While the concentration of population in urban areas accelerates, local governments troubled by depopulation are raising the banner of "regional revitalization" and putting effort into attracting migrants.'
+      },
+      {
+        japanese: '<ruby>豊<rt>ゆた</rt></ruby>かな<ruby>自然環境<rt>しぜんかんきょう</rt></ruby>や、ワークライフバランスの<ruby>改善<rt>かいぜん</rt></ruby>を<ruby>求<rt>もと</rt></ruby>めて、<ruby>都会<rt>とかい</rt></ruby>から<ruby>地方<rt>ちほう</rt></ruby>へと<ruby>生活<rt>せいかつ</rt></ruby>の<ruby>拠点<rt>きょてん</rt></ruby>を<ruby>移<rt>うつ</rt></ruby>す<ruby>若者<rt>わかもの</rt></ruby>やファミリー<ruby>層<rt>そう</rt></ruby>も<ruby>徐々<rt>じょじょ</rt></ruby>に<ruby>増加<rt>ぞうか</rt></ruby>しつつある。',
+        english: 'Seeking a rich natural environment and improved work-life balance, the number of young people and families moving their base of life from the city to rural areas is also gradually increasing.'
+      },
+      {
+        japanese: 'しかし、<ruby>移住後<rt>いじゅうご</rt></ruby>の<ruby>雇用<rt>こよう</rt></ruby>の<ruby>確保<rt>かくほ</rt></ruby>や<ruby>地域<rt>ちいき</rt></ruby>コミュニティとの<ruby>融合<rt>ゆうごう</rt></ruby>など、<ruby>解決<rt>かいけつ</rt></ruby>すべき<ruby>課題<rt>かだい</rt></ruby>は<ruby>依然<rt>いぜん</rt></ruby>として<ruby>山積<rt>さんせき</rt></ruby>している。',
+        english: 'However, challenges that need to be resolved, such as securing employment after migration and integrating with the local community, still remain piled high.'
+      }
+    ],
+    quizzes: [
+      {
+        question: 'Why are some young people and families moving to rural areas?',
+        options: ['To find better schools', 'To seek a rich natural environment and improved work-life balance', 'To start large corporations', 'Because living in the city is illegal'],
+        correctAnswerIndex: 1,
+        explanation: 'The text states they seek "豊かな自然環境や、ワークライフバランスの改善" (a rich natural environment and improved work-life balance).'
+      },
+      {
+        question: 'What is mentioned as a challenge after migrating to a rural area?',
+        options: ['Traffic jams', 'Securing employment and integrating with the local community', 'Too much noise', 'Lack of internet'],
+        correctAnswerIndex: 1,
+        explanation: 'The text points out "移住後の雇用の確保や地域コミュニティとの融合など" (securing employment after migration and integrating with the local community).'
+      }
+    ]
   }
 ];
