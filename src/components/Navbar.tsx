@@ -179,6 +179,9 @@ const SettingsBtn = styled.button<{ $isOpen?: boolean }>`
 `;
 
 const SearchBtn = styled(SettingsBtn)`
+  svg {
+    fill: none;
+  }
 `;
 
 const HamburgerBtn = styled.button<{ $isOpen: boolean }>`
