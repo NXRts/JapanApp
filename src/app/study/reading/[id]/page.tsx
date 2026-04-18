@@ -234,11 +234,16 @@ const Explanation = styled.div<{ $isCorrect: boolean }>`
   span { color: var(--text-secondary); line-height: 1.5; display: inline-block; }
 `;
 
-function QuizBlock({ quiz }: { quiz: ReadingQuiz }) {
+function QuizBlock({ quiz, onComplete }: { quiz: ReadingQuiz, onComplete?: () => void }) {
   const [selected, setSelected] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
   const isCorrect = selected === quiz.correctAnswerIndex;
+
+  const handleSubmit = () => {
+    setSubmitted(true);
+    if (onComplete) onComplete();
+  };
 
   return (
     <QuestionContainer>
@@ -269,7 +274,7 @@ function QuizBlock({ quiz }: { quiz: ReadingQuiz }) {
       
       {!submitted && (
         <SubmitBtn 
-          onClick={() => setSubmitted(true)} 
+          onClick={handleSubmit} 
           disabled={selected === null}
         >
           Check Answer
@@ -350,6 +355,7 @@ export default function ReadingDetailPage() {
   const [showFurigana, setShowFurigana] = useState(true);
   const [showTranslation, setShowTranslation] = useState(false);
   const { progress, markExerciseCompleted } = useProgress();
+  const [completedQuizzes, setCompletedQuizzes] = useState<Record<number, boolean>>({});
 
   useEffect(() => { setMounted(true); }, []);
   if (!mounted) return null;
@@ -372,6 +378,9 @@ export default function ReadingDetailPage() {
     : null;
 
   const isCompleted = !!progress.completedExercises?.includes(passage.id);
+  const allQuizzesCompleted = passage.quizzes 
+    ? Object.keys(completedQuizzes).length === passage.quizzes.length 
+    : true;
 
   return (
     <Container>
@@ -412,15 +421,26 @@ export default function ReadingDetailPage() {
         <QuizSection>
           <QuizTitle>Reading Comprehension Check</QuizTitle>
           {passage.quizzes.map((quiz, idx) => (
-            <QuizBlock key={idx} quiz={quiz} />
+            <QuizBlock 
+              key={idx} 
+              quiz={quiz} 
+              onComplete={() => setCompletedQuizzes(prev => ({...prev, [idx]: true}))}
+            />
           ))}
         </QuizSection>
+      )}
+
+      {!isCompleted && !allQuizzesCompleted && (
+        <div style={{ textAlign: 'center', marginTop: '3rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+          📝 Please answer all questions to mark this reading as completed.
+        </div>
       )}
 
       <CompleteBtn 
         $completed={isCompleted}
         onClick={() => markExerciseCompleted(passage.id)}
-        disabled={isCompleted}
+        disabled={isCompleted || !allQuizzesCompleted}
+        style={{ opacity: (!isCompleted && !allQuizzesCompleted) ? 0.5 : 1 }}
       >
         {isCompleted ? (
           <>

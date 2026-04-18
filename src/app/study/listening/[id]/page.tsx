@@ -395,6 +395,7 @@ export default function ListeningDetailPage() {
   const [mounted, setMounted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [isQuizAnswered, setIsQuizAnswered] = useState(false);
   const { progress, markExerciseCompleted } = useProgress();
   
   const isPlayingRef = useRef(false);
@@ -500,7 +501,10 @@ export default function ListeningDetailPage() {
        <QuizSection>
           <QuizBlock 
             quiz={exercise.quiz} 
-            onAnswered={() => setIsUnlocked(true)} 
+            onAnswered={() => {
+              setIsUnlocked(true);
+              setIsQuizAnswered(true);
+            }} 
           />
        </QuizSection>
 
@@ -529,10 +533,17 @@ export default function ListeningDetailPage() {
          )}
        </TranscriptSection>
 
+      {!isCompleted && !isQuizAnswered && (
+        <div style={{ textAlign: 'center', marginTop: '3rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+          🎧 Please answer the question to mark this listening as completed.
+        </div>
+      )}
+
       <CompleteBtn 
         $completed={isCompleted}
         onClick={() => markExerciseCompleted(exercise.id)}
-        disabled={isCompleted}
+        disabled={isCompleted || !isQuizAnswered}
+        style={{ opacity: (!isCompleted && !isQuizAnswered) ? 0.5 : 1 }}
       >
         {isCompleted ? (
           <>
