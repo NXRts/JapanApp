@@ -1,6 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
+import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
@@ -308,6 +309,41 @@ const CompleteBtn = styled.button<{ $completed: boolean }>`
   }
 `;
 
+const NextStepsContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  animation: fadeIn 0.5s ease-out forwards;
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+`;
+
+const NavBtn = styled(Link)<{ $primary?: boolean }>`
+  flex: 1;
+  padding: 1.25rem;
+  border-radius: 16px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: all 0.3s;
+  background: ${props => props.$primary ? 'var(--primary)' : 'var(--surface)'};
+  color: ${props => props.$primary ? 'white' : 'var(--foreground)'};
+  border: 2px solid ${props => props.$primary ? 'var(--primary)' : 'var(--border)'};
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${props => props.$primary ? '0 10px 25px -5px rgba(79, 70, 229, 0.3)' : '0 10px 25px -5px rgba(0,0,0,0.05)'};
+  }
+`;
+
 export default function ReadingDetailPage() {
   const params = useParams();
   const [mounted, setMounted] = useState(false);
@@ -329,6 +365,13 @@ export default function ReadingDetailPage() {
       </Container>
     );
   }
+
+  const currentIndex = readingPassages.findIndex(p => p.id === passage.id);
+  const nextPassage = currentIndex >= 0 && currentIndex < readingPassages.length - 1 
+    ? readingPassages[currentIndex + 1] 
+    : null;
+
+  const isCompleted = !!progress.completedExercises?.includes(passage.id);
 
   return (
     <Container>
@@ -375,11 +418,11 @@ export default function ReadingDetailPage() {
       )}
 
       <CompleteBtn 
-        $completed={!!progress.completedExercises?.includes(passage.id)}
+        $completed={isCompleted}
         onClick={() => markExerciseCompleted(passage.id)}
-        disabled={!!progress.completedExercises?.includes(passage.id)}
+        disabled={isCompleted}
       >
-        {progress.completedExercises?.includes(passage.id) ? (
+        {isCompleted ? (
           <>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
             Completed
@@ -388,6 +431,15 @@ export default function ReadingDetailPage() {
           'Mark as Completed'
         )}
       </CompleteBtn>
+
+      {isCompleted && (
+        <NextStepsContainer>
+          <NavBtn href="/study/reading">⬅ Back to List</NavBtn>
+          {nextPassage && (
+            <NavBtn href={`/study/reading/${nextPassage.id}`} $primary>Next Reading ➡</NavBtn>
+          )}
+        </NextStepsContainer>
+      )}
     </Container>
   );
 }
