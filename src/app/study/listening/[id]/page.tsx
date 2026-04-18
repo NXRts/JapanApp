@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { listeningExercises, ListeningQuiz } from '@/data/listening';
+import { useProgress } from '@/context/ProgressContext';
 
 const Container = styled.div`
   max-width: 850px;
@@ -330,11 +331,35 @@ function QuizBlock({ quiz, onAnswered }: { quiz: ListeningQuiz, onAnswered: () =
   );
 }
 
+const CompleteBtn = styled.button<{ $completed: boolean }>`
+  width: 100%;
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: ${props => props.$completed ? '#10b981' : 'var(--surface)'};
+  color: ${props => props.$completed ? 'white' : 'var(--primary)'};
+  border: 2px solid ${props => props.$completed ? '#10b981' : 'var(--primary)'};
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: ${props => props.$completed ? 'default' : 'pointer'};
+  margin-top: 3rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    transform: ${props => props.$completed ? 'none' : 'translateY(-2px)'};
+    box-shadow: ${props => props.$completed ? 'none' : '0 10px 25px -5px rgba(79, 70, 229, 0.2)'};
+  }
+`;
+
 export default function ListeningDetailPage() {
   const params = useParams();
   const [mounted, setMounted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const { progress, markExerciseCompleted } = useProgress();
   
   const isPlayingRef = useRef(false);
 
@@ -461,6 +486,20 @@ export default function ListeningDetailPage() {
          )}
        </TranscriptSection>
 
+      <CompleteBtn 
+        $completed={!!progress.completedExercises?.includes(exercise.id)}
+        onClick={() => markExerciseCompleted(exercise.id)}
+        disabled={!!progress.completedExercises?.includes(exercise.id)}
+      >
+        {progress.completedExercises?.includes(exercise.id) ? (
+          <>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Completed
+          </>
+        ) : (
+          'Mark as Completed'
+        )}
+      </CompleteBtn>
     </Container>
   );
 }

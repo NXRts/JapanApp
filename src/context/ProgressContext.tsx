@@ -22,6 +22,7 @@ interface ProgressData {
   srs: Record<string, SRSItem>;
   exp: number;
   activityLog: Record<string, number>; // Date string -> EXP gained
+  completedExercises: string[];
 }
 
 interface ProgressContextType {
@@ -32,6 +33,7 @@ interface ProgressContextType {
   updateSRS: (char: string, quality: number) => void;
   addExp: (amount: number) => void;
   resetProgress: () => void;
+  markExerciseCompleted: (id: string) => void;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
@@ -44,6 +46,7 @@ const INITIAL_DATA: ProgressData = {
   srs: {},
   exp: 0,
   activityLog: {},
+  completedExercises: [],
 };
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
@@ -65,6 +68,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
           streak: parsed.streak || 0,
           exp: parsed.exp || 0,
           activityLog: parsed.activityLog || {},
+          completedExercises: parsed.completedExercises || [],
         });
       } catch (e) {
         console.error('Failed to parse progress data', e);
@@ -171,6 +175,16 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }));
   };
 
+  const markExerciseCompleted = (id: string) => {
+    setProgress(prev => {
+      if (prev.completedExercises?.includes(id)) return prev;
+      return {
+        ...prev,
+        completedExercises: [...(prev.completedExercises || []), id]
+      };
+    });
+  };
+
   const contextValue = React.useMemo(() => ({
     progress,
     updateMastery,
@@ -178,6 +192,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     checkStreak,
     updateSRS,
     addExp,
+    markExerciseCompleted,
     resetProgress: () => {
       if (typeof window !== 'undefined') {
         // 1. Atomic wipe of all storage (Learning + Theme settings)
