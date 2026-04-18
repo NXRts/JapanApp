@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { readingPassages } from '@/data/reading';
+import { useProgress } from '@/context/ProgressContext';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -105,7 +106,8 @@ const FilterBtn = styled.button<{ $active: boolean }>`
 
 export default function ReadingHub() {
   const [filter, setFilter] = useState<string>('All');
-  
+  const { progress } = useProgress();
+
   const filteredPassages = filter === 'All' 
     ? readingPassages 
     : readingPassages.filter(p => p.level === filter);
@@ -139,7 +141,15 @@ export default function ReadingHub() {
         {filteredPassages.map(passage => (
           <ArticleCard key={passage.id} href={`/study/reading/${passage.id}`}>
             <ArticleHeader>
-              <LevelBadge $level={passage.level}>{passage.level}</LevelBadge>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <LevelBadge $level={passage.level}>{passage.level}</LevelBadge>
+                {progress.completedExercises?.includes(passage.id) && (
+                  <span style={{ background: '#10b981', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Completed
+                  </span>
+                )}
+              </div>
               <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontWeight: 600 }}>⏱ {passage.estimatedTime}</span>
             </ArticleHeader>
             <ArticleTitle>{passage.title}</ArticleTitle>

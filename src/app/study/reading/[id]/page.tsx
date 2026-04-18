@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { readingPassages, ReadingPassage, ReadingQuiz } from '@/data/reading';
+import { useProgress } from '@/context/ProgressContext';
 
 const Container = styled.div`
   max-width: 850px;
@@ -284,11 +285,35 @@ function QuizBlock({ quiz }: { quiz: ReadingQuiz }) {
   );
 }
 
+const CompleteBtn = styled.button<{ $completed: boolean }>`
+  width: 100%;
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: ${props => props.$completed ? '#10b981' : 'var(--surface)'};
+  color: ${props => props.$completed ? 'white' : 'var(--primary)'};
+  border: 2px solid ${props => props.$completed ? '#10b981' : 'var(--primary)'};
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: ${props => props.$completed ? 'default' : 'pointer'};
+  margin-top: 3rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    transform: ${props => props.$completed ? 'none' : 'translateY(-2px)'};
+    box-shadow: ${props => props.$completed ? 'none' : '0 10px 25px -5px rgba(79, 70, 229, 0.2)'};
+  }
+`;
+
 export default function ReadingDetailPage() {
   const params = useParams();
   const [mounted, setMounted] = useState(false);
   const [showFurigana, setShowFurigana] = useState(true);
   const [showTranslation, setShowTranslation] = useState(false);
+  const { progress, markExerciseCompleted } = useProgress();
 
   useEffect(() => { setMounted(true); }, []);
   if (!mounted) return null;
@@ -348,6 +373,21 @@ export default function ReadingDetailPage() {
           ))}
         </QuizSection>
       )}
+
+      <CompleteBtn 
+        $completed={!!progress.completedExercises?.includes(passage.id)}
+        onClick={() => markExerciseCompleted(passage.id)}
+        disabled={!!progress.completedExercises?.includes(passage.id)}
+      >
+        {progress.completedExercises?.includes(passage.id) ? (
+          <>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Completed
+          </>
+        ) : (
+          'Mark as Completed'
+        )}
+      </CompleteBtn>
     </Container>
   );
 }
