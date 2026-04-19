@@ -613,5 +613,389 @@ export const speakingExercises: SpeakingExercise[] = [
         translation: 'I like anime and action movies. Do you have any recommendations?',
       }
     ]
+  },
+  {
+    id: 'n2-asking-refund',
+    title: '返金の依頼 (Asking for a Refund)',
+    level: 'N2',
+    scenario: 'You bought a dress that had a small hole in it. You go back to the store to ask for a refund. You will roleplay as the Customer.',
+    estimatedTime: '4 mins',
+    userRole: 'A',
+    lines: [
+      {
+        id: 'AR1',
+        speaker: 'A',
+        characterName: 'You (Customer)',
+        avatar: '👤',
+        text: 'すみません、昨日ここで買ったワンピースに穴が開いていたので、返金をお願いしたいのですが。',
+        displayHtml: 'すみません、<ruby>昨日<rt>きのう</rt></ruby>ここで<ruby>買<rt>か</rt></ruby>ったワンピースに<ruby>穴<rt>あな</rt></ruby>が<ruby>開<rt>あ</rt></ruby>いていたので、<ruby>返金<rt>へんきん</rt></ruby>をお<ruby>願<rt>ねが</rt></ruby>いしたいのですが。',
+        translation: 'Excuse me, the dress I bought here yesterday has a hole in it, so I\'d like to ask for a refund.',
+      },
+      {
+        id: 'AR2',
+        speaker: 'B',
+        characterName: 'Shop Manager',
+        avatar: '👩🏻‍💼',
+        text: '申し訳ございません。レシートはお持ちでしょうか。',
+        displayHtml: '<ruby>申<rt>もう</rt></ruby>し<ruby>訳<rt>わけ</rt></ruby>ございません。レシートはお<ruby>持<rt>も</rt></ruby>ちでしょうか。',
+        translation: 'I\'m very sorry. Do you have the receipt?',
+        voiceSettings: { pitch: 1.1, rate: 0.9 }
+      },
+      {
+        id: 'AR3',
+        speaker: 'A',
+        characterName: 'You (Customer)',
+        avatar: '👤',
+        text: 'はい、これです。同じものがあれば交換でもいいですよ。',
+        displayHtml: 'はい、これです。<ruby>同<rt>おな</rt></ruby>じものがあれば<ruby>交換<rt>こうかん</rt></ruby>でもいいですよ。',
+        translation: 'Yes, here it is. If you have the same item, an exchange would be fine too.',
+      },
+      {
+        id: 'AR4',
+        speaker: 'B',
+        characterName: 'Shop Manager',
+        avatar: '👩🏻‍💼',
+        text: '在庫を確認してまいります。少々お待ちください。',
+        displayHtml: '<ruby>在庫<rt>ざいこ</rt></ruby>を<ruby>確認<rt>かくにん</rt></ruby>してまいります。<ruby>少々<rt>しょうしょう</rt></ruby>お<ruby>待<rt>ま</rt></ruby>ちください。',
+        translation: 'I\'ll go check the stock. Please wait a moment.',
+        voiceSettings: { pitch: 1.1, rate: 0.9 }
+      }
+    ]
+  },
+  {
+    id: 'n3-declining-invitation',
+    title: '誘いを断る (Declining an Invitation)',
+    level: 'N3',
+    scenario: 'Your colleague invites you to a drinking party, but you have other plans. You will roleplay as yourself.',
+    estimatedTime: '3 mins',
+    userRole: 'A',
+    lines: [
+      {
+        id: 'DI1',
+        speaker: 'B',
+        characterName: 'Colleague',
+        avatar: '👨🏻‍💻',
+        text: '今日の仕事帰り、飲みに行かない？',
+        displayHtml: '<ruby>今日<rt>きょう</rt></ruby>の<ruby>仕事帰<rt>しごとがえ</rt></ruby>り、<ruby>飲<rt>の</rt></ruby>みに<ruby>行<rt>い</rt></ruby>かない？',
+        translation: 'Do you want to go for a drink after work today?',
+        voiceSettings: { pitch: 1.0, rate: 1.1 }
+      },
+      {
+        id: 'DI2',
+        speaker: 'A',
+        characterName: 'You',
+        avatar: '👤',
+        text: '誘ってくれてありがとう。でも今日は予定があって。',
+        displayHtml: '<ruby>誘<rt>さそ</rt></ruby>ってくれてありがとう。でも<ruby>今日<rt>きょう</rt></ruby>は<ruby>予定<rt>よてい</rt></ruby>があって。',
+        translation: 'Thanks for inviting me. But I have plans today.',
+      },
+      {
+        id: 'DI3',
+        speaker: 'B',
+        characterName: 'Colleague',
+        avatar: '👨🏻‍💻',
+        text: 'そっか、残念。また今度誘うね。',
+        displayHtml: 'そっか、<ruby>残念<rt>ざんねん</rt></ruby>。また<ruby>今度誘<rt>こんどさそ</rt></ruby>うね。',
+        translation: 'Oh, that\'s a shame. I\'ll invite you next time.',
+        voiceSettings: { pitch: 1.0, rate: 1.1 }
+      },
+      {
+        id: 'DI4',
+        speaker: 'A',
+        characterName: 'You',
+        avatar: '👤',
+        text: 'うん、ぜひ！また声をかけてね。',
+        displayHtml: 'うん、ぜひ！また<ruby>声<rt>こえ</rt></ruby>をかけてね。',
+        translation: 'Yeah, definitely! Please ask again.',
+      }
+    ]
+  },
+  {
+    id: 'n5-ordering-coffee',
+    title: 'カフェで注文 (Ordering at a Cafe)',
+    level: 'N5',
+    scenario: 'You are ordering coffee and a cake at a local cafe. You will roleplay as the Customer.',
+    estimatedTime: '2 mins',
+    userRole: 'A',
+    lines: [
+      {
+        id: 'OC1',
+        speaker: 'B',
+        characterName: 'Barista',
+        avatar: '☕',
+        text: 'いらっしゃいませ。何になさいますか。',
+        displayHtml: 'いらっしゃいませ。<ruby>何<rt>なに</rt></ruby>になさいますか。',
+        translation: 'Welcome. What would you like?',
+        voiceSettings: { pitch: 1.2, rate: 1.0 }
+      },
+      {
+        id: 'OC2',
+        speaker: 'A',
+        characterName: 'You (Customer)',
+        avatar: '👤',
+        text: 'ホットコーヒーと、チーズケーキを一つください。',
+        displayHtml: 'ホットコーヒーと、チーズケーキを<ruby>一<rt>ひと</rt></ruby>つください。',
+        translation: 'A hot coffee and one cheesecake, please.',
+      },
+      {
+        id: 'OC3',
+        speaker: 'B',
+        characterName: 'Barista',
+        avatar: '☕',
+        text: '店内でお召し上がりですか。',
+        displayHtml: '<ruby>店内<rt>てんない</rt></ruby>でお<ruby>召<rt>め</rt></ruby>し<ruby>上<rt>あ</rt></ruby>がりですか。',
+        translation: 'Will you be eating here?',
+        voiceSettings: { pitch: 1.2, rate: 1.0 }
+      },
+      {
+        id: 'OC4',
+        speaker: 'A',
+        characterName: 'You (Customer)',
+        avatar: '👤',
+        text: 'はい、店内で。',
+        displayHtml: 'はい、<ruby>店内<rt>てんない</rt></ruby>で。',
+        translation: 'Yes, here.',
+      }
+    ]
+  },
+  {
+    id: 'n4-part-time-interview',
+    title: 'アルバイトの面接 (Part-time Job Interview)',
+    level: 'N4',
+    scenario: 'You are interviewing for a part-time job at a convenience store. You will roleplay as the Applicant.',
+    estimatedTime: '4 mins',
+    userRole: 'A',
+    lines: [
+      {
+        id: 'PI1',
+        speaker: 'B',
+        characterName: 'Store Manager',
+        avatar: '🏪',
+        text: '週に何日くらい入れますか。',
+        displayHtml: '<ruby>週<rt>しゅう</rt></ruby>に<ruby>何日<rt>なんにち</rt></ruby>くらい<ruby>入<rt>い</rt></ruby>れますか。',
+        translation: 'About how many days a week can you work?',
+        voiceSettings: { pitch: 0.9, rate: 0.9 }
+      },
+      {
+        id: 'PI2',
+        speaker: 'A',
+        characterName: 'You (Applicant)',
+        avatar: '👤',
+        text: '週に3日、平日の夕方からなら入れます。',
+        displayHtml: '<ruby>週<rt>しゅう</rt></ruby>に3<ruby>日<rt>にち</rt></ruby>、<ruby>平日<rt>へいじつ</rt></ruby>の<ruby>夕方<rt>ゆうがた</rt></ruby>からなら<ruby>入<rt>い</rt></ruby>れます。',
+        translation: 'I can work three days a week, from weekday evenings.',
+      },
+      {
+        id: 'PI3',
+        speaker: 'B',
+        characterName: 'Store Manager',
+        avatar: '🏪',
+        text: '土日は難しいですか。',
+        displayHtml: '<ruby>土日<rt>どにち</rt></ruby>は<ruby>難<rt>むずか</rt></ruby>しいですか。',
+        translation: 'Is it difficult on weekends?',
+        voiceSettings: { pitch: 0.9, rate: 0.9 }
+      },
+      {
+        id: 'PI4',
+        speaker: 'A',
+        characterName: 'You (Applicant)',
+        avatar: '👤',
+        text: '土曜日の午前中なら大丈夫です。',
+        displayHtml: '<ruby>土曜日<rt>どようび</rt></ruby>の<ruby>午前中<rt>ごぜんちゅう</rt></ruby>なら<ruby>大丈夫<rt>だいじょうぶ</rt></ruby>です。',
+        translation: 'Saturday mornings would be fine.',
+      }
+    ]
+  },
+  {
+    id: 'n1-project-delay',
+    title: 'プロジェクトの遅延報告 (Project Delay Report)',
+    level: 'N1',
+    scenario: 'You have to inform your boss about a significant delay in the current project. You will roleplay as the Team Lead.',
+    estimatedTime: '6 mins',
+    userRole: 'A',
+    lines: [
+      {
+        id: 'PD1',
+        speaker: 'A',
+        characterName: 'You (Team Lead)',
+        avatar: '👤',
+        text: '課長、今お時間よろしいでしょうか。',
+        displayHtml: '<ruby>課長<rt>かちょう</rt></ruby>、<ruby>今<rt>いま</rt></ruby>お<ruby>時間<rt>じかん</rt></ruby>よろしいでしょうか。',
+        translation: 'Section Chief, do you have a moment?',
+      },
+      {
+        id: 'PD2',
+        speaker: 'B',
+        characterName: 'Section Chief',
+        avatar: '👨🏻‍💼',
+        text: 'ああ、どうしたんだ。',
+        displayHtml: 'ああ、どうしたんだ。',
+        translation: 'Ah, what is it?',
+        voiceSettings: { pitch: 0.8, rate: 0.9 }
+      },
+      {
+        id: 'PD3',
+        speaker: 'A',
+        characterName: 'You (Team Lead)',
+        avatar: '👤',
+        text: '例のプロジェクトですが、サーバーの不具合により1週間の遅れが生じる見込みです。',
+        displayHtml: '<ruby>例<rt>れい</rt></ruby>のプロジェクトですが、サーバーの<ruby>不具合<rt>ふぐあい</rt></ruby>により1<ruby>週間<rt>しゅうかん</rt></ruby>の<ruby>遅<rt>おく</rt></ruby>れが<ruby>生<rt>しょう</rt></ruby>じる<ruby>見込<rt>みこ</rt></ruby>みです。',
+        translation: 'Regarding that project, due to server issues, we are expecting a one-week delay.',
+      },
+      {
+        id: 'PD4',
+        speaker: 'B',
+        characterName: 'Section Chief',
+        avatar: '👨🏻‍💼',
+        text: 'それは困るな。リカバリープランは考えてあるのか。',
+        displayHtml: 'それは<ruby>困<rt>こま</rt></ruby>るな。リカバリープランは<ruby>考<rt>かんが</rt></ruby>えてあるのか。',
+        translation: 'That\'s a problem. Have you thought of a recovery plan?',
+        voiceSettings: { pitch: 0.8, rate: 0.9 }
+      }
+    ]
+  },
+  {
+    id: 'n5-library-help',
+    title: '図書館で質問 (Asking at a Library)',
+    level: 'N5',
+    scenario: 'You are looking for a specific book at a local library. You will roleplay as the Visitor.',
+    estimatedTime: '2 mins',
+    userRole: 'A',
+    lines: [
+      {
+        id: 'LH1',
+        speaker: 'A',
+        characterName: 'You (Visitor)',
+        avatar: '👤',
+        text: 'すみません、日本語の教科書はどこにありますか。',
+        displayHtml: 'すみません、<ruby>日本語<rt>にほんご</rt></ruby>の<ruby>教科書<rt>きょうかしょ</rt></ruby>はどこにありますか。',
+        translation: 'Excuse me, where are the Japanese language textbooks?',
+      },
+      {
+        id: 'LH2',
+        speaker: 'B',
+        characterName: 'Librarian',
+        avatar: '👩🏻‍🏫',
+        text: 'あちらの3番の棚にあります。',
+        displayHtml: 'あちらの3<ruby>番<rt>ばん</rt></ruby>の<ruby>棚<rt>たな</rt></ruby>にあります。',
+        translation: 'They are on shelf number 3 over there.',
+        voiceSettings: { pitch: 1.1, rate: 1.0 }
+      },
+      {
+        id: 'LH3',
+        speaker: 'A',
+        characterName: 'You (Visitor)',
+        avatar: '👤',
+        text: 'ありがとうございます。CDも借りることができますか。',
+        displayHtml: 'ありがとうございます。CDも<ruby>借<rt>か</rt></ruby>りることができますか。',
+        translation: 'Thank you. Can I also borrow CDs?',
+      },
+      {
+        id: 'LH4',
+        speaker: 'B',
+        characterName: 'Librarian',
+        avatar: '👩🏻‍🏫',
+        text: 'はい、カードがあれば大丈夫ですよ。',
+        displayHtml: 'はい、カードがあれば<ruby>大丈夫<rt>だいじょうぶ</rt></ruby>ですよ。',
+        translation: 'Yes, if you have a card, it\'s fine.',
+        voiceSettings: { pitch: 1.1, rate: 1.0 }
+      }
+    ]
+  },
+  {
+    id: 'n4-weekend-plans',
+    title: '週末の予定 (Weekend Plans)',
+    level: 'N4',
+    scenario: 'You are discussing weekend plans with your Japanese partner. You will roleplay as yourself.',
+    estimatedTime: '3 mins',
+    userRole: 'A',
+    lines: [
+      {
+        id: 'WP1',
+        speaker: 'B',
+        characterName: 'Partner',
+        avatar: '👧🏻',
+        text: '今週末、何かしたいことある？',
+        displayHtml: '<ruby>今週末<rt>こんしゅうまつ</rt></ruby>、<ruby>何<rt>なに</rt></ruby>かしたいことある？',
+        translation: 'Is there anything you want to do this weekend?',
+        voiceSettings: { pitch: 1.2, rate: 1.1 }
+      },
+      {
+        id: 'WP2',
+        speaker: 'A',
+        characterName: 'You',
+        avatar: '👤',
+        text: '久しぶりに公園でピクニックがしたいな。',
+        displayHtml: '<ruby>久<rt>ひさ</rt></ruby>しぶりに<ruby>公園<rt>こうえん</rt></ruby>でピクニックがしたいな。',
+        translation: 'I want to have a picnic in the park for the first time in a while.',
+      },
+      {
+        id: 'WP3',
+        speaker: 'B',
+        characterName: 'Partner',
+        avatar: '👧🏻',
+        text: 'いいね！お弁当、私が作るよ。',
+        displayHtml: 'いいね！お<ruby>弁当<rt>べんとう</rt></ruby>、<ruby>私<rt>わたし</rt></ruby>が<ruby>作<rt>つく</rt></ruby>るよ。',
+        translation: 'That sounds good! I\'ll make the lunch boxes.',
+        voiceSettings: { pitch: 1.2, rate: 1.1 }
+      },
+      {
+        id: 'WP4',
+        speaker: 'A',
+        characterName: 'You',
+        avatar: '👤',
+        text: '本当？ありがとう。楽しみにしてるね。',
+        displayHtml: '<ruby>本当<rt>ほんとう</rt></ruby>？ありがとう。<ruby>楽<rt>たの</rt></ruby>しみにしてるね。',
+        translation: 'Really? Thank you. I\'m looking forward to it.',
+      }
+    ]
+  },
+  {
+    id: 'n3-bank-account',
+    title: '銀行口座の開設 (Opening a Bank Account)',
+    level: 'N3',
+    scenario: 'You are at a bank to open a new savings account. You will roleplay as the Customer.',
+    estimatedTime: '5 mins',
+    userRole: 'A',
+    lines: [
+      {
+        id: 'BA1',
+        speaker: 'A',
+        characterName: 'You (Customer)',
+        avatar: '👤',
+        text: '新しい口座を作りたいのですが。',
+        displayHtml: '<ruby>新<rt>あたら</rt></ruby>しい<ruby>口座<rt>こうざ</rt></ruby>を<ruby>作<rt>つく</rt></ruby>りたいのですが。',
+        translation: 'I\'d like to open a new account.',
+      },
+      {
+        id: 'BA2',
+        speaker: 'B',
+        characterName: 'Bank Clerk',
+        avatar: '🏦',
+        text: 'かしこまりました。こちらに必要事項を記入してください。',
+        displayHtml: 'かしこまりました。こちらに<ruby>必要事項<rt>ひつようじこう</rt></ruby>を<ruby>記入<rt>きにゅう</rt></ruby>してください。',
+        translation: 'Certainly. Please fill in the necessary information here.',
+        voiceSettings: { pitch: 1.0, rate: 0.9 }
+      },
+      {
+        id: 'BA3',
+        speaker: 'A',
+        characterName: 'You (Customer)',
+        avatar: '👤',
+        text: '印鑑は持っていないんですが、サインでもいいですか。',
+        displayHtml: '<ruby>印鑑<rt>いんかん</rt></ruby>は<ruby>持<rt>も</rt></ruby>っていないんですが、サインでもいいですか。',
+        translation: 'I don\'t have a seal, is a signature okay?',
+      },
+      {
+        id: 'BA4',
+        speaker: 'B',
+        characterName: 'Bank Clerk',
+        avatar: '🏦',
+        text: 'はい、サインでも大丈夫ですよ。',
+        displayHtml: 'はい、サインでも<ruby>大丈夫<rt>だいじょうぶ</rt></ruby>ですよ。',
+        translation: 'Yes, a signature is fine too.',
+        voiceSettings: { pitch: 1.0, rate: 0.9 }
+      }
+    ]
   }
 ];
