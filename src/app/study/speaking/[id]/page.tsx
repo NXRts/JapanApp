@@ -2,9 +2,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { speakingExercises, KaiwaLine } from '@/data/speaking';
+import { useProgress } from '@/context/ProgressContext';
 
 const Container = styled.div`
   max-width: 800px;
@@ -151,6 +153,64 @@ const cleanString = (str: string) => {
   return str.replace(/[、。！？\s\n]/g, '').trim();
 };
 
+const CompleteBtn = styled.button<{ $completed: boolean }>`
+  width: 100%;
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: ${props => props.$completed ? '#10b981' : 'var(--surface)'};
+  color: ${props => props.$completed ? 'white' : 'var(--primary)'};
+  border: 2px solid ${props => props.$completed ? '#10b981' : 'var(--primary)'};
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: ${props => props.$completed ? 'default' : 'pointer'};
+  margin-top: 3rem;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    transform: ${props => props.$completed ? 'none' : 'translateY(-2px)'};
+    box-shadow: ${props => props.$completed ? 'none' : '0 10px 25px -5px rgba(79, 70, 229, 0.2)'};
+  }
+`;
+
+const NextStepsContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  animation: fadeIn 0.5s ease-out forwards;
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+`;
+
+const NavBtn = styled(Link)<{ $primary?: boolean }>`
+  flex: 1;
+  padding: 1.25rem;
+  border-radius: 16px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: all 0.3s;
+  background: ${props => props.$primary ? 'var(--primary)' : 'var(--surface)'};
+  color: ${props => props.$primary ? 'white' : 'var(--foreground)'};
+  border: 2px solid ${props => props.$primary ? 'var(--primary)' : 'var(--border)'};
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${props => props.$primary ? '0 10px 25px -5px rgba(79, 70, 229, 0.3)' : '0 10px 25px -5px rgba(0,0,0,0.05)'};
+  }
+`;
+
 export default function KaiwaRoleplayPage() {
   const params = useParams();
   const id = typeof params?.id === 'string' ? params.id : Array.isArray(params?.id) ? params.id[0] : null;
@@ -162,6 +222,7 @@ export default function KaiwaRoleplayPage() {
   const [recognizerError, setRecognizerError] = useState('');
   const [transcript, setTranscript] = useState('');
   const [status, setStatus] = useState<'waiting' | 'success' | 'error' | 'speaking' | 'fin'>('waiting');
+  const { progress, markExerciseCompleted } = useProgress();
   
   const recognitionRef = useRef<any>(null);
   const synthRef = useRef<SpeechSynthesis | null>(null);
@@ -293,9 +354,16 @@ export default function KaiwaRoleplayPage() {
     setIsListening(false);
   };
 
+  const currentIndex = speakingExercises.findIndex(e => e.id === exercise.id);
+  const nextExercise = currentIndex >= 0 && currentIndex < speakingExercises.length - 1 
+    ? speakingExercises[currentIndex + 1] 
+    : null;
+
+  const isCompleted = !!progress.completedExercises?.includes(exercise.id);
+
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Study', href: '/study' }, { label: 'Speaking', href: '/study/speaking' }]} current={exercise.title} />
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Speaking', href: '/study/speaking' }]} current={exercise.title} />
       
       <Header>
         <Title>{exercise.title}</Title>
@@ -370,6 +438,37 @@ export default function KaiwaRoleplayPage() {
           </>
         )}
       </ControlsArea>
+
+      {!isCompleted && status !== 'fin' && (
+        <div style={{ textAlign: 'center', marginTop: '3rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+          🗣️ Please complete the roleplay scenario to mark it as completed.
+        </div>
+      )}
+
+      <CompleteBtn 
+        $completed={isCompleted}
+        onClick={() => markExerciseCompleted(exercise.id)}
+        disabled={isCompleted || status !== 'fin'}
+        style={{ opacity: (!isCompleted && status !== 'fin') ? 0.5 : 1 }}
+      >
+        {isCompleted ? (
+          <>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Completed
+          </>
+        ) : (
+          'Mark as Completed'
+        )}
+      </CompleteBtn>
+
+      {isCompleted && (
+        <NextStepsContainer>
+          <NavBtn href="/study/speaking">⬅ Back to List</NavBtn>
+          {nextExercise && (
+            <NavBtn href={`/study/speaking/${nextExercise.id}`} $primary>Next Roleplay ➡</NavBtn>
+          )}
+        </NextStepsContainer>
+      )}
     </Container>
   );
 }

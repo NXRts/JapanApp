@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { speakingExercises } from '@/data/speaking';
+import { useProgress } from '@/context/ProgressContext';
 
 const Container = styled.div`
   max-width: 1200px;
@@ -80,6 +81,8 @@ const ScenarioText = styled.p`
 `;
 
 export default function SpeakingHub() {
+  const { progress } = useProgress();
+
   return (
     <Container>
       <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Study', href: '/study' }]} current="Speaking Roleplay" />
@@ -95,7 +98,15 @@ export default function SpeakingHub() {
         {speakingExercises.map(exercise => (
           <CategoryCard key={exercise.id} href={`/study/speaking/${exercise.id}`}>
             <CardHeader>
-              <LevelBadge $level={exercise.level}>{exercise.level}</LevelBadge>
+              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <LevelBadge $level={exercise.level}>{exercise.level}</LevelBadge>
+                {progress.completedExercises?.includes(exercise.id) && (
+                  <span style={{ background: '#10b981', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Completed
+                  </span>
+                )}
+              </div>
               <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontWeight: 600 }}>⏱ {exercise.estimatedTime}</span>
             </CardHeader>
             <CardTitle>{exercise.title}</CardTitle>
