@@ -15,7 +15,7 @@ const Container = styled.div`
   gap: 3rem;
 
   @media (max-width: 768px) {
-    padding: 1.5rem 1.25rem;
+    padding: 1.5rem 1.5rem; /* Increased horizontal padding */
     gap: 2rem;
   }
 `;
@@ -33,6 +33,10 @@ const SectionTitle = styled.h2`
   display: flex;
   align-items: center;
   gap: 0.75rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+  }
 
   &::before {
     content: '';
@@ -89,6 +93,12 @@ const MainStatCard = styled.div`
   box-shadow: var(--shadow-sm);
   transition: all 0.3s ease;
 
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    min-height: 180px;
+    border-radius: 24px;
+  }
+
   &:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-md);
@@ -111,6 +121,10 @@ const StatValue = styled.div`
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 2.25rem;
+  }
 
   span {
     font-size: 1rem;
@@ -160,6 +174,11 @@ const BarChartContainer = styled.div`
   justify-content: space-between;
   gap: 0.75rem;
   margin-top: 1.5rem;
+
+  @media (max-width: 768px) {
+    height: 150px;
+    gap: 0.4rem;
+  }
 `;
 
 const BarWrapper = styled.div`
@@ -200,9 +219,13 @@ const SRSDistribution = styled.div`
 
 const SRSLegend = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
   gap: 0.75rem;
   font-size: 0.8rem;
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const LegendItem = styled.div<{ $color: string }>`
@@ -253,6 +276,10 @@ const ActivityItem = styled.div`
   align-items: center;
   justify-content: space-between;
   transition: all 0.2s;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 
   &:hover {
     border-color: var(--primary-light);

@@ -44,8 +44,9 @@ const Title = styled.h3`
 
 const HeatmapWrapper = styled.div`
   display: flex;
-  gap: 1rem;
-  min-width: 800px;
+  gap: 1.5rem;
+  min-width: 850px;
+  padding-right: 2rem; /* Add space at the end of the scroll */
 `;
 
 const DayLabels = styled.div`
@@ -174,7 +175,16 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
         </GridWrapper>
       </HeatmapWrapper>
 
-      <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'flex-end', gap: '1rem', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+      <div style={{ 
+        marginTop: '1.5rem', 
+        display: 'flex', 
+        justifyContent: 'flex-end', 
+        alignItems: 'center',
+        gap: '0.5rem', 
+        fontSize: '0.7rem', 
+        color: 'var(--text-secondary)',
+        flexWrap: 'wrap'
+      }}>
         <span>Less</span>
         <Day $intensity={0} />
         <Day $intensity={25} />
