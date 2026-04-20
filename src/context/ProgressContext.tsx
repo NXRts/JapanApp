@@ -176,13 +176,14 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   };
 
   const markExerciseCompleted = (id: string) => {
-    setProgress(prev => {
-      if (prev.completedExercises?.includes(id)) return prev;
-      return {
-        ...prev,
-        completedExercises: [...(prev.completedExercises || []), id]
-      };
-    });
+    if (progress.completedExercises?.includes(id)) return;
+    
+    addExp(50); // Reward 50 EXP for completing a module
+    
+    setProgress(prev => ({
+      ...prev,
+      completedExercises: [...(prev.completedExercises || []), id]
+    }));
   };
 
   const contextValue = React.useMemo(() => ({
