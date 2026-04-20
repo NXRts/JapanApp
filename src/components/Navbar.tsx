@@ -221,6 +221,54 @@ const Badge = styled.span`
   justify-content: center;
 `;
 
+const LevelBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.9rem;
+  background: rgba(var(--primary-rgb), 0.08);
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    background: rgba(var(--primary-rgb), 0.12);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.3rem 0.6rem;
+    gap: 0.4rem;
+  }
+`;
+
+const LevelText = styled.span`
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--primary);
+  white-space: nowrap;
+`;
+
+const ExpBar = styled.div`
+  width: 60px;
+  height: 6px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+
+  @media (max-width: 600px) {
+    display: none;
+  }
+`;
+
+const ExpFill = styled.div<{ $percent: number }>`
+  width: ${({ $percent }) => $percent}%;
+  height: 100%;
+  background: var(--primary);
+  border-radius: 999px;
+`;
+
 const MobileMenu = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 70px; /* Precise alignment below the navbar */
@@ -327,6 +375,14 @@ export function Navbar() {
 
   const dueItemsCount = Object.values(progress.srs).filter(isItemDue).length;
 
+  // Level Logic
+  const level = Math.floor(Math.sqrt(progress.exp / 100)) + 1;
+  const currentLevelExp = Math.pow(level - 1, 2) * 100;
+  const nextLevelExp = Math.pow(level, 2) * 100;
+  const expInCurrentLevel = progress.exp - currentLevelExp;
+  const expNeededForNext = nextLevelExp - currentLevelExp;
+  const percent = (expInCurrentLevel / expNeededForNext) * 100;
+
   // Prevent background scrolling when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -394,13 +450,15 @@ export function Navbar() {
             </NavItem>
           </NavList>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 102 }}>
-            {/* 
-            <AuthButtonGroup>
-              <LoginLink href="/login">Log In</LoginLink>
-              <RegisterButton href="/register">Sign Up</RegisterButton>
-            </AuthButtonGroup> 
-            */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', zIndex: 102 }}>
+            <Link href="/stats" style={{ textDecoration: 'none' }}>
+              <LevelBadge title={`${progress.exp} Total EXP`}>
+                <LevelText>LVL {level}</LevelText>
+                <ExpBar>
+                  <ExpFill $percent={percent} />
+                </ExpBar>
+              </LevelBadge>
+            </Link>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <SearchBtn $isOpen={isMobileMenuOpen} onClick={() => setIsDictionaryOpen(true)} title="Dictionary (Jisho)">
