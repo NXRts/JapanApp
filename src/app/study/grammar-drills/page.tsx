@@ -258,6 +258,51 @@ const SecondaryButton = styled(Button)`
   }
 `;
 
+const InfoSection = styled.div`
+  margin-top: 4rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  max-width: 800px;
+  width: 100%;
+`;
+
+const InfoTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  &::before {
+    content: '💡';
+    font-size: 1.5rem;
+  }
+`;
+
+const InfoGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+`;
+
+const InfoItem = styled.div`
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--foreground);
+  }
+  p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+`;
+
 export default function GrammarDrillsPage() {
   const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState<ParticleDrill[]>([]);
@@ -399,6 +444,24 @@ export default function GrammarDrillsPage() {
           <ProgressFill $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100} />
         </ProgressBarContainer>
       </QuizCard>
+
+      <InfoSection>
+        <InfoTitle>Cara Kerja Particle Drills</InfoTitle>
+        <InfoGrid>
+          <InfoItem>
+            <h4>Pengacakan Soal</h4>
+            <p>Sistem mengacak urutan soal dari bank data untuk memastikan variasi latihan di setiap sesi.</p>
+          </InfoItem>
+          <InfoItem>
+            <h4>Umpan Balik Instan</h4>
+            <p>Dapatkan konfirmasi langsung benar/salah beserta penjelasan tata bahasa setelah memilih jawaban.</p>
+          </InfoItem>
+          <InfoItem>
+            <h4>Pelacakan Skor</h4>
+            <p>Pantau kemajuan Anda melalui bar indikator dan skor akumulatif di bagian atas.</p>
+          </InfoItem>
+        </InfoGrid>
+      </InfoSection>
     </Container>
   );
 }
