@@ -415,12 +415,12 @@ export function Navbar() {
             <NavItem>
               <StyledLink href="/study" $active={pathname.startsWith('/study')}>Study</StyledLink>
             </NavItem>
-            {/* <NavItem>
+            <NavItem>
               <StyledLink href="/review" $active={pathname.startsWith('/review')}>
                 Review
                 {dueItemsCount > 0 && <Badge>{dueItemsCount}</Badge>}
               </StyledLink>
-            </NavItem> */}
+            </NavItem>
             <NavItem>
               <StyledLink href="/quiz" $active={pathname.startsWith('/quiz')}>Quiz</StyledLink>
             </NavItem>

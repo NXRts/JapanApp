@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { useProgress } from '@/context/ProgressContext';
 import { DrawingCanvas } from '@/components/Practice/Canvas';
 
 const PageWrapper = styled.div`
@@ -313,6 +314,8 @@ export default function KanjiFlashcards() {
   const [clearTrigger, setClearTrigger] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const { progress, updateSRS, addExp } = useProgress();
+
   // Fetch List
   useEffect(() => {
     setLoading(true);
@@ -320,16 +323,33 @@ export default function KanjiFlashcards() {
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
-          // Shuffle
-          setKanjiList(data.sort(() => 0.5 - Math.random()));
+          // Smart Shuffle based on SRS
+          const sorted = [...data].sort((a, b) => {
+            const srsA = progress.srs[a];
+            const srsB = progress.srs[b];
+
+            if (!srsA && !srsB) return 0.5 - Math.random();
+            if (!srsA) return -1;
+            if (!srsB) return 1;
+
+            return new Date(srsA.nextReviewDate).getTime() - new Date(srsB.nextReviewDate).getTime();
+          });
+
+          setKanjiList(sorted);
           setCurrentIndex(0);
           setFlipped(false);
         }
       })
       .finally(() => setLoading(false));
-  }, [level]);
+  }, [level, progress.srs]);
 
   const currentKanji = kanjiList[currentIndex];
+
+  const rateRecall = (quality: number) => {
+    updateSRS(currentKanji, quality);
+    addExp(quality * 3); // More EXP for Kanji
+    nextCard();
+  };
 
   // Fetch Details for current card (Back side)
   useEffect(() => {
@@ -410,8 +430,9 @@ export default function KanjiFlashcards() {
                 clearTrigger={clearTrigger}
                 char={currentKanji}
                 onComplete={() => {
-                  // Optional: Play sound or show toast here
-                  nextCard();
+                  // If drawn correctly, mark as Easy automatically? 
+                  // Let's keep it manual for now to be safe.
+                  setFlipped(true);
                 }}
                 onSkip={() => nextCard()}
               />
@@ -478,10 +499,11 @@ export default function KanjiFlashcards() {
                   Reveal Answer
                 </ActionBtn>
               ) : (
-                <>
-                  <ActionBtn $type="hard" onClick={nextCard}>Hard</ActionBtn>
-                  <ActionBtn $type="easy" onClick={nextCard}>Easy</ActionBtn>
-                </>
+                <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
+                  <ActionBtn $type="hard" style={{ background: '#ef4444' }} onClick={() => rateRecall(1)}>Hard</ActionBtn>
+                  <ActionBtn $type="hard" style={{ background: '#3b82f6' }} onClick={() => rateRecall(3)}>Good</ActionBtn>
+                  <ActionBtn $type="easy" style={{ background: '#10b981' }} onClick={() => rateRecall(5)}>Easy</ActionBtn>
+                </div>
               )}
             </ActionButtons>
           </CardArea>

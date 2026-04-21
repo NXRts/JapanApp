@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { useProgress } from '@/context/ProgressContext';
 
 const PageWrapper = styled.div`
   min-height: 90vh;
@@ -413,6 +414,8 @@ export default function VocabularyFlashcards() {
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
   const minSwipeDistance = 50;
 
+  const { progress, updateSRS, addExp } = useProgress();
+
   // Fetch List
   useEffect(() => {
     setLoading(true);
@@ -420,17 +423,36 @@ export default function VocabularyFlashcards() {
       .then(res => res.json())
       .then((data: VocabItem[]) => {
         if (Array.isArray(data)) {
-          // Shuffle
-          setVocabList(data.sort(() => 0.5 - Math.random()));
+          // Smart Shuffle based on SRS
+          const sorted = [...data].sort((a, b) => {
+            const srsA = progress.srs[a.word];
+            const srsB = progress.srs[b.word];
+
+            // If an item has never been seen, give it high priority
+            if (!srsA && !srsB) return 0.5 - Math.random();
+            if (!srsA) return -1;
+            if (!srsB) return 1;
+
+            // Otherwise, sort by nextReviewDate
+            return new Date(srsA.nextReviewDate).getTime() - new Date(srsB.nextReviewDate).getTime();
+          });
+
+          setVocabList(sorted);
           setCurrentIndex(0);
           setFlipped(false);
         }
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [level]);
+  }, [level, progress.srs]);
 
   const currentVocab = vocabList[currentIndex];
+
+  const rateRecall = (quality: number) => {
+    updateSRS(currentVocab.word, quality);
+    addExp(quality * 2); // Small EXP boost for practice
+    nextCard();
+  };
 
   const nextCard = () => {
     if (flipped) {
@@ -563,15 +585,25 @@ export default function VocabularyFlashcards() {
           </AnimContainer>
 
           <ActionButtons>
-            <IconBtn onClick={prevCard} aria-label="Previous Word">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </IconBtn>
+            {!flipped ? (
+              <>
+                <IconBtn onClick={prevCard} aria-label="Previous Word">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </IconBtn>
 
-            <ActionBtn onClick={nextCard}>
-              Next Word {currentIndex + 1} / {vocabList.length}
-            </ActionBtn>
+                <ActionBtn onClick={() => setFlipped(true)}>
+                  Reveal Answer
+                </ActionBtn>
+              </>
+            ) : (
+              <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
+                <ActionBtn style={{ background: '#ef4444' }} onClick={() => rateRecall(1)}>Hard</ActionBtn>
+                <ActionBtn style={{ background: '#3b82f6' }} onClick={() => rateRecall(3)}>Good</ActionBtn>
+                <ActionBtn style={{ background: '#10b981' }} onClick={() => rateRecall(5)}>Easy</ActionBtn>
+              </div>
+            )}
           </ActionButtons>
         </FlashcardContainer>
       </Container>
