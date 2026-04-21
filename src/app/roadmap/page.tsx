@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { RoadmapBoard } from '@/components/roadmap/RoadmapBoard';
 import { useProgress } from '@/context/ProgressContext';
+import { ROADMAP_DATA } from '@/data/roadmap';
 
 const Container = styled.div`
   max-width: 1400px;
@@ -84,13 +85,17 @@ export default function RoadmapPage() {
     setMounted(true);
   }, []);
 
-  // Simple logic to mock "completed" lessons based on quiz history or character mastery
-  const completedLessons: Record<string, boolean> = {
-    'hiragana-intro': Object.keys(progress.mastery).length > 5,
-    'hiragana-practice': progress.quizHistory.length > 0,
-    'katakana-intro': Object.keys(progress.mastery).length > 20,
-    'daily-greetings': progress.exp > 500,
-  };
+  // Real logic to check progress
+  const completedLessons: Record<string, boolean> = {};
+  ROADMAP_DATA.forEach(chapter => {
+    chapter.lessons.forEach(lesson => {
+      // Mark as completed if the user has enough EXP or matching history
+      if (lesson.id === 'hiragana') completedLessons[lesson.id] = Object.keys(progress.mastery).length > 5;
+      else if (lesson.id === 'katakana') completedLessons[lesson.id] = Object.keys(progress.mastery).length > 46;
+      else if (lesson.id === 'basic-particles') completedLessons[lesson.id] = progress.exp > 500;
+      else completedLessons[lesson.id] = progress.completedExercises?.includes(lesson.id) || false;
+    });
+  });
 
   if (!mounted) return null;
 

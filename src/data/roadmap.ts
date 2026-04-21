@@ -3,111 +3,67 @@ export interface RoadmapLesson {
   title: string;
   description: string;
   link: string;
-  type: 'writing' | 'vocabulary' | 'grammar' | 'quiz' | 'survival';
+  type: 'writing' | 'vocabulary' | 'grammar' | 'quiz' | 'survival' | 'kanji';
   xpReward: number;
 }
 
 export interface RoadmapChapter {
   id: string;
   title: string;
+  level: 'N5' | 'N4' | 'N3' | 'N2' | 'N1';
   lessons: RoadmapLesson[];
 }
 
 export const ROADMAP_DATA: RoadmapChapter[] = [
   {
-    id: 'chapter-1',
-    title: 'Chapter 1: The Writing System',
+    id: 'n5-foundation',
+    title: 'N5: The Foundations',
+    level: 'N5',
     lessons: [
-      {
-        id: 'hiragana-intro',
-        title: 'Hiragana Basics',
-        description: 'Learn the first 46 characters of the Japanese alphabet.',
-        link: '/materi',
-        type: 'writing',
-        xpReward: 50
-      },
-      {
-        id: 'hiragana-practice',
-        title: 'Mastering Hiragana',
-        description: 'Practice writing and reading Hiragana characters.',
-        link: '/practice/kana',
-        type: 'quiz',
-        xpReward: 100
-      },
-      {
-        id: 'katakana-intro',
-        title: 'Katakana Intro',
-        description: 'Learn Katakana, used for foreign loanwords.',
-        link: '/materi',
-        type: 'writing',
-        xpReward: 50
-      }
+      { id: 'hiragana', title: 'Hiragana Mastery', description: 'The phonetic base of Japanese.', link: '/study/kanji', type: 'writing', xpReward: 50 },
+      { id: 'katakana', title: 'Katakana Intro', description: 'Loanwords and foreign names.', link: '/study/kanji', type: 'writing', xpReward: 50 },
+      { id: 'basic-particles', title: 'Essential Particles', description: 'は, が, を, に fundamentals.', link: '/study/grammar', type: 'grammar', xpReward: 100 },
+      { id: 'n5-vocab-1', title: 'Daily Vocab', description: '100 most common words.', link: '/study/vocabulary', type: 'vocabulary', xpReward: 100 },
     ]
   },
   {
-    id: 'chapter-2',
-    title: 'Chapter 2: Essential Greetings',
+    id: 'n4-intermediate-base',
+    title: 'N4: Expanding Horizons',
+    level: 'N4',
     lessons: [
-      {
-        id: 'daily-greetings',
-        title: 'Daily Greetings',
-        description: 'Ohayou, Konnichiwa, and more common phrases.',
-        link: '/vocabulary',
-        type: 'survival',
-        xpReward: 75
-      },
-      {
-        id: 'self-intro',
-        title: 'Self Introductions',
-        description: 'How to introduce yourself in Japanese.',
-        link: '/vocabulary',
-        type: 'survival',
-        xpReward: 100
-      }
+      { id: 'n4-grammar', title: 'Intermediate Grammar', description: 'Complex sentences and conjugation.', link: '/study/grammar', type: 'grammar', xpReward: 150 },
+      { id: 'n4-kanji', title: '300 Essential Kanji', description: 'Daily life characters.', link: '/study/kanji', type: 'kanji', xpReward: 200 },
+      { id: 'n4-listening', title: 'Basic Conversation', description: 'Understanding native speed.', link: '/study/listening', type: 'survival', xpReward: 150 },
     ]
   },
   {
-    id: 'chapter-3',
-    title: 'Chapter 3: Numbers & Time',
+    id: 'n3-bridge',
+    title: 'N3: The Bridge',
+    level: 'N3',
     lessons: [
-      {
-        id: 'numbers-1-100',
-        title: 'Counting (1-100)',
-        description: 'Master Japanese numbers and counters.',
-        link: '/vocabulary',
-        type: 'vocabulary',
-        xpReward: 80
-      },
-      {
-        id: 'telling-time',
-        title: 'Telling Time',
-        description: 'Learn how to ask and tell the time.',
-        link: '/vocabulary',
-        type: 'vocabulary',
-        xpReward: 100
-      }
+      { id: 'n3-reading', title: 'Short Stories', description: 'Reading for comprehension.', link: '/study/reading', type: 'vocabulary', xpReward: 250 },
+      { id: 'n3-keigo', title: 'Honorifics Intro', description: 'Polite and humble speech.', link: '/study/speaking', type: 'survival', xpReward: 200 },
+      { id: 'n3-kanji-mastery', title: '600 Kanji', description: 'Advanced character sets.', link: '/study/kanji', type: 'kanji', xpReward: 300 },
     ]
   },
   {
-    id: 'chapter-4',
-    title: 'Chapter 4: Survival Grammar',
+    id: 'n2-business',
+    title: 'N2: Professional Japanese',
+    level: 'N2',
     lessons: [
-      {
-        id: 'particle-wa',
-        title: 'The Particle は',
-        description: 'Introduction to sentence topics and "desu".',
-        link: '/grammar',
-        type: 'grammar',
-        xpReward: 150
-      },
-      {
-        id: 'question-ka',
-        title: 'Asking Questions',
-        description: 'Transform statements into questions with か.',
-        link: '/grammar',
-        type: 'grammar',
-        xpReward: 150
-      }
+      { id: 'n2-business-vocab', title: 'Business Terms', description: 'Workplace vocabulary.', link: '/study/vocabulary', type: 'vocabulary', xpReward: 400 },
+      { id: 'n2-advanced-grammar', title: 'Abstract Grammar', description: 'Nuanced expressions.', link: '/study/grammar', type: 'grammar', xpReward: 400 },
+      { id: 'n2-news-listening', title: 'News Reports', description: 'Understanding media.', link: '/study/listening', type: 'survival', xpReward: 400 },
+    ]
+  },
+  {
+    id: 'n1-fluency',
+    title: 'N1: Native Fluency',
+    level: 'N1',
+    lessons: [
+      { id: 'n1-literature', title: 'Classic Literature', description: 'Deep cultural understanding.', link: '/study/reading', type: 'writing', xpReward: 500 },
+      { id: 'n1-kanji-2000', title: 'Jouyou Kanji 2136', description: 'The complete set.', link: '/study/kanji', type: 'kanji', xpReward: 1000 },
+      { id: 'n1-philosophical-debate', title: 'Abstract Discussion', description: 'High-level speaking.', link: '/study/speaking', type: 'survival', xpReward: 600 },
     ]
   }
 ];
