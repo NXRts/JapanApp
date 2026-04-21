@@ -10,66 +10,56 @@ const BoardContainer = styled.div`
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem 0 4rem;
-`;
-
-const SkillPath = styled.div`
+  padding: 2rem 0 6rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 4rem;
-  padding: 2rem 0;
-  position: relative;
+`;
 
-  &::before {
+const TierSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
+const TierHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  
+  &::after {
     content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 4px;
-    background: var(--border);
-    transform: translateX(-50%);
-    z-index: 0;
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
   }
 `;
 
-const ChapterSection = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  z-index: 1;
-`;
-
-const ChapterTitle = styled.h3`
-  background: var(--surface);
+const TierBadge = styled.div`
+  background: var(--primary);
+  color: white;
   padding: 0.5rem 1.5rem;
-  border: 2px solid var(--primary);
-  border-radius: 99px;
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: var(--primary);
-  box-shadow: var(--shadow-sm);
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 `;
 
-const NodesContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-  width: 100%;
+const TierTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 850;
+  color: var(--foreground);
 `;
 
-const NodeRow = styled.div<{ $offset: number }>`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  transform: translateX(${props => props.$offset}px);
-  
+const NodesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 3rem 2rem;
+  padding-left: 1rem;
+
   @media (max-width: 600px) {
-    transform: none;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 2rem 1rem;
   }
 `;
 
@@ -90,44 +80,43 @@ export function RoadmapBoard({ userProgress }: RoadmapBoardProps) {
 
   return (
     <BoardContainer>
-      <SkillPath>
-        {ROADMAP_DATA.map((chapter, chapterIdx) => (
-          <ChapterSection key={chapter.id}>
-            <ChapterTitle>{chapter.title}</ChapterTitle>
-            <NodesContainer>
-              {chapter.lessons.map((lesson, lessonIdx) => {
-                // Zig-zag offset
-                const offset = (lessonIdx % 2 === 0 ? -40 : 40);
-                const isCompleted = userProgress[lesson.id];
-                
-                // Logic for availability: Previous lesson must be completed
-                let isAvailable = false;
-                if (chapterIdx === 0 && lessonIdx === 0) {
-                  isAvailable = true;
-                } else {
-                  const prevLesson = lessonIdx > 0 
-                    ? chapter.lessons[lessonIdx - 1] 
-                    : ROADMAP_DATA[chapterIdx - 1]?.lessons.slice(-1)[0];
-                  if (prevLesson && userProgress[prevLesson.id]) isAvailable = true;
-                }
+      {ROADMAP_DATA.map((chapter, chapterIdx) => (
+        <TierSection key={chapter.id}>
+          <TierHeader>
+            <TierBadge>{chapter.level}</TierBadge>
+            <TierTitle>{chapter.title.split(':')[1] || chapter.title}</TierTitle>
+          </TierHeader>
+          
+          <NodesGrid>
+            {chapter.lessons.map((lesson, lessonIdx) => {
+              const isCompleted = userProgress[lesson.id];
+              
+              // Logic for availability
+              let isAvailable = false;
+              if (chapterIdx === 0 && lessonIdx === 0) {
+                isAvailable = true;
+              } else {
+                const prevLesson = lessonIdx > 0 
+                  ? chapter.lessons[lessonIdx - 1] 
+                  : ROADMAP_DATA[chapterIdx - 1]?.lessons.slice(-1)[0];
+                if (prevLesson && userProgress[prevLesson.id]) isAvailable = true;
+              }
 
-                const status = isCompleted ? 'completed' : (isAvailable ? 'available' : 'locked');
+              const status = isCompleted ? 'completed' : (isAvailable ? 'available' : 'locked');
 
-                return (
-                  <NodeRow key={lesson.id} $offset={offset}>
-                    <GridNode 
-                      title={lesson.title} 
-                      link={lesson.link} 
-                      status={status} 
-                      rowColor={getRowColor(lesson.type)} 
-                    />
-                  </NodeRow>
-                );
-              })}
-            </NodesContainer>
-          </ChapterSection>
-        ))}
-      </SkillPath>
+              return (
+                <GridNode 
+                  key={lesson.id}
+                  title={lesson.title} 
+                  link={lesson.link} 
+                  status={status} 
+                  rowColor={getRowColor(lesson.type)} 
+                />
+              );
+            })}
+          </NodesGrid>
+        </TierSection>
+      ))}
     </BoardContainer>
   );
 }
