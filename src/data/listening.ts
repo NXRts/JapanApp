@@ -8,6 +8,7 @@ export interface DialogueLine {
     pitch: number;
     rate: number;
   };
+  audioUrl?: string;
 }
 
 export interface ListeningQuiz {
@@ -25,6 +26,7 @@ export interface ListeningExercise {
   scenario: string;
   dialogue: DialogueLine[];
   quiz: ListeningQuiz;
+  audioUrl?: string;
 }
 
 export const listeningExercises: ListeningExercise[] = [

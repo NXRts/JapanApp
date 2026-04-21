@@ -7,6 +7,7 @@ export interface KaiwaLine {
   displayHtml: string;    // nicely formatted with furigana
   translation: string;
   voiceSettings?: { pitch: number; rate: number }; // used if text is spoken by App
+  audioUrl?: string;
 }
 
 export interface SpeakingExercise {

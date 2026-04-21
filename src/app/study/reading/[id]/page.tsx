@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { readingPassages, ReadingPassage, ReadingQuiz } from '@/data/reading';
 import { useProgress } from '@/context/ProgressContext';
+import { ClickableJapaneseText } from '@/components/common/ClickableJapaneseText';
 
 const Container = styled.div`
   max-width: 850px;
@@ -100,14 +101,6 @@ const ContentContainer = styled.div<{ $showFurigana: boolean }>`
 
 const ParagraphBlock = styled.div`
   margin-bottom: 3rem;
-`;
-
-const JapaneseText = styled.div`
-  font-size: 1.4rem;
-  line-height: 2.4;
-  color: var(--foreground);
-  font-family: 'Noto Sans JP', sans-serif;
-  letter-spacing: 0.02em;
 `;
 
 const EnglishText = styled.div`
@@ -409,7 +402,11 @@ export default function ReadingDetailPage() {
       <ContentContainer $showFurigana={showFurigana}>
         {passage.paragraphs.map((para, idx) => (
           <ParagraphBlock key={idx}>
-            <JapaneseText dangerouslySetInnerHTML={{ __html: para.japanese }} />
+            <ClickableJapaneseText 
+                className="jp-text"
+                html={para.japanese}
+                style={{ fontSize: '1.4rem', lineHeight: '2.4', color: 'var(--foreground)' }}
+            />
             {showTranslation && (
               <EnglishText>{para.english}</EnglishText>
             )}
