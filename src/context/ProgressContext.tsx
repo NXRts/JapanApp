@@ -34,6 +34,7 @@ interface ProgressContextType {
   addExp: (amount: number) => void;
   resetProgress: () => void;
   markExerciseCompleted: (id: string) => void;
+  getDueItems: () => (SRSItem & { id: string })[];
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
@@ -194,6 +195,12 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     updateSRS,
     addExp,
     markExerciseCompleted,
+    getDueItems: () => {
+      const now = new Date();
+      return Object.entries(progress.srs)
+        .filter(([_, item]) => new Date(item.nextReviewDate) <= now)
+        .map(([id, item]) => ({ id, ...item }));
+    },
     resetProgress: () => {
       if (typeof window !== 'undefined') {
         // 1. Atomic wipe of all storage (Learning + Theme settings)
