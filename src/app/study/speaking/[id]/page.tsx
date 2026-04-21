@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { speakingExercises, KaiwaLine } from '@/data/speaking';
 import { useProgress } from '@/context/ProgressContext';
+import { ClickableJapaneseText } from '@/components/common/ClickableJapaneseText';
 
 const Container = styled.div`
   max-width: 800px;
@@ -81,11 +82,7 @@ const Bubble = styled.div<{ $isUser: boolean }>`
   }
 `;
 
-const JapaneseText = styled.div`
-  font-size: 1.5rem;
-  line-height: 1.6;
-  margin-bottom: 0.5rem;
-`;
+
 
 const TranslationText = styled.div<{ $isUser: boolean }>`
   font-size: 0.95rem;
@@ -279,6 +276,28 @@ export default function KaiwaRoleplayPage() {
     if (currentLine.speaker !== exercise.userRole) {
       // AI Turn! Speak the line.
       setStatus('speaking');
+
+      // Check for authentic audio first
+      if (currentLine.audioUrl) {
+          const audio = new Audio(currentLine.audioUrl);
+          audio.onended = () => {
+              setTimeout(() => setCurrentLineIdx(prev => prev + 1), 600);
+          };
+          audio.play().catch(err => {
+              console.error("Audio play failed, falling back to TTS", err);
+              playAI_TTS(currentLine);
+          });
+      } else {
+          playAI_TTS(currentLine);
+      }
+    } else {
+      // User Turn!
+      setStatus('waiting');
+      setTranscript('');
+    }
+  }, [currentLineIdx, exercise, mounted]);
+
+  const playAI_TTS = (currentLine: KaiwaLine) => {
       if (synthRef.current) {
         synthRef.current.cancel();
         let voices = synthRef.current.getVoices();
@@ -296,22 +315,9 @@ export default function KaiwaRoleplayPage() {
           setTimeout(() => setCurrentLineIdx(prev => prev + 1), 600);
         };
         
-        // Timeout safeguard for Web Speech API bug
-        const timer = setTimeout(() => {
-          if (synthRef.current?.speaking) synthRef.current.cancel();
-          setCurrentLineIdx(prev => prev + 1);
-        }, 10000);
-
         synthRef.current.speak(utterance);
-        
-        return () => clearTimeout(timer);
       }
-    } else {
-      // User Turn!
-      setStatus('waiting');
-      setTranscript('');
-    }
-  }, [currentLineIdx, exercise, mounted]);
+  };
 
   // Handle finalize manually when transcript stops changing (or onend)
   useEffect(() => {
@@ -380,7 +386,11 @@ export default function KaiwaRoleplayPage() {
               <div style={{ display: 'flex', flexDirection: isUser ? 'row-reverse' : 'row', gap: '1rem', alignItems: 'flex-start', maxWidth: '100%' }}>
                 <MessageAvatar title={line.characterName}>{line.avatar}</MessageAvatar>
                 <Bubble $isUser={isUser} style={{ opacity: isCurrentAI && status !== 'speaking' ? 0.5 : 1 }}>
-                  <JapaneseText dangerouslySetInnerHTML={{ __html: line.displayHtml }} />
+                  <ClickableJapaneseText 
+                    className="jp-text" 
+                    html={line.displayHtml} 
+                    style={{ fontSize: '1.5rem', lineHeight: '1.6', marginBottom: '0.5rem' }}
+                  />
                   <TranslationText $isUser={isUser}>{line.translation}</TranslationText>
                 </Bubble>
               </div>

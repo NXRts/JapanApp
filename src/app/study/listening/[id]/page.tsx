@@ -7,6 +7,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { listeningExercises, ListeningQuiz } from '@/data/listening';
 import { useProgress } from '@/context/ProgressContext';
+import { ClickableJapaneseText } from '@/components/common/ClickableJapaneseText';
 
 const Container = styled.div`
   max-width: 850px;
@@ -432,7 +433,13 @@ export default function ListeningDetailPage() {
 
   const togglePlay = async () => {
     if (isPlayingRef.current) {
-      window.speechSynthesis.cancel();
+      window.speechSynthesis?.cancel();
+      // Stop audio element if exists
+      const audio = document.getElementById('exercise-audio') as HTMLAudioElement;
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
       isPlayingRef.current = false;
       setIsPlaying(false);
       return;
@@ -441,6 +448,25 @@ export default function ListeningDetailPage() {
     isPlayingRef.current = true;
     setIsPlaying(true);
 
+    // Check for authentic audio file
+    const exerciseAudio = exercise.audioUrl;
+    if (exerciseAudio) {
+      const audio = new Audio(exerciseAudio);
+      audio.id = 'exercise-audio';
+      audio.onended = () => {
+        isPlayingRef.current = false;
+        setIsPlaying(false);
+      };
+      audio.play().catch(err => {
+        console.error("Audio play failed, falling back to TTS", err);
+        playTTS();
+      });
+    } else {
+      await playTTS();
+    }
+  };
+
+  const playTTS = async () => {
     const speakLine = (line: { text: string; voiceSettings: { pitch: number; rate: number } }) => 
       new Promise<void>((resolve) => {
         const u = new SpeechSynthesisUtterance(line.text);
@@ -523,7 +549,10 @@ export default function ListeningDetailPage() {
                    <Avatar>{line.avatar}</Avatar>
                    <DialogueContent>
                      <div className="speaker-name">{line.speaker}</div>
-                     <div className="jp-text" dangerouslySetInnerHTML={{ __html: line.displayHtml }} />
+                     <ClickableJapaneseText 
+                       className="jp-text" 
+                       html={line.displayHtml} 
+                     />
                      <div className="en-text">{line.translation}</div>
                    </DialogueContent>
                  </DialogueBubble>
