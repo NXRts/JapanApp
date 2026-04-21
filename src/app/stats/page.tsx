@@ -455,6 +455,34 @@ export default function StatsPage() {
       </Section>
 
       <Section>
+        <SectionTitle>Items to Focus On</SectionTitle>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
+          {Object.entries(progress.mastery)
+            .sort(([, a], [, b]) => b.incorrect - a.incorrect)
+            .filter(([, m]) => m.incorrect > 0)
+            .slice(0, 5)
+            .map(([char, m]) => (
+              <ActivityItem key={char} style={{ padding: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                  <div style={{ fontSize: '1.5rem', fontWeight: 800 }}>{char}</div>
+                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                    {m.incorrect} errors
+                  </div>
+                </div>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#ef4444' }}>
+                  {Math.round((m.correct / (m.correct + m.incorrect)) * 100)}% Acc
+                </div>
+              </ActivityItem>
+            ))}
+          {Object.values(progress.mastery).every(m => m.incorrect === 0) && (
+            <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)', background: 'var(--surface)', borderRadius: '20px', border: '1px dashed var(--border)', gridColumn: '1 / -1' }}>
+              No weak points detected yet. Keep it up!
+            </div>
+          )}
+        </div>
+      </Section>
+
+      <Section>
         <SectionTitle>Recent Activity</SectionTitle>
         <ActivityList>
           {progress.quizHistory.length === 0 ? (
