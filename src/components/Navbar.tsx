@@ -77,6 +77,10 @@ const NavContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 70px;
+
+  @media (max-width: 600px) {
+    padding: 0.75rem 1rem; /* Slightly tighter padding on mobile */
+  }
 `;
 
 const Logo = styled(Link)`
@@ -98,6 +102,11 @@ const Logo = styled(Link)`
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 1.25rem;
+    gap: 0.3rem;
   }
 `;
 
@@ -198,6 +207,10 @@ const HamburgerBtn = styled.button<{ $isOpen: boolean }>`
     align-items: center;
     justify-content: center;
   }
+
+  @media (max-width: 600px) {
+    padding: 0.2rem; /* Tighter padding on small screens */
+  }
   
   svg {
     width: 24px;
@@ -205,6 +218,17 @@ const HamburgerBtn = styled.button<{ $isOpen: boolean }>`
     fill: currentColor;
     transition: transform 0.3s ease;
     transform: ${({ $isOpen }) => ($isOpen ? 'rotate(90deg)' : 'rotate(0)')};
+  }
+`;
+
+const RightNavContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  z-index: 102;
+
+  @media (max-width: 600px) {
+    gap: 0.5rem; /* Tighter grouping on mobile */
   }
 `;
 
@@ -445,7 +469,7 @@ export function Navbar() {
             </NavItem>
           </NavList>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', zIndex: 102 }}>
+          <RightNavContainer>
             <Link href="/stats" style={{ textDecoration: 'none' }}>
               <LevelBadge title={`${progress.exp} Total EXP`}>
                 <LevelText>LVL {level}</LevelText>
@@ -455,7 +479,7 @@ export function Navbar() {
               </LevelBadge>
             </Link>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
               <SearchBtn $isOpen={isMobileMenuOpen} onClick={() => setIsDictionaryOpen(true)} title="Dictionary (Jisho)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8" />
@@ -481,7 +505,7 @@ export function Navbar() {
                 <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg>
               )}
             </HamburgerBtn>
-          </div>
+          </RightNavContainer>
         </NavContainer>
 
         <MobileMenu $isOpen={isMobileMenuOpen}>
