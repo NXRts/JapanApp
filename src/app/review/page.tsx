@@ -57,6 +57,46 @@ const EmptyState = styled.div`
   }
 `;
 
+const TaskGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+  width: 100%;
+`;
+
+const TaskCard = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--navbar-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  text-decoration: none;
+  color: var(--foreground);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.15);
+  }
+
+  svg {
+    width: 36px;
+    height: 36px;
+    color: var(--primary);
+  }
+
+  span {
+    font-weight: 700;
+    font-size: 1rem;
+    text-align: center;
+  }
+`;
+
 const FlashcardContainer = styled.div`
   width: 100%;
   max-width: 500px;
@@ -239,13 +279,30 @@ export default function ReviewPage() {
           <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="SRS Review" />
           <EmptyState>
             <h2>Semua Beres! 🎉</h2>
-            <p>Tidak ada item yang perlu diulas hari ini. Kerja bagus!</p>
-            <Link href="/study" style={{ textDecoration: 'none' }}>
-              <RevealBtn $color="var(--primary)" as="div" style={{ display: 'inline-block', padding: '1rem 2rem' }}>
-                Kembali Belajar
-              </RevealBtn>
-            </Link>
+            <p style={{ marginBottom: '0' }}>Tidak ada item yang perlu diulas hari ini. Kerja bagus!</p>
           </EmptyState>
+          
+          <div style={{ marginTop: '4rem', width: '100%' }}>
+            <h3 style={{ fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 800, color: 'var(--text-secondary)', marginBottom: '1.5rem', textAlign: 'center' }}>
+              Lanjut Belajar
+            </h3>
+            <TaskGrid style={{ marginTop: '1rem' }}>
+              <TaskCard href="/study/kanji">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="m2 2 5 2"></path><path d="m2 2 2 5"></path></svg>
+                <span>Pelajari Kanji Baru</span>
+              </TaskCard>
+              
+              <TaskCard href="/study/vocabulary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--rm-orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                <span style={{ color: 'var(--rm-orange)' }}>Hafalkan Kosakata</span>
+              </TaskCard>
+
+              <TaskCard href="/roadmap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                <span style={{ color: '#10b981' }}>Lanjut Learning Path</span>
+              </TaskCard>
+            </TaskGrid>
+          </div>
         </Container>
       </PageWrapper>
     );
