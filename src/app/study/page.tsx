@@ -142,7 +142,24 @@ const PlayButton = styled.div<{ $color: string }>`
   }
 `;
 
+import { useProgress } from '@/context/ProgressContext';
+import { isItemDue } from '@/lib/srs';
+
+const Badge = styled.span`
+  background: #ef4444;
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  margin-left: 0.5rem;
+  box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4);
+`;
+
 export default function StudyHub() {
+  const { progress } = useProgress();
+  const dueItemsCount = Object.values(progress.srs).filter(isItemDue).length;
+
   return (
     <Container>
       <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Study" />
@@ -155,6 +172,32 @@ export default function StudyHub() {
       </Header>
 
       <Grid>
+        <CategoryCard href="/review" style={{ gridColumn: '1 / -1', background: 'var(--primary)', color: 'white', borderColor: 'transparent' }}>
+          <CardContent>
+            <IconWrapper $color="255, 255, 255" className="icon-wrapper" style={{ background: 'rgba(255, 255, 255, 0.2)', color: 'white' }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 2v6h-6"></path>
+                <path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path>
+                <path d="M3 22v-6h6"></path>
+                <path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path>
+              </svg>
+            </IconWrapper>
+            <CardTitle style={{ color: 'white', display: 'flex', alignItems: 'center' }}>
+              Daily SRS Review
+              {dueItemsCount > 0 && <Badge>{dueItemsCount}</Badge>}
+            </CardTitle>
+            <CardDescription style={{ color: 'rgba(255, 255, 255, 0.9)' }}>
+              Review your vocabulary, kanji, and grammar using Spaced Repetition to ensure long-term retention.
+            </CardDescription>
+            <PlayButton $color="255, 255, 255" style={{ background: 'white', color: 'var(--primary)' }}>
+              Start Review
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </CategoryCard>
+
         <CategoryCard href="/study/reading">
           <CardContent>
             <IconWrapper $color="79, 70, 229" className="icon-wrapper">
