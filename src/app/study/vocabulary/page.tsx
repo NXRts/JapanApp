@@ -414,7 +414,10 @@ export default function VocabularyFlashcards() {
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
   const minSwipeDistance = 50;
 
-  const { progress, updateSRS, addExp } = useProgress();
+  const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 });
+  const SESSION_LIMIT = 10;
+
+  const { progress, updateSRS, addExp, recordQuizResult, markExerciseCompleted } = useProgress();
 
   // Fetch List
   useEffect(() => {
@@ -440,6 +443,7 @@ export default function VocabularyFlashcards() {
           setVocabList(sorted);
           setCurrentIndex(0);
           setFlipped(false);
+          setSessionStats({ correct: 0, total: 0 });
         }
       })
       .catch(console.error)
@@ -449,8 +453,14 @@ export default function VocabularyFlashcards() {
   const currentVocab = vocabList[currentIndex];
 
   const rateRecall = (quality: number) => {
-    updateSRS(currentVocab.word, quality);
-    addExp(quality * 2); // Small EXP boost for practice
+    if (currentVocab) {
+      updateSRS(currentVocab.word, quality);
+      addExp(quality * 2); // Small EXP boost for practice
+      setSessionStats(prev => ({
+        correct: prev.correct + (quality > 1 ? 1 : 0),
+        total: prev.total + 1
+      }));
+    }
     nextCard();
   };
 
@@ -465,6 +475,17 @@ export default function VocabularyFlashcards() {
       setSlideDir('next');
       setCurrentIndex(prev => (prev + 1) % vocabList.length);
     }
+  };
+
+  const handleFinishSession = () => {
+    recordQuizResult(sessionStats.correct, sessionStats.total, `Vocabulary (${level.replace('-', ' ')})`);
+    addExp(50); // Bonus EXP
+    if (level === 'n5-vocab-1') markExerciseCompleted('n5-vocab-1');
+    if (level === 'numbers') markExerciseCompleted('numbers-1-100');
+    // Default fallback
+    markExerciseCompleted(`vocab-${level}`);
+    setSessionStats({ correct: 0, total: 0 });
+    setCurrentIndex(0);
   };
 
   const prevCard = () => {
@@ -511,6 +532,31 @@ export default function VocabularyFlashcards() {
       </Container>
     </PageWrapper>
   );
+
+  if (sessionStats.total >= SESSION_LIMIT) {
+    return (
+      <PageWrapper>
+        <Container>
+          <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'var(--surface)', borderRadius: '24px', border: '1px solid var(--border)', marginTop: '4rem' }}>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Session Complete! 🎉</h2>
+            <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+              You reviewed {SESSION_LIMIT} Vocabulary words.
+            </p>
+            <div style={{ fontSize: '4rem', fontWeight: 900, color: 'var(--primary)', marginBottom: '2rem' }}>
+              {sessionStats.correct}/{sessionStats.total}
+            </div>
+            <p style={{ color: '#10b981', fontWeight: 'bold', marginBottom: '3rem' }}>+50 EXP Bonus!</p>
+            <button 
+              onClick={handleFinishSession}
+              style={{ background: 'var(--primary)', color: 'white', padding: '1rem 3rem', borderRadius: '99px', fontSize: '1.2rem', fontWeight: 800, border: 'none', cursor: 'pointer', boxShadow: '0 4px 15px rgba(79, 70, 229, 0.3)' }}
+            >
+              Continue Learning
+            </button>
+          </div>
+        </Container>
+      </PageWrapper>
+    );
+  }
 
   if (!currentVocab) return <PageWrapper><Container>No Vocabulary found for this level.</Container></PageWrapper>;
 

@@ -314,7 +314,10 @@ export default function KanjiFlashcards() {
   const [clearTrigger, setClearTrigger] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { progress, updateSRS, addExp } = useProgress();
+  const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 });
+  const SESSION_LIMIT = 10;
+
+  const { progress, updateSRS, addExp, recordQuizResult, markExerciseCompleted } = useProgress();
 
   // Fetch List
   useEffect(() => {
@@ -338,6 +341,7 @@ export default function KanjiFlashcards() {
           setKanjiList(sorted);
           setCurrentIndex(0);
           setFlipped(false);
+          setSessionStats({ correct: 0, total: 0 });
         }
       })
       .finally(() => setLoading(false));
@@ -348,6 +352,10 @@ export default function KanjiFlashcards() {
   const rateRecall = (quality: number) => {
     updateSRS(currentKanji, quality);
     addExp(quality * 3); // More EXP for Kanji
+    setSessionStats(prev => ({
+      correct: prev.correct + (quality > 1 ? 1 : 0),
+      total: prev.total + 1
+    }));
     nextCard();
   };
 
@@ -369,6 +377,18 @@ export default function KanjiFlashcards() {
     }, 400); // Wait for flip back
   };
 
+  const handleFinishSession = () => {
+    recordQuizResult(sessionStats.correct, sessionStats.total, `Kanji (Level ${level.toUpperCase()})`);
+    addExp(50); // Bonus EXP for finishing a session
+    if (level === 'n5') markExerciseCompleted('n5-kanji');
+    if (level === 'n4') markExerciseCompleted('n4-kanji');
+    if (level === 'n3') markExerciseCompleted('n3-kanji-mastery');
+    if (level === 'n2') markExerciseCompleted('n2-kanji-2000');
+    setSessionStats({ correct: 0, total: 0 });
+    // Reshuffle or proceed
+    setCurrentIndex(0);
+  };
+
   if (loading) return (
     <PageWrapper>
       <Container>
@@ -376,6 +396,31 @@ export default function KanjiFlashcards() {
       </Container>
     </PageWrapper>
   );
+
+  if (sessionStats.total >= SESSION_LIMIT) {
+    return (
+      <PageWrapper>
+        <Container>
+          <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'var(--surface)', borderRadius: '24px', border: '1px solid var(--border)' }}>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Session Complete! 🎉</h2>
+            <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+              You reviewed {SESSION_LIMIT} Kanji characters.
+            </p>
+            <div style={{ fontSize: '4rem', fontWeight: 900, color: 'var(--primary)', marginBottom: '2rem' }}>
+              {sessionStats.correct}/{sessionStats.total}
+            </div>
+            <p style={{ color: '#10b981', fontWeight: 'bold', marginBottom: '3rem' }}>+50 EXP Bonus!</p>
+            <button 
+              onClick={handleFinishSession}
+              style={{ background: 'var(--primary)', color: 'white', padding: '1rem 3rem', borderRadius: '99px', fontSize: '1.2rem', fontWeight: 800, border: 'none', cursor: 'pointer' }}
+            >
+              Continue Learning
+            </button>
+          </div>
+        </Container>
+      </PageWrapper>
+    );
+  }
 
   if (!currentKanji) return <PageWrapper><Container>No Kanji found for this level.</Container></PageWrapper>;
 
