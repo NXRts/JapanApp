@@ -33,6 +33,10 @@ const TierHeader = styled.div`
     height: 2px;
     background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
   }
+
+  @media (max-width: 600px) {
+    gap: 0.75rem;
+  }
 `;
 
 const TierBadge = styled.div`
@@ -43,12 +47,21 @@ const TierBadge = styled.div`
   font-weight: 900;
   font-size: 1.2rem;
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+
+  @media (max-width: 600px) {
+    padding: 0.4rem 1rem;
+    font-size: 1.1rem;
+  }
 `;
 
 const TierTitle = styled.h3`
   font-size: 1.5rem;
   font-weight: 850;
   color: var(--foreground);
+
+  @media (max-width: 600px) {
+    font-size: 1.25rem;
+  }
 `;
 
 const NodesGrid = styled.div`
@@ -58,8 +71,9 @@ const NodesGrid = styled.div`
   padding-left: 1rem;
 
   @media (max-width: 600px) {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 2rem 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 2rem 0.5rem;
+    padding-left: 0;
   }
 `;
 

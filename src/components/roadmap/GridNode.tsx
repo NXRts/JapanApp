@@ -9,7 +9,7 @@ const NodeContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  width: 120px;
+  width: 100%;
 `;
 
 const NodeButton = styled(Link)<{ $status: 'locked' | 'available' | 'completed'; $rowColor: string }>`
