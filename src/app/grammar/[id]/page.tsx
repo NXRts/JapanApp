@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { n5Grammar } from '@/data/jlpt/n5/grammar';
 import { n4Grammar } from '@/data/jlpt/n4/grammar';
+import { n3Grammar } from '@/data/jlpt/n3/grammar';
+import { n2Grammar } from '@/data/jlpt/n2/grammar';
+import { n1Grammar } from '@/data/jlpt/n1/grammar';
 import { use } from 'react';
 
 const Container = styled.div`
@@ -109,8 +112,7 @@ const EnglishText = styled.div`
 export default function GrammarDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   
-  // Search in both N5 and N4
-  const allGrammar = [...n5Grammar, ...n4Grammar];
+  const allGrammar = [...n5Grammar, ...n4Grammar, ...n3Grammar, ...n2Grammar, ...n1Grammar];
   const point = allGrammar.find((p) => p.id === id);
 
   if (!point) {
