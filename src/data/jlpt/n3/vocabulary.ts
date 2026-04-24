@@ -280,5 +280,285 @@ export const n3Vocabulary: VocabularyItem[] = [
       romaji: "Shikkari yasunde kudasai.",
       english: "Tolong beristirahatlah dengan cukup/baik."
     }
+  },
+  {
+    id: "v-n3-aisuru",
+    level: "N3",
+    word: "愛する",
+    reading: "あいする",
+    romaji: "aisuru",
+    meaning: "Mencintai",
+    category: "verb",
+    example: {
+      japanese: "家族を心から愛しています。",
+      romaji: "Kazoku o kokoro kara aishite imasu.",
+      english: "Saya mencintai keluarga saya dari lubuk hati."
+    }
+  },
+  {
+    id: "v-n3-osoreru",
+    level: "N3",
+    word: "恐れる",
+    reading: "おそれる",
+    romaji: "osoreru",
+    meaning: "Takut / Mengkhawatirkan",
+    category: "verb",
+    example: {
+      japanese: "失敗を恐れないで挑戦しよう。",
+      romaji: "Shippai o osorenaide chousen shiyou.",
+      english: "Mari mencoba tanpa takut akan kegagalan."
+    }
+  },
+  {
+    id: "v-n3-utagau",
+    level: "N3",
+    word: "疑う",
+    reading: "うたがう",
+    romaji: "utagau",
+    meaning: "Mencurigai / Meragukan",
+    category: "verb",
+    example: {
+      japanese: "彼の言葉を疑っている。",
+      romaji: "Kare no kotoba o utagatte iru.",
+      english: "Saya meragukan perkataannya."
+    }
+  },
+  {
+    id: "v-n3-omoidasu",
+    level: "N3",
+    word: "思い出す",
+    reading: "おもいだす",
+    romaji: "omoidasu",
+    meaning: "Teringat",
+    category: "verb",
+    example: {
+      japanese: "子供のころをよく思い出す。",
+      romaji: "Kodomo no koro o yoku omoidasu.",
+      english: "Saya sering teringat masa kecil."
+    }
+  },
+  {
+    id: "v-n3-kizuku",
+    level: "N3",
+    word: "気づく",
+    reading: "きづく",
+    romaji: "kizuku",
+    meaning: "Menyadari",
+    category: "verb",
+    example: {
+      japanese: "自分の間違いに気づいた。",
+      romaji: "Jibun no machigai ni kizuita.",
+      english: "Saya menyadari kesalahan saya sendiri."
+    }
+  },
+  {
+    id: "v-n3-nayamu",
+    level: "N3",
+    word: "悩む",
+    reading: "なやむ",
+    romaji: "nayamu",
+    meaning: "Bimbang / Khawatir",
+    category: "verb",
+    example: {
+      japanese: "進路について悩んでいます。",
+      romaji: "Shinro ni tsuite nayande imasu.",
+      english: "Saya sedang bimbang memikirkan jalur karir/sekolah."
+    }
+  },
+  {
+    id: "v-n3-urayamu",
+    level: "N3",
+    word: "羨む",
+    reading: "うらやむ",
+    romaji: "urayamu",
+    meaning: "Iri hati",
+    category: "verb",
+    example: {
+      japanese: "彼の成功を羨む人は多い。",
+      romaji: "Kare no seikou o urayamu hito wa ooi.",
+      english: "Banyak orang iri dengan kesuksesannya."
+    }
+  },
+  {
+    id: "v-n3-ryuukou",
+    level: "N3",
+    word: "流行",
+    reading: "りゅうこう",
+    romaji: "ryuukou",
+    meaning: "Tren / Populer",
+    category: "noun",
+    example: {
+      japanese: "今年の流行の服を買った。",
+      romaji: "Kotoshi no ryuukou no fuku o katta.",
+      english: "Saya membeli baju yang sedang tren tahun ini."
+    }
+  },
+  {
+    id: "v-n3-jouhou",
+    level: "N3",
+    word: "情報",
+    reading: "じょうほう",
+    romaji: "jouhou",
+    meaning: "Informasi",
+    category: "noun",
+    example: {
+      japanese: "インターネットで情報を集める。",
+      romaji: "Intaanetto de jouhou o atsumeru.",
+      english: "Mengumpulkan informasi melalui internet."
+    }
+  },
+  {
+    id: "v-n3-kekka",
+    level: "N3",
+    word: "結果",
+    reading: "けっか",
+    romaji: "kekka",
+    meaning: "Hasil",
+    category: "noun",
+    example: {
+      japanese: "試験の結果が心配です。",
+      romaji: "Shiken no kekka ga shinpai desu.",
+      english: "Saya khawatir tentang hasil ujiannya."
+    }
+  },
+  {
+    id: "v-n3-genin",
+    level: "N3",
+    word: "原因",
+    reading: "げんいん",
+    romaji: "gen'in",
+    meaning: "Penyebab",
+    category: "noun",
+    example: {
+      japanese: "事故の原因を調べている。",
+      romaji: "Jiko no gen'in o shirabete iru.",
+      english: "Sedang menyelidiki penyebab kecelakaan."
+    }
+  },
+  {
+    id: "v-n3-mokuteki",
+    level: "N3",
+    word: "目的",
+    reading: "もくてき",
+    romaji: "mokuteki",
+    meaning: "Tujuan",
+    category: "noun",
+    example: {
+      japanese: "留学の目的は何ですか。",
+      romaji: "Ryuugaku no mokuteki wa nan desu ka.",
+      english: "Apa tujuan Anda belajar di luar negeri?"
+    }
+  },
+  {
+    id: "v-n3-jinkou",
+    level: "N3",
+    word: "人口",
+    reading: "じんこう",
+    romaji: "jinkou",
+    meaning: "Populasi / Penduduk",
+    category: "noun",
+    example: {
+      japanese: "この町の人口は減っている。",
+      romaji: "Kono machi no jinkou wa hette iru.",
+      english: "Populasi kota ini sedang menurun."
+    }
+  },
+  {
+    id: "v-n3-kigyou",
+    level: "N3",
+    word: "企業",
+    reading: "きぎょう",
+    romaji: "kigyou",
+    meaning: "Perusahaan (Corporate)",
+    category: "noun",
+    example: {
+      japanese: "彼は有名な企業で働いている。",
+      romaji: "Kare wa yuumei na kigyou de hataraite iru.",
+      english: "Dia bekerja di sebuah perusahaan terkenal."
+    }
+  },
+  {
+    id: "v-n3-shouhin",
+    level: "N3",
+    word: "商品",
+    reading: "しょうひん",
+    romaji: "shouhin",
+    meaning: "Produk / Barang dagangan",
+    category: "noun",
+    example: {
+      japanese: "新しい商品が発売された。",
+      romaji: "Atarashii shouhin ga hatsubai sareta.",
+      english: "Produk baru telah dirilis."
+    }
+  },
+  {
+    id: "v-n3-ryoushin",
+    level: "N3",
+    word: "両親",
+    reading: "りょうしん",
+    romaji: "ryoushin",
+    meaning: "Kedua orang tua",
+    category: "noun",
+    example: {
+      japanese: "両親にプレゼントを贈った。",
+      romaji: "Ryoushin ni purezento o okutta.",
+      english: "Saya memberikan hadiah kepada kedua orang tua."
+    }
+  },
+  {
+    id: "v-n3-kankei",
+    level: "N3",
+    word: "関係",
+    reading: "かんけい",
+    romaji: "kankei",
+    meaning: "Hubungan",
+    category: "noun",
+    example: {
+      japanese: "彼とは良い関係を保っている。",
+      romaji: "Kare to wa yoi kankei o tamotte iru.",
+      english: "Saya menjaga hubungan yang baik dengannya."
+    }
+  },
+  {
+    id: "v-n3-kashikoi",
+    level: "N3",
+    word: "賢い",
+    reading: "かしこい",
+    romaji: "kashikoi",
+    meaning: "Pintar / Bijaksana",
+    category: "adjective",
+    example: {
+      japanese: "彼女はとても賢い学生だ。",
+      romaji: "Kanojo wa totemo kashikoi gakusei da.",
+      english: "Dia adalah murid yang sangat pintar."
+    }
+  },
+  {
+    id: "v-n3-hageshii",
+    level: "N3",
+    word: "激しい",
+    reading: "はげしい",
+    romaji: "hageshii",
+    meaning: "Sengit / Lebat / Hebat",
+    category: "adjective",
+    example: {
+      japanese: "今日は激しい雨が降っている。",
+      romaji: "Kyou wa hageshii ame ga futte iru.",
+      english: "Hari ini turun hujan yang lebat."
+    }
+  },
+  {
+    id: "v-n3-mezurashii",
+    level: "N3",
+    word: "珍しい",
+    reading: "めずらしい",
+    romaji: "mezurashii",
+    meaning: "Langka / Jarang ada",
+    category: "adjective",
+    example: {
+      japanese: "珍しい鳥を見つけた。",
+      romaji: "Mezurashii tori o mitsuketa.",
+      english: "Saya menemukan burung yang langka."
+    }
   }
 ];

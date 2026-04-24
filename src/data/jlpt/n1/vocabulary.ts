@@ -280,5 +280,285 @@ export const n1Vocabulary: VocabularyItem[] = [
       romaji: "Kare no kotoba wa gizen ni michite iru.",
       english: "Perkataannya dipenuhi dengan kemunafikan."
     }
+  },
+  {
+    id: "v-n1-aegu",
+    level: "N1",
+    word: "喘ぐ",
+    reading: "あえぐ",
+    romaji: "aegu",
+    meaning: "Terengah-engah / Menderita",
+    category: "verb",
+    example: {
+      japanese: "不況にあえぐ企業が多い。",
+      romaji: "Fukyou ni aegu kigyou ga ooi.",
+      english: "Banyak perusahaan yang menderita akibat resesi."
+    }
+  },
+  {
+    id: "v-n1-azamuku",
+    level: "N1",
+    word: "欺く",
+    reading: "あざむく",
+    romaji: "azamuku",
+    meaning: "Menipu / Memperdaya",
+    category: "verb",
+    example: {
+      japanese: "敵を欺くための作戦だ。",
+      romaji: "Teki o azamuku tame no sakusen da.",
+      english: "Itu adalah taktik untuk menipu musuh."
+    }
+  },
+  {
+    id: "v-n1-itonamu",
+    level: "N1",
+    word: "営む",
+    reading: "いとなむ",
+    romaji: "itonamu",
+    meaning: "Menjalankan (bisnis/kehidupan)",
+    category: "verb",
+    example: {
+      japanese: "田舎で小さな店を営んでいる。",
+      romaji: "Inaka de chiisana mise o itonande iru.",
+      english: "Saya menjalankan toko kecil di pedesaan."
+    }
+  },
+  {
+    id: "v-n1-uruou",
+    level: "N1",
+    word: "潤う",
+    reading: "うるおう",
+    romaji: "uruou",
+    meaning: "Lembap / Makmur",
+    category: "verb",
+    example: {
+      japanese: "雨で大地が潤った。",
+      romaji: "Ame de daichi ga uruotta.",
+      english: "Bumi menjadi lembap karena hujan."
+    }
+  },
+  {
+    id: "v-n1-okotaru",
+    level: "N1",
+    word: "怠る",
+    reading: "おこたる",
+    romaji: "okotaru",
+    meaning: "Melalaikan / Mengabaikan",
+    category: "verb",
+    example: {
+      japanese: "日々の努力を怠ってはいけない。",
+      romaji: "Hibi no doryoku o okotatte wa ikenai.",
+      english: "Tidak boleh melalaikan usaha sehari-hari."
+    }
+  },
+  {
+    id: "v-n1-tsuieru",
+    level: "N1",
+    word: "費える",
+    reading: "ついえる",
+    romaji: "tsuieru",
+    meaning: "Terkuras / Terbuang sia-sia",
+    category: "verb",
+    example: {
+      japanese: "長年の努力が水の泡と費えた。",
+      romaji: "Naganen no doryoku ga mizu no awa to tsuiteta.",
+      english: "Usaha selama bertahun-tahun terbuang sia-sia menjadi gelembung air."
+    }
+  },
+  {
+    id: "v-n1-todokooru",
+    level: "N1",
+    word: "滞る",
+    reading: "とどこおる",
+    romaji: "todokooru",
+    meaning: "Tertunggak / Terhambat",
+    category: "verb",
+    example: {
+      japanese: "家賃の支払いが滞っている。",
+      romaji: "Yachin no shiharai ga todokoote iru.",
+      english: "Pembayaran uang sewa rumah sedang tertunggak."
+    }
+  },
+  {
+    id: "v-n1-ishu",
+    level: "N1",
+    word: "意趣",
+    reading: "いしゅ",
+    romaji: "ishu",
+    meaning: "Dendam / Maksud tersembunyi",
+    category: "noun",
+    example: {
+      japanese: "彼に意趣返しをするつもりはない。",
+      romaji: "Kare ni ishu gaeshi o suru tsumori wa nai.",
+      english: "Saya tidak bermaksud membalas dendam kepadanya."
+    }
+  },
+  {
+    id: "v-n1-inpei",
+    level: "N1",
+    word: "隠蔽",
+    reading: "いんぺい",
+    romaji: "inpei",
+    meaning: "Penyembunyian (fakta)",
+    category: "noun",
+    example: {
+      japanese: "証拠の隠蔽は重大な犯罪だ。",
+      romaji: "Shouko no inpei wa juudai na hanzai da.",
+      english: "Penyembunyian bukti adalah kejahatan serius."
+    }
+  },
+  {
+    id: "v-n1-unmei",
+    level: "N1",
+    word: "運命",
+    reading: "うんめい",
+    romaji: "unmei",
+    meaning: "Takdir",
+    category: "noun",
+    example: {
+      japanese: "二人の出会いは運命だった。",
+      romaji: "Futari no deai wa unmei datta.",
+      english: "Pertemuan mereka berdua adalah takdir."
+    }
+  },
+  {
+    id: "v-n1-enen",
+    level: "N1",
+    word: "延々",
+    reading: "えんえん",
+    romaji: "enen",
+    meaning: "Terus-menerus (tanpa henti)",
+    category: "adverb",
+    example: {
+      japanese: "彼の自慢話が延々と続いた。",
+      romaji: "Kare no jimanbanashi ga en'en to tsuzuita.",
+      english: "Cerita kebanggaannya berlanjut terus-menerus tiada henti."
+    }
+  },
+  {
+    id: "v-n1-kaitaku",
+    level: "N1",
+    word: "開拓",
+    reading: "かいたく",
+    romaji: "kaitaku",
+    meaning: "Pembukaan / Perintisan",
+    category: "noun",
+    example: {
+      japanese: "新しい分野を開拓する。",
+      romaji: "Atarashii bunya o kaitaku suru.",
+      english: "Merintis (membuka) bidang baru."
+    }
+  },
+  {
+    id: "v-n1-katsuro",
+    level: "N1",
+    word: "活路",
+    reading: "かつろ",
+    romaji: "katsuro",
+    meaning: "Jalan keluar (dari krisis)",
+    category: "noun",
+    example: {
+      japanese: "海外市場に活路を見出す。",
+      romaji: "Kaigai shijou ni katsuro o miidasu.",
+      english: "Menemukan jalan keluar di pasar luar negeri."
+    }
+  },
+  {
+    id: "v-n1-kiban",
+    level: "N1",
+    word: "基盤",
+    reading: "きばん",
+    romaji: "kiban",
+    meaning: "Fondasi / Basis",
+    category: "noun",
+    example: {
+      japanese: "生活の基盤を固める。",
+      romaji: "Seikatsu no kiban o katameru.",
+      english: "Memperkuat fondasi kehidupan."
+    }
+  },
+  {
+    id: "v-n1-kikou",
+    level: "N1",
+    word: "気候",
+    reading: "きこう",
+    romaji: "kikou",
+    meaning: "Iklim",
+    category: "noun",
+    example: {
+      japanese: "この地域の気候は温暖だ。",
+      romaji: "Kono chiiki no kikou wa ondan da.",
+      english: "Iklim di wilayah ini hangat."
+    }
+  },
+  {
+    id: "v-n1-kyouju",
+    level: "N1",
+    word: "享受",
+    reading: "きょうじゅ",
+    romaji: "kyouju",
+    meaning: "Menikmati (manfaat/hak)",
+    category: "noun",
+    example: {
+      japanese: "自由を享受する権利がある。",
+      romaji: "Jiyuu o kyouju suru kenri ga aru.",
+      english: "Kita memiliki hak untuk menikmati kebebasan."
+    }
+  },
+  {
+    id: "v-n1-gyouki",
+    level: "N1",
+    word: "猟奇",
+    reading: "りょうき",
+    romaji: "ryouki",
+    meaning: "Aneh dan menyeramkan (Bizarre/Grotesque)",
+    category: "noun",
+    example: {
+      japanese: "猟奇的な事件が起きた。",
+      romaji: "Ryoukiteki na jiken ga okita.",
+      english: "Sebuah insiden yang aneh dan menyeramkan telah terjadi."
+    }
+  },
+  {
+    id: "v-n1-okogamashii",
+    level: "N1",
+    word: "おこがましい",
+    reading: "おこがましい",
+    romaji: "okogamashii",
+    meaning: "Lancang / Tidak tahu diri",
+    category: "adjective",
+    example: {
+      japanese: "私から意見を言うのはおこがましいですが。",
+      romaji: "Watashi kara iken o iu no wa okogamashii desu ga.",
+      english: "Mungkin agak lancang bagi saya untuk memberikan pendapat, tetapi..."
+    }
+  },
+  {
+    id: "v-n1-obitadashii",
+    level: "N1",
+    word: "夥しい",
+    reading: "おびただしい",
+    romaji: "obitadashii",
+    meaning: "Sangat banyak / Melimpah (sering dalam konteks negatif)",
+    category: "adjective",
+    example: {
+      japanese: "事故現場には夥しい数の警察官がいた。",
+      romaji: "Jiko genba ni wa obitadashii kazu no keisatsukan ga ita.",
+      english: "Ada polisi dalam jumlah yang sangat banyak di lokasi kejadian."
+    }
+  },
+  {
+    id: "v-n1-takumashii",
+    level: "N1",
+    word: "逞しい",
+    reading: "たくましい",
+    romaji: "takumashii",
+    meaning: "Kuat / Kekar / Tangguh",
+    category: "adjective",
+    example: {
+      japanese: "困難を乗り越える逞しい精神力を持つ。",
+      romaji: "Konnan o norikoeru takumashii seishinryoku o motsu.",
+      english: "Memiliki kekuatan mental yang tangguh untuk mengatasi kesulitan."
+    }
   }
 ];
