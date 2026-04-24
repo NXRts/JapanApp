@@ -293,5 +293,285 @@ export const n5Vocabulary: VocabularyItem[] = [
       romaji: "Kare wa itsumo genki desu.",
       english: "Dia selalu bersemangat."
     }
+  },
+  {
+    id: "v-n5-okiru",
+    level: "N5",
+    word: "起きる",
+    reading: "おきる",
+    romaji: "okiru",
+    meaning: "Bangun",
+    category: "verb",
+    example: {
+      japanese: "毎朝六時に起きます。",
+      romaji: "Maiasa rokuji ni okimasu.",
+      english: "Saya bangun jam enam setiap pagi."
+    }
+  },
+  {
+    id: "v-n5-neru",
+    level: "N5",
+    word: "寝る",
+    reading: "ねる",
+    romaji: "neru",
+    meaning: "Tidur",
+    category: "verb",
+    example: {
+      japanese: "夜十時に寝ます。",
+      romaji: "Yoru juuji ni nemasu.",
+      english: "Saya tidur pada jam sepuluh malam."
+    }
+  },
+  {
+    id: "v-n5-hanasu",
+    level: "N5",
+    word: "話す",
+    reading: "はなす",
+    romaji: "hanasu",
+    meaning: "Berbicara",
+    category: "verb",
+    example: {
+      japanese: "友達と日本語で話します。",
+      romaji: "Tomodachi to Nihongo de hanashimasu.",
+      english: "Saya berbicara dengan teman menggunakan bahasa Jepang."
+    }
+  },
+  {
+    id: "v-n5-kiku",
+    level: "N5",
+    word: "聞く",
+    reading: "きく",
+    romaji: "kiku",
+    meaning: "Mendengar / Bertanya",
+    category: "verb",
+    example: {
+      japanese: "先生に質問を聞きます。",
+      romaji: "Sensei ni shitsumon o kikimasu.",
+      english: "Saya menanyakan pertanyaan kepada guru."
+    }
+  },
+  {
+    id: "v-n5-yomu",
+    level: "N5",
+    word: "読む",
+    reading: "よむ",
+    romaji: "yomu",
+    meaning: "Membaca",
+    category: "verb",
+    example: {
+      japanese: "毎晩本を読みます。",
+      romaji: "Maiban hon o yomimasu.",
+      english: "Saya membaca buku setiap malam."
+    }
+  },
+  {
+    id: "v-n5-kaku",
+    level: "N5",
+    word: "書く",
+    reading: "かく",
+    romaji: "kaku",
+    meaning: "Menulis",
+    category: "verb",
+    example: {
+      japanese: "ノートに漢字を書きます。",
+      romaji: "Nooto ni kanji o kakimasu.",
+      english: "Saya menulis kanji di buku catatan."
+    }
+  },
+  {
+    id: "v-n5-inu",
+    level: "N5",
+    word: "犬",
+    reading: "いぬ",
+    romaji: "inu",
+    meaning: "Anjing",
+    category: "noun",
+    example: {
+      japanese: "可愛い犬がいます。",
+      romaji: "Kawaii inu ga imasu.",
+      english: "Ada anjing yang lucu."
+    }
+  },
+  {
+    id: "v-n5-neko",
+    level: "N5",
+    word: "猫",
+    reading: "ねこ",
+    romaji: "neko",
+    meaning: "Kucing",
+    category: "noun",
+    example: {
+      japanese: "私は猫が好きです。",
+      romaji: "Watashi wa neko ga suki desu.",
+      english: "Saya suka kucing."
+    }
+  },
+  {
+    id: "v-n5-mizu",
+    level: "N5",
+    word: "水",
+    reading: "みず",
+    romaji: "mizu",
+    meaning: "Air",
+    category: "noun",
+    example: {
+      japanese: "冷たい水を飲みます。",
+      romaji: "Tsumetai mizu o nomimasu.",
+      english: "Saya minum air dingin."
+    }
+  },
+  {
+    id: "v-n5-ocha",
+    level: "N5",
+    word: "お茶",
+    reading: "おちゃ",
+    romaji: "ocha",
+    meaning: "Teh hijau",
+    category: "noun",
+    example: {
+      japanese: "温かいお茶をどうぞ。",
+      romaji: "Atatakai ocha o douzo.",
+      english: "Silakan teh hangatnya."
+    }
+  },
+  {
+    id: "v-n5-ringo",
+    level: "N5",
+    word: "りんご",
+    reading: "りんご",
+    romaji: "ringo",
+    meaning: "Apel",
+    category: "noun",
+    example: {
+      japanese: "りんごを三つ買いました。",
+      romaji: "Ringo o mittsu kaimashita.",
+      english: "Saya membeli tiga buah apel."
+    }
+  },
+  {
+    id: "v-n5-mikan",
+    level: "N5",
+    word: "みかん",
+    reading: "みかん",
+    romaji: "mikan",
+    meaning: "Jeruk mandarin",
+    category: "noun",
+    example: {
+      japanese: "みかんが美味しいです。",
+      romaji: "Mikan ga oishii desu.",
+      english: "Jeruk mandarinnya enak."
+    }
+  },
+  {
+    id: "v-n5-eiga",
+    level: "N5",
+    word: "映画",
+    reading: "えいが",
+    romaji: "eiga",
+    meaning: "Film",
+    category: "noun",
+    example: {
+      japanese: "週末に映画を見ます。",
+      romaji: "Shuumatsu ni eiga o mimasu.",
+      english: "Saya menonton film di akhir pekan."
+    }
+  },
+  {
+    id: "v-n5-tomodachi",
+    level: "N5",
+    word: "友達",
+    reading: "ともだち",
+    romaji: "tomodachi",
+    meaning: "Teman",
+    category: "noun",
+    example: {
+      japanese: "友達と一緒に遊びます。",
+      romaji: "Tomodachi to issho ni asobimasu.",
+      english: "Saya bermain bersama dengan teman."
+    }
+  },
+  {
+    id: "v-n5-gakkou",
+    level: "N5",
+    word: "学校",
+    reading: "がっこう",
+    romaji: "gakkou",
+    meaning: "Sekolah",
+    category: "noun",
+    example: {
+      japanese: "明日、学校が休みです。",
+      romaji: "Ashita, gakkou ga yasumi desu.",
+      english: "Besok, sekolah libur."
+    }
+  },
+  {
+    id: "v-n5-sensei",
+    level: "N5",
+    word: "先生",
+    reading: "せんせい",
+    romaji: "sensei",
+    meaning: "Guru",
+    category: "noun",
+    example: {
+      japanese: "山田先生は優しいです。",
+      romaji: "Yamada sensei wa yasashii desu.",
+      english: "Guru Yamada baik hati."
+    }
+  },
+  {
+    id: "v-n5-atsui",
+    level: "N5",
+    word: "暑い",
+    reading: "あつい",
+    romaji: "atsui",
+    meaning: "Panas (cuaca)",
+    category: "adjective",
+    example: {
+      japanese: "今日はとても暑いです。",
+      romaji: "Kyou wa totemo atsui desu.",
+      english: "Hari ini sangat panas."
+    }
+  },
+  {
+    id: "v-n5-samui",
+    level: "N5",
+    word: "寒い",
+    reading: "さむい",
+    romaji: "samui",
+    meaning: "Dingin (cuaca)",
+    category: "adjective",
+    example: {
+      japanese: "冬は寒いです。",
+      romaji: "Fuyu wa samui desu.",
+      english: "Musim dingin itu dingin."
+    }
+  },
+  {
+    id: "v-n5-oishii",
+    level: "N5",
+    word: "美味しい",
+    reading: "おいしい",
+    romaji: "oishii",
+    meaning: "Enak",
+    category: "adjective",
+    example: {
+      japanese: "このケーキは美味しいです。",
+      romaji: "Kono keeki wa oishii desu.",
+      english: "Kue ini enak."
+    }
+  },
+  {
+    id: "v-n5-tanoshii",
+    level: "N5",
+    word: "楽しい",
+    reading: "たのしい",
+    romaji: "tanoshii",
+    meaning: "Menyenangkan",
+    category: "adjective",
+    example: {
+      japanese: "パーティーは楽しかったです。",
+      romaji: "Paatii wa tanoshikatta desu.",
+      english: "Pestanya menyenangkan."
+    }
   }
 ];

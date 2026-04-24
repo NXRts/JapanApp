@@ -280,5 +280,285 @@ export const n4Vocabulary: VocabularyItem[] = [
       romaji: "Yoru no umi wa kiken desu.",
       english: "Laut di malam hari berbahaya."
     }
+  },
+  {
+    id: "v-n4-tateru",
+    level: "N4",
+    word: "建てる",
+    reading: "たてる",
+    romaji: "tateru",
+    meaning: "Membangun",
+    category: "verb",
+    example: {
+      japanese: "新しい家を建てます。",
+      romaji: "Atarashii ie o tatemasu.",
+      english: "Saya membangun rumah baru."
+    }
+  },
+  {
+    id: "v-n4-kowasu",
+    level: "N4",
+    word: "壊す",
+    reading: "こわす",
+    romaji: "kowasu",
+    meaning: "Merusak",
+    category: "verb",
+    example: {
+      japanese: "弟がおもちゃを壊しました。",
+      romaji: "Otouto ga omocha o kowashimashita.",
+      english: "Adik laki-laki saya merusak mainannya."
+    }
+  },
+  {
+    id: "v-n4-naosu",
+    level: "N4",
+    word: "直す",
+    reading: "なおす",
+    romaji: "naosu",
+    meaning: "Memperbaiki",
+    category: "verb",
+    example: {
+      japanese: "自転車を直してもらいました。",
+      romaji: "Jitensha o naoshite moraimashita.",
+      english: "Saya meminta sepeda saya diperbaiki."
+    }
+  },
+  {
+    id: "v-n4-sageru",
+    level: "N4",
+    word: "下げる",
+    reading: "さげる",
+    romaji: "sageru",
+    meaning: "Menurunkan",
+    category: "verb",
+    example: {
+      japanese: "熱を下げる薬を飲みます。",
+      romaji: "Netsu o sageru kusuri o nomimasu.",
+      english: "Saya minum obat untuk menurunkan demam."
+    }
+  },
+  {
+    id: "v-n4-ageru",
+    level: "N4",
+    word: "上げる",
+    reading: "あげる",
+    romaji: "ageru",
+    meaning: "Menaikkan",
+    category: "verb",
+    example: {
+      japanese: "手を上げてください。",
+      romaji: "Te o agete kudasai.",
+      english: "Tolong angkat tangan."
+    }
+  },
+  {
+    id: "v-n4-tsutaeru",
+    level: "N4",
+    word: "伝える",
+    reading: "つたえる",
+    romaji: "tsutaeru",
+    meaning: "Menyampaikan",
+    category: "verb",
+    example: {
+      japanese: "彼にメッセージを伝えます。",
+      romaji: "Kare ni messeeji o tsutaemasu.",
+      english: "Saya menyampaikan pesan kepadanya."
+    }
+  },
+  {
+    id: "v-n4-shiraseru",
+    level: "N4",
+    word: "知らせる",
+    reading: "しらせる",
+    romaji: "shiraseru",
+    meaning: "Memberitahukan",
+    category: "verb",
+    example: {
+      japanese: "結果を後で知らせます。",
+      romaji: "Kekka o ato de shirasemasu.",
+      english: "Saya akan memberitahukan hasilnya nanti."
+    }
+  },
+  {
+    id: "v-n4-keizai",
+    level: "N4",
+    word: "経済",
+    reading: "けいざい",
+    romaji: "keizai",
+    meaning: "Ekonomi",
+    category: "noun",
+    example: {
+      japanese: "日本の経済について勉強します。",
+      romaji: "Nihon no keizai ni tsuite benkyou shimasu.",
+      english: "Saya belajar tentang ekonomi Jepang."
+    }
+  },
+  {
+    id: "v-n4-rekishi",
+    level: "N4",
+    word: "歴史",
+    reading: "れきし",
+    romaji: "rekishi",
+    meaning: "Sejarah",
+    category: "noun",
+    example: {
+      japanese: "古い歴史がある町です。",
+      romaji: "Furui rekishi ga aru machi desu.",
+      english: "Ini adalah kota yang memiliki sejarah tua."
+    }
+  },
+  {
+    id: "v-n4-seiji",
+    level: "N4",
+    word: "政治",
+    reading: "せいじ",
+    romaji: "seiji",
+    meaning: "Politik",
+    category: "noun",
+    example: {
+      japanese: "彼は政治に興味がありません。",
+      romaji: "Kare wa seiji ni kyoumi ga arimasen.",
+      english: "Dia tidak tertarik pada politik."
+    }
+  },
+  {
+    id: "v-n4-bunka",
+    level: "N4",
+    word: "文化",
+    reading: "ぶんか",
+    romaji: "bunka",
+    meaning: "Budaya",
+    category: "noun",
+    example: {
+      japanese: "日本の文化が大好きです。",
+      romaji: "Nihon no bunka ga daisuki desu.",
+      english: "Saya sangat menyukai budaya Jepang."
+    }
+  },
+  {
+    id: "v-n4-shakai",
+    level: "N4",
+    word: "社会",
+    reading: "しゃかい",
+    romaji: "shakai",
+    meaning: "Masyarakat",
+    category: "noun",
+    example: {
+      japanese: "社会のために働きたいです。",
+      romaji: "Shakai no tame ni hatarakitai desu.",
+      english: "Saya ingin bekerja untuk masyarakat."
+    }
+  },
+  {
+    id: "v-n4-kyouiku",
+    level: "N4",
+    word: "教育",
+    reading: "きょういく",
+    romaji: "kyouiku",
+    meaning: "Pendidikan",
+    category: "noun",
+    example: {
+      japanese: "教育はとても重要です。",
+      romaji: "Kyouiku wa totemo juuyou desu.",
+      english: "Pendidikan itu sangat penting."
+    }
+  },
+  {
+    id: "v-n4-kankyou",
+    level: "N4",
+    word: "環境",
+    reading: "かんきょう",
+    romaji: "kankyou",
+    meaning: "Lingkungan",
+    category: "noun",
+    example: {
+      japanese: "環境を守りましょう。",
+      romaji: "Kankyou o mamorimashou.",
+      english: "Mari kita menjaga lingkungan."
+    }
+  },
+  {
+    id: "v-n4-ryuugaku",
+    level: "N4",
+    word: "留学",
+    reading: "りゅうがく",
+    romaji: "ryuugaku",
+    meaning: "Belajar di luar negeri",
+    category: "noun",
+    example: {
+      japanese: "来年、アメリカに留学します。",
+      romaji: "Rainen, Amerika ni ryuugaku shimasu.",
+      english: "Tahun depan, saya akan belajar di Amerika."
+    }
+  },
+  {
+    id: "v-n4-shourai",
+    level: "N4",
+    word: "将来",
+    reading: "しょうらい",
+    romaji: "shourai",
+    meaning: "Masa depan",
+    category: "noun",
+    example: {
+      japanese: "将来の夢は医者になることです。",
+      romaji: "Shourai no yume wa isha ni naru koto desu.",
+      english: "Impian masa depanku adalah menjadi seorang dokter."
+    }
+  },
+  {
+    id: "v-n4-yume",
+    level: "N4",
+    word: "夢",
+    reading: "ゆめ",
+    romaji: "yume",
+    meaning: "Mimpi",
+    category: "noun",
+    example: {
+      japanese: "昨日の夜、怖い夢を見ました。",
+      romaji: "Kinou no yoru, kowai yume o mimashita.",
+      english: "Tadi malam, saya bermimpi menakutkan."
+    }
+  },
+  {
+    id: "v-n4-sugoi",
+    level: "N4",
+    word: "凄い",
+    reading: "すごい",
+    romaji: "sugoi",
+    meaning: "Hebat / Luar biasa",
+    category: "adjective",
+    example: {
+      japanese: "あの選手は本当にすごいです。",
+      romaji: "Ano senshu wa hontou ni sugoi desu.",
+      english: "Pemain itu benar-benar hebat."
+    }
+  },
+  {
+    id: "v-n4-urusai",
+    level: "N4",
+    word: "煩い",
+    reading: "うるさい",
+    romaji: "urusai",
+    meaning: "Berisik",
+    category: "adjective",
+    example: {
+      japanese: "外の工事がうるさいです。",
+      romaji: "Soto no kouji ga urusai desu.",
+      english: "Konstruksi di luar sangat berisik."
+    }
+  },
+  {
+    id: "v-n4-kibishii",
+    level: "N4",
+    word: "厳しい",
+    reading: "きびしい",
+    romaji: "kibishii",
+    meaning: "Ketat / Tegas",
+    category: "adjective",
+    example: {
+      japanese: "私の父はとても厳しいです。",
+      romaji: "Watashi no chichi wa totemo kibishii desu.",
+      english: "Ayah saya sangat tegas."
+    }
   }
 ];
