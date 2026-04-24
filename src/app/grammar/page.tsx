@@ -72,8 +72,8 @@ const LevelButton = styled.button<{ $active: boolean }>`
   padding: 0.75rem 2rem;
   border-radius: 99px;
   border: 1px solid ${({ $active }) => ($active ? 'var(--primary)' : 'var(--border)')};
-  background: ${({ $active }) => ($active ? 'rgba(79, 70, 229, 0.1)' : 'var(--surface)')};
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  background: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--surface)')};
+  color: ${({ $active }) => ($active ? '#ffffff' : 'var(--text-secondary)')};
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
@@ -81,7 +81,7 @@ const LevelButton = styled.button<{ $active: boolean }>`
 
   &:hover {
     border-color: var(--primary);
-    color: var(--primary);
+    color: ${({ $active }) => ($active ? '#ffffff' : 'var(--primary)')};
   }
 
   @media (max-width: 768px) {
