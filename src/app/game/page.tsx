@@ -216,6 +216,33 @@ export default function GamesHubPage() {
             </PlayButton>
           </CardContent>
         </GameCardLink>
+
+        {/* Conjugation Drills Game */}
+        <GameCardLink href="/game/conjugation">
+          <CardContent>
+            <IconWrapper $color="16, 185, 129"> {/* Emerald color */}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+                <path d="M12 8h4" />
+                <path d="M12 12h4" />
+                <path d="M12 16h4" />
+                <circle cx="8" cy="8" r="1" />
+                <circle cx="8" cy="12" r="1" />
+                <circle cx="8" cy="16" r="1" />
+              </svg>
+            </IconWrapper>
+            <CardTitle>Conjugation Drills</CardTitle>
+            <CardDescription>
+              Master verb conjugations! Quickly identify the correct Masu, Te, Ta, or Nai form of Japanese verbs before time runs out.
+            </CardDescription>
+            <PlayButton $color="16, 185, 129">
+              Start Drills
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PlayButton>
+          </CardContent>
+        </GameCardLink>
       </GameGrid>
     </Container>
   );
