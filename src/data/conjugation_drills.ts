@@ -11,6 +11,8 @@ export interface ConjugationVerb {
     te: string;       // 食べて
     ta: string;       // 食べた
     nai: string;      // 食べない
+    passive: string;  // 食べられる
+    causative: string;// 食べさせる
   };
 }
 
@@ -24,9 +26,11 @@ export const conjugationData: ConjugationVerb[] = [
     group: 1,
     forms: {
       masu: "行きます",
-      te: "行って", // Special case
-      ta: "行った", // Special case
-      nai: "行かない"
+      te: "行って",
+      ta: "行った",
+      nai: "行かない",
+      passive: "行かれる",
+      causative: "行かせる"
     }
   },
   {
@@ -39,7 +43,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "飲みます",
       te: "飲んで",
       ta: "飲んだ",
-      nai: "飲まない"
+      nai: "飲まない",
+      passive: "飲まれる",
+      causative: "飲ませる"
     }
   },
   {
@@ -52,7 +58,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "話します",
       te: "話して",
       ta: "話した",
-      nai: "話さない"
+      nai: "話さない",
+      passive: "話される",
+      causative: "話させる"
     }
   },
   {
@@ -65,7 +73,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "待ちます",
       te: "待って",
       ta: "待った",
-      nai: "待たない"
+      nai: "待たない",
+      passive: "待たれる",
+      causative: "待たせる"
     }
   },
   {
@@ -78,7 +88,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "買います",
       te: "買って",
       ta: "買った",
-      nai: "買わない"
+      nai: "買わない",
+      passive: "買われる",
+      causative: "買わせる"
     }
   },
   {
@@ -91,7 +103,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "読みます",
       te: "読んで",
       ta: "読んだ",
-      nai: "読まない"
+      nai: "読まない",
+      passive: "読まれる",
+      causative: "読ませる"
     }
   },
   {
@@ -104,7 +118,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "泳ぎます",
       te: "泳いで",
       ta: "泳いだ",
-      nai: "泳がない"
+      nai: "泳がない",
+      passive: "泳がれる",
+      causative: "泳がせる"
     }
   },
   {
@@ -117,7 +133,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "遊びます",
       te: "遊んで",
       ta: "遊んだ",
-      nai: "遊ばない"
+      nai: "遊ばない",
+      passive: "遊ばれる",
+      causative: "遊ばせる"
     }
   },
   {
@@ -130,118 +148,11 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "帰ります",
       te: "帰って",
       ta: "帰った",
-      nai: "帰らない"
+      nai: "帰らない",
+      passive: "帰られる",
+      causative: "帰らせる"
     }
   },
-
-  // Group 2 (Ru-verbs)
-  {
-    dictionary: "食べる",
-    reading: "たべる",
-    romaji: "taberu",
-    meaning: "Makan",
-    group: 2,
-    forms: {
-      masu: "食べます",
-      te: "食べて",
-      ta: "食べた",
-      nai: "食べない"
-    }
-  },
-  {
-    dictionary: "見る",
-    reading: "みる",
-    romaji: "miru",
-    meaning: "Melihat",
-    group: 2,
-    forms: {
-      masu: "見ます",
-      te: "見て",
-      ta: "見た",
-      nai: "見ない"
-    }
-  },
-  {
-    dictionary: "寝る",
-    reading: "ねる",
-    romaji: "neru",
-    meaning: "Tidur",
-    group: 2,
-    forms: {
-      masu: "寝ます",
-      te: "寝て",
-      ta: "寝た",
-      nai: "寝ない"
-    }
-  },
-  {
-    dictionary: "起きる",
-    reading: "おきる",
-    romaji: "okiru",
-    meaning: "Bangun",
-    group: 2,
-    forms: {
-      masu: "起きます",
-      te: "起きて",
-      ta: "起きた",
-      nai: "起きない"
-    }
-  },
-  {
-    dictionary: "教える",
-    reading: "おしえる",
-    romaji: "oshieru",
-    meaning: "Mengajar",
-    group: 2,
-    forms: {
-      masu: "教えます",
-      te: "教えて",
-      ta: "教えた",
-      nai: "教えない"
-    }
-  },
-
-  // Group 3 (Irregular)
-  {
-    dictionary: "する",
-    reading: "する",
-    romaji: "suru",
-    meaning: "Melakukan",
-    group: 3,
-    forms: {
-      masu: "します",
-      te: "して",
-      ta: "した",
-      nai: "しない"
-    }
-  },
-  {
-    dictionary: "来る",
-    reading: "くる",
-    romaji: "kuru",
-    meaning: "Datang",
-    group: 3,
-    forms: {
-      masu: "来ます",
-      te: "来て",
-      ta: "来た",
-      nai: "来ない"
-    }
-  },
-  {
-    dictionary: "勉強する",
-    reading: "べんきょうする",
-    romaji: "benkyousuru",
-    meaning: "Belajar",
-    group: 3,
-    forms: {
-      masu: "勉強します",
-      te: "勉強して",
-      ta: "勉強した",
-      nai: "勉強しない"
-    }
-  },
-  // --- ADDITIONAL U-VERBS ---
   {
     dictionary: "書く",
     reading: "かく",
@@ -252,7 +163,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "書きます",
       te: "書いて",
       ta: "書いた",
-      nai: "書かない"
+      nai: "書かない",
+      passive: "書かれる",
+      causative: "書かせる"
     }
   },
   {
@@ -265,7 +178,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "聞きます",
       te: "聞いて",
       ta: "聞いた",
-      nai: "聞かない"
+      nai: "聞かない",
+      passive: "聞かれる",
+      causative: "聞かせる"
     }
   },
   {
@@ -278,7 +193,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "歩きます",
       te: "歩いて",
       ta: "歩いた",
-      nai: "歩かない"
+      nai: "歩かない",
+      passive: "歩かれる",
+      causative: "歩かせる"
     }
   },
   {
@@ -291,7 +208,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "働きます",
       te: "働いて",
       ta: "働いた",
-      nai: "働かない"
+      nai: "働かない",
+      passive: "働かれる",
+      causative: "働かせる"
     }
   },
   {
@@ -304,7 +223,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "急ぎます",
       te: "急いで",
       ta: "急いだ",
-      nai: "急がない"
+      nai: "急がない",
+      passive: "急がれる",
+      causative: "急がせる"
     }
   },
   {
@@ -317,7 +238,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "死にます",
       te: "死んで",
       ta: "死んだ",
-      nai: "死なない"
+      nai: "死なない",
+      passive: "死なれる",
+      causative: "死なせる"
     }
   },
   {
@@ -330,7 +253,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "飛びます",
       te: "飛んで",
       ta: "飛んだ",
-      nai: "飛ばない"
+      nai: "飛ばない",
+      passive: "飛ばれる",
+      causative: "飛ばせる"
     }
   },
   {
@@ -343,7 +268,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "呼びます",
       te: "呼んで",
       ta: "呼んだ",
-      nai: "呼ばない"
+      nai: "呼ばない",
+      passive: "呼ばれる",
+      causative: "呼ばせる"
     }
   },
   {
@@ -356,7 +283,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "休みます",
       te: "休んで",
       ta: "休んだ",
-      nai: "休まない"
+      nai: "休まない",
+      passive: "休まれる",
+      causative: "休ませる"
     }
   },
   {
@@ -369,7 +298,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "住みます",
       te: "住んで",
       ta: "住んだ",
-      nai: "住まない"
+      nai: "住まない",
+      passive: "住まれる",
+      causative: "住ませる"
     }
   },
   {
@@ -382,7 +313,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "座ります",
       te: "座って",
       ta: "座った",
-      nai: "座らない"
+      nai: "座らない",
+      passive: "座られる",
+      causative: "座らせる"
     }
   },
   {
@@ -395,7 +328,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "作ります",
       te: "作って",
       ta: "作った",
-      nai: "作らない"
+      nai: "作らない",
+      passive: "作られる",
+      causative: "作らせる"
     }
   },
   {
@@ -408,7 +343,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "乗ります",
       te: "乗って",
       ta: "乗った",
-      nai: "乗らない"
+      nai: "乗らない",
+      passive: "乗られる",
+      causative: "乗らせる"
     }
   },
   {
@@ -421,7 +358,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "頑張ります",
       te: "頑張って",
       ta: "頑張った",
-      nai: "頑張らない"
+      nai: "頑張らない",
+      passive: "頑張られる",
+      causative: "頑張らせる"
     }
   },
   {
@@ -434,7 +373,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "会います",
       te: "会って",
       ta: "会った",
-      nai: "会わない"
+      nai: "会わない",
+      passive: "会われる",
+      causative: "会わせる"
     }
   },
   {
@@ -447,7 +388,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "洗います",
       te: "洗って",
       ta: "洗った",
-      nai: "洗わない"
+      nai: "洗わない",
+      passive: "洗われる",
+      causative: "洗わせる"
     }
   },
   {
@@ -460,11 +403,88 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "歌います",
       te: "歌って",
       ta: "歌った",
-      nai: "歌わない"
+      nai: "歌わない",
+      passive: "歌われる",
+      causative: "歌わせる"
     }
   },
 
   // --- ADDITIONAL RU-VERBS ---
+  {
+    dictionary: "食べる",
+    reading: "たべる",
+    romaji: "taberu",
+    meaning: "Makan",
+    group: 2,
+    forms: {
+      masu: "食べます",
+      te: "食べて",
+      ta: "食べた",
+      nai: "食べない",
+      passive: "食べられる",
+      causative: "食べさせる"
+    }
+  },
+  {
+    dictionary: "見る",
+    reading: "みる",
+    romaji: "miru",
+    meaning: "Melihat",
+    group: 2,
+    forms: {
+      masu: "見ます",
+      te: "見て",
+      ta: "見た",
+      nai: "見ない",
+      passive: "見られる",
+      causative: "見させる"
+    }
+  },
+  {
+    dictionary: "寝る",
+    reading: "ねる",
+    romaji: "neru",
+    meaning: "Tidur",
+    group: 2,
+    forms: {
+      masu: "寝ます",
+      te: "寝て",
+      ta: "寝た",
+      nai: "寝ない",
+      passive: "寝られる",
+      causative: "寝させる"
+    }
+  },
+  {
+    dictionary: "起きる",
+    reading: "おきる",
+    romaji: "okiru",
+    meaning: "Bangun",
+    group: 2,
+    forms: {
+      masu: "起きます",
+      te: "起きて",
+      ta: "起きた",
+      nai: "起きない",
+      passive: "起きられる",
+      causative: "起きさせる"
+    }
+  },
+  {
+    dictionary: "教える",
+    reading: "おしえる",
+    romaji: "oshieru",
+    meaning: "Mengajar",
+    group: 2,
+    forms: {
+      masu: "教えます",
+      te: "教えて",
+      ta: "教えた",
+      nai: "教えない",
+      passive: "教えられる",
+      causative: "教えさせる"
+    }
+  },
   {
     dictionary: "開ける",
     reading: "あける",
@@ -475,7 +495,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "開けます",
       te: "開けて",
       ta: "開けた",
-      nai: "開けない"
+      nai: "開けない",
+      passive: "開けられる",
+      causative: "開けさせる"
     }
   },
   {
@@ -488,7 +510,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "閉めます",
       te: "閉めて",
       ta: "閉めた",
-      nai: "閉めない"
+      nai: "閉めない",
+      passive: "閉められる",
+      causative: "閉めさせる"
     }
   },
   {
@@ -501,7 +525,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "始めます",
       te: "始めて",
       ta: "始めた",
-      nai: "始めない"
+      nai: "始めない",
+      passive: "始められる",
+      causative: "始めさせる"
     }
   },
   {
@@ -514,7 +540,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "忘れます",
       te: "忘れて",
       ta: "忘れた",
-      nai: "忘れない"
+      nai: "忘れない",
+      passive: "忘れられる",
+      causative: "忘れさせる"
     }
   },
   {
@@ -527,7 +555,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "覚えます",
       te: "覚えて",
       ta: "覚えた",
-      nai: "覚えない"
+      nai: "覚えない",
+      passive: "覚えられる",
+      causative: "覚えさせる"
     }
   },
   {
@@ -540,7 +570,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "借ります",
       te: "借りて",
       ta: "借りた",
-      nai: "借りない"
+      nai: "借りない",
+      passive: "借りられる",
+      causative: "借りさせる"
     }
   },
   {
@@ -553,11 +585,58 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "降ります",
       te: "降りて",
       ta: "降りた",
-      nai: "降りない"
+      nai: "降りない",
+      passive: "降りられる",
+      causative: "降りさせる"
     }
   },
 
   // --- ADDITIONAL IRREGULAR VERBS ---
+  {
+    dictionary: "する",
+    reading: "する",
+    romaji: "suru",
+    meaning: "Melakukan",
+    group: 3,
+    forms: {
+      masu: "します",
+      te: "して",
+      ta: "した",
+      nai: "しない",
+      passive: "される",
+      causative: "させる"
+    }
+  },
+  {
+    dictionary: "来る",
+    reading: "くる",
+    romaji: "kuru",
+    meaning: "Datang",
+    group: 3,
+    forms: {
+      masu: "来ます",
+      te: "来て",
+      ta: "来た",
+      nai: "来ない",
+      passive: "来られる",
+      causative: "来させる"
+    }
+  },
+  {
+    dictionary: "勉強する",
+    reading: "べんきょうする",
+    romaji: "benkyousuru",
+    meaning: "Belajar",
+    group: 3,
+    forms: {
+      masu: "勉強します",
+      te: "勉強して",
+      ta: "勉強した",
+      nai: "勉強しない",
+      passive: "勉強される",
+      causative: "勉強させる"
+    }
+  },
   {
     dictionary: "買い物する",
     reading: "かいものする",
@@ -568,7 +647,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "買い物します",
       te: "買い物して",
       ta: "買い物した",
-      nai: "買い物しない"
+      nai: "買い物しない",
+      passive: "買い物される",
+      causative: "買い物させる"
     }
   },
   {
@@ -581,7 +662,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "掃除します",
       te: "掃除して",
       ta: "掃除した",
-      nai: "掃除しない"
+      nai: "掃除しない",
+      passive: "掃除される",
+      causative: "掃除させる"
     }
   },
   {
@@ -594,7 +677,9 @@ export const conjugationData: ConjugationVerb[] = [
       masu: "料理します",
       te: "料理して",
       ta: "料理した",
-      nai: "料理しない"
+      nai: "料理しない",
+      passive: "料理される",
+      causative: "料理させる"
     }
   }
 ];

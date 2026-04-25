@@ -266,7 +266,7 @@ const ResultMessage = styled.h2`
 
 // --- Logic Helpers ---
 
-type FormType = 'masu' | 'te' | 'ta' | 'nai';
+type FormType = 'masu' | 'te' | 'ta' | 'nai' | 'passive' | 'causative';
 type InputType = 'multiple-choice' | 'manual-typing';
 type DifficultyType = 'basic' | 'advanced';
 
@@ -274,7 +274,9 @@ const formLabels: Record<FormType, string> = {
   masu: 'Bentuk Masu (Sopan)',
   te: 'Bentuk Te (Menyambung)',
   ta: 'Bentuk Ta (Lampau)',
-  nai: 'Bentuk Nai (Negatif)'
+  nai: 'Bentuk Nai (Negatif)',
+  passive: 'Bentuk Pasif (Di...)',
+  causative: 'Bentuk Kausatif (Menyuruh/Membiarkan)'
 };
 
 const TOTAL_QUESTIONS = 10;
@@ -306,11 +308,15 @@ export default function ConjugationDrillsPage() {
     // 1. Pick a random verb
     const randomVerb = conjugationData[Math.floor(Math.random() * conjugationData.length)];
     
-    // 2. Pick a random target form (For now only basic forms)
-    const forms: FormType[] = ['masu', 'te', 'ta', 'nai'];
+    // 2. Determine available forms based on difficulty
+    const forms: FormType[] = difficulty === 'advanced' 
+      ? ['masu', 'te', 'ta', 'nai', 'passive', 'causative']
+      : ['masu', 'te', 'ta', 'nai'];
+      
+    // 3. Pick a random target form
     const selectedForm = forms[Math.floor(Math.random() * forms.length)];
     
-    // 3. The correct answer
+    // 4. The correct answer
     const correctAnswer = randomVerb.forms[selectedForm];
     
     if (inputType === 'multiple-choice') {
@@ -454,10 +460,10 @@ export default function ConjugationDrillsPage() {
                     Basic (Dasar)
                   </SelectButton>
                   <SelectButton 
-                    $disabled={true}
-                    title="Akan hadir di update selanjutnya!"
+                    $active={difficulty === 'advanced'}
+                    onClick={() => setDifficulty('advanced')}
                   >
-                    Advanced <ComingSoonBadge>Coming Soon</ComingSoonBadge>
+                    Advanced (Pasif/Kausatif)
                   </SelectButton>
                 </ButtonRow>
               </OptionGroup>
