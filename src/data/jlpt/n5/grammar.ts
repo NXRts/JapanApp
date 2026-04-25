@@ -514,5 +514,125 @@ export const n5Grammar: GrammarPoint[] = [
         english: "Anda bisa membeli tiket di sini."
       }
     ]
+  },
+  {
+    id: "tari-tari",
+    level: "N5",
+    title: "〜たり、〜たりします (tari, tari shimasu)",
+    meaning: "Melakukan hal-hal seperti... dan...",
+    structure: "Kata Kerja 1 (Bentuk Ta) + り、Kata Kerja 2 (Bentuk Ta) + りします",
+    explanation: "Digunakan untuk menyebutkan beberapa contoh tindakan dari banyak tindakan yang dilakukan. Tidak menyiratkan urutan waktu seperti partikel 'te'. Kata kerja terakhir selalu diikuti 'shimasu' (atau 'shimashita' untuk masa lalu).",
+    examples: [
+      {
+        japanese: "週末は買い物をしたり、映画を見たりします。",
+        romaji: "Shuumatsu wa kaimono o shitari, eiga o mitari shimasu.",
+        english: "Pada akhir pekan, saya (melakukan hal seperti) berbelanja dan menonton film."
+      },
+      {
+        japanese: "昨日は本を読んだり、手紙を書いたりしました。",
+        romaji: "Kinou wa hon o yondari, tegami o kaitari shimashita.",
+        english: "Kemarin saya membaca buku, menulis surat, dan sebagainya."
+      }
+    ]
+  },
+  {
+    id: "mae-ni",
+    level: "N5",
+    title: "〜前に (mae ni)",
+    meaning: "Sebelum...",
+    structure: "Kata Kerja (Kamus) / Kata Benda + の / Waktu + 前に",
+    explanation: "Digunakan untuk menunjukkan bahwa suatu tindakan dilakukan sebelum tindakan lain atau kejadian lain terjadi.",
+    examples: [
+      {
+        japanese: "寝る前に、本を読みます。",
+        romaji: "Neru mae ni, hon o yomimasu.",
+        english: "Sebelum tidur, saya membaca buku."
+      },
+      {
+        japanese: "食事の前に、手を洗います。",
+        romaji: "Shokuji no mae ni, te o araimasu.",
+        english: "Sebelum makan, saya mencuci tangan."
+      }
+    ]
+  },
+  {
+    id: "ato-de",
+    level: "N5",
+    title: "〜後で (ato de)",
+    meaning: "Setelah / Sesudah...",
+    structure: "Kata Kerja (Bentuk Ta) / Kata Benda + の + 後で",
+    explanation: "Digunakan untuk menunjukkan bahwa suatu tindakan dilakukan setelah tindakan lain selesai. Sangat penting untuk mengingat kata kerja menggunakan bentuk Ta (lampau) sebelum 'ato de'.",
+    examples: [
+      {
+        japanese: "勉強した後で、映画を見ます。",
+        romaji: "Benkyou shita ato de, eiga o mimasu.",
+        english: "Setelah belajar, saya akan menonton film."
+      },
+      {
+        japanese: "仕事の後で、飲みに行きましょう。",
+        romaji: "Shigoto no ato de, nomi ni ikimashou.",
+        english: "Setelah bekerja, mari kita pergi minum."
+      }
+    ]
+  },
+  {
+    id: "kara-reason",
+    level: "N5",
+    title: "〜から (kara - Alasan)",
+    meaning: "Karena...",
+    structure: "Kalimat Alasan + から、Kalimat Akibat",
+    explanation: "Digunakan untuk menjelaskan alasan. 'Kara' biasanya bernuansa subyektif dan sering dipakai ketika membujuk, memerintah, atau memberikan alasan pribadi.",
+    examples: [
+      {
+        japanese: "忙しいですから、行きません。",
+        romaji: "Isogashii desu kara, ikimasen.",
+        english: "Karena sibuk, saya tidak akan pergi."
+      },
+      {
+        japanese: "明日テストがありますから、勉強します。",
+        romaji: "Ashita tesuto ga arimasu kara, benkyou shimasu.",
+        english: "Karena besok ada ujian, saya belajar."
+      }
+    ]
+  },
+  {
+    id: "node",
+    level: "N5",
+    title: "〜ので (node)",
+    meaning: "Karena / Sebab...",
+    structure: "Bentuk Biasa (Na-adj/Noun + な) + ので",
+    explanation: "Mirip dengan 'kara', tetapi 'node' lebih obyektif dan sopan. Sering digunakan untuk menjelaskan fakta atau meminta maaf secara formal.",
+    examples: [
+      {
+        japanese: "雨が降っているので、試合は中止です。",
+        romaji: "Ame ga futte iru node, shiai wa chuushi desu.",
+        english: "Karena hujan turun (fakta obyektif), pertandingan dibatalkan."
+      },
+      {
+        japanese: "日曜日なので、銀行は休みです。",
+        romaji: "Nichiyoubi na node, ginkou wa yasumi desu.",
+        english: "Karena (ini) hari Minggu, bank libur."
+      }
+    ]
+  },
+  {
+    id: "tsumori-n5",
+    level: "N5",
+    title: "〜つもりです (tsumori desu)",
+    meaning: "Bermaksud / Berencana untuk",
+    structure: "Kata Kerja (Bentuk Kamus / Nai) + つもりです",
+    explanation: "Digunakan untuk menyatakan rencana atau niat kuat dari si pembicara yang sudah diputuskan sebelumnya.",
+    examples: [
+      {
+        japanese: "来年、日本へ行くつもりです。",
+        romaji: "Rainen, Nihon e iku tsumori desu.",
+        english: "Tahun depan, saya berencana pergi ke Jepang."
+      },
+      {
+        japanese: "今日は出かけないつもりです。",
+        romaji: "Kyou wa dekakenai tsumori desu.",
+        english: "Hari ini saya bermaksud untuk tidak keluar."
+      }
+    ]
   }
 ];

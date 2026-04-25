@@ -300,5 +300,105 @@ export const n4Grammar: GrammarPoint[] = [
         english: "Saya meminjamkan mobil kepada teman."
       }
     ]
+  },
+  {
+    id: "reru-rareru-passive",
+    level: "N4",
+    title: "〜れる / られる (Bentuk Pasif)",
+    meaning: "Di... / Ter... (Bentuk Pasif)",
+    structure: "Kata Kerja Kelompok 1 (Ubah U jadi A + れる), Kelompok 2 (Ubah RU jadi られる)",
+    explanation: "Digunakan ketika subjek menerima tindakan dari orang atau benda lain. Dalam bahasa Jepang, bentuk pasif juga sering digunakan untuk menunjukkan bahwa si pembicara merasa terganggu/dirugikan oleh tindakan orang lain (Passive of annoyance).",
+    examples: [
+      {
+        japanese: "私は先生に褒められました。",
+        romaji: "Watashi wa sensei ni homeraremashita.",
+        english: "Saya dipuji oleh guru."
+      },
+      {
+        japanese: "雨に降られて、服が濡れました。",
+        romaji: "Ame ni furarete, fuku ga nuremashita.",
+        english: "Saya kehujanan (terkena hujan), baju saya basah."
+      }
+    ]
+  },
+  {
+    id: "seru-saseru-causative",
+    level: "N4",
+    title: "〜せる / させる (Bentuk Kausatif)",
+    meaning: "Menyuruh / Membiarkan...",
+    structure: "Kata Kerja Kelompok 1 (Ubah U jadi A + せる), Kelompok 2 (Ubah RU jadi させる)",
+    explanation: "Digunakan ketika seseorang membuat, menyuruh, atau membiarkan orang lain melakukan suatu tindakan. Jika berupa paksaan (menyuruh), gunakan partikel に. Jika berupa izin (membiarkan), gunakan partikel を.",
+    examples: [
+      {
+        japanese: "先生は学生に宿題をさせました。",
+        romaji: "Sensei wa gakusei ni shukudai o sasemashita.",
+        english: "Guru menyuruh murid mengerjakan pekerjaan rumah."
+      },
+      {
+        japanese: "母は子供を公園で遊ばせました。",
+        romaji: "Haha wa kodomo o kouen de asobasemashita.",
+        english: "Ibu membiarkan anaknya bermain di taman."
+      }
+    ]
+  },
+  {
+    id: "yasui-nikui",
+    level: "N4",
+    title: "〜やすい / 〜にくい",
+    meaning: "Mudah untuk... / Sulit untuk...",
+    structure: "Kata Kerja (Masu dicoret) + やすい / にくい",
+    explanation: "Digunakan untuk menyatakan apakah suatu tindakan itu mudah (yasui) atau sulit (nikui) untuk dilakukan, baik karena sifat bawaan benda tersebut atau karena situasi.",
+    examples: [
+      {
+        japanese: "このペンはとても書きやすいです。",
+        romaji: "Kono pen wa totemo kakiyasui desu.",
+        english: "Pulpen ini sangat mudah untuk ditulis (digunakan menulis)."
+      },
+      {
+        japanese: "この漢字は覚えにくいです。",
+        romaji: "Kono kanji wa oboenikui desu.",
+        english: "Kanji ini sulit untuk dihafal."
+      }
+    ]
+  },
+  {
+    id: "youni-suru",
+    level: "N4",
+    title: "〜ようにする (youni suru)",
+    meaning: "Berusaha agar / Memastikan...",
+    structure: "Kata Kerja (Kamus / Nai) + ようにする",
+    explanation: "Menyatakan niat atau usaha sadar untuk terus-menerus melakukan atau tidak melakukan sesuatu sebagai kebiasaan.",
+    examples: [
+      {
+        japanese: "毎日、野菜を食べるようにしています。",
+        romaji: "Mainichi, yasai o taberu youni shite imasu.",
+        english: "Setiap hari, saya berusaha (membiasakan diri) memakan sayur."
+      },
+      {
+        japanese: "甘い物を食べないようにしています。",
+        romaji: "Amai mono o tabenai youni shite imasu.",
+        english: "Saya berusaha untuk tidak memakan yang manis-manis."
+      }
+    ]
+  },
+  {
+    id: "tameni",
+    level: "N4",
+    title: "〜ために (tame ni)",
+    meaning: "Demi / Untuk (Tujuan)",
+    structure: "Kata Kerja (Kamus) / Kata Benda + の + ために",
+    explanation: "Digunakan untuk menunjukkan tujuan yang jelas dari suatu tindakan yang akan dilakukan dengan usaha (bukan sekadar niat pasif).",
+    examples: [
+      {
+        japanese: "家を買うために、お金を貯めています。",
+        romaji: "Ie o kau tame ni, okane o tamete imasu.",
+        english: "Demi/untuk membeli rumah, saya menabung uang."
+      },
+      {
+        japanese: "家族のために働きます。",
+        romaji: "Kazoku no tame ni hatarakimasu.",
+        english: "Saya bekerja untuk keluarga."
+      }
+    ]
   }
 ];
