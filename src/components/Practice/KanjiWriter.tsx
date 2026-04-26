@@ -106,6 +106,8 @@ export interface KanjiWriterProps {
   height?: number;
   onComplete?: () => void;
   onSkip?: () => void;
+  hideToolbar?: boolean;
+  autoLoop?: boolean;
 }
 
 export function KanjiWriter({
@@ -113,7 +115,9 @@ export function KanjiWriter({
   width = 300,
   height = 300,
   onComplete,
-  onSkip
+  onSkip,
+  hideToolbar = false,
+  autoLoop = false
 }: KanjiWriterProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const writerRef = useRef<HanziWriter | null>(null);
@@ -138,15 +142,19 @@ export function KanjiWriter({
       outlineColor: '#e5e7eb',
     });
 
-    // We can auto-animate when it loads
+    // Auto animate or loop
     setTimeout(() => {
-      writerRef.current?.animateCharacter();
+      if (autoLoop) {
+        writerRef.current?.loopCharacterAnimation();
+      } else {
+        writerRef.current?.animateCharacter();
+      }
     }, 500);
 
     return () => {
       writerRef.current = null;
     };
-  }, [char, width, height]);
+  }, [char, width, height, autoLoop]);
 
   const handleAnimate = () => {
     setIsQuizzing(false);
@@ -182,26 +190,28 @@ export function KanjiWriter({
         <TargetDiv ref={containerRef} />
       </CanvasWrapper>
       
-      <Toolbar>
-        <ToolBtn onClick={handleAnimate} $variant="primary">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-          Animate
-        </ToolBtn>
-        <ToolBtn onClick={handlePractice} $variant={isQuizzing ? 'success' : undefined}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-          Practice
-        </ToolBtn>
-        <ToolBtn onClick={handleClear} $variant="ghost">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"></path></svg>
-          Clear
-        </ToolBtn>
-        {onSkip && (
-          <ToolBtn onClick={onSkip} $variant="ghost">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            Skip
+      {!hideToolbar && (
+        <Toolbar>
+          <ToolBtn onClick={handleAnimate} $variant="primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Animate
           </ToolBtn>
-        )}
-      </Toolbar>
+          <ToolBtn onClick={handlePractice} $variant={isQuizzing ? 'success' : undefined}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+            Practice
+          </ToolBtn>
+          <ToolBtn onClick={handleClear} $variant="ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"></path></svg>
+            Clear
+          </ToolBtn>
+          {onSkip && (
+            <ToolBtn onClick={onSkip} $variant="ghost">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              Skip
+            </ToolBtn>
+          )}
+        </Toolbar>
+      )}
     </div>
   );
 }
