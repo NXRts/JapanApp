@@ -153,8 +153,12 @@ const MainContent = styled.main`
 
 const ActionButtonsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
@@ -164,14 +168,15 @@ const ActionButtonsGrid = styled.div`
 const ActionButton = styled.button`
   background: var(--primary);
   color: #fff;
-  padding: 1.25rem;
-  border-radius: 20px;
+  padding: 1rem;
+  border-radius: 16px;
   border: none;
   font-weight: 800;
+  font-size: 0.9rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-md);
@@ -183,8 +188,8 @@ const ActionButton = styled.button`
   }
 
   svg {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
   }
 `;
 
@@ -1029,6 +1034,10 @@ export default function DictionaryPage() {
             <ActionButton>
               <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" /></svg>
               Mini Test
+            </ActionButton>
+            <ActionButton as={Link} href={`/jlpt/kanji-writer?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+              Kanji Writer
             </ActionButton>
           </ActionButtonsGrid>
 
