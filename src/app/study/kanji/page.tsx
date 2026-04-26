@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { useProgress } from '@/context/ProgressContext';
-import { DrawingCanvas } from '@/components/Practice/Canvas';
+import { KanjiWriter } from '@/components/Practice/KanjiWriter';
 
 const PageWrapper = styled.div`
   min-height: 90vh;
@@ -469,14 +469,12 @@ export default function KanjiFlashcards() {
           <DrawingArea>
             <SectionTitle>Practice Writing</SectionTitle>
             <CanvasSection>
-              <DrawingCanvas
+              <KanjiWriter
                 width={320}
                 height={320}
-                clearTrigger={clearTrigger}
                 char={currentKanji}
                 onComplete={() => {
-                  // If drawn correctly, mark as Easy automatically? 
-                  // Let's keep it manual for now to be safe.
+                  // Jika berhasil digambar, otomatis balik kartu
                   setFlipped(true);
                 }}
                 onSkip={() => nextCard()}
