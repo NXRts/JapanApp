@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { useProgress } from '@/context/ProgressContext';
+import { DrawingCanvas } from '@/components/Practice/Canvas';
 import { KanjiWriter } from '@/components/Practice/KanjiWriter';
 
 const PageWrapper = styled.div`
@@ -118,16 +119,15 @@ const DropdownItem = styled.div<{ $isActive: boolean }>`
 
 const FlashcardContainer = styled.div`
   display: flex;
-  gap: 4rem;
+  gap: 2rem;
   align-items: flex-start;
   width: 100%;
   justify-content: center;
-  max-width: 1000px;
+  max-width: 1200px;
 
-  @media (max-width: 900px) {
-    flex-direction: column;
+  @media (max-width: 1024px) {
+    flex-wrap: wrap;
     align-items: center;
-    gap: 3rem;
   }
 `;
 
@@ -467,11 +467,25 @@ export default function KanjiFlashcards() {
 
         <FlashcardContainer>
           <DrawingArea>
-            <SectionTitle>Practice Writing</SectionTitle>
+            <SectionTitle>Stroke Order</SectionTitle>
             <CanvasSection>
               <KanjiWriter
-                width={320}
-                height={320}
+                width={250}
+                height={250}
+                char={currentKanji}
+                hideToolbar={true}
+                autoLoop={true}
+              />
+            </CanvasSection>
+          </DrawingArea>
+
+          <DrawingArea>
+            <SectionTitle>Practice Writing</SectionTitle>
+            <CanvasSection>
+              <DrawingCanvas
+                width={250}
+                height={250}
+                clearTrigger={clearTrigger}
                 char={currentKanji}
                 onComplete={() => {
                   // Jika berhasil digambar, otomatis balik kartu
