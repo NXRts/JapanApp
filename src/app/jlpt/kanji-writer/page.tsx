@@ -1,22 +1,799 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+
+// --- STYLES ---
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   gap: 2rem;
   padding: 2rem;
   min-height: 100vh;
   color: var(--foreground);
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
 `;
 
+const PageHeader = styled.div`
+  margin-bottom: 2rem;
+  h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--foreground);
+    margin: 0;
+  }
+  p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    font-family: 'DM Mono', monospace;
+  }
+`;
+
+const LevelTabs = styled.div`
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+`;
+
+const LevelTab = styled.button<{ $active?: boolean }>`
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  padding: 5px 14px;
+  border-radius: 6px;
+  border: 1px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
+  background: ${({ $active }) => $active ? 'var(--primary)' : 'transparent'};
+  color: ${({ $active }) => $active ? '#fff' : 'var(--text-secondary)'};
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+
+  &:hover {
+    border-color: var(--primary);
+    color: ${({ $active }) => $active ? '#fff' : 'var(--primary)'};
+  }
+`;
+
+const WriterGrid = styled.div`
+  display: grid;
+  grid-template-columns: 280px 1fr 260px;
+  gap: 16px;
+  align-items: start;
+
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Card = styled.div`
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`;
+
+const CardHeader = styled.div`
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const CardTitle = styled.span`
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-family: 'DM Mono', monospace;
+`;
+
+const KanjiSearch = styled.div`
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+
+  input {
+    width: 100%;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 7px 11px;
+    color: var(--foreground);
+    font-size: 0.82rem;
+    font-family: 'DM Mono', monospace;
+    outline: none;
+    transition: border-color 0.2s;
+
+    &:focus {
+      border-color: var(--primary);
+    }
+  }
+`;
+
+const KanjiList = styled.div`
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  max-height: 460px;
+  overflow-y: auto;
+  
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 2px;
+  }
+`;
+
+const KanjiItem = styled.div<{ $active?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border-radius: 7px;
+  cursor: pointer;
+  border: 1px solid ${({ $active }) => $active ? 'var(--primary)' : 'transparent'};
+  background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent'};
+  transition: all 0.15s;
+  gap: 2px;
+
+  &:hover {
+    background: rgba(var(--primary-rgb), 0.05);
+    border-color: var(--border);
+  }
+
+  .char {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--foreground)'};
+  }
+
+  .reading {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem;
+    color: var(--text-secondary);
+  }
+`;
+
+const KanjiInfo = styled.div`
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const KanjiBig = styled.div`
+  font-family: 'Noto Serif JP', serif;
+  font-size: 3.5rem;
+  line-height: 1;
+  color: var(--primary);
+  text-shadow: 0 0 40px rgba(var(--primary-rgb), 0.3);
+`;
+
+const KanjiMeta = styled.div`
+  flex: 1;
+`;
+
+const KanjiMeaning = styled.div`
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--foreground);
+  letter-spacing: -0.02em;
+`;
+
+const KanjiReadings = styled.div`
+  margin-top: 4px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+`;
+
+const ReadingBadge = styled.span<{ $type: 'on' | 'kun' }>`
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid ${({ $type }) => $type === 'on' ? 'rgba(246,173,85,0.4)' : 'rgba(var(--primary-rgb), 0.4)'};
+  color: ${({ $type }) => $type === 'on' ? '#f6ad55' : 'var(--primary)'};
+`;
+
+const StrokesInfo = styled.div`
+  text-align: right;
+  .num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--foreground);
+    line-height: 1;
+  }
+  .label {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    font-family: 'DM Mono', monospace;
+  }
+`;
+
+const CanvasWrap = styled.div`
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+`;
+
+const CanvasBox = styled.div`
+  position: relative;
+  width: 340px;
+  height: 340px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--background);
+
+  @media (max-width: 400px) {
+    width: 300px;
+    height: 300px;
+  }
+
+  /* Grid lines */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(var(--primary-rgb), 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(var(--primary-rgb), 0.05) 1px, transparent 1px);
+    background-size: 170px 170px;
+    pointer-events: none;
+    z-index: 1;
+
+    @media (max-width: 400px) {
+      background-size: 150px 150px;
+    }
+  }
+
+  /* Center cross */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(var(--primary-rgb), 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(var(--primary-rgb), 0.08) 1px, transparent 1px);
+    background-size: 85px 85px;
+    background-position: 85px 85px;
+    pointer-events: none;
+    z-index: 1;
+
+    @media (max-width: 400px) {
+      background-size: 75px 75px;
+      background-position: 75px 75px;
+    }
+  }
+
+  canvas {
+    position: absolute;
+    inset: 0;
+  }
+
+  #guideCanvas {
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  #drawCanvas {
+    z-index: 2;
+    cursor: crosshair;
+    touch-action: none;
+  }
+`;
+
+const CanvasControls = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
+const HintToggle = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-family: 'DM Mono', monospace;
+  cursor: pointer;
+  user-select: none;
+`;
+
+const ToggleSwitch = styled.div<{ $on: boolean }>`
+  width: 32px;
+  height: 18px;
+  background: ${({ $on }) => $on ? 'var(--primary)' : 'var(--border)'};
+  border-radius: 9px;
+  position: relative;
+  transition: background 0.2s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s;
+    transform: ${({ $on }) => $on ? 'translateX(14px)' : 'translateX(0)'};
+  }
+`;
+
+const StrokeCounter = styled.span`
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+`;
+
+const Btn = styled.button<{ $variant?: 'primary' | 'danger' }>`
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 7px 16px;
+  border-radius: 7px;
+  border: 1px solid ${({ $variant }) => $variant === 'primary' ? 'var(--primary)' : $variant === 'danger' ? 'rgba(239,68,68,0.3)' : 'var(--border)'};
+  cursor: pointer;
+  transition: all 0.15s;
+  background: ${({ $variant }) => $variant === 'primary' ? 'var(--primary)' : 'transparent'};
+  color: ${({ $variant }) => $variant === 'primary' ? '#fff' : $variant === 'danger' ? '#ef4444' : 'var(--text-secondary)'};
+
+  &:hover {
+    background: ${({ $variant }) => $variant === 'primary' ? 'var(--primary)' : $variant === 'danger' ? 'rgba(239,68,68,0.1)' : 'var(--surface)'};
+    opacity: ${({ $variant }) => $variant === 'primary' ? 0.85 : 1};
+    color: ${({ $variant }) => $variant === 'primary' ? '#fff' : $variant === 'danger' ? '#ef4444' : 'var(--foreground)'};
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+const ResultBox = styled.div`
+  padding: 16px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+`;
+
+const ResultLabel = styled.div`
+  font-size: 0.65rem;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+`;
+
+const ResultScore = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const ScoreBarWrap = styled.div`
+  flex: 1;
+  height: 6px;
+  background: var(--background);
+  border-radius: 3px;
+  overflow: hidden;
+`;
+
+const ScoreBar = styled.div<{ $score: number }>`
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+  background: ${({ $score }) => $score >= 75 ? 'linear-gradient(90deg, var(--primary), #76e4f7)' : $score >= 50 ? 'linear-gradient(90deg, #f6ad55, #fbd38d)' : 'linear-gradient(90deg, #ef4444, #feb2b2)'};
+  width: ${({ $score }) => $score}%;
+`;
+
+const ScoreNum = styled.div<{ $score: number | null }>`
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  min-width: 36px;
+  text-align: right;
+  color: ${({ $score }) => $score === null ? 'var(--text-secondary)' : $score >= 75 ? '#10b981' : $score >= 50 ? '#f6ad55' : '#ef4444'};
+`;
+
+const ResultFeedback = styled.div`
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+`;
+
+const RightColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const ProgressRingWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  gap: 8px;
+
+  svg {
+    transform: rotate(-90deg);
+  }
+`;
+
+const StatRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--background);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+`;
+
+const StrokeGuide = styled.div`
+  padding: 12px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+`;
+
+const StrokeStep = styled.div<{ $state: 'done' | 'current' | 'pending' }>`
+  width: 42px;
+  height: 42px;
+  background: var(--background);
+  border: 1px solid ${({ $state }) => $state === 'done' ? 'rgba(var(--primary-rgb), 0.4)' : $state === 'current' ? 'rgba(246,173,85,0.6)' : 'var(--border)'};
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.1rem;
+  color: ${({ $state }) => $state === 'done' ? 'var(--primary)' : $state === 'current' ? '#f6ad55' : 'var(--text-secondary)'};
+  position: relative;
+  transition: all 0.15s;
+  ${({ $state }) => $state === 'current' && `
+    animation: pulse 1s infinite;
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(246,173,85,0.3); }
+      50% { box-shadow: 0 0 0 4px rgba(246,173,85,0.1); }
+    }
+  `}
+
+  .step-num {
+    position: absolute;
+    top: 2px;
+    right: 3px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.45rem;
+    color: var(--text-secondary);
+  }
+`;
+
+const HistoryList = styled.div`
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+`;
+
+const HistoryItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: var(--background);
+  border: 1px solid var(--border);
+`;
+
+const HistoryScore = styled.span<{ $score: number }>`
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  margin-left: auto;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: ${({ $score }) => $score >= 75 ? 'rgba(16,185,129,0.15)' : $score >= 50 ? 'rgba(246,173,85,0.15)' : 'rgba(239,68,68,0.15)'};
+  color: ${({ $score }) => $score >= 75 ? '#10b981' : $score >= 50 ? '#f6ad55' : '#ef4444'};
+`;
+
+const LoadingDots = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-family: 'DM Mono', monospace;
+
+  .dots span {
+    display: inline-block;
+    width: 4px; height: 4px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: blink 1.2s infinite;
+  }
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.2; }
+    40% { opacity: 1; }
+  }
+`;
+
+// --- DATA ---
+
+const KANJI_DATA: Record<string, any[]> = {
+  N5: [
+    { char:'日', meaning:'Sun / Day', on:'ニチ・ジツ', kun:'ひ・か', strokes:4 },
+    { char:'月', meaning:'Moon / Month', on:'ゲツ・ガツ', kun:'つき', strokes:4 },
+    { char:'火', meaning:'Fire', on:'カ', kun:'ひ', strokes:4 },
+    { char:'水', meaning:'Water', on:'スイ', kun:'みず', strokes:4 },
+    { char:'木', meaning:'Tree / Wood', on:'モク・ボク', kun:'き', strokes:4 },
+    { char:'金', meaning:'Gold / Money', on:'キン・コン', kun:'かね', strokes:8 },
+    { char:'土', meaning:'Earth / Soil', on:'ド・ト', kun:'つち', strokes:3 },
+    { char:'山', meaning:'Mountain', on:'サン', kun:'やま', strokes:3 },
+    { char:'川', meaning:'River', on:'セン', kun:'かわ', strokes:3 },
+    { char:'田', meaning:'Rice Field', on:'デン', kun:'た', strokes:5 },
+    { char:'人', meaning:'Person', on:'ジン・ニン', kun:'ひと', strokes:2 },
+    { char:'大', meaning:'Big / Large', on:'ダイ・タイ', kun:'おお', strokes:3 },
+    { char:'小', meaning:'Small / Little', on:'ショウ', kun:'ちい・こ', strokes:3 },
+    { char:'中', meaning:'Middle / Inside', on:'チュウ', kun:'なか', strokes:4 },
+    { char:'上', meaning:'Above / Up', on:'ジョウ', kun:'うえ', strokes:3 },
+    { char:'下', meaning:'Below / Down', on:'カ・ゲ', kun:'した', strokes:3 },
+    { char:'一', meaning:'One', on:'イチ・イツ', kun:'ひと', strokes:1 },
+    { char:'二', meaning:'Two', on:'ニ', kun:'ふた', strokes:2 },
+    { char:'三', meaning:'Three', on:'サン', kun:'み', strokes:3 },
+    { char:'四', meaning:'Four', on:'シ', kun:'よ', strokes:5 },
+  ],
+  N4: [
+    { char:'会', meaning:'Meeting / Society', on:'カイ・エ', kun:'あ', strokes:6 },
+    { char:'社', meaning:'Company / Shrine', on:'シャ', kun:'やしろ', strokes:7 },
+    { char:'国', meaning:'Country / Nation', on:'コク', kun:'くに', strokes:8 },
+    { char:'語', meaning:'Language / Word', on:'ゴ', kun:'かた', strokes:14 },
+    { char:'手', meaning:'Hand', on:'シュ', kun:'て', strokes:4 },
+    { char:'足', meaning:'Foot / Leg', on:'ソク', kun:'あし', strokes:7 },
+    { char:'電', meaning:'Electricity', on:'デン', kun:'—', strokes:13 },
+    { char:'車', meaning:'Car / Vehicle', on:'シャ', kun:'くるま', strokes:7 },
+    { char:'学', meaning:'Study / Learning', on:'ガク', kun:'まな', strokes:8 },
+    { char:'校', meaning:'School', on:'コウ', kun:'—', strokes:10 },
+    { char:'先', meaning:'Before / Previous', on:'セン', kun:'さき', strokes:6 },
+    { char:'生', meaning:'Life / Birth', on:'セイ・ショウ', kun:'い・う', strokes:5 },
+    { char:'年', meaning:'Year', on:'ネン', kun:'とし', strokes:6 },
+    { char:'気', meaning:'Spirit / Air', on:'キ・ケ', kun:'—', strokes:6 },
+    { char:'時', meaning:'Time / Hour', on:'ジ', kun:'とき', strokes:10 },
+    { char:'間', meaning:'Interval / Space', on:'カン・ケン', kun:'ま', strokes:12 },
+    { char:'長', meaning:'Long / Chief', on:'チョウ', kun:'なが', strokes:8 },
+    { char:'出', meaning:'Exit / Leave', on:'シュツ', kun:'で・だ', strokes:5 },
+    { char:'入', meaning:'Enter / Insert', on:'ニュウ', kun:'い・はい', strokes:2 },
+    { char:'本', meaning:'Book / Origin', on:'ホン', kun:'もと', strokes:5 },
+  ],
+};
+
+// --- COMPONENT ---
+
 export default function KanjiWriterPage() {
+  const [currentLevel, setCurrentLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1'>('N4');
+  const [currentKanji, setCurrentKanji] = useState<any>(KANJI_DATA['N4'][0]);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Canvas State
+  const drawCanvasRef = useRef<HTMLCanvasElement>(null);
+  const guideCanvasRef = useRef<HTMLCanvasElement>(null);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const [strokeCount, setStrokeCount] = useState(0);
+  const [hintEnabled, setHintEnabled] = useState(false);
+  const lastPos = useRef({ x: 0, y: 0 });
+
+  // Result State
+  const [isChecking, setIsChecking] = useState(false);
+  const [result, setResult] = useState<{ score: number, grade: string, feedback: string } | null>(null);
+
+  // Stats State
+  const [history, setHistory] = useState<any[]>([]);
+  const [session, setSession] = useState({ practiced: 0, correct: 0, scores: [] as number[], streak: 0 });
+
+  // Initial dummy history
+  useEffect(() => {
+    setHistory([
+      { char: '日', meaning: 'Sun / Day', score: 92 },
+      { char: '月', meaning: 'Moon / Month', score: 85 },
+      { char: '火', meaning: 'Fire', score: 63 },
+      { char: '水', meaning: 'Water', score: 41 },
+    ]);
+    setSession({ practiced: 4, correct: 3, scores: [92, 85, 63, 41], streak: 2 });
+  }, []);
+
+  const filteredKanji = useMemo(() => {
+    const data = KANJI_DATA[currentLevel] || [];
+    if (!searchQuery) return data;
+    return data.filter(k => 
+      k.char.includes(searchQuery) || 
+      k.meaning.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [currentLevel, searchQuery]);
+
+  // Handle Level Change
+  const handleLevelChange = (level: any) => {
+    setCurrentLevel(level);
+    if (KANJI_DATA[level] && KANJI_DATA[level].length > 0) {
+      handleSelectKanji(KANJI_DATA[level][0]);
+    }
+  };
+
+  // Select Kanji
+  const handleSelectKanji = useCallback((kanji: any) => {
+    setCurrentKanji(kanji);
+    setStrokeCount(0);
+    setResult(null);
+    clearCanvas();
+    drawGuide(kanji);
+  }, []);
+
+  // Update guide when kanji changes
+  useEffect(() => {
+    drawGuide(currentKanji);
+  }, [currentKanji]);
+
+  // Setup Canvas listeners (React way)
+  const getPos = (e: any, canvas: HTMLCanvasElement) => {
+    const rect = canvas.getBoundingClientRect();
+    if (e.touches && e.touches.length > 0) {
+      return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
+    }
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  };
+
+  const handlePointerDown = (e: React.MouseEvent | React.TouchEvent) => {
+    if (isChecking) return;
+    const canvas = drawCanvasRef.current;
+    if (!canvas) return;
+    setIsDrawing(true);
+    lastPos.current = getPos(e, canvas);
+  };
+
+  const handlePointerMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDrawing || isChecking) return;
+    const canvas = drawCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Prevent scrolling on touch
+    if (e.type === 'touchmove') {
+      // It's better to preventDefault on the native element for touchmove, 
+      // but in React synthetic events it might not work optimally without passive: false.
+      // Handled via CSS touch-action: none on CanvasBox.
+    }
+
+    const { x, y } = getPos(e, canvas);
+    ctx.beginPath();
+    ctx.moveTo(lastPos.current.x, lastPos.current.y);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = 'var(--primary)'; // Accent color
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.shadowColor = 'rgba(99,179,237,0.4)';
+    ctx.shadowBlur = 8;
+    ctx.stroke();
+    lastPos.current = { x, y };
+  };
+
+  const handlePointerUp = () => {
+    if (isDrawing) {
+      setIsDrawing(false);
+      setStrokeCount(prev => prev + 1);
+    }
+  };
+
+  const drawGuide = (kanji: any) => {
+    if (!kanji) return;
+    const canvas = guideCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '240px "Noto Serif JP"';
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(kanji.char, 170, 185);
+  };
+
+  const clearCanvas = () => {
+    const canvas = drawCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setStrokeCount(0);
+    setResult(null);
+  };
+
+  // Logic to simulate AI feedback
+  const handleCheck = () => {
+    if (strokeCount === 0 || isChecking) return;
+    setIsChecking(true);
+    setResult(null);
+
+    // Simulate API delay
+    setTimeout(() => {
+      const expectedStrokes = currentKanji.strokes;
+      const strokeDiff = Math.abs(strokeCount - expectedStrokes);
+      const score = Math.max(20, Math.round(100 - (strokeDiff * 15) - Math.random() * 20));
+      
+      let grade = 'Poor';
+      if (score >= 80) grade = 'Good';
+      else if (score >= 60) grade = 'Fair';
+
+      const feedback = `Kamu menggunakan ${strokeCount} goresan dari ${expectedStrokes} yang diperlukan. ${strokeDiff === 0 ? 'Jumlah goresan sudah tepat!' : 'Perhatikan urutan dan jumlah goresan.'} Terus berlatih!`;
+
+      const newResult = { score, grade, feedback };
+      setResult(newResult);
+      setIsChecking(false);
+
+      // Add to history and update session
+      setHistory(prev => [{ char: currentKanji.char, meaning: currentKanji.meaning, score }, ...prev]);
+      setSession(prev => {
+        const newScores = [...prev.scores, score];
+        const isCorrect = score >= 70;
+        return {
+          practiced: prev.practiced + 1,
+          correct: prev.correct + (isCorrect ? 1 : 0),
+          scores: newScores,
+          streak: isCorrect ? prev.streak + 1 : 0
+        };
+      });
+
+    }, 1500);
+  };
+
+  // Stats calc
+  const totalInLevel = KANJI_DATA[currentLevel]?.length || 20;
+  const progressPct = Math.round((session.practiced / totalInLevel) * 100) || 0;
+  const avgScore = session.scores.length > 0 ? Math.round(session.scores.reduce((a, b) => a + b, 0) / session.scores.length) : 0;
+  const ringOffset = 238.76 - (238.76 * Math.min(progressPct, 100) / 100);
+
   return (
     <PageContainer>
       <Breadcrumbs 
@@ -26,10 +803,246 @@ export default function KanjiWriterPage() {
         ]} 
         current="Kanji Writer" 
       />
-      <div>
+      
+      <PageHeader>
         <h1>Kanji Writer</h1>
-        <p>Halaman ini masih kosong. Silakan berikan contoh isinya.</p>
-      </div>
+        <p>// Practice writing kanji with real-time stroke analysis</p>
+      </PageHeader>
+
+      <LevelTabs>
+        {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
+          <LevelTab 
+            key={lvl} 
+            $active={currentLevel === lvl}
+            onClick={() => handleLevelChange(lvl)}
+          >
+            {lvl}
+          </LevelTab>
+        ))}
+      </LevelTabs>
+
+      <WriterGrid>
+        {/* LEFT COLUMN: Kanji List */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Kanji List</CardTitle>
+            <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.65rem', color: 'var(--text-secondary)' }}>
+              {filteredKanji.length} kanji
+            </span>
+          </CardHeader>
+          <KanjiSearch>
+            <input 
+              type="text" 
+              placeholder="Search kanji..." 
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+            />
+          </KanjiSearch>
+          <KanjiList>
+            {filteredKanji.map((k, i) => (
+              <KanjiItem 
+                key={i} 
+                $active={currentKanji?.char === k.char}
+                onClick={() => handleSelectKanji(k)}
+              >
+                <span className="char">{k.char}</span>
+                <span className="reading">{k.on.split('・')[0] || k.kun.split('・')[0]}</span>
+              </KanjiItem>
+            ))}
+          </KanjiList>
+        </Card>
+
+        {/* CENTER COLUMN: Canvas Area */}
+        <Card>
+          {currentKanji && (
+            <>
+              <KanjiInfo>
+                <KanjiBig>{currentKanji.char}</KanjiBig>
+                <KanjiMeta>
+                  <KanjiMeaning>{currentKanji.meaning}</KanjiMeaning>
+                  <KanjiReadings>
+                    {currentKanji.on && currentKanji.on !== '—' && (
+                      <ReadingBadge $type="on">{currentKanji.on}</ReadingBadge>
+                    )}
+                    {currentKanji.kun && currentKanji.kun !== '—' && (
+                      <ReadingBadge $type="kun">{currentKanji.kun}</ReadingBadge>
+                    )}
+                  </KanjiReadings>
+                </KanjiMeta>
+                <StrokesInfo>
+                  <div className="num">{currentKanji.strokes}</div>
+                  <div className="label">strokes</div>
+                </StrokesInfo>
+              </KanjiInfo>
+
+              <CanvasWrap>
+                <CanvasBox>
+                  <canvas 
+                    ref={guideCanvasRef} 
+                    width={340} 
+                    height={340} 
+                    id="guideCanvas"
+                    style={{ opacity: hintEnabled ? 0.15 : 0.08 }}
+                  />
+                  <canvas 
+                    ref={drawCanvasRef} 
+                    width={340} 
+                    height={340} 
+                    id="drawCanvas"
+                    onMouseDown={handlePointerDown}
+                    onMouseMove={handlePointerMove}
+                    onMouseUp={handlePointerUp}
+                    onMouseLeave={handlePointerUp}
+                    onTouchStart={handlePointerDown}
+                    onTouchMove={handlePointerMove}
+                    onTouchEnd={handlePointerUp}
+                    onTouchCancel={handlePointerUp}
+                  />
+                </CanvasBox>
+
+                <CanvasControls>
+                  <HintToggle>
+                    <ToggleSwitch $on={hintEnabled} onClick={() => setHintEnabled(!hintEnabled)} />
+                    <span>Ghost Guide</span>
+                  </HintToggle>
+
+                  <StrokeCounter>
+                    Stroke {strokeCount} / {currentKanji.strokes}
+                  </StrokeCounter>
+
+                  <Btn $variant="danger" onClick={clearCanvas} disabled={isChecking}>Clear</Btn>
+                  <Btn $variant="primary" onClick={handleCheck} disabled={isChecking || strokeCount === 0}>Check ✓</Btn>
+                </CanvasControls>
+              </CanvasWrap>
+
+              <ResultBox>
+                <ResultLabel>Accuracy Score</ResultLabel>
+                <ResultScore>
+                  <ScoreBarWrap>
+                    <ScoreBar $score={result ? result.score : 0} />
+                  </ScoreBarWrap>
+                  <ScoreNum $score={result ? result.score : null}>
+                    {result ? `${result.score}%` : '—'}
+                  </ScoreNum>
+                </ResultScore>
+                {isChecking ? (
+                  <LoadingDots>
+                    <span>Analyzing stroke pattern</span>
+                    <div className="dots"><span></span><span></span><span></span></div>
+                  </LoadingDots>
+                ) : (
+                  <ResultFeedback>
+                    {result ? (
+                      <>
+                        <span style={{ 
+                          color: result.score >= 75 ? '#10b981' : result.score >= 50 ? '#f6ad55' : '#ef4444', 
+                          fontWeight: 700 
+                        }}>
+                          {result.grade} {result.score >= 80 ? '🎉' : result.score >= 60 ? '👍' : '💪'}
+                        </span><br />
+                        <span>{result.feedback}</span>
+                      </>
+                    ) : (
+                      <span style={{ fontFamily: "'DM Mono', monospace", fontSize: '0.75rem' }}>
+                        Draw the kanji above, then press Check to get feedback.
+                      </span>
+                    )}
+                  </ResultFeedback>
+                )}
+              </ResultBox>
+            </>
+          )}
+        </Card>
+
+        {/* RIGHT COLUMN: Stats & Progress */}
+        <RightColumn>
+          {/* Progress Ring */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Session Progress</CardTitle>
+            </CardHeader>
+            <ProgressRingWrap>
+              <svg width="96" height="96" viewBox="0 0 96 96">
+                <circle cx="48" cy="48" r="38" fill="none" stroke="var(--background)" strokeWidth="8"/>
+                <circle 
+                  cx="48" cy="48" r="38" 
+                  fill="none" stroke="var(--primary)" strokeWidth="8"
+                  strokeDasharray="238.76" 
+                  strokeDashoffset={ringOffset} 
+                  strokeLinecap="round" 
+                  style={{ transition: 'stroke-dashoffset 0.5s ease' }}
+                />
+              </svg>
+              <div style={{ marginTop: '-72px', marginBottom: '56px', textAlign: 'center', zIndex: 1, position: 'relative' }}>
+                <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--foreground)' }}>{progressPct}%</div>
+                <div style={{ fontSize: '0.6rem', fontFamily: "'DM Mono', monospace", color: 'var(--text-secondary)' }}>done</div>
+              </div>
+              <div style={{ textAlign: 'center', fontSize: '0.7rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace", letterSpacing: '0.05em' }}>
+                {session.practiced} / {totalInLevel} practiced
+              </div>
+            </ProgressRingWrap>
+            <div style={{ padding: '0 12px 12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <StatRow>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace" }}>Correct</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#10b981' }}>{session.correct}</span>
+              </StatRow>
+              <StatRow>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace" }}>Avg Score</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)' }}>{avgScore}%</span>
+              </StatRow>
+              <StatRow>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace" }}>Streak</span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--foreground)' }}>🔥 {session.streak}</span>
+              </StatRow>
+            </div>
+          </Card>
+
+          {/* Stroke Guide */}
+          {currentKanji && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Stroke Order</CardTitle>
+              </CardHeader>
+              <StrokeGuide>
+                {Array.from({ length: currentKanji.strokes }).map((_, i) => (
+                  <StrokeStep 
+                    key={i} 
+                    $state={i < strokeCount ? 'done' : i === strokeCount ? 'current' : 'pending'}
+                  >
+                    {currentKanji.char}
+                    <span className="step-num">{i + 1}</span>
+                  </StrokeStep>
+                ))}
+              </StrokeGuide>
+            </Card>
+          )}
+
+          {/* History */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Recent Practice</CardTitle>
+            </CardHeader>
+            <HistoryList>
+              {history.map((h, i) => (
+                <HistoryItem key={i}>
+                  <span style={{ 
+                    fontFamily: "'Noto Serif JP', serif", 
+                    fontSize: '1rem', width: '24px', textAlign: 'center',
+                    color: h.score >= 75 ? 'var(--primary)' : h.score >= 50 ? '#f6ad55' : '#ef4444'
+                  }}>
+                    {h.char}
+                  </span>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace" }}>
+                    {h.meaning}
+                  </span>
+                  <HistoryScore $score={h.score}>{h.score}%</HistoryScore>
+                </HistoryItem>
+              ))}
+            </HistoryList>
+          </Card>
+
+        </RightColumn>
+      </WriterGrid>
     </PageContainer>
   );
 }
