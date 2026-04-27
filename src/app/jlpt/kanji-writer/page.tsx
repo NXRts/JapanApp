@@ -12,8 +12,8 @@ const PageContainer = styled.div`
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  gap: 2rem;
-  padding: 2rem;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem 2rem 2rem;
   min-height: 100vh;
   color: var(--foreground);
 
@@ -22,8 +22,21 @@ const PageContainer = styled.div`
   }
 `;
 
+const HeaderRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+`;
+
 const PageHeader = styled.div`
-  margin-bottom: 2rem;
   h1 {
     font-size: 1.9rem;
     font-weight: 800;
@@ -42,7 +55,6 @@ const PageHeader = styled.div`
 const LevelTabs = styled.div`
   display: flex;
   gap: 6px;
-  margin-bottom: 1.5rem;
   flex-wrap: wrap;
 `;
 
@@ -804,22 +816,24 @@ export default function KanjiWriterPage() {
         current="Kanji Writer" 
       />
       
-      <PageHeader>
-        <h1>Kanji Writer</h1>
-        <p>// Practice writing kanji with real-time stroke analysis</p>
-      </PageHeader>
+      <HeaderRow>
+        <PageHeader>
+          <h1>Kanji Writer</h1>
+          <p>// Practice writing kanji with real-time stroke analysis</p>
+        </PageHeader>
 
-      <LevelTabs>
-        {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
-          <LevelTab 
-            key={lvl} 
-            $active={currentLevel === lvl}
-            onClick={() => handleLevelChange(lvl)}
-          >
-            {lvl}
-          </LevelTab>
-        ))}
-      </LevelTabs>
+        <LevelTabs>
+          {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
+            <LevelTab 
+              key={lvl} 
+              $active={currentLevel === lvl}
+              onClick={() => handleLevelChange(lvl)}
+            >
+              {lvl}
+            </LevelTab>
+          ))}
+        </LevelTabs>
+      </HeaderRow>
 
       <WriterGrid>
         {/* LEFT COLUMN: Kanji List */}
