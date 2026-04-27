@@ -70,29 +70,28 @@ const RegisterButton = styled(Link)`
 `;
 
 const NavContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0.75rem 1.5rem;
+  width: 100%;
+  padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 70px;
+  height: 56px;
 
   @media (max-width: 600px) {
-    padding: 0.75rem 1rem; /* Slightly tighter padding on mobile */
+    padding: 0 1rem;
   }
 `;
 
 const Logo = styled(Link)`
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: 1rem;
+  font-weight: 700;
   text-decoration: none;
   color: var(--foreground);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 8px;
   transition: opacity 0.2s;
-  z-index: 102; /* High enough to sit securely above the mobile menu */
+  z-index: 102;
 
   &:hover {
     opacity: 0.8;
@@ -105,8 +104,8 @@ const Logo = styled(Link)`
   }
 
   @media (max-width: 600px) {
-    font-size: 1.25rem;
-    gap: 0.3rem;
+    font-size: 0.95rem;
+    gap: 6px;
   }
 `;
 
@@ -124,36 +123,19 @@ const NavList = styled.ul`
 `;
 
 const NavItem = styled.li`
-  font-size: 0.95rem;
-  font-weight: 500;
   position: relative;
 `;
 
 const StyledLink = styled(Link) <{ $active?: boolean }>`
   color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
   text-decoration: none;
-  transition: all 0.2s ease;
-  font-weight: ${({ $active }) => ($active ? '600' : '500')};
-  position: relative;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
   
   &:hover {
     color: var(--primary);
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: ${({ $active }) => ($active ? '100%' : '0')};
-    height: 2px;
-    background: var(--primary);
-    transition: width 0.3s ease;
-    border-radius: 2px;
-  }
-
-  &:hover::after {
-    width: 100%;
   }
 `;
 
@@ -246,51 +228,20 @@ const Badge = styled.span`
 `;
 
 const LevelBadge = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem 0.9rem;
-  background: rgba(var(--primary-rgb), 0.08);
-  border: 1px solid rgba(var(--primary-rgb), 0.2);
-  border-radius: 999px;
+  font-size: 0.72rem;
+  font-family: 'DM Mono', monospace;
+  background: rgba(var(--primary-rgb), 0.1);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 20px;
+  color: var(--primary);
   cursor: pointer;
   transition: all 0.2s;
   
   &:hover {
-    background: rgba(var(--primary-rgb), 0.12);
-    transform: translateY(-1px);
+    background: rgba(var(--primary-rgb), 0.15);
+    border-color: var(--primary);
   }
-
-  @media (max-width: 600px) {
-    padding: 0.3rem 0.6rem;
-    gap: 0.4rem;
-  }
-`;
-
-const LevelText = styled.span`
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: var(--primary);
-  white-space: nowrap;
-`;
-
-const ExpBar = styled.div`
-  width: 60px;
-  height: 6px;
-  background: var(--border);
-  border-radius: 999px;
-  overflow: hidden;
-
-  @media (max-width: 600px) {
-    display: none;
-  }
-`;
-
-const ExpFill = styled.div<{ $percent: number }>`
-  width: ${({ $percent }) => $percent}%;
-  height: 100%;
-  background: var(--primary);
-  border-radius: 999px;
 `;
 
 const MobileMenu = styled.div<{ $isOpen: boolean }>`
@@ -472,10 +423,7 @@ export function Navbar() {
           <RightNavContainer>
             <Link href="/stats" style={{ textDecoration: 'none' }}>
               <LevelBadge title={`${progress.exp} Total EXP`}>
-                <LevelText>LVL {level}</LevelText>
-                <ExpBar>
-                  <ExpFill $percent={percent} />
-                </ExpBar>
+                LVL {level} {'▰'.repeat(Math.round(percent / 20)) + '▱'.repeat(5 - Math.round(percent / 20))}
               </LevelBadge>
             </Link>
 

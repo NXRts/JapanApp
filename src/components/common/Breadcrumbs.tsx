@@ -7,26 +7,24 @@ import Link from 'next/link';
 const Nav = styled.nav`
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-size: 1.1rem;
+  gap: 6px;
+  font-size: 0.78rem;
   color: var(--text-secondary);
-  margin-bottom: 2.5rem;
+  font-family: 'DM Mono', monospace;
   width: 100%;
   
   /* Layout alignment - stays left even in centered containers */
   justify-content: flex-start;
 
   @media (max-width: 768px) {
-    font-size: 1rem;
-    margin-bottom: 2rem;
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
   }
 `;
 
 const CrumbLink = styled(Link)`
-  color: var(--foreground);
+  color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 800;
-  letter-spacing: -0.02em;
   transition: all 0.2s ease;
   
   &:hover {
@@ -35,14 +33,11 @@ const CrumbLink = styled(Link)`
 `;
 
 const Separator = styled.span`
-  opacity: 0.3;
-  font-weight: 300;
+  color: rgba(var(--foreground-rgb), 0.3);
 `;
 
 const CurrentPage = styled.span`
-  font-weight: 500;
-  opacity: 0.6;
-  color: var(--text-secondary);
+  color: var(--foreground);
 `;
 
 interface BreadcrumbItem {
