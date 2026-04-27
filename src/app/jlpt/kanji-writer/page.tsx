@@ -12,8 +12,8 @@ const PageContainer = styled.div`
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  gap: 1.5rem;
-  padding: 0 2rem 2rem 2rem;
+  gap: 2rem;
+  padding: 2rem;
   min-height: 100vh;
   color: var(--foreground);
 
@@ -22,17 +22,8 @@ const PageContainer = styled.div`
   }
 `;
 
-const BreadcrumbWrap = styled.div`
-  padding: 16px 2rem;
-  width: 100%;
-  
-  @media (max-width: 600px) {
-    padding: 16px 1rem;
-  }
-`;
-
 const PageHeader = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   h1 {
     font-size: 1.9rem;
     font-weight: 800;
@@ -804,18 +795,16 @@ export default function KanjiWriterPage() {
   const ringOffset = 238.76 - (238.76 * Math.min(progressPct, 100) / 100);
 
   return (
-    <>
-      <BreadcrumbWrap>
-        <Breadcrumbs 
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'JLPT Mastery', href: '/jlpt' }
-          ]} 
-          current="Kanji Writer" 
-        />
-      </BreadcrumbWrap>
-      <PageContainer>
-        <PageHeader>
+    <PageContainer>
+      <Breadcrumbs 
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'JLPT Mastery', href: '/jlpt' }
+        ]} 
+        current="Kanji Writer" 
+      />
+      
+      <PageHeader>
         <h1>Kanji Writer</h1>
         <p>// Practice writing kanji with real-time stroke analysis</p>
       </PageHeader>
@@ -1055,6 +1044,5 @@ export default function KanjiWriterPage() {
         </RightColumn>
       </WriterGrid>
     </PageContainer>
-    </>
   );
 }
