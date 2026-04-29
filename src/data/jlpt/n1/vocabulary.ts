@@ -561,4 +561,285 @@ export const n1Vocabulary: VocabularyItem[] = [
       english: "Memiliki kekuatan mental yang tangguh untuk mengatasi kesulitan."
     }
   }
+,
+  {
+    id: "v-n1-gizen",
+    level: "N1",
+    word: "偽善",
+    reading: "ぎぜん",
+    romaji: "gizen",
+    meaning: "Kemunafikan",
+    category: "noun",
+    example: {
+      japanese: "彼の言葉は偽善に満ちている。",
+      romaji: "Kare no kotoba wa gizen ni michite iru.",
+      english: "Kata-katanya penuh dengan kemunafikan."
+    }
+  },
+  {
+    id: "v-n1-ketsudan",
+    level: "N1",
+    word: "決断",
+    reading: "けつだん",
+    romaji: "ketsudan",
+    meaning: "Keputusan (Tegas)",
+    category: "noun",
+    example: {
+      japanese: "重大な決断を下す。",
+      romaji: "Juudaina ketsudan o kudasu.",
+      english: "Mengambil keputusan yang sangat penting."
+    }
+  },
+  {
+    id: "v-n1-keno",
+    level: "N1",
+    word: "嫌悪",
+    reading: "けんお",
+    romaji: "keno",
+    meaning: "Kebencian / Kejijikan",
+    category: "noun",
+    example: {
+      japanese: "彼は嘘に対して嫌悪感を抱く。",
+      romaji: "Kare wa uso ni taishite keno-kan o idaku.",
+      english: "Dia memiliki rasa jijik terhadap kebohongan."
+    }
+  },
+  {
+    id: "v-n1-keni",
+    level: "N1",
+    word: "権威",
+    reading: "けんい",
+    romaji: "ken'i",
+    meaning: "Otoritas / Wibawa",
+    category: "noun",
+    example: {
+      japanese: "彼はその分野の権威です。",
+      romaji: "Kare wa sono bunya no ken'i desu.",
+      english: "Dia adalah otoritas (ahli utama) di bidang tersebut."
+    }
+  },
+  {
+    id: "v-n1-kouken",
+    level: "N1",
+    word: "貢献",
+    reading: "こうけん",
+    romaji: "kouken",
+    meaning: "Kontribusi",
+    category: "noun",
+    example: {
+      japanese: "社会に貢献したい。",
+      romaji: "Shakai ni kouken shitai.",
+      english: "Saya ingin berkontribusi pada masyarakat."
+    }
+  },
+  {
+    id: "v-n1-koufun",
+    level: "N1",
+    word: "興奮",
+    reading: "こうふん",
+    romaji: "koufun",
+    meaning: "Kegembiraan / Eksitasi",
+    category: "noun",
+    example: {
+      japanese: "観客は興奮して立ち上がった。",
+      romaji: "Kankyaku wa koufun shite tachiagatta.",
+      english: "Para penonton berdiri karena kegirangan/kegembiraan."
+    }
+  },
+  {
+    id: "v-n1-kokka",
+    level: "N1",
+    word: "国家",
+    reading: "こっか",
+    romaji: "kokka",
+    meaning: "Negara (State)",
+    category: "noun",
+    example: {
+      japanese: "国家の安全を守る。",
+      romaji: "Kokka no anzen o mamoru.",
+      english: "Melindungi keamanan negara."
+    }
+  },
+  {
+    id: "v-n1-soumei",
+    level: "N1",
+    word: "聡明",
+    reading: "そうめい",
+    romaji: "soumei",
+    meaning: "Cerdas / Bijaksana",
+    category: "adjective",
+    example: {
+      japanese: "彼女はとても聡明な女性だ。",
+      romaji: "Kanojo wa totemo soumeina josei da.",
+      english: "Dia adalah wanita yang sangat cerdas."
+    }
+  },
+  {
+    id: "v-n1-dakyou",
+    level: "N1",
+    word: "妥協",
+    reading: "だきょう",
+    romaji: "dakyou",
+    meaning: "Kompromi",
+    category: "noun",
+    example: {
+      japanese: "絶対に妥協はしない。",
+      romaji: "Zettai ni dakyou wa shinai.",
+      english: "Saya sama sekali tidak akan berkompromi."
+    }
+  },
+  {
+    id: "v-n1-chikuseki",
+    level: "N1",
+    word: "蓄積",
+    reading: "ちくせき",
+    romaji: "chikuseki",
+    meaning: "Akumulasi / Penumpukan",
+    category: "noun",
+    example: {
+      japanese: "疲労が蓄積している。",
+      romaji: "Hirou ga chikuseki shite iru.",
+      english: "Kelelahan sedang menumpuk."
+    }
+  },
+  {
+    id: "v-n1-chitsujo",
+    level: "N1",
+    word: "秩序",
+    reading: "ちつじょ",
+    romaji: "chitsujo",
+    meaning: "Ketertiban / Orde",
+    category: "noun",
+    example: {
+      japanese: "社会の秩序を維持する。",
+      romaji: "Shakai no chitsujo o iji suru.",
+      english: "Memelihara ketertiban masyarakat."
+    }
+  },
+  {
+    id: "v-n1-chuushou",
+    level: "N1",
+    word: "抽象",
+    reading: "ちゅうしょう",
+    romaji: "chuushou",
+    meaning: "Abstrak",
+    category: "noun",
+    example: {
+      japanese: "彼の説明は抽象的すぎる。",
+      romaji: "Kare no setsumei wa chuushouteki sugiru.",
+      english: "Penjelasannya terlalu abstrak."
+    }
+  },
+  {
+    id: "v-n1-touhi",
+    level: "N1",
+    word: "逃避",
+    reading: "とうひ",
+    romaji: "touhi",
+    meaning: "Pelarian",
+    category: "noun",
+    example: {
+      japanese: "現実から逃避してはいけない。",
+      romaji: "Genjitsu kara touhi shite wa ikenai.",
+      english: "Tidak boleh lari dari kenyataan."
+    }
+  },
+  {
+    id: "v-n1-toushi",
+    level: "N1",
+    word: "投資",
+    reading: "とうし",
+    romaji: "toushi",
+    meaning: "Investasi",
+    category: "noun",
+    example: {
+      japanese: "株式に投資する。",
+      romaji: "Kabushiki ni toushi suru.",
+      english: "Berinvestasi dalam saham."
+    }
+  },
+  {
+    id: "v-n1-hinkon",
+    level: "N1",
+    word: "貧困",
+    reading: "ひんこん",
+    romaji: "hinkon",
+    meaning: "Kemiskinan",
+    category: "noun",
+    example: {
+      japanese: "貧困問題を解決する。",
+      romaji: "Hinkon mondai o kaiketsu suru.",
+      english: "Menyelesaikan masalah kemiskinan."
+    }
+  },
+  {
+    id: "v-n1-fukkyuu",
+    level: "N1",
+    word: "復旧",
+    reading: "ふっきゅう",
+    romaji: "fukkyuu",
+    meaning: "Pemulihan (Sistem/Infrastruktur)",
+    category: "noun",
+    example: {
+      japanese: "停電が復旧した。",
+      romaji: "Teiden ga fukkyuu shita.",
+      english: "Pemadaman listrik telah pulih."
+    }
+  },
+  {
+    id: "v-n1-mujun",
+    level: "N1",
+    word: "矛盾",
+    reading: "むじゅん",
+    romaji: "mujun",
+    meaning: "Kontradiksi",
+    category: "noun",
+    example: {
+      japanese: "彼の言動には矛盾がある。",
+      romaji: "Kare no gendou ni wa mujun ga aru.",
+      english: "Ada kontradiksi dalam ucapan dan tindakannya."
+    }
+  },
+  {
+    id: "v-n1-yuuyou",
+    level: "N1",
+    word: "有用",
+    reading: "ゆうよう",
+    romaji: "yuuyou",
+    meaning: "Berguna / Bermanfaat",
+    category: "adjective",
+    example: {
+      japanese: "有用な情報を得る。",
+      romaji: "Yuuyouna jouhou o eru.",
+      english: "Mendapatkan informasi yang berguna."
+    }
+  },
+  {
+    id: "v-n1-rinri",
+    level: "N1",
+    word: "倫理",
+    reading: "りんり",
+    romaji: "rinri",
+    meaning: "Etika",
+    category: "noun",
+    example: {
+      japanese: "医療倫理について話し合う。",
+      romaji: "Iryou rinri ni tsuite hanashiau.",
+      english: "Membicarakan tentang etika medis."
+    }
+  },
+  {
+    id: "v-n1-reigai",
+    level: "N1",
+    word: "例外",
+    reading: "れいがい",
+    romaji: "reigai",
+    meaning: "Pengecualian",
+    category: "noun",
+    example: {
+      japanese: "例外は認められません。",
+      romaji: "Reigai wa mitomeraremasen.",
+      english: "Pengecualian tidak diizinkan."
+    }
+  }
 ];

@@ -561,4 +561,271 @@ export const n3Vocabulary: VocabularyItem[] = [
       english: "Saya menemukan burung yang langka."
     }
   }
+,
+  {
+    id: "v-n3-kansha",
+    level: "N3",
+    word: "感謝",
+    reading: "かんしゃ",
+    romaji: "kansha",
+    meaning: "Rasa Syukur / Berterima kasih",
+    category: "noun",
+    example: {
+      japanese: "彼に深く感謝しています。",
+      romaji: "Kare ni fukaku kansha shite imasu.",
+      english: "Saya sangat berterima kasih kepadanya."
+    }
+  },
+  {
+    id: "v-n3-kankou",
+    level: "N3",
+    word: "観光",
+    reading: "かんこう",
+    romaji: "kankou",
+    meaning: "Pariwisata / Tamasya",
+    category: "noun",
+    example: {
+      japanese: "京都へ観光に行きます。",
+      romaji: "Kyouto e kankou ni ikimasu.",
+      english: "Saya pergi bertamasya ke Kyoto."
+    }
+  },
+  {
+    id: "v-n3-kyoumi",
+    level: "N3",
+    word: "興味",
+    reading: "きょうみ",
+    romaji: "kyoumi",
+    meaning: "Minat / Ketertarikan",
+    category: "noun",
+    example: {
+      japanese: "日本の歴史に興味があります。",
+      romaji: "Nihon no rekishi ni kyoumi ga arimasu.",
+      english: "Saya memiliki minat pada sejarah Jepang."
+    }
+  },
+  {
+    id: "v-n3-hyougen",
+    level: "N3",
+    word: "表現",
+    reading: "ひょうげん",
+    romaji: "hyougen",
+    meaning: "Ekspresi / Ungkapan",
+    category: "noun",
+    example: {
+      japanese: "気持ちを言葉で表現する。",
+      romaji: "Kimochi o kotoba de hyougen suru.",
+      english: "Mengekspresikan perasaan dengan kata-kata."
+    }
+  },
+  {
+    id: "v-n3-jijou",
+    level: "N3",
+    word: "事情",
+    reading: "じじょう",
+    romaji: "jijou",
+    meaning: "Keadaan / Situasi",
+    category: "noun",
+    example: {
+      japanese: "家庭の事情で退社します。",
+      romaji: "Katei no jijou de taisha shimasu.",
+      english: "Saya keluar dari perusahaan karena keadaan keluarga."
+    }
+  },
+  {
+    id: "v-n3-chishiki",
+    level: "N3",
+    word: "知識",
+    reading: "ちしき",
+    romaji: "chishiki",
+    meaning: "Pengetahuan",
+    category: "noun",
+    example: {
+      japanese: "専門的な知識が必要です。",
+      romaji: "Senmontekina chishiki ga hitsuyou desu.",
+      english: "Dibutuhkan pengetahuan khusus."
+    }
+  },
+  {
+    id: "v-n3-ishiki",
+    level: "N3",
+    word: "意識",
+    reading: "いしき",
+    romaji: "ishiki",
+    meaning: "Kesadaran",
+    category: "noun",
+    example: {
+      japanese: "健康への意識が高まっている。",
+      romaji: "Kenkou e no ishiki ga takamatte iru.",
+      english: "Kesadaran akan kesehatan sedang meningkat."
+    }
+  },
+  {
+    id: "v-n3-sekinin",
+    level: "N3",
+    word: "責任",
+    reading: "せきにん",
+    romaji: "sekinin",
+    meaning: "Tanggung jawab",
+    category: "noun",
+    example: {
+      japanese: "自分の行動に責任を持つ。",
+      romaji: "Jibun no koudou ni sekinin o motsu.",
+      english: "Bertanggung jawab atas tindakan sendiri."
+    }
+  },
+  {
+    id: "v-n3-katsudou",
+    level: "N3",
+    word: "活動",
+    reading: "かつどう",
+    romaji: "katsudou",
+    meaning: "Aktivitas / Kegiatan",
+    category: "noun",
+    example: {
+      japanese: "ボランティア活動に参加する。",
+      romaji: "Borantia katsudou ni sanka suru.",
+      english: "Berpartisipasi dalam kegiatan relawan."
+    }
+  },
+  {
+    id: "v-n3-kankyou",
+    level: "N3",
+    word: "環境",
+    reading: "かんきょう",
+    romaji: "kankyou",
+    meaning: "Lingkungan",
+    category: "noun",
+    example: {
+      japanese: "環境を守るために何ができるか。",
+      romaji: "Kankyou o mamoru tame ni nani ga dekiru ka.",
+      english: "Apa yang bisa dilakukan untuk melindungi lingkungan?"
+    }
+  },
+  {
+    id: "v-n3-kansei",
+    level: "N3",
+    word: "完成",
+    reading: "かんせい",
+    romaji: "kansei",
+    meaning: "Selesai / Rampung",
+    category: "noun",
+    example: {
+      japanese: "新しいビルが完成した。",
+      romaji: "Atarashii biru ga kansei shita.",
+      english: "Gedung baru telah selesai dibangun."
+    }
+  },
+  {
+    id: "v-n3-jiken",
+    level: "N3",
+    word: "事件",
+    reading: "じけん",
+    romaji: "jiken",
+    meaning: "Kejadian / Insiden / Kasus",
+    category: "noun",
+    example: {
+      japanese: "その事件は昨日起きた。",
+      romaji: "Sono jiken wa kinou okita.",
+      english: "Insiden itu terjadi kemarin."
+    }
+  },
+  {
+    id: "v-n3-kioku",
+    level: "N3",
+    word: "記憶",
+    reading: "きおく",
+    romaji: "kioku",
+    meaning: "Ingatan / Memori",
+    category: "noun",
+    example: {
+      japanese: "子供の頃の記憶がない。",
+      romaji: "Kodomo no koro no kioku ga nai.",
+      english: "Saya tidak punya ingatan masa kecil."
+    }
+  },
+  {
+    id: "v-n3-sanka",
+    level: "N3",
+    word: "参加",
+    reading: "さんか",
+    romaji: "sanka",
+    meaning: "Partisipasi",
+    category: "noun",
+    example: {
+      japanese: "コンテストに参加するつもりです。",
+      romaji: "Kontesuto ni sanka suru tsumori desu.",
+      english: "Saya berencana berpartisipasi dalam kontes."
+    }
+  },
+  {
+    id: "v-n3-seikaku",
+    level: "N3",
+    word: "正確",
+    reading: "せいかく",
+    romaji: "seikaku",
+    meaning: "Akurat / Tepat",
+    category: "adjective",
+    example: {
+      japanese: "正確な時間を教えてください。",
+      romaji: "Seikaku na jikan o oshiete kudasai.",
+      english: "Tolong beritahu waktu yang akurat."
+    }
+  },
+  {
+    id: "v-n3-shizen",
+    level: "N3",
+    word: "自然",
+    reading: "しぜん",
+    romaji: "shizen",
+    meaning: "Alam",
+    category: "noun",
+    example: {
+      japanese: "自然の中でリラックスする。",
+      romaji: "Shizen no naka de rirakkusu suru.",
+      english: "Bersantai di tengah alam."
+    }
+  },
+  {
+    id: "v-n3-kikai",
+    level: "N3",
+    word: "機会",
+    reading: "きかい",
+    romaji: "kikai",
+    meaning: "Kesempatan",
+    category: "noun",
+    example: {
+      japanese: "またとない機会を逃すな。",
+      romaji: "Matatonai kikai o nogasu na.",
+      english: "Jangan lewatkan kesempatan yang tak akan datang lagi."
+    }
+  },
+  {
+    id: "v-n3-tokuchou",
+    level: "N3",
+    word: "特徴",
+    reading: "とくちょう",
+    romaji: "tokuchou",
+    meaning: "Ciri khas / Karakteristik",
+    category: "noun",
+    example: {
+      japanese: "この製品の特徴は何ですか。",
+      romaji: "Kono seihin no tokuchou wa nan desu ka.",
+      english: "Apa ciri khas dari produk ini?"
+    }
+  },
+  {
+    id: "v-n3-kibou",
+    level: "N3",
+    word: "希望",
+    reading: "きぼう",
+    romaji: "kibou",
+    meaning: "Harapan",
+    category: "noun",
+    example: {
+      japanese: "平和な未来を希望する。",
+      romaji: "Heiwa na mirai o kibou suru.",
+      english: "Berharap akan masa depan yang damai."
+    }
+  }
 ];

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { KANJI_DATA } from '@/data/kanji';
 
 // --- STYLES ---
 
@@ -574,53 +575,6 @@ const LoadingDots = styled.div`
 `;
 
 // --- DATA ---
-
-const KANJI_DATA: Record<string, any[]> = {
-  N5: [
-    { char:'日', meaning:'Sun / Day', on:'ニチ・ジツ', kun:'ひ・か', strokes:4 },
-    { char:'月', meaning:'Moon / Month', on:'ゲツ・ガツ', kun:'つき', strokes:4 },
-    { char:'火', meaning:'Fire', on:'カ', kun:'ひ', strokes:4 },
-    { char:'水', meaning:'Water', on:'スイ', kun:'みず', strokes:4 },
-    { char:'木', meaning:'Tree / Wood', on:'モク・ボク', kun:'き', strokes:4 },
-    { char:'金', meaning:'Gold / Money', on:'キン・コン', kun:'かね', strokes:8 },
-    { char:'土', meaning:'Earth / Soil', on:'ド・ト', kun:'つち', strokes:3 },
-    { char:'山', meaning:'Mountain', on:'サン', kun:'やま', strokes:3 },
-    { char:'川', meaning:'River', on:'セン', kun:'かわ', strokes:3 },
-    { char:'田', meaning:'Rice Field', on:'デン', kun:'た', strokes:5 },
-    { char:'人', meaning:'Person', on:'ジン・ニン', kun:'ひと', strokes:2 },
-    { char:'大', meaning:'Big / Large', on:'ダイ・タイ', kun:'おお', strokes:3 },
-    { char:'小', meaning:'Small / Little', on:'ショウ', kun:'ちい・こ', strokes:3 },
-    { char:'中', meaning:'Middle / Inside', on:'チュウ', kun:'なか', strokes:4 },
-    { char:'上', meaning:'Above / Up', on:'ジョウ', kun:'うえ', strokes:3 },
-    { char:'下', meaning:'Below / Down', on:'カ・ゲ', kun:'した', strokes:3 },
-    { char:'一', meaning:'One', on:'イチ・イツ', kun:'ひと', strokes:1 },
-    { char:'二', meaning:'Two', on:'ニ', kun:'ふた', strokes:2 },
-    { char:'三', meaning:'Three', on:'サン', kun:'み', strokes:3 },
-    { char:'四', meaning:'Four', on:'シ', kun:'よ', strokes:5 },
-  ],
-  N4: [
-    { char:'会', meaning:'Meeting / Society', on:'カイ・エ', kun:'あ', strokes:6 },
-    { char:'社', meaning:'Company / Shrine', on:'シャ', kun:'やしろ', strokes:7 },
-    { char:'国', meaning:'Country / Nation', on:'コク', kun:'くに', strokes:8 },
-    { char:'語', meaning:'Language / Word', on:'ゴ', kun:'かた', strokes:14 },
-    { char:'手', meaning:'Hand', on:'シュ', kun:'て', strokes:4 },
-    { char:'足', meaning:'Foot / Leg', on:'ソク', kun:'あし', strokes:7 },
-    { char:'電', meaning:'Electricity', on:'デン', kun:'—', strokes:13 },
-    { char:'車', meaning:'Car / Vehicle', on:'シャ', kun:'くるま', strokes:7 },
-    { char:'学', meaning:'Study / Learning', on:'ガク', kun:'まな', strokes:8 },
-    { char:'校', meaning:'School', on:'コウ', kun:'—', strokes:10 },
-    { char:'先', meaning:'Before / Previous', on:'セン', kun:'さき', strokes:6 },
-    { char:'生', meaning:'Life / Birth', on:'セイ・ショウ', kun:'い・う', strokes:5 },
-    { char:'年', meaning:'Year', on:'ネン', kun:'とし', strokes:6 },
-    { char:'気', meaning:'Spirit / Air', on:'キ・ケ', kun:'—', strokes:6 },
-    { char:'時', meaning:'Time / Hour', on:'ジ', kun:'とき', strokes:10 },
-    { char:'間', meaning:'Interval / Space', on:'カン・ケン', kun:'ま', strokes:12 },
-    { char:'長', meaning:'Long / Chief', on:'チョウ', kun:'なが', strokes:8 },
-    { char:'出', meaning:'Exit / Leave', on:'シュツ', kun:'で・だ', strokes:5 },
-    { char:'入', meaning:'Enter / Insert', on:'ニュウ', kun:'い・はい', strokes:2 },
-    { char:'本', meaning:'Book / Origin', on:'ホン', kun:'もと', strokes:5 },
-  ],
-};
 
 // --- COMPONENT ---
 
