@@ -561,4 +561,243 @@ export const n2Vocabulary: VocabularyItem[] = [
       english: "Diskusi yang aktif berlangsung dalam rapat."
     }
   }
+,
+  {
+    id: "v-n2-kanjiru",
+    level: "N2",
+    word: "感じる",
+    reading: "かんじる",
+    romaji: "kanjiru",
+    meaning: "Merasakan",
+    category: "verb",
+    example: {
+      japanese: "痛みを全く感じない。",
+      romaji: "Itami o mattaku kanjinai.",
+      english: "Saya sama sekali tidak merasakan sakit."
+    }
+  },
+  {
+    id: "v-n2-kakujitsu",
+    level: "N2",
+    word: "確実",
+    reading: "かくじつ",
+    romaji: "kakujitsu",
+    meaning: "Pasti / Tentu",
+    category: "adjective",
+    example: {
+      japanese: "彼の成功は確実だ。",
+      romaji: "Kare no seikou wa kakujitsu da.",
+      english: "Kesuksesannya sudah pasti."
+    }
+  },
+  {
+    id: "v-n2-kizuku",
+    level: "N2",
+    word: "築く",
+    reading: "きずく",
+    romaji: "kizuku",
+    meaning: "Membangun (Hubungan/Kekayaan)",
+    category: "verb",
+    example: {
+      japanese: "新しい人間関係を築く。",
+      romaji: "Atarashii ningen kankei o kizuku.",
+      english: "Membangun hubungan antarmanusia yang baru."
+    }
+  },
+  {
+    id: "v-n2-kokufuku",
+    level: "N2",
+    word: "克服",
+    reading: "こくふく",
+    romaji: "kokufuku",
+    meaning: "Mengatasi (Kelemahan/Penyakit)",
+    category: "noun",
+    example: {
+      japanese: "恐怖心を克服する。",
+      romaji: "Kyoufushin o kokufuku suru.",
+      english: "Mengatasi rasa takut."
+    }
+  },
+  {
+    id: "v-n2-giron",
+    level: "N2",
+    word: "議論",
+    reading: "ぎろん",
+    romaji: "giron",
+    meaning: "Diskusi / Perdebatan",
+    category: "noun",
+    example: {
+      japanese: "その問題について議論する。",
+      romaji: "Sono mondai ni tsuite giron suru.",
+      english: "Mendiskusikan tentang masalah tersebut."
+    }
+  },
+  {
+    id: "v-n2-kanousei",
+    level: "N2",
+    word: "可能性",
+    reading: "かのうせい",
+    romaji: "kanousei",
+    meaning: "Kemungkinan / Potensi",
+    category: "noun",
+    example: {
+      japanese: "彼が勝つ可能性は高い。",
+      romaji: "Kare ga katsu kanousei wa takai.",
+      english: "Kemungkinan dia menang sangat tinggi."
+    }
+  },
+  {
+    id: "v-n2-katsuyou",
+    level: "N2",
+    word: "活用",
+    reading: "かつよう",
+    romaji: "katsuyou",
+    meaning: "Pemanfaatan",
+    category: "noun",
+    example: {
+      japanese: "インターネットを活用する。",
+      romaji: "Intaanetto o katsuyou suru.",
+      english: "Memanfaatkan internet."
+    }
+  },
+  {
+    id: "v-n2-kyoukyuu",
+    level: "N2",
+    word: "供給",
+    reading: "きょうきゅう",
+    romaji: "kyoukyuu",
+    meaning: "Pasokan / Penawaran",
+    category: "noun",
+    example: {
+      japanese: "需要と供給のバランス。",
+      romaji: "Juyou to kyoukyuu no baransu.",
+      english: "Keseimbangan antara permintaan dan penawaran."
+    }
+  },
+  {
+    id: "v-n2-genshou",
+    level: "N2",
+    word: "減少",
+    reading: "げんしょう",
+    romaji: "genshou",
+    meaning: "Penurunan / Berkurang",
+    category: "noun",
+    example: {
+      japanese: "人口が減少している。",
+      romaji: "Jinkou ga genshou shite iru.",
+      english: "Populasi sedang menurun."
+    }
+  },
+  {
+    id: "v-n2-shiji",
+    level: "N2",
+    word: "指示",
+    reading: "しじ",
+    romaji: "shiji",
+    meaning: "Instruksi / Arahan",
+    category: "noun",
+    example: {
+      japanese: "上司の指示に従う。",
+      romaji: "Joushi no shiji ni shitagau.",
+      english: "Mematuhi instruksi atasan."
+    }
+  },
+  {
+    id: "v-n2-shitei",
+    level: "N2",
+    word: "指定",
+    reading: "してい",
+    romaji: "shitei",
+    meaning: "Penunjukan / Spesifikasi",
+    category: "noun",
+    example: {
+      japanese: "指定された席に座る。",
+      romaji: "Shitei sareta seki ni suwaru.",
+      english: "Duduk di kursi yang telah ditentukan."
+    }
+  },
+  {
+    id: "v-n2-shucchou",
+    level: "N2",
+    word: "出張",
+    reading: "しゅっちょう",
+    romaji: "shucchou",
+    meaning: "Perjalanan Dinas",
+    category: "noun",
+    example: {
+      japanese: "来週、東京へ出張します。",
+      romaji: "Raishuu, Toukyou e shucchou shimasu.",
+      english: "Minggu depan, saya akan melakukan perjalanan dinas ke Tokyo."
+    }
+  },
+  {
+    id: "v-n2-shouhi",
+    level: "N2",
+    word: "消費",
+    reading: "しょうひ",
+    romaji: "shouhi",
+    meaning: "Konsumsi",
+    category: "noun",
+    example: {
+      japanese: "エネルギーの消費を抑える。",
+      romaji: "Enerugii no shouhi o osaeru.",
+      english: "Menekan konsumsi energi."
+    }
+  },
+  {
+    id: "v-n2-shoumei",
+    level: "N2",
+    word: "証明",
+    reading: "しょうめい",
+    romaji: "shoumei",
+    meaning: "Bukti / Pembuktian",
+    category: "noun",
+    example: {
+      japanese: "自分の無実を証明する。",
+      romaji: "Jibun no mujitsu o shoumei suru.",
+      english: "Membuktikan ketidakbersalahan diri."
+    }
+  },
+  {
+    id: "v-n2-shinrai",
+    level: "N2",
+    word: "信頼",
+    reading: "しんらい",
+    romaji: "shinrai",
+    meaning: "Kepercayaan (Trust)",
+    category: "noun",
+    example: {
+      japanese: "彼は信頼できる人です。",
+      romaji: "Kare wa shinrai dekiru hito desu.",
+      english: "Dia adalah orang yang bisa dipercaya."
+    }
+  },
+  {
+    id: "v-n2-shingaku",
+    level: "N2",
+    word: "進学",
+    reading: "しんがく",
+    romaji: "shingaku",
+    meaning: "Melanjutkan Pendidikan",
+    category: "noun",
+    example: {
+      japanese: "大学へ進学する予定です。",
+      romaji: "Daigaku e shingaku suru yotei desu.",
+      english: "Saya berencana melanjutkan pendidikan ke universitas."
+    }
+  },
+  {
+    id: "v-n2-seigen",
+    level: "N2",
+    word: "制限",
+    reading: "せいげん",
+    romaji: "seigen",
+    meaning: "Batasan / Restriksi",
+    category: "noun",
+    example: {
+      japanese: "速度制限を守ってください。",
+      romaji: "Sokudo seigen o mamotte kudasai.",
+      english: "Tolong patuhi batas kecepatan."
+    }
+  }
 ];

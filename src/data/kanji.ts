@@ -1,0 +1,111 @@
+export interface KanjiItem {
+  char: string;
+  meaning: string;
+  on: string;
+  kun: string;
+  strokes: number;
+}
+
+export const KANJI_DATA: Record<string, KanjiItem[]> = {
+  N5: [
+    { char:'日', meaning:'Sun / Day', on:'ニチ・ジツ', kun:'ひ・か', strokes:4 },
+    { char:'月', meaning:'Moon / Month', on:'ゲツ・ガツ', kun:'つき', strokes:4 },
+    { char:'火', meaning:'Fire', on:'カ', kun:'ひ', strokes:4 },
+    { char:'水', meaning:'Water', on:'スイ', kun:'みず', strokes:4 },
+    { char:'木', meaning:'Tree / Wood', on:'モク・ボク', kun:'き', strokes:4 },
+    { char:'金', meaning:'Gold / Money', on:'キン・コン', kun:'かね', strokes:8 },
+    { char:'土', meaning:'Earth / Soil', on:'ド・ト', kun:'つち', strokes:3 },
+    { char:'山', meaning:'Mountain', on:'サン', kun:'やま', strokes:3 },
+    { char:'川', meaning:'River', on:'セン', kun:'かわ', strokes:3 },
+    { char:'田', meaning:'Rice Field', on:'デン', kun:'た', strokes:5 },
+    { char:'人', meaning:'Person', on:'ジン・ニン', kun:'ひと', strokes:2 },
+    { char:'大', meaning:'Big / Large', on:'ダイ・タイ', kun:'おお', strokes:3 },
+    { char:'小', meaning:'Small / Little', on:'ショウ', kun:'ちい・こ', strokes:3 },
+    { char:'中', meaning:'Middle / Inside', on:'チュウ', kun:'なか', strokes:4 },
+    { char:'上', meaning:'Above / Up', on:'ジョウ', kun:'うえ', strokes:3 },
+    { char:'下', meaning:'Below / Down', on:'カ・ゲ', kun:'した', strokes:3 },
+    { char:'一', meaning:'One', on:'イチ・イツ', kun:'ひと', strokes:1 },
+    { char:'二', meaning:'Two', on:'ニ', kun:'ふた', strokes:2 },
+    { char:'三', meaning:'Three', on:'サン', kun:'み', strokes:3 },
+    { char:'四', meaning:'Four', on:'シ', kun:'よ', strokes:5 },
+    { char:'五', meaning:'Five', on:'ゴ', kun:'いつ', strokes:4 },
+    { char:'六', meaning:'Six', on:'ロク', kun:'む・むい', strokes:4 },
+    { char:'七', meaning:'Seven', on:'シチ', kun:'なな・なの', strokes:2 },
+    { char:'八', meaning:'Eight', on:'ハチ', kun:'や・よう', strokes:2 },
+    { char:'九', meaning:'Nine', on:'キュウ・ク', kun:'ここの', strokes:2 },
+    { char:'十', meaning:'Ten', on:'ジュウ・ジッ', kun:'とお・と', strokes:2 },
+    { char:'百', meaning:'Hundred', on:'ヒャク', kun:'—', strokes:6 },
+    { char:'千', meaning:'Thousand', on:'セン', kun:'ち', strokes:3 },
+    { char:'万', meaning:'Ten Thousand', on:'マン・バン', kun:'—', strokes:3 },
+    { char:'円', meaning:'Yen / Circle', on:'エン', kun:'まる', strokes:4 },
+    { char:'年', meaning:'Year', on:'ネン', kun:'とし', strokes:6 }
+  ],
+  N4: [
+    { char:'会', meaning:'Meeting / Society', on:'カイ・エ', kun:'あ', strokes:6 },
+    { char:'社', meaning:'Company / Shrine', on:'シャ', kun:'やしろ', strokes:7 },
+    { char:'国', meaning:'Country / Nation', on:'コク', kun:'くに', strokes:8 },
+    { char:'語', meaning:'Language / Word', on:'ゴ', kun:'かた', strokes:14 },
+    { char:'手', meaning:'Hand', on:'シュ', kun:'て', strokes:4 },
+    { char:'足', meaning:'Foot / Leg', on:'ソク', kun:'あし', strokes:7 },
+    { char:'電', meaning:'Electricity', on:'デン', kun:'—', strokes:13 },
+    { char:'車', meaning:'Car / Vehicle', on:'シャ', kun:'くるま', strokes:7 },
+    { char:'学', meaning:'Study / Learning', on:'ガク', kun:'まな', strokes:8 },
+    { char:'校', meaning:'School', on:'コウ', kun:'—', strokes:10 },
+    { char:'先', meaning:'Before / Previous', on:'セン', kun:'さき', strokes:6 },
+    { char:'生', meaning:'Life / Birth', on:'セイ・ショウ', kun:'い・う', strokes:5 },
+    { char:'気', meaning:'Spirit / Air', on:'キ・ケ', kun:'—', strokes:6 },
+    { char:'時', meaning:'Time / Hour', on:'ジ', kun:'とき', strokes:10 },
+    { char:'間', meaning:'Interval / Space', on:'カン・ケン', kun:'ま', strokes:12 },
+    { char:'長', meaning:'Long / Chief', on:'チョウ', kun:'なが', strokes:8 },
+    { char:'出', meaning:'Exit / Leave', on:'シュツ', kun:'で・だ', strokes:5 },
+    { char:'入', meaning:'Enter / Insert', on:'ニュウ', kun:'い・はい', strokes:2 },
+    { char:'本', meaning:'Book / Origin', on:'ホン', kun:'もと', strokes:5 },
+    { char:'名', meaning:'Name', on:'メイ・ミョウ', kun:'な', strokes:6 },
+    { char:'白', meaning:'White', on:'ハク・ビャク', kun:'しろ', strokes:5 },
+    { char:'空', meaning:'Sky / Empty', on:'クウ', kun:'そら・あ・から', strokes:8 },
+    { char:'町', meaning:'Town', on:'チョウ', kun:'まち', strokes:7 },
+    { char:'村', meaning:'Village', on:'ソン', kun:'むら', strokes:7 },
+    { char:'雨', meaning:'Rain', on:'ウ', kun:'あめ・あま', strokes:8 }
+  ],
+  N3: [
+    { char:'愛', meaning:'Love', on:'アイ', kun:'—', strokes:13 },
+    { char:'暗', meaning:'Dark', on:'アン', kun:'くら', strokes:13 },
+    { char:'意', meaning:'Mind / Meaning', on:'イ', kun:'—', strokes:13 },
+    { char:'悲', meaning:'Sad', on:'ヒ', kun:'かな', strokes:12 },
+    { char:'苦', meaning:'Suffer / Bitter', on:'ク', kun:'くる・にが', strokes:8 },
+    { char:'寒', meaning:'Cold', on:'カン', kun:'さむ', strokes:12 },
+    { char:'暑', meaning:'Hot (weather)', on:'ショ', kun:'あつ', strokes:12 },
+    { char:'重', meaning:'Heavy', on:'ジュウ・チョウ', kun:'おも・かさ', strokes:9 },
+    { char:'軽', meaning:'Light', on:'ケイ', kun:'かる・かろ', strokes:12 },
+    { char:'早', meaning:'Early / Fast', on:'ソウ・サッ', kun:'はや', strokes:6 },
+    { char:'遅', meaning:'Slow / Late', on:'チ', kun:'おく・おそ', strokes:12 },
+    { char:'新', meaning:'New', on:'シン', kun:'あたら・あら', strokes:13 },
+    { char:'古', meaning:'Old', on:'コ', kun:'ふる', strokes:5 },
+    { char:'親', meaning:'Parent / Intimate', on:'シン', kun:'おや・した', strokes:16 },
+    { char:'友', meaning:'Friend', on:'ユウ', kun:'とも', strokes:4 }
+  ],
+  N2: [
+    { char:'確', meaning:'Certain / Firm', on:'カク', kun:'たし', strokes:15 },
+    { char:'率', meaning:'Rate / Lead', on:'ソツ・リツ', kun:'ひき', strokes:11 },
+    { char:'精', meaning:'Refined / Spirit', on:'セイ・ショウ', kun:'—', strokes:14 },
+    { char:'識', meaning:'Discriminate / Write', on:'シキ', kun:'—', strokes:19 },
+    { char:'際', meaning:'Occasion / Edge', on:'サイ', kun:'きわ', strokes:14 },
+    { char:'防', meaning:'Prevent', on:'ボウ', kun:'ふせ', strokes:7 },
+    { char:'限', meaning:'Limit', on:'ゲン', kun:'かぎ', strokes:9 },
+    { char:'制', meaning:'System / Control', on:'セイ', kun:'—', strokes:8 },
+    { char:'政', meaning:'Politics', on:'セイ・ショウ', kun:'まつりごと', strokes:9 },
+    { char:'治', meaning:'Cure / Govern', on:'ジ・チ', kun:'なお・おさ', strokes:8 }
+  ],
+  N1: [
+    { char:'憂', meaning:'Melancholy', on:'ユウ', kun:'うれ', strokes:15 },
+    { char:'覇', meaning:'Hegemony', on:'ハ', kun:'—', strokes:19 },
+    { char:'犠', meaning:'Sacrifice', on:'ギ', kun:'—', strokes:17 },
+    { char:'牲', meaning:'Victim / Offering', on:'セイ', kun:'—', strokes:9 },
+    { char:'繊', meaning:'Slender', on:'セン', kun:'—', strokes:17 },
+    { char:'驚', meaning:'Wonder / Surprise', on:'キョウ', kun:'おどろ', strokes:22 },
+    { char:'躍', meaning:'Leap', on:'ヤク', kun:'おど', strokes:21 },
+    { char:'露', meaning:'Dew / Expose', on:'ロ・ロウ', kun:'つゆ', strokes:21 },
+    { char:'顧', meaning:'Look Back', on:'コ', kun:'かえり', strokes:21 },
+    { char:'魔', meaning:'Demon / Magic', on:'マ', kun:'—', strokes:21 }
+  ]
+};
