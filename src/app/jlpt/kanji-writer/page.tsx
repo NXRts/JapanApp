@@ -716,33 +716,109 @@ export default function KanjiWriterPage() {
     setResult(null);
   };
 
-  // Logic to simulate AI feedback
+  const handleNextKanji = () => {
+    const currentList = KANJI_DATA[currentLevel];
+    if (!currentList || currentList.length === 0) return;
+    const currentIndex = currentList.findIndex(k => k.char === currentKanji.char);
+    const nextIndex = (currentIndex + 1) % currentList.length;
+    setCurrentKanji(currentList[nextIndex]);
+    clearCanvas();
+    setResult(null);
+    setStrokeCount(0);
+  };
+
+  // Calculate pixel overlap between user drawing and guide
+  const calculatePixelAccuracy = () => {
+    const drawCanvas = drawCanvasRef.current;
+    const guideCanvas = guideCanvasRef.current;
+    if (!drawCanvas || !guideCanvas) return 0;
+    
+    const drawCtx = drawCanvas.getContext('2d');
+    const guideCtx = guideCanvas.getContext('2d');
+    if (!drawCtx || !guideCtx) return 0;
+
+    const width = drawCanvas.width;
+    const height = drawCanvas.height;
+    
+    const drawData = drawCtx.getImageData(0, 0, width, height).data;
+    const guideData = guideCtx.getImageData(0, 0, width, height).data;
+
+    let hitPixels = 0;
+    let drawnPixels = 0;
+    let guidePixels = 0;
+
+    // Check alpha channels (every 4th byte is alpha)
+    for (let i = 3; i < drawData.length; i += 4) {
+      const drawAlpha = drawData[i];
+      const guideAlpha = guideData[i];
+      
+      const isDrawn = drawAlpha > 20;
+      const isGuide = guideAlpha > 20;
+
+      if (isDrawn) drawnPixels++;
+      if (isGuide) guidePixels++;
+      if (isDrawn && isGuide) hitPixels++;
+    }
+
+    if (drawnPixels === 0) return 0;
+    if (guidePixels === 0) return 0;
+
+    const precision = hitPixels / drawnPixels;
+    const recallRaw = hitPixels / guidePixels;
+    const recall = Math.min(1.0, recallRaw / 0.45); // Assuming 45% coverage is maximum due to brush vs font thickness
+
+    const f1 = 2 * (precision * recall) / (precision + recall + 0.0001);
+    return Math.round(f1 * 100);
+  };
+
+  // Logic to simulate AI feedback with pixel accuracy
   const handleCheck = () => {
     if (strokeCount === 0 || isChecking) return;
     setIsChecking(true);
     setResult(null);
 
-    // Simulate API delay
     setTimeout(() => {
       const expectedStrokes = currentKanji.strokes;
       const strokeDiff = Math.abs(strokeCount - expectedStrokes);
-      const score = Math.max(20, Math.round(100 - (strokeDiff * 15) - Math.random() * 20));
+      const pixelAccuracy = calculatePixelAccuracy();
       
+      let baseScore = 10;
+      let feedback = '';
+
+      if (strokeDiff === 0) {
+        if (pixelAccuracy >= 85) {
+          baseScore = 95;
+          feedback = `Luar Biasa! Jumlah goresan (${strokeCount}) tepat, dan bentuk kanjinya sangat presisi.`;
+        } else if (pixelAccuracy >= 60) {
+          baseScore = 80;
+          feedback = `Bagus! Jumlah goresan tepat, namun bentuk coretan masih bisa diperbaiki agar lebih rapi mengikuti pola.`;
+        } else {
+          baseScore = 55;
+          feedback = `Jumlah goresan (${strokeCount}) memang tepat, tetapi coretannya tidak membentuk pola kanji yang benar. Coba lagi!`;
+        }
+      } else if (strokeCount < expectedStrokes) {
+        baseScore = Math.min(80 - (strokeDiff * 20), pixelAccuracy);
+        baseScore = Math.max(10, baseScore);
+        feedback = `Kurang ${strokeDiff} goresan. Kanji ini membutuhkan ${expectedStrokes} goresan. Walaupun bentuknya mirip, aturan goresan harus dipatuhi.`;
+      } else {
+        baseScore = Math.min(80 - (strokeDiff * 20), pixelAccuracy);
+        baseScore = Math.max(10, baseScore);
+        feedback = `Kelebihan ${strokeDiff} goresan. Kanji ini hanya membutuhkan ${expectedStrokes} goresan. Perhatikan urutan dan cara menulisnya.`;
+      }
+
       let grade = 'Poor';
-      if (score >= 80) grade = 'Good';
-      else if (score >= 60) grade = 'Fair';
+      if (baseScore >= 90) grade = 'Excellent';
+      else if (baseScore >= 75) grade = 'Good';
+      else if (baseScore >= 50) grade = 'Fair';
 
-      const feedback = `Kamu menggunakan ${strokeCount} goresan dari ${expectedStrokes} yang diperlukan. ${strokeDiff === 0 ? 'Jumlah goresan sudah tepat!' : 'Perhatikan urutan dan jumlah goresan.'} Terus berlatih!`;
-
-      const newResult = { score, grade, feedback };
+      const newResult = { score: baseScore, grade, feedback };
       setResult(newResult);
       setIsChecking(false);
 
-      // Add to history and update session
-      setHistory(prev => [{ char: currentKanji.char, meaning: currentKanji.meaning, score }, ...prev]);
+      setHistory(prev => [{ char: currentKanji.char, meaning: currentKanji.meaning, score: baseScore }, ...prev]);
       setSession(prev => {
-        const newScores = [...prev.scores, score];
-        const isCorrect = score >= 70;
+        const newScores = [...prev.scores, baseScore];
+        const isCorrect = baseScore >= 90; // Lulus jika >= 90
         return {
           practiced: prev.practiced + 1,
           correct: prev.correct + (isCorrect ? 1 : 0),
@@ -750,8 +826,7 @@ export default function KanjiWriterPage() {
           streak: isCorrect ? prev.streak + 1 : 0
         };
       });
-
-    }, 1500);
+    }, 800); // Reduced delay to 800ms to feel more responsive since it's doing real calculation
   };
 
   // Stats calc
@@ -880,6 +955,9 @@ export default function KanjiWriterPage() {
 
                   <Btn $variant="danger" onClick={clearCanvas} disabled={isChecking}>Clear</Btn>
                   <Btn $variant="primary" onClick={handleCheck} disabled={isChecking || strokeCount === 0}>Check ✓</Btn>
+                  {result && result.score >= 90 && (
+                    <Btn $variant="primary" onClick={handleNextKanji} style={{ background: '#10b981', borderColor: '#10b981' }}>Next ➔</Btn>
+                  )}
                 </CanvasControls>
               </CanvasWrap>
 
