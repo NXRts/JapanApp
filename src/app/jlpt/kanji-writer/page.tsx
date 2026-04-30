@@ -1081,16 +1081,24 @@ export default function KanjiWriterPage() {
                   >
                     {svgPaths.length > 0 ? (
                       <svg viewBox="0 0 109 109" style={{ width: '100%', height: '100%' }}>
-                        <g stroke="rgba(255,255,255,0.15)" strokeWidth="6" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                           {svgPaths.map((d, idx) => (
+                        {/* Future strokes */}
+                        <g stroke="rgba(255,255,255,0.12)" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                           {svgPaths.slice(i + 1).map((d, idx) => (
                              <path key={`bg-${idx}`} d={d} />
                            ))}
                         </g>
-                        <g stroke="currentColor" strokeWidth="6" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                           {svgPaths.slice(0, i + 1).map((d, idx) => (
-                             <path key={`fg-${idx}`} d={d} />
+                        {/* Past strokes */}
+                        <g stroke="rgba(255,255,255,0.7)" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                           {svgPaths.slice(0, i).map((d, idx) => (
+                             <path key={`past-${idx}`} d={d} />
                            ))}
                         </g>
+                        {/* Current stroke */}
+                        {svgPaths[i] && (
+                          <g stroke="#f6ad55" strokeWidth="6" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                            <path d={svgPaths[i]} />
+                          </g>
+                        )}
                       </svg>
                     ) : (
                       <>
