@@ -590,6 +590,7 @@ export default function KanjiWriterPage() {
   const [strokeCount, setStrokeCount] = useState(0);
   const [hintEnabled, setHintEnabled] = useState(false);
   const lastPos = useRef({ x: 0, y: 0 });
+  const [svgPaths, setSvgPaths] = useState<string[]>([]);
 
   // Result State
   const [isChecking, setIsChecking] = useState(false);
@@ -633,12 +634,31 @@ export default function KanjiWriterPage() {
     setStrokeCount(0);
     setResult(null);
     clearCanvas();
-    drawGuide(kanji);
   }, []);
 
-  // Update guide when kanji changes
+  // Fetch SVG Paths when kanji changes
   useEffect(() => {
-    drawGuide(currentKanji);
+    if (!currentKanji) return;
+    const fetchSvg = async () => {
+      try {
+        const hex = currentKanji.char.charCodeAt(0).toString(16).padStart(5, '0');
+        const res = await fetch(`https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${hex}.svg`);
+        if (res.ok) {
+          const text = await res.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(text, 'image/svg+xml');
+          const paths = Array.from(doc.querySelectorAll('path[id*="-s"]'))
+                             .map(p => p.getAttribute('d'))
+                             .filter(Boolean) as string[];
+          setSvgPaths(paths);
+        } else {
+          setSvgPaths([]);
+        }
+      } catch (err) {
+        setSvgPaths([]);
+      }
+    };
+    fetchSvg();
   }, [currentKanji]);
 
   // Setup Canvas listeners (React way)
@@ -693,19 +713,23 @@ export default function KanjiWriterPage() {
     }
   };
 
-  const drawGuide = (kanji: any) => {
-    if (!kanji) return;
+  const drawGuide = useCallback(() => {
     const canvas = guideCanvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     ctx.font = '240px "Noto Serif JP"';
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(kanji.char, 170, 185);
-  };
+    ctx.fillText(currentKanji?.char || '', 170, 185);
+  }, [currentKanji]);
+
+  useEffect(() => {
+    drawGuide();
+  }, [drawGuide]);
 
   const clearCanvas = () => {
     const canvas = drawCanvasRef.current;
@@ -1055,7 +1079,33 @@ export default function KanjiWriterPage() {
                     key={i} 
                     $state={i < strokeCount ? 'done' : i === strokeCount ? 'current' : 'pending'}
                   >
-                    {currentKanji.char}
+                    {svgPaths.length > 0 ? (
+                      <svg viewBox="0 0 109 109" style={{ width: '100%', height: '100%' }}>
+                        <g stroke="rgba(255,255,255,0.15)" strokeWidth="6" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                           {svgPaths.map((d, idx) => (
+                             <path key={`bg-${idx}`} d={d} />
+                           ))}
+                        </g>
+                        <g stroke="currentColor" strokeWidth="6" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                           {svgPaths.slice(0, i + 1).map((d, idx) => (
+                             <path key={`fg-${idx}`} d={d} />
+                           ))}
+                        </g>
+                      </svg>
+                    ) : (
+                      <>
+                        <span style={{ position: 'absolute', opacity: 0.15, zIndex: 0 }}>
+                          {currentKanji.char}
+                        </span>
+                        <span style={{ 
+                          position: 'relative', 
+                          zIndex: 1,
+                          clipPath: `circle(${((i + 1) / currentKanji.strokes) * 1.5 * 100}% at 0 0)` 
+                        }}>
+                          {currentKanji.char}
+                        </span>
+                      </>
+                    )}
                     <span className="step-num">{i + 1}</span>
                   </StrokeStep>
                 ))}
