@@ -676,12 +676,12 @@ export default function KanjiWriterPage() {
     ctx.beginPath();
     ctx.moveTo(lastPos.current.x, lastPos.current.y);
     ctx.lineTo(x, y);
-    ctx.strokeStyle = 'var(--primary)'; // Accent color
-    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#818CF8'; // Bright Primary-light color instead of unparsed var()
+    ctx.lineWidth = 6;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    ctx.shadowColor = 'rgba(99,179,237,0.4)';
-    ctx.shadowBlur = 8;
+    ctx.shadowColor = 'rgba(129, 140, 248, 0.6)';
+    ctx.shadowBlur = 10;
     ctx.stroke();
     lastPos.current = { x, y };
   };
