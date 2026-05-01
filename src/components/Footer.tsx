@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import styled from 'styled-components';
 import { CoffeeIcon } from './icons/AppIcons';
 
@@ -325,6 +326,9 @@ const SupportButton = styled.a`
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const pathname = usePathname();
+
+  if (pathname === '/login' || pathname === '/register') return null;
 
   return (
     <FooterRoot>
