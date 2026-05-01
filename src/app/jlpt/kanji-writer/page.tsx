@@ -606,7 +606,13 @@ export default function KanjiWriterPage() {
 
   // Stats State
   const [history, setHistory] = useState<any[]>([]);
-  const [session, setSession] = useState({ practiced: 0, correct: 0, scores: [] as number[], streak: 0 });
+  const [session, setSession] = useState({ 
+    practicedChars: [] as string[], 
+    practiced: 0, 
+    correct: 0, 
+    scores: [] as number[], 
+    streak: 0 
+  });
 
 
 
@@ -845,7 +851,15 @@ export default function KanjiWriterPage() {
       setSession(prev => {
         const newScores = [...prev.scores, baseScore];
         const isCorrect = baseScore >= 90; // Lulus jika >= 90
+        
+        // Track unique practiced if correct
+        let newPracticedChars = prev.practicedChars || [];
+        if (isCorrect && !newPracticedChars.includes(currentKanji.char)) {
+          newPracticedChars = [...newPracticedChars, currentKanji.char];
+        }
+
         return {
+          practicedChars: newPracticedChars,
           practiced: prev.practiced + 1,
           correct: prev.correct + (isCorrect ? 1 : 0),
           scores: newScores,
@@ -857,7 +871,10 @@ export default function KanjiWriterPage() {
 
   // Stats calc
   const totalInLevel = KANJI_DATA[currentLevel]?.length || 20;
-  const progressPct = Math.round((session.practiced / totalInLevel) * 100) || 0;
+  const practicedInLevel = session.practicedChars.filter(char => 
+    KANJI_DATA[currentLevel]?.some(k => k.char === char)
+  ).length;
+  const progressPct = Math.round((practicedInLevel / totalInLevel) * 100) || 0;
   const avgScore = session.scores.length > 0 ? Math.round(session.scores.reduce((a, b) => a + b, 0) / session.scores.length) : 0;
   const ringOffset = 238.76 - (238.76 * Math.min(progressPct, 100) / 100);
 
@@ -1050,7 +1067,7 @@ export default function KanjiWriterPage() {
                 <div style={{ fontSize: '0.6rem', fontFamily: "'DM Mono', monospace", color: 'var(--text-secondary)' }}>done</div>
               </div>
               <div style={{ textAlign: 'center', fontSize: '0.7rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace", letterSpacing: '0.05em' }}>
-                {session.practiced} / {totalInLevel} practiced
+                {practicedInLevel} / {totalInLevel} practiced
               </div>
             </ProgressRingWrap>
             <div style={{ padding: '0 12px 12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
