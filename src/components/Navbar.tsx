@@ -373,6 +373,7 @@ export function Navbar() {
 
   // Close menu when route changes (optional, but good for UX if Link doesn't fully reload)
   // We handle it via onClick on Links usually
+  if (pathname === '/login' || pathname === '/register') return null;
 
   return (
     <>
