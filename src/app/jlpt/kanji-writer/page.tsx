@@ -597,8 +597,12 @@ export default function KanjiWriterPage() {
   const [isDrawing, setIsDrawing] = useState(false);
   const [strokeCount, setStrokeCount] = useState(0);
   const [hintEnabled, setHintEnabled] = useState(false);
-  const lastPos = useRef({ x: 0, y: 0 });
   const [svgPaths, setSvgPaths] = useState<string[]>([]);
+
+  type Point = { x: number; y: number };
+  const [userStrokes, setUserStrokes] = useState<Point[][]>([]);
+  const [currentStroke, setCurrentStroke] = useState<Point[]>([]);
+  const [strokeFeedback, setStrokeFeedback] = useState<string | null>(null);
 
   // Result State
   const [isChecking, setIsChecking] = useState(false);
@@ -701,47 +705,124 @@ export default function KanjiWriterPage() {
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
+  const redrawCanvas = useCallback((strokes: Point[][], activeStroke: Point[]) => {
+    const canvas = drawCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const drawPath = (path: Point[]) => {
+      if (path.length < 2) return;
+      ctx.beginPath();
+      ctx.moveTo(path[0].x, path[0].y);
+      for (let i = 1; i < path.length; i++) {
+        ctx.lineTo(path[i].x, path[i].y);
+      }
+      ctx.strokeStyle = '#818CF8';
+      ctx.lineWidth = 6;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.shadowColor = 'rgba(129, 140, 248, 0.6)';
+      ctx.shadowBlur = 10;
+      ctx.stroke();
+    };
+
+    strokes.forEach(drawPath);
+    if (activeStroke.length > 0) drawPath(activeStroke);
+  }, []);
+
+  const validateStroke = useCallback((userPath: Point[], svgPathString: string) => {
+    if (!svgPathString || userPath.length < 2) return { ok: true };
+    
+    const match = svgPathString.match(/^M\s*([-\d.]+)[,\s]+([-\d.]+)/);
+    if (!match) return { ok: true };
+
+    const svgX = parseFloat(match[1]);
+    const svgY = parseFloat(match[2]);
+
+    const scale = 340 / 109;
+    const targetX = svgX * scale;
+    const targetY = svgY * scale;
+
+    const startP = userPath[0];
+    const dist = Math.sqrt(Math.pow(startP.x - targetX, 2) + Math.pow(startP.y - targetY, 2));
+    
+    if (dist > 60) {
+      return { ok: false, msg: "Urutan atau arah goresan salah!" };
+    }
+
+    return { ok: true };
+  }, []);
+
   const handlePointerDown = (e: React.MouseEvent | React.TouchEvent) => {
-    if (isChecking) return;
+    if (isChecking || userStrokes.length >= currentKanji.strokes) return;
     const canvas = drawCanvasRef.current;
     if (!canvas) return;
     setIsDrawing(true);
-    lastPos.current = getPos(e, canvas);
+    const pos = getPos(e, canvas);
+    setCurrentStroke([pos]);
   };
 
   const handlePointerMove = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDrawing || isChecking) return;
     const canvas = drawCanvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Prevent scrolling on touch
-    if (e.type === 'touchmove') {
-      // It's better to preventDefault on the native element for touchmove, 
-      // but in React synthetic events it might not work optimally without passive: false.
-      // Handled via CSS touch-action: none on CanvasBox.
-    }
-
-    const { x, y } = getPos(e, canvas);
-    ctx.beginPath();
-    ctx.moveTo(lastPos.current.x, lastPos.current.y);
-    ctx.lineTo(x, y);
-    ctx.strokeStyle = '#818CF8'; // Bright Primary-light color instead of unparsed var()
-    ctx.lineWidth = 6;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.shadowColor = 'rgba(129, 140, 248, 0.6)';
-    ctx.shadowBlur = 10;
-    ctx.stroke();
-    lastPos.current = { x, y };
+    const pos = getPos(e, canvas);
+    setCurrentStroke(prev => {
+      const next = [...prev, pos];
+      redrawCanvas(userStrokes, next);
+      return next;
+    });
   };
 
   const handlePointerUp = () => {
-    if (isDrawing) {
-      setIsDrawing(false);
-      setStrokeCount(prev => prev + 1);
+    if (!isDrawing) return;
+    setIsDrawing(false);
+
+    if (currentStroke.length < 2) {
+      setCurrentStroke([]);
+      redrawCanvas(userStrokes, []);
+      return;
     }
+
+    const targetIdx = userStrokes.length;
+    if (targetIdx >= svgPaths.length && svgPaths.length > 0) {
+      setStrokeFeedback("Semua goresan sudah lengkap!");
+      setTimeout(() => setStrokeFeedback(null), 2000);
+      setCurrentStroke([]);
+      redrawCanvas(userStrokes, []);
+      return;
+    }
+
+    if (svgPaths.length > 0) {
+      const valid = validateStroke(currentStroke, svgPaths[targetIdx]);
+      if (!valid.ok) {
+        setStrokeFeedback(valid.msg || "Urutan goresan salah!");
+        setTimeout(() => setStrokeFeedback(null), 2000);
+        setCurrentStroke([]);
+        redrawCanvas(userStrokes, []);
+        return;
+      }
+    }
+
+    // Success
+    const newStrokes = [...userStrokes, currentStroke];
+    setUserStrokes(newStrokes);
+    setStrokeCount(newStrokes.length);
+    setCurrentStroke([]);
+    redrawCanvas(newStrokes, []);
+  };
+
+  const handleUndo = () => {
+    if (userStrokes.length === 0 || isChecking) return;
+    const newStrokes = userStrokes.slice(0, -1);
+    setUserStrokes(newStrokes);
+    setStrokeCount(newStrokes.length);
+    redrawCanvas(newStrokes, []);
+    setResult(null);
+    setStrokeFeedback(null);
   };
 
   const drawGuide = useCallback(() => {
@@ -762,14 +843,18 @@ export default function KanjiWriterPage() {
     drawGuide();
   }, [drawGuide]);
 
-  const clearCanvas = () => {
+  const clearCanvas = useCallback(() => {
     const canvas = drawCanvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
     setStrokeCount(0);
+    setUserStrokes([]);
+    setCurrentStroke([]);
     setResult(null);
-  };
+    setStrokeFeedback(null);
+  }, []);
 
   const handleNextKanji = () => {
     const currentList = KANJI_DATA[currentLevel];
@@ -987,7 +1072,30 @@ export default function KanjiWriterPage() {
                 </StrokesInfo>
               </KanjiInfo>
 
-              <CanvasWrap>
+              <CanvasWrap style={{ position: 'relative' }}>
+                {strokeFeedback && (
+                  <div style={{
+                    position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)',
+                    background: 'rgba(239, 68, 68, 0.9)', color: '#fff', padding: '10px 20px',
+                    borderRadius: '20px', fontSize: '0.8rem', fontWeight: 600, pointerEvents: 'none',
+                    animation: 'fadeInOut 2s forwards', zIndex: 10, whiteSpace: 'nowrap'
+                  }}>
+                    {strokeFeedback}
+                  </div>
+                )}
+                {isChecking && (
+                  <div style={{
+                    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                    background: 'rgba(15,23,42,0.6)', backdropFilter: 'blur(2px)',
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                    zIndex: 10, borderRadius: '12px'
+                  }}>
+                    <LoadingDots>
+                      <div className="dots"><span></span><span></span><span></span></div>
+                      <span>Analyzing...</span>
+                    </LoadingDots>
+                  </div>
+                )}
                 <CanvasBox>
                   <canvas 
                     ref={guideCanvasRef} 
@@ -1022,7 +1130,10 @@ export default function KanjiWriterPage() {
                     Stroke {strokeCount} / {currentKanji.strokes}
                   </StrokeCounter>
 
-                  <Btn $variant="danger" onClick={clearCanvas} disabled={isChecking}>Clear</Btn>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <Btn $variant="danger" onClick={handleUndo} disabled={userStrokes.length === 0 || isChecking} style={{ opacity: userStrokes.length === 0 ? 0.5 : 1 }}>Undo</Btn>
+                    <Btn $variant="danger" onClick={clearCanvas} disabled={isChecking}>Clear</Btn>
+                  </div>
                   <Btn $variant="primary" onClick={handleCheck} disabled={isChecking || strokeCount === 0}>Check ✓</Btn>
                   {result && result.score >= 90 && (
                     <Btn $variant="primary" onClick={handleNextKanji} style={{ background: '#10b981', borderColor: '#10b981' }}>Next ➔</Btn>
