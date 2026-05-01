@@ -538,6 +538,14 @@ const HistoryItem = styled.div`
   border-radius: 6px;
   background: var(--background);
   border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: var(--surface);
+    border-color: rgba(var(--primary-rgb), 0.3);
+    transform: translateX(4px);
+  }
 `;
 
 const HistoryScore = styled.span<{ $score: number }>`
@@ -600,16 +608,7 @@ export default function KanjiWriterPage() {
   const [history, setHistory] = useState<any[]>([]);
   const [session, setSession] = useState({ practiced: 0, correct: 0, scores: [] as number[], streak: 0 });
 
-  // Initial dummy history
-  useEffect(() => {
-    setHistory([
-      { char: '日', meaning: 'Sun / Day', score: 92 },
-      { char: '月', meaning: 'Moon / Month', score: 85 },
-      { char: '火', meaning: 'Fire', score: 63 },
-      { char: '水', meaning: 'Water', score: 41 },
-    ]);
-    setSession({ practiced: 4, correct: 3, scores: [92, 85, 63, 41], streak: 2 });
-  }, []);
+
 
   const filteredKanji = useMemo(() => {
     const data = KANJI_DATA[currentLevel] || [];
@@ -839,7 +838,10 @@ export default function KanjiWriterPage() {
       setResult(newResult);
       setIsChecking(false);
 
-      setHistory(prev => [{ char: currentKanji.char, meaning: currentKanji.meaning, score: baseScore }, ...prev]);
+      setHistory(prev => {
+        const filtered = prev.filter(h => h.kanji.char !== currentKanji.char);
+        return [{ kanji: currentKanji, score: baseScore }, ...filtered].slice(0, 20);
+      });
       setSession(prev => {
         const newScores = [...prev.scores, baseScore];
         const isCorrect = baseScore >= 90; // Lulus jika >= 90
@@ -1127,17 +1129,31 @@ export default function KanjiWriterPage() {
               <CardTitle>Recent Practice</CardTitle>
             </CardHeader>
             <HistoryList>
+              {history.length === 0 && (
+                <div style={{ textAlign: 'center', padding: '20px 0', color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
+                  Belum ada riwayat latihan.
+                </div>
+              )}
               {history.map((h, i) => (
-                <HistoryItem key={i}>
+                <HistoryItem key={i} onClick={() => {
+                  // Find correct level and select
+                  for (const level of ['N5', 'N4', 'N3', 'N2', 'N1']) {
+                    if (KANJI_DATA[level as 'N5']?.find((k: any) => k.char === h.kanji.char)) {
+                      setCurrentLevel(level as 'N5');
+                      break;
+                    }
+                  }
+                  handleSelectKanji(h.kanji);
+                }}>
                   <span style={{ 
                     fontFamily: "'Noto Serif JP', serif", 
                     fontSize: '1rem', width: '24px', textAlign: 'center',
                     color: h.score >= 75 ? 'var(--primary)' : h.score >= 50 ? '#f6ad55' : '#ef4444'
                   }}>
-                    {h.char}
+                    {h.kanji.char}
                   </span>
                   <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace" }}>
-                    {h.meaning}
+                    {h.kanji.meaning}
                   </span>
                   <HistoryScore $score={h.score}>{h.score}%</HistoryScore>
                 </HistoryItem>
