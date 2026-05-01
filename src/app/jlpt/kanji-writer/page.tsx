@@ -4,6 +4,22 @@ import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import styled from 'styled-components';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { KANJI_DATA } from '@/data/kanji';
+import { getStroke } from 'perfect-freehand';
+
+// Utility for perfect-freehand
+function getSvgPathFromStroke(stroke: number[][]) {
+  if (!stroke.length) return '';
+  const d = stroke.reduce(
+    (acc, [x0, y0], i, arr) => {
+      const [x1, y1] = arr[(i + 1) % arr.length];
+      acc.push(x0, y0, (x0 + x1) / 2, (y0 + y1) / 2);
+      return acc;
+    },
+    ['M', ...stroke[0], 'Q']
+  );
+  d.push('Z');
+  return d.join(' ');
+}
 
 // --- STYLES ---
 
@@ -715,18 +731,25 @@ export default function KanjiWriterPage() {
     
     const drawPath = (path: Point[]) => {
       if (path.length < 2) return;
-      ctx.beginPath();
-      ctx.moveTo(path[0].x, path[0].y);
-      for (let i = 1; i < path.length; i++) {
-        ctx.lineTo(path[i].x, path[i].y);
-      }
-      ctx.strokeStyle = '#818CF8';
-      ctx.lineWidth = 6;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.shadowColor = 'rgba(129, 140, 248, 0.6)';
-      ctx.shadowBlur = 10;
-      ctx.stroke();
+      
+      const strokeOptions = {
+        size: 16,
+        thinning: 0.7,
+        smoothing: 0.5,
+        streamline: 0.5,
+        simulatePressure: true,
+      };
+
+      // Convert Point[] to [number, number][]
+      const pointsArray = path.map(p => [p.x, p.y]);
+      const strokeOutline = getStroke(pointsArray, strokeOptions);
+      const pathData = getSvgPathFromStroke(strokeOutline);
+      const path2D = new Path2D(pathData);
+
+      ctx.fillStyle = '#ffffff'; // White calligraphy ink for dark mode
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
+      ctx.shadowBlur = 4;
+      ctx.fill(path2D);
     };
 
     strokes.forEach(drawPath);
