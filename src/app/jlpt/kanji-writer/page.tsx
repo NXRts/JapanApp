@@ -614,8 +614,34 @@ export default function KanjiWriterPage() {
     streak: 0 
   });
 
+  // Load progress from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedLevel = localStorage.getItem('jlpt_kw_level');
+      const savedKanji = localStorage.getItem('jlpt_kw_kanji');
+      const savedHistory = localStorage.getItem('jlpt_kw_history');
+      const savedSession = localStorage.getItem('jlpt_kw_session');
 
+      if (savedLevel) setCurrentLevel(savedLevel as any);
+      if (savedKanji) setCurrentKanji(JSON.parse(savedKanji));
+      if (savedHistory) setHistory(JSON.parse(savedHistory));
+      if (savedSession) setSession(JSON.parse(savedSession));
+    } catch (e) {
+      console.error('Failed to load kanji progress', e);
+    }
+  }, []);
 
+  // Save progress to localStorage on state change
+  useEffect(() => {
+    try {
+      localStorage.setItem('jlpt_kw_level', currentLevel);
+      localStorage.setItem('jlpt_kw_kanji', JSON.stringify(currentKanji));
+      localStorage.setItem('jlpt_kw_history', JSON.stringify(history));
+      localStorage.setItem('jlpt_kw_session', JSON.stringify(session));
+    } catch (e) {
+      console.error('Failed to save kanji progress', e);
+    }
+  }, [currentLevel, currentKanji, history, session]);
   const filteredKanji = useMemo(() => {
     const data = KANJI_DATA[currentLevel] || [];
     if (!searchQuery) return data;
