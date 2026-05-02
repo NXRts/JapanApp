@@ -422,20 +422,30 @@ const StrokeCounter = styled.span`
   border-radius: 6px;
 `;
 
-const Btn = styled.button<{ $variant?: 'primary' | 'danger' }>`
+const Btn = styled.button<{ $variant?: 'primary' | 'danger' | 'ghost' }>`
   font-weight: 700;
   font-size: 0.75rem;
   letter-spacing: 0.04em;
   padding: 7px 16px;
   border-radius: 7px;
-  border: 1px solid ${({ $variant }) => $variant === 'primary' ? 'var(--primary)' : $variant === 'danger' ? 'rgba(239,68,68,0.3)' : 'var(--border)'};
+  border: 1px solid ${({ $variant }) => 
+    $variant === 'primary' ? 'var(--primary)' : 
+    $variant === 'danger' ? 'rgba(239,68,68,0.3)' : 
+    $variant === 'ghost' ? 'transparent' :
+    'var(--border)'
+  };
   cursor: pointer;
   transition: all 0.15s;
   background: ${({ $variant }) => $variant === 'primary' ? 'var(--primary)' : 'transparent'};
   color: ${({ $variant }) => $variant === 'primary' ? '#fff' : $variant === 'danger' ? '#ef4444' : 'var(--text-secondary)'};
 
   &:hover {
-    background: ${({ $variant }) => $variant === 'primary' ? 'var(--primary)' : $variant === 'danger' ? 'rgba(239,68,68,0.1)' : 'var(--surface)'};
+    background: ${({ $variant }) => 
+      $variant === 'primary' ? 'var(--primary)' : 
+      $variant === 'danger' ? 'rgba(239,68,68,0.1)' : 
+      $variant === 'ghost' ? 'rgba(255,255,255,0.05)' :
+      'var(--surface)'
+    };
     opacity: ${({ $variant }) => $variant === 'primary' ? 0.85 : 1};
     color: ${({ $variant }) => $variant === 'primary' ? '#fff' : $variant === 'danger' ? '#ef4444' : 'var(--foreground)'};
   }
@@ -653,6 +663,11 @@ export default function KanjiWriterPage() {
   const [currentStroke, setCurrentStroke] = useState<Point[]>([]);
   const [strokeFeedback, setStrokeFeedback] = useState<string | null>(null);
 
+  // Animation State
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [animIdx, setAnimIdx] = useState(-1);
+  const [animProgress, setAnimProgress] = useState(false);
+
   // Result State
   const [isChecking, setIsChecking] = useState(false);
   const [result, setResult] = useState<{ score: number, grade: string, feedback: string } | null>(null);
@@ -813,7 +828,7 @@ export default function KanjiWriterPage() {
   }, []);
 
   const handlePointerDown = (e: React.MouseEvent | React.TouchEvent) => {
-    if (isChecking || userStrokes.length >= currentKanji.strokes) return;
+    if (isChecking || isAnimating || userStrokes.length >= currentKanji.strokes) return;
     const canvas = drawCanvasRef.current;
     if (!canvas) return;
     setIsDrawing(true);
@@ -822,7 +837,7 @@ export default function KanjiWriterPage() {
   };
 
   const handlePointerMove = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDrawing || isChecking) return;
+    if (!isDrawing || isChecking || isAnimating) return;
     const canvas = drawCanvasRef.current;
     if (!canvas) return;
     const pos = getPos(e, canvas);
@@ -872,7 +887,7 @@ export default function KanjiWriterPage() {
   };
 
   const handleUndo = () => {
-    if (userStrokes.length === 0 || isChecking) return;
+    if (userStrokes.length === 0 || isChecking || isAnimating) return;
     const newStrokes = userStrokes.slice(0, -1);
     setUserStrokes(newStrokes);
     setStrokeCount(newStrokes.length);
@@ -912,15 +927,57 @@ export default function KanjiWriterPage() {
     setStrokeFeedback(null);
   }, []);
 
-  const handleNextKanji = () => {
+  const getNextSmartKanji = () => {
     const currentList = KANJI_DATA[currentLevel];
-    if (!currentList || currentList.length === 0) return;
-    const currentIndex = currentList.findIndex(k => k.char === currentKanji.char);
-    const nextIndex = (currentIndex + 1) % currentList.length;
-    setCurrentKanji(currentList[nextIndex]);
-    clearCanvas();
+    if (!currentList || currentList.length === 0) return null;
+
+    // 1. Find unmastered kanji (not in practicedChars)
+    const unmastered = currentList.filter(k => !session.practicedChars.includes(k.char));
+    
+    if (unmastered.length > 0) {
+      // 2. Pick a random one from the unmastered pool
+      const randomIndex = Math.floor(Math.random() * unmastered.length);
+      return unmastered[randomIndex];
+    } else {
+      // 3. All mastered! Just pick a random one for review
+      const randomIndex = Math.floor(Math.random() * currentList.length);
+      return currentList[randomIndex];
+    }
+  };
+
+  const handleNextKanji = () => {
+    const nextKanji = getNextSmartKanji();
+    if (nextKanji) {
+      setCurrentKanji(nextKanji);
+      clearCanvas();
+      setResult(null);
+      setStrokeCount(0);
+    }
+  };
+
+  const handleSmartPractice = () => {
+    handleNextKanji();
+  };
+
+  const runWritingDemo = async () => {
+    if (isAnimating || svgPaths.length === 0) return;
+    setIsAnimating(true);
     setResult(null);
-    setStrokeCount(0);
+    
+    for (let i = 0; i < svgPaths.length; i++) {
+      setAnimIdx(i);
+      setAnimProgress(false);
+      // Brief delay to allow CSS to reset offset if needed
+      await new Promise(r => setTimeout(r, 20));
+      setAnimProgress(true);
+      await new Promise(r => setTimeout(r, 700)); // Delay per stroke
+    }
+    
+    setTimeout(() => {
+      setIsAnimating(false);
+      setAnimIdx(-1);
+      setAnimProgress(false);
+    }, 800);
   };
 
   // Calculate pixel overlap between user drawing and guide
@@ -1094,6 +1151,15 @@ export default function KanjiWriterPage() {
               {filteredKanji.length} kanji
             </span>
           </CardHeader>
+          <div style={{ padding: '0 16px 12px' }}>
+            <Btn 
+              $variant="primary" 
+              onClick={handleSmartPractice} 
+              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'var(--primary)', color: '#fff', fontSize: '0.8rem', padding: '10px' }}
+            >
+              Latihan Cerdas 🧠
+            </Btn>
+          </div>
           <KanjiSearch>
             <input 
               type="text" 
@@ -1140,6 +1206,30 @@ export default function KanjiWriterPage() {
               </KanjiInfo>
 
               <CanvasWrap style={{ position: 'relative' }}>
+                {/* Writing Demo Animation Overlay */}
+                {isAnimating && (
+                  <div style={{ position: 'absolute', inset: '20px', zIndex: 10, pointerEvents: 'none' }}>
+                    <svg viewBox="0 0 109 109" style={{ width: '100%', height: '100%', transform: 'translateY(15px)' }}>
+                      {svgPaths.map((d, i) => (
+                        <path
+                          key={i}
+                          d={d}
+                          fill="none"
+                          stroke="#f6ad55"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          style={{
+                            strokeDasharray: 300,
+                            strokeDashoffset: (i < animIdx || (i === animIdx && animProgress)) ? 0 : 300,
+                            transition: (i === animIdx && animProgress) ? 'stroke-dashoffset 0.6s ease-in-out' : 'none',
+                            opacity: i <= animIdx ? 0.8 : 0
+                          }}
+                        />
+                      ))}
+                    </svg>
+                  </div>
+                )}
+
                 {strokeFeedback && (
                   <div style={{
                     position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)',
@@ -1193,17 +1283,28 @@ export default function KanjiWriterPage() {
                     <span>Ghost Guide</span>
                   </HintToggle>
 
-                  <StrokeCounter>
-                    Stroke {strokeCount} / {currentKanji.strokes}
-                  </StrokeCounter>
-
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <Btn $variant="danger" onClick={handleUndo} disabled={userStrokes.length === 0 || isChecking} style={{ opacity: userStrokes.length === 0 ? 0.5 : 1 }}>Undo</Btn>
-                    <Btn $variant="danger" onClick={clearCanvas} disabled={isChecking}>Clear</Btn>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace" }}>
+                      Stroke {strokeCount} / {currentKanji.strokes}
+                    </div>
                   </div>
-                  <Btn $variant="primary" onClick={handleCheck} disabled={isChecking || strokeCount === 0}>Check ✓</Btn>
+
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    <Btn 
+                      $variant="ghost" 
+                      onClick={runWritingDemo} 
+                      disabled={isAnimating || isChecking || svgPaths.length === 0}
+                      style={{ background: 'rgba(246,173,85,0.1)', color: '#f6ad55', borderColor: 'rgba(246,173,85,0.2)' }}
+                    >
+                      Play Demo 🎬
+                    </Btn>
+                    <div style={{ width: '1px', height: '20px', background: 'var(--border)', margin: '0 4px' }} />
+                    <Btn $variant="danger" onClick={handleUndo} disabled={userStrokes.length === 0 || isChecking || isAnimating} style={{ opacity: (userStrokes.length === 0 || isAnimating) ? 0.5 : 1 }}>Undo</Btn>
+                    <Btn $variant="danger" onClick={clearCanvas} disabled={isChecking || isAnimating}>Clear</Btn>
+                  </div>
+                  <Btn $variant="primary" onClick={handleCheck} disabled={isChecking || isAnimating || strokeCount === 0}>Check ✓</Btn>
                   {result && result.score >= 90 && (
-                    <Btn $variant="primary" onClick={handleNextKanji} style={{ background: '#10b981', borderColor: '#10b981' }}>Next ➔</Btn>
+                    <Btn $variant="primary" onClick={handleNextKanji} style={{ background: '#10b981', borderColor: '#10b981' }}>Smart Next ➔</Btn>
                   )}
                 </CanvasControls>
               </CanvasWrap>
