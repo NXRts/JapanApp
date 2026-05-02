@@ -422,20 +422,30 @@ const StrokeCounter = styled.span`
   border-radius: 6px;
 `;
 
-const Btn = styled.button<{ $variant?: 'primary' | 'danger' }>`
+const Btn = styled.button<{ $variant?: 'primary' | 'danger' | 'ghost' }>`
   font-weight: 700;
   font-size: 0.75rem;
   letter-spacing: 0.04em;
   padding: 7px 16px;
   border-radius: 7px;
-  border: 1px solid ${({ $variant }) => $variant === 'primary' ? 'var(--primary)' : $variant === 'danger' ? 'rgba(239,68,68,0.3)' : 'var(--border)'};
+  border: 1px solid ${({ $variant }) => 
+    $variant === 'primary' ? 'var(--primary)' : 
+    $variant === 'danger' ? 'rgba(239,68,68,0.3)' : 
+    $variant === 'ghost' ? 'transparent' :
+    'var(--border)'
+  };
   cursor: pointer;
   transition: all 0.15s;
   background: ${({ $variant }) => $variant === 'primary' ? 'var(--primary)' : 'transparent'};
   color: ${({ $variant }) => $variant === 'primary' ? '#fff' : $variant === 'danger' ? '#ef4444' : 'var(--text-secondary)'};
 
   &:hover {
-    background: ${({ $variant }) => $variant === 'primary' ? 'var(--primary)' : $variant === 'danger' ? 'rgba(239,68,68,0.1)' : 'var(--surface)'};
+    background: ${({ $variant }) => 
+      $variant === 'primary' ? 'var(--primary)' : 
+      $variant === 'danger' ? 'rgba(239,68,68,0.1)' : 
+      $variant === 'ghost' ? 'rgba(255,255,255,0.05)' :
+      'var(--surface)'
+    };
     opacity: ${({ $variant }) => $variant === 'primary' ? 0.85 : 1};
     color: ${({ $variant }) => $variant === 'primary' ? '#fff' : $variant === 'danger' ? '#ef4444' : 'var(--foreground)'};
   }
