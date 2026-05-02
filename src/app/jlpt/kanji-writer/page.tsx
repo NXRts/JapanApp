@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { KANJI_DATA } from '@/data/kanji';
 import { getStroke } from 'perfect-freehand';
+import confetti from 'canvas-confetti';
 
 // Utility for perfect-freehand
 function getSvgPathFromStroke(stroke: number[][]) {
@@ -19,6 +20,38 @@ function getSvgPathFromStroke(stroke: number[][]) {
   );
   d.push('Z');
   return d.join(' ');
+}
+
+// Utility for Audio Chime using Web Audio API (No MP3 file needed!)
+function playSuccessChime() {
+  try {
+    const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const osc1 = audioCtx.createOscillator();
+    const osc2 = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+
+    osc1.type = 'sine';
+    osc2.type = 'triangle';
+
+    osc1.frequency.setValueAtTime(880, audioCtx.currentTime); // A5 note
+    osc2.frequency.setValueAtTime(1108.73, audioCtx.currentTime + 0.1); // C#6 note
+
+    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.05);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+
+    osc1.connect(gainNode);
+    osc2.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    osc1.start(audioCtx.currentTime);
+    osc1.stop(audioCtx.currentTime + 0.5);
+    
+    osc2.start(audioCtx.currentTime + 0.1);
+    osc2.stop(audioCtx.currentTime + 0.6);
+  } catch (e) {
+    console.error("Audio Context not supported or blocked", e);
+  }
 }
 
 // --- STYLES ---
@@ -970,7 +1003,18 @@ export default function KanjiWriterPage() {
       }
 
       let grade = 'Poor';
-      if (baseScore >= 90) grade = 'Excellent';
+      if (baseScore >= 90) {
+        grade = 'Excellent';
+        // Fire Confetti!
+        confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.8 },
+          colors: ['#f6ad55', '#818cf8', '#10b981', '#ffffff']
+        });
+        // Play Chime!
+        playSuccessChime();
+      }
       else if (baseScore >= 75) grade = 'Good';
       else if (baseScore >= 50) grade = 'Fair';
 
