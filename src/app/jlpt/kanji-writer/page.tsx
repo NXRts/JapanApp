@@ -903,12 +903,32 @@ export default function KanjiWriterPage() {
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.font = '240px "Noto Serif JP"';
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(currentKanji?.char || '', 170, 185);
-  }, [currentKanji]);
+    if (svgPaths.length > 0) {
+      ctx.save();
+      // KanjiVG is 109x109. Canvas is 340x340 (usually).
+      // Calculate scale based on actual canvas size
+      const scale = canvas.width / 109;
+      ctx.scale(scale, scale);
+      
+      // Use a very faint white for the ghost guide
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.lineWidth = 3;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      
+      svgPaths.forEach(pathStr => {
+        ctx.stroke(new Path2D(pathStr));
+      });
+      ctx.restore();
+    } else {
+      // Fallback to font if SVG not loaded yet
+      ctx.font = '240px "Noto Serif JP"';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(currentKanji?.char || '', canvas.width / 2, canvas.height / 2 + 15);
+    }
+  }, [currentKanji, svgPaths]);
 
   useEffect(() => {
     drawGuide();
@@ -1206,30 +1226,6 @@ export default function KanjiWriterPage() {
               </KanjiInfo>
 
               <CanvasWrap style={{ position: 'relative' }}>
-                {/* Writing Demo Animation Overlay */}
-                {isAnimating && (
-                  <div style={{ position: 'absolute', inset: '20px', zIndex: 10, pointerEvents: 'none' }}>
-                    <svg viewBox="0 0 109 109" style={{ width: '100%', height: '100%', transform: 'translateY(15px)' }}>
-                      {svgPaths.map((d, i) => (
-                        <path
-                          key={i}
-                          d={d}
-                          fill="none"
-                          stroke="#f6ad55"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                          style={{
-                            strokeDasharray: 300,
-                            strokeDashoffset: (i < animIdx || (i === animIdx && animProgress)) ? 0 : 300,
-                            transition: (i === animIdx && animProgress) ? 'stroke-dashoffset 0.6s ease-in-out' : 'none',
-                            opacity: i <= animIdx ? 0.8 : 0
-                          }}
-                        />
-                      ))}
-                    </svg>
-                  </div>
-                )}
-
                 {strokeFeedback && (
                   <div style={{
                     position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)',
@@ -1275,6 +1271,30 @@ export default function KanjiWriterPage() {
                     onTouchEnd={handlePointerUp}
                     onTouchCancel={handlePointerUp}
                   />
+
+                  {/* Writing Demo Animation Overlay - INSIDE CanvasBox for perfect alignment */}
+                  {isAnimating && (
+                    <div style={{ position: 'absolute', inset: 0, zIndex: 10, pointerEvents: 'none' }}>
+                      <svg viewBox="0 0 109 109" style={{ width: '100%', height: '100%' }}>
+                        {svgPaths.map((d, i) => (
+                          <path
+                            key={i}
+                            d={d}
+                            fill="none"
+                            stroke="#f6ad55"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            style={{
+                              strokeDasharray: 300,
+                              strokeDashoffset: (i < animIdx || (i === animIdx && animProgress)) ? 0 : 300,
+                              transition: (i === animIdx && animProgress) ? 'stroke-dashoffset 0.6s ease-in-out' : 'none',
+                              opacity: i <= animIdx ? 0.8 : 0
+                            }}
+                          />
+                        ))}
+                      </svg>
+                    </div>
+                  )}
                 </CanvasBox>
 
                 <CanvasControls>
