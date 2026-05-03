@@ -77,7 +77,7 @@ const HeaderRow = styled.div`
   justify-content: space-between;
   align-items: flex-end;
   width: 100%;
-  margin-bottom: 0.5rem;
+  margin-bottom: 2rem;
   
   @media (max-width: 768px) {
     flex-direction: column;
@@ -148,7 +148,7 @@ const Card = styled.div`
 `;
 
 const CardHeader = styled.div`
-  padding: 14px 16px;
+  padding: 18px 20px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
@@ -156,7 +156,7 @@ const CardHeader = styled.div`
 `;
 
 const CardTitle = styled.span`
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -187,7 +187,7 @@ const KanjiSearch = styled.div`
 `;
 
 const KanjiList = styled.div`
-  padding: 8px;
+  padding: 12px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;
@@ -539,7 +539,7 @@ const StatRow = styled.div`
 `;
 
 const StrokeGuide = styled.div`
-  padding: 12px;
+  padding: 16px;
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -578,7 +578,7 @@ const StrokeStep = styled.div<{ $state: 'done' | 'current' | 'pending' }>`
 `;
 
 const HistoryList = styled.div`
-  padding: 8px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1171,7 +1171,7 @@ export default function KanjiWriterPage() {
               {filteredKanji.length} kanji
             </span>
           </CardHeader>
-          <div style={{ padding: '0 16px 12px' }}>
+          <div style={{ padding: '16px 16px 12px' }}>
             <Btn 
               $variant="primary" 
               onClick={handleSmartPractice} 
