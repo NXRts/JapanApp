@@ -375,10 +375,22 @@ const CanvasBox = styled.div`
 
 const CanvasControls = styled.div`
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+`;
+
+const ControlGroup = styled.div`
+  display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const ActionGroup = styled.div`
+  display: flex;
+  gap: 8px;
+  width: 100%;
 `;
 
 const HintToggle = styled.label`
@@ -412,16 +424,6 @@ const ToggleSwitch = styled.div<{ $on: boolean }>`
     transition: transform 0.2s;
     transform: ${({ $on }) => $on ? 'translateX(14px)' : 'translateX(0)'};
   }
-`;
-
-const StrokeCounter = styled.span`
-  font-family: 'DM Mono', monospace;
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  padding: 6px 12px;
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: 6px;
 `;
 
 const Btn = styled.button<{ $variant?: 'primary' | 'danger' | 'ghost' }>`
@@ -1313,34 +1315,50 @@ export default function KanjiWriterPage() {
                 </CanvasBox>
 
                 <CanvasControls>
-                  <HintToggle>
-                    <ToggleSwitch $on={hintEnabled} onClick={() => setHintEnabled(!hintEnabled)} />
-                    <span>Ghost Guide</span>
-                  </HintToggle>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace" }}>
-                      Stroke {strokeCount} / {currentKanji.strokes}
+                  <ControlGroup>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <HintToggle>
+                        <ToggleSwitch $on={hintEnabled} onClick={() => setHintEnabled(!hintEnabled)} />
+                        <span>Ghost Guide</span>
+                      </HintToggle>
+                      <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace" }}>
+                        Stroke {strokeCount} / {currentKanji.strokes}
+                      </div>
                     </div>
-                  </div>
 
-                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                     <Btn 
                       $variant="ghost" 
                       onClick={runWritingDemo} 
                       disabled={isAnimating || isChecking || svgPaths.length === 0}
-                      style={{ background: 'rgba(246,173,85,0.1)', color: '#f6ad55', borderColor: 'rgba(246,173,85,0.2)' }}
+                      style={{ 
+                        background: 'rgba(var(--primary-rgb), 0.05)', 
+                        color: 'var(--primary)', 
+                        borderColor: 'rgba(var(--primary-rgb), 0.1)',
+                        padding: '5px 12px',
+                        fontSize: '0.7rem'
+                      }}
                     >
                       Play Demo 🎬
                     </Btn>
-                    <div style={{ width: '1px', height: '20px', background: 'var(--border)', margin: '0 4px' }} />
-                    <Btn $variant="danger" onClick={handleUndo} disabled={userStrokes.length === 0 || isChecking || isAnimating} style={{ opacity: (userStrokes.length === 0 || isAnimating) ? 0.5 : 1 }}>Undo</Btn>
-                    <Btn $variant="danger" onClick={clearCanvas} disabled={isChecking || isAnimating}>Clear</Btn>
-                  </div>
-                  <Btn $variant="primary" onClick={handleCheck} disabled={isChecking || isAnimating || strokeCount === 0}>Check ✓</Btn>
-                  {result && result.score >= 90 && (
-                    <Btn $variant="primary" onClick={handleNextKanji} style={{ background: '#10b981', borderColor: '#10b981' }}>Smart Next ➔</Btn>
-                  )}
+                  </ControlGroup>
+
+                  <ActionGroup>
+                    <div style={{ display: 'flex', gap: '6px', flex: 1 }}>
+                      <Btn $variant="danger" onClick={handleUndo} disabled={userStrokes.length === 0 || isChecking || isAnimating} style={{ flex: 1, padding: '8px' }}>Undo</Btn>
+                      <Btn $variant="danger" onClick={clearCanvas} disabled={isChecking || isAnimating} style={{ flex: 1, padding: '8px' }}>Clear</Btn>
+                    </div>
+                    <Btn 
+                      $variant="primary" 
+                      onClick={handleCheck} 
+                      disabled={isChecking || isAnimating || strokeCount === 0}
+                      style={{ flex: 1.5, padding: '10px', fontSize: '0.85rem' }}
+                    >
+                      Check ✓
+                    </Btn>
+                    {result && result.score >= 90 && (
+                      <Btn $variant="primary" onClick={handleNextKanji} style={{ background: '#10b981', borderColor: '#10b981', flex: 1, padding: '10px' }}>Next ➔</Btn>
+                    )}
+                  </ActionGroup>
                 </CanvasControls>
               </CanvasWrap>
 
