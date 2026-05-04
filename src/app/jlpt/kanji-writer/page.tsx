@@ -7,6 +7,8 @@ import { KANJI_DATA } from '@/data/kanji';
 import { getStroke } from 'perfect-freehand';
 import confetti from 'canvas-confetti';
 
+import { useProgress } from '@/context/ProgressContext';
+
 // Utility for perfect-freehand
 function getSvgPathFromStroke(stroke: number[][]) {
   if (!stroke.length) return '';
@@ -649,6 +651,7 @@ export default function KanjiWriterPage() {
   const [currentLevel, setCurrentLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1'>('N4');
   const [currentKanji, setCurrentKanji] = useState<any>(KANJI_DATA['N4'][0]);
   const [searchQuery, setSearchQuery] = useState('');
+  const { addExp, updateMastery } = useProgress();
   
   // Canvas State
   const drawCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -1091,13 +1094,21 @@ export default function KanjiWriterPage() {
         });
         // Play Chime!
         playSuccessChime();
+        // Add EXP
+        addExp(10);
       }
-      else if (baseScore >= 75) grade = 'Good';
+      else if (baseScore >= 75) {
+        grade = 'Good';
+        addExp(5);
+      }
       else if (baseScore >= 50) grade = 'Fair';
 
       const newResult = { score: baseScore, grade, feedback };
       setResult(newResult);
       setIsChecking(false);
+
+      // Global progress tracking
+      updateMastery(currentKanji.char, baseScore >= 75);
 
       setHistory(prev => {
         const filtered = prev.filter(h => h.kanji.char !== currentKanji.char);
