@@ -162,6 +162,10 @@ const SettingsBtn = styled.button<{ $isOpen?: boolean }>`
     opacity: 1;
   }
 
+  @media (max-width: 600px) {
+    padding: 5px;
+  }
+
   svg {
     width: 22px;
     height: 22px;
@@ -241,6 +245,15 @@ const LevelBadge = styled.div`
   &:hover {
     background: rgba(var(--primary-rgb), 0.15);
     border-color: var(--primary);
+  }
+
+  @media (max-width: 600px) {
+    padding: 2px 6px;
+    font-size: 0.65rem;
+    
+    .level-bar {
+      display: none;
+    }
   }
 `;
 
@@ -424,7 +437,7 @@ export function Navbar() {
           <RightNavContainer>
             <Link href="/stats" style={{ textDecoration: 'none' }}>
               <LevelBadge title={`${progress.exp} Total EXP`}>
-                LVL {level} {'▰'.repeat(Math.round(percent / 20)) + '▱'.repeat(5 - Math.round(percent / 20))}
+                LVL {level} <span className="level-bar">{'▰'.repeat(Math.round(percent / 20)) + '▱'.repeat(5 - Math.round(percent / 20))}</span>
               </LevelBadge>
             </Link>
 
