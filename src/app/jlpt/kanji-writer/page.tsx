@@ -684,6 +684,7 @@ export default function KanjiWriterPage() {
     scores: [] as number[], 
     streak: 0 
   });
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Load progress from localStorage on mount
   useEffect(() => {
@@ -699,11 +700,14 @@ export default function KanjiWriterPage() {
       if (savedSession) setSession(JSON.parse(savedSession));
     } catch (e) {
       console.error('Failed to load kanji progress', e);
+    } finally {
+      setIsLoaded(true);
     }
   }, []);
 
   // Save progress to localStorage on state change
   useEffect(() => {
+    if (!isLoaded) return;
     try {
       localStorage.setItem('jlpt_kw_level', currentLevel);
       localStorage.setItem('jlpt_kw_kanji', JSON.stringify(currentKanji));
@@ -712,7 +716,7 @@ export default function KanjiWriterPage() {
     } catch (e) {
       console.error('Failed to save kanji progress', e);
     }
-  }, [currentLevel, currentKanji, history, session]);
+  }, [currentLevel, currentKanji, history, session, isLoaded]);
   const filteredKanji = useMemo(() => {
     const data = KANJI_DATA[currentLevel] || [];
     if (!searchQuery) return data;
