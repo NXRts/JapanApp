@@ -1089,7 +1089,7 @@ export default function KanjiWriterPage() {
       }
 
       let grade = 'Poor';
-      if (baseScore >= 90) {
+      if (baseScore >= 80) {
         grade = 'Excellent';
         // Fire Confetti!
         confetti({
@@ -1103,18 +1103,18 @@ export default function KanjiWriterPage() {
         // Add EXP
         addExp(10);
       }
-      else if (baseScore >= 75) {
+      else if (baseScore >= 60) {
         grade = 'Good';
         addExp(5);
       }
-      else if (baseScore >= 50) grade = 'Fair';
+      else if (baseScore >= 40) grade = 'Fair';
 
       const newResult = { score: baseScore, grade, feedback };
       setResult(newResult);
       setIsChecking(false);
 
       // Global progress tracking
-      updateMastery(currentKanji.char, baseScore >= 75);
+      updateMastery(currentKanji.char, baseScore >= 80);
 
       setHistory(prev => {
         const filtered = prev.filter(h => h.kanji.char !== currentKanji.char);
@@ -1122,7 +1122,7 @@ export default function KanjiWriterPage() {
       });
       setSession(prev => {
         const newScores = [...prev.scores, baseScore];
-        const isCorrect = baseScore >= 90; // Lulus jika >= 90
+        const isCorrect = baseScore >= 80; // Lulus jika >= 80
         
         // Track unique practiced if correct
         let newPracticedChars = prev.practicedChars || [];
@@ -1355,7 +1355,7 @@ export default function KanjiWriterPage() {
                     >
                       Check ✓
                     </Btn>
-                    {result && result.score >= 90 && (
+                    {result && result.score >= 80 && (
                       <Btn $variant="primary" onClick={handleNextKanji} style={{ background: '#10b981', borderColor: '#10b981', flex: 1, padding: '10px' }}>Next ➔</Btn>
                     )}
                   </ActionGroup>
