@@ -1054,10 +1054,12 @@ export default function KanjiWriterPage() {
 
     const precision = hitPixels / drawnPixels;
     const recallRaw = hitPixels / guidePixels;
-    const recall = Math.min(1.0, recallRaw / 0.45); // Assuming 45% coverage is maximum due to brush vs font thickness
+    // Increased leniency: lowered coverage requirement from 0.45 to 0.35
+    const recall = Math.min(1.0, recallRaw / 0.35); 
 
     const f1 = 2 * (precision * recall) / (precision + recall + 0.0001);
-    return Math.round(f1 * 100);
+    // Added a 15% "leniency boost" to the final score
+    return Math.min(100, Math.round(f1 * 115));
   };
 
   // Logic to simulate AI feedback with pixel accuracy
@@ -1075,10 +1077,10 @@ export default function KanjiWriterPage() {
       let feedback = '';
 
       if (strokeDiff === 0) {
-        if (pixelAccuracy >= 85) {
+        if (pixelAccuracy >= 75) { // Lowered from 85
           baseScore = 95;
           feedback = `Luar Biasa! Jumlah goresan (${strokeCount}) tepat, dan bentuk kanjinya sangat presisi.`;
-        } else if (pixelAccuracy >= 60) {
+        } else if (pixelAccuracy >= 50) { // Lowered from 60
           baseScore = 80;
           feedback = `Bagus! Jumlah goresan tepat, namun bentuk coretan masih bisa diperbaiki agar lebih rapi mengikuti pola.`;
         } else {
