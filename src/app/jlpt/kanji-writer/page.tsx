@@ -687,6 +687,7 @@ export default function KanjiWriterPage() {
     streak: 0 
   });
   const [isLoaded, setIsLoaded] = useState(false);
+  const [brushType, setBrushType] = useState<'aesthetic' | 'uniform'>('aesthetic');
 
   // Load progress from localStorage on mount
   useEffect(() => {
@@ -695,11 +696,13 @@ export default function KanjiWriterPage() {
       const savedKanji = localStorage.getItem('jlpt_kw_kanji');
       const savedHistory = localStorage.getItem('jlpt_kw_history');
       const savedSession = localStorage.getItem('jlpt_kw_session');
+      const savedBrush = localStorage.getItem('jlpt_kw_brush');
 
       if (savedLevel) setCurrentLevel(savedLevel as any);
       if (savedKanji) setCurrentKanji(JSON.parse(savedKanji));
       if (savedHistory) setHistory(JSON.parse(savedHistory));
       if (savedSession) setSession(JSON.parse(savedSession));
+      if (savedBrush) setBrushType(savedBrush as any);
     } catch (e) {
       console.error('Failed to load kanji progress', e);
     } finally {
@@ -715,10 +718,11 @@ export default function KanjiWriterPage() {
       localStorage.setItem('jlpt_kw_kanji', JSON.stringify(currentKanji));
       localStorage.setItem('jlpt_kw_history', JSON.stringify(history));
       localStorage.setItem('jlpt_kw_session', JSON.stringify(session));
+      localStorage.setItem('jlpt_kw_brush', brushType);
     } catch (e) {
       console.error('Failed to save kanji progress', e);
     }
-  }, [currentLevel, currentKanji, history, session, isLoaded]);
+  }, [currentLevel, currentKanji, history, session, isLoaded, brushType]);
   const filteredKanji = useMemo(() => {
     const data = KANJI_DATA[currentLevel] || [];
     if (!searchQuery) return data;
@@ -796,29 +800,43 @@ export default function KanjiWriterPage() {
     const drawPath = (path: Point[]) => {
       if (path.length < 2) return;
       
-      const strokeOptions = {
-        size: 16,
-        thinning: 0.7,
-        smoothing: 0.5,
-        streamline: 0.5,
-        simulatePressure: true,
-      };
+      if (brushType === 'aesthetic') {
+        const strokeOptions = {
+          size: 16,
+          thinning: 0.7,
+          smoothing: 0.5,
+          streamline: 0.5,
+          simulatePressure: true,
+        };
 
-      // Convert Point[] to [number, number][]
-      const pointsArray = path.map(p => [p.x, p.y]);
-      const strokeOutline = getStroke(pointsArray, strokeOptions);
-      const pathData = getSvgPathFromStroke(strokeOutline);
-      const path2D = new Path2D(pathData);
+        const pointsArray = path.map(p => [p.x, p.y]);
+        const strokeOutline = getStroke(pointsArray, strokeOptions);
+        const pathData = getSvgPathFromStroke(strokeOutline);
+        const path2D = new Path2D(pathData);
 
-      ctx.fillStyle = '#ffffff'; // White calligraphy ink for dark mode
-      ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
-      ctx.shadowBlur = 4;
-      ctx.fill(path2D);
+        ctx.fillStyle = '#ffffff'; 
+        ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
+        ctx.shadowBlur = 4;
+        ctx.fill(path2D);
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+        for (let i = 1; i < path.length; i++) {
+          ctx.lineTo(path[i].x, path[i].y);
+        }
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 12;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.shadowColor = 'rgba(255, 255, 255, 0.2)';
+        ctx.shadowBlur = 2;
+        ctx.stroke();
+      }
     };
 
     strokes.forEach(drawPath);
     if (activeStroke.length > 0) drawPath(activeStroke);
-  }, []);
+  }, [brushType]);
 
   const validateStroke = useCallback((userPath: Point[], svgPathString: string) => {
     if (!svgPathString || userPath.length < 2) return { ok: true };
@@ -1329,6 +1347,10 @@ export default function KanjiWriterPage() {
                       <HintToggle>
                         <ToggleSwitch $on={hintEnabled} onClick={() => setHintEnabled(!hintEnabled)} />
                         <span>Ghost Guide</span>
+                      </HintToggle>
+                      <HintToggle>
+                        <ToggleSwitch $on={brushType === 'aesthetic'} onClick={() => setBrushType(prev => prev === 'aesthetic' ? 'uniform' : 'aesthetic')} />
+                        <span>Aesthetic</span>
                       </HintToggle>
                       <div style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', fontFamily: "'DM Mono', monospace" }}>
                         Stroke {strokeCount} / {currentKanji.strokes}
