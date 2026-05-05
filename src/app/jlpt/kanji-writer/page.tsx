@@ -937,16 +937,21 @@ export default function KanjiWriterPage() {
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (svgPaths.length > 0) {
+    // If uniform mode, use Kaku (Gothic) font guide for straighter lines
+    if (brushType === 'uniform' || svgPaths.length === 0) {
+      ctx.font = '900 240px sans-serif'; // "Kaku" / Gothic style
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(currentKanji?.char || '', canvas.width / 2, canvas.height / 2 + 15);
+    } else {
+      // Aesthetic mode uses SVG paths for calligraphy style
       ctx.save();
-      // KanjiVG is 109x109. Canvas is 340x340 (usually).
-      // Calculate scale based on actual canvas size
       const scale = canvas.width / 109;
       ctx.scale(scale, scale);
       
-      // Use a very faint white for the ghost guide
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
-      ctx.lineWidth = 3;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.lineWidth = 10;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       
@@ -954,15 +959,8 @@ export default function KanjiWriterPage() {
         ctx.stroke(new Path2D(pathStr));
       });
       ctx.restore();
-    } else {
-      // Fallback to font if SVG not loaded yet
-      ctx.font = '240px "Noto Serif JP"';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(currentKanji?.char || '', canvas.width / 2, canvas.height / 2 + 15);
     }
-  }, [currentKanji, svgPaths]);
+  }, [currentKanji, svgPaths, brushType]);
 
   useEffect(() => {
     drawGuide();
