@@ -741,12 +741,15 @@ export default function KanjiWriterPage() {
     setCurrentKanji(kanji);
     setStrokeCount(0);
     setResult(null);
+    setSvgPaths([]); // Clear old SVG paths immediately
     clearCanvas();
   }, []);
 
   // Fetch SVG Paths when kanji changes
   useEffect(() => {
     if (!currentKanji) return;
+    let active = true;
+
     const fetchSvg = async () => {
       try {
         const hex = currentKanji.char.charCodeAt(0).toString(16).padStart(5, '0');
@@ -758,15 +761,19 @@ export default function KanjiWriterPage() {
           const paths = Array.from(doc.querySelectorAll('path[id*="-s"]'))
                              .map(p => p.getAttribute('d'))
                              .filter(Boolean) as string[];
-          setSvgPaths(paths);
+          if (active) setSvgPaths(paths);
         } else {
-          setSvgPaths([]);
+          if (active) setSvgPaths([]);
         }
       } catch (err) {
-        setSvgPaths([]);
+        if (active) setSvgPaths([]);
       }
     };
     fetchSvg();
+
+    return () => {
+      active = false;
+    };
   }, [currentKanji]);
 
   // Setup Canvas listeners (React way)
