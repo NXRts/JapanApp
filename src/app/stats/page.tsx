@@ -168,39 +168,60 @@ const ChartCard = styled(MainStatCard)`
 `;
 
 const BarChartContainer = styled.div`
-  height: 180px;
+  height: 220px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
+  gap: 1.25rem;
+  margin-top: 2rem;
+  padding-bottom: 0.5rem;
 
   @media (max-width: 768px) {
-    height: 150px;
-    gap: 0.4rem;
+    height: 180px;
+    gap: 0.5rem;
   }
 `;
 
 const BarWrapper = styled.div`
   flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: flex-end;
+  gap: 0.5rem;
+`;
+
+const BarArea = styled.div`
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 0;
 `;
 
 const Bar = styled.div<{ $height: number }>`
   width: 100%;
-  max-width: 40px;
-  height: ${({ $height }) => Math.max($height, 4)}%;
-  background: ${({ $height }) => $height > 0 ? 'var(--primary)' : 'var(--border)'};
-  border-radius: 8px 8px 4px 4px;
-  transition: height 1s ease-out;
-  cursor: pointer;
+  max-width: 32px;
+  height: ${({ $height }) => Math.max($height, 2)}%;
+  background: ${({ $height }) => $height > 0 ? 'var(--primary)' : 'rgba(var(--primary-rgb), 0.1)'};
+  border-radius: 6px 6px 2px 2px;
+  transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to top, rgba(255,255,255,0.1), transparent);
+    border-radius: inherit;
+  }
 
   &:hover {
-    background: var(--primary-light);
-    filter: brightness(1.1);
+    filter: brightness(1.2);
+    transform: scaleX(1.05);
   }
 `;
 
@@ -418,10 +439,18 @@ export default function StatsPage() {
           <BarChartContainer>
             {weeklyData.map((day, i) => (
               <BarWrapper key={i}>
-                <div style={{ fontSize: '0.7rem', fontWeight: 700, color: day.value > 0 ? 'var(--primary)' : 'transparent' }}>
+                <div style={{ 
+                  fontSize: '0.75rem', 
+                  fontWeight: 800, 
+                  color: day.value > 0 ? 'var(--primary)' : 'var(--text-secondary)',
+                  opacity: day.value > 0 ? 1 : 0.3,
+                  marginBottom: '2px'
+                }}>
                   {day.value}
                 </div>
-                <Bar $height={day.percent} title={`${day.label}: ${day.value} EXP`} />
+                <BarArea>
+                  <Bar $height={day.percent} title={`${day.label}: ${day.value} EXP`} />
+                </BarArea>
                 <DayLabel>{day.label}</DayLabel>
               </BarWrapper>
             ))}
