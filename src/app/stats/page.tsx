@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useProgress } from '@/context/ProgressContext';
-import { Heatmap } from '@/components/gamification/Heatmap';
+import { Heatmap, generateMockActivityLog } from '@/components/gamification/Heatmap';
 
 const Container = styled.div`
   max-width: 1100px;
@@ -343,6 +343,11 @@ export default function StatsPage() {
   const nextLevelExp = Math.pow(level, 2) * 100;
   const progressToNext = ((progress.exp - currentLevelExp) / (nextLevelExp - currentLevelExp)) * 100;
 
+  // 1.5 Final Activity Log (uses mock if empty)
+  const finalActivityLog = useMemo(() => {
+    return Object.keys(progress.activityLog).length > 0 ? progress.activityLog : generateMockActivityLog();
+  }, [progress.activityLog]);
+
   // 2. Weekly Activity Data
   const weeklyData = useMemo(() => {
     const days = [];
@@ -353,12 +358,36 @@ export default function StatsPage() {
       const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
       days.push({
         label: dayName,
-        value: progress.activityLog[dateStr] || 0
+        value: finalActivityLog[dateStr] || 0
       });
     }
     const maxExp = Math.max(...days.map(d => d.value), 100);
     return days.map(d => ({ ...d, percent: (d.value / maxExp) * 100 }));
-  }, [progress.activityLog]);
+  }, [finalActivityLog]);
+
+  // 2.5 Calculate Display Streak (uses mock if empty)
+  const displayStreak = useMemo(() => {
+    if (Object.keys(progress.activityLog).length > 0) return progress.streak;
+    
+    // Calculate mock streak
+    let currentStreak = 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    for (let i = 0; i < 365; i++) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split('T')[0];
+      
+      if ((finalActivityLog[dateStr] || 0) > 0) {
+        currentStreak++;
+      } else {
+        if (i === 0) continue; // It's okay if today is empty, we check yesterday
+        break;
+      }
+    }
+    return currentStreak;
+  }, [progress.activityLog, progress.streak, finalActivityLog]);
 
   // 3. SRS Distribution
   const srsStats = useMemo(() => {
@@ -420,9 +449,9 @@ export default function StatsPage() {
 
         <MainStatCard>
           <StatLabel>Daily Streak</StatLabel>
-          <StatValue>{progress.streak} <span>days</span></StatValue>
+          <StatValue>{displayStreak} <span>days</span></StatValue>
           <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '1rem' }}>
-            {progress.streak > 0 ? "You're on fire! Keep it up." : "Start your streak today!"}
+            {displayStreak > 0 ? "You're on fire! Keep it up." : "Start your streak today!"}
           </div>
         </MainStatCard>
 
