@@ -8,44 +8,34 @@ interface HeatmapProps {
 }
 
 const Container = styled.div<{ $cellSize: number }>`
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+  --local-surface:     var(--surface, #1E293B);
+  --local-surface-2:   var(--background, #0F172A);
+  --local-border:      var(--border, #334155);
+  --local-text:        var(--foreground, #F8FAFC);
+  --local-text-muted:  var(--text-secondary, #94A3B8);
+  --local-accent:      var(--primary, #4F46E5);
 
-  --bg:          #0d1117;
-  --surface:     #161b22;
-  --surface-2:   #1e2530;
-  --border:      rgba(255, 255, 255, 0.07);
-  --text:        #e6edf3;
-  --text-muted:  #7d8590;
-  --text-dim:    #484f58;
-  --accent:      #5865f2;
+  --h0: #1E293B; /* Solid slate-800 to cover background */
+  --h1: #312E81; /* Solid indigo-900 */
+  --h2: #4338CA; /* Solid indigo-700 */
+  --h3: #4F46E5; /* Solid indigo-600 */
+  --h4: #818CF8; /* Solid indigo-400 */
 
-  --h0: #1e2530;
-  --h1: #2d3561;
-  --h2: #3d4ec4;
-  --h3: #5865f2;
-  --h4: #818cf8;
-
-  --radius:   14px;
+  --radius:   28px;
   --cell:     ${props => props.$cellSize}px;
-  --gap:      3px;
+  --gap:      4px;
 
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--local-surface);
+  border: 1px solid var(--local-border);
   border-radius: var(--radius);
-  padding: 28px 28px 24px;
+  padding: 2rem;
+  box-shadow: var(--shadow-sm, 0 1px 2px 0 rgb(0 0 0 / 0.05));
   position: relative;
   overflow: hidden;
-  width: 100%;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(88, 101, 242, 0.5), transparent);
-  }
+  width: max-content;
+  max-width: 100%;
+  color: var(--local-text);
+  font-family: 'Inter', 'Noto Sans JP', sans-serif;
 
   *, *::before, *::after { box-sizing: border-box; }
 `;
@@ -60,17 +50,17 @@ const CardHeader = styled.div`
 `;
 
 const CardTitle = styled.div`
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.1px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--local-text);
+  letter-spacing: -0.01em;
 `;
 
 const CardSubtitle = styled.div`
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 3px;
-  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--local-text-muted);
+  margin-top: 4px;
+  font-weight: 500;
 `;
 
 const StatChips = styled.div`
@@ -80,18 +70,18 @@ const StatChips = styled.div`
 `;
 
 const Chip = styled.div`
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  background: var(--local-surface-2);
+  border: 1px solid var(--local-border);
   border-radius: 8px;
-  padding: 5px 10px;
-  font-size: 12px;
-  color: var(--text-muted);
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  color: var(--local-text-muted);
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-family: 'DM Mono', monospace;
+  gap: 6px;
+  font-weight: 500;
 
-  span { color: var(--text); font-weight: 500; }
+  span { color: var(--local-text); font-weight: 700; }
 `;
 
 const HeatmapWrap = styled.div`
@@ -111,16 +101,17 @@ const DayLabels = styled.div`
   gap: var(--gap);
   padding-top: 24px;
   margin-right: 8px;
+  width: 36px;
+  flex-shrink: 0;
 `;
 
 const DayLabel = styled.div<{ $hidden?: boolean }>`
   height: var(--cell);
-  font-size: 10px;
-  color: ${({ $hidden }) => $hidden ? 'transparent' : 'var(--text-muted)'};
+  font-size: 0.75rem;
+  color: ${({ $hidden }) => $hidden ? 'transparent' : 'var(--local-text-muted)'};
   line-height: var(--cell);
   white-space: nowrap;
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.3px;
+  font-weight: 600;
 `;
 
 const GridArea = styled.div`
@@ -138,19 +129,16 @@ const MonthLabels = styled.div`
 `;
 
 const MonthLabel = styled.div<{ $width: number }>`
-  font-size: 10.5px;
-  color: var(--text-muted);
-  font-family: 'DM Mono', monospace;
-  letter-spacing: 0.4px;
+  font-size: 0.75rem;
+  color: var(--local-text-muted);
+  font-weight: 600;
   white-space: nowrap;
-  overflow: hidden;
   width: ${({ $width }) => $width}px;
 `;
 
 const WeekCols = styled.div`
   display: flex;
   gap: var(--gap);
-  justify-content: space-between;
 `;
 
 const WeekCol = styled.div`
@@ -162,12 +150,12 @@ const WeekCol = styled.div`
 const DayCell = styled.div<{ $level: number; $empty?: boolean }>`
   width: var(--cell);
   height: var(--cell);
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: ${({ $empty }) => $empty ? 'default' : 'pointer'};
   position: relative;
   transition: transform 0.12s ease, filter 0.12s ease;
-  background: ${({ $level, $empty }) => {
-    if ($empty) return 'transparent';
+  visibility: ${({ $empty }) => $empty ? 'hidden' : 'visible'};
+  background: ${({ $level }) => {
     if ($level === 0) return 'var(--h0)';
     if ($level === 1) return 'var(--h1)';
     if ($level === 2) return 'var(--h2)';
@@ -178,8 +166,9 @@ const DayCell = styled.div<{ $level: number; $empty?: boolean }>`
   ${({ $empty }) => !$empty && `
     &:hover {
       transform: scale(1.35);
-      filter: brightness(1.25);
+      filter: brightness(1.1);
       z-index: 10;
+      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     }
   `}
 `;
@@ -187,21 +176,21 @@ const DayCell = styled.div<{ $level: number; $empty?: boolean }>`
 const Legend = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text-muted);
-  font-family: 'DM Mono', monospace;
+  gap: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--local-text-muted);
 `;
 
 const LegendCells = styled.div`
   display: flex;
-  gap: 3px;
+  gap: 4px;
 `;
 
 const LegendCell = styled.div<{ $level: number }>`
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
   background: ${({ $level }) => {
     if ($level === 0) return 'var(--h0)';
     if ($level === 1) return 'var(--h1)';
@@ -215,14 +204,14 @@ const HeatmapFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 18px;
+  margin-top: 24px;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 16px;
 `;
 
 const StreakInfo = styled.div`
   display: flex;
-  gap: 16px;
+  gap: 20px;
 `;
 
 const StreakItem = styled.div`
@@ -232,54 +221,55 @@ const StreakItem = styled.div`
 `;
 
 const StreakValue = styled.div`
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: -0.5px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--local-text);
+  letter-spacing: -0.02em;
   line-height: 1;
 
   .unit {
-    font-size: 12px;
-    font-weight: 400;
-    color: var(--text-muted);
-    margin-left: 2px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--local-text-muted);
+    margin-left: 4px;
   }
 `;
 
 const StreakLabel = styled.div`
-  font-size: 11px;
-  color: var(--text-muted);
-  letter-spacing: 0.3px;
+  font-size: 0.75rem;
+  color: var(--local-text-muted);
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 `;
 
 const StreakDivider = styled.div`
   width: 1px;
-  height: 32px;
-  background: var(--border);
+  height: 40px;
+  background: var(--local-border);
   align-self: center;
 `;
 
 const Tooltip = styled.div<{ $show: boolean; $x: number; $y: number }>`
   position: fixed;
-  background: #1e2530;
-  border: 1px solid rgba(88,101,242,0.35);
-  border-radius: 8px;
-  padding: 7px 11px;
-  font-size: 11.5px;
-  color: var(--text);
+  background: var(--local-surface);
+  border: 1px solid var(--local-border);
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--local-text);
   pointer-events: none;
   white-space: nowrap;
   z-index: 100;
   opacity: ${({ $show }) => $show ? 1 : 0};
   transform: ${({ $show }) => $show ? 'translateY(0)' : 'translateY(4px)'};
   transition: opacity 0.12s, transform 0.12s;
-  font-family: 'DM Mono', monospace;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1));
   left: ${({ $x }) => $x}px;
   top: ${({ $y }) => $y}px;
 
-  strong { color: var(--accent); }
+  strong { color: var(--local-accent); font-weight: 700; }
 `;
 
 function seededRand(seed: number) {
@@ -304,12 +294,17 @@ export function generateMockActivityLog(): Record<string, number> {
   for (let i = 0; i <= 365; i++) {
     const d = new Date(startDate);
     d.setDate(d.getDate() + i);
-    const dateStr = d.toISOString().split('T')[0];
+    
+    // Fix timezone shift bug by manually creating local YYYY-MM-DD
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    const dateStr = `${y}-${m}-${day}`;
 
     const r = rand();
     const bias = prevActive ? 0.55 : 0.35;
     
-    if (r > (1 - bias)) {
+    if (i >= 360 || r > (1 - bias)) {
       const r2 = rand();
       let exp = 0;
       if (r2 < 0.30) exp = 30; // Level 1 (< 50)
@@ -330,12 +325,13 @@ export function generateMockActivityLog(): Record<string, number> {
 export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [cellSize, setCellSize] = useState(13);
+  const [visibleWeeks, setVisibleWeeks] = useState(53);
   const [tooltip, setTooltip] = useState({ show: false, x: 0, y: 0, content: '' });
 
-  const TOTAL_WEEKS = 53;
-  const GAP = 3;
+  const TOTAL_WEEKS = 52;
+  const GAP = 4;
   const DAY_LABEL_W = 36;
-  const CARD_PADDING = 56; // 28 * 2
+  const CARD_PADDING = 64; // 2rem * 2 = 64px
   const MARGIN_RIGHT = 8;
 
   useEffect(() => {
@@ -344,7 +340,13 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
       const cardW = containerRef.current.clientWidth;
       const available = cardW - CARD_PADDING - DAY_LABEL_W - MARGIN_RIGHT;
       const cell = Math.floor((available - (TOTAL_WEEKS - 1) * GAP) / TOTAL_WEEKS);
-      setCellSize(Math.max(8, Math.min(cell, 14)));
+      
+      const clampedCell = Math.max(6, Math.min(cell, 14));
+      setCellSize(clampedCell);
+
+      // Dynamically calculate how many weeks fit to truncate left side cleanly
+      const maxW = Math.floor((available + GAP) / (clampedCell + GAP));
+      setVisibleWeeks(Math.max(10, Math.min(TOTAL_WEEKS, maxW)));
     };
 
     computeCellSize();
@@ -372,9 +374,8 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
     const endDate = new Date(today);
     endDate.setDate(today.getDate() + (6 - today.getDay()));
 
-    // Go back exactly 53 weeks (371 days). Since endDate is Saturday, endDate - 370 days is Sunday.
-    const startDate = new Date(endDate);
-    startDate.setDate(endDate.getDate() - 370);
+    // Go back exactly 52 weeks (364 days). Since endDate is Saturday, endDate - 363 days is Sunday.
+    const startDate = new Date(endDate.getTime() - 363 * 24 * 60 * 60 * 1000);
 
     const resultWeeks = [];
     const allCells = [];
@@ -398,7 +399,10 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
         
         const exp = finalActivityLog[dateStr] || 0;
         
+        // We still calculate level based on exp
         let level = 0;
+        
+        // Stats are only calculated for days up to 'today' and within the last 365 days
         const cellInRange = date <= today && date >= oneYearAgo;
 
         if (cellInRange && exp > 0) {
@@ -407,7 +411,9 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
           level = exp < 50 ? 1 : exp < 200 ? 2 : exp < 500 ? 3 : 4;
         }
 
-        const cell = { date, dateStr, level, inRange: cellInRange };
+        // Make ALL cells visually present (inRange: true) so the grid is a perfect rectangle
+        // Future days and >365 days will simply have level 0
+        const cell = { date, dateStr, level, inRange: true, isFuture: date > today };
         week.push(cell);
         allCells.push(cell);
       }
@@ -435,7 +441,9 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
     let longestStreak = 0;
     let tempStreak = 0;
 
-    const sortedCells = [...allCells].filter(c => c.inRange).sort((a,b) => a.date.getTime() - b.date.getTime());
+    const sortedCells = [...allCells]
+      .filter(c => c.inRange && !c.isFuture)
+      .sort((a,b) => a.date.getTime() - b.date.getTime());
     
     sortedCells.forEach(c => {
       if (c.level > 0) {
@@ -512,26 +520,29 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
           </DayLabels>
           <GridArea>
             <MonthLabels>
-              {monthPositions.map((pos, i) => {
-                const nextIdx = monthPositions[i + 1]?.weekIdx ?? TOTAL_WEEKS;
-                const spanWeeks = nextIdx - pos.weekIdx;
-                return (
-                  <MonthLabel key={i} $width={spanWeeks * (cellSize + GAP)}>
-                    {pos.name}
-                  </MonthLabel>
-                );
+              {monthPositions
+                .filter(pos => pos.weekIdx >= TOTAL_WEEKS - visibleWeeks)
+                .map((pos, i, arr) => {
+                  const relativeIdx = pos.weekIdx - (TOTAL_WEEKS - visibleWeeks);
+                  const nextRelativeIdx = i < arr.length - 1 ? arr[i + 1].weekIdx - (TOTAL_WEEKS - visibleWeeks) : visibleWeeks;
+                  const spanWeeks = nextRelativeIdx - relativeIdx;
+                  return (
+                    <MonthLabel key={i} $width={spanWeeks * (cellSize + GAP)}>
+                      {pos.name}
+                    </MonthLabel>
+                  );
               })}
             </MonthLabels>
             <WeekCols>
-              {weeks.map((week, wi) => (
+              {weeks.slice(-visibleWeeks).map((week, wi) => (
                 <WeekCol key={wi}>
                   {week.map((cell, di) => (
                     <DayCell 
                       key={di} 
                       $level={cell.level}
-                      $empty={!cell.inRange}
-                      onMouseEnter={(e) => handleMouseEnter(e, cell.date, cell.level, !cell.inRange)}
-                      onMouseMove={(e) => handleMouseMove(e, !cell.inRange)}
+                      $empty={cell.isFuture}
+                      onMouseEnter={(e) => handleMouseEnter(e, cell.date, cell.level, cell.isFuture)}
+                      onMouseMove={(e) => handleMouseMove(e, cell.isFuture)}
                       onMouseLeave={handleMouseLeave}
                     />
                   ))}
