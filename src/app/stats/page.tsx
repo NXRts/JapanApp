@@ -354,7 +354,10 @@ export default function StatsPage() {
     for (let i = 6; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split('T')[0];
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const dayStr = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${y}-${m}-${dayStr}`;
       const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
       days.push({
         label: dayName,
@@ -377,7 +380,10 @@ export default function StatsPage() {
     for (let i = 0; i < 365; i++) {
       const d = new Date(today);
       d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split('T')[0];
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const dayStr = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${y}-${m}-${dayStr}`;
       
       if ((finalActivityLog[dateStr] || 0) > 0) {
         currentStreak++;
