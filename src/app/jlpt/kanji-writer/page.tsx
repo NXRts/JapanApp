@@ -650,8 +650,8 @@ const LoadingDots = styled.div`
 // --- COMPONENT ---
 
 export default function KanjiWriterPage() {
-  const [currentLevel, setCurrentLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1'>('N4');
-  const [currentKanji, setCurrentKanji] = useState<any>(KANJI_DATA['N4'][0]);
+  const [currentLevel, setCurrentLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1'>('N5');
+  const [currentKanji, setCurrentKanji] = useState<any>(KANJI_DATA['N5'][0]);
   const [searchQuery, setSearchQuery] = useState('');
   const { addExp, updateMastery } = useProgress();
   
