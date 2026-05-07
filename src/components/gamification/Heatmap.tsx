@@ -35,7 +35,7 @@ const Container = styled.div<{ $cellSize: number }>`
   }
   box-shadow: var(--shadow-sm, 0 1px 2px 0 rgb(0 0 0 / 0.05));
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
   color: var(--local-text);
   font-family: 'Inter', 'Noto Sans JP', sans-serif;
@@ -92,27 +92,14 @@ const Chip = styled.div`
 `;
 
 const HeatmapWrap = styled.div`
-  overflow-x: auto;
+  overflow: hidden;
   width: 100%;
-  
-  /* Custom scrollbar */
-  &::-webkit-scrollbar {
-    height: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: var(--local-border);
-    border-radius: 10px;
-  }
 `;
 
 const HeatmapInner = styled.div`
   display: flex;
   gap: 0;
-  width: max-content;
-  padding-right: 20px;
+  width: 100%;
 `;
 
 const DayLabels = styled.div`
@@ -374,17 +361,21 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
   const GAP = 4;
   const DAY_LABEL_W = 36;
   const CARD_PADDING = 64; // 2rem * 2 = 64px
-  const MARGIN_RIGHT = 8;
 
   useEffect(() => {
     const computeCellSize = () => {
       if (!containerRef.current) return;
       const cardW = containerRef.current.clientWidth;
+      const MARGIN_RIGHT = 0;
       const available = cardW - CARD_PADDING - DAY_LABEL_W - MARGIN_RIGHT;
       const cell = Math.floor((available - (TOTAL_WEEKS - 1) * GAP) / TOTAL_WEEKS);
       
-      setCellSize(14);
-      setVisibleWeeks(TOTAL_WEEKS);
+      const clampedCell = Math.max(6, Math.min(cell, 14));
+      setCellSize(clampedCell);
+
+      // Dynamically calculate how many weeks fit to truncate left side cleanly
+      const maxW = Math.floor((available + GAP) / (clampedCell + GAP));
+      setVisibleWeeks(Math.max(10, Math.min(TOTAL_WEEKS, maxW - 1)));
     };
 
     computeCellSize();
@@ -420,8 +411,7 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
     let activeDays = 0;
     let totalSessions = 0;
 
-    const hasRealActivity = Object.values(activityLog).some(v => v > 0);
-    const finalActivityLog = hasRealActivity ? activityLog : generateMockActivityLog();
+    const finalActivityLog = activityLog;
 
     for (let w = 0; w < TOTAL_WEEKS; w++) {
       const week = [];
