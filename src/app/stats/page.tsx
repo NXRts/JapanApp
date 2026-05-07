@@ -15,8 +15,8 @@ const Container = styled.div`
   gap: 3rem;
 
   @media (max-width: 768px) {
-    padding: 1.5rem 1.5rem; /* Increased horizontal padding */
-    gap: 2rem;
+    padding: 1rem;
+    gap: 1.5rem;
   }
 `;
 
@@ -58,13 +58,13 @@ const Title = styled.h1`
   letter-spacing: -0.02em;
 
   @media (max-width: 768px) {
-    font-size: 2.25rem;
+    font-size: 1.75rem;
   }
 `;
 
 const Subtitle = styled.p`
   color: var(--text-secondary);
-  font-size: 1.1rem;
+  font-size: 1rem;
 `;
 
 const StatsGrid = styled.div`
@@ -177,8 +177,9 @@ const BarChartContainer = styled.div`
   padding-bottom: 0.5rem;
 
   @media (max-width: 768px) {
-    height: 180px;
-    gap: 0.5rem;
+    height: 160px;
+    gap: 0.4rem;
+    margin-top: 1.5rem;
   }
 `;
 
@@ -246,6 +247,7 @@ const SRSLegend = styled.div`
 
   @media (max-width: 480px) {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
   }
 `;
 
@@ -343,9 +345,9 @@ export default function StatsPage() {
   const nextLevelExp = Math.pow(level, 2) * 100;
   const progressToNext = ((progress.exp - currentLevelExp) / (nextLevelExp - currentLevelExp)) * 100;
 
-  // 1.5 Final Activity Log (uses actual progress data)
+  // 1.5 Final Activity Log (uses mock if empty)
   const finalActivityLog = useMemo(() => {
-    return progress.activityLog;
+    return Object.keys(progress.activityLog).length > 0 ? progress.activityLog : generateMockActivityLog();
   }, [progress.activityLog]);
 
   // 2. Weekly Activity Data
@@ -368,8 +370,32 @@ export default function StatsPage() {
     return days.map(d => ({ ...d, percent: (d.value / maxExp) * 100 }));
   }, [finalActivityLog]);
 
-  // 2.5 Display Streak (uses actual progress data)
-  const displayStreak = progress.streak;
+  // 2.5 Calculate Display Streak (uses mock if empty)
+  const displayStreak = useMemo(() => {
+    if (Object.keys(progress.activityLog).length > 0) return progress.streak;
+    
+    // Calculate mock streak
+    let currentStreak = 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    for (let i = 0; i < 365; i++) {
+      const d = new Date(today);
+      d.setDate(d.getDate() - i);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const dayStr = String(d.getDate()).padStart(2, '0');
+      const dateStr = `${y}-${m}-${dayStr}`;
+      
+      if ((finalActivityLog[dateStr] || 0) > 0) {
+        currentStreak++;
+      } else {
+        if (i === 0) continue; // It's okay if today is empty, we check yesterday
+        break;
+      }
+    }
+    return currentStreak;
+  }, [progress.activityLog, progress.streak, finalActivityLog]);
 
   // 3. SRS Distribution
   const srsStats = useMemo(() => {
@@ -491,7 +517,7 @@ export default function StatsPage() {
 
       <Section>
         <SectionTitle>Consistency</SectionTitle>
-        <Heatmap activityLog={progress.activityLog} />
+        <Heatmap activityLog={finalActivityLog} />
       </Section>
 
       <Section>

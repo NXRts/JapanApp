@@ -29,11 +29,14 @@ const Container = styled.div<{ $cellSize: number }>`
   border: 1px solid var(--local-border);
   border-radius: var(--radius);
   padding: 2rem;
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+    border-radius: 20px;
+  }
   box-shadow: var(--shadow-sm, 0 1px 2px 0 rgb(0 0 0 / 0.05));
   position: relative;
   overflow: hidden;
-  width: max-content;
-  max-width: 100%;
+  width: 100%;
   color: var(--local-text);
   font-family: 'Inter', 'Noto Sans JP', sans-serif;
 
@@ -61,6 +64,10 @@ const CardSubtitle = styled.div`
   color: var(--local-text-muted);
   margin-top: 4px;
   font-weight: 500;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const StatChips = styled.div`
@@ -85,14 +92,27 @@ const Chip = styled.div`
 `;
 
 const HeatmapWrap = styled.div`
-  overflow: hidden;
+  overflow-x: auto;
   width: 100%;
+  
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--local-border);
+    border-radius: 10px;
+  }
 `;
 
 const HeatmapInner = styled.div`
   display: flex;
   gap: 0;
-  width: 100%;
+  width: max-content;
+  padding-right: 20px;
 `;
 
 const DayLabels = styled.div`
@@ -103,6 +123,12 @@ const DayLabels = styled.div`
   margin-right: 8px;
   width: 36px;
   flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    padding-top: 24px;
+    width: 36px;
+    margin-right: 8px;
+  }
 `;
 
 const DayLabel = styled.div<{ $hidden?: boolean }>`
@@ -112,6 +138,13 @@ const DayLabel = styled.div<{ $hidden?: boolean }>`
   line-height: var(--cell);
   white-space: nowrap;
   font-weight: 600;
+  
+  @media (max-width: 480px) {
+    font-size: 0.75rem;
+    width: 36px;
+    height: var(--cell);
+    line-height: var(--cell);
+  }
 `;
 
 const GridArea = styled.div`
@@ -126,6 +159,11 @@ const MonthLabels = styled.div`
   margin-bottom: 6px;
   height: 18px;
   align-items: flex-end;
+
+  @media (max-width: 480px) {
+    height: 18px;
+    margin-bottom: 6px;
+  }
 `;
 
 const MonthLabel = styled.div<{ $width: number }>`
@@ -134,6 +172,7 @@ const MonthLabel = styled.div<{ $width: number }>`
   font-weight: 600;
   white-space: nowrap;
   width: ${({ $width }) => $width}px;
+  min-width: 30px;
 `;
 
 const WeekCols = styled.div`
@@ -205,8 +244,11 @@ const HeatmapFooter = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 24px;
-  flex-wrap: wrap;
-  gap: 16px;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
 `;
 
 const StreakInfo = styled.div`
@@ -341,12 +383,8 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
       const available = cardW - CARD_PADDING - DAY_LABEL_W - MARGIN_RIGHT;
       const cell = Math.floor((available - (TOTAL_WEEKS - 1) * GAP) / TOTAL_WEEKS);
       
-      const clampedCell = Math.max(6, Math.min(cell, 14));
-      setCellSize(clampedCell);
-
-      // Dynamically calculate how many weeks fit to truncate left side cleanly
-      const maxW = Math.floor((available + GAP) / (clampedCell + GAP));
-      setVisibleWeeks(Math.max(10, Math.min(TOTAL_WEEKS, maxW)));
+      setCellSize(14);
+      setVisibleWeeks(TOTAL_WEEKS);
     };
 
     computeCellSize();
@@ -382,7 +420,8 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
     let activeDays = 0;
     let totalSessions = 0;
 
-    const finalActivityLog = activityLog;
+    const hasRealActivity = Object.values(activityLog).some(v => v > 0);
+    const finalActivityLog = hasRealActivity ? activityLog : generateMockActivityLog();
 
     for (let w = 0; w < TOTAL_WEEKS; w++) {
       const week = [];
@@ -509,13 +548,13 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
       <HeatmapWrap>
         <HeatmapInner>
           <DayLabels>
-            <DayLabel $hidden>·</DayLabel>
+            <DayLabel $hidden data-hidden="true">·</DayLabel>
             <DayLabel>Mon</DayLabel>
-            <DayLabel $hidden>·</DayLabel>
+            <DayLabel $hidden data-hidden="true">·</DayLabel>
             <DayLabel>Wed</DayLabel>
-            <DayLabel $hidden>·</DayLabel>
+            <DayLabel $hidden data-hidden="true">·</DayLabel>
             <DayLabel>Fri</DayLabel>
-            <DayLabel $hidden>·</DayLabel>
+            <DayLabel $hidden data-hidden="true">·</DayLabel>
           </DayLabels>
           <GridArea>
             <MonthLabels>
