@@ -345,10 +345,8 @@ export default function StatsPage() {
   const nextLevelExp = Math.pow(level, 2) * 100;
   const progressToNext = ((progress.exp - currentLevelExp) / (nextLevelExp - currentLevelExp)) * 100;
 
-  // 1.5 Final Activity Log (uses mock if empty)
-  const finalActivityLog = useMemo(() => {
-    return Object.keys(progress.activityLog).length > 0 ? progress.activityLog : generateMockActivityLog();
-  }, [progress.activityLog]);
+  // 1.5 Final Activity Log (uses actual progress data)
+  const finalActivityLog = progress.activityLog;
 
   // 2. Weekly Activity Data
   const weeklyData = useMemo(() => {
@@ -370,32 +368,8 @@ export default function StatsPage() {
     return days.map(d => ({ ...d, percent: (d.value / maxExp) * 100 }));
   }, [finalActivityLog]);
 
-  // 2.5 Calculate Display Streak (uses mock if empty)
-  const displayStreak = useMemo(() => {
-    if (Object.keys(progress.activityLog).length > 0) return progress.streak;
-    
-    // Calculate mock streak
-    let currentStreak = 0;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    for (let i = 0; i < 365; i++) {
-      const d = new Date(today);
-      d.setDate(d.getDate() - i);
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const dayStr = String(d.getDate()).padStart(2, '0');
-      const dateStr = `${y}-${m}-${dayStr}`;
-      
-      if ((finalActivityLog[dateStr] || 0) > 0) {
-        currentStreak++;
-      } else {
-        if (i === 0) continue; // It's okay if today is empty, we check yesterday
-        break;
-      }
-    }
-    return currentStreak;
-  }, [progress.activityLog, progress.streak, finalActivityLog]);
+  // 2.5 Display Streak (uses actual progress data)
+  const displayStreak = progress.streak;
 
   // 3. SRS Distribution
   const srsStats = useMemo(() => {
