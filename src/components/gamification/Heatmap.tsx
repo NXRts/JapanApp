@@ -382,8 +382,7 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
     let activeDays = 0;
     let totalSessions = 0;
 
-    const hasRealActivity = Object.values(activityLog).some(v => v > 0);
-    const finalActivityLog = hasRealActivity ? activityLog : generateMockActivityLog();
+    const finalActivityLog = activityLog;
 
     for (let w = 0; w < TOTAL_WEEKS; w++) {
       const week = [];
