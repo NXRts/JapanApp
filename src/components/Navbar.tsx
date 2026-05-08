@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { useProgress } from '@/context/ProgressContext';
 import { isItemDue } from '@/lib/srs';
-import { ArrowRightIcon } from './icons/AppIcons';
+import { ArrowRightIcon, UserIcon } from './icons/AppIcons';
 
 const SettingsModal = dynamic(() => import('./SettingsModal').then((mod) => mod.SettingsModal), { ssr: false });
 const DictionarySearchOverlay = dynamic(() => import('./dictionary/DictionarySearchOverlay'), { ssr: false });
@@ -176,6 +176,35 @@ const SettingsBtn = styled.button<{ $isOpen?: boolean }>`
 const SearchBtn = styled(SettingsBtn)`
   svg {
     fill: none;
+  }
+`;
+
+const UserBtn = styled(Link)`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+
+  &:hover {
+    color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.15);
+    opacity: 1;
+  }
+
+  @media (max-width: 600px) {
+    padding: 5px;
+  }
+
+  svg {
+    width: 22px;
+    height: 22px;
   }
 `;
 
@@ -430,6 +459,9 @@ export function Navbar() {
               <StyledLink href="/about" $active={pathname === '/about'}>About</StyledLink>
             </NavItem>
             <NavItem>
+              <StyledLink href="/profile" $active={pathname === '/profile'}>Profile</StyledLink>
+            </NavItem>
+            <NavItem>
               <StyledLink href="/contact" $active={pathname === '/contact'}>Contact</StyledLink>
             </NavItem>
           </NavList>
@@ -448,6 +480,10 @@ export function Navbar() {
                   <path d="m21 21-4.3-4.3" />
                 </svg>
               </SearchBtn>
+
+              <UserBtn href="/profile" title="Profile">
+                <UserIcon size={22} />
+              </UserBtn>
 
               <SettingsBtn $isOpen={isMobileMenuOpen} onClick={() => setIsSettingsOpen(true)} title="Settings">
                 <svg viewBox="0 0 24 24">
@@ -508,6 +544,10 @@ export function Navbar() {
             About
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
+          <MobileLink href="/profile" $active={pathname === '/profile'} $isOpen={isMobileMenuOpen} $delay={0.55} onClick={() => setIsMobileMenuOpen(false)}>
+            Profile
+            <span><ArrowRightIcon size={18} /></span>
+          </MobileLink>
           <MobileLink href="/contact" $active={pathname === '/contact'} $isOpen={isMobileMenuOpen} $delay={0.55} onClick={() => setIsMobileMenuOpen(false)}>
             Contact
             <span><ArrowRightIcon size={18} /></span>
@@ -524,7 +564,7 @@ export function Navbar() {
           */}
           <MobileDictBtn
             $isOpen={isMobileMenuOpen}
-            $delay={0.75}
+            $delay={0.8}
             onClick={() => { setIsDictionaryOpen(true); setIsMobileMenuOpen(false); }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

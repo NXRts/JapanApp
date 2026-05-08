@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useProgress } from '@/context/ProgressContext';
-import { Heatmap, generateMockActivityLog } from '@/components/gamification/Heatmap';
+import { Heatmap } from '@/components/gamification/Heatmap';
 
 const Container = styled.div`
   max-width: 1100px;
