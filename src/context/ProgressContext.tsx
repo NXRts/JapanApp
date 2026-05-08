@@ -1,7 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { calculateNextSRS, SRSItem } from '@/lib/srs';
+import { GamificationAlert, GamificationAlertData } from '@/components/gamification/GamificationAlert';
 
 interface MasteryRecord {
   correct: number;
@@ -53,6 +54,16 @@ const INITIAL_DATA: ProgressData = {
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const [progress, setProgress] = useState<ProgressData>(INITIAL_DATA);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [alerts, setAlerts] = useState<GamificationAlertData[]>([]);
+
+  const triggerAlert = useCallback((type: 'level' | 'achievement', title: string, description: string) => {
+    const id = Math.random().toString(36).substring(7);
+    setAlerts(prev => [...prev, { id, type, title, description }]);
+  }, []);
+
+  const closeAlert = useCallback((id: string) => {
+    setAlerts(prev => prev.filter(a => a.id !== id));
+  }, []);
 
   // Load from localStorage
   useEffect(() => {
@@ -89,12 +100,20 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const addExp = (amount: number) => {
     const today = new Date().toISOString().split('T')[0];
     setProgress(prev => {
+      const oldLevel = Math.floor(Math.sqrt(prev.exp / 100)) + 1;
+      const newExp = prev.exp + amount;
+      const newLevel = Math.floor(Math.sqrt(newExp / 100)) + 1;
+      
+      if (newLevel > oldLevel) {
+        triggerAlert('level', `Level Up!`, `You've reached level ${newLevel}! Keep it up!`);
+      }
+
       const newActivityLog = { ...prev.activityLog };
       newActivityLog[today] = (newActivityLog[today] || 0) + amount;
       
       return {
         ...prev,
-        exp: prev.exp + amount,
+        exp: newExp,
         activityLog: newActivityLog
       };
     });
@@ -131,16 +150,28 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const updateMastery = (char: string, isCorrect: boolean) => {
     setProgress(prev => {
       const current = prev.mastery[char] || { correct: 0, incorrect: 0, lastAttempt: '' };
+      const newMastery = {
+        ...prev.mastery,
+        [char]: {
+          correct: current.correct + (isCorrect ? 1 : 0),
+          incorrect: current.incorrect + (isCorrect ? 0 : 1),
+          lastAttempt: new Date().toISOString(),
+        }
+      };
+
+      // Check for achievements
+      const totalMastered = Object.keys(newMastery).length;
+      const oldTotal = Object.keys(prev.mastery).length;
+      
+      if (totalMastered === 10 && oldTotal < 10) {
+        triggerAlert('achievement', 'Kanji Apprentice', 'You have learned your first 10 items!');
+      } else if (totalMastered === 1 && oldTotal === 0) {
+        triggerAlert('achievement', 'First Steps', 'Welcome to your learning journey!');
+      }
+
       return {
         ...prev,
-        mastery: {
-          ...prev.mastery,
-          [char]: {
-            correct: current.correct + (isCorrect ? 1 : 0),
-            incorrect: current.incorrect + (isCorrect ? 0 : 1),
-            lastAttempt: new Date().toISOString(),
-          }
-        }
+        mastery: newMastery
       };
     });
   };
@@ -226,6 +257,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   return (
     <ProgressContext.Provider value={contextValue}>
       {children}
+      {alerts.map(alert => (
+        <GamificationAlert 
+          key={alert.id} 
+          data={alert} 
+          onClose={closeAlert} 
+        />
+      ))}
     </ProgressContext.Provider>
   );
 }
