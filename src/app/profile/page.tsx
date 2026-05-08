@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useProgress } from '@/context/ProgressContext';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { UserIcon } from '@/components/icons/AppIcons';
 
 const Container = styled.div`
   max-width: 800px;
@@ -200,10 +201,14 @@ export default function ProfilePage() {
       <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Profile" />
       
       <ProfileHeader>
-        <AvatarCircle>👤</AvatarCircle>
+        <AvatarCircle>
+          <UserIcon size={64} />
+        </AvatarCircle>
         <ProfileInfo>
-          <Name>Learner</Name>
-          <JoinedDate>Studying Japanese since today</JoinedDate>
+          <Name>JapanApp Learner</Name>
+          <JoinedDate>
+            Mastering {Object.keys(progress.mastery).length} items across Kanji & Vocabulary
+          </JoinedDate>
           <LevelBadge>
             <span>🏆</span> Level {level}
           </LevelBadge>
@@ -220,12 +225,22 @@ export default function ProfilePage() {
           <StatValue>{progress.streak} days</StatValue>
         </StatCard>
         <StatCard>
-          <StatLabel>Characters Learned</StatLabel>
+          <StatLabel>Items Mastered</StatLabel>
           <StatValue>{totalCharacters}</StatValue>
         </StatCard>
         <StatCard>
-          <StatLabel>Quizzes Taken</StatLabel>
-          <StatValue>{totalQuizzes}</StatValue>
+          <StatLabel>Learning Accuracy</StatLabel>
+          <StatValue>
+            {useMemo(() => {
+              let correct = 0;
+              let total = 0;
+              Object.values(progress.mastery).forEach(m => {
+                correct += m.correct;
+                total += (m.correct + m.incorrect);
+              });
+              return total === 0 ? 0 : Math.round((correct / total) * 100);
+            }, [progress.mastery])}%
+          </StatValue>
         </StatCard>
       </StatsGrid>
 
