@@ -52,6 +52,12 @@ const AvatarCircle = styled.div`
   font-weight: 800;
   box-shadow: 0 10px 25px rgba(var(--primary-rgb), 0.3);
   flex-shrink: 0;
+
+  @media (max-width: 600px) {
+    width: 100px;
+    height: 100px;
+    font-size: 2.5rem;
+  }
 `;
 
 const ProfileInfo = styled.div`
@@ -63,6 +69,10 @@ const Name = styled.h1`
   font-weight: 850;
   margin-bottom: 0.5rem;
   letter-spacing: -0.02em;
+
+  @media (max-width: 600px) {
+    font-size: 1.75rem;
+  }
 `;
 
 const JoinedDate = styled.p`
@@ -122,6 +132,10 @@ const StatValue = styled.div`
   font-size: 2rem;
   font-weight: 850;
   color: var(--foreground);
+
+  @media (max-width: 600px) {
+    font-size: 1.75rem;
+  }
 `;
 
 const SettingsSection = styled.div`
@@ -154,6 +168,12 @@ const SettingItem = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.75rem;
+  gap: 1rem;
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const SettingLabel = styled.div`
@@ -187,6 +207,11 @@ const ActionButton = styled.button<{ $danger?: boolean }>`
     background: ${({ $danger }) => $danger ? '#ef4444' : 'var(--primary)'};
     color: white;
     border-color: ${({ $danger }) => $danger ? '#ef4444' : 'var(--primary)'};
+  }
+
+  @media (max-width: 500px) {
+    width: 100%;
+    text-align: center;
   }
 `;
 
