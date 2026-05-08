@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { TrophyIcon, SparklesIcon, FireIcon } from '../icons/AppIcons';
 
 const slideUp = keyframes`
@@ -21,22 +22,26 @@ const AlertContainer = styled.div`
   top: 50%;
   left: 50%;
   z-index: 10000;
-  pointer-events: none;
+  perspective: 1000px;
 `;
 
-const AlertBox = styled.div<{ $type: 'level' | 'achievement' }>`
+const AlertBox = styled(motion.div)<{ $type: 'level' | 'achievement' }>`
   background: var(--surface);
   border: 2px solid ${({ $type }) => $type === 'level' ? 'var(--primary)' : 'var(--secondary)'};
   border-radius: 24px;
   padding: 2rem 3rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px ${({ $type }) => $type === 'level' ? 'rgba(var(--primary-rgb), 0.3)' : 'rgba(var(--secondary-rgb), 0.3)'};
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 
+              0 0 30px ${({ $type }) => $type === 'level' ? 'rgba(var(--primary-rgb), 0.3)' : 'rgba(var(--secondary-rgb), 0.3)'};
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  animation: ${slideUp} 4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   min-width: 320px;
   text-align: center;
+  cursor: grab;
+  pointer-events: auto;
+
+  &:active { cursor: grabbing; }
 `;
 
 const IconWrapper = styled.div<{ $type: 'level' | 'achievement' }>`
@@ -90,22 +95,58 @@ export const GamificationAlert = ({
   data: GamificationAlertData; 
   onClose: (id: string) => void 
 }) => {
+  const [isVisible, setIsVisible] = useState(true);
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      onClose(data.id);
-    }, 4000);
+      setIsVisible(false);
+      setTimeout(() => onClose(data.id), 500);
+    }, 4500);
     return () => clearTimeout(timer);
   }, [data.id, onClose]);
 
+  const handleDragEnd = (_: any, info: any) => {
+    if (Math.abs(info.offset.y) > 100 || Math.abs(info.offset.x) > 100) {
+      setIsVisible(false);
+      setTimeout(() => onClose(data.id), 200);
+    }
+  };
+
   return (
-    <AlertContainer>
-      <AlertBox $type={data.type}>
-        <IconWrapper $type={data.type}>
-          {data.type === 'level' ? <SparklesIcon /> : <TrophyIcon />}
-        </IconWrapper>
-        <Title>{data.title}</Title>
-        <Description>{data.description}</Description>
-      </AlertBox>
-    </AlertContainer>
+    <AnimatePresence>
+      {isVisible && (
+        <AlertContainer>
+          <AlertBox
+            $type={data.type}
+            initial={{ y: 100, x: "-50%", opacity: 0, scale: 0.8 }}
+            animate={{ y: "-50%", x: "-50%", opacity: 1, scale: 1 }}
+            exit={{ y: -200, opacity: 0, scale: 0.5, rotate: 10 }}
+            drag
+            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
+            dragElastic={0.7}
+            onDragEnd={handleDragEnd}
+            transition={{ type: "spring", damping: 15, stiffness: 200 }}
+          >
+            <IconWrapper $type={data.type}>
+              {data.type === 'level' ? <SparklesIcon /> : <TrophyIcon />}
+              <motion.div
+                style={{ position: 'absolute', inset: 0 }}
+                animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </IconWrapper>
+            <Title>{data.title}</Title>
+            <Description>{data.description}</Description>
+            <motion.div 
+              style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.5rem', opacity: 0.6 }}
+              animate={{ opacity: [0.4, 0.8, 0.4] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            >
+              Swipe to dismiss
+            </motion.div>
+          </AlertBox>
+        </AlertContainer>
+      )}
+    </AnimatePresence>
   );
 };
