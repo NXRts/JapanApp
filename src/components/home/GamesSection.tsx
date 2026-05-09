@@ -6,8 +6,7 @@ import { motion, Variants } from 'framer-motion';
 
 const Section = styled.section`
   padding: 6rem 2rem;
-  background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.05), transparent 40%),
-              radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.05), transparent 40%);
+  background: transparent;
   width: 100%;
   position: relative;
   overflow: hidden;
