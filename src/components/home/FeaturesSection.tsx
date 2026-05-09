@@ -146,10 +146,10 @@ export function FeaturesSection() {
         </Card>
         <Card>
           <CardIcon><GamepadIcon size={28} /></CardIcon>
-          <CardTitle>Interactive Games</CardTitle>
+          <CardTitle>Learning Hub</CardTitle>
           <CardDescription>
-            Learning made addictive. Test your memory with <b>Match Pairs</b>, 
-            <b>Sentence Builder</b>, and fast-paced <b>Speed Typing</b> challenges.
+            Mastery made fun. Learn through <b>Match Pairs</b>, <b>Conjugation Drills</b>, 
+            <b>Kanji Writing</b>, and <b>Audio Challenges</b> in our interactive hub.
           </CardDescription>
         </Card>
         <Card>

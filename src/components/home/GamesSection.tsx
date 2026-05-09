@@ -2,100 +2,121 @@
 
 import styled from 'styled-components';
 import Link from 'next/link';
+import { motion, Variants } from 'framer-motion';
 
 const Section = styled.section`
-  padding: 3rem 2rem;
-  background: linear-gradient(to bottom, transparent, rgba(16, 185, 129, 0.03), transparent);
+  padding: 6rem 2rem;
+  background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.05), transparent 40%),
+              radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.05), transparent 40%);
   width: 100%;
+  position: relative;
+  overflow: hidden;
+`;
+
+const SectionHeader = styled.div`
+  max-width: 800px;
+  margin: 0 auto 4rem;
+  text-align: center;
+`;
+
+const Badge = styled(motion.span)`
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--primary);
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(16, 185, 129, 0.2);
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 4rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
   color: var(--foreground);
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
   
   span {
-    position: relative;
-    z-index: 1;
-    
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 4px;
-      background: var(--primary);
-      border-radius: 2px;
-    }
+    background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
-  
-  @media (max-width: 768px) {
-    font-size: 1.75rem;
-    margin-bottom: 2rem;
-  }
+`;
+
+const SectionSubtitle = styled.p`
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
 `;
 
 const GamesGrid = styled.div`
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 `;
 
-const Card = styled(Link)`
-  background: var(--surface);
-  padding: 2.5rem;
+const Card = styled(motion(Link))`
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
   border-radius: 24px;
   border: 1px solid var(--border);
   text-decoration: none;
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; height: 4px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
-  }
+  transition: border-color 0.3s ease, background 0.3s ease;
+  height: 100%;
   
   &:hover {
-    transform: translateY(-8px);
-    border-color: rgba(var(--primary-rgb), 0.3);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(var(--primary-rgb), 0.1);
-    
-    &::before {
-      transform: scaleX(1);
-    }
+    border-color: rgba(var(--primary-rgb), 0.5);
+    background: rgba(255, 255, 255, 0.05);
   }
 `;
 
-const Badge = styled.span`
-  align-self: flex-start;
-  background: rgba(var(--primary-rgb), 0.15);
-  color: var(--primary-light); 
-  border: 1px solid rgba(var(--primary-rgb), 0.2);
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  font-size: 0.7rem;
+const IconWrapper = styled.div<{ $color: string }>`
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: ${({ $color }) => `rgba(${$color}, 0.1)`};
+  color: ${({ $color }) => `rgb(${$color})`};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+
+  ${Card}:hover & {
+    transform: scale(1.1) rotate(5deg);
+  }
+  
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+`;
+
+const CardBadge = styled.span<{ $color: string }>`
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 0.65rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 1.5rem;
+  color: ${({ $color }) => `rgb(${$color})`};
+  background: ${({ $color }) => `rgba(${$color}, 0.1)`};
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
 `;
 
 const Title = styled.h3`
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--foreground);
   margin-bottom: 0.75rem;
@@ -103,58 +124,244 @@ const Title = styled.h3`
 
 const Description = styled.p`
   color: var(--text-secondary);
-  line-height: 1.6;
-  font-size: 1rem;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  flex-grow: 1;
 `;
+
+const LearnMore = styled.div<{ $color: string }>`
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: ${({ $color }) => `rgb(${$color})`};
+  opacity: 0.8;
+  transition: gap 0.2s ease;
+
+  ${Card}:hover & {
+    gap: 0.75rem;
+    opacity: 1;
+  }
+`;
+
+const features = [
+  {
+    title: 'Match Pairs',
+    description: 'Test your memory speed by matching Japanese characters and their meanings in this exciting game.',
+    href: '/match-pairs',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+      </svg>
+    ),
+    color: '245, 158, 11', // Amber
+    badge: 'Popular',
+    type: 'Game'
+  },
+  {
+    title: 'Kanji Writer',
+    description: 'Master Kanji stroke order with our interactive writing tool. Get instant feedback on your form.',
+    href: '/jlpt/kanji-writer',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20h9" />
+        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+      </svg>
+    ),
+    color: '16, 185, 129', // Emerald
+    badge: 'Essential',
+    type: 'Practice'
+  },
+  {
+    title: 'Conjugation Drills',
+    description: 'Speed up your grammar! Practice verb forms across different levels and difficulties.',
+    href: '/game/conjugation',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
+        <path d="M12 8h4" />
+        <path d="M12 12h4" />
+        <path d="M12 16h4" />
+      </svg>
+    ),
+    color: '59, 130, 246', // Blue
+    badge: 'Advanced',
+    type: 'Drill'
+  },
+  {
+    title: 'Sentence Builder',
+    description: 'Construct complex Japanese sentences by dragging particles and words into place.',
+    href: '/game/sentence-builder',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 8.38 8.38 0 0 1 3.8.9" />
+        <path d="M11 11v6" />
+        <path d="M8 14h6" />
+        <path d="M18 4l-6 6" />
+      </svg>
+    ),
+    color: '139, 92, 246', // Violet
+    badge: 'New',
+    type: 'Skill'
+  },
+  {
+    title: 'Particle Master',
+    description: 'Learn the nuances of Japanese particles like は, が, に, and を in real-world contexts.',
+    href: '/study/grammar-drills',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+    ),
+    color: '236, 72, 153', // Pink
+    badge: 'Tricky',
+    type: 'Drill'
+  },
+  {
+    title: 'Listening Lab',
+    description: 'Sharpen your ears with audio-based challenges. Listen and identify phrases or words.',
+    href: '/study/listening',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" />
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+        <line x1="12" y1="19" x2="12" y2="23" />
+        <line x1="8" y1="23" x2="16" y2="23" />
+      </svg>
+    ),
+    color: '20, 184, 166', // Teal
+    badge: 'Audio',
+    type: 'Skill'
+  },
+  {
+    title: 'Smart Flashcards',
+    description: 'Our SRS algorithm tracks your progress and shows cards right when you need to review.',
+    href: '/study/smart-flashcards',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+    ),
+    color: '99, 102, 241', // Indigo
+    badge: 'SRS',
+    type: 'Review'
+  },
+  {
+    title: 'Speed Typing',
+    description: 'Improve your reflexes! Type the correct Romaji mapping for Kana as fast as you can.',
+    href: '/game/speed-typing',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2" ry="2" />
+        <line x1="6" y1="8" x2="6" y2="8" />
+        <line x1="10" y1="8" x2="10" y2="8" />
+        <line x1="14" y1="8" x2="14" y2="8" />
+        <line x1="18" y1="8" x2="18" y2="8" />
+        <line x1="6" y1="12" x2="6" y2="12" />
+        <line x1="10" y1="12" x2="10" y2="12" />
+        <line x1="14" y1="12" x2="14" y2="12" />
+        <line x1="18" y1="12" x2="18" y2="12" />
+        <line x1="7" y1="16" x2="17" y2="16" />
+      </svg>
+    ),
+    color: '239, 68, 68', // Red
+    badge: 'Reflex',
+    type: 'Game'
+  }
+];
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const cardVariants: Variants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+      damping: 15
+    }
+  }
+};
 
 export function GamesSection() {
   return (
-    <Section>
-      <SectionTitle><span>Interactive Learning</span></SectionTitle>
-      <GamesGrid>
-        <Card href="/match-pairs">
-          <Badge>Game</Badge>
-          <Title>Match Pairs</Title>
-          <Description>
-            Test your memory speed by matching Japanese characters and their meanings in this exciting game.
-          </Description>
-        </Card>
-        <Card href="/game/sentence-builder">
-          <Badge>New</Badge>
-          <Title>Sentence Builder</Title>
-          <Description>
-            Practice your grammar by constructing Japanese sentence patterns accurately and interactively.
-          </Description>
-        </Card>
-        <Card href="/game/speed-typing">
-          <Badge>Featured</Badge>
-          <Title>Speed Typing</Title>
-          <Description>
-            Improve your reflexes and typing speed for Kana & Kanji characters in a timed challenge.
-          </Description>
-        </Card>
-        <Card href="/daily-quiz">
-          <Badge>Daily</Badge>
-          <Title>Daily Quiz</Title>
-          <Description>
-            Daily challenges to keep your mind sharp and earn bonus EXP every single day.
-          </Description>
-        </Card>
-        <Card href="/practice/smart-flashcards">
-          <Badge>Smart</Badge>
-          <Title>Smart Flashcards</Title>
-          <Description>
-            Intelligent study sessions based on the SRS algorithm, personalized to your memory needs.
-          </Description>
-        </Card>
-        <Card href="/reverse-quiz">
-          <Badge>Mastery</Badge>
-          <Title>Reverse Quiz</Title>
-          <Description>
-            Challenge your memory by identifying characters from their meanings in reverse order.
-          </Description>
-        </Card>
+    <Section id="interactive-learning">
+      <SectionHeader>
+        <Badge
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          Belajar Lebih Seru
+        </Badge>
+        <SectionTitle
+          as={motion.h2}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+        >
+          Interactive <span>Learning Hub</span>
+        </SectionTitle>
+        <SectionSubtitle
+          as={motion.p}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+        >
+          Tingkatkan kemampuan bahasa Jepangmu melalui berbagai aktivitas interaktif yang dirancang khusus untuk mempercepat pemahaman dan daya ingat.
+        </SectionSubtitle>
+      </SectionHeader>
+
+      <GamesGrid
+        as={motion.div}
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        {features.map((feature, index) => (
+          <Card 
+            key={index} 
+            href={feature.href}
+            variants={cardVariants}
+            whileHover={{ y: -10, transition: { duration: 0.2 } }}
+          >
+            <CardBadge $color={feature.color}>{feature.badge}</CardBadge>
+            <IconWrapper $color={feature.color}>
+              {feature.icon}
+            </IconWrapper>
+            <Title>{feature.title}</Title>
+            <Description>{feature.description}</Description>
+            <LearnMore $color={feature.color}>
+              Mulai Sekarang
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+              </svg>
+            </LearnMore>
+          </Card>
+        ))}
       </GamesGrid>
     </Section>
   );
 }
+
