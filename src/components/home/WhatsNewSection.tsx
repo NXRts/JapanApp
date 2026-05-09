@@ -112,11 +112,11 @@ export function WhatsNewSection() {
     <Section>
       <SectionTitle><span>What's New</span></SectionTitle>
       <WhatsNewGrid>
-        <Card href="/game">
-          <Badge>New Mini-Games</Badge>
-          <Title>Interactive Learning Challenges</Title>
+        <Card href="/#interactive-learning">
+          <Badge>Updated Hub</Badge>
+          <Title>Interactive Learning Hub</Title>
           <Description>
-            Master Japanese through fun! We've added <b>Memory Match</b>, <b>Sentence Builder</b>, and <b>Speed Typing</b> games to make learning addictive.
+            Master Japanese faster with <b>Conjugation Drills</b>, <b>Kanji Writer</b>, and <b>Listening Lab</b>. 8+ activities to keep you engaged.
           </Description>
         </Card>
         <Card href="/dictionary">

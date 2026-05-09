@@ -16,6 +16,8 @@
   --accent-rgb: 244, 63, 94;
 
   /* Neutral Colors */
+  --foreground: #0F172A;
+  /* Slate 900 */
   --background: #F1F5F9;
   /* Slate 100 */
   --surface: #FFFFFF;
