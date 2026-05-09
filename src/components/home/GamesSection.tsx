@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 const Section = styled.section`
   padding: 6rem 2rem;
@@ -277,7 +277,7 @@ const features = [
   }
 ];
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -287,7 +287,7 @@ const containerVariants = {
   }
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { y: 20, opacity: 0 },
   visible: {
     y: 0,
