@@ -112,25 +112,25 @@ export function WhatsNewSection() {
     <Section>
       <SectionTitle><span>What's New</span></SectionTitle>
       <WhatsNewGrid>
-        <Card href="/#interactive-learning">
-          <Badge>Updated Hub</Badge>
-          <Title>Interactive Learning Hub</Title>
+        <Card href="/jlpt/kanji-writer">
+          <Badge>New Tool</Badge>
+          <Title>Interactive Kanji Writer</Title>
           <Description>
-            Master Japanese faster with <b>Conjugation Drills</b>, <b>Kanji Writer</b>, and <b>Listening Lab</b>. 8+ activities to keep you engaged.
+            Master stroke order by writing naturally on your screen. Get <b>instant feedback</b> and learn Kanji through muscle memory.
           </Description>
         </Card>
-        <Card href="/dictionary">
-          <Badge>Powerful Search</Badge>
-          <Title>Multi-Source Dictionary</Title>
+        <Card href="/roadmap">
+          <Badge>JLPT</Badge>
+          <Title>JLPT Mastery</Title>
           <Description>
-            Get the most accurate definitions with integrated <b>Jisho</b>, <b>Wiktionary</b>, and <b>Native Examples</b>. Now with Image and Voice lookup.
+            Stop feeling lost! Follow a clear, <b>step-by-step journey</b> from N5 to N1 levels, curated to help you reach fluency faster.
           </Description>
         </Card>
-        <Card href="/blog">
-          <Badge>New Insights</Badge>
-          <Title>Japanese Culture Blog</Title>
+        <Card href="/study/grammar-drills">
+          <Badge>New Drills</Badge>
+          <Title>Verb & Particle Mastery</Title>
           <Description>
-            Explore deep dives into Japanese culture, daily life tips, and language learning strategies with our newly updated blog experience.
+            Master tricky <b>Verb Conjugations</b> and <b>Particles</b> with our new repetitive drill system designed for permanent retention.
           </Description>
         </Card>
       </WhatsNewGrid>
