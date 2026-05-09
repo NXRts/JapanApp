@@ -21,7 +21,7 @@ const SectionHeader = styled.div`
 const Badge = styled(motion.span)`
   display: inline-block;
   padding: 0.5rem 1rem;
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(var(--primary-rgb), 0.1);
   color: var(--primary);
   border-radius: 99px;
   font-size: 0.8rem;
@@ -29,7 +29,7 @@ const Badge = styled(motion.span)`
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 1.5rem;
-  border: 1px solid rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
 `;
 
 const SectionTitle = styled.h2`
@@ -61,8 +61,7 @@ const GamesGrid = styled.div`
 `;
 
 const Card = styled(motion(Link))`
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
+  background: var(--surface);
   padding: 2rem;
   border-radius: 24px;
   border: 1px solid var(--border);
@@ -75,7 +74,7 @@ const Card = styled(motion(Link))`
   
   &:hover {
     border-color: rgba(var(--primary-rgb), 0.5);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--background);
   }
 `;
 

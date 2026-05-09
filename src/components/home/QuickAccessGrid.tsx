@@ -15,9 +15,8 @@ const Grid = styled.div`
 `;
 
 const AccessCard = styled(Link)`
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--surface);
+  border: 1px solid var(--border);
   padding: 2rem;
   border-radius: 24px;
   text-decoration: none;
@@ -25,13 +24,13 @@ const AccessCard = styled(Link)`
   flex-direction: column;
   gap: 1rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
 
   &:hover {
     transform: translateY(-8px);
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--background);
     border-color: var(--primary-light);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--shadow-lg);
     
     .icon-wrapper {
       background: var(--primary);
