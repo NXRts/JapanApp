@@ -10,12 +10,20 @@ const Section = styled.section`
   width: 100%;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 3rem 1rem;
+  }
 `;
 
 const SectionHeader = styled.div`
   max-width: 800px;
   margin: 0 auto 4rem;
   text-align: center;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2.5rem;
+  }
 `;
 
 const Badge = styled(motion.span)`
@@ -52,12 +60,17 @@ const SectionSubtitle = styled.p`
   line-height: 1.6;
 `;
 
-const GamesGrid = styled.div`
+const GamesGrid = styled(motion.div)`
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
 `;
 
 const Card = styled(motion(Link))`
@@ -75,6 +88,11 @@ const Card = styled(motion(Link))`
   &:hover {
     border-color: rgba(var(--primary-rgb), 0.5);
     background: var(--background);
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+    border-radius: 20px;
   }
 `;
 
@@ -98,6 +116,18 @@ const IconWrapper = styled.div<{ $color: string }>`
     width: 28px;
     height: 28px;
   }
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const CardBadge = styled.span<{ $color: string }>`
@@ -111,6 +141,13 @@ const CardBadge = styled.span<{ $color: string }>`
   background: ${({ $color }) => `rgba(${$color}, 0.1)`};
   padding: 0.25rem 0.6rem;
   border-radius: 6px;
+
+  @media (max-width: 768px) {
+    top: 1.25rem;
+    right: 1.25rem;
+    font-size: 0.55rem;
+    padding: 0.15rem 0.4rem;
+  }
 `;
 
 const Title = styled.h3`
@@ -118,6 +155,11 @@ const Title = styled.h3`
   font-weight: 700;
   color: var(--foreground);
   margin-bottom: 0.75rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const Description = styled.p`
@@ -125,6 +167,15 @@ const Description = styled.p`
   line-height: 1.5;
   font-size: 0.95rem;
   flex-grow: 1;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 `;
 
 const LearnMore = styled.div<{ $color: string }>`
@@ -141,6 +192,16 @@ const LearnMore = styled.div<{ $color: string }>`
   ${Card}:hover & {
     gap: 0.75rem;
     opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    
+    svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 `;
 
@@ -330,11 +391,10 @@ export function GamesSection() {
       </SectionHeader>
 
       <GamesGrid
-        as={motion.div}
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
       >
         {features.map((feature, index) => (
           <Card 
