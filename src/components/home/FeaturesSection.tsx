@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import { CameraIcon, GamepadIcon, GraduationIcon, RefreshIcon } from '../icons/AppIcons';
+import { CameraIcon, GamepadIcon, RefreshIcon, TargetIcon, BookIcon } from '../icons/AppIcons';
 
 const Section = styled.section`
   padding: 4rem 2rem;
@@ -122,50 +122,50 @@ export function FeaturesSection() {
       <Grid>
         <Card>
           <CardIcon>字</CardIcon>
-          <CardTitle>2136+ Joyo Kanji</CardTitle>
+          <CardTitle>Interactive Kanji Writer</CardTitle>
           <CardDescription>
-            The most complete Kanji library for all JLPT levels. Includes <b>Readings</b>, 
-            <b>Meanings</b>, <b>Stroke Order</b>, and in-depth word examples.
+            Master stroke order by writing naturally on your screen. Includes <b>Real-time Feedback</b>, 
+            <b>Stroke Recognition</b>, and 2136+ Joyo Kanji library.
           </CardDescription>
         </Card>
         <Card>
-          <CardIcon>あ</CardIcon>
-          <CardTitle>Hiragana & Katakana</CardTitle>
+          <CardIcon><TargetIcon size={28} /></CardIcon>
+          <CardTitle>Personalized Roadmap</CardTitle>
           <CardDescription>
-            The essential foundation for beginners. Interactive visualizations help you 
-            master both Japanese alphabets in record time.
+            Follow a clear, <b>Step-by-Step path</b> from N5 to N1. Curated curriculum 
+            covering vocabulary, kanji, and grammar patterns for official JLPT exams.
           </CardDescription>
         </Card>
         <Card>
           <CardIcon><CameraIcon size={28} /></CardIcon>
-          <CardTitle>AI Dictionary & Camera</CardTitle>
+          <CardTitle>AI Dictionary & OCR</CardTitle>
           <CardDescription>
-            Beyond simple text. Search for meanings using <b>OCR Camera</b>, 
-            <b>Handwriting</b>, or highly accurate <b>Voice Search</b> features.
+            Search for meanings instantly using <b>OCR Camera</b>, 
+            <b>Handwriting input</b>, or highly accurate <b>Voice Search</b> features.
+          </CardDescription>
+        </Card>
+        <Card>
+          <CardIcon><BookIcon size={28} /></CardIcon>
+          <CardTitle>Grammar & Particle Drills</CardTitle>
+          <CardDescription>
+            Master tricky <b>Particles</b> and <b>Verb Conjugations</b> through repetitive, 
+            interactive drills designed to build permanent muscle memory.
           </CardDescription>
         </Card>
         <Card>
           <CardIcon><GamepadIcon size={28} /></CardIcon>
-          <CardTitle>Learning Hub</CardTitle>
+          <CardTitle>Interactive Learning Hub</CardTitle>
           <CardDescription>
-            Mastery made fun. Learn through <b>Match Pairs</b>, <b>Conjugation Drills</b>, 
-            <b>Kanji Writing</b>, and <b>Audio Challenges</b> in our interactive hub.
-          </CardDescription>
-        </Card>
-        <Card>
-          <CardIcon><GraduationIcon size={28} /></CardIcon>
-          <CardTitle>Comprehensive JLPT</CardTitle>
-          <CardDescription>
-            Structured curriculum from <b>N5 to N1</b>. Covers Grammar, 
-            Sentence Patterns, and official exam vocabulary lists.
+            Mastery made fun. Learn through <b>Match Pairs</b>, <b>Audio Challenges</b>, 
+            and various <b>Mini-games</b> in our vibrant interactive hub.
           </CardDescription>
         </Card>
         <Card>
           <CardIcon><RefreshIcon size={28} /></CardIcon>
-          <CardTitle>SRS Mastery System</CardTitle>
+          <CardTitle>Smart SRS Mastery</CardTitle>
           <CardDescription>
-            Our <b>Spaced Repetition System</b> technology predicts the best time for you 
-            to review, ensuring long-term memory retention.
+            Our <b>Spaced Repetition System</b> predicts the optimal time for you 
+            to review, ensuring maximum long-term memory retention with minimum effort.
           </CardDescription>
         </Card>
       </Grid>

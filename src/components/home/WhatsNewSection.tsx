@@ -119,7 +119,7 @@ export function WhatsNewSection() {
             Master stroke order by writing naturally on your screen. Get <b>instant feedback</b> and learn Kanji through muscle memory.
           </Description>
         </Card>
-        <Card href="/roadmap">
+        <Card href="/jlpt">
           <Badge>JLPT</Badge>
           <Title>JLPT Mastery</Title>
           <Description>
