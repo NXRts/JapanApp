@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import { TargetIcon, BookIcon, SwordsIcon } from '../icons/AppIcons';
+import { TargetIcon, BookIcon, RefreshIcon } from '../icons/AppIcons';
 
 const Section = styled.section`
   padding: 4rem 2rem;
@@ -182,9 +182,9 @@ export function StepsSection() {
           <Dot className="dot">1</Dot>
           <ContentCard className="content">
             <IconWrapper><TargetIcon size={32} /></IconWrapper>
-            <StepTitle>Choose Your Level</StepTitle>
+            <StepTitle>Choose Your Roadmap</StepTitle>
             <StepDescription>
-              Start your journey from the basic <b>Hiragana</b> to the deep challenges of <b>Kanji N1</b> mastery.
+              Start your journey with a structured path from <b>Hiragana basics</b> to advanced <b>JLPT N1</b> mastery.
             </StepDescription>
           </ContentCard>
         </StepNode>
@@ -193,9 +193,9 @@ export function StepsSection() {
           <Dot className="dot">2</Dot>
           <ContentCard className="content">
             <IconWrapper><BookIcon size={32} /></IconWrapper>
-            <StepTitle>Learn the Details</StepTitle>
+            <StepTitle>Interactive Practice</StepTitle>
             <StepDescription>
-              Master stroke orders, <b>Onyomi/Kunyomi</b> readings, and thousands of example words in real contexts.
+              Master Kanji with our <b>Handwriting Tool</b>, drill complex <b>Grammar</b>, and sharpen ears in the <b>Audio Lab</b>.
             </StepDescription>
           </ContentCard>
         </StepNode>
@@ -203,10 +203,10 @@ export function StepsSection() {
         <StepNode>
           <Dot className="dot">3</Dot>
           <ContentCard className="content">
-            <IconWrapper><SwordsIcon size={32} /></IconWrapper>
-            <StepTitle>Test Your Skills</StepTitle>
+            <IconWrapper><RefreshIcon size={32} /></IconWrapper>
+            <StepTitle>Achieve Mastery</StepTitle>
             <StepDescription>
-              Sharpen your memory through <b>Interactive Quizzes</b>, fun games, and challenging writing practices.
+              Retain everything with our <b>Intelligent SRS</b> that tracks your memory and schedules perfect reviews.
             </StepDescription>
           </ContentCard>
         </StepNode>
