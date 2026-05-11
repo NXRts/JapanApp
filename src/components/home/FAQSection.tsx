@@ -135,27 +135,31 @@ const AnswerContent = styled.div<{ $isOpen: boolean }>`
 const faqs = [
   {
     question: "Is this app really free to use?",
-    answer: "Yes! Our mission is to make Japanese language education accessible to everyone. You have full access to all Kanji, Kana, and quiz features completely free of charge."
+    answer: "Yes! Our mission is to make Japanese language education accessible to everyone. You have full access to all Kanji, Kana, Roadmap, and Interactive Hub features completely free of charge."
   },
   {
-    question: "Is this suitable for absolute beginners?",
-    answer: "Absolutely. We recommend starting with the 'Hiragana & Katakana' section to master the basic alphabets before moving on to Kanji study."
+    question: "How does the Interactive Kanji Writer work?",
+    answer: "Our Kanji Writer uses a real-time recognition engine. It guides you through the correct stroke order and provides instant feedback on your writing accuracy, helping you build muscle memory."
+  },
+  {
+    question: "What is the Learning Roadmap?",
+    answer: "The Roadmap is a structured, step-by-step path designed to take you from absolute beginner (N5) to advanced proficiency (N1). It organizes Kanji, Vocabulary, and Grammar in the most logical learning order."
+  },
+  {
+    question: "Can I practice specific Grammar like Particles or Verbs?",
+    answer: "Absolutely! We have dedicated modules like 'Particle Master' and 'Verb Conjugator' that use interactive drills to help you master these traditionally difficult aspects of Japanese grammar."
   },
   {
     question: "What is the SRS Mastery System?",
-    answer: "SRS (Spaced Repetition System) is an algorithm that predicts when you are about to forget a character and schedules a review at that exact moment for maximum retention."
+    answer: "SRS (Spaced Repetition System) is an intelligent algorithm that tracks your memory for each character. It schedules reviews at the exact moment you're about to forget them, ensuring maximum long-term retention."
   },
   {
-    question: "Do I need to create an account?",
-    answer: "No account is required to start studying. We believe in removing barriers so you can begin your learning journey immediately."
-  },
-  {
-    question: "Can I use the app offline?",
-    answer: "Most core learning data is cached on your device, allowing you to review your favorite Kanji and Kana even without an internet connection."
+    question: "What kind of audio practice is in the Listening Lab?",
+    answer: "The Listening Lab features various challenges ranging from simple character recognition to complex sentence comprehension, all using high-quality audio to sharpen your listening skills."
   },
   {
     question: "How is my progress saved?",
-    answer: "Currently, progress is saved locally in your browser. We are working on an optional cloud sync feature for those who wish to switch between devices."
+    answer: "Your progress is automatically saved locally in your browser. This includes your Roadmap status, Kanji mastery levels, and quiz scores, so you can pick up exactly where you left off."
   }
 ];
 
