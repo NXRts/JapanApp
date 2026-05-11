@@ -1,6 +1,7 @@
 'use client';
 
 import styled, { keyframes } from 'styled-components';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
@@ -22,26 +23,17 @@ const Container = styled.div`
   overflow-x: hidden;
 `;
 
-const WaveSection = styled.section`
+const ValuesSection = styled.section`
   position: relative;
-  background-color: var(--surface);
-  /* Refined, larger Seigaiha Pattern */
-  background-image: 
-    radial-gradient(circle at 100% 150%, transparent 24%, rgba(79, 70, 229, 0.04) 25%, rgba(79, 70, 229, 0.04) 28%, transparent 29%, transparent 36%, rgba(79, 70, 229, 0.04) 36%, rgba(79, 70, 229, 0.04) 40%, transparent 41%, transparent),
-    radial-gradient(circle at 0 150%, transparent 24%, rgba(79, 70, 229, 0.04) 25%, rgba(79, 70, 229, 0.04) 28%, transparent 29%, transparent 36%, rgba(79, 70, 229, 0.04) 36%, rgba(79, 70, 229, 0.04) 40%, transparent 41%, transparent),
-    radial-gradient(circle at 50% 100%, transparent 24%, rgba(79, 70, 229, 0.04) 25%, rgba(79, 70, 229, 0.04) 28%, transparent 29%, transparent 36%, rgba(79, 70, 229, 0.04) 36%, rgba(79, 70, 229, 0.04) 40%, transparent 41%, transparent),
-    radial-gradient(circle at 100% 50%, transparent 24%, rgba(79, 70, 229, 0.04) 25%, rgba(79, 70, 229, 0.04) 28%, transparent 29%, transparent 36%, rgba(79, 70, 229, 0.04) 36%, rgba(79, 70, 229, 0.04) 40%, transparent 41%, transparent),
-    radial-gradient(circle at 0 50%, transparent 24%, rgba(79, 70, 229, 0.04) 25%, rgba(79, 70, 229, 0.04) 28%, transparent 29%, transparent 36%, rgba(79, 70, 229, 0.04) 36%, rgba(79, 70, 229, 0.04) 40%, transparent 41%, transparent);
-  background-size: 240px 120px;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: inherit;
-    opacity: 0.8;
-    pointer-events: none;
-    animation: ${waveMove} 40s linear infinite;
+  padding: 8rem 2rem;
+  background: #0F172A; /* Harmonious Slate Navy */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+  @media (max-width: 768px) {
+    padding: 5rem 1.5rem;
   }
 `;
 
@@ -614,7 +606,7 @@ export default function AboutPage() {
         </GridContainer>
       </ContentSection>
 
-      <WaveSection style={{ padding: '6rem 0 4rem' }}>
+      <ValuesSection>
         <SectionHeader>
           <SectionTitle>Our Core <span>Values</span></SectionTitle>
           <SectionSubtitle>Essential principles that guide everything we build for our community of learners.</SectionSubtitle>
@@ -642,7 +634,7 @@ export default function AboutPage() {
             </div>
             <h3>Dynamic Learning</h3>
             <p>
-              We move beyond static lists. Our platform uses Spaced Repetition (SRS) to ensure you remember what you&#39;ve learned
+              We move beyond static lists. Our platform uses Spaced Repetition (SRS) to ensure you remember what you've learned
               at just the right time. Our algorithms adapt to your progress, helping you master Kanji faster than traditional methods.
             </p>
           </ValueCard>
@@ -660,7 +652,7 @@ export default function AboutPage() {
             </p>
           </ValueCard>
         </ValuesGrid>
-      </WaveSection>
+      </ValuesSection>
 
       <JourneySection>
         <SectionHeader>
