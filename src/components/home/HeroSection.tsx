@@ -275,13 +275,13 @@ export function HeroSection({ isDailyCompleted }: HeroSectionProps) {
           <StatNumber>2,136</StatNumber>
           <StatLabel>Joyo Kanji</StatLabel>
         </StatItem>
-        <StatItem>
-          <StatNumber>92</StatNumber>
-          <StatLabel>Kana Characters</StatLabel>
+        <StatItem style={{ borderColor: 'rgba(var(--primary-rgb), 0.3)', boxShadow: '0 0 20px rgba(var(--primary-rgb), 0.1)' }}>
+          <StatNumber>JLPT</StatNumber>
+          <StatLabel>N5 to N1 Ready</StatLabel>
         </StatItem>
         <StatItem>
           <StatNumber>100%</StatNumber>
-          <StatLabel>Free Forever</StatLabel>
+          <StatLabel>Interactive</StatLabel>
         </StatItem>
       </StatsContainer>
     </Section>
