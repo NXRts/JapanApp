@@ -665,31 +665,39 @@ export default function AboutPage() {
             <div className="date">Phase 1</div>
             <div className="content">
               <h4>The Foundation</h4>
-              <p>Launch of basic Hiragana and Katakana master tables with interactive quizzes. We started with the basics to ensure a solid foundation for every learner.</p>
+              <p>Establishing the core learning experience with comprehensive Hiragana and Katakana tables, interactive quizzes, and native audio foundations.</p>
             </div>
           </TimelineItem>
 
           <TimelineItem $side="right">
             <div className="date">Phase 2</div>
             <div className="content">
-              <h4>Kanji Mastery</h4>
-              <p>Introduction of the full Joyo Kanji database with stroke-order animations and N5-N1 classification, covering over 2,000 essential characters.</p>
+              <h4>Comprehensive Characters</h4>
+              <p>Integration of the full Joyo Kanji database and expanded vocabulary modules, categorized by JLPT levels for structured progress.</p>
             </div>
           </TimelineItem>
 
           <TimelineItem $side="left">
             <div className="date">Phase 3</div>
             <div className="content">
-              <h4>Gamification</h4>
-              <p>Adding local stats, daily goals, and immersive dictionary flashcards to boost engagement and make learning a regular, fun habit.</p>
+              <h4>Intelligent Mastery</h4>
+              <p>Implementation of our signature SRS (Spaced Repetition System) and advanced study statistics to ensure long-term retention of characters.</p>
             </div>
           </TimelineItem>
 
           <TimelineItem $side="right">
             <div className="date">Phase 4</div>
             <div className="content">
-              <h4>Community & PWA</h4>
-              <p>Full Progressive Web App support and the launch of our community donation feature to keep the project growing and accessible offline.</p>
+              <h4>Interactive Ecosystem</h4>
+              <p>Launch of the Kanji Writer, Particle Master, and Verb Conjugation Drills, turning passive learning into an active handwriting and grammar experience.</p>
+            </div>
+          </TimelineItem>
+
+          <TimelineItem $side="left">
+            <div className="date">Phase 5</div>
+            <div className="content">
+              <h4>Personalized Roadmaps</h4>
+              <p>The current era: Tailored learning paths from N5 to N1, guiding every student through a personalized journey to Japanese fluency.</p>
             </div>
           </TimelineItem>
         </Timeline>
