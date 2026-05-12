@@ -1029,9 +1029,9 @@ export default function DictionaryPage() {
               <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" /></svg>
               Practice
             </ActionButton>
-            <ActionButton as={Link} href={`/jlpt/mini-test?level=${activeLevel}`} style={{ textDecoration: 'none', border: '1px solid var(--primary)', background: 'rgba(var(--primary-rgb), 0.05)', boxShadow: '0 0 15px rgba(var(--primary-rgb), 0.1)' }}>
-              <svg fill="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--primary)' }}><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" /></svg>
-              <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>Mini Test</span>
+            <ActionButton as={Link} href={`/jlpt/mini-test?level=${activeLevel}`} style={{ textDecoration: 'none' }}>
+              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" /></svg>
+              Mini Test
             </ActionButton>
             <ActionButton as={Link} href={`/jlpt/kanji-writer?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
               <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
