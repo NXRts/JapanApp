@@ -20,7 +20,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "食べる",
     reading: "たべる",
     romaji: "taberu",
-    meaning: "Makan",
+    meaning: "To eat",
     category: "verb",
     example: {
       japanese: "朝ごはんを食べます。",
@@ -34,7 +34,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "飲む",
     reading: "のむ",
     romaji: "nomu",
-    meaning: "Minum",
+    meaning: "To drink",
     category: "verb",
     example: {
       japanese: "水を飲みます。",
@@ -48,7 +48,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "行く",
     reading: "いく",
     romaji: "iku",
-    meaning: "Pergi",
+    meaning: "To go",
     category: "verb",
     example: {
       japanese: "学校へ行きます。",
@@ -62,7 +62,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "来る",
     reading: "くる",
     romaji: "kuru",
-    meaning: "Datang",
+    meaning: "To come",
     category: "verb",
     example: {
       japanese: "友達がうちに来ます。",
@@ -76,7 +76,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "する",
     reading: "する",
     romaji: "suru",
-    meaning: "Melakukan",
+    meaning: "To do",
     category: "verb",
     example: {
       japanese: "週末にテニスをします。",
@@ -90,7 +90,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "私",
     reading: "わたし",
     romaji: "watashi",
-    meaning: "Saya",
+    meaning: "I / Me",
     category: "noun",
     example: {
       japanese: "私は学生です。",
@@ -104,7 +104,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "人",
     reading: "ひと",
     romaji: "hito",
-    meaning: "Orang",
+    meaning: "Person",
     category: "noun",
     example: {
       japanese: "あの人は誰ですか。",
@@ -118,7 +118,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "本",
     reading: "ほん",
     romaji: "hon",
-    meaning: "Buku",
+    meaning: "Book",
     category: "noun",
     example: {
       japanese: "図書館で本を借ります。",
@@ -132,7 +132,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "時間",
     reading: "じかん",
     romaji: "jikan",
-    meaning: "Waktu",
+    meaning: "Time",
     category: "noun",
     example: {
       japanese: "時間がありません。",
@@ -146,7 +146,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "家",
     reading: "いえ",
     romaji: "ie",
-    meaning: "Rumah",
+    meaning: "House",
     category: "noun",
     example: {
       japanese: "私の家は大きいです。",
@@ -160,7 +160,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "高い",
     reading: "たかい",
     romaji: "takai",
-    meaning: "Tinggi / Mahal",
+    meaning: "Tall / Expensive",
     category: "adjective",
     example: {
       japanese: "このカバンは高いです。",
@@ -174,7 +174,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "安い",
     reading: "やすい",
     romaji: "yasui",
-    meaning: "Murah",
+    meaning: "Cheap",
     category: "adjective",
     example: {
       japanese: "あのレストランは安くて美味しいです。",
@@ -188,7 +188,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "大きい",
     reading: "おおきい",
     romaji: "ookii",
-    meaning: "Besar",
+    meaning: "Big",
     category: "adjective",
     example: {
       japanese: "大きいりんごを買いました。",
@@ -202,7 +202,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "小さい",
     reading: "ちいさい",
     romaji: "chiisai",
-    meaning: "Kecil",
+    meaning: "Small",
     category: "adjective",
     example: {
       japanese: "小さい犬がいます。",
@@ -216,7 +216,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "新しい",
     reading: "あたらしい",
     romaji: "atarashii",
-    meaning: "Baru",
+    meaning: "New",
     category: "adjective",
     example: {
       japanese: "新しい靴が欲しいです。",
@@ -230,7 +230,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "古い",
     reading: "ふるい",
     romaji: "furui",
-    meaning: "Lama / Kuno",
+    meaning: "Old",
     category: "adjective",
     example: {
       japanese: "これは古い車です。",
@@ -244,7 +244,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "とても",
     reading: "とても",
     romaji: "totemo",
-    meaning: "Sangat",
+    meaning: "Very",
     category: "adverb",
     example: {
       japanese: "今日はとても暑いです。",
@@ -258,7 +258,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "少し",
     reading: "すこし",
     romaji: "sukoshi",
-    meaning: "Sedikit",
+    meaning: "A little",
     category: "adverb",
     example: {
       japanese: "日本語が少しわかります。",
@@ -272,7 +272,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "よく",
     reading: "よく",
     romaji: "yoku",
-    meaning: "Sering / Dengan baik",
+    meaning: "Often / Well",
     category: "adverb",
     example: {
       japanese: "私はよく映画を見ます。",
@@ -286,7 +286,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "いつも",
     reading: "いつも",
     romaji: "itsumo",
-    meaning: "Selalu",
+    meaning: "Always",
     category: "adverb",
     example: {
       japanese: "彼はいつも元気です。",
@@ -300,7 +300,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "起きる",
     reading: "おきる",
     romaji: "okiru",
-    meaning: "Bangun",
+    meaning: "To wake up",
     category: "verb",
     example: {
       japanese: "毎朝六時に起きます。",
@@ -314,7 +314,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "寝る",
     reading: "ねる",
     romaji: "neru",
-    meaning: "Tidur",
+    meaning: "To sleep",
     category: "verb",
     example: {
       japanese: "夜十時に寝ます。",
@@ -328,7 +328,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "話す",
     reading: "はなす",
     romaji: "hanasu",
-    meaning: "Berbicara",
+    meaning: "To speak",
     category: "verb",
     example: {
       japanese: "友達と日本語で話します。",
@@ -342,7 +342,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "聞く",
     reading: "きく",
     romaji: "kiku",
-    meaning: "Mendengar / Bertanya",
+    meaning: "To listen / To ask",
     category: "verb",
     example: {
       japanese: "先生に質問を聞きます。",
@@ -356,7 +356,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "読む",
     reading: "よむ",
     romaji: "yomu",
-    meaning: "Membaca",
+    meaning: "To read",
     category: "verb",
     example: {
       japanese: "毎晩本を読みます。",
@@ -370,7 +370,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "書く",
     reading: "かく",
     romaji: "kaku",
-    meaning: "Menulis",
+    meaning: "To write",
     category: "verb",
     example: {
       japanese: "ノートに漢字を書きます。",
@@ -384,7 +384,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "犬",
     reading: "いぬ",
     romaji: "inu",
-    meaning: "Anjing",
+    meaning: "Dog",
     category: "noun",
     example: {
       japanese: "可愛い犬がいます。",
@@ -398,7 +398,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "猫",
     reading: "ねこ",
     romaji: "neko",
-    meaning: "Kucing",
+    meaning: "Cat",
     category: "noun",
     example: {
       japanese: "私は猫が好きです。",
@@ -412,7 +412,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "水",
     reading: "みず",
     romaji: "mizu",
-    meaning: "Air",
+    meaning: "Water",
     category: "noun",
     example: {
       japanese: "冷たい水を飲みます。",
@@ -426,7 +426,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "お茶",
     reading: "おちゃ",
     romaji: "ocha",
-    meaning: "Teh hijau",
+    meaning: "Green tea",
     category: "noun",
     example: {
       japanese: "温かいお茶をどうぞ。",
@@ -440,7 +440,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "りんご",
     reading: "りんご",
     romaji: "ringo",
-    meaning: "Apel",
+    meaning: "Apple",
     category: "noun",
     example: {
       japanese: "りんごを三つ買いました。",
@@ -454,7 +454,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "みかん",
     reading: "みかん",
     romaji: "mikan",
-    meaning: "Jeruk mandarin",
+    meaning: "Mandarin orange",
     category: "noun",
     example: {
       japanese: "みかんが美味しいです。",
@@ -468,7 +468,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "映画",
     reading: "えいが",
     romaji: "eiga",
-    meaning: "Film",
+    meaning: "Movie",
     category: "noun",
     example: {
       japanese: "週末に映画を見ます。",
@@ -482,7 +482,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "友達",
     reading: "ともだち",
     romaji: "tomodachi",
-    meaning: "Teman",
+    meaning: "Friend",
     category: "noun",
     example: {
       japanese: "友達と一緒に遊びます。",
@@ -496,7 +496,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "学校",
     reading: "がっこう",
     romaji: "gakkou",
-    meaning: "Sekolah",
+    meaning: "School",
     category: "noun",
     example: {
       japanese: "明日、学校が休みです。",
@@ -510,7 +510,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "先生",
     reading: "せんせい",
     romaji: "sensei",
-    meaning: "Guru",
+    meaning: "Teacher",
     category: "noun",
     example: {
       japanese: "山田先生は優しいです。",
@@ -524,7 +524,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "暑い",
     reading: "あつい",
     romaji: "atsui",
-    meaning: "Panas (cuaca)",
+    meaning: "Hot (weather)",
     category: "adjective",
     example: {
       japanese: "今日はとても暑いです。",
@@ -538,7 +538,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "寒い",
     reading: "さむい",
     romaji: "samui",
-    meaning: "Dingin (cuaca)",
+    meaning: "Cold (weather)",
     category: "adjective",
     example: {
       japanese: "冬は寒いです。",
@@ -552,7 +552,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "美味しい",
     reading: "おいしい",
     romaji: "oishii",
-    meaning: "Enak",
+    meaning: "Delicious",
     category: "adjective",
     example: {
       japanese: "このケーキは美味しいです。",
@@ -566,7 +566,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "楽しい",
     reading: "たのしい",
     romaji: "tanoshii",
-    meaning: "Menyenangkan",
+    meaning: "Fun / Enjoyable",
     category: "adjective",
     example: {
       japanese: "パーティーは楽しかったです。",
@@ -580,7 +580,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "月曜日",
     reading: "げつようび",
     romaji: "getsuyoubi",
-    meaning: "Hari Senin",
+    meaning: "Monday",
     category: "noun",
     example: {
       japanese: "月曜日は忙しいです。",
@@ -594,7 +594,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "火曜日",
     reading: "かようび",
     romaji: "kayoubi",
-    meaning: "Hari Selasa",
+    meaning: "Tuesday",
     category: "noun",
     example: {
       japanese: "火曜日にテストがあります。",
@@ -608,7 +608,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "水曜日",
     reading: "すいようび",
     romaji: "suiyoubi",
-    meaning: "Hari Rabu",
+    meaning: "Wednesday",
     category: "noun",
     example: {
       japanese: "水曜日は休みです。",
@@ -622,7 +622,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "木曜日",
     reading: "もくようび",
     romaji: "mokuyoubi",
-    meaning: "Hari Kamis",
+    meaning: "Thursday",
     category: "noun",
     example: {
       japanese: "木曜日に映画を見ます。",
@@ -636,7 +636,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "金曜日",
     reading: "きんようび",
     romaji: "kinyoubi",
-    meaning: "Hari Jumat",
+    meaning: "Friday",
     category: "noun",
     example: {
       japanese: "金曜日の夜は楽しいです。",
@@ -650,7 +650,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "土曜日",
     reading: "どようび",
     romaji: "doyoubi",
-    meaning: "Hari Sabtu",
+    meaning: "Saturday",
     category: "noun",
     example: {
       japanese: "土曜日に買い物をします。",
@@ -664,7 +664,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "日曜日",
     reading: "にちようび",
     romaji: "nichiyoubi",
-    meaning: "Hari Minggu",
+    meaning: "Sunday",
     category: "noun",
     example: {
       japanese: "日曜日は家にいます。",
@@ -678,7 +678,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "今日",
     reading: "きょう",
     romaji: "kyou",
-    meaning: "Hari ini",
+    meaning: "Today",
     category: "noun",
     example: {
       japanese: "今日は天気がいいです。",
@@ -692,7 +692,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "明日",
     reading: "あした",
     romaji: "ashita",
-    meaning: "Besok",
+    meaning: "Tomorrow",
     category: "noun",
     example: {
       japanese: "明日は雨です。",
@@ -706,7 +706,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "昨日",
     reading: "きのう",
     romaji: "kinou",
-    meaning: "Kemarin",
+    meaning: "Yesterday",
     category: "noun",
     example: {
       japanese: "昨日は疲れました。",
@@ -720,7 +720,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "朝",
     reading: "あさ",
     romaji: "asa",
-    meaning: "Pagi",
+    meaning: "Morning",
     category: "noun",
     example: {
       japanese: "毎朝コーヒーを飲みます。",
@@ -734,7 +734,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "昼",
     reading: "ひる",
     romaji: "hiru",
-    meaning: "Siang",
+    meaning: "Afternoon / Noon",
     category: "noun",
     example: {
       japanese: "昼に友達と会います。",
@@ -748,7 +748,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "夜",
     reading: "よる",
     romaji: "yoru",
-    meaning: "Malam",
+    meaning: "Night / Evening",
     category: "noun",
     example: {
       japanese: "夜は勉強します。",
@@ -762,7 +762,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "父",
     reading: "ちち",
     romaji: "chichi",
-    meaning: "Ayah (sendiri)",
+    meaning: "Father",
     category: "noun",
     example: {
       japanese: "父は会社員です。",
@@ -776,7 +776,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "母",
     reading: "はは",
     romaji: "haha",
-    meaning: "Ibu (sendiri)",
+    meaning: "Mother",
     category: "noun",
     example: {
       japanese: "母は料理が上手です。",
@@ -790,7 +790,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "兄",
     reading: "あに",
     romaji: "ani",
-    meaning: "Kakak Laki-laki (sendiri)",
+    meaning: "Older brother",
     category: "noun",
     example: {
       japanese: "兄は東京にいます。",

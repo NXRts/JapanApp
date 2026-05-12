@@ -7,7 +7,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "調べる",
     reading: "しらべる",
     romaji: "shiraberu",
-    meaning: "Memeriksa / Menyelidiki",
+    meaning: "To check / Investigate",
     category: "verb",
     example: {
       japanese: "辞書で意味を調べます。",
@@ -21,7 +21,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "約束",
     reading: "やくそく",
     romaji: "yakusoku",
-    meaning: "Janji",
+    meaning: "Promise / Appointment",
     category: "noun",
     example: {
       japanese: "友達と約束があります。",
@@ -35,7 +35,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "引っ越す",
     reading: "ひっこす",
     romaji: "hikkosu",
-    meaning: "Pindah rumah",
+    meaning: "To move house",
     category: "verb",
     example: {
       japanese: "来月、東京に引っ越します。",
@@ -49,7 +49,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "決める",
     reading: "きめる",
     romaji: "kimeru",
-    meaning: "Memutuskan",
+    meaning: "To decide",
     category: "verb",
     example: {
       japanese: "旅行の日を決めた。",
@@ -63,7 +63,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "紹介",
     reading: "しょうかい",
     romaji: "shoukai",
-    meaning: "Perkenalan",
+    meaning: "Introduction",
     category: "noun",
     example: {
       japanese: "自己紹介をお願いします。",
@@ -77,7 +77,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "急ぐ",
     reading: "いそぐ",
     romaji: "isogu",
-    meaning: "Bergegas / Terburu-buru",
+    meaning: "To hurry",
     category: "verb",
     example: {
       japanese: "時間がないから、急ぎましょう。",
@@ -91,7 +91,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "忘れる",
     reading: "わすれる",
     romaji: "wasureru",
-    meaning: "Melupakan",
+    meaning: "To forget",
     category: "verb",
     example: {
       japanese: "宿題を忘れてしまいました。",
@@ -105,7 +105,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "笑う",
     reading: "わらう",
     romaji: "warau",
-    meaning: "Tertawa / Tersenyum",
+    meaning: "To laugh / Smile",
     category: "verb",
     example: {
       japanese: "彼の話を聞いて、みんな笑った。",
@@ -119,7 +119,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "泣く",
     reading: "なく",
     romaji: "naku",
-    meaning: "Menangis",
+    meaning: "To cry",
     category: "verb",
     example: {
       japanese: "赤ちゃんが泣いています。",
@@ -133,7 +133,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "遊ぶ",
     reading: "あそぶ",
     romaji: "asobu",
-    meaning: "Bermain",
+    meaning: "To play",
     category: "verb",
     example: {
       japanese: "週末は子供と公園で遊びます。",
@@ -147,7 +147,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "遅れる",
     reading: "おくれる",
     romaji: "okureru",
-    meaning: "Terlambat",
+    meaning: "To be late",
     category: "verb",
     example: {
       japanese: "電車が遅れました。",
@@ -161,7 +161,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "手伝う",
     reading: "てつだう",
     romaji: "tetsudau",
-    meaning: "Membantu",
+    meaning: "To help",
     category: "verb",
     example: {
       japanese: "母の料理を手伝います。",
@@ -175,7 +175,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "見つける",
     reading: "みつける",
     romaji: "mitsukeru",
-    meaning: "Menemukan",
+    meaning: "To find",
     category: "verb",
     example: {
       japanese: "やっと新しい仕事を見つけました。",
@@ -189,7 +189,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "喜ぶ",
     reading: "よろこぶ",
     romaji: "yorokobu",
-    meaning: "Bergembira / Merasa senang",
+    meaning: "To be happy / Glad",
     category: "verb",
     example: {
       japanese: "プレゼントをもらって喜んだ。",
@@ -203,7 +203,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "試合",
     reading: "しあい",
     romaji: "shiai",
-    meaning: "Pertandingan",
+    meaning: "Match / Game",
     category: "noun",
     example: {
       japanese: "明日はサッカーの試合があります。",
@@ -217,7 +217,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "生活",
     reading: "せいかつ",
     romaji: "seikatsu",
-    meaning: "Kehidupan sehari-hari",
+    meaning: "Daily life",
     category: "noun",
     example: {
       japanese: "日本の生活に慣れました。",
@@ -231,7 +231,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "景色",
     reading: "けしき",
     romaji: "keshiki",
-    meaning: "Pemandangan",
+    meaning: "Scenery / View",
     category: "noun",
     example: {
       japanese: "山の景色がとてもきれいです。",
@@ -245,7 +245,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "交通",
     reading: "こうつう",
     romaji: "koutsuu",
-    meaning: "Lalu lintas / Transportasi",
+    meaning: "Traffic / Transportation",
     category: "noun",
     example: {
       japanese: "この町は交通が便利です。",
@@ -259,7 +259,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "安全",
     reading: "あんぜん",
     romaji: "anzen",
-    meaning: "Aman / Keamanan",
+    meaning: "Safe / Safety",
     category: "adjective",
     example: {
       japanese: "ここは安全な場所です。",
@@ -273,7 +273,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "危険",
     reading: "きけん",
     romaji: "kiken",
-    meaning: "Bahaya",
+    meaning: "Danger",
     category: "adjective",
     example: {
       japanese: "夜の海は危険です。",
@@ -287,7 +287,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "建てる",
     reading: "たてる",
     romaji: "tateru",
-    meaning: "Membangun",
+    meaning: "To build",
     category: "verb",
     example: {
       japanese: "新しい家を建てます。",
@@ -301,7 +301,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "壊す",
     reading: "こわす",
     romaji: "kowasu",
-    meaning: "Merusak",
+    meaning: "To break / Destroy",
     category: "verb",
     example: {
       japanese: "弟がおもちゃを壊しました。",
@@ -315,7 +315,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "直す",
     reading: "なおす",
     romaji: "naosu",
-    meaning: "Memperbaiki",
+    meaning: "To repair / Fix",
     category: "verb",
     example: {
       japanese: "自転車を直してもらいました。",
@@ -329,7 +329,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "下げる",
     reading: "さげる",
     romaji: "sageru",
-    meaning: "Menurunkan",
+    meaning: "To lower",
     category: "verb",
     example: {
       japanese: "熱を下げる薬を飲みます。",
@@ -343,7 +343,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "上げる",
     reading: "あげる",
     romaji: "ageru",
-    meaning: "Menaikkan",
+    meaning: "To raise / Lift",
     category: "verb",
     example: {
       japanese: "手を上げてください。",
@@ -357,7 +357,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "伝える",
     reading: "つたえる",
     romaji: "tsutaeru",
-    meaning: "Menyampaikan",
+    meaning: "To convey / Tell",
     category: "verb",
     example: {
       japanese: "彼にメッセージを伝えます。",
@@ -371,7 +371,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "知らせる",
     reading: "しらせる",
     romaji: "shiraseru",
-    meaning: "Memberitahukan",
+    meaning: "To inform / Let know",
     category: "verb",
     example: {
       japanese: "結果を後で知らせます。",
@@ -385,7 +385,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "経済",
     reading: "けいざい",
     romaji: "keizai",
-    meaning: "Ekonomi",
+    meaning: "Economy",
     category: "noun",
     example: {
       japanese: "日本の経済について勉強します。",
@@ -399,7 +399,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "歴史",
     reading: "れきし",
     romaji: "rekishi",
-    meaning: "Sejarah",
+    meaning: "History",
     category: "noun",
     example: {
       japanese: "古い歴史がある町です。",
@@ -413,7 +413,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "政治",
     reading: "せいじ",
     romaji: "seiji",
-    meaning: "Politik",
+    meaning: "Politics",
     category: "noun",
     example: {
       japanese: "彼は政治に興味がありません。",
@@ -427,7 +427,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "文化",
     reading: "ぶんか",
     romaji: "bunka",
-    meaning: "Budaya",
+    meaning: "Culture",
     category: "noun",
     example: {
       japanese: "日本の文化が大好きです。",
@@ -441,7 +441,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "社会",
     reading: "しゃかい",
     romaji: "shakai",
-    meaning: "Masyarakat",
+    meaning: "Society",
     category: "noun",
     example: {
       japanese: "社会のために働きたいです。",
@@ -455,7 +455,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "教育",
     reading: "きょういく",
     romaji: "kyouiku",
-    meaning: "Pendidikan",
+    meaning: "Education",
     category: "noun",
     example: {
       japanese: "教育はとても重要です。",
@@ -469,7 +469,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "環境",
     reading: "かんきょう",
     romaji: "kankyou",
-    meaning: "Lingkungan",
+    meaning: "Environment",
     category: "noun",
     example: {
       japanese: "環境を守りましょう。",
@@ -483,7 +483,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "留学",
     reading: "りゅうがく",
     romaji: "ryuugaku",
-    meaning: "Belajar di luar negeri",
+    meaning: "Study abroad",
     category: "noun",
     example: {
       japanese: "来年、アメリカに留学します。",
@@ -497,7 +497,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "将来",
     reading: "しょうらい",
     romaji: "shourai",
-    meaning: "Masa depan",
+    meaning: "Future",
     category: "noun",
     example: {
       japanese: "将来の夢は医者になることです。",
@@ -511,7 +511,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "夢",
     reading: "ゆめ",
     romaji: "yume",
-    meaning: "Mimpi",
+    meaning: "Dream",
     category: "noun",
     example: {
       japanese: "昨日の夜、怖い夢を見ました。",
@@ -525,7 +525,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "凄い",
     reading: "すごい",
     romaji: "sugoi",
-    meaning: "Hebat / Luar biasa",
+    meaning: "Great / Amazing",
     category: "adjective",
     example: {
       japanese: "あの選手は本当にすごいです。",
@@ -539,7 +539,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "煩い",
     reading: "うるさい",
     romaji: "urusai",
-    meaning: "Berisik",
+    meaning: "Noisy",
     category: "adjective",
     example: {
       japanese: "外の工事がうるさいです。",
@@ -553,7 +553,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "厳しい",
     reading: "きびしい",
     romaji: "kibishii",
-    meaning: "Ketat / Tegas",
+    meaning: "Strict",
     category: "adjective",
     example: {
       japanese: "私の父はとても厳しいです。",
@@ -567,7 +567,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "反対",
     reading: "はんたい",
     romaji: "hantai",
-    meaning: "Berlawanan / Menentang",
+    meaning: "Opposite / Against",
     category: "noun",
     example: {
       japanese: "彼の意見に反対です。",
@@ -581,7 +581,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "賛成",
     reading: "さんせい",
     romaji: "sansei",
-    meaning: "Setuju",
+    meaning: "Agree",
     category: "noun",
     example: {
       japanese: "その計画に賛成します。",
@@ -595,7 +595,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "自由",
     reading: "じゆう",
     romaji: "jiyuu",
-    meaning: "Bebas / Kebebasan",
+    meaning: "Free / Freedom",
     category: "noun",
     example: {
       japanese: "自由に意見を言ってください。",
@@ -609,7 +609,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "機械",
     reading: "きかい",
     romaji: "kikai",
-    meaning: "Mesin",
+    meaning: "Machine",
     category: "noun",
     example: {
       japanese: "この機械の使い方が分かりません。",
@@ -623,7 +623,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "規則",
     reading: "きそく",
     romaji: "kisoku",
-    meaning: "Peraturan",
+    meaning: "Rules / Regulations",
     category: "noun",
     example: {
       japanese: "学校の規則を守りましょう。",
@@ -637,7 +637,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "法律",
     reading: "ほうりつ",
     romaji: "houritsu",
-    meaning: "Hukum",
+    meaning: "Law",
     category: "noun",
     example: {
       japanese: "法律の勉強をしています。",
@@ -651,7 +651,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "習慣",
     reading: "しゅうかん",
     romaji: "shuukan",
-    meaning: "Kebiasaan / Adat",
+    meaning: "Habit / Custom",
     category: "noun",
     example: {
       japanese: "日本の習慣に驚きました。",
@@ -665,7 +665,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "経験",
     reading: "けいけん",
     romaji: "keiken",
-    meaning: "Pengalaman",
+    meaning: "Experience",
     category: "noun",
     example: {
       japanese: "色々な経験をしたいです。",
@@ -679,7 +679,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "地震",
     reading: "じしん",
     romaji: "jishin",
-    meaning: "Gempa bumi",
+    meaning: "Earthquake",
     category: "noun",
     example: {
       japanese: "昨日、大きな地震がありました。",
@@ -693,7 +693,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "火事",
     reading: "かじ",
     romaji: "kaji",
-    meaning: "Kebakaran",
+    meaning: "Fire",
     category: "noun",
     example: {
       japanese: "火事になったら、すぐ逃げてください。",
@@ -707,7 +707,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "台風",
     reading: "たいふう",
     romaji: "taifuu",
-    meaning: "Angin topan",
+    meaning: "Typhoon",
     category: "noun",
     example: {
       japanese: "台風が来ています。",
@@ -721,7 +721,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "事故",
     reading: "じこ",
     romaji: "jiko",
-    meaning: "Kecelakaan",
+    meaning: "Accident",
     category: "noun",
     example: {
       japanese: "交通事故に気を付けてください。",
@@ -735,7 +735,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "準備",
     reading: "じゅんび",
     romaji: "junbi",
-    meaning: "Persiapan",
+    meaning: "Preparation",
     category: "noun",
     example: {
       japanese: "旅行の準備をします。",
@@ -749,7 +749,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "連絡",
     reading: "れんらく",
     romaji: "renraku",
-    meaning: "Menghubungi / Kontak",
+    meaning: "Contact / Liaison",
     category: "noun",
     example: {
       japanese: "着いたら連絡してください。",
@@ -763,7 +763,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "注意",
     reading: "ちゅうい",
     romaji: "chuui",
-    meaning: "Peringatan / Hati-hati",
+    meaning: "Caution / Warning",
     category: "noun",
     example: {
       japanese: "先生に注意されました。",
@@ -777,7 +777,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "出席",
     reading: "しゅっせき",
     romaji: "shusseki",
-    meaning: "Kehadiran",
+    meaning: "Attendance",
     category: "noun",
     example: {
       japanese: "明日の会議に出席します。",
@@ -791,7 +791,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "欠席",
     reading: "けっせき",
     romaji: "kesseki",
-    meaning: "Ketidakhadiran / Absen",
+    meaning: "Absence",
     category: "noun",
     example: {
       japanese: "病気で学校を欠席しました。",
