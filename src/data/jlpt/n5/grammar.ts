@@ -19,8 +19,8 @@ export const n5Grammar: GrammarPoint[] = [
     id: "desu",
     level: "N5",
     title: "〜です (desu)",
-    meaning: "Adalah / Merupakan (To be)",
-    structure: "Kata Benda / Kata Sifat + です",
+    meaning: "To be (is/am/are)",
+    structure: "Noun / Adjective + です",
     explanation: "Digunakan pada akhir kalimat untuk menunjukkan kesopanan (bentuk formal) sekaligus menyatakan identitas, keadaan, atau fakta dari subjek.",
     examples: [
       {
@@ -39,8 +39,8 @@ export const n5Grammar: GrammarPoint[] = [
     id: "dewa-arimasen",
     level: "N5",
     title: "〜ではありません (dewa arimasen)",
-    meaning: "Bukan / Tidak",
-    structure: "Kata Benda / Kata Sifat-Na + ではありません (atau じゃありません)",
+    meaning: "To not be (is not/am not/are not)",
+    structure: "Noun / Na-Adjective + ではありません",
     explanation: "Bentuk negatif dari 'desu' untuk kata benda dan kata sifat-na. Dalam percakapan sehari-hari sering disingkat menjadi 'ja arimasen'.",
     examples: [
       {
@@ -59,7 +59,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "wa-particle",
     level: "N5",
     title: "Partikel は (wa)",
-    meaning: "Penanda Topik (Adalah / Adapun)",
+    meaning: "Topic marker",
     structure: "Topik + は + Predikat",
     explanation: "Partikel は (ditulis 'ha' tapi dibaca 'wa') digunakan untuk menandai topik dari suatu kalimat. Topik adalah apa yang sedang dibicarakan dalam kalimat tersebut.",
     examples: [
@@ -79,7 +79,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "masu",
     level: "N5",
     title: "〜ます (masu)",
-    meaning: "Bentuk Sopan Kata Kerja (Melakukan)",
+    meaning: "Polite verb form",
     structure: "Kata Kerja (Bentuk Masu) + ます",
     explanation: "Akhiran untuk kata kerja bentuk formal/sopan. Digunakan untuk menyatakan tindakan positif yang terjadi saat ini, kebiasaan, atau di masa depan.",
     examples: [
@@ -99,7 +99,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "masen",
     level: "N5",
     title: "〜ません (masen)",
-    meaning: "Bentuk Negatif Sopan (Tidak melakukan)",
+    meaning: "Polite negative verb form",
     structure: "Kata Kerja (Bentuk Masu) + ません",
     explanation: "Bentuk negatif dari 〜ます. Digunakan untuk menyatakan bahwa suatu tindakan tidak dilakukan (saat ini/masa depan) secara sopan.",
     examples: [
@@ -119,7 +119,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "mashita",
     level: "N5",
     title: "〜ました (mashita)",
-    meaning: "Telah melakukan (Lampau)",
+    meaning: "Past polite verb form (Completed)",
     structure: "Kata Kerja (Bentuk Masu) + ました",
     explanation: "Bentuk lampau (past tense) yang sopan untuk kata kerja. Digunakan untuk menyatakan tindakan yang sudah terjadi atau selesai dilakukan.",
     examples: [
@@ -139,7 +139,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "masen-deshita",
     level: "N5",
     title: "〜ませんでした (masen deshita)",
-    meaning: "Tidak melakukan (Lampau)",
+    meaning: "Past negative polite verb form",
     structure: "Kata Kerja (Bentuk Masu) + ませんでした",
     explanation: "Bentuk negatif lampau dari kata kerja yang sopan. Artinya suatu tindakan tidak dilakukan di masa lalu.",
     examples: [
@@ -159,7 +159,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "ni-particle-time",
     level: "N5",
     title: "Partikel に (Waktu)",
-    meaning: "Pada (Waktu spesifik)",
+    meaning: "At (specific time)",
     structure: "Waktu Spesifik + に + Kata Kerja",
     explanation: "Partikel に digunakan untuk menunjukkan titik waktu spesifik kapan suatu tindakan terjadi (seperti jam, tanggal, hari, bulan). Tidak digunakan untuk kata penunjuk waktu relatif seperti 'hari ini' atau 'besok'.",
     examples: [
@@ -179,7 +179,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "ni-particle-destination",
     level: "N5",
     title: "Partikel に (Tujuan)",
-    meaning: "Ke / Kepada (Tujuan / Arah)",
+    meaning: "To / For (Destination / Recipient)",
     structure: "Tempat/Orang + に + Kata Kerja Pindah/Memberi",
     explanation: "Menunjukkan tujuan pergerakan (pergi ke...) atau arah sebuah tindakan (memberi kepada...).",
     examples: [
@@ -199,7 +199,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "e-particle",
     level: "N5",
     title: "Partikel へ (e)",
-    meaning: "Ke (Arah pergerakan)",
+    meaning: "To (Direction of movement)",
     structure: "Tempat + へ + Kata Kerja Pergerakan (行く, 来る, 帰る)",
     explanation: "Mirip dengan に untuk tujuan, tapi lebih menekankan pada arah pergerakan. Ditulis 'he' tapi dibaca 'e'.",
     examples: [
@@ -219,7 +219,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "o-particle",
     level: "N5",
     title: "Partikel を (o)",
-    meaning: "Penanda Objek Langsung",
+    meaning: "Direct object marker",
     structure: "Objek + を + Kata Kerja Transitif",
     explanation: "Partikel を (ditulis 'wo' tapi dibaca 'o') digunakan untuk menandai objek langsung dari sebuah kata kerja tindakan (objek yang dikenai suatu tindakan).",
     examples: [
@@ -239,7 +239,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "de-particle-place",
     level: "N5",
     title: "Partikel で (Tempat)",
-    meaning: "Di (Tempat terjadinya aktivitas)",
+    meaning: "At / In (Location of action)",
     structure: "Tempat + で + Kata Kerja Aksi",
     explanation: "Menunjukkan lokasi di mana sebuah aktivitas atau kejadian berlangsung. Berbeda dengan に yang hanya menunjukkan letak keberadaan statis.",
     examples: [
@@ -259,7 +259,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "de-particle-tool",
     level: "N5",
     title: "Partikel で (Alat / Metode)",
-    meaning: "Dengan / Menggunakan",
+    meaning: "By means of / Using",
     structure: "Alat / Metode / Kendaraan + で",
     explanation: "Menunjukkan alat, sarana, atau metode yang digunakan untuk melakukan sesuatu.",
     examples: [
@@ -279,7 +279,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "to-particle",
     level: "N5",
     title: "Partikel と (to)",
-    meaning: "Dan / Bersama dengan",
+    meaning: "And / With",
     structure: "Kata Benda 1 + と + Kata Benda 2 (atau Bersama Orang + と)",
     explanation: "Bisa digunakan untuk menggabungkan benda ('dan') secara spesifik, atau menunjukkan teman beraktivitas ('bersama dengan').",
     examples: [
@@ -299,7 +299,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "mo-particle",
     level: "N5",
     title: "Partikel も (mo)",
-    meaning: "Juga / Pun",
+    meaning: "Also / Too",
     structure: "Kata Benda + も",
     explanation: "Menggantikan partikel は, が, atau を untuk menyatakan bahwa sesuatu 'juga' memiliki sifat atau melakukan aksi yang sama dengan yang telah disebutkan sebelumnya.",
     examples: [
@@ -319,7 +319,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "ga-particle",
     level: "N5",
     title: "Partikel が (ga)",
-    meaning: "Penanda Subjek Baru / Penekanan",
+    meaning: "Subject marker",
     structure: "Subjek + が + Predikat",
     explanation: "Berbeda dengan は yang menandai topik lama, が digunakan untuk menandai informasi baru (subjek), atau digunakan secara spesifik bersama kata sifat yang menunjukkan suka/benci, pintar/bodoh, ada/tidak ada.",
     examples: [
@@ -339,7 +339,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "arimasu-imasu",
     level: "N5",
     title: "あります / います",
-    meaning: "Ada / Berada",
+    meaning: "There is / To exist",
     structure: "Benda/Orang + が + あります/います",
     explanation: "あります digunakan untuk menyatakan keberadaan benda mati atau tumbuhan. Sedangkan います digunakan untuk benda hidup yang bisa bergerak sendiri seperti manusia dan hewan.",
     examples: [
@@ -359,7 +359,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "kara-made",
     level: "N5",
     title: "〜から 〜まで (kara - made)",
-    meaning: "Dari ... Sampai ...",
+    meaning: "From ... To ...",
     structure: "Waktu/Tempat 1 + から + Waktu/Tempat 2 + まで",
     explanation: "Menunjukkan titik awal (kara) dan titik akhir (made) dari waktu atau jarak geografis.",
     examples: [
@@ -379,7 +379,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "te-kudasai",
     level: "N5",
     title: "〜てください (te kudasai)",
-    meaning: "Tolong lakukan...",
+    meaning: "Please do...",
     structure: "Kata Kerja (Bentuk Te) + ください",
     explanation: "Digunakan untuk meminta seseorang melakukan sesuatu dengan cara yang sopan.",
     examples: [
@@ -399,7 +399,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "te-mo-ii-desu",
     level: "N5",
     title: "〜てもいいです (te mo ii desu)",
-    meaning: "Boleh melakukan...",
+    meaning: "May do... (Permission)",
     structure: "Kata Kerja (Bentuk Te) + もいいです(か)",
     explanation: "Memberikan atau meminta izin untuk melakukan sesuatu. Ditambah 'ka' di akhir untuk bertanya 'Bolehkah saya...?'",
     examples: [
@@ -419,7 +419,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "te-wa-ikemasen",
     level: "N5",
     title: "〜てはいけません (te wa ikemasen)",
-    meaning: "Tidak boleh melakukan...",
+    meaning: "Must not do (Prohibition)",
     structure: "Kata Kerja (Bentuk Te) + はいけません",
     explanation: "Digunakan untuk melarang atau menunjukkan bahwa suatu tindakan tidak diizinkan / dilarang keras.",
     examples: [
@@ -439,7 +439,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "nai-de-kudasai",
     level: "N5",
     title: "〜ないでください (nai de kudasai)",
-    meaning: "Tolong jangan lakukan...",
+    meaning: "Please don't do...",
     structure: "Kata Kerja (Bentuk Nai) + でください",
     explanation: "Permintaan sopan agar seseorang TIDAK melakukan sesuatu.",
     examples: [
@@ -459,7 +459,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "tai-desu",
     level: "N5",
     title: "〜たいです (tai desu)",
-    meaning: "Ingin melakukan...",
+    meaning: "Want to do...",
     structure: "Kata Kerja (Bentuk Masu dicoret) + たいです",
     explanation: "Menyatakan keinginan diri sendiri untuk melakukan suatu tindakan. Bertingkah laku seperti kata sifat berakhiran-i.",
     examples: [
@@ -479,7 +479,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "hoshii-desu",
     level: "N5",
     title: "〜がほしいです (ga hoshii desu)",
-    meaning: "Menginginkan (suatu benda)",
+    meaning: "Want (something)",
     structure: "Kata Benda + がほしいです",
     explanation: "Menyatakan keinginan akan suatu benda mati atau hal yang bisa dimiliki, bukan sebuah aksi/tindakan.",
     examples: [
@@ -499,7 +499,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "koto-ga-dekimasu",
     level: "N5",
     title: "〜ことができます (koto ga dekimasu)",
-    meaning: "Bisa / Mampu melakukan...",
+    meaning: "Can / Able to do",
     structure: "Kata Kerja (Bentuk Kamus) + ことができます",
     explanation: "Cara sopan untuk menyatakan kemampuan atau kemungkinan untuk melakukan sesuatu.",
     examples: [
@@ -519,7 +519,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "tari-tari",
     level: "N5",
     title: "〜たり、〜たりします (tari, tari shimasu)",
-    meaning: "Melakukan hal-hal seperti... dan...",
+    meaning: "Doing things like... and...",
     structure: "Kata Kerja 1 (Bentuk Ta) + り、Kata Kerja 2 (Bentuk Ta) + りします",
     explanation: "Digunakan untuk menyebutkan beberapa contoh tindakan dari banyak tindakan yang dilakukan. Tidak menyiratkan urutan waktu seperti partikel 'te'. Kata kerja terakhir selalu diikuti 'shimasu' (atau 'shimashita' untuk masa lalu).",
     examples: [
@@ -539,7 +539,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "mae-ni",
     level: "N5",
     title: "〜前に (mae ni)",
-    meaning: "Sebelum...",
+    meaning: "Before...",
     structure: "Kata Kerja (Kamus) / Kata Benda + の / Waktu + 前に",
     explanation: "Digunakan untuk menunjukkan bahwa suatu tindakan dilakukan sebelum tindakan lain atau kejadian lain terjadi.",
     examples: [
@@ -559,7 +559,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "ato-de",
     level: "N5",
     title: "〜後で (ato de)",
-    meaning: "Setelah / Sesudah...",
+    meaning: "After...",
     structure: "Kata Kerja (Bentuk Ta) / Kata Benda + の + 後で",
     explanation: "Digunakan untuk menunjukkan bahwa suatu tindakan dilakukan setelah tindakan lain selesai. Sangat penting untuk mengingat kata kerja menggunakan bentuk Ta (lampau) sebelum 'ato de'.",
     examples: [
@@ -579,7 +579,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "kara-reason",
     level: "N5",
     title: "〜から (kara - Alasan)",
-    meaning: "Karena...",
+    meaning: "Because...",
     structure: "Kalimat Alasan + から、Kalimat Akibat",
     explanation: "Digunakan untuk menjelaskan alasan. 'Kara' biasanya bernuansa subyektif dan sering dipakai ketika membujuk, memerintah, atau memberikan alasan pribadi.",
     examples: [
@@ -599,7 +599,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "node",
     level: "N5",
     title: "〜ので (node)",
-    meaning: "Karena / Sebab...",
+    meaning: "Because (Formal)",
     structure: "Bentuk Biasa (Na-adj/Noun + な) + ので",
     explanation: "Mirip dengan 'kara', tetapi 'node' lebih obyektif dan sopan. Sering digunakan untuk menjelaskan fakta atau meminta maaf secara formal.",
     examples: [
@@ -619,7 +619,7 @@ export const n5Grammar: GrammarPoint[] = [
     id: "tsumori-n5",
     level: "N5",
     title: "〜つもりです (tsumori desu)",
-    meaning: "Bermaksud / Berencana untuk",
+    meaning: "Intend / Plan to",
     structure: "Kata Kerja (Bentuk Kamus / Nai) + つもりです",
     explanation: "Digunakan untuk menyatakan rencana atau niat kuat dari si pembicara yang sudah diputuskan sebelumnya.",
     examples: [

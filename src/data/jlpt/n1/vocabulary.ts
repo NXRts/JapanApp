@@ -7,7 +7,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "決裂",
     reading: "けつれつ",
     romaji: "ketsuretsu",
-    meaning: "Pecah / Gagal (perundingan)",
+    meaning: "Breakdown / Failure",
     category: "noun",
     example: {
       japanese: "両国の交渉は決裂した。",
@@ -21,7 +21,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "妥協",
     reading: "だきょう",
     romaji: "dakyou",
-    meaning: "Kompromi",
+    meaning: "Compromise",
     category: "noun",
     example: {
       japanese: "この点については妥協できない。",
@@ -35,7 +35,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "抽象",
     reading: "ちゅうしょう",
     romaji: "chuushou",
-    meaning: "Abstrak",
+    meaning: "Abstract",
     category: "noun",
     example: {
       japanese: "彼の話は抽象的すぎて分かりにくい。",
@@ -49,7 +49,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "朗らか",
     reading: "ほがらか",
     romaji: "hogaraka",
-    meaning: "Ceria / Terang",
+    meaning: "Cheerful / Bright",
     category: "adjective",
     example: {
       japanese: "彼女はいつも朗らかな声で挨拶をする。",
@@ -63,7 +63,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "免れる",
     reading: "まぬかれる",
     romaji: "manukareru",
-    meaning: "Lolos dari / Terhindar dari",
+    meaning: "To escape / Evade",
     category: "verb",
     example: {
       japanese: "責任を免れることはできない。",
@@ -77,7 +77,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "欠乏",
     reading: "けつぼう",
     romaji: "ketsubou",
-    meaning: "Kekurangan / Kelangkaan",
+    meaning: "Lack / Scarcity",
     category: "noun",
     example: {
       japanese: "食料の欠乏が深刻な問題となっている。",
@@ -91,7 +91,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "活力",
     reading: "かつりょく",
     romaji: "katsuryoku",
-    meaning: "Daya hidup / Vitalitas",
+    meaning: "Vitality / Energy",
     category: "noun",
     example: {
       japanese: "若い人たちの活力が社会を変える。",
@@ -105,7 +105,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "妄言",
     reading: "もうげん",
     romaji: "mougen",
-    meaning: "Omong kosong / Kata-kata sembarangan",
+    meaning: "Nonsense / Reckless words",
     category: "noun",
     example: {
       japanese: "彼の言うことは単なる妄言に過ぎない。",
@@ -119,7 +119,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "共鳴",
     reading: "きょうめい",
     romaji: "kyoumei",
-    meaning: "Resonansi / Bersimpati",
+    meaning: "Resonance / Sympathy",
     category: "noun",
     example: {
       japanese: "彼の意見に深く共鳴した。",
@@ -133,7 +133,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "包括",
     reading: "ほうかつ",
     romaji: "houkatsu",
-    meaning: "Inklusif / Meliputi keseluruhan",
+    meaning: "Inclusive / Comprehensive",
     category: "noun",
     example: {
       japanese: "包括的なアプローチが必要だ。",
@@ -147,7 +147,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "用いる",
     reading: "もちいる",
     romaji: "mochiiru",
-    meaning: "Menggunakan / Mempekerjakan",
+    meaning: "To use / Employ",
     category: "verb",
     example: {
       japanese: "最新の技術を用いて開発する。",
@@ -161,7 +161,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "脅かす",
     reading: "おびやかす",
     romaji: "obiyakasu",
-    meaning: "Mengancam / Membahayakan",
+    meaning: "To threaten / Endanger",
     category: "verb",
     example: {
       japanese: "平和を脅かす行為は許されない。",
@@ -175,7 +175,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "詳しい",
     reading: "くわしい",
     romaji: "kuwashii",
-    meaning: "Terperinci / Detail",
+    meaning: "Detailed / Minute",
     category: "adjective",
     example: {
       japanese: "その件について詳しい説明を求めた。",
@@ -189,7 +189,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "哀れ",
     reading: "あわれ",
     romaji: "aware",
-    meaning: "Menyedihkan / Patut dikasihani",
+    meaning: "Pitiful / Miserable",
     category: "adjective",
     example: {
       japanese: "哀れな姿を見て涙が出た。",
@@ -203,7 +203,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "高尚",
     reading: "こうしょう",
     romaji: "koushou",
-    meaning: "Luhur / Tingkat tinggi / Mulia",
+    meaning: "Noble / High-class",
     category: "adjective",
     example: {
       japanese: "彼は高尚な趣味を持っている。",
@@ -217,7 +217,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "誠意",
     reading: "せいい",
     romaji: "seii",
-    meaning: "Ketulusan / Itikad baik",
+    meaning: "Sincerity / Good faith",
     category: "noun",
     example: {
       japanese: "誠意をもって対応させていただきます。",
@@ -231,7 +231,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "追求",
     reading: "ついきゅう",
     romaji: "tsuikyuu",
-    meaning: "Pengejaran (ideal, kebenaran)",
+    meaning: "Pursuit / Seeking",
     category: "noun",
     example: {
       japanese: "幸福の追求は人間の権利だ。",
@@ -245,7 +245,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "盲動",
     reading: "もうどう",
     romaji: "moudou",
-    meaning: "Tindakan membabi buta",
+    meaning: "Blind action / Reckless behavior",
     category: "noun",
     example: {
       japanese: "感情に任せて盲動してはいけない。",
@@ -259,7 +259,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "渇望",
     reading: "かつぼう",
     romaji: "katsubou",
-    meaning: "Keinginan kuat / Haus akan",
+    meaning: "Craving / Longing",
     category: "noun",
     example: {
       japanese: "国民は新しい指導者を渇望している。",
@@ -273,7 +273,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "偽善",
     reading: "ぎぜん",
     romaji: "gizen",
-    meaning: "Kemunafikan",
+    meaning: "Hypocrisy",
     category: "noun",
     example: {
       japanese: "彼の言葉は偽善に満ちている。",
@@ -287,7 +287,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "喘ぐ",
     reading: "あえぐ",
     romaji: "aegu",
-    meaning: "Terengah-engah / Menderita",
+    meaning: "To pant / Gasp / Suffer",
     category: "verb",
     example: {
       japanese: "不況にあえぐ企業が多い。",
@@ -301,7 +301,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "欺く",
     reading: "あざむく",
     romaji: "azamuku",
-    meaning: "Menipu / Memperdaya",
+    meaning: "To deceive / Cheat",
     category: "verb",
     example: {
       japanese: "敵を欺くための作戦だ。",
@@ -315,7 +315,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "営む",
     reading: "いとなむ",
     romaji: "itonamu",
-    meaning: "Menjalankan (bisnis/kehidupan)",
+    meaning: "To run / Manage",
     category: "verb",
     example: {
       japanese: "田舎で小さな店を営んでいる。",
@@ -329,7 +329,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "潤う",
     reading: "うるおう",
     romaji: "uruou",
-    meaning: "Lembap / Makmur",
+    meaning: "To be moist / Prosper",
     category: "verb",
     example: {
       japanese: "雨で大地が潤った。",
@@ -343,7 +343,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "怠る",
     reading: "おこたる",
     romaji: "okotaru",
-    meaning: "Melalaikan / Mengabaikan",
+    meaning: "To neglect / Be negligent",
     category: "verb",
     example: {
       japanese: "日々の努力を怠ってはいけない。",
@@ -357,7 +357,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "費える",
     reading: "ついえる",
     romaji: "tsuieru",
-    meaning: "Terkuras / Terbuang sia-sia",
+    meaning: "To be wasted / Used up",
     category: "verb",
     example: {
       japanese: "長年の努力が水の泡と費えた。",
@@ -371,7 +371,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "滞る",
     reading: "とどこおる",
     romaji: "todokooru",
-    meaning: "Tertunggak / Terhambat",
+    meaning: "To be stagnant / Delayed",
     category: "verb",
     example: {
       japanese: "家賃の支払いが滞っている。",
@@ -385,7 +385,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "意趣",
     reading: "いしゅ",
     romaji: "ishu",
-    meaning: "Dendam / Maksud tersembunyi",
+    meaning: "Grudge / Malice",
     category: "noun",
     example: {
       japanese: "彼に意趣返しをするつもりはない。",
@@ -399,7 +399,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "隠蔽",
     reading: "いんぺい",
     romaji: "inpei",
-    meaning: "Penyembunyian (fakta)",
+    meaning: "Concealment / Hiding",
     category: "noun",
     example: {
       japanese: "証拠の隠蔽は重大な犯罪だ。",
@@ -413,7 +413,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "運命",
     reading: "うんめい",
     romaji: "unmei",
-    meaning: "Takdir",
+    meaning: "Fate / Destiny",
     category: "noun",
     example: {
       japanese: "二人の出会いは運命だった。",
@@ -427,7 +427,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "延々",
     reading: "えんえん",
     romaji: "enen",
-    meaning: "Terus-menerus (tanpa henti)",
+    meaning: "Endlessly / On and on",
     category: "adverb",
     example: {
       japanese: "彼の自慢話が延々と続いた。",
@@ -441,7 +441,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "開拓",
     reading: "かいたく",
     romaji: "kaitaku",
-    meaning: "Pembukaan / Perintisan",
+    meaning: "Development / Cultivation",
     category: "noun",
     example: {
       japanese: "新しい分野を開拓する。",
@@ -455,7 +455,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "活路",
     reading: "かつろ",
     romaji: "katsuro",
-    meaning: "Jalan keluar (dari krisis)",
+    meaning: "Way out / Way of escape",
     category: "noun",
     example: {
       japanese: "海外市場に活路を見出す。",
@@ -469,7 +469,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "基盤",
     reading: "きばん",
     romaji: "kiban",
-    meaning: "Fondasi / Basis",
+    meaning: "Foundation / Basis",
     category: "noun",
     example: {
       japanese: "生活の基盤を固める。",
@@ -483,7 +483,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "気候",
     reading: "きこう",
     romaji: "kikou",
-    meaning: "Iklim",
+    meaning: "Climate",
     category: "noun",
     example: {
       japanese: "この地域の気候は温暖だ。",
@@ -497,7 +497,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "享受",
     reading: "きょうじゅ",
     romaji: "kyouju",
-    meaning: "Menikmati (manfaat/hak)",
+    meaning: "Enjoyment / To enjoy",
     category: "noun",
     example: {
       japanese: "自由を享受する権利がある。",
@@ -511,7 +511,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "猟奇",
     reading: "りょうき",
     romaji: "ryouki",
-    meaning: "Aneh dan menyeramkan (Bizarre/Grotesque)",
+    meaning: "Bizarre / Grotesque",
     category: "noun",
     example: {
       japanese: "猟奇的な事件が起きた。",
@@ -525,7 +525,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "おこがましい",
     reading: "おこがましい",
     romaji: "okogamashii",
-    meaning: "Lancang / Tidak tahu diri",
+    meaning: "Presumptuous / Audacious",
     category: "adjective",
     example: {
       japanese: "私から意見を言うのはおこがましいですが。",
@@ -539,7 +539,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "夥しい",
     reading: "おびただしい",
     romaji: "obitadashii",
-    meaning: "Sangat banyak / Melimpah (sering dalam konteks negatif)",
+    meaning: "Numerous / Tremendous",
     category: "adjective",
     example: {
       japanese: "事故現場には夥しい数の警察官がいた。",
@@ -553,7 +553,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "逞しい",
     reading: "たくましい",
     romaji: "takumashii",
-    meaning: "Kuat / Kekar / Tangguh",
+    meaning: "Robust / Sturdy / Strong",
     category: "adjective",
     example: {
       japanese: "困難を乗り越える逞しい精神力を持つ。",
@@ -568,7 +568,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "偽善",
     reading: "ぎぜん",
     romaji: "gizen",
-    meaning: "Kemunafikan",
+    meaning: "Hypocrisy",
     category: "noun",
     example: {
       japanese: "彼の言葉は偽善に満ちている。",
@@ -582,7 +582,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "決断",
     reading: "けつだん",
     romaji: "ketsudan",
-    meaning: "Keputusan (Tegas)",
+    meaning: "Decision / Determination",
     category: "noun",
     example: {
       japanese: "重大な決断を下す。",
@@ -596,7 +596,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "嫌悪",
     reading: "けんお",
     romaji: "keno",
-    meaning: "Kebencian / Kejijikan",
+    meaning: "Hatred / Disgust",
     category: "noun",
     example: {
       japanese: "彼は嘘に対して嫌悪感を抱く。",
@@ -610,7 +610,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "権威",
     reading: "けんい",
     romaji: "ken'i",
-    meaning: "Otoritas / Wibawa",
+    meaning: "Authority / Influence",
     category: "noun",
     example: {
       japanese: "彼はその分野の権威です。",
@@ -624,7 +624,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "貢献",
     reading: "こうけん",
     romaji: "kouken",
-    meaning: "Kontribusi",
+    meaning: "Contribution",
     category: "noun",
     example: {
       japanese: "社会に貢献したい。",
@@ -638,7 +638,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "興奮",
     reading: "こうふん",
     romaji: "koufun",
-    meaning: "Kegembiraan / Eksitasi",
+    meaning: "Excitement / Agitation",
     category: "noun",
     example: {
       japanese: "観客は興奮して立ち上がった。",
@@ -652,7 +652,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "国家",
     reading: "こっか",
     romaji: "kokka",
-    meaning: "Negara (State)",
+    meaning: "Nation / State",
     category: "noun",
     example: {
       japanese: "国家の安全を守る。",
@@ -666,7 +666,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "聡明",
     reading: "そうめい",
     romaji: "soumei",
-    meaning: "Cerdas / Bijaksana",
+    meaning: "Wise / Sagacious",
     category: "adjective",
     example: {
       japanese: "彼女はとても聡明な女性だ。",
@@ -680,7 +680,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "妥協",
     reading: "だきょう",
     romaji: "dakyou",
-    meaning: "Kompromi",
+    meaning: "Compromise",
     category: "noun",
     example: {
       japanese: "絶対に妥協はしない。",
@@ -694,7 +694,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "蓄積",
     reading: "ちくせき",
     romaji: "chikuseki",
-    meaning: "Akumulasi / Penumpukan",
+    meaning: "Accumulation",
     category: "noun",
     example: {
       japanese: "疲労が蓄積している。",
@@ -708,7 +708,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "秩序",
     reading: "ちつじょ",
     romaji: "chitsujo",
-    meaning: "Ketertiban / Orde",
+    meaning: "Order / Discipline",
     category: "noun",
     example: {
       japanese: "社会の秩序を維持する。",
@@ -722,7 +722,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "抽象",
     reading: "ちゅうしょう",
     romaji: "chuushou",
-    meaning: "Abstrak",
+    meaning: "Abstract",
     category: "noun",
     example: {
       japanese: "彼の説明は抽象的すぎる。",
@@ -736,7 +736,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "逃避",
     reading: "とうひ",
     romaji: "touhi",
-    meaning: "Pelarian",
+    meaning: "Escape / Evasion",
     category: "noun",
     example: {
       japanese: "現実から逃避してはいけない。",
@@ -750,7 +750,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "投資",
     reading: "とうし",
     romaji: "toushi",
-    meaning: "Investasi",
+    meaning: "Investment",
     category: "noun",
     example: {
       japanese: "株式に投資する。",
@@ -764,7 +764,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "貧困",
     reading: "ひんこん",
     romaji: "hinkon",
-    meaning: "Kemiskinan",
+    meaning: "Poverty",
     category: "noun",
     example: {
       japanese: "貧困問題を解決する。",
@@ -778,7 +778,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "復旧",
     reading: "ふっきゅう",
     romaji: "fukkyuu",
-    meaning: "Pemulihan (Sistem/Infrastruktur)",
+    meaning: "Restoration / Recovery",
     category: "noun",
     example: {
       japanese: "停電が復旧した。",
@@ -792,7 +792,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     word: "矛盾",
     reading: "むじゅん",
     romaji: "mujun",
-    meaning: "Kontradiksi",
+    meaning: "Contradiction",
     category: "noun",
     example: {
       japanese: "彼の言動には矛盾がある。",

@@ -7,7 +7,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "影響",
     reading: "えいきょう",
     romaji: "eikyou",
-    meaning: "Pengaruh / Dampak",
+    meaning: "Influence / Impact",
     category: "noun",
     example: {
       japanese: "環境に良い影響を与えます。",
@@ -21,7 +21,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "解決",
     reading: "かいけつ",
     romaji: "kaiketsu",
-    meaning: "Penyelesaian / Solusi",
+    meaning: "Solution / Resolution",
     category: "noun",
     example: {
       japanese: "問題を早く解決したいです。",
@@ -35,7 +35,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "活躍",
     reading: "かつやく",
     romaji: "katsuyaku",
-    meaning: "Berperan aktif / Bersinar",
+    meaning: "To play an active role / To shine",
     category: "noun",
     example: {
       japanese: "彼の国際的な活躍を期待しています。",
@@ -49,7 +49,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "市場",
     reading: "しじょう",
     romaji: "shijou",
-    meaning: "Pasar (Market/Ekonomi)",
+    meaning: "Market",
     category: "noun",
     example: {
       japanese: "新しい市場を開拓する。",
@@ -63,7 +63,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "防ぐ",
     reading: "ふせぐ",
     romaji: "fusegu",
-    meaning: "Mencegah",
+    meaning: "To prevent",
     category: "verb",
     example: {
       japanese: "事故を防ぐための対策を立てる。",
@@ -77,7 +77,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "資源",
     reading: "しげん",
     romaji: "shigen",
-    meaning: "Sumber daya",
+    meaning: "Resources",
     category: "noun",
     example: {
       japanese: "日本は天然資源が少ない。",
@@ -91,7 +91,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "条件",
     reading: "じょうけん",
     romaji: "jouken",
-    meaning: "Syarat / Kondisi",
+    meaning: "Conditions / Terms",
     category: "noun",
     example: {
       japanese: "働く条件について話し合う。",
@@ -105,7 +105,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "完了",
     reading: "かんりょう",
     romaji: "kanryou",
-    meaning: "Selesai / Rampung",
+    meaning: "Completion / Finish",
     category: "noun",
     example: {
       japanese: "データの送信が完了しました。",
@@ -119,7 +119,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "具体的",
     reading: "ぐたいてき",
     romaji: "gutaiteki",
-    meaning: "Konkret / Spesifik",
+    meaning: "Concrete / Specific",
     category: "adjective",
     example: {
       japanese: "もっと具体的な例を挙げてください。",
@@ -133,7 +133,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "慎重",
     reading: "しんちょう",
     romaji: "shinchou",
-    meaning: "Hati-hati / Waspada",
+    meaning: "Cautions / Prudent",
     category: "adjective",
     example: {
       japanese: "その決定は慎重に行うべきだ。",
@@ -147,7 +147,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "望む",
     reading: "のぞむ",
     romaji: "nozomu",
-    meaning: "Berharap / Menginginkan",
+    meaning: "To hope / Desire",
     category: "verb",
     example: {
       japanese: "平和な世界を望んでいます。",
@@ -161,7 +161,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "占める",
     reading: "しめる",
     romaji: "shimeru",
-    meaning: "Menduduki / Memakan (persentase)",
+    meaning: "To occupy / Account for",
     category: "verb",
     example: {
       japanese: "女性が全体の６割を占めている。",
@@ -175,7 +175,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "追加",
     reading: "ついか",
     romaji: "tsuika",
-    meaning: "Tambahan",
+    meaning: "Addition / Supplement",
     category: "noun",
     example: {
       japanese: "追加の注文をお願いします。",
@@ -189,7 +189,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "好評",
     reading: "こうひょう",
     romaji: "kouhyou",
-    meaning: "Reputasi baik / Populer",
+    meaning: "Well-received / Popular",
     category: "noun",
     example: {
       japanese: "この映画は若者に好評だ。",
@@ -203,7 +203,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "実際",
     reading: "じっさい",
     romaji: "jissai",
-    meaning: "Kenyataan / Sebenarnya",
+    meaning: "Actual / Reality",
     category: "noun",
     example: {
       japanese: "理想と現実は実際には違う。",
@@ -217,7 +217,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "効率",
     reading: "こうりつ",
     romaji: "kouritsu",
-    meaning: "Efisiensi",
+    meaning: "Efficiency",
     category: "noun",
     example: {
       japanese: "仕事の効率を上げる。",
@@ -231,7 +231,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "不可",
     reading: "ふか",
     romaji: "fuka",
-    meaning: "Tidak bisa / Tidak diizinkan",
+    meaning: "Impossible / Not allowed",
     category: "noun",
     example: {
       japanese: "ここへの立ち入りは不可です。",
@@ -245,7 +245,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "提案",
     reading: "ていあん",
     romaji: "teian",
-    meaning: "Usulan / Proposal",
+    meaning: "Proposal / Suggestion",
     category: "noun",
     example: {
       japanese: "新しい企画を提案する。",
@@ -259,7 +259,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "勢い",
     reading: "いきおい",
     romaji: "ikioi",
-    meaning: "Kekuatan / Momentum / Tenaga",
+    meaning: "Force / Momentum / Energy",
     category: "noun",
     example: {
       japanese: "風の勢いが強くなった。",
@@ -273,7 +273,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "盛ん",
     reading: "さかん",
     romaji: "sakan",
-    meaning: "Populer / Makmur / Aktif",
+    meaning: "Prosperous / Active",
     category: "adjective",
     example: {
       japanese: "この町は工業が盛んです。",
@@ -287,7 +287,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "青ざめる",
     reading: "あおざめる",
     romaji: "aozameru",
-    meaning: "Menjadi pucat",
+    meaning: "To turn pale",
     category: "verb",
     example: {
       japanese: "恐ろしい話を聞いて顔が青ざめた。",
@@ -301,7 +301,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "裏切る",
     reading: "うらぎる",
     romaji: "uragiru",
-    meaning: "Mengkhianati",
+    meaning: "To betray",
     category: "verb",
     example: {
       japanese: "彼は決して仲間を裏切らない。",
@@ -315,7 +315,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "語る",
     reading: "かたる",
     romaji: "kataru",
-    meaning: "Bercerita / Menuturkan",
+    meaning: "To tell / Narrate",
     category: "verb",
     example: {
       japanese: "おじいさんが昔の経験を語ってくれた。",
@@ -329,7 +329,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "傾く",
     reading: "かたむく",
     romaji: "katamuku",
-    meaning: "Miring / Cenderung",
+    meaning: "To lean / Incline",
     category: "verb",
     example: {
       japanese: "地震で家が少し傾いた。",
@@ -343,7 +343,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "示す",
     reading: "しめす",
     romaji: "shimesu",
-    meaning: "Menunjukkan / Memperlihatkan",
+    meaning: "To show / Indicate",
     category: "verb",
     example: {
       japanese: "データが事実を示している。",
@@ -357,7 +357,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "含める",
     reading: "ふくめる",
     romaji: "fukumeru",
-    meaning: "Memasukkan / Termasuk",
+    meaning: "To include",
     category: "verb",
     example: {
       japanese: "税金を含めた値段を教えてください。",
@@ -371,7 +371,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "譲る",
     reading: "ゆずる",
     romaji: "yuzuru",
-    meaning: "Menyerahkan / Mengalah",
+    meaning: "To hand over / Give up",
     category: "verb",
     example: {
       japanese: "お年寄りに席を譲る。",
@@ -385,7 +385,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "意思",
     reading: "いし",
     romaji: "ishi",
-    meaning: "Niat / Kehendak",
+    meaning: "Intention / Will",
     category: "noun",
     example: {
       japanese: "自分の意思をはっきりと伝える。",
@@ -399,7 +399,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "印象",
     reading: "いんしょう",
     romaji: "inshou",
-    meaning: "Kesan",
+    meaning: "Impression",
     category: "noun",
     example: {
       japanese: "第一印象がとても大切です。",
@@ -413,7 +413,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "営業",
     reading: "えいぎょう",
     romaji: "eigyou",
-    meaning: "Bisnis / Penjualan",
+    meaning: "Business / Sales",
     category: "noun",
     example: {
       japanese: "営業時間は午後8時までです。",
@@ -427,7 +427,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "応募",
     reading: "おうぼ",
     romaji: "oubo",
-    meaning: "Lamaran / Pendaftaran",
+    meaning: "Application",
     category: "noun",
     example: {
       japanese: "新しいアルバイトに応募した。",
@@ -441,7 +441,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "価値",
     reading: "かち",
     romaji: "kachi",
-    meaning: "Nilai (Value)",
+    meaning: "Value / Worth",
     category: "noun",
     example: {
       japanese: "この絵は高い価値がある。",
@@ -455,7 +455,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "管理",
     reading: "かんり",
     romaji: "kanri",
-    meaning: "Manajemen / Pengelolaan",
+    meaning: "Management",
     category: "noun",
     example: {
       japanese: "健康管理に気を付けてください。",
@@ -469,7 +469,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "基本",
     reading: "きほん",
     romaji: "kihon",
-    meaning: "Dasar / Fundamental",
+    meaning: "Base / Fundamental",
     category: "noun",
     example: {
       japanese: "何事も基本が大切です。",
@@ -483,7 +483,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "契約",
     reading: "けいやく",
     romaji: "keiyaku",
-    meaning: "Kontrak",
+    meaning: "Contract",
     category: "noun",
     example: {
       japanese: "新しいアパートの契約をした。",
@@ -497,7 +497,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "権利",
     reading: "けんり",
     romaji: "kenri",
-    meaning: "Hak",
+    meaning: "Right / Privilege",
     category: "noun",
     example: {
       japanese: "すべての子供に教育を受ける権利がある。",
@@ -511,7 +511,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "支出",
     reading: "ししゅつ",
     romaji: "shishutsu",
-    meaning: "Pengeluaran",
+    meaning: "Expenditure / Expense",
     category: "noun",
     example: {
       japanese: "今月は支出が多かった。",
@@ -525,7 +525,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "曖昧",
     reading: "あいまい",
     romaji: "aimai",
-    meaning: "Ambigu / Tidak jelas",
+    meaning: "Ambiguous / Vague",
     category: "adjective",
     example: {
       japanese: "曖昧な返事はやめてください。",
@@ -539,7 +539,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "偉大",
     reading: "いだい",
     romaji: "idai",
-    meaning: "Agung / Hebat / Besar",
+    meaning: "Great / Grand",
     category: "adjective",
     example: {
       japanese: "彼は偉大な科学者だ。",
@@ -553,7 +553,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "活発",
     reading: "かっぱつ",
     romaji: "kappatsu",
-    meaning: "Aktif / Lincah",
+    meaning: "Active / Lively",
     category: "adjective",
     example: {
       japanese: "会議で活発な議論が行われた。",
@@ -568,7 +568,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "感じる",
     reading: "かんじる",
     romaji: "kanjiru",
-    meaning: "Merasakan",
+    meaning: "To feel",
     category: "verb",
     example: {
       japanese: "痛みを全く感じない。",
@@ -582,7 +582,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "確実",
     reading: "かくじつ",
     romaji: "kakujitsu",
-    meaning: "Pasti / Tentu",
+    meaning: "Certain / Sure",
     category: "adjective",
     example: {
       japanese: "彼の成功は確実だ。",
@@ -596,7 +596,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "築く",
     reading: "きずく",
     romaji: "kizuku",
-    meaning: "Membangun (Hubungan/Kekayaan)",
+    meaning: "To build / Establish",
     category: "verb",
     example: {
       japanese: "新しい人間関係を築く。",
@@ -610,7 +610,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "克服",
     reading: "こくふく",
     romaji: "kokufuku",
-    meaning: "Mengatasi (Kelemahan/Penyakit)",
+    meaning: "To overcome / Conquer",
     category: "noun",
     example: {
       japanese: "恐怖心を克服する。",
@@ -624,7 +624,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "議論",
     reading: "ぎろん",
     romaji: "giron",
-    meaning: "Diskusi / Perdebatan",
+    meaning: "Discussion / Debate",
     category: "noun",
     example: {
       japanese: "その問題について議論する。",
@@ -638,7 +638,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "可能性",
     reading: "かのうせい",
     romaji: "kanousei",
-    meaning: "Kemungkinan / Potensi",
+    meaning: "Possibility / Potential",
     category: "noun",
     example: {
       japanese: "彼が勝つ可能性は高い。",
@@ -652,7 +652,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "活用",
     reading: "かつよう",
     romaji: "katsuyou",
-    meaning: "Pemanfaatan",
+    meaning: "Utilization",
     category: "noun",
     example: {
       japanese: "インターネットを活用する。",
@@ -666,7 +666,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "供給",
     reading: "きょうきゅう",
     romaji: "kyoukyuu",
-    meaning: "Pasokan / Penawaran",
+    meaning: "Supply",
     category: "noun",
     example: {
       japanese: "需要と供給のバランス。",
@@ -680,7 +680,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "減少",
     reading: "げんしょう",
     romaji: "genshou",
-    meaning: "Penurunan / Berkurang",
+    meaning: "Decrease / Reduction",
     category: "noun",
     example: {
       japanese: "人口が減少している。",
@@ -694,7 +694,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "指示",
     reading: "しじ",
     romaji: "shiji",
-    meaning: "Instruksi / Arahan",
+    meaning: "Instruction / Direction",
     category: "noun",
     example: {
       japanese: "上司の指示に従う。",
@@ -708,7 +708,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "指定",
     reading: "してい",
     romaji: "shitei",
-    meaning: "Penunjukan / Spesifikasi",
+    meaning: "Designation / Specification",
     category: "noun",
     example: {
       japanese: "指定された席に座る。",
@@ -722,7 +722,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "出張",
     reading: "しゅっちょう",
     romaji: "shucchou",
-    meaning: "Perjalanan Dinas",
+    meaning: "Business trip",
     category: "noun",
     example: {
       japanese: "来週、東京へ出張します。",
@@ -736,7 +736,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "消費",
     reading: "しょうひ",
     romaji: "shouhi",
-    meaning: "Konsumsi",
+    meaning: "Consumption",
     category: "noun",
     example: {
       japanese: "エネルギーの消費を抑える。",
@@ -750,7 +750,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "証明",
     reading: "しょうめい",
     romaji: "shoumei",
-    meaning: "Bukti / Pembuktian",
+    meaning: "Proof / Certification",
     category: "noun",
     example: {
       japanese: "自分の無実を証明する。",
@@ -764,7 +764,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "信頼",
     reading: "しんらい",
     romaji: "shinrai",
-    meaning: "Kepercayaan (Trust)",
+    meaning: "Trust / Confidence",
     category: "noun",
     example: {
       japanese: "彼は信頼できる人です。",
@@ -778,7 +778,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "進学",
     reading: "しんがく",
     romaji: "shingaku",
-    meaning: "Melanjutkan Pendidikan",
+    meaning: "Entering a higher-level school",
     category: "noun",
     example: {
       japanese: "大学へ進学する予定です。",
@@ -792,7 +792,7 @@ export const n2Vocabulary: VocabularyItem[] = [
     word: "制限",
     reading: "せいげん",
     romaji: "seigen",
-    meaning: "Batasan / Restriksi",
+    meaning: "Restriction / Limitation",
     category: "noun",
     example: {
       japanese: "速度制限を守ってください。",
