@@ -141,32 +141,40 @@ const QuestionContainer = styled.div`
 
 const QuestionType = styled.div`
   display: inline-flex;
-  padding: 0.4rem 1rem;
+  padding: 0.5rem 1.25rem;
   background: rgba(var(--primary-rgb), 0.1);
+  border: 1px solid rgba(var(--primary-rgb), 0.2);
   color: var(--primary);
   border-radius: 99px;
-  font-size: 0.85rem;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   align-self: flex-start;
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.1);
 `;
 
 const Prompt = styled.h2`
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.1;
   margin: 0;
+  background: linear-gradient(to bottom, var(--foreground), var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 
   @media (max-width: 640px) {
-    font-size: 2rem;
+    font-size: 2.25rem;
   }
 `;
 
 const SubPrompt = styled.p`
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   color: var(--text-secondary);
-  margin-top: -1.5rem;
+  margin-top: 0.75rem;
+  font-weight: 500;
+  opacity: 0.8;
+  line-height: 1.5;
 `;
 
 const OptionsGrid = styled.div`
@@ -195,14 +203,15 @@ const OptionButton = styled(motion.button)<{ $status?: 'correct' | 'incorrect' |
     $status === 'correct' ? '#10b981' : 
     $status === 'incorrect' ? '#ef4444' : 
     'var(--foreground)'};
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   text-align: left;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
+  box-shadow: ${({ $status }) => $status === 'neutral' ? 'var(--shadow-sm)' : 'none'};
 
   &:hover {
     border-color: ${({ $status }) => $status === 'neutral' ? 'var(--primary)' : ''};
