@@ -692,8 +692,8 @@ export default function DictionaryPage() {
   const [query, setQuery] = useState('');
   const [showKeyboard, setShowKeyboard] = useState(false);
   const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('N5');
-  const [activeCategory, setActiveCategory] = useState<'kata' | 'tata-bahasa' | 'kanji' | 'kalimat' | 'jpjp' | 'ai' | 'kana'>('kata');
-  const [showConfig, setShowConfig] = useState({ kata: true, ejaan: true, arti: true, rekomendasi: true });
+  const [activeCategory, setActiveCategory] = useState<'vocabulary' | 'grammar' | 'kanji' | 'sentences' | 'jpjp' | 'ai' | 'kana'>('vocabulary');
+  const [showConfig, setShowConfig] = useState({ vocabulary: true, ejaan: true, arti: true, rekomendasi: true });
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -907,9 +907,7 @@ export default function DictionaryPage() {
   };
 
   const browseData = React.useMemo(() => {
-    if (activeCategory === 'kanji') {
-      return allKanji;
-    } else if (activeCategory === 'tata-bahasa') {
+    if (activeCategory === "kanji") { return allKanji; } else if (activeCategory === "grammar") {
       return allGrammar.map(g => ({
         ...g,
         type: 'grammar' as const,
@@ -926,7 +924,7 @@ export default function DictionaryPage() {
         meaning: `${index < 46 ? 'Hiragana' : 'Katakana'} Letter: ${toRomaji(char).toUpperCase()}`,
         source: 'local' as const
       }));
-    } else if (activeCategory === 'kalimat' || activeCategory === 'jpjp') {
+    } else if (activeCategory === 'sentences' || activeCategory === 'jpjp') {
       return []; // These are dynamic searches or self-rendering components
     } else {
       return allVocabulary
@@ -979,10 +977,10 @@ export default function DictionaryPage() {
             <RadioGroup>
               {[
                 { id: 'kana', label: 'Kana' },
-                { id: 'kata', label: 'Words' },
+                { id: 'vocabulary', label: 'Vocabulary' },
                 { id: 'kanji', label: 'Kanji' },
-                { id: 'kalimat', label: 'Sentences' },
-                { id: 'tata-bahasa', label: 'Grammar' },
+                { id: 'sentences', label: 'Sentences' },
+                { id: 'grammar', label: 'Grammar' },
                 { id: 'jpjp', label: 'Japanese - Japanese' },
               ].map(item => (
                 <RadioLabel key={item.id} $active={activeCategory === item.id}>
@@ -1031,9 +1029,9 @@ export default function DictionaryPage() {
               <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" /></svg>
               Practice
             </ActionButton>
-            <ActionButton as={Link} href={`/jlpt/mini-test?level=${activeLevel}`} style={{ textDecoration: 'none' }}>
-              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" /></svg>
-              Mini Test
+            <ActionButton as={Link} href={`/jlpt/mini-test?level=${activeLevel}`} style={{ textDecoration: 'none', border: '1px solid var(--primary)', background: 'rgba(var(--primary-rgb), 0.05)', boxShadow: '0 0 15px rgba(var(--primary-rgb), 0.1)' }}>
+              <svg fill="currentColor" viewBox="0 0 24 24" style={{ color: 'var(--primary)' }}><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" /></svg>
+              <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>Mini Test</span>
             </ActionButton>
             <ActionButton as={Link} href={`/jlpt/kanji-writer?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
               <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
@@ -1102,8 +1100,8 @@ export default function DictionaryPage() {
                 </DictSelect>
                 {showDictDropdown && (
                   <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '0.5rem', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', zIndex: 50, display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', minWidth: '180px' }}>
-                    <button onClick={() => { setSelectedDict('JA-ID'); setShowDictDropdown(false); if (activeCategory === 'jpjp') setActiveCategory('kata'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-ID' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-ID' ? 'bold' : 'normal' }}>Japanese - Indonesian</button>
-                    <button onClick={() => { setSelectedDict('JA-EN'); setShowDictDropdown(false); if (activeCategory === 'jpjp') setActiveCategory('kata'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-EN' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-EN' ? 'bold' : 'normal' }}>Japanese - English</button>
+                    <button onClick={() => { setSelectedDict('JA-ID'); setShowDictDropdown(false); if (activeCategory === 'jpjp') setActiveCategory('vocabulary'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-ID' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-ID' ? 'bold' : 'normal' }}>Japanese - Indonesian</button>
+                    <button onClick={() => { setSelectedDict('JA-EN'); setShowDictDropdown(false); if (activeCategory === 'jpjp') setActiveCategory('vocabulary'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-EN' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-EN' ? 'bold' : 'normal' }}>Japanese - English</button>
                     <button onClick={() => { setSelectedDict('JA-JA'); setShowDictDropdown(false); setActiveCategory('jpjp'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-JA' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', fontWeight: selectedDict === 'JA-JA' ? 'bold' : 'normal' }}>Japanese - Japanese</button>
                   </div>
                 )}
@@ -1114,10 +1112,10 @@ export default function DictionaryPage() {
               {[
                 { id: 'ai', label: 'AI Mode' },
                 { id: 'kana', label: 'Kana' },
-                { id: 'kata', label: 'Words' },
+                { id: 'vocabulary', label: 'Words' },
                 { id: 'kanji', label: 'Kanji' },
-                { id: 'kalimat', label: 'Sentences' },
-                { id: 'tata-bahasa', label: 'Grammar' },
+                { id: 'sentences', label: 'Sentences' },
+                { id: 'grammar', label: 'Grammar' },
                 { id: 'jpjp', label: 'Japanese - Japanese' },
               ].map(mode => (
                 <ModeBtn
@@ -1184,7 +1182,7 @@ export default function DictionaryPage() {
           <ListToolbar style={{ marginTop: '-1.5rem' }}>
             <CheckboxGroup>
               {[
-                { id: 'kata', label: 'Words' },
+                { id: 'vocabulary', label: 'Words' },
                 { id: 'ejaan', label: 'Reading' },
                 { id: 'arti', label: 'Meaning' },
                 { id: 'rekomendasi', label: 'Suggestions' }
@@ -1225,7 +1223,7 @@ export default function DictionaryPage() {
                         <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
                       </SpeakerButton>
                       <ItemContent>
-                        {showConfig.kata && (
+                        {showConfig.vocabulary && (
                           <KanjiText>
                             {item.type === 'kanji' ? item.kanji : (item.word || item.title)}
                           </KanjiText>

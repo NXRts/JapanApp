@@ -25,7 +25,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "朝ごはんを食べます。",
       romaji: "Asagohan o tabemasu.",
-      english: "Saya makan sarapan."
+      english: "I eat breakfast."
     }
   },
   {
@@ -39,7 +39,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "水を飲みます。",
       romaji: "Mizu o nomimasu.",
-      english: "Saya minum air."
+      english: "I drink water."
     }
   },
   {
@@ -53,7 +53,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "学校へ行きます。",
       romaji: "Gakkou e ikimasu.",
-      english: "Saya pergi ke sekolah."
+      english: "I go to school."
     }
   },
   {
@@ -67,7 +67,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "友達がうちに来ます。",
       romaji: "Tomodachi ga uchi ni kimasu.",
-      english: "Teman datang ke rumah saya."
+      english: "A friend is coming to my house."
     }
   },
   {
@@ -81,7 +81,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "週末にテニスをします。",
       romaji: "Shuumatsu ni tenisu o shimasu.",
-      english: "Di akhir pekan saya (melakukan) tenis."
+      english: "I play tennis on weekends."
     }
   },
   {
@@ -95,7 +95,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "私は学生です。",
       romaji: "Watashi wa gakusei desu.",
-      english: "Saya adalah seorang murid."
+      english: "I am a student."
     }
   },
   {
@@ -109,7 +109,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "あの人は誰ですか。",
       romaji: "Ano hito wa dare desu ka.",
-      english: "Orang itu siapa?"
+      english: "Who is that person?"
     }
   },
   {
@@ -123,7 +123,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "図書館で本を借ります。",
       romaji: "Toshokan de hon o karimasu.",
-      english: "Saya meminjam buku di perpustakaan."
+      english: "I borrow books from the library."
     }
   },
   {
@@ -137,7 +137,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "時間がありません。",
       romaji: "Jikan ga arimasen.",
-      english: "Tidak ada waktu."
+      english: "There is no time."
     }
   },
   {
@@ -151,7 +151,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "私の家は大きいです。",
       romaji: "Watashi no ie wa ookii desu.",
-      english: "Rumah saya besar."
+      english: "My house is big."
     }
   },
   {
@@ -165,7 +165,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "このカバンは高いです。",
       romaji: "Kono kaban wa takai desu.",
-      english: "Tas ini mahal."
+      english: "This bag is expensive."
     }
   },
   {
@@ -179,7 +179,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "あのレストランは安くて美味しいです。",
       romaji: "Ano resutoran wa yasukute oishii desu.",
-      english: "Restoran itu murah dan enak."
+      english: "That restaurant is cheap and delicious."
     }
   },
   {
@@ -193,7 +193,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "大きいりんごを買いました。",
       romaji: "Ookii ringo o kaimashita.",
-      english: "Saya membeli apel yang besar."
+      english: "I bought a big apple."
     }
   },
   {
@@ -207,7 +207,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "小さい犬がいます。",
       romaji: "Chiisai inu ga imasu.",
-      english: "Ada anjing kecil."
+      english: "There is a small dog."
     }
   },
   {
@@ -221,7 +221,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "新しい靴が欲しいです。",
       romaji: "Atarashii kutsu ga hoshii desu.",
-      english: "Saya menginginkan sepatu baru."
+      english: "I want new shoes."
     }
   },
   {
@@ -235,7 +235,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "これは古い車です。",
       romaji: "Kore wa furui kuruma desu.",
-      english: "Ini adalah mobil tua."
+      english: "This is an old car."
     }
   },
   {
@@ -249,7 +249,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "今日はとても暑いです。",
       romaji: "Kyou wa totemo atsui desu.",
-      english: "Hari ini sangat panas."
+      english: "It is very hot today."
     }
   },
   {
@@ -263,7 +263,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日本語が少しわかります。",
       romaji: "Nihongo ga sukoshi wakarimasu.",
-      english: "Saya mengerti bahasa Jepang sedikit."
+      english: "I understand a little Japanese."
     }
   },
   {
@@ -277,7 +277,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "私はよく映画を見ます。",
       romaji: "Watashi wa yoku eiga o mimasu.",
-      english: "Saya sering menonton film."
+      english: "I often watch movies."
     }
   },
   {
@@ -291,7 +291,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼はいつも元気です。",
       romaji: "Kare wa itsumo genki desu.",
-      english: "Dia selalu bersemangat."
+      english: "He is always energetic."
     }
   },
   {
@@ -305,7 +305,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "毎朝六時に起きます。",
       romaji: "Maiasa rokuji ni okimasu.",
-      english: "Saya bangun jam enam setiap pagi."
+      english: "I wake up at six every morning."
     }
   },
   {
@@ -319,7 +319,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "夜十時に寝ます。",
       romaji: "Yoru juuji ni nemasu.",
-      english: "Saya tidur pada jam sepuluh malam."
+      english: "I go to sleep at ten at night."
     }
   },
   {
@@ -333,7 +333,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "友達と日本語で話します。",
       romaji: "Tomodachi to Nihongo de hanashimasu.",
-      english: "Saya berbicara dengan teman menggunakan bahasa Jepang."
+      english: "I speak with my friend in Japanese."
     }
   },
   {
@@ -347,7 +347,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "先生に質問を聞きます。",
       romaji: "Sensei ni shitsumon o kikimasu.",
-      english: "Saya menanyakan pertanyaan kepada guru."
+      english: "I ask the teacher a question."
     }
   },
   {
@@ -361,7 +361,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "毎晩本を読みます。",
       romaji: "Maiban hon o yomimasu.",
-      english: "Saya membaca buku setiap malam."
+      english: "I read books every night."
     }
   },
   {
@@ -375,7 +375,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "ノートに漢字を書きます。",
       romaji: "Nooto ni kanji o kakimasu.",
-      english: "Saya menulis kanji di buku catatan."
+      english: "I write kanji in my notebook."
     }
   },
   {
@@ -389,7 +389,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "可愛い犬がいます。",
       romaji: "Kawaii inu ga imasu.",
-      english: "Ada anjing yang lucu."
+      english: "There is a cute dog."
     }
   },
   {
@@ -403,7 +403,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "私は猫が好きです。",
       romaji: "Watashi wa neko ga suki desu.",
-      english: "Saya suka kucing."
+      english: "I like cats."
     }
   },
   {
@@ -417,7 +417,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "冷たい水を飲みます。",
       romaji: "Tsumetai mizu o nomimasu.",
-      english: "Saya minum air dingin."
+      english: "I drink cold water."
     }
   },
   {
@@ -431,7 +431,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "温かいお茶をどうぞ。",
       romaji: "Atatakai ocha o douzo.",
-      english: "Silakan teh hangatnya."
+      english: "Please, have some warm tea."
     }
   },
   {
@@ -445,7 +445,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "りんごを三つ買いました。",
       romaji: "Ringo o mittsu kaimashita.",
-      english: "Saya membeli tiga buah apel."
+      english: "I bought three apples."
     }
   },
   {
@@ -459,7 +459,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "みかんが美味しいです。",
       romaji: "Mikan ga oishii desu.",
-      english: "Jeruk mandarinnya enak."
+      english: "Mandarin oranges are delicious."
     }
   },
   {
@@ -473,7 +473,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "週末に映画を見ます。",
       romaji: "Shuumatsu ni eiga o mimasu.",
-      english: "Saya menonton film di akhir pekan."
+      english: "I watch movies on weekends."
     }
   },
   {
@@ -487,7 +487,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "友達と一緒に遊びます。",
       romaji: "Tomodachi to issho ni asobimasu.",
-      english: "Saya bermain bersama dengan teman."
+      english: "I play together with my friend."
     }
   },
   {
@@ -501,7 +501,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "明日、学校が休みです。",
       romaji: "Ashita, gakkou ga yasumi desu.",
-      english: "Besok, sekolah libur."
+      english: "Tomorrow, school is out."
     }
   },
   {
@@ -515,7 +515,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "山田先生は優しいです。",
       romaji: "Yamada sensei wa yasashii desu.",
-      english: "Guru Yamada baik hati."
+      english: "Mr. Yamada is kind."
     }
   },
   {
@@ -529,7 +529,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "今日はとても暑いです。",
       romaji: "Kyou wa totemo atsui desu.",
-      english: "Hari ini sangat panas."
+      english: "It is very hot today."
     }
   },
   {
@@ -543,7 +543,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "冬は寒いです。",
       romaji: "Fuyu wa samui desu.",
-      english: "Musim dingin itu dingin."
+      english: "Winter is cold."
     }
   },
   {
@@ -557,7 +557,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "このケーキは美味しいです。",
       romaji: "Kono keeki wa oishii desu.",
-      english: "Kue ini enak."
+      english: "This cake is delicious."
     }
   },
   {
@@ -571,7 +571,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "パーティーは楽しかったです。",
       romaji: "Paatii wa tanoshikatta desu.",
-      english: "Pestanya menyenangkan."
+      english: "The party was fun."
     }
   },
   {
@@ -585,7 +585,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "月曜日は忙しいです。",
       romaji: "Getsuyoubi wa isogashii desu.",
-      english: "Hari Senin saya sibuk."
+      english: "I am busy on Mondays."
     }
   },
   {
@@ -599,7 +599,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "火曜日にテストがあります。",
       romaji: "Kayoubi ni tesuto ga arimasu.",
-      english: "Pada hari Selasa ada ujian."
+      english: "There is a test on Tuesday."
     }
   },
   {
@@ -613,7 +613,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "水曜日は休みです。",
       romaji: "Suiyoubi wa yasumi desu.",
-      english: "Hari Rabu libur."
+      english: "Wednesday is a holiday."
     }
   },
   {
@@ -627,7 +627,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "木曜日に映画を見ます。",
       romaji: "Mokuyoubi ni eiga o mimasu.",
-      english: "Saya menonton film pada hari Kamis."
+      english: "I watch movies on Thursdays."
     }
   },
   {
@@ -641,7 +641,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "金曜日の夜は楽しいです。",
       romaji: "Kinyoubi no yoru wa tanoshii desu.",
-      english: "Malam Jumat itu menyenangkan."
+      english: "Friday nights are fun."
     }
   },
   {
@@ -655,7 +655,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "土曜日に買い物をします。",
       romaji: "Doyoubi ni kaimono o shimasu.",
-      english: "Saya berbelanja pada hari Sabtu."
+      english: "I go shopping on Saturdays."
     }
   },
   {
@@ -669,7 +669,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日曜日は家にいます。",
       romaji: "Nichiyoubi wa ie ni imasu.",
-      english: "Hari Minggu saya berada di rumah."
+      english: "I am at home on Sundays."
     }
   },
   {
@@ -683,7 +683,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "今日は天気がいいです。",
       romaji: "Kyou wa tenki ga ii desu.",
-      english: "Hari ini cuacanya cerah."
+      english: "The weather is nice today."
     }
   },
   {
@@ -697,7 +697,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "明日は雨です。",
       romaji: "Ashita wa ame desu.",
-      english: "Besok akan hujan."
+      english: "It will rain tomorrow."
     }
   },
   {
@@ -711,7 +711,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "昨日は疲れました。",
       romaji: "Kinou wa tsukaremashita.",
-      english: "Kemarin saya merasa lelah."
+      english: "I felt tired yesterday."
     }
   },
   {
@@ -725,7 +725,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "毎朝コーヒーを飲みます。",
       romaji: "Maiasa koohii o nomimasu.",
-      english: "Setiap pagi saya minum kopi."
+      english: "I drink coffee every morning."
     }
   },
   {
@@ -739,7 +739,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "昼に友達と会います。",
       romaji: "Hiru ni tomodachi to aimasu.",
-      english: "Di siang hari saya bertemu teman."
+      english: "I meet a friend at noon."
     }
   },
   {
@@ -753,7 +753,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "夜は勉強します。",
       romaji: "Yoru wa benkyou shimasu.",
-      english: "Saya belajar di malam hari."
+      english: "I study at night."
     }
   },
   {
@@ -767,7 +767,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "父は会社員です。",
       romaji: "Chichi wa kaishain desu.",
-      english: "Ayah saya adalah seorang pekerja kantoran."
+      english: "My father is an office worker."
     }
   },
   {
@@ -781,7 +781,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "母は料理が上手です。",
       romaji: "Haha wa ryouri ga jouzu desu.",
-      english: "Ibu saya pandai memasak."
+      english: "My mother is good at cooking."
     }
   },
   {
@@ -795,7 +795,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "兄は東京にいます。",
       romaji: "Ani wa Toukyou ni imasu.",
-      english: "Kakak laki-laki saya ada di Tokyo."
+      english: "My older brother is in Tokyo."
     }
   },
   {
@@ -804,12 +804,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "姉",
     reading: "あね",
     romaji: "ane",
-    meaning: "Kakak Perempuan (sendiri)",
+    meaning: "Older sister",
     category: "noun",
     example: {
       japanese: "姉は大学生です。",
       romaji: "Ane wa daigakusei desu.",
-      english: "Kakak perempuan saya adalah mahasiswa."
+      english: "My older sister is a college student."
     }
   },
   {
@@ -818,12 +818,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "弟",
     reading: "おとうと",
     romaji: "otouto",
-    meaning: "Adik Laki-laki",
+    meaning: "Younger brother",
     category: "noun",
     example: {
       japanese: "弟は元気です。",
       romaji: "Otouto wa genki desu.",
-      english: "Adik laki-laki saya sangat energik."
+      english: "My younger brother is energetic."
     }
   },
   {
@@ -832,12 +832,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "妹",
     reading: "いもうと",
     romaji: "imouto",
-    meaning: "Adik Perempuan",
+    meaning: "Younger sister",
     category: "noun",
     example: {
       japanese: "妹はとても可愛いです。",
       romaji: "Imouto wa totemo kawaii desu.",
-      english: "Adik perempuan saya sangat lucu/manis."
+      english: "My younger sister is very cute."
     }
   },
   {
@@ -846,12 +846,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "お父さん",
     reading: "おとうさん",
     romaji: "otousan",
-    meaning: "Ayah (orang lain / panggilan sopan)",
+    meaning: "Father (polite)",
     category: "noun",
     example: {
       japanese: "お父さんはお元気ですか。",
       romaji: "Otousan wa ogenki desu ka.",
-      english: "Apakah ayah Anda sehat?"
+      english: "Is your father well?"
     }
   },
   {
@@ -860,12 +860,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "お母さん",
     reading: "おかあさん",
     romaji: "okaasan",
-    meaning: "Ibu (orang lain / panggilan sopan)",
+    meaning: "Mother (polite)",
     category: "noun",
     example: {
       japanese: "山田さんのお母さんに会いました。",
       romaji: "Yamada-san no okaasan ni aimashita.",
-      english: "Saya bertemu dengan ibu Bapak Yamada."
+      english: "I met Mr. Yamada's mother."
     }
   },
   {
@@ -874,12 +874,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "右",
     reading: "みぎ",
     romaji: "migi",
-    meaning: "Kanan",
+    meaning: "Right",
     category: "noun",
     example: {
       japanese: "右へ曲がってください。",
       romaji: "Migi e magatte kudasai.",
-      english: "Tolong belok ke kanan."
+      english: "Please turn right."
     }
   },
   {
@@ -888,12 +888,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "左",
     reading: "ひだり",
     romaji: "hidari",
-    meaning: "Kiri",
+    meaning: "Left",
     category: "noun",
     example: {
       japanese: "銀行の左に郵便局があります。",
       romaji: "Ginkou no hidari ni yuubinkyoku ga arimasu.",
-      english: "Di sebelah kiri bank ada kantor pos."
+      english: "There is a post office to the left of the bank."
     }
   },
   {
@@ -902,12 +902,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "前",
     reading: "まえ",
     romaji: "mae",
-    meaning: "Depan / Sebelum",
+    meaning: "Front / Before",
     category: "noun",
     example: {
       japanese: "駅の前にタクシーがいます。",
       romaji: "Eki no mae ni takushii ga imasu.",
-      english: "Di depan stasiun ada taksi."
+      english: "There is a taxi in front of the station."
     }
   },
   {
@@ -916,12 +916,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "後ろ",
     reading: "うしろ",
     romaji: "ushiro",
-    meaning: "Belakang",
+    meaning: "Behind / Back",
     category: "noun",
     example: {
       japanese: "私の後ろに山田さんがいます。",
       romaji: "Watashi no ushiro ni Yamada-san ga imasu.",
-      english: "Di belakang saya ada Bapak Yamada."
+      english: "Mr. Yamada is behind me."
     }
   },
   {
@@ -930,12 +930,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "中",
     reading: "なか",
     romaji: "naka",
-    meaning: "Dalam / Di dalam",
+    meaning: "Inside",
     category: "noun",
     example: {
       japanese: "鞄の中に本があります。",
       romaji: "Kaban no naka ni hon ga arimasu.",
-      english: "Di dalam tas ada buku."
+      english: "There is a book inside the bag."
     }
   },
   {
@@ -944,12 +944,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "外",
     reading: "そと",
     romaji: "soto",
-    meaning: "Luar / Di luar",
+    meaning: "Outside",
     category: "noun",
     example: {
       japanese: "外は寒いです。",
       romaji: "Soto wa samui desu.",
-      english: "Di luar dingin."
+      english: "It is cold outside."
     }
   },
   {
@@ -958,12 +958,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "上",
     reading: "うえ",
     romaji: "ue",
-    meaning: "Atas",
+    meaning: "Up / Above",
     category: "noun",
     example: {
       japanese: "机の上に時計があります。",
       romaji: "Tsukue no ue ni tokei ga arimasu.",
-      english: "Di atas meja ada jam."
+      english: "There is a clock on the desk."
     }
   },
   {
@@ -972,12 +972,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "下",
     reading: "した",
     romaji: "shita",
-    meaning: "Bawah",
+    meaning: "Down / Below",
     category: "noun",
     example: {
       japanese: "テーブルの下に猫がいます。",
       romaji: "Teeburu no shita ni neko ga imasu.",
-      english: "Di bawah meja ada kucing."
+      english: "There is a cat under the table."
     }
   },
   {
@@ -986,12 +986,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "赤",
     reading: "あか",
     romaji: "aka",
-    meaning: "Merah",
+    meaning: "Red",
     category: "noun",
     example: {
       japanese: "赤が好きです。",
       romaji: "Aka ga suki desu.",
-      english: "Saya suka warna merah."
+      english: "I like red."
     }
   },
   {
@@ -1000,12 +1000,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "青",
     reading: "あお",
     romaji: "ao",
-    meaning: "Biru",
+    meaning: "Blue",
     category: "noun",
     example: {
       japanese: "空は青いです。",
       romaji: "Sora wa aoi desu.",
-      english: "Langit berwarna biru."
+      english: "The sky is blue."
     }
   },
   {
@@ -1014,12 +1014,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "白",
     reading: "しろ",
     romaji: "shiro",
-    meaning: "Putih",
+    meaning: "White",
     category: "noun",
     example: {
       japanese: "白い車を買いました。",
       romaji: "Shiroi kuruma o kaimashita.",
-      english: "Saya membeli mobil putih."
+      english: "I bought a white car."
     }
   },
   {
@@ -1028,12 +1028,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "黒",
     reading: "くろ",
     romaji: "kuro",
-    meaning: "Hitam",
+    meaning: "Black",
     category: "noun",
     example: {
       japanese: "黒い猫がいます。",
       romaji: "Kuroi neko ga imasu.",
-      english: "Ada kucing hitam."
+      english: "There is a black cat."
     }
   },
   {
@@ -1042,12 +1042,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "買う",
     reading: "かう",
     romaji: "kau",
-    meaning: "Membeli",
+    meaning: "To buy",
     category: "verb",
     example: {
       japanese: "デパートで靴を買います。",
       romaji: "Depaato de kutsu o kaimasu.",
-      english: "Saya membeli sepatu di department store."
+      english: "I buy shoes at the department store."
     }
   },
   {
@@ -1056,12 +1056,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "待つ",
     reading: "まつ",
     romaji: "matsu",
-    meaning: "Menunggu",
+    meaning: "To wait",
     category: "verb",
     example: {
       japanese: "駅で友達を待ちます。",
       romaji: "Eki de tomodachi o machimasu.",
-      english: "Saya menunggu teman di stasiun."
+      english: "I wait for my friend at the station."
     }
   },
   {
@@ -1070,12 +1070,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "分かる",
     reading: "わかる",
     romaji: "wakaru",
-    meaning: "Mengerti / Paham",
+    meaning: "To understand",
     category: "verb",
     example: {
       japanese: "日本語が少し分かります。",
       romaji: "Nihongo ga sukoshi wakarimasu.",
-      english: "Saya sedikit mengerti bahasa Jepang."
+      english: "I understand a little Japanese."
     }
   },
   {
@@ -1084,12 +1084,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "知る",
     reading: "しる",
     romaji: "shiru",
-    meaning: "Mengetahui",
+    meaning: "To know",
     category: "verb",
     example: {
       japanese: "彼の電話番号を知っていますか。",
       romaji: "Kare no denwabangou o shitte imasu ka.",
-      english: "Apakah Anda tahu nomor teleponnya?"
+      english: "Do you know his phone number?"
     }
   },
   {
@@ -1098,12 +1098,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "作る",
     reading: "つくる",
     romaji: "tsukuru",
-    meaning: "Membuat",
+    meaning: "To make",
     category: "verb",
     example: {
       japanese: "母がケーキを作りました。",
       romaji: "Haha ga keeki o tsukurimashita.",
-      english: "Ibu membuat kue."
+      english: "My mother made a cake."
     }
   },
   {
@@ -1112,12 +1112,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "会う",
     reading: "あう",
     romaji: "au",
-    meaning: "Bertemu",
+    meaning: "To meet",
     category: "verb",
     example: {
       japanese: "明日、先生に会います。",
       romaji: "Ashita, sensei ni aimasu.",
-      english: "Besok saya akan bertemu guru."
+      english: "Tomorrow, I will meet the teacher."
     }
   },
   {
@@ -1126,12 +1126,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "乗る",
     reading: "のる",
     romaji: "noru",
-    meaning: "Naik (kendaraan)",
+    meaning: "To ride / To get on",
     category: "verb",
     example: {
       japanese: "バスに乗ります。",
       romaji: "Basu ni norimasu.",
-      english: "Saya naik bus."
+      english: "I get on the bus."
     }
   },
   {
@@ -1140,12 +1140,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "降りる",
     reading: "おりる",
     romaji: "oriru",
-    meaning: "Turun (kendaraan)",
+    meaning: "To get off",
     category: "verb",
     example: {
       japanese: "次の駅で降ります。",
       romaji: "Tsugi no eki de orimasu.",
-      english: "Saya akan turun di stasiun berikutnya."
+      english: "I will get off at the next station."
     }
   },
   {
@@ -1154,12 +1154,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "休む",
     reading: "やすむ",
     romaji: "yasumu",
-    meaning: "Istirahat / Libur",
+    meaning: "To rest / To take a day off",
     category: "verb",
     example: {
       japanese: "少し休みましょう。",
       romaji: "Sukoshi yasumimashou.",
-      english: "Mari kita istirahat sebentar."
+      english: "Let's take a short rest."
     }
   },
   {
@@ -1168,12 +1168,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "いい",
     reading: "いい",
     romaji: "ii",
-    meaning: "Bagus / Baik",
+    meaning: "Good / Nice",
     category: "adjective",
     example: {
       japanese: "今日はいい天気です。",
       romaji: "Kyou wa ii tenki desu.",
-      english: "Hari ini cuacanya bagus."
+      english: "The weather is nice today."
     }
   },
   {
@@ -1182,12 +1182,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "悪い",
     reading: "わるい",
     romaji: "warui",
-    meaning: "Buruk / Jelek",
+    meaning: "Bad",
     category: "adjective",
     example: {
       japanese: "天気が悪いです。",
       romaji: "Tenki ga warui desu.",
-      english: "Cuacanya buruk."
+      english: "The weather is bad."
     }
   },
   {
@@ -1196,12 +1196,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "長い",
     reading: "ながい",
     romaji: "nagai",
-    meaning: "Panjang",
+    meaning: "Long",
     category: "adjective",
     example: {
       japanese: "彼女の髪は長いです。",
       romaji: "Kanojo no kami wa nagai desu.",
-      english: "Rambut dia (perempuan) panjang."
+      english: "Her hair is long."
     }
   },
   {
@@ -1210,12 +1210,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "短い",
     reading: "みじかい",
     romaji: "mijikai",
-    meaning: "Pendek",
+    meaning: "Short",
     category: "adjective",
     example: {
       japanese: "短い手紙を書きました。",
       romaji: "Mijikai tegami o kakimashita.",
-      english: "Saya menulis surat yang pendek."
+      english: "I wrote a short letter."
     }
   },
   {
@@ -1224,12 +1224,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "早い",
     reading: "はやい",
     romaji: "hayai",
-    meaning: "Cepat / Awal",
+    meaning: "Fast / Early",
     category: "adjective",
     example: {
       japanese: "日本の新幹線は速いです。",
       romaji: "Nihon no shinkansen wa hayai desu.",
-      english: "Shinkansen Jepang itu cepat."
+      english: "The Japanese Shinkansen is fast."
     }
   },
   {
@@ -1238,12 +1238,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "遅い",
     reading: "おそい",
     romaji: "osoi",
-    meaning: "Lambat / Terlambat",
+    meaning: "Slow / Late",
     category: "adjective",
     example: {
       japanese: "夜遅くに電話しました。",
       romaji: "Yoru osoku ni denwa shimashita.",
-      english: "Saya menelepon larut malam."
+      english: "I called late at night."
     }
   },
   {
@@ -1252,12 +1252,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "綺麗",
     reading: "きれい",
     romaji: "kirei",
-    meaning: "Cantik / Bersih",
+    meaning: "Beautiful / Clean",
     category: "adjective",
     example: {
       japanese: "この花はとてもきれいです。",
       romaji: "Kono hana wa totemo kirei desu.",
-      english: "Bunga ini sangat cantik."
+      english: "This flower is very beautiful."
     }
   },
   {
@@ -1266,12 +1266,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "静か",
     reading: "しずか",
     romaji: "shizuka",
-    meaning: "Tenang / Sunyi",
+    meaning: "Quiet / Peaceful",
     category: "adjective",
     example: {
       japanese: "図書館は静かです。",
       romaji: "Toshokan wa shizuka desu.",
-      english: "Perpustakaan itu tenang/sunyi."
+      english: "The library is quiet."
     }
   },
   {
@@ -1280,12 +1280,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "賑やか",
     reading: "にぎやか",
     romaji: "nigiyaka",
-    meaning: "Ramai",
+    meaning: "Lively / Busy",
     category: "adjective",
     example: {
       japanese: "この町はいつも賑やかです。",
       romaji: "Kono machi wa itsumo nigiyaka desu.",
-      english: "Kota ini selalu ramai."
+      english: "This town is always lively."
     }
   },
   {
@@ -1294,12 +1294,12 @@ export const n5Vocabulary: VocabularyItem[] = [
     word: "便利",
     reading: "べんり",
     romaji: "benri",
-    meaning: "Praktis / Mudah",
+    meaning: "Convenient / Handy",
     category: "adjective",
     example: {
       japanese: "スマートフォンはとても便利です。",
       romaji: "Sumatofon wa totemo benri desu.",
-      english: "Ponsel pintar sangatlah praktis."
+      english: "Smartphones are very convenient."
     }
   }
 ];

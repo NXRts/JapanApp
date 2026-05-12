@@ -279,7 +279,7 @@ function QuizContent() {
   const searchParams = useSearchParams();
 
   const query = searchParams.get('q') || '';
-  const activeCategory = searchParams.get('category') || 'kata';
+  const activeCategory = searchParams.get('category') || 'vocabulary';
   const activeLevel = searchParams.get('level') || 'All';
 
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
@@ -300,7 +300,7 @@ function QuizContent() {
           baseData = await searchDictionary(query, activeCategory as any, activeLevel);
         } else {
           if (activeCategory === 'kanji') baseData = allKanji;
-          else if (activeCategory === 'tata-bahasa') baseData = allGrammar;
+          else if (activeCategory === 'grammar') baseData = allGrammar;
           else baseData = allVocabulary.filter(v => v.id.startsWith('lib-'));
           
           if (activeLevel !== 'All' && activeLevel !== 'all') {

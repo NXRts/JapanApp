@@ -450,15 +450,15 @@ export default function KanjiWritingQuizPage() {
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <GlassCard style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🏆</div>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Quiz Selesai!</h2>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Quiz Finished!</h2>
             <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '2.5rem' }}>
-              Kamu telah menyelesaikan latihan menulis {score} Kanji.
+              You have completed writing {score} Kanji.
             </p>
             <RevealBtn onClick={() => { setIsFinished(false); setCurrentIndex(0); setScore(0); setFlipped(false); }}>
-              Ulangi Latihan
+              Try Again
             </RevealBtn>
             <Link href="/quiz" style={{ marginTop: '1.5rem', color: 'rgba(255,255,255,0.4)', textDecoration: 'none', fontWeight: 700 }}>
-              Kembali ke Quiz Hub
+              Back to Quiz Hub
             </Link>
           </GlassCard>
         </div>
@@ -576,7 +576,7 @@ export default function KanjiWritingQuizPage() {
                 </BigKanji>
                 <div style={{ marginTop: '2rem' }}>
                    <Label>PRECISION CHECK</Label>
-                   <p style={{ marginTop: '0.5rem', fontWeight: 600, color: 'var(--primary)' }}>Latihan presisi penulisan aktif!</p>
+                   <p style={{ marginTop: '0.5rem', fontWeight: 600, color: 'var(--primary)' }}>Active writing precision practice!</p>
                 </div>
                 <FlipHint>Tap to Reveal ⟳</FlipHint>
               </CardBack>
