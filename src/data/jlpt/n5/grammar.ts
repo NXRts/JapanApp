@@ -578,9 +578,9 @@ export const n5Grammar: GrammarPoint[] = [
   {
     id: "kara-reason",
     level: "N5",
-    title: "〜から (kara - Alasan)",
+    title: "〜から (kara - Reason)",
     meaning: "Because...",
-    structure: "Kalimat Alasan + から、Kalimat Akibat",
+    structure: "Reason Sentence + から、Result Sentence",
     explanation: "Used to explain the reason. 'Kara' usually has a subjective nuance and is often used when persuading, commanding, or giving personal reasons.",
     examples: [
       {

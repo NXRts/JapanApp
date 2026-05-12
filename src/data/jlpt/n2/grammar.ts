@@ -351,7 +351,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜と言いながら (to ii nagara)",
     meaning: "Despite saying that... (reality is different)",
-    structure: "Bentuk Biasa / Kalimat Kutipan + と言いながら",
+    structure: "Plain Form / Quote Sentence + と言いながら",
     explanation: "Describes a clear contradiction between what someone says and their direct actions.",
     examples: [
       {

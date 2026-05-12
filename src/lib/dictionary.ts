@@ -17,7 +17,7 @@ import { toRomaji } from 'wanakana';
 
 export interface DictionaryResult {
   id: string;
-  type: 'vocabulary' | 'grammar' | 'kanji' | 'kalimat' | 'jpjp';
+  type: 'vocabulary' | 'grammar' | 'kanji' | 'sentences' | 'jpjp';
   level: string;
   word?: string; // For vocabulary
   title?: string; // For grammar
@@ -111,7 +111,7 @@ export async function searchDictionary(
       const data = await response.json();
       return (data.data || []).map((item: any, idx: number) => ({
         id: `sentence-${idx}`,
-        type: 'kalimat',
+        type: 'sentences',
         level: '?',
         word: item.japanese,
         meaning: item.english,
