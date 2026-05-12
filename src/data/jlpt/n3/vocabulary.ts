@@ -264,7 +264,7 @@ export const n3Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "明日は必ず来てください。",
       romaji: "Ashita wa kanarazu kite kudasai.",
-
+      english: "Please be sure to come tomorrow."
     }
   },
   {
