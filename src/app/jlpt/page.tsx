@@ -1112,10 +1112,10 @@ export default function DictionaryPage() {
               {[
                 { id: 'ai', label: 'AI Mode' },
                 { id: 'kana', label: 'Kana' },
-                { id: 'kata', label: 'Words' },
+                { id: 'vocabulary', label: 'Words' },
                 { id: 'kanji', label: 'Kanji' },
-                { id: 'kalimat', label: 'Sentences' },
-                { id: 'tata-bahasa', label: 'Grammar' },
+                { id: 'sentences', label: 'Sentences' },
+                { id: 'grammar', label: 'Grammar' },
                 { id: 'jpjp', label: 'Japanese - Japanese' },
               ].map(mode => (
                 <ModeBtn
@@ -1182,7 +1182,7 @@ export default function DictionaryPage() {
           <ListToolbar style={{ marginTop: '-1.5rem' }}>
             <CheckboxGroup>
               {[
-                { id: 'kata', label: 'Words' },
+                { id: 'vocabulary', label: 'Words' },
                 { id: 'ejaan', label: 'Reading' },
                 { id: 'arti', label: 'Meaning' },
                 { id: 'rekomendasi', label: 'Suggestions' }

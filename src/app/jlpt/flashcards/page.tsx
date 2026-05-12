@@ -995,7 +995,7 @@ function FlashcardContent() {
   }, [activeTab, relatedKanjis, activeSelectedKanjiIndex, currentItem, usageInPractice]);
 
   useEffect(() => {
-    if (activeTab === 'kalimat' && targetWordForDetails && targetWordForDetails !== '?') {
+    if (activeTab === 'sentences' && targetWordForDetails && targetWordForDetails !== '?') {
       const allCombinedExamples = [...(currentItem?.examples || []), ...usageInPractice];
       if (allCombinedExamples.length < 5) {
         setIsFetchingSentences(true);
