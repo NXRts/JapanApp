@@ -16,8 +16,8 @@ export const particleDrills: ParticleDrill[] = [
     displaySentence: '私 [ ] 学生です。',
     options: ['は', 'が', 'を', 'に'],
     correctAnswer: 'は',
-    translation: 'Saya adalah seorang murid.',
-    explanation: 'Partikel \"は\" (wa) menandai topik kalimat.',
+    translation: 'I am a student.',
+    explanation: 'The particle "は" (wa) marks the topic of the sentence.',
     level: 'N5'
   },
   {
@@ -26,8 +26,8 @@ export const particleDrills: ParticleDrill[] = [
     displaySentence: '水 [ ] 飲みます。',
     options: ['は', 'が', 'を', 'も'],
     correctAnswer: 'を',
-    translation: 'Minum air.',
-    explanation: 'Partikel \"を\" (o) menandai objek langsung dari kata kerja.',
+    translation: 'Drinking water.',
+    explanation: 'The particle "を" (o) marks the direct object of the verb.',
     level: 'N5'
   },
   {
@@ -36,8 +36,8 @@ export const particleDrills: ParticleDrill[] = [
     displaySentence: '学校 [ ] 行きます。',
     options: ['は', 'が', 'を', 'へ'],
     correctAnswer: 'へ',
-    translation: 'Pergi ke sekolah.',
-    explanation: 'Partikel \"へ\" (e) menunjukkan arah atau tujuan pergerakan.',
+    translation: 'Going to school.',
+    explanation: 'The particle "へ" (e) indicates direction or destination.',
     level: 'N5'
   },
   {
@@ -46,8 +46,8 @@ export const particleDrills: ParticleDrill[] = [
     displaySentence: '公園 [ ] 遊んでいます。',
     options: ['に', 'で', 'を', 'は'],
     correctAnswer: 'で',
-    translation: 'Sedang bermain di taman.',
-    explanation: 'Partikel \"で\" (de) menunjukkan tempat terjadinya suatu aksi.',
+    translation: 'Playing in the park.',
+    explanation: 'The particle "で" (de) indicates the place where an action occurs.',
     level: 'N5'
   },
   {
@@ -56,8 +56,8 @@ export const particleDrills: ParticleDrill[] = [
     displaySentence: '猫 [ ] います。',
     options: ['は', 'が', 'を', 'に'],
     correctAnswer: 'が',
-    translation: 'Ada kucing.',
-    explanation: 'Partikel \"が\" (ga) menandai subjek, sering digunakan dengan kata kerja keberadaan (imasu/arimasu).',
+    translation: 'There is a cat.',
+    explanation: 'The particle "が" (ga) marks the subject, often used with verbs of existence (imasu/arimasu).',
     level: 'N5'
   },
   {
@@ -66,8 +66,8 @@ export const particleDrills: ParticleDrill[] = [
     displaySentence: '日本 [ ] 行きたいです。',
     options: ['に', 'で', 'を', 'は'],
     correctAnswer: 'に',
-    translation: 'Ingin pergi ke Jepang.',
-    explanation: 'Partikel \"に\" (ni) menunjukkan tujuan atau titik waktu.',
+    translation: 'I want to go to Japan.',
+    explanation: 'The particle "に" (ni) indicates destination or a point in time.',
     level: 'N5'
   },
   {
@@ -76,8 +76,8 @@ export const particleDrills: ParticleDrill[] = [
     displaySentence: '本 [ ] 読みました。',
     options: ['は', 'が', 'を', 'に'],
     correctAnswer: 'を',
-    translation: 'Sudah membaca buku.',
-    explanation: 'Partikel \"を\" (o) menandai objek langsung.',
+    translation: 'I read a book.',
+    explanation: 'The particle "を" (o) marks the direct object.',
     level: 'N5'
   },
   {
@@ -86,8 +86,8 @@ export const particleDrills: ParticleDrill[] = [
     displaySentence: 'デパート [ ] バスで行きます。',
     options: ['に', 'へ', 'まで', 'を'],
     correctAnswer: 'まで',
-    translation: 'Pergi sampai ke departemen store dengan bus.',
-    explanation: 'Partikel \"まで\" (made) berarti sampai atau hingga.',
+    translation: 'Going to the department store by bus.',
+    explanation: 'The particle "まで" (made) means "until" or "to".',
     level: 'N5'
   },
   {
@@ -96,8 +96,8 @@ export const particleDrills: ParticleDrill[] = [
     displaySentence: '明日 [ ] テレビを見ます。',
     options: ['は', 'が', 'に', '（空欄）'],
     correctAnswer: '（空欄）',
-    translation: 'Besok akan menonton TV.',
-    explanation: 'Kata keterangan waktu relatif seperti \"Ashita\" tidak memerlukan partikel \"ni\".',
+    translation: 'I will watch TV tomorrow.',
+    explanation: 'Relative time adverbs like "Ashita" do not require the particle "ni".',
     level: 'N5'
   },
   {
@@ -106,8 +106,8 @@ export const particleDrills: ParticleDrill[] = [
     displaySentence: '田中さん [ ] 話しました。',
     options: ['と', 'に', 'は', 'が'],
     correctAnswer: 'と',
-    translation: 'Berbicara dengan Tuan Tanaka.',
-    explanation: 'Partikel \"と\" (to) berarti \"dengan\" atau \"dan\".',
+    translation: 'I talked with Mr. Tanaka.',
+    explanation: 'The particle "と" (to) means "with" or "and".',
     level: 'N5'
   }
 ];

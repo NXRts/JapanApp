@@ -42,7 +42,7 @@ const libraryVocabulary = Object.values(jlptWordsData).map((item: any) => ({
   word: item.word,
   reading: item.reading,
   romaji: item.reading,  // We'll use kana reading as the romaji fallback
-  meaning: item.english && item.english !== 'No definition' ? item.english : (item.indonesian || 'No definition'),
+  meaning: item.english && item.english !== 'No definition' ? item.english : 'No definition',
   level: item.level as string,
 }));
 
@@ -55,11 +55,13 @@ export const allVocabulary = [
   ...libraryVocabulary,
 ];
 
-export const allGrammar: DictionaryResult[] = Object.values(grammarData).map((item: any) => ({
-  ...item,
-  type: 'grammar',
-  source: 'local'
-}));
+export const allGrammar: DictionaryResult[] = [
+  ...n5Grammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const })),
+  ...n4Grammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const })),
+  ...n3Grammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const })),
+  ...n2Grammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const })),
+  ...n1Grammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const })),
+];
 
 export const allKanji: DictionaryResult[] = Object.values(kanjiData).map((item: any) => ({
   id: `kanji-${item.kanji}`,
@@ -70,7 +72,7 @@ export const allKanji: DictionaryResult[] = Object.values(kanjiData).map((item: 
   kunyomi: item.kunyomi || [],
   stroke_count: item.stroke_count,
   grade: item.grade,
-  meaning: item.english && item.english !== 'No definition' ? item.english : (item.indonesian || 'No definition'),
+  meaning: item.english && item.english !== 'No definition' ? item.english : 'No definition',
   source: 'kanji-db',
 }));
 
@@ -89,7 +91,7 @@ export const allNumbers = Object.entries(numbersData).flatMap(([category, items]
 
 export async function searchDictionary(
   query: string, 
-  category: 'kata' | 'tata-bahasa' | 'kanji' | 'kalimat' | 'jpjp' | 'ai' | 'all' | 'kana' = 'all',
+  category: 'vocabulary' | 'grammar' | 'kanji' | 'sentences' | 'jpjp' | 'ai' | 'all' | 'kana' = 'all',
   levelFilter: string = 'all'
 ): Promise<DictionaryResult[]> {
   const normalizedQuery = query.toLowerCase().trim();
@@ -102,7 +104,7 @@ export async function searchDictionary(
     // Defaulting to 'all' behavior for now but tagged as category 'ai'.
     category = 'all';
   }
-  if (category === 'kalimat') {
+  if (category === 'sentences') {
     try {
       const response = await fetch(`/api/proxy/sentences?keyword=${encodeURIComponent(normalizedQuery)}`);
       if (!response.ok) return [];
@@ -112,7 +114,7 @@ export async function searchDictionary(
         type: 'kalimat',
         level: '?',
         word: item.japanese,
-        meaning: item.english || item.indonesian,
+        meaning: item.english,
         romaji: item.romaji,
         source: 'tatoeba'
       }));
@@ -211,7 +213,7 @@ export async function searchDictionary(
   }
 
   // Search local Vocabulary
-  if (category === 'kata' || category === 'all') {
+  if (category === 'vocabulary' || category === 'all') {
     allVocabulary.forEach((item) => {
       if (levelFilter !== 'all' && item.level !== levelFilter) return;
       if (
@@ -235,7 +237,7 @@ export async function searchDictionary(
   }
 
   // Search local Grammar
-  if (category === 'tata-bahasa' || category === 'all') {
+  if (category === 'grammar' || category === 'all') {
     allGrammar.forEach((item) => {
       if (levelFilter !== 'all' && item.level !== levelFilter) return;
       if (
@@ -258,7 +260,7 @@ export async function searchDictionary(
   }
 
   // If we only want Kanji or Grammar, we can skip fetching Jisho
-  if (category === 'kanji' || category === 'tata-bahasa') {
+  if (category === 'kanji' || category === 'grammar') {
     return localResults.slice(0, 100);
   }
 

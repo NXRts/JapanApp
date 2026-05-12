@@ -690,7 +690,7 @@ function FlashcardContent() {
   const pathname = usePathname();
   
   const q = searchParams.get('q') || '';
-  const activeCategory = searchParams.get('category') || 'kata';
+  const activeCategory = searchParams.get('category') || 'vocabulary';
   const activeLevel = searchParams.get('level') || 'All';
   const activeStatus = searchParams.get('status') || 'All';
 
@@ -699,7 +699,7 @@ function FlashcardContent() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [reviewStatus, setReviewStatus] = useState<Record<string, 'remembered' | 'not-remembered'>>({});
-  const [activeTab, setActiveTab] = useState<'kata' | 'kanji' | 'kalimat' | 'tata-bahasa' | 'jpjp'>('kata');
+  const [activeTab, setActiveTab] = useState<'vocabulary' | 'kanji' | 'sentences' | 'grammar' | 'jpjp'>('vocabulary');
   const [activeSelectedKanjiIndex, setActiveSelectedKanjiIndex] = useState(0);
   const [externalSentences, setExternalSentences] = useState<any[]>([]);
   const [isFetchingSentences, setIsFetchingSentences] = useState(false);
@@ -714,7 +714,7 @@ function FlashcardContent() {
       if (e.key === 'Escape') {
         setShowDetailModal(false);
         setTimeout(() => {
-          setActiveTab('kata');
+          setActiveTab('vocabulary');
           setActiveSelectedKanjiIndex(0);
           setActiveGrammarLevel('All');
         }, 200);
@@ -809,7 +809,7 @@ function FlashcardContent() {
 
   const browseData = useMemo(() => {
     if (activeCategory === 'kanji') return allKanji;
-    if (activeCategory === 'tata-bahasa') return allGrammar;
+    if (activeCategory === 'grammar') return allGrammar;
     return allVocabulary
       .filter(v => v.id.startsWith('lib-'))
       .map(v => ({ ...v, type: 'vocabulary' as const, source: 'kamus' as const }));
@@ -1276,7 +1276,7 @@ function FlashcardContent() {
           if (e.target === e.currentTarget) {
              setShowDetailModal(false);
              setTimeout(() => {
-               setActiveTab('kata');
+               setActiveTab('vocabulary');
                setActiveSelectedKanjiIndex(0);
                setActiveGrammarLevel('All');
              }, 200);
@@ -1284,15 +1284,15 @@ function FlashcardContent() {
         }}>
           <ModalContent>
             <ModalHeader>
-              <ModalTab $active={activeTab === 'kata'} onClick={() => setActiveTab('kata')}>Words</ModalTab>
+              <ModalTab $active={activeTab === 'vocabulary'} onClick={() => setActiveTab('vocabulary')}>Words</ModalTab>
               <ModalTab $active={activeTab === 'kanji'} onClick={() => setActiveTab('kanji')}>Kanji</ModalTab>
-              <ModalTab $active={activeTab === 'kalimat'} onClick={() => setActiveTab('kalimat')}>Sentences</ModalTab>
-              <ModalTab $active={activeTab === 'tata-bahasa'} onClick={() => setActiveTab('tata-bahasa')}>Grammar</ModalTab>
+              <ModalTab $active={activeTab === 'sentences'} onClick={() => setActiveTab('sentences')}>Sentences</ModalTab>
+              <ModalTab $active={activeTab === 'grammar'} onClick={() => setActiveTab('grammar')}>Grammar</ModalTab>
               <ModalTab $active={activeTab === 'jpjp'} onClick={() => setActiveTab('jpjp')}>Japanese - Japanese</ModalTab>
               <CloseModalBtn onClick={() => {
                 setShowDetailModal(false);
                 setTimeout(() => {
-                  setActiveTab('kata');
+                  setActiveTab('vocabulary');
                   setActiveSelectedKanjiIndex(0);
                   setActiveGrammarLevel('All');
                 }, 200);
@@ -1300,7 +1300,7 @@ function FlashcardContent() {
             </ModalHeader>
             <ModalLayout>
               <MainContent>
-                {activeTab === 'kata' && (
+                {activeTab === 'vocabulary' && (
                   <>
                     <MainWord style={{ fontSize: '3.5rem', textAlign: 'left', color: '#3b82f6', marginBottom: '0.5rem', fontWeight: 800 }}>
                       {resolveTargetWord()}
@@ -1332,7 +1332,7 @@ function FlashcardContent() {
 
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#ef4444', fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '1rem' }}>
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
-                        {currentItem?.category === 'kata' ? 'Noun' : currentItem?.category || 'Vocabulary'}
+                        {currentItem?.category === 'vocabulary' ? 'Noun' : currentItem?.category || 'Vocabulary'}
                     </div>
 
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '1.5rem' }}>
@@ -1619,7 +1619,7 @@ function FlashcardContent() {
                   </div>
                 )}
 
-                {activeTab === 'kalimat' && (() => {
+                {activeTab === 'sentences' && (() => {
                   const allCombinedExamples = [...(currentItem?.examples || []), ...usageInPractice, ...externalSentences];
                   return (
                     <div>
@@ -1657,7 +1657,7 @@ function FlashcardContent() {
                   );
                 })()}
 
-                {activeTab === 'tata-bahasa' && (
+                {activeTab === 'grammar' && (
                   <div>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
                       <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--foreground)', margin: 0 }}>

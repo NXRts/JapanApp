@@ -305,6 +305,70 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return newArray;
 };
 
+const SettingSection = styled.div`
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  background: rgba(var(--foreground-rgb), 0.03);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+`;
+
+const SettingGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+const SettingLabel = styled.label`
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+`;
+
+const SettingOptions = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+`;
+
+const SettingChip = styled.button<{ $active: boolean }>`
+  padding: 0.6rem 1.25rem;
+  border-radius: 12px;
+  border: 2px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
+  background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent'};
+  color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  cursor: pointer;
+
+  input {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary);
+  }
+`;
+
 // --- Main Component ---
 function MiniTestContent() {
   const searchParams = useSearchParams();
@@ -314,7 +378,19 @@ function MiniTestContent() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
+  
+  // Settings State
+  const [settings, setSettings] = useState({
+    count: 20,
+    time: 10, // minutes
+    types: {
+      vocabulary: true,
+      kanji: true,
+      grammar: true
+    }
+  });
+
+  const [timeLeft, setTimeLeft] = useState(settings.time * 60);
   const [testState, setTestState] = useState<'intro' | 'playing' | 'results'>('intro');
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [answers, setAnswers] = useState<{ questionIndex: number, isCorrect: boolean, selected: string }[]>([]);
@@ -329,71 +405,84 @@ function MiniTestContent() {
 
     const generatedQuestions: Question[] = [];
     
-    // Pick 10 Vocab, 5 Kanji, 5 Grammar (or whatever is available)
-    const vocabPool = shuffleArray(levelData.vocab);
-    const kanjiPool = shuffleArray(levelData.kanji);
-    const grammarPool = shuffleArray(levelData.grammar);
+    // Calculate split
+    const enabledTypes = (Object.keys(settings.types) as Array<keyof typeof settings.types>).filter(type => settings.types[type]);
+    if (enabledTypes.length === 0) {
+      alert('Please select at least one question type.');
+      return;
+    }
 
-    // 1. Vocabulary Questions (Meaning)
-    vocabPool.slice(0, 10).forEach(item => {
-      const distractors = shuffleArray(vocabPool.filter(v => v.id !== item.id))
-        .slice(0, 3)
-        .map(v => v.meaning);
-      
-      generatedQuestions.push({
-        id: item.id,
-        type: 'vocabulary',
-        prompt: item.word || '',
-        subPrompt: item.reading,
-        correctAnswer: item.meaning || '',
-        options: shuffleArray([item.meaning || '', ...distractors]),
-        sourceItem: item
+    const countPerType = Math.ceil(settings.count / enabledTypes.length);
+
+    // 1. Vocabulary Questions
+    if (settings.types.vocabulary) {
+      const vocabPool = shuffleArray(levelData.vocab);
+      vocabPool.slice(0, countPerType).forEach(item => {
+        const distractors = shuffleArray(vocabPool.filter(v => v.id !== item.id))
+          .slice(0, 3)
+          .map(v => v.meaning);
+        
+        generatedQuestions.push({
+          id: item.id,
+          type: 'vocabulary',
+          prompt: item.word || '',
+          subPrompt: item.reading,
+          correctAnswer: item.meaning || '',
+          options: shuffleArray([item.meaning || '', ...distractors]),
+          sourceItem: item
+        });
       });
-    });
+    }
 
-    // 2. Kanji Questions (Reading)
-    kanjiPool.slice(0, 5).forEach(item => {
-      const distractors = shuffleArray(kanjiPool.filter(k => k.id !== item.id))
-        .slice(0, 3)
-        .map(k => (k.onyomi?.[0] || k.kunyomi?.[0] || ''));
+    // 2. Kanji Questions
+    if (settings.types.kanji) {
+      const kanjiPool = shuffleArray(levelData.kanji);
+      kanjiPool.slice(0, countPerType).forEach(item => {
+        const distractors = shuffleArray(kanjiPool.filter(k => k.id !== item.id))
+          .slice(0, 3)
+          .map(k => (k.onyomi?.[0] || k.kunyomi?.[0] || ''));
 
-      const correctReading = item.onyomi?.[0] || item.kunyomi?.[0] || '';
-      
-      generatedQuestions.push({
-        id: item.id,
-        type: 'kanji',
-        prompt: item.kanji || '',
-        subPrompt: `What is the reading?`,
-        correctAnswer: correctReading,
-        options: shuffleArray([correctReading, ...distractors]),
-        sourceItem: item
+        const correctReading = item.onyomi?.[0] || item.kunyomi?.[0] || '';
+        
+        generatedQuestions.push({
+          id: item.id,
+          type: 'kanji',
+          prompt: item.kanji || '',
+          subPrompt: `What is the reading?`,
+          correctAnswer: correctReading,
+          options: shuffleArray([correctReading, ...distractors]),
+          sourceItem: item
+        });
       });
-    });
+    }
 
-    // 3. Grammar Questions (Meaning/Usage)
-    grammarPool.slice(0, 5).forEach(item => {
-      const distractors = shuffleArray(grammarPool.filter(g => g.id !== item.id))
-        .slice(0, 3)
-        .map(g => g.meaning || '');
-      
-      generatedQuestions.push({
-        id: item.id,
-        type: 'grammar',
-        prompt: item.title || '',
-        subPrompt: item.structure,
-        correctAnswer: item.meaning || '',
-        options: shuffleArray([item.meaning || '', ...distractors]),
-        sourceItem: item
+    // 3. Grammar Questions
+    if (settings.types.grammar) {
+      const grammarPool = shuffleArray(levelData.grammar);
+      grammarPool.slice(0, countPerType).forEach(item => {
+        const distractors = shuffleArray(grammarPool.filter(g => g.id !== item.id))
+          .slice(0, 3)
+          .map(g => g.meaning || '');
+        
+        generatedQuestions.push({
+          id: item.id,
+          type: 'grammar',
+          prompt: item.title || '',
+          subPrompt: item.structure,
+          correctAnswer: item.meaning || '',
+          options: shuffleArray([item.meaning || '', ...distractors]),
+          sourceItem: item
+        });
       });
-    });
+    }
 
-    setQuestions(shuffleArray(generatedQuestions));
+    setQuestions(shuffleArray(generatedQuestions).slice(0, settings.count));
     setTestState('playing');
     setCurrentIndex(0);
     setScore(0);
-    setTimeLeft(600);
+    setTimeLeft(settings.time * 60);
     setAnswers([]);
-  }, [level]);
+  }, [level, settings]);
 
   // Timer Effect
   useEffect(() => {
@@ -467,34 +556,101 @@ function MiniTestContent() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
             >
-              <Title>JLPT {level} Mini Test</Title>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <Title>JLPT {level} Mini Test</Title>
+                <LevelBadge>{level}</LevelBadge>
+              </div>
               <Subtitle>
-                Test your knowledge with a mix of Vocabulary, Kanji, and Grammar. 
-                You have 10 minutes to complete 20 questions.
+                Customize your test parameters and challenge yourself to master the JLPT {level} content.
               </Subtitle>
+
+              <SettingSection>
+                <SettingGroup>
+                  <SettingLabel>Question Count</SettingLabel>
+                  <SettingOptions>
+                    {[10, 20, 30, 50].map(c => (
+                      <SettingChip 
+                        key={c} 
+                        $active={settings.count === c}
+                        onClick={() => setSettings(prev => ({ ...prev, count: c }))}
+                      >
+                        {c} Questions
+                      </SettingChip>
+                    ))}
+                  </SettingOptions>
+                </SettingGroup>
+
+                <SettingGroup>
+                  <SettingLabel>Time Limit</SettingLabel>
+                  <SettingOptions>
+                    {[5, 10, 20, 30].map(t => (
+                      <SettingChip 
+                        key={t} 
+                        $active={settings.time === t}
+                        onClick={() => setSettings(prev => ({ ...prev, time: t }))}
+                      >
+                        {t} Minutes
+                      </SettingChip>
+                    ))}
+                  </SettingOptions>
+                </SettingGroup>
+
+                <SettingGroup>
+                  <SettingLabel>Question Types</SettingLabel>
+                  <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+                    <CheckboxLabel>
+                      <input 
+                        type="checkbox" 
+                        checked={settings.types.vocabulary} 
+                        onChange={e => setSettings(prev => ({ ...prev, types: { ...prev.types, vocabulary: e.target.checked } }))} 
+                      />
+                      Vocabulary
+                    </CheckboxLabel>
+                    <CheckboxLabel>
+                      <input 
+                        type="checkbox" 
+                        checked={settings.types.kanji} 
+                        onChange={e => setSettings(prev => ({ ...prev, types: { ...prev.types, kanji: e.target.checked } }))} 
+                      />
+                      Kanji
+                    </CheckboxLabel>
+                    <CheckboxLabel>
+                      <input 
+                        type="checkbox" 
+                        checked={settings.types.grammar} 
+                        onChange={e => setSettings(prev => ({ ...prev, types: { ...prev.types, grammar: e.target.checked } }))} 
+                      />
+                      Grammar
+                    </CheckboxLabel>
+                  </div>
+                </SettingGroup>
+              </SettingSection>
               
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+              <div style={{ display: 'flex', gap: '1rem', marginTop: '3rem' }}>
                 <button 
                   onClick={generateTest}
                   style={{ 
-                    padding: '1rem 2.5rem', 
+                    padding: '1.25rem 3rem', 
                     background: 'var(--primary)', 
                     color: 'white', 
                     borderRadius: '99px', 
                     border: 'none', 
-                    fontWeight: 800, 
-                    fontSize: '1.1rem', 
-                    cursor: 'pointer' 
+                    fontWeight: 900, 
+                    fontSize: '1.2rem', 
+                    cursor: 'pointer',
+                    boxShadow: '0 10px 30px rgba(var(--primary-rgb), 0.3)',
+                    flex: 1
                   }}
                 >
                   Start Test
                 </button>
-                <ActionButton href="/jlpt" style={{ background: 'transparent', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none' }}>
+                <ActionButton href="/jlpt" style={{ background: 'transparent', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none', padding: '1.25rem 2rem' }}>
                   Cancel
                 </ActionButton>
               </div>
             </GlassCard>
           )}
+
 
           {testState === 'playing' && (
             <div key="playing">

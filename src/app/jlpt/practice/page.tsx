@@ -401,7 +401,7 @@ function shuffleArray(array: any[]) {
 function PracticeContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get('q') || '';
-  const initialCategory = (searchParams.get('category') as any) || 'kata';
+  const initialCategory = (searchParams.get('category') as any) || 'vocabulary';
   const initialLevel = searchParams.get('level') || 'N5';
 
   const [items, setItems] = useState<any[]>([]);
@@ -423,7 +423,7 @@ function PracticeContent() {
         baseData = await searchDictionary(initialQuery, setupCategory as any, setupLevel);
       } else {
         if (setupCategory === 'kanji') baseData = allKanji;
-        else if (setupCategory === 'tata-bahasa') baseData = allGrammar;
+        else if (setupCategory === 'grammar') baseData = allGrammar;
         else baseData = allVocabulary.filter(v => v.id.startsWith('lib-'));
         
         if (setupLevel !== 'All') {
@@ -529,9 +529,9 @@ function PracticeContent() {
                 <SelectionLabel>Select Category</SelectionLabel>
                 <CategoryGrid>
                   {[
-                    { id: 'kata', label: 'Vocabulary' },
+                    { id: 'vocabulary', label: 'Vocabulary' },
                     { id: 'kanji', label: 'Kanji' },
-                    { id: 'tata-bahasa', label: 'Grammar' }
+                    { id: 'grammar', label: 'Grammar' }
                   ].map((c) => (
                     <OptionButton 
                       key={c.id} 

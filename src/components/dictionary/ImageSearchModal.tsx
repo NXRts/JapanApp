@@ -167,7 +167,7 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
     }
 
     setIsProcessing(true);
-    setProgressText('Menyiapkan Mesin OCR...');
+    setProgressText('Initializing OCR Engine...');
 
     try {
       const Tesseract = (await import('tesseract.js')).default;
@@ -177,13 +177,13 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
         {
           logger: m => {
             if (m.status === 'recognizing text') {
-              setProgressText(`Membaca teks: ${Math.round(m.progress * 100)}%`);
+              setProgressText(`Recognizing text: ${Math.round(m.progress * 100)}%`);
             } else if (m.status === 'loading tesseract core') {
-              setProgressText('Memuat inti memori...');
+              setProgressText('Loading Tesseract core...');
             } else if (m.status === 'loading language traineddata') {
-                setProgressText('Mengunduh data bahasa (Hanya 1x Pertama)');
+                setProgressText('Downloading language data (First time only)');
             } else {
-              setProgressText('Memproses gambar...');
+              setProgressText('Processing image...');
             }
           }
         }
@@ -196,7 +196,7 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
       onResult(cleanText);
     } catch (error) {
       console.error(error);
-      alert('Gagal mendeteksi teks pada gambar.');
+      alert('Failed to detect text on the image.');
       setIsProcessing(false);
     }
   };

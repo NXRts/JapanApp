@@ -5,14 +5,14 @@ export const n3Grammar: GrammarPoint[] = [
     id: "nagara",
     level: "N3",
     title: "〜ながら (nagara)",
-    meaning: "Sambil",
+    meaning: "While / Simultaneously",
     structure: "Kata Kerja (Bentuk Masu dicoret) + ながら",
-    explanation: "Digunakan untuk menunjukkan bahwa subjek melakukan dua aktivitas secara bersamaan. Tindakan utama adalah kata kerja yang datang setelah ながら.",
+    explanation: "Used to indicate that the subject is doing two activities at the same time. The main action is the verb that comes after ながら.",
     examples: [
       {
         japanese: "音楽を聴きながら勉強します。",
         romaji: "Ongaku o kikinagara benkyou shimasu.",
-        english: "Saya belajar sambil mendengarkan musik."
+        english: "I study while listening to music."
       }
     ]
   },
@@ -20,14 +20,14 @@ export const n3Grammar: GrammarPoint[] = [
     id: "ni-chigainai",
     level: "N3",
     title: "〜に違いない (ni chigainai)",
-    meaning: "Pasti / Tidak salah lagi",
+    meaning: "Certainly / Must be",
     structure: "Bentuk Biasa (Kamus/Ta/Nai) + に違いない",
-    explanation: "Digunakan untuk menyatakan keyakinan kuat atau kesimpulan dari si pembicara berdasarkan bukti atau firasat.",
+    explanation: "Used to express strong conviction or a conclusion by the speaker based on evidence or intuition.",
     examples: [
       {
         japanese: "彼は犯人に違いない。",
         romaji: "Kare wa hannin ni chigainai.",
-        english: "Dia pasti pelakunya."
+        english: "He must be the culprit."
       }
     ]
   },
@@ -35,14 +35,14 @@ export const n3Grammar: GrammarPoint[] = [
     id: "koto-ni-natte-iru",
     level: "N3",
     title: "〜ことになっている",
-    meaning: "Sudah diatur / Telah diputuskan (Peraturan)",
+    meaning: "It has been decided / It is a rule",
     structure: "Kata Kerja (Kamus/Nai) + ことになっている",
-    explanation: "Menyatakan sesuatu yang telah diputuskan di luar kendali kita, seperti aturan, adat, kebiasaan, atau hukum yang berlaku secara objektif.",
+    explanation: "States something that has been decided outside of our control, such as rules, customs, habits, or laws that apply objectively.",
     examples: [
       {
         japanese: "この教室では日本語しか話せないことになっています。",
         romaji: "Kono kyoushitsu de wa Nihongo shika hanasenai koto ni natte imasu.",
-        english: "Sesuai aturan, di ruang kelas ini hanya boleh berbicara bahasa Jepang."
+        english: "According to the rules, only Japanese can be spoken in this classroom."
       }
     ]
   },
@@ -50,19 +50,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "to-tori-ni",
     level: "N3",
     title: "〜とおりに (toori ni)",
-    meaning: "Sesuai dengan / Seperti halnya",
+    meaning: "In accordance with / Just as",
     structure: "Kata Kerja (Kamus/Ta) / Benda+の + とおりに",
-    explanation: "Digunakan untuk menyatakan bahwa seseorang melakukan tindakan sesuai persis dengan pola, instruksi, atau harapan yang sudah ada.",
+    explanation: "Used to state that someone is performing an action exactly according to a pattern, instruction, or pre-existing expectation.",
     examples: [
       {
         japanese: "私が言ったとおりに書いてください。",
         romaji: "Watashi ga itta toori ni kaite kudasai.",
-        english: "Tolong tulis sesuai dengan apa yang saya katakan."
+        english: "Please write exactly as I said."
       },
       {
         japanese: "説明書のとおりに組み立てました。",
         romaji: "Setsumeisho no toori ni kumitatemashita.",
-        english: "Saya merakitnya sesuai dengan buku panduan."
+        english: "I assembled it according to the manual."
       }
     ]
   },
@@ -70,19 +70,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "ba-yokatta",
     level: "N3",
     title: "〜ばよかった (ba yokatta)",
-    meaning: "Seharusnya... (Penyesalan)",
+    meaning: "Should have... (Regret)",
     structure: "Kata Kerja (Bentuk Ba) + よかった",
-    explanation: "Digunakan untuk mengungkapkan penyesalan tentang hal di masa lalu. 'Ah, seharusnya saya melakukan itu' (tapi kenyataannya tidak dilakukan).",
+    explanation: "Used to express regret about something in the past. 'Ah, I should have done that' (but in reality, I didn't).",
     examples: [
       {
         japanese: "もっと勉強すればよかった。",
         romaji: "Motto benkyou sureba yokatta.",
-        english: "Seharusnya saya belajar lebih giat (dulu)."
+        english: "I should have studied harder (back then)."
       },
       {
         japanese: "あんなことを言わなければよかった。",
         romaji: "Anna koto o iwanakereba yokatta.",
-        english: "Seharusnya saya tidak mengatakan hal seperti itu."
+        english: "I should not have said such a thing."
       }
     ]
   },
@@ -90,14 +90,14 @@ export const n3Grammar: GrammarPoint[] = [
     id: "hazu-desu",
     level: "N3",
     title: "〜はずです (hazu desu)",
-    meaning: "Pasti / Seharusnya (Ekspektasi logis)",
+    meaning: "Must be / Expected to (Logical expectation)",
     structure: "Bentuk Biasa + はずです",
-    explanation: "Menyatakan kesimpulan logis pembicara berdasarkan fakta atau jadwal yang diketahui. Menunjukkan keyakinan yang kuat (mirip dengan 'It must be / It should be').",
+    explanation: "States a logical conclusion of the speaker based on known facts or schedules. Shows strong conviction (similar to 'It must be / It should be').",
     examples: [
       {
         japanese: "山田さんはアメリカに住んでいたから、英語が話せるはずです。",
         romaji: "Yamada-san wa Amerika ni sunde ita kara, eigo ga hanaseru hazu desu.",
-        english: "Karena Yamada pernah tinggal di Amerika, dia seharusnya bisa berbahasa Inggris."
+        english: "Since Mr. Yamada lived in America, he should be able to speak English."
       }
     ]
   },
@@ -105,19 +105,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "mama",
     level: "N3",
     title: "〜まま (mama)",
-    meaning: "Dalam keadaan... / Dibiarkan...",
+    meaning: "Remaining in a state / Left as is",
     structure: "Kata Kerja (Ta/Nai) / Kata Benda + の + まま",
-    explanation: "Menyatakan kondisi atau keadaan dibiarkan tidak berubah setelah sesuatu dilakukan. Sering menunjukkan bahwa hal tersebut seharusnya tidak dibiarkan demikian.",
+    explanation: "Indicates that a condition or state is left unchanged after something is done. Often suggests that it should not have been left that way.",
     examples: [
       {
         japanese: "エアコンをつけたまま寝てしまった。",
         romaji: "Eakon o tsuketa mama nete shimatta.",
-        english: "Saya ketiduran dalam keadaan AC dibiarkan menyala."
+        english: "I fell asleep with the air conditioner left on."
       },
       {
         japanese: "靴のまま家に入らないでください。",
         romaji: "Kutsu no mama ie ni hairanaide kudasai.",
-        english: "Tolong jangan masuk ke rumah dalam keadaan (masih memakai) sepatu."
+        english: "Please do not enter the house with your shoes (still) on."
       }
     ]
   },
@@ -125,14 +125,14 @@ export const n3Grammar: GrammarPoint[] = [
     id: "te-kara-denai-to",
     level: "N3",
     title: "〜てからでないと (te kara denai to)",
-    meaning: "Kecuali jika... / Sebelum (ini dilakukan), maka tidak bisa...",
+    meaning: "Unless... / Not until...",
     structure: "Kata Kerja (Bentuk Te) + からでないと + Bentuk Negatif",
-    explanation: "Menyatakan bahwa tindakan pertama harus benar-benar diselesaikan lebih dahulu sebelum hal kedua bisa dilakukan. Jika kondisi pertama tidak terpenuhi, akibat di belakangnya tidak akan bisa terjadi.",
+    explanation: "States that the first action must be completely finished before the second thing can be done. If the first condition is not met, the consequence cannot happen.",
     examples: [
       {
         japanese: "親に相談してからでないと、決められません。",
         romaji: "Oya ni soudan shite kara denai to, kimeraremasen.",
-        english: "Kecuali jika saya berdiskusi dengan orang tua terlebih dahulu, saya tidak bisa memutuskannya."
+        english: "Unless I consult with my parents first, I cannot decide."
       }
     ]
   },
@@ -140,19 +140,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "gimi",
     level: "N3",
     title: "〜気味 (gimi)",
-    meaning: "Merasa sedikit... / Agak... (Kecenderungan negatif)",
+    meaning: "Feeling a bit... / Tending towards... (Negative tendency)",
     structure: "Kata Benda / Kata Kerja (Masu dicoret) + 気味",
-    explanation: "Mengekspresikan bahwa seseorang memiliki gejala atau merasa cenderung pada suatu keadaan fisik/mental, biasanya berkonotasi negatif atau di luar kebiasaan.",
+    explanation: "Expresses that someone has symptoms or feels prone to a certain physical/mental state, usually with a negative connotation or being out of the ordinary.",
     examples: [
       {
         japanese: "最近、少し疲れ気味です。",
         romaji: "Saikin, sukoshi tsukaregimi desu.",
-        english: "Akhir-akhir ini, saya merasa agak kelelahan."
+        english: "Lately, I've been feeling a bit exhausted."
       },
       {
         japanese: "彼は風邪気味で学校を休んだ。",
         romaji: "Kare wa kazegimi de gakkou o yasunda.",
-        english: "Dia libur sekolah karena merasa agak flu."
+        english: "He was absent from school because he felt a bit like he had a cold."
       }
     ]
   },
@@ -160,19 +160,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "kawari-ni",
     level: "N3",
     title: "〜代わりに (kawari ni)",
-    meaning: "Sebagai gantinya / Alih-alih",
+    meaning: "Instead of / In place of",
     structure: "Bentuk Biasa / Benda+の + 代わりに",
-    explanation: "Digunakan ketika satu hal digunakan untuk menggantikan atau mewakili sesuatu yang lain, atau sebagai 'kompensasi/timbal balik' atas suatu hal.",
+    explanation: "Used when one thing is used to replace or represent something else, or as compensation/reciprocity for something.",
     examples: [
       {
         japanese: "社長の代わりに私が会議に出席します。",
         romaji: "Shachou no kawari ni watashi ga kaigi ni shusseki shimasu.",
-        english: "Saya akan menghadiri rapat menggantikan (sebagai wakil dari) direktur."
+        english: "I will attend the meeting in place of (representing) the director."
       },
       {
         japanese: "英語を教えてもらう代わりに、日本語を教えます。",
         romaji: "Eigo o oshiete morau kawari ni, Nihongo o oshiemasu.",
-        english: "Sebagai ganti Anda mengajari saya bahasa Inggris, saya akan mengajari Anda bahasa Jepang."
+        english: "In exchange for you teaching me English, I will teach you Japanese."
       }
     ]
   },
@@ -180,19 +180,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "darake",
     level: "N3",
     title: "〜だらけ (darake)",
-    meaning: "Penuh dengan (hal negatif)",
+    meaning: "Full of / Covered with (Negative things)",
     structure: "Kata Benda + だらけ",
-    explanation: "Menggambarkan bahwa sesuatu dipenuhi oleh hal-hal yang tidak menyenangkan, kotor, atau tidak diinginkan secara visual (seperti debu, lumpur, kesalahan).",
+    explanation: "Describes that something is filled with unpleasant, dirty, or visually unwanted things (like dust, mud, mistakes).",
     examples: [
       {
         japanese: "彼の部屋はゴミだらけだ。",
         romaji: "Kare no heya wa gomi darake da.",
-        english: "Kamarnya penuh dengan sampah."
+        english: "His room is full of trash."
       },
       {
         japanese: "この作文は間違いだらけです。",
         romaji: "Kono sakubun wa machigai darake desu.",
-        english: "Karangan ini penuh dengan kesalahan."
+        english: "This essay is full of mistakes."
       }
     ]
   },
@@ -200,19 +200,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "tokoro-da",
     level: "N3",
     title: "〜ところだ (tokoro da)",
-    meaning: "Baru saja / Sedang / Akan",
+    meaning: "Just about to / In the middle of / Just finished",
     structure: "Kata Kerja (Kamus/Te-iru/Ta) + ところだ",
-    explanation: "Menunjukkan 'titik waktu' yang sangat spesifik dari suatu aksi. Kamus = akan segera dilakukan. Te-iru = sedang tepat dilakukan sekarang. Ta = baru saja selesai detik ini.",
+    explanation: "Indicates a very specific 'point in time' of an action. Dictionary form = about to be done. Te-iru = exactly being done now. Ta = just finished this second.",
     examples: [
       {
         japanese: "今からご飯を食べるところです。",
         romaji: "Ima kara gohan o taberu tokoro desu.",
-        english: "Saya baru akan mulai makan sekarang."
+        english: "I am just about to start eating now."
       },
       {
         japanese: "たった今、バスが出たところです。",
         romaji: "Tatta ima, basu ga deta tokoro desu.",
-        english: "Baru saja detik ini, busnya berangkat."
+        english: "Just this second, the bus has departed."
       }
     ]
   },
@@ -220,19 +220,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "wake-ga-nai",
     level: "N3",
     title: "〜わけがない (wake ga nai)",
-    meaning: "Tidak mungkin",
+    meaning: "No way / Impossible",
     structure: "Bentuk Biasa + わけがない",
-    explanation: "Pernyataan keyakinan yang sangat kuat (100%) dari pembicara bahwa sesuatu itu sama sekali tidak mungkin terjadi berdasarkan logika atau kenyataan.",
+    explanation: "A very strong statement of conviction (100%) by the speaker that something is absolutely impossible based on logic or reality.",
     examples: [
       {
         japanese: "あんな下手なチームが勝てるわけがない。",
         romaji: "Anna hetana chiimu ga kateru wake ga nai.",
-        english: "Tidak mungkin tim payah seperti itu bisa menang."
+        english: "There is no way such a poor team could win."
       },
       {
         japanese: "彼がお金を盗むわけがありません。",
         romaji: "Kare ga okane o nusumu wake ga arimasen.",
-        english: "Tidak mungkin dia mencuri uang."
+        english: "There is no way he would steal money."
       }
     ]
   },
@@ -240,19 +240,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "sae",
     level: "N3",
     title: "〜さえ (sae)",
-    meaning: "Bahkan",
+    meaning: "Even",
     structure: "Kata Benda + さえ",
-    explanation: "Digunakan untuk memberikan contoh kasus ekstrem, yang menyiratkan bahwa 'jika hal ekstrem ini saja (bahkan) terjadi/tidak terjadi, apalagi hal yang biasa'.",
+    explanation: "Used to provide an extreme example, implying that 'if even this extreme case happens/doesn't happen, how much more so for ordinary things'.",
     examples: [
       {
         japanese: "ひらがなさえ書けない。",
         romaji: "Hiragana sae kakenai.",
-        english: "Bahkan Hiragana pun saya tidak bisa menulisnya."
+        english: "I can't even write Hiragana."
       },
       {
         japanese: "専門家でさえわからない問題だ。",
         romaji: "Senmonka de sae wakaranai mondai da.",
-        english: "Itu adalah masalah yang bahkan seorang ahli pun tidak mengerti."
+        english: "That's a problem that even an expert wouldn't understand."
       }
     ]
   },
@@ -260,19 +260,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "sae-ba",
     level: "N3",
     title: "〜さえ〜ば (sae...ba)",
-    meaning: "Asalkan... (Satu-satunya syarat)",
+    meaning: "As long as... (The only condition)",
     structure: "Kata Benda + さえ + Kata Kerja (Ba)",
-    explanation: "Menyatakan bahwa jika SATU syarat minimum tersebut terpenuhi, maka semuanya akan beres/baik-baik saja.",
+    explanation: "States that if that ONE minimum condition is met, then everything will be fine/taken care of.",
     examples: [
       {
         japanese: "あなたさえいれば、私は幸せです。",
         romaji: "Anata sae ireba, watashi wa shiawase desu.",
-        english: "Asalkan ada kamu, aku bahagia."
+        english: "As long as you're here, I'm happy."
       },
       {
         japanese: "お金さえあれば、何でもできる。",
         romaji: "Okane sae areba, nandemo dekiru.",
-        english: "Asalkan ada uang, apapun bisa dilakukan."
+        english: "As long as there's money, anything can be done."
       }
     ]
   },
@@ -280,19 +280,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "ppanashi",
     level: "N3",
     title: "〜っぱなし (ppanashi)",
-    meaning: "Dibiarkan (dalam keadaan buruk)",
+    meaning: "Left as is (in a bad state)",
     structure: "Kata Kerja (Masu dicoret) + っぱなし",
-    explanation: "Mirip dengan 〜まま, namun 〜っぱなし biasanya digunakan untuk kondisi negatif di mana seseorang membiarkan sesuatu yang seharusnya diubah/dibereskan.",
+    explanation: "Similar to 〜まま, but 〜っぱなし is usually used for a negative condition where someone leaves something that should be changed/tidied up.",
     examples: [
       {
         japanese: "水を出しっぱなしにしないでください。",
         romaji: "Mizu o dashippanashi ni shinaide kudasai.",
-        english: "Tolong jangan biarkan air mengalir terus (dibiarkan menyala)."
+        english: "Please don't leave the water running (left on)."
       },
       {
         japanese: "テレビをつけっぱなしで寝てしまった。",
         romaji: "Terebi o tsukeppanashi de nete shimatta.",
-        english: "Saya ketiduran dengan TV dibiarkan menyala."
+        english: "I fell asleep with the TV left on."
       }
     ]
   },
@@ -300,19 +300,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "tabini",
     level: "N3",
     title: "〜たびに (tabi ni)",
-    meaning: "Setiap kali...",
+    meaning: "Every time / Whenever",
     structure: "Kata Kerja (Kamus) / Benda+の + たびに",
-    explanation: "Menekankan bahwa setiap kali hal A terjadi, maka SELALU hal B akan terjadi tanpa terkecuali.",
+    explanation: "Emphasizes that every time event A happens, then event B will ALWAYS happen without exception.",
     examples: [
       {
         japanese: "この写真を見るたびに、昔を思い出す。",
         romaji: "Kono shashin o miru tabi ni, mukashi o omoidasu.",
-        english: "Setiap kali melihat foto ini, saya teringat masa lalu."
+        english: "Every time I see this photo, I remember the past."
       },
       {
         japanese: "父は出張のたびに、お土産を買ってきてくれる。",
         romaji: "Chichi wa shucchou no tabi ni, omiyage o katte kite kureru.",
-        english: "Ayah selalu membelikan oleh-oleh setiap kali perjalanan dinas."
+        english: "Father always buys souvenirs whenever he goes on a business trip."
       }
     ]
   },
@@ -320,19 +320,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "to-totanni",
     level: "N3",
     title: "〜とたんに (to totan ni)",
-    meaning: "Begitu (ini) terjadi, langsung...",
+    meaning: "Just as (this) happened, immediately...",
     structure: "Kata Kerja (Ta) + とたんに",
-    explanation: "Menyatakan bahwa tepat setelah kejadian pertama berlangsung, secara mendadak kejadian kedua terjadi, sering kali tanpa diduga.",
+    explanation: "States that exactly after the first event takes place, a second event happens suddenly, often unexpectedly.",
     examples: [
       {
         japanese: "ドアを開けたとたんに、猫が飛び出してきた。",
         romaji: "Doa o aketa totan ni, neko ga tobidashite kita.",
-        english: "Begitu pintu dibuka, kucing itu langsung melompat keluar."
+        english: "As soon as the door opened, the cat jumped out."
       },
       {
         japanese: "先生の顔を見たとたんに、涙が出た。",
         romaji: "Sensei no kao o mita totan ni, namida ga deta.",
-        english: "Begitu melihat wajah guru, air mataku langsung keluar."
+        english: "As soon as I saw the teacher's face, tears came out."
       }
     ]
   },
@@ -340,19 +340,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "ni-taishite",
     level: "N3",
     title: "〜に対して (ni taishite)",
-    meaning: "Terhadap / Berlawanan dengan",
+    meaning: "Towards / In contrast to",
     structure: "Kata Benda + に対して",
-    explanation: "Memiliki dua arti: 1) Sikap/tindakan 'terhadap' suatu subjek. 2) Menunjukkan perbedaan kontras 'berlawanan dengan / dibandingkan dengan'.",
+    explanation: "Has two meanings: 1) Attitude/action 'towards' a subject. 2) Shows a contrast 'as opposed to / compared to'.",
     examples: [
       {
         japanese: "お客様に対して、丁寧な言葉を使いなさい。",
         romaji: "Okyakusama ni taishite, teineina kotoba o tsukainasai.",
-        english: "Gunakanlah bahasa yang sopan terhadap pelanggan."
+        english: "Use polite words towards customers."
       },
       {
         japanese: "兄は活発なのに対して、弟はおとなしい。",
         romaji: "Ani wa kappatsu na no ni taishite, otouto wa otonashii.",
-        english: "Berlawanan dengan kakaknya yang aktif, adiknya pendiam."
+        english: "In contrast to his active older brother, the younger brother is quiet."
       }
     ]
   },
@@ -360,19 +360,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "ni-kimatte-iru",
     level: "N3",
     title: "〜に決まっている (ni kimatte iru)",
-    meaning: "Sudah pasti / Tentu saja",
+    meaning: "Decidedly / Surely",
     structure: "Bentuk Biasa + に決まっている",
-    explanation: "Sangat mirip dengan に違いない, tetapi lebih kasual dan bernuansa subyektif ('Ah, sudah pasti begitu lah!').",
+    explanation: "Very similar to に違いない, but more casual and subjective in tone ('Ah, surely it must be so!').",
     examples: [
       {
         japanese: "そんなの嘘に決まっている。",
         romaji: "Sonna no uso ni kimatte iru.",
-        english: "Sudah pasti itu bohong."
+        english: "That is surely a lie."
       },
       {
         japanese: "一人で外国へ行くなんて、寂しいに決まっている。",
         romaji: "Hitori de gaikoku e iku nante, samishii ni kimatte iru.",
-        english: "Pergi ke luar negeri sendirian, sudah pasti akan merasa kesepian."
+        english: "Going to a foreign country alone, one is bound to feel lonely."
       }
     ]
   },
@@ -380,19 +380,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "uchi-ni",
     level: "N3",
     title: "〜うちに (uchi ni)",
-    meaning: "Selagi / Mumpung",
+    meaning: "While / Before (it's too late)",
     structure: "Kata Kerja (Te-iru/Nai) / Kata Sifat / Benda+の + うちに",
-    explanation: "Menyarankan untuk melakukan sesuatu selagi kondisinya masih memungkinkan (sebelum situasinya berubah menjadi buruk/tidak memungkinkan).",
+    explanation: "Suggests doing something while the conditions still allow (before the situation changes for the worse/becomes impossible).",
     examples: [
       {
         japanese: "温かいうちに、食べてください。",
         romaji: "Atatakai uchi ni, tabete kudasai.",
-        english: "Silakan dimakan selagi (mumpung) masih hangat."
+        english: "Please eat while it's still warm."
       },
       {
         japanese: "忘れないうちに、メモをしておこう。",
         romaji: "Wasurenai uchi ni, memo o shite okou.",
-        english: "Mari kita catat selagi belum lupa."
+        english: "Let's make a note while we haven't forgotten."
       }
     ]
   },
@@ -400,19 +400,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "you-ni-suru",
     level: "N3",
     title: "〜ようにする (you ni suru)",
-    meaning: "Berusaha untuk...",
+    meaning: "Endeavor to / Make an effort to",
     structure: "Kata Kerja (Kamus/Nai) + ようにする",
-    explanation: "Menunjukkan usaha atau niat terus-menerus untuk membuat suatu keadaan terjadi atau menjadi kebiasaan.",
+    explanation: "Indicates a continuous effort or intention to make a certain state happen or become a habit.",
     examples: [
       {
         japanese: "毎日、野菜を食べるようにしています。",
         romaji: "Mainichi, yasai o taberu you ni shite imasu.",
-        english: "Saya berusaha untuk selalu makan sayur setiap hari."
+        english: "I try to always eat vegetables every day."
       },
       {
         japanese: "遅刻しないようにしてください。",
         romaji: "Chikoku shinai you ni shite kudasai.",
-        english: "Tolong usahakan agar tidak datang terlambat."
+        english: "Please try to make sure you don't arrive late."
       }
     ]
   },
@@ -420,19 +420,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "you-ni-naru",
     level: "N3",
     title: "〜ようになる (you ni naru)",
-    meaning: "Menjadi bisa / Mulai terbiasa",
+    meaning: "To reach the point where / Come to be that",
     structure: "Kata Kerja (Kamus/Potensial) + ようになる",
-    explanation: "Menunjukkan perubahan keadaan, dari yang asalnya tidak bisa menjadi bisa, atau dari tidak terbiasa menjadi terbiasa.",
+    explanation: "Indicates a change in state, from not being able to being able, or from not being used to being used to something.",
     examples: [
       {
         japanese: "納豆が食べられるようになりました。",
         romaji: "Nattou ga taberareru you ni narimashita.",
-        english: "Saya (sekarang) menjadi bisa makan natto."
+        english: "I have (now) become able to eat natto."
       },
       {
         japanese: "最近、よくアニメを見るようになった。",
         romaji: "Saikin, yoku anime o miru you ni natta.",
-        english: "Akhir-akhir ini, saya jadi (mulai) sering menonton anime."
+        english: "Lately, I've started watching anime often."
       }
     ]
   },
@@ -440,19 +440,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "koto-ni-suru",
     level: "N3",
     title: "〜ことにする (koto ni suru)",
-    meaning: "Memutuskan untuk...",
+    meaning: "Decide to...",
     structure: "Kata Kerja (Kamus/Nai) + ことにする",
-    explanation: "Menyatakan sebuah keputusan subyektif yang dibuat oleh diri sendiri, biasanya untuk kebiasaan atau tindakan ke depan.",
+    explanation: "States a subjective decision made by oneself, usually for a habit or future action.",
     examples: [
       {
         japanese: "明日からタバコをやめることにしました。",
         romaji: "Ashita kara tabako o yameru koto ni shimashita.",
-        english: "Saya telah memutuskan untuk berhenti merokok mulai besok."
+        english: "I have decided to quit smoking starting from tomorrow."
       },
       {
         japanese: "車を買わないことにした。",
         romaji: "Kuruma o kawanai koto ni shita.",
-        english: "Saya memutuskan untuk tidak membeli mobil."
+        english: "I decided not to buy a car."
       }
     ]
   },
@@ -460,19 +460,19 @@ export const n3Grammar: GrammarPoint[] = [
     id: "to-iutte-mo",
     level: "N3",
     title: "〜といっても (to itte mo)",
-    meaning: "Meskipun dibilang / Sekalipun disebut...",
+    meaning: "Even if you say / Although called...",
     structure: "Bentuk Biasa + といっても",
-    explanation: "Digunakan ketika kenyataannya jauh lebih kecil, sedikit, atau tidak semenarik seperti ekspektasi dari pernyataan sebelumnya.",
+    explanation: "Used when reality is much smaller, less, or not as interesting as the expectation from the previous statement.",
     examples: [
       {
         japanese: "英語が話せるといっても、少しだけです。",
         romaji: "Eigo ga hanaseru to itte mo, sukoshi dake desu.",
-        english: "Meskipun dibilang bisa berbahasa Inggris, (saya) hanya bisa sedikit saja."
+        english: "Even if I say I can speak English, it's only a little bit."
       },
       {
         japanese: "家を建てたといっても、とても小さい家です。",
         romaji: "Ie o tateta to itte mo, totemo chiisai ie desu.",
-        english: "Sekalipun disebut telah membangun rumah, itu adalah rumah yang sangat kecil."
+        english: "Even if it's said that I built a house, it's a very small house."
       }
     ]
   }

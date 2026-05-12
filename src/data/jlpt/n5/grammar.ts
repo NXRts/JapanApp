@@ -21,17 +21,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜です (desu)",
     meaning: "To be (is/am/are)",
     structure: "Noun / Adjective + です",
-    explanation: "Digunakan pada akhir kalimat untuk menunjukkan kesopanan (bentuk formal) sekaligus menyatakan identitas, keadaan, atau fakta dari subjek.",
+    explanation: "Used at the end of a sentence to show politeness (formal form) and to state identity, state, or facts about the subject.",
     examples: [
       {
         japanese: "私は学生です。",
         romaji: "Watashi wa gakusei desu.",
-        english: "Saya adalah seorang murid."
+        english: "I am a student."
       },
       {
         japanese: "今日はいい天気です。",
         romaji: "Kyou wa ii tenki desu.",
-        english: "Hari ini cuacanya bagus."
+        english: "Today's weather is good."
       }
     ]
   },
@@ -41,17 +41,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜ではありません (dewa arimasen)",
     meaning: "To not be (is not/am not/are not)",
     structure: "Noun / Na-Adjective + ではありません",
-    explanation: "Bentuk negatif dari 'desu' untuk kata benda dan kata sifat-na. Dalam percakapan sehari-hari sering disingkat menjadi 'ja arimasen'.",
+    explanation: "The negative form of 'desu' for nouns and na-adjectives. In daily conversation, it is often shortened to 'ja arimasen'.",
     examples: [
       {
         japanese: "私は先生ではありません。",
         romaji: "Watashi wa sensei dewa arimasen.",
-        english: "Saya bukan seorang guru."
+        english: "I am not a teacher."
       },
       {
         japanese: "ここは静かじゃありません。",
         romaji: "Koko wa shizuka ja arimasen.",
-        english: "Di sini tidak tenang/sunyi."
+        english: "It is not quiet here."
       }
     ]
   },
@@ -61,17 +61,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "Partikel は (wa)",
     meaning: "Topic marker",
     structure: "Topik + は + Predikat",
-    explanation: "Partikel は (ditulis 'ha' tapi dibaca 'wa') digunakan untuk menandai topik dari suatu kalimat. Topik adalah apa yang sedang dibicarakan dalam kalimat tersebut.",
+    explanation: "The particle は (written 'ha' but pronounced 'wa') is used to mark the topic of a sentence. The topic is what is being talked about in the sentence.",
     examples: [
       {
         japanese: "これはペンです。",
         romaji: "Kore wa pen desu.",
-        english: "Ini adalah pulpen."
+        english: "This is a pen."
       },
       {
         japanese: "山田さんは先生です。",
         romaji: "Yamada-san wa sensei desu.",
-        english: "Bapak Yamada adalah seorang guru."
+        english: "Mr. Yamada is a teacher."
       }
     ]
   },
@@ -81,17 +81,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜ます (masu)",
     meaning: "Polite verb form",
     structure: "Kata Kerja (Bentuk Masu) + ます",
-    explanation: "Akhiran untuk kata kerja bentuk formal/sopan. Digunakan untuk menyatakan tindakan positif yang terjadi saat ini, kebiasaan, atau di masa depan.",
+    explanation: "The suffix for formal/polite verb forms. Used to state positive actions happening now, habits, or future actions.",
     examples: [
       {
         japanese: "毎日りんごを食べます。",
         romaji: "Mainichi ringo o tabemasu.",
-        english: "Saya makan apel setiap hari."
+        english: "I eat apples every day."
       },
       {
         japanese: "明日学校へ行きます。",
         romaji: "Ashita gakkou e ikimasu.",
-        english: "Besok saya pergi ke sekolah."
+        english: "I will go to school tomorrow."
       }
     ]
   },
@@ -101,17 +101,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜ません (masen)",
     meaning: "Polite negative verb form",
     structure: "Kata Kerja (Bentuk Masu) + ません",
-    explanation: "Bentuk negatif dari 〜ます. Digunakan untuk menyatakan bahwa suatu tindakan tidak dilakukan (saat ini/masa depan) secara sopan.",
+    explanation: "The negative form of 〜ます. Used to politely state that an action is not being performed (present/future).",
     examples: [
       {
         japanese: "私は肉を食べません。",
         romaji: "Watashi wa niku o tabemasen.",
-        english: "Saya tidak makan daging."
+        english: "I don't eat meat."
       },
       {
         japanese: "今日はテレビを見ません。",
         romaji: "Kyou wa terebi o mimasen.",
-        english: "Hari ini saya tidak menonton TV."
+        english: "I won't watch TV today."
       }
     ]
   },
@@ -121,17 +121,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜ました (mashita)",
     meaning: "Past polite verb form (Completed)",
     structure: "Kata Kerja (Bentuk Masu) + ました",
-    explanation: "Bentuk lampau (past tense) yang sopan untuk kata kerja. Digunakan untuk menyatakan tindakan yang sudah terjadi atau selesai dilakukan.",
+    explanation: "The polite past tense form for verbs. Used to state actions that have already happened or have been completed.",
     examples: [
       {
         japanese: "昨日、映画を見ました。",
         romaji: "Kinou, eiga o mimashita.",
-        english: "Kemarin, saya (telah) menonton film."
+        english: "Yesterday, I watched a movie."
       },
       {
         japanese: "今朝、６時に起きました。",
         romaji: "Kesa, rokuji ni okimashita.",
-        english: "Tadi pagi, saya bangun jam 6."
+        english: "This morning, I woke up at 6."
       }
     ]
   },
@@ -141,17 +141,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜ませんでした (masen deshita)",
     meaning: "Past negative polite verb form",
     structure: "Kata Kerja (Bentuk Masu) + ませんでした",
-    explanation: "Bentuk negatif lampau dari kata kerja yang sopan. Artinya suatu tindakan tidak dilakukan di masa lalu.",
+    explanation: "The polite past negative form for verbs. It means an action was not performed in the past.",
     examples: [
       {
         japanese: "きのうは勉強しませんでした。",
         romaji: "Kinou wa benkyou shimasen deshita.",
-        english: "Kemarin saya tidak belajar."
+        english: "Yesterday, I didn't study."
       },
       {
         japanese: "朝ご飯を食べませんでした。",
         romaji: "Asagohan o tabemasen deshita.",
-        english: "Saya tidak makan sarapan."
+        english: "I didn't eat breakfast."
       }
     ]
   },
@@ -161,17 +161,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "Partikel に (Waktu)",
     meaning: "At (specific time)",
     structure: "Waktu Spesifik + に + Kata Kerja",
-    explanation: "Partikel に digunakan untuk menunjukkan titik waktu spesifik kapan suatu tindakan terjadi (seperti jam, tanggal, hari, bulan). Tidak digunakan untuk kata penunjuk waktu relatif seperti 'hari ini' atau 'besok'.",
+    explanation: "The particle に is used to indicate a specific point in time when an action occurs (such as hour, date, day, month). It is not used for relative time markers like 'today' or 'tomorrow'.",
     examples: [
       {
         japanese: "六時に起きます。",
         romaji: "Rokuji ni okimasu.",
-        english: "Saya bangun pada jam 6."
+        english: "I wake up at 6 o'clock."
       },
       {
         japanese: "日曜日に日本へ行きます。",
         romaji: "Nichiyoubi ni Nihon e ikimasu.",
-        english: "Saya pergi ke Jepang pada hari Minggu."
+        english: "I'm going to Japan on Sunday."
       }
     ]
   },
@@ -181,17 +181,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "Partikel に (Tujuan)",
     meaning: "To / For (Destination / Recipient)",
     structure: "Tempat/Orang + に + Kata Kerja Pindah/Memberi",
-    explanation: "Menunjukkan tujuan pergerakan (pergi ke...) atau arah sebuah tindakan (memberi kepada...).",
+    explanation: "Indicates the destination of movement (going to...) or the direction of an action (giving to...).",
     examples: [
       {
         japanese: "会社に行きます。",
         romaji: "Kaisha ni ikimasu.",
-        english: "Saya pergi ke perusahaan/kantor."
+        english: "I'm going to the company/office."
       },
       {
         japanese: "友達にプレゼントをあげます。",
         romaji: "Tomodachi ni purezento o agemasu.",
-        english: "Saya memberikan hadiah kepada teman."
+        english: "I give a present to my friend."
       }
     ]
   },
@@ -201,17 +201,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "Partikel へ (e)",
     meaning: "To (Direction of movement)",
     structure: "Tempat + へ + Kata Kerja Pergerakan (行く, 来る, 帰る)",
-    explanation: "Mirip dengan に untuk tujuan, tapi lebih menekankan pada arah pergerakan. Ditulis 'he' tapi dibaca 'e'.",
+    explanation: "Similar to に for destination, but emphasizes the direction of movement more. Written as 'he' but pronounced 'e'.",
     examples: [
       {
         japanese: "東京へ行きます。",
         romaji: "Toukyou e ikimasu.",
-        english: "Saya pergi ke (arah) Tokyo."
+        english: "I'm going (towards) Tokyo."
       },
       {
         japanese: "うちへ帰ります。",
         romaji: "Uchi e kaerimasu.",
-        english: "Saya pulang ke rumah."
+        english: "I'm going home."
       }
     ]
   },
@@ -221,17 +221,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "Partikel を (o)",
     meaning: "Direct object marker",
     structure: "Objek + を + Kata Kerja Transitif",
-    explanation: "Partikel を (ditulis 'wo' tapi dibaca 'o') digunakan untuk menandai objek langsung dari sebuah kata kerja tindakan (objek yang dikenai suatu tindakan).",
+    explanation: "The particle を (written 'wo' but pronounced 'o') is used to mark the direct object of an action verb (the object that receives the action).",
     examples: [
       {
         japanese: "水を飲みます。",
         romaji: "Mizu o nomimasu.",
-        english: "Saya minum air."
+        english: "I drink water."
       },
       {
         japanese: "本を読みました。",
         romaji: "Hon o yomimashita.",
-        english: "Saya telah membaca buku."
+        english: "I read a book."
       }
     ]
   },
@@ -241,17 +241,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "Partikel で (Tempat)",
     meaning: "At / In (Location of action)",
     structure: "Tempat + で + Kata Kerja Aksi",
-    explanation: "Menunjukkan lokasi di mana sebuah aktivitas atau kejadian berlangsung. Berbeda dengan に yang hanya menunjukkan letak keberadaan statis.",
+    explanation: "Indicates the location where an activity or event takes place. Different from に which only shows the location of static existence.",
     examples: [
       {
         japanese: "レストランで晩ご飯を食べます。",
         romaji: "Resutoran de bangohan o tabemasu.",
-        english: "Saya makan malam di restoran."
+        english: "I eat dinner at a restaurant."
       },
       {
         japanese: "図書館で勉強しました。",
         romaji: "Toshokan de benkyou shimashita.",
-        english: "Saya belajar di perpustakaan."
+        english: "I studied at the library."
       }
     ]
   },
@@ -261,17 +261,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "Partikel で (Alat / Metode)",
     meaning: "By means of / Using",
     structure: "Alat / Metode / Kendaraan + で",
-    explanation: "Menunjukkan alat, sarana, atau metode yang digunakan untuk melakukan sesuatu.",
+    explanation: "Indicates the tool, means, or method used to perform an action.",
     examples: [
       {
         japanese: "バスで学校へ行きます。",
         romaji: "Basu de gakkou e ikimasu.",
-        english: "Saya pergi ke sekolah dengan (naik) bus."
+        english: "I go to school by bus."
       },
       {
         japanese: "鉛筆で手紙を書きます。",
         romaji: "Enpitsu de tegami o kakimasu.",
-        english: "Saya menulis surat dengan pensil."
+        english: "I write a letter with a pencil."
       }
     ]
   },
@@ -281,17 +281,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "Partikel と (to)",
     meaning: "And / With",
     structure: "Kata Benda 1 + と + Kata Benda 2 (atau Bersama Orang + と)",
-    explanation: "Bisa digunakan untuk menggabungkan benda ('dan') secara spesifik, atau menunjukkan teman beraktivitas ('bersama dengan').",
+    explanation: "Can be used to combine objects ('and') specifically, or to show a companion in an activity ('together with').",
     examples: [
       {
         japanese: "犬と猫が好きです。",
         romaji: "Inu to neko ga suki desu.",
-        english: "Saya suka anjing dan kucing."
+        english: "I like dogs and cats."
       },
       {
         japanese: "友達と映画を見ました。",
         romaji: "Tomodachi to eiga o mimashita.",
-        english: "Saya menonton film bersama teman."
+        english: "I watched a movie with a friend."
       }
     ]
   },
@@ -301,17 +301,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "Partikel も (mo)",
     meaning: "Also / Too",
     structure: "Kata Benda + も",
-    explanation: "Menggantikan partikel は, が, atau を untuk menyatakan bahwa sesuatu 'juga' memiliki sifat atau melakukan aksi yang sama dengan yang telah disebutkan sebelumnya.",
+    explanation: "Replaces the particle は, が, or を to state that something 'also' has the same property or performs the same action as what has been mentioned before.",
     examples: [
       {
         japanese: "私も学生です。",
         romaji: "Watashi mo gakusei desu.",
-        english: "Saya juga seorang murid."
+        english: "I am also a student."
       },
       {
         japanese: "りんごを買いました。みかんも買いました。",
         romaji: "Ringo o kaimashita. Mikan mo kaimashita.",
-        english: "Saya membeli apel. Saya juga membeli jeruk."
+        english: "I bought an apple. I also bought an orange."
       }
     ]
   },
@@ -321,17 +321,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "Partikel が (ga)",
     meaning: "Subject marker",
     structure: "Subjek + が + Predikat",
-    explanation: "Berbeda dengan は yang menandai topik lama, が digunakan untuk menandai informasi baru (subjek), atau digunakan secara spesifik bersama kata sifat yang menunjukkan suka/benci, pintar/bodoh, ada/tidak ada.",
+    explanation: "Unlike は which marks the old topic, が is used to mark new information (subject), or is used specifically with adjectives indicating like/dislike, skillful/unskillful, exist/not exist.",
     examples: [
       {
         japanese: "雨が降っています。",
         romaji: "Ame ga futte imasu.",
-        english: "Hujan sedang turun. (fakta baru)"
+        english: "It's raining. (new fact)"
       },
       {
         japanese: "私は猫が好きです。",
         romaji: "Watashi wa neko ga suki desu.",
-        english: "Saya (topik) suka kucing (subjek spesifik)."
+        english: "I (topic) like cats (specific subject)."
       }
     ]
   },
@@ -341,17 +341,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "あります / います",
     meaning: "There is / To exist",
     structure: "Benda/Orang + が + あります/います",
-    explanation: "あります digunakan untuk menyatakan keberadaan benda mati atau tumbuhan. Sedangkan います digunakan untuk benda hidup yang bisa bergerak sendiri seperti manusia dan hewan.",
+    explanation: "あります is used to state the existence of inanimate objects or plants. Whereas います is used for living things that can move on their own like humans and animals.",
     examples: [
       {
         japanese: "あそこに犬がいます。",
         romaji: "Asoko ni inu ga imasu.",
-        english: "Di sana ada anjing."
+        english: "There is a dog over there."
       },
       {
         japanese: "机の上に本があります。",
         romaji: "Tsukue no ue ni hon ga arimasu.",
-        english: "Di atas meja ada buku."
+        english: "There is a book on the table."
       }
     ]
   },
@@ -361,17 +361,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜から 〜まで (kara - made)",
     meaning: "From ... To ...",
     structure: "Waktu/Tempat 1 + から + Waktu/Tempat 2 + まで",
-    explanation: "Menunjukkan titik awal (kara) dan titik akhir (made) dari waktu atau jarak geografis.",
+    explanation: "Indicates the starting point (kara) and ending point (made) of time or geographical distance.",
     examples: [
       {
         japanese: "会議は９時から５時までです。",
         romaji: "Kaigi wa kuji kara goji made desu.",
-        english: "Rapat berlangsung dari jam 9 sampai jam 5."
+        english: "The meeting is from 9 o'clock to 5 o'clock."
       },
       {
         japanese: "家から学校まで歩きます。",
         romaji: "Ie kara gakkou made arukimasu.",
-        english: "Saya berjalan dari rumah sampai ke sekolah."
+        english: "I walk from home to school."
       }
     ]
   },
@@ -381,17 +381,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜てください (te kudasai)",
     meaning: "Please do...",
     structure: "Kata Kerja (Bentuk Te) + ください",
-    explanation: "Digunakan untuk meminta seseorang melakukan sesuatu dengan cara yang sopan.",
+    explanation: "Used to ask someone to do something in a polite manner.",
     examples: [
       {
         japanese: "ここに名前を書いてください。",
         romaji: "Koko ni namae o kaite kudasai.",
-        english: "Tolong tulis nama di sini."
+        english: "Please write your name here."
       },
       {
         japanese: "ちょっと待ってください。",
         romaji: "Chotto matte kudasai.",
-        english: "Tolong tunggu sebentar."
+        english: "Please wait a moment."
       }
     ]
   },
@@ -401,17 +401,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜てもいいです (te mo ii desu)",
     meaning: "May do... (Permission)",
     structure: "Kata Kerja (Bentuk Te) + もいいです(か)",
-    explanation: "Memberikan atau meminta izin untuk melakukan sesuatu. Ditambah 'ka' di akhir untuk bertanya 'Bolehkah saya...?'",
+    explanation: "Giving or asking for permission to do something. Add 'ka' at the end to ask 'May I...?'",
     examples: [
       {
         japanese: "写真を撮ってもいいですか。",
         romaji: "Shashin o totte mo ii desu ka.",
-        english: "Bolehkah saya mengambil foto?"
+        english: "May I take a photo?"
       },
       {
         japanese: "はい、ここで休んでもいいです。",
         romaji: "Hai, koko de yasunde mo ii desu.",
-        english: "Ya, Anda boleh istirahat di sini."
+        english: "Yes, you may rest here."
       }
     ]
   },
@@ -421,17 +421,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜てはいけません (te wa ikemasen)",
     meaning: "Must not do (Prohibition)",
     structure: "Kata Kerja (Bentuk Te) + はいけません",
-    explanation: "Digunakan untuk melarang atau menunjukkan bahwa suatu tindakan tidak diizinkan / dilarang keras.",
+    explanation: "Used to prohibit or indicate that an action is not allowed / strictly prohibited.",
     examples: [
       {
         japanese: "ここでタバコを吸ってはいけません。",
         romaji: "Koko de tabako o sutte wa ikemasen.",
-        english: "Tidak boleh merokok di sini."
+        english: "Smoking is not allowed here."
       },
       {
         japanese: "危ないですから、入ってはいけません。",
         romaji: "Abunai desu kara, haitte wa ikemasen.",
-        english: "Karena berbahaya, tidak boleh masuk."
+        english: "Since it's dangerous, entering is not allowed."
       }
     ]
   },
@@ -441,17 +441,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜ないでください (nai de kudasai)",
     meaning: "Please don't do...",
     structure: "Kata Kerja (Bentuk Nai) + でください",
-    explanation: "Permintaan sopan agar seseorang TIDAK melakukan sesuatu.",
+    explanation: "A polite request for someone NOT to do something.",
     examples: [
       {
         japanese: "写真を撮らないでください。",
         romaji: "Shashin o toranaide kudasai.",
-        english: "Tolong jangan mengambil foto."
+        english: "Please do not take photos."
       },
       {
         japanese: "心配しないでください。",
         romaji: "Shinpai shinaide kudasai.",
-        english: "Tolong jangan khawatir."
+        english: "Please don't worry."
       }
     ]
   },
@@ -461,17 +461,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜たいです (tai desu)",
     meaning: "Want to do...",
     structure: "Kata Kerja (Bentuk Masu dicoret) + たいです",
-    explanation: "Menyatakan keinginan diri sendiri untuk melakukan suatu tindakan. Bertingkah laku seperti kata sifat berakhiran-i.",
+    explanation: "Expresses one's own desire to perform an action. Behaves like an i-adjective.",
     examples: [
       {
         japanese: "日本へ行きたいです。",
         romaji: "Nihon e ikitai desu.",
-        english: "Saya ingin pergi ke Jepang."
+        english: "I want to go to Japan."
       },
       {
         japanese: "寿司が食べたいです。",
         romaji: "Sushi ga tabetai desu.",
-        english: "Saya ingin makan sushi."
+        english: "I want to eat sushi."
       }
     ]
   },
@@ -481,17 +481,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜がほしいです (ga hoshii desu)",
     meaning: "Want (something)",
     structure: "Kata Benda + がほしいです",
-    explanation: "Menyatakan keinginan akan suatu benda mati atau hal yang bisa dimiliki, bukan sebuah aksi/tindakan.",
+    explanation: "Expresses a desire for an inanimate object or something that can be possessed, not an action.",
     examples: [
       {
         japanese: "新しい車がほしいです。",
         romaji: "Atarashii kuruma ga hoshii desu.",
-        english: "Saya ingin mobil baru."
+        english: "I want a new car."
       },
       {
         japanese: "時間とお金がほしいです。",
         romaji: "Jikan to okane ga hoshii desu.",
-        english: "Saya ingin waktu dan uang."
+        english: "I want time and money."
       }
     ]
   },
@@ -501,17 +501,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜ことができます (koto ga dekimasu)",
     meaning: "Can / Able to do",
     structure: "Kata Kerja (Bentuk Kamus) + ことができます",
-    explanation: "Cara sopan untuk menyatakan kemampuan atau kemungkinan untuk melakukan sesuatu.",
+    explanation: "A polite way to state ability or possibility to perform something.",
     examples: [
       {
         japanese: "私は日本語を少し話すことができます。",
         romaji: "Watashi wa Nihongo o sukoshi hanasu koto ga dekimasu.",
-        english: "Saya bisa berbicara bahasa Jepang sedikit."
+        english: "I can speak a little Japanese."
       },
       {
         japanese: "ここでチケットを買うことができます。",
         romaji: "Koko de chiketto o kau koto ga dekimasu.",
-        english: "Anda bisa membeli tiket di sini."
+        english: "You can buy tickets here."
       }
     ]
   },
@@ -521,17 +521,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜たり、〜たりします (tari, tari shimasu)",
     meaning: "Doing things like... and...",
     structure: "Kata Kerja 1 (Bentuk Ta) + り、Kata Kerja 2 (Bentuk Ta) + りします",
-    explanation: "Digunakan untuk menyebutkan beberapa contoh tindakan dari banyak tindakan yang dilakukan. Tidak menyiratkan urutan waktu seperti partikel 'te'. Kata kerja terakhir selalu diikuti 'shimasu' (atau 'shimashita' untuk masa lalu).",
+    explanation: "Used to list several examples of actions from many that are performed. It does not imply chronological order like the 'te' particle. The last verb is always followed by 'shimasu' (or 'shimashita' for the past).",
     examples: [
       {
         japanese: "週末は買い物をしたり、映画を見たりします。",
         romaji: "Shuumatsu wa kaimono o shitari, eiga o mitari shimasu.",
-        english: "Pada akhir pekan, saya (melakukan hal seperti) berbelanja dan menonton film."
+        english: "On weekends, I do things like shopping and watching movies."
       },
       {
         japanese: "昨日は本を読んだり、手紙を書いたりしました。",
         romaji: "Kinou wa hon o yondari, tegami o kaitari shimashita.",
-        english: "Kemarin saya membaca buku, menulis surat, dan sebagainya."
+        english: "Yesterday I read books, wrote letters, and so on."
       }
     ]
   },
@@ -541,17 +541,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜前に (mae ni)",
     meaning: "Before...",
     structure: "Kata Kerja (Kamus) / Kata Benda + の / Waktu + 前に",
-    explanation: "Digunakan untuk menunjukkan bahwa suatu tindakan dilakukan sebelum tindakan lain atau kejadian lain terjadi.",
+    explanation: "Used to indicate that an action is performed before another action or event occurs.",
     examples: [
       {
         japanese: "寝る前に、本を読みます。",
         romaji: "Neru mae ni, hon o yomimasu.",
-        english: "Sebelum tidur, saya membaca buku."
+        english: "Before going to sleep, I read a book."
       },
       {
         japanese: "食事の前に、手を洗います。",
         romaji: "Shokuji no mae ni, te o araimasu.",
-        english: "Sebelum makan, saya mencuci tangan."
+        english: "Before eating, I wash my hands."
       }
     ]
   },
@@ -561,17 +561,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜後で (ato de)",
     meaning: "After...",
     structure: "Kata Kerja (Bentuk Ta) / Kata Benda + の + 後で",
-    explanation: "Digunakan untuk menunjukkan bahwa suatu tindakan dilakukan setelah tindakan lain selesai. Sangat penting untuk mengingat kata kerja menggunakan bentuk Ta (lampau) sebelum 'ato de'.",
+    explanation: "Used to indicate that an action is performed after another action is completed. It is very important to remember that the verb uses the Ta-form (past) before 'ato de'.",
     examples: [
       {
         japanese: "勉強した後で、映画を見ます。",
         romaji: "Benkyou shita ato de, eiga o mimasu.",
-        english: "Setelah belajar, saya akan menonton film."
+        english: "After studying, I will watch a movie."
       },
       {
         japanese: "仕事の後で、飲みに行きましょう。",
         romaji: "Shigoto no ato de, nomi ni ikimashou.",
-        english: "Setelah bekerja, mari kita pergi minum."
+        english: "After work, let's go for a drink."
       }
     ]
   },
@@ -581,17 +581,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜から (kara - Alasan)",
     meaning: "Because...",
     structure: "Kalimat Alasan + から、Kalimat Akibat",
-    explanation: "Digunakan untuk menjelaskan alasan. 'Kara' biasanya bernuansa subyektif dan sering dipakai ketika membujuk, memerintah, atau memberikan alasan pribadi.",
+    explanation: "Used to explain the reason. 'Kara' usually has a subjective nuance and is often used when persuading, commanding, or giving personal reasons.",
     examples: [
       {
         japanese: "忙しいですから、行きません。",
         romaji: "Isogashii desu kara, ikimasen.",
-        english: "Karena sibuk, saya tidak akan pergi."
+        english: "Since I am busy, I won't go."
       },
       {
         japanese: "明日テストがありますから、勉強します。",
         romaji: "Ashita tesuto ga arimasu kara, benkyou shimasu.",
-        english: "Karena besok ada ujian, saya belajar."
+        english: "Because there's a test tomorrow, I'll study."
       }
     ]
   },
@@ -601,17 +601,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜ので (node)",
     meaning: "Because (Formal)",
     structure: "Bentuk Biasa (Na-adj/Noun + な) + ので",
-    explanation: "Mirip dengan 'kara', tetapi 'node' lebih obyektif dan sopan. Sering digunakan untuk menjelaskan fakta atau meminta maaf secara formal.",
+    explanation: "Similar to 'kara', but 'node' is more objective and polite. Often used to explain facts or apologize formally.",
     examples: [
       {
         japanese: "雨が降っているので、試合は中止です。",
         romaji: "Ame ga futte iru node, shiai wa chuushi desu.",
-        english: "Karena hujan turun (fakta obyektif), pertandingan dibatalkan."
+        english: "Since it's raining (objective fact), the match is cancelled."
       },
       {
         japanese: "日曜日なので、銀行は休みです。",
         romaji: "Nichiyoubi na node, ginkou wa yasumi desu.",
-        english: "Karena (ini) hari Minggu, bank libur."
+        english: "Since (it's) Sunday, the bank is closed."
       }
     ]
   },
@@ -621,17 +621,17 @@ export const n5Grammar: GrammarPoint[] = [
     title: "〜つもりです (tsumori desu)",
     meaning: "Intend / Plan to",
     structure: "Kata Kerja (Bentuk Kamus / Nai) + つもりです",
-    explanation: "Digunakan untuk menyatakan rencana atau niat kuat dari si pembicara yang sudah diputuskan sebelumnya.",
+    explanation: "Used to state a plan or strong intention of the speaker that has been decided beforehand.",
     examples: [
       {
         japanese: "来年、日本へ行くつもりです。",
         romaji: "Rainen, Nihon e iku tsumori desu.",
-        english: "Tahun depan, saya berencana pergi ke Jepang."
+        english: "Next year, I intend to go to Japan."
       },
       {
         japanese: "今日は出かけないつもりです。",
         romaji: "Kyou wa dekakenai tsumori desu.",
-        english: "Hari ini saya bermaksud untuk tidak keluar."
+        english: "Today I intend not to go out."
       }
     ]
   }

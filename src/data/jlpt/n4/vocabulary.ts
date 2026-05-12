@@ -12,7 +12,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "辞書で意味を調べます。",
       romaji: "Jisho de imi o shirabemasu.",
-      english: "Saya memeriksa artinya di kamus."
+      english: "I check the meaning in the dictionary."
     }
   },
   {
@@ -26,7 +26,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "友達と約束があります。",
       romaji: "Tomodachi to yakusoku ga arimasu.",
-      english: "Saya punya janji dengan teman."
+      english: "I have a promise with a friend."
     }
   },
   {
@@ -40,7 +40,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "来月、東京に引っ越します。",
       romaji: "Raigetsu, Toukyou ni hikkoshimasu.",
-      english: "Bulan depan, saya pindah rumah ke Tokyo."
+      english: "Next month, I will move to Tokyo."
     }
   },
   {
@@ -54,7 +54,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "旅行の日を決めた。",
       romaji: "Ryokou no hi o kimeta.",
-      english: "Saya telah memutuskan hari liburan."
+      english: "I decided on the day of the trip."
     }
   },
   {
@@ -68,7 +68,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "自己紹介をお願いします。",
       romaji: "Jikoshoukai o onegai shimasu.",
-      english: "Tolong perkenalkan diri Anda."
+      english: "Please introduce yourself."
     }
   },
   {
@@ -82,7 +82,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "時間がないから、急ぎましょう。",
       romaji: "Jikan ga nai kara, isogimashou.",
-      english: "Karena tidak ada waktu, mari kita bergegas."
+      english: "Since there is no time, let's hurry."
     }
   },
   {
@@ -96,7 +96,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "宿題を忘れてしまいました。",
       romaji: "Shukudai o wasurete shimaimashita.",
-      english: "Saya (tidak sengaja) melupakan pekerjaan rumah."
+      english: "I accidentally forgot my homework."
     }
   },
   {
@@ -110,7 +110,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の話を聞いて、みんな笑った。",
       romaji: "Kare no hanashi o kiite, minna waratta.",
-      english: "Mendengar ceritanya, semua orang tertawa."
+      english: "Hearing his story, everyone laughed."
     }
   },
   {
@@ -124,7 +124,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "赤ちゃんが泣いています。",
       romaji: "Akachan ga naite imasu.",
-      english: "Bayi sedang menangis."
+      english: "The baby is crying."
     }
   },
   {
@@ -138,7 +138,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "週末は子供と公園で遊びます。",
       romaji: "Shuumatsu wa kodomo to kouen de asobimasu.",
-      english: "Akhir pekan saya bermain di taman bersama anak."
+      english: "On weekends, I play in the park with my child."
     }
   },
   {
@@ -152,7 +152,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "電車が遅れました。",
       romaji: "Densha ga okuremashita.",
-      english: "Kereta apinya terlambat."
+      english: "The train was late."
     }
   },
   {
@@ -166,7 +166,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "母の料理を手伝います。",
       romaji: "Haha no ryouri o tetsudaimasu.",
-      english: "Saya membantu masakan ibu."
+      english: "I help with my mother's cooking."
     }
   },
   {
@@ -180,7 +180,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "やっと新しい仕事を見つけました。",
       romaji: "Yatto atarashii shigoto o mitsukemashita.",
-      english: "Akhirnya saya menemukan pekerjaan baru."
+      english: "Finally, I found a new job."
     }
   },
   {
@@ -194,7 +194,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "プレゼントをもらって喜んだ。",
       romaji: "Purezento o moratte yorokonda.",
-      english: "Dia sangat senang menerima hadiah tersebut."
+      english: "He was very happy to receive the present."
     }
   },
   {
@@ -208,7 +208,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "明日はサッカーの試合があります。",
       romaji: "Ashita wa sakkaa no shiai ga arimasu.",
-      english: "Besok ada pertandingan sepak bola."
+      english: "There is a soccer match tomorrow."
     }
   },
   {
@@ -222,7 +222,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日本の生活に慣れました。",
       romaji: "Nihon no seikatsu ni naremashita.",
-      english: "Saya sudah terbiasa dengan kehidupan di Jepang."
+      english: "I've gotten used to life in Japan."
     }
   },
   {
@@ -236,7 +236,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "山の景色がとてもきれいです。",
       romaji: "Yama no keshiki ga totemo kirei desu.",
-      english: "Pemandangan gunung sangat indah."
+      english: "The mountain view is very beautiful."
     }
   },
   {
@@ -250,7 +250,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "この町は交通が便利です。",
       romaji: "Kono machi wa koutsuu ga benri desu.",
-      english: "Kota ini transportasinya praktis/mudah."
+      english: "Transportation in this town is convenient."
     }
   },
   {
@@ -264,7 +264,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "ここは安全な場所です。",
       romaji: "Koko wa anzen na basho desu.",
-      english: "Ini adalah tempat yang aman."
+      english: "This is a safe place."
     }
   },
   {
@@ -278,7 +278,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "夜の海は危険です。",
       romaji: "Yoru no umi wa kiken desu.",
-      english: "Laut di malam hari berbahaya."
+      english: "The sea at night is dangerous."
     }
   },
   {
@@ -292,7 +292,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "新しい家を建てます。",
       romaji: "Atarashii ie o tatemasu.",
-      english: "Saya membangun rumah baru."
+      english: "I will build a new house."
     }
   },
   {
@@ -306,7 +306,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "弟がおもちゃを壊しました。",
       romaji: "Otouto ga omocha o kowashimashita.",
-      english: "Adik laki-laki saya merusak mainannya."
+      english: "My younger brother broke his toy."
     }
   },
   {
@@ -320,7 +320,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "自転車を直してもらいました。",
       romaji: "Jitensha o naoshite moraimashita.",
-      english: "Saya meminta sepeda saya diperbaiki."
+      english: "I had my bicycle fixed."
     }
   },
   {
@@ -334,7 +334,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "熱を下げる薬を飲みます。",
       romaji: "Netsu o sageru kusuri o nomimasu.",
-      english: "Saya minum obat untuk menurunkan demam."
+      english: "I take medicine to lower the fever."
     }
   },
   {
@@ -348,7 +348,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "手を上げてください。",
       romaji: "Te o agete kudasai.",
-      english: "Tolong angkat tangan."
+      english: "Please raise your hand."
     }
   },
   {
@@ -362,7 +362,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼にメッセージを伝えます。",
       romaji: "Kare ni messeeji o tsutaemasu.",
-      english: "Saya menyampaikan pesan kepadanya."
+      english: "I convey a message to him."
     }
   },
   {
@@ -376,7 +376,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "結果を後で知らせます。",
       romaji: "Kekka o ato de shirasemasu.",
-      english: "Saya akan memberitahukan hasilnya nanti."
+      english: "I will let you know the result later."
     }
   },
   {
@@ -390,7 +390,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日本の経済について勉強します。",
       romaji: "Nihon no keizai ni tsuite benkyou shimasu.",
-      english: "Saya belajar tentang ekonomi Jepang."
+      english: "I study about the Japanese economy."
     }
   },
   {
@@ -404,7 +404,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "古い歴史がある町です。",
       romaji: "Furui rekishi ga aru machi desu.",
-      english: "Ini adalah kota yang memiliki sejarah tua."
+      english: "It is a town with an old history."
     }
   },
   {
@@ -418,7 +418,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼は政治に興味がありません。",
       romaji: "Kare wa seiji ni kyoumi ga arimasen.",
-      english: "Dia tidak tertarik pada politik."
+      english: "He is not interested in politics."
     }
   },
   {
@@ -432,7 +432,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日本の文化が大好きです。",
       romaji: "Nihon no bunka ga daisuki desu.",
-      english: "Saya sangat menyukai budaya Jepang."
+      english: "I love Japanese culture."
     }
   },
   {
@@ -446,7 +446,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "社会のために働きたいです。",
       romaji: "Shakai no tame ni hatarakitai desu.",
-      english: "Saya ingin bekerja untuk masyarakat."
+      english: "I want to work for society."
     }
   },
   {
@@ -460,7 +460,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "教育はとても重要です。",
       romaji: "Kyouiku wa totemo juuyou desu.",
-      english: "Pendidikan itu sangat penting."
+      english: "Education is very important."
     }
   },
   {
@@ -474,7 +474,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "環境を守りましょう。",
       romaji: "Kankyou o mamorimashou.",
-      english: "Mari kita menjaga lingkungan."
+      english: "Let's protect the environment."
     }
   },
   {
@@ -488,7 +488,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "来年、アメリカに留学します。",
       romaji: "Rainen, Amerika ni ryuugaku shimasu.",
-      english: "Tahun depan, saya akan belajar di Amerika."
+      english: "Next year, I will study in America."
     }
   },
   {
@@ -502,7 +502,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "将来の夢は医者になることです。",
       romaji: "Shourai no yume wa isha ni naru koto desu.",
-      english: "Impian masa depanku adalah menjadi seorang dokter."
+      english: "My future dream is to become a doctor."
     }
   },
   {
@@ -516,7 +516,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "昨日の夜、怖い夢を見ました。",
       romaji: "Kinou no yoru, kowai yume o mimashita.",
-      english: "Tadi malam, saya bermimpi menakutkan."
+      english: "Last night, I had a scary dream."
     }
   },
   {
@@ -530,7 +530,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "あの選手は本当にすごいです。",
       romaji: "Ano senshu wa hontou ni sugoi desu.",
-      english: "Pemain itu benar-benar hebat."
+      english: "That player is really great."
     }
   },
   {
@@ -544,7 +544,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "外の工事がうるさいです。",
       romaji: "Soto no kouji ga urusai desu.",
-      english: "Konstruksi di luar sangat berisik."
+      english: "The construction outside is very noisy."
     }
   },
   {
@@ -558,7 +558,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "私の父はとても厳しいです。",
       romaji: "Watashi no chichi wa totemo kibishii desu.",
-      english: "Ayah saya sangat tegas."
+      english: "My father is very strict."
     }
   },
   {
@@ -572,7 +572,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の意見に反対です。",
       romaji: "Kare no iken ni hantai desu.",
-      english: "Saya menentang pendapatnya."
+      english: "I am against his opinion."
     }
   },
   {
@@ -586,7 +586,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "その計画に賛成します。",
       romaji: "Sono keikaku ni sansei shimasu.",
-      english: "Saya setuju dengan rencana tersebut."
+      english: "I agree with that plan."
     }
   },
   {
@@ -600,7 +600,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "自由に意見を言ってください。",
       romaji: "Jiyuu ni iken o itte kudasai.",
-      english: "Silakan sampaikan pendapat secara bebas."
+      english: "Please express your opinion freely."
     }
   },
   {
@@ -614,7 +614,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "この機械の使い方が分かりません。",
       romaji: "Kono kikai no tsukaikata ga wakarimasen.",
-      english: "Saya tidak tahu cara menggunakan mesin ini."
+      english: "I don't know how to use this machine."
     }
   },
   {
@@ -628,7 +628,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "学校の規則を守りましょう。",
       romaji: "Gakkou no kisoku o mamorimashou.",
-      english: "Mari kita patuhi peraturan sekolah."
+      english: "Let's follow the school rules."
     }
   },
   {
@@ -642,7 +642,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "法律の勉強をしています。",
       romaji: "Houritsu no benkyou o shite imasu.",
-      english: "Saya sedang belajar hukum."
+      english: "I am studying law."
     }
   },
   {
@@ -656,7 +656,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日本の習慣に驚きました。",
       romaji: "Nihon no shuukan ni odorokimashita.",
-      english: "Saya terkejut dengan kebiasaan di Jepang."
+      english: "I was surprised by the customs in Japan."
     }
   },
   {
@@ -670,7 +670,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "色々な経験をしたいです。",
       romaji: "Iroiro na keiken o shitai desu.",
-      english: "Saya ingin melakukan berbagai pengalaman."
+      english: "I want to have various experiences."
     }
   },
   {
@@ -684,7 +684,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "昨日、大きな地震がありました。",
       romaji: "Kinou, ookina jishin ga arimasu.",
-      english: "Kemarin ada gempa bumi yang besar."
+      english: "There was a big earthquake yesterday."
     }
   },
   {
@@ -698,7 +698,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "火事になったら、すぐ逃げてください。",
       romaji: "Kaji ni nattara, sugu nigete kudasai.",
-      english: "Jika terjadi kebakaran, tolong segera lari."
+      english: "If a fire occurs, please run immediately."
     }
   },
   {
@@ -712,7 +712,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "台風が来ています。",
       romaji: "Taifuu ga kite imasu.",
-      english: "Angin topan sedang datang."
+      english: "A typhoon is coming."
     }
   },
   {
@@ -726,7 +726,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "交通事故に気を付けてください。",
       romaji: "Koutsuujiko ni ki o tsukete kudasai.",
-      english: "Tolong berhati-hatilah dengan kecelakaan lalu lintas."
+      english: "Please be careful of traffic accidents."
     }
   },
   {
@@ -740,7 +740,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "旅行の準備をします。",
       romaji: "Ryokou no junbi o shimasu.",
-      english: "Saya melakukan persiapan liburan."
+      english: "I make preparations for the trip."
     }
   },
   {
@@ -754,7 +754,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "着いたら連絡してください。",
       romaji: "Tsuitara renraku shite kudasai.",
-      english: "Tolong hubungi jika sudah sampai."
+      english: "Please contact me when you arrive."
     }
   },
   {
@@ -768,7 +768,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "先生に注意されました。",
       romaji: "Sensei ni chuui saremashita.",
-      english: "Saya diperingatkan oleh guru."
+      english: "I was warned by the teacher."
     }
   },
   {
@@ -782,7 +782,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "明日の会議に出席します。",
       romaji: "Ashita no kaigi ni shusseki shimasu.",
-      english: "Saya akan hadir pada rapat besok."
+      english: "I will attend tomorrow's meeting."
     }
   },
   {
@@ -796,7 +796,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "病気で学校を欠席しました。",
       romaji: "Byouki de gakkou o kesseki shimashita.",
-      english: "Saya absen dari sekolah karena sakit."
+      english: "I was absent from school due to illness."
     }
   },
   {
@@ -805,12 +805,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "失敗",
     reading: "しっぱい",
     romaji: "shippai",
-    meaning: "Kegagalan",
+    meaning: "Failure",
     category: "noun",
     example: {
       japanese: "失敗を恐れないでください。",
       romaji: "Shippai o osorenaide kudasai.",
-      english: "Tolong jangan takut akan kegagalan."
+      english: "Please don't be afraid of failure."
     }
   },
   {
@@ -819,12 +819,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "成功",
     reading: "せいこう",
     romaji: "seikou",
-    meaning: "Kesuksesan / Berhasil",
+    meaning: "Success",
     category: "noun",
     example: {
       japanese: "実験は成功しました。",
       romaji: "Jikken wa seikou shimashita.",
-      english: "Eksperimennya telah berhasil."
+      english: "The experiment was a success."
     }
   },
   {
@@ -833,12 +833,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "謝る",
     reading: "あやまる",
     romaji: "ayamaru",
-    meaning: "Meminta maaf",
+    meaning: "To apologize",
     category: "verb",
     example: {
       japanese: "彼に謝りました。",
       romaji: "Kare ni ayamaramashita.",
-      english: "Saya meminta maaf kepadanya."
+      english: "I apologized to him."
     }
   },
   {
@@ -847,12 +847,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "祈る",
     reading: "いのる",
     romaji: "inoru",
-    meaning: "Berdoa",
+    meaning: "To pray",
     category: "verb",
     example: {
       japanese: "家族の健康を祈ります。",
       romaji: "Kazoku no kenkou o inorimasu.",
-      english: "Saya mendoakan kesehatan keluarga."
+      english: "I pray for my family's health."
     }
   },
   {
@@ -861,12 +861,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "怒る",
     reading: "おこる",
     romaji: "okoru",
-    meaning: "Marah",
+    meaning: "To get angry",
     category: "verb",
     example: {
       japanese: "父はとても怒っています。",
       romaji: "Chichi wa totemo okotte imasu.",
-      english: "Ayah sedang sangat marah."
+      english: "My father is very angry."
     }
   },
   {
@@ -875,12 +875,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "考える",
     reading: "かんがえる",
     romaji: "kangaeru",
-    meaning: "Memikirkan",
+    meaning: "To think",
     category: "verb",
     example: {
       japanese: "将来について考えます。",
       romaji: "Shourai ni tsuite kangaemasu.",
-      english: "Saya memikirkan tentang masa depan."
+      english: "I think about the future."
     }
   },
   {
@@ -889,12 +889,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "比べる",
     reading: "くらべる",
     romaji: "kuraberu",
-    meaning: "Membandingkan",
+    meaning: "To compare",
     category: "verb",
     example: {
       japanese: "二つの車を比べます。",
       romaji: "Futatsu no kuruma o kurabemasu.",
-      english: "Saya membandingkan dua mobil."
+      english: "I compare two cars."
     }
   },
   {
@@ -903,12 +903,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "信じる",
     reading: "しんじる",
     romaji: "shinjiru",
-    meaning: "Mempercayai",
+    meaning: "To believe",
     category: "verb",
     example: {
       japanese: "彼の言葉を信じます。",
       romaji: "Kare no kotoba o shinjimasu.",
-      english: "Saya mempercayai perkataannya."
+      english: "I believe what he says."
     }
   },
   {
@@ -917,12 +917,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "育てる",
     reading: "そだてる",
     romaji: "sodateru",
-    meaning: "Membesarkan / Mendidik",
+    meaning: "To raise / Rear",
     category: "verb",
     example: {
       japanese: "子供を育てます。",
       romaji: "Kodomo o sodatemasu.",
-      english: "Saya membesarkan anak."
+      english: "I am raising a child."
     }
   },
   {
@@ -931,12 +931,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "確かめる",
     reading: "たしかめる",
     romaji: "tashikameru",
-    meaning: "Memastikan",
+    meaning: "To confirm / Verify",
     category: "verb",
     example: {
       japanese: "答えを確かめましょう。",
       romaji: "Kotae o tashikamemashou.",
-      english: "Mari kita pastikan jawabannya."
+      english: "Let's check the answer."
     }
   },
   {
@@ -945,12 +945,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "逃げる",
     reading: "にげる",
     romaji: "nigeru",
-    meaning: "Melarikan diri",
+    meaning: "To run away",
     category: "verb",
     example: {
       japanese: "泥棒が逃げました。",
       romaji: "Dorobou ga nigemashita.",
-      english: "Pencuri itu melarikan diri."
+      english: "The thief ran away."
     }
   },
   {
@@ -959,12 +959,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "迎える",
     reading: "むかえる",
     romaji: "mukaeru",
-    meaning: "Menyambut / Menjemput",
+    meaning: "To welcome / Meet",
     category: "verb",
     example: {
       japanese: "駅まで友達を迎えに行きます。",
       romaji: "Eki made tomodachi o mukae ni ikimasu.",
-      english: "Saya pergi menjemput teman di stasiun."
+      english: "I'll go to the station to meet my friend."
     }
   },
   {
@@ -973,12 +973,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "役に立つ",
     reading: "やくにたつ",
     romaji: "yakunitatsu",
-    meaning: "Berguna",
+    meaning: "To be useful",
     category: "verb",
     example: {
       japanese: "この辞書はとても役に立ちます。",
       romaji: "Kono jisho wa totemo yaku ni tachimasu.",
-      english: "Kamus ini sangat berguna."
+      english: "This dictionary is very useful."
     }
   },
   {
@@ -987,12 +987,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "美しい",
     reading: "うつくしい",
     romaji: "utsukushii",
-    meaning: "Indah",
+    meaning: "Beautiful",
     category: "adjective",
     example: {
       japanese: "日本の景色は美しいです。",
       romaji: "Nihon no keshiki wa utsukushii desu.",
-      english: "Pemandangan Jepang itu indah."
+      english: "The scenery in Japan is beautiful."
     }
   },
   {
@@ -1001,12 +1001,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "可笑しい",
     reading: "おかしい",
     romaji: "okashii",
-    meaning: "Aneh / Lucu",
+    meaning: "Strange / Funny",
     category: "adjective",
     example: {
       japanese: "彼のおかしい話に笑いました。",
       romaji: "Kare no okashii hanashi ni waraimashita.",
-      english: "Saya tertawa mendengar ceritanya yang lucu/aneh."
+      english: "I laughed at his funny story."
     }
   },
   {
@@ -1015,12 +1015,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "悲しい",
     reading: "かなしい",
     romaji: "kanashii",
-    meaning: "Sedih",
+    meaning: "Sad",
     category: "adjective",
     example: {
       japanese: "悲しいニュースを聞きました。",
       romaji: "Kanashii nyuusu o kikimashita.",
-      english: "Saya mendengar berita yang sedih."
+      english: "I heard some sad news."
     }
   },
   {
@@ -1029,12 +1029,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "詳しい",
     reading: "くわしい",
     romaji: "kuwashii",
-    meaning: "Detail / Mengenal baik",
+    meaning: "Detailed / Well-informed",
     category: "adjective",
     example: {
       japanese: "彼女は日本の歴史に詳しいです。",
       romaji: "Kanojo wa Nihon no rekishi ni kuwashii desu.",
-      english: "Dia mengenal baik tentang sejarah Jepang."
+      english: "She is well-informed about Japanese history."
     }
   },
   {
@@ -1043,12 +1043,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "酷い",
     reading: "ひどい",
     romaji: "hidoi",
-    meaning: "Kejam / Mengerikan",
+    meaning: "Terrible / Cruel",
     category: "adjective",
     example: {
       japanese: "今日はひどい雨ですね。",
       romaji: "Kyou wa hidoi ame desu ne.",
-      english: "Hari ini hujannya sangat mengerikan ya."
+      english: "It's a terrible rain today, isn't it?"
     }
   },
   {
@@ -1057,12 +1057,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "真面目",
     reading: "まじめ",
     romaji: "majime",
-    meaning: "Serius / Rajin",
+    meaning: "Serious / Diligent",
     category: "adjective",
     example: {
       japanese: "彼は真面目な学生です。",
       romaji: "Kare wa majime na gakusei desu.",
-      english: "Dia adalah murid yang rajin."
+      english: "He is a diligent student."
     }
   },
   {
@@ -1071,12 +1071,12 @@ export const n4Vocabulary: VocabularyItem[] = [
     word: "残念",
     reading: "ざんねん",
     romaji: "zannen",
-    meaning: "Sayang sekali / Kecewa",
+    meaning: "Unfortunate / Disappointing",
     category: "adjective",
     example: {
       japanese: "行けなくて残念です。",
       romaji: "Ikenakute zannen desu.",
-      english: "Saya tidak bisa pergi dan itu sangat disayangkan."
+      english: "It's a pity I can't go."
     }
   }
 ];

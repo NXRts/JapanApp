@@ -368,7 +368,7 @@ export function GamesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          Belajar Lebih Seru
+          Learning Made Fun
         </Badge>
         <SectionTitle
           as={motion.h2}
@@ -386,7 +386,7 @@ export function GamesSection() {
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
-          Tingkatkan kemampuan bahasa Jepangmu melalui berbagai aktivitas interaktif yang dirancang khusus untuk mempercepat pemahaman dan daya ingat.
+          Level up your Japanese skills through interactive activities designed to accelerate your understanding and memory.
         </SectionSubtitle>
       </SectionHeader>
 
@@ -410,7 +410,7 @@ export function GamesSection() {
             <Title>{feature.title}</Title>
             <Description>{feature.description}</Description>
             <LearnMore $color={feature.color}>
-              Mulai Sekarang
+              Start Now
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />

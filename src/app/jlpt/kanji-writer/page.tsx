@@ -1095,22 +1095,22 @@ export default function KanjiWriterPage() {
       if (strokeDiff === 0) {
         if (pixelAccuracy >= 75) { // Lowered from 85
           baseScore = 95;
-          feedback = `Luar Biasa! Jumlah goresan (${strokeCount}) tepat, dan bentuk kanjinya sangat presisi.`;
+          feedback = `Amazing! The stroke count (${strokeCount}) is correct, and the kanji shape is very precise.`;
         } else if (pixelAccuracy >= 50) { // Lowered from 60
           baseScore = 80;
-          feedback = `Bagus! Jumlah goresan tepat, namun bentuk coretan masih bisa diperbaiki agar lebih rapi mengikuti pola.`;
+          feedback = `Good! The stroke count is correct, but the shape could be improved to follow the pattern more closely.`;
         } else {
           baseScore = 55;
-          feedback = `Jumlah goresan (${strokeCount}) memang tepat, tetapi coretannya tidak membentuk pola kanji yang benar. Coba lagi!`;
+          feedback = `The stroke count (${strokeCount}) is correct, but the strokes do not form the correct kanji pattern. Try again!`;
         }
       } else if (strokeCount < expectedStrokes) {
         baseScore = Math.min(80 - (strokeDiff * 20), pixelAccuracy);
         baseScore = Math.max(10, baseScore);
-        feedback = `Kurang ${strokeDiff} goresan. Kanji ini membutuhkan ${expectedStrokes} goresan. Walaupun bentuknya mirip, aturan goresan harus dipatuhi.`;
+        feedback = `Missing ${strokeDiff} stroke(s). This kanji requires ${expectedStrokes} strokes. Even if the shape looks similar, the stroke rules must be followed.`;
       } else {
         baseScore = Math.min(80 - (strokeDiff * 20), pixelAccuracy);
         baseScore = Math.max(10, baseScore);
-        feedback = `Kelebihan ${strokeDiff} goresan. Kanji ini hanya membutuhkan ${expectedStrokes} goresan. Perhatikan urutan dan cara menulisnya.`;
+        feedback = `Too many strokes (${strokeDiff} extra). This kanji only requires ${expectedStrokes} strokes. Pay attention to the order and writing method.`;
       }
 
       let grade = 'Poor';
@@ -1219,7 +1219,7 @@ export default function KanjiWriterPage() {
               onClick={handleSmartPractice} 
               style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: 'var(--primary)', color: '#fff', fontSize: '0.8rem', padding: '10px' }}
             >
-              Latihan Cerdas 🧠
+              Smart Practice 🧠
             </Btn>
           </div>
           <KanjiSearch>
@@ -1535,7 +1535,7 @@ export default function KanjiWriterPage() {
             <HistoryList>
               {history.length === 0 && (
                 <div style={{ textAlign: 'center', padding: '20px 0', color: 'var(--text-secondary)', fontSize: '0.8rem' }}>
-                  Belum ada riwayat latihan.
+                  No practice history yet.
                 </div>
               )}
               {history.map((h, i) => (

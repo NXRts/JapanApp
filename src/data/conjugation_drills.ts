@@ -22,7 +22,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "行く",
     reading: "いく",
     romaji: "iku",
-    meaning: "Pergi",
+    meaning: "To go",
     group: 1,
     forms: {
       masu: "行きます",
@@ -37,7 +37,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "飲む",
     reading: "のむ",
     romaji: "nomu",
-    meaning: "Minum",
+    meaning: "To drink",
     group: 1,
     forms: {
       masu: "飲みます",
@@ -52,7 +52,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "話す",
     reading: "はなす",
     romaji: "hanasu",
-    meaning: "Berbicara",
+    meaning: "To speak",
     group: 1,
     forms: {
       masu: "話します",
@@ -67,7 +67,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "待つ",
     reading: "まつ",
     romaji: "matsu",
-    meaning: "Menunggu",
+    meaning: "To wait",
     group: 1,
     forms: {
       masu: "待ちます",
@@ -82,7 +82,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "買う",
     reading: "かう",
     romaji: "kau",
-    meaning: "Membeli",
+    meaning: "To buy",
     group: 1,
     forms: {
       masu: "買います",
@@ -97,7 +97,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "読む",
     reading: "よむ",
     romaji: "yomu",
-    meaning: "Membaca",
+    meaning: "To read",
     group: 1,
     forms: {
       masu: "読みます",
@@ -112,7 +112,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "泳ぐ",
     reading: "およぐ",
     romaji: "oyogu",
-    meaning: "Berenang",
+    meaning: "To swim",
     group: 1,
     forms: {
       masu: "泳ぎます",
@@ -127,7 +127,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "遊ぶ",
     reading: "あそぶ",
     romaji: "asobu",
-    meaning: "Bermain",
+    meaning: "To play",
     group: 1,
     forms: {
       masu: "遊びます",
@@ -142,7 +142,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "帰る",
     reading: "かえる",
     romaji: "kaeru",
-    meaning: "Pulang",
+    meaning: "To return",
     group: 1,
     forms: {
       masu: "帰ります",
@@ -157,7 +157,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "書く",
     reading: "かく",
     romaji: "kaku",
-    meaning: "Menulis",
+    meaning: "To write",
     group: 1,
     forms: {
       masu: "書きます",
@@ -172,7 +172,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "聞く",
     reading: "きく",
     romaji: "kiku",
-    meaning: "Mendengar / Bertanya",
+    meaning: "To hear / ask",
     group: 1,
     forms: {
       masu: "聞きます",
@@ -187,7 +187,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "歩く",
     reading: "あるく",
     romaji: "aruku",
-    meaning: "Berjalan",
+    meaning: "To walk",
     group: 1,
     forms: {
       masu: "歩きます",
@@ -202,7 +202,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "働く",
     reading: "はたらく",
     romaji: "hataraku",
-    meaning: "Bekerja",
+    meaning: "To work",
     group: 1,
     forms: {
       masu: "働きます",
@@ -217,7 +217,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "急ぐ",
     reading: "いそぐ",
     romaji: "isogu",
-    meaning: "Bergegas / Buru-buru",
+    meaning: "To hurry",
     group: 1,
     forms: {
       masu: "急ぎます",
@@ -232,7 +232,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "死ぬ",
     reading: "しぬ",
     romaji: "shinu",
-    meaning: "Mati",
+    meaning: "To die",
     group: 1,
     forms: {
       masu: "死にます",
@@ -247,7 +247,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "飛ぶ",
     reading: "とぶ",
     romaji: "tobu",
-    meaning: "Terbang",
+    meaning: "To fly",
     group: 1,
     forms: {
       masu: "飛びます",
@@ -262,7 +262,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "呼ぶ",
     reading: "よぶ",
     romaji: "yobu",
-    meaning: "Memanggil",
+    meaning: "To call",
     group: 1,
     forms: {
       masu: "呼びます",
@@ -277,7 +277,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "休む",
     reading: "やすむ",
     romaji: "yasumu",
-    meaning: "Beristirahat / Libur",
+    meaning: "To rest / break",
     group: 1,
     forms: {
       masu: "休みます",
@@ -292,7 +292,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "住む",
     reading: "すむ",
     romaji: "sumu",
-    meaning: "Tinggal / Menetap",
+    meaning: "To live / reside",
     group: 1,
     forms: {
       masu: "住みます",
@@ -307,7 +307,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "座る",
     reading: "すわる",
     romaji: "suwaru",
-    meaning: "Duduk",
+    meaning: "To sit",
     group: 1,
     forms: {
       masu: "座ります",
@@ -322,7 +322,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "作る",
     reading: "つくる",
     romaji: "tsukuru",
-    meaning: "Membuat",
+    meaning: "To make",
     group: 1,
     forms: {
       masu: "作ります",
@@ -337,7 +337,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "乗る",
     reading: "のる",
     romaji: "noru",
-    meaning: "Naik (Kendaraan)",
+    meaning: "To ride (vehicle)",
     group: 1,
     forms: {
       masu: "乗ります",
@@ -352,7 +352,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "頑張る",
     reading: "がんばる",
     romaji: "ganbaru",
-    meaning: "Berusaha keras",
+    meaning: "To do one's best",
     group: 1,
     forms: {
       masu: "頑張ります",
@@ -367,7 +367,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "会う",
     reading: "あう",
     romaji: "au",
-    meaning: "Bertemu",
+    meaning: "To meet",
     group: 1,
     forms: {
       masu: "会います",
@@ -382,7 +382,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "洗う",
     reading: "あらう",
     romaji: "arau",
-    meaning: "Mencuci",
+    meaning: "To wash",
     group: 1,
     forms: {
       masu: "洗います",
@@ -397,7 +397,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "歌う",
     reading: "うたう",
     romaji: "utau",
-    meaning: "Menyanyi",
+    meaning: "To sing",
     group: 1,
     forms: {
       masu: "歌います",
@@ -414,7 +414,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "食べる",
     reading: "たべる",
     romaji: "taberu",
-    meaning: "Makan",
+    meaning: "To eat",
     group: 2,
     forms: {
       masu: "食べます",
@@ -429,7 +429,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "見る",
     reading: "みる",
     romaji: "miru",
-    meaning: "Melihat",
+    meaning: "To see",
     group: 2,
     forms: {
       masu: "見ます",
@@ -444,7 +444,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "寝る",
     reading: "ねる",
     romaji: "neru",
-    meaning: "Tidur",
+    meaning: "To sleep",
     group: 2,
     forms: {
       masu: "寝ます",
@@ -459,7 +459,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "起きる",
     reading: "おきる",
     romaji: "okiru",
-    meaning: "Bangun",
+    meaning: "To wake up",
     group: 2,
     forms: {
       masu: "起きます",
@@ -474,7 +474,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "教える",
     reading: "おしえる",
     romaji: "oshieru",
-    meaning: "Mengajar",
+    meaning: "To teach",
     group: 2,
     forms: {
       masu: "教えます",
@@ -489,7 +489,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "開ける",
     reading: "あける",
     romaji: "akeru",
-    meaning: "Membuka",
+    meaning: "To open",
     group: 2,
     forms: {
       masu: "開けます",
@@ -504,7 +504,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "閉める",
     reading: "しめる",
     romaji: "shimeru",
-    meaning: "Menutup",
+    meaning: "To close",
     group: 2,
     forms: {
       masu: "閉めます",
@@ -519,7 +519,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "始める",
     reading: "はじめる",
     romaji: "hajimeru",
-    meaning: "Memulai",
+    meaning: "To start",
     group: 2,
     forms: {
       masu: "始めます",
@@ -534,7 +534,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "忘れる",
     reading: "わすれる",
     romaji: "wasureru",
-    meaning: "Lupa",
+    meaning: "To forget",
     group: 2,
     forms: {
       masu: "忘れます",
@@ -549,7 +549,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "覚える",
     reading: "おぼえる",
     romaji: "oboeru",
-    meaning: "Mengingat / Menghafal",
+    meaning: "To remember / memorize",
     group: 2,
     forms: {
       masu: "覚えます",
@@ -564,7 +564,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "借りる",
     reading: "かりる",
     romaji: "kariru",
-    meaning: "Meminjam",
+    meaning: "To borrow",
     group: 2,
     forms: {
       masu: "借ります",
@@ -579,7 +579,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "降りる",
     reading: "おりる",
     romaji: "oriru",
-    meaning: "Turun (Kendaraan)",
+    meaning: "To get off (vehicle)",
     group: 2,
     forms: {
       masu: "降ります",
@@ -596,7 +596,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "する",
     reading: "する",
     romaji: "suru",
-    meaning: "Melakukan",
+    meaning: "To do",
     group: 3,
     forms: {
       masu: "します",
@@ -611,7 +611,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "来る",
     reading: "くる",
     romaji: "kuru",
-    meaning: "Datang",
+    meaning: "To come",
     group: 3,
     forms: {
       masu: "来ます",
@@ -626,7 +626,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "勉強する",
     reading: "べんきょうする",
     romaji: "benkyousuru",
-    meaning: "Belajar",
+    meaning: "To study",
     group: 3,
     forms: {
       masu: "勉強します",
@@ -641,7 +641,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "買い物する",
     reading: "かいものする",
     romaji: "kaimonosuru",
-    meaning: "Berbelanja",
+    meaning: "To shop",
     group: 3,
     forms: {
       masu: "買い物します",
@@ -656,7 +656,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "掃除する",
     reading: "そうじする",
     romaji: "soujisuru",
-    meaning: "Membersihkan",
+    meaning: "To clean",
     group: 3,
     forms: {
       masu: "掃除します",
@@ -671,7 +671,7 @@ export const conjugationData: ConjugationVerb[] = [
     dictionary: "料理する",
     reading: "りょうりする",
     romaji: "ryourisuru",
-    meaning: "Memasak",
+    meaning: "To cook",
     group: 3,
     forms: {
       masu: "料理します",
