@@ -747,10 +747,6 @@ function MiniTestContent() {
                     <StatLabel>Progress</StatLabel>
                     <StatValue>{currentIndex + 1} / {questions.length}</StatValue>
                   </StatItem>
-                  <StatItem>
-                    <StatLabel>Score</StatLabel>
-                    <StatValue>{score}</StatValue>
-                  </StatItem>
                 </StatsRow>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
