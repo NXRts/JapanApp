@@ -7,6 +7,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { allVocabulary, allKanji, allGrammar, DictionaryResult } from '@/lib/dictionary';
 import { motion, AnimatePresence } from 'framer-motion';
+import { TestResultStats } from '@/components/jlpt/TestResultStats';
 
 // --- Types ---
 interface Question {
@@ -233,35 +234,49 @@ const OptionButton = styled(motion.button)<{ $status?: 'correct' | 'incorrect' |
   }
 `;
 
-const ResultGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 3rem;
-`;
-
-const ResultCard = styled.div`
-  background: rgba(var(--surface-rgb), 0.5);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 1.5rem;
-  text-align: center;
+const ScoreCircleWrapper = styled.div`
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 2.5rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
 `;
 
-const ResultValue = styled.div`
-  font-size: 2.5rem;
-  font-weight: 900;
-  color: var(--primary);
+const ScoreLabel = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+
+  .value {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--foreground);
+    line-height: 1;
+  }
+  .label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
 `;
 
-const ResultLabel = styled.div`
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
+const SvgCircle = styled.svg`
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+`;
+
+const ProgressRing = styled.circle`
+  fill: none;
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s ease-out;
 `;
 
 const ActionButton = styled(Link)`
@@ -727,43 +742,55 @@ function MiniTestContent() {
           {testState === 'results' && (
             <GlassCard
               key="results"
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
+              style={{ overflow: 'hidden' }}
             >
-              <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                <motion.div 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', delay: 0.2 }}
-                  style={{ fontSize: '5rem', marginBottom: '1rem' }}
-                >
-                  {score / questions.length >= 0.8 ? '🏆' : '📚'}
-                </motion.div>
-                <Title>Test Results</Title>
-                <Subtitle>{getPerformanceMessage((score / questions.length) * 100)}</Subtitle>
+              <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                <ScoreCircleWrapper>
+                  <SvgCircle viewBox="0 0 100 100">
+                    <circle
+                      cx="50"
+                      cy="50"
+                      r="44"
+                      stroke="rgba(var(--foreground-rgb), 0.05)"
+                      strokeWidth="12"
+                      fill="none"
+                    />
+                    <ProgressRing
+                      cx="50"
+                      cy="50"
+                      r="44"
+                      stroke="var(--primary)"
+                      strokeDasharray={276.46}
+                      strokeDashoffset={276.46 - (276.46 * (score / questions.length))}
+                    />
+                  </SvgCircle>
+                  <ScoreLabel>
+                    <div className="value">{Math.round((score / questions.length) * 100)}%</div>
+                    <div className="label">Final Score</div>
+                  </ScoreLabel>
+                </ScoreCircleWrapper>
+
+                <Title style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Test Results</Title>
+                <Subtitle style={{ maxWidth: '400px', margin: '0 auto' }}>
+                  {getPerformanceMessage((score / questions.length) * 100)}
+                </Subtitle>
               </div>
 
-              <ResultGrid>
-                <ResultCard>
-                  <ResultLabel>Final Score</ResultLabel>
-                  <ResultValue>{Math.round((score / questions.length) * 100)}%</ResultValue>
-                </ResultCard>
-                <ResultCard>
-                  <ResultLabel>Correct</ResultLabel>
-                  <ResultValue style={{ color: '#10b981' }}>{score}</ResultValue>
-                </ResultCard>
-                <ResultCard>
-                  <ResultLabel>Incorrect</ResultLabel>
-                  <ResultValue style={{ color: '#ef4444' }}>{questions.length - score}</ResultValue>
-                </ResultCard>
-                <ResultCard>
-                  <ResultLabel>Time Spent</ResultLabel>
-                  <ResultValue>{formatTime(600 - timeLeft)}</ResultValue>
-                </ResultCard>
-              </ResultGrid>
+              <TestResultStats 
+                stats={[
+                  { label: 'Correct', value: score, color: '#10b981' },
+                  { label: 'Incorrect', value: questions.length - score, color: '#ef4444' },
+                  { label: 'Time', value: formatTime(600 - timeLeft), color: 'var(--primary)' },
+                  { label: 'Level', value: level, color: 'var(--primary)' }
+                ]} 
+              />
 
-              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                <button 
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1rem' }}>
+                <motion.button 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={generateTest}
                   style={{ 
                     padding: '1rem 2.5rem', 
@@ -773,12 +800,13 @@ function MiniTestContent() {
                     border: 'none', 
                     fontWeight: 800, 
                     fontSize: '1.1rem', 
-                    cursor: 'pointer' 
+                    cursor: 'pointer',
+                    boxShadow: '0 10px 20px rgba(var(--primary-rgb), 0.3)'
                   }}
                 >
                   Try Again
-                </button>
-                <ActionButton href="/jlpt">
+                </motion.button>
+                <ActionButton href="/jlpt" style={{ background: 'rgba(var(--foreground-rgb), 0.05)', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none' }}>
                   Finish
                 </ActionButton>
               </div>
