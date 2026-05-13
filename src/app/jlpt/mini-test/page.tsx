@@ -495,6 +495,7 @@ function MiniTestContent() {
     setTestState('playing');
     setCurrentIndex(0);
     setScore(0);
+    setSelectedOption(null);
     setTimeLeft(settings.time * 60);
     setAnswers([]);
   }, [level, settings]);
