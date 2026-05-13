@@ -310,6 +310,60 @@ const LevelBadge = styled.div`
   font-size: 1rem;
 `;
 
+const ReviewSection = styled.div`
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+  text-align: left;
+`;
+
+const ReviewTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: var(--foreground);
+`;
+
+const ReviewList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const ReviewItem = styled.div<{ $isCorrect: boolean }>`
+  background: rgba(var(--surface-rgb), 0.3);
+  border: 1px solid ${({ $isCorrect }) => $isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'};
+  border-radius: 16px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const ReviewQuestion = styled.div`
+  font-weight: 700;
+  font-size: 1.1rem;
+`;
+
+const ReviewAnswers = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.95rem;
+
+  .label {
+    color: var(--text-secondary);
+    margin-right: 0.5rem;
+  }
+  .user-answer {
+    color: var(--foreground);
+    font-weight: 600;
+  }
+  .correct-answer {
+    color: #10b981;
+    font-weight: 600;
+  }
+`;
+
 // --- Helpers ---
 const shuffleArray = <T,>(array: T[]): T[] => {
   const newArray = [...array];
@@ -402,7 +456,8 @@ function MiniTestContent() {
       vocabulary: true,
       kanji: true,
       grammar: true
-    }
+    },
+    showInstantFeedback: true
   });
 
   const [timeLeft, setTimeLeft] = useState(settings.time * 60);
@@ -529,6 +584,8 @@ function MiniTestContent() {
       selected: currentQ.options[optionIndex]
     }]);
 
+    const delay = settings.showInstantFeedback ? 800 : 300;
+
     setTimeout(() => {
       if (currentIndex < questions.length - 1) {
         setCurrentIndex(prev => prev + 1);
@@ -536,7 +593,7 @@ function MiniTestContent() {
       } else {
         setTestState('results');
       }
-    }, 800);
+    }, delay);
   };
 
   const formatTime = (seconds: number) => {
@@ -640,6 +697,20 @@ function MiniTestContent() {
                     </CheckboxLabel>
                   </div>
                 </SettingGroup>
+
+                <SettingGroup>
+                  <SettingLabel>Feedback Mode</SettingLabel>
+                  <div style={{ display: 'flex', gap: '2rem' }}>
+                    <CheckboxLabel>
+                      <input 
+                        type="checkbox" 
+                        checked={settings.showInstantFeedback} 
+                        onChange={e => setSettings(prev => ({ ...prev, showInstantFeedback: e.target.checked }))} 
+                      />
+                      Show correct answer immediately
+                    </CheckboxLabel>
+                  </div>
+                </SettingGroup>
               </SettingSection>
               
               <div style={{ display: 'flex', gap: '1rem', marginTop: '3rem' }}>
@@ -716,7 +787,7 @@ function MiniTestContent() {
                   <OptionsGrid>
                     {questions[currentIndex].options.map((opt, idx) => {
                       let status: 'neutral' | 'correct' | 'incorrect' = 'neutral';
-                      if (selectedOption !== null) {
+                      if (selectedOption !== null && settings.showInstantFeedback) {
                         if (opt === questions[currentIndex].correctAnswer) status = 'correct';
                         else if (idx === selectedOption) status = 'incorrect';
                       }
@@ -726,8 +797,8 @@ function MiniTestContent() {
                           key={idx}
                           $status={status}
                           onClick={() => handleOptionClick(idx)}
-                          whileHover={{ scale: status === 'neutral' ? 1.02 : 1 }}
-                          whileTap={{ scale: status === 'neutral' ? 0.98 : 1 }}
+                          whileHover={{ scale: (status === 'neutral' && selectedOption === null) ? 1.02 : 1 }}
+                          whileTap={{ scale: (status === 'neutral' && selectedOption === null) ? 0.98 : 1 }}
                         >
                           <span className="label">{String.fromCharCode(65 + idx)}</span>
                           {opt}
@@ -811,6 +882,42 @@ function MiniTestContent() {
                   Finish
                 </ActionButton>
               </div>
+
+              <ReviewSection>
+                <ReviewTitle>Question Review</ReviewTitle>
+                <ReviewList>
+                  {answers.map((answer, i) => {
+                    const q = questions[answer.questionIndex];
+                    return (
+                      <ReviewItem key={i} $isCorrect={answer.isCorrect}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <ReviewQuestion>{q.prompt} <span style={{ color: 'var(--text-secondary)', fontWeight: 400, fontSize: '0.9rem' }}>({q.type})</span></ReviewQuestion>
+                          <div style={{ 
+                            color: answer.isCorrect ? '#10b981' : '#ef4444', 
+                            fontWeight: 800, 
+                            fontSize: '0.8rem',
+                            textTransform: 'uppercase'
+                          }}>
+                            {answer.isCorrect ? 'Correct' : 'Incorrect'}
+                          </div>
+                        </div>
+                        <ReviewAnswers>
+                          <div>
+                            <span className="label">Your answer:</span>
+                            <span className="user-answer" style={{ color: answer.isCorrect ? '' : '#ef4444' }}>{answer.selected}</span>
+                          </div>
+                          {!answer.isCorrect && (
+                            <div>
+                              <span className="label">Correct:</span>
+                              <span className="correct-answer">{q.correctAnswer}</span>
+                            </div>
+                          )}
+                        </ReviewAnswers>
+                      </ReviewItem>
+                    );
+                  })}
+                </ReviewList>
+              </ReviewSection>
             </GlassCard>
           )}
         </AnimatePresence>
