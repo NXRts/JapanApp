@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import React, { useState, useEffect, Suspense, useCallback, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
@@ -8,6 +8,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { allVocabulary, allKanji, allGrammar, DictionaryResult } from '@/lib/dictionary';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TestResultStats } from '@/components/jlpt/TestResultStats';
+import { useProgress } from '@/context/ProgressContext';
 
 // --- Types ---
 interface Question {
@@ -442,11 +443,13 @@ const CheckboxLabel = styled.label`
 function MiniTestContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { updateMastery, recordQuizResult } = useProgress();
   const level = searchParams.get('level') || 'N5';
 
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const hasRecordedResult = useRef(false);
   
   // Settings State
   const [settings, setSettings] = useState({
@@ -553,6 +556,7 @@ function MiniTestContent() {
     setSelectedOption(null);
     setTimeLeft(settings.time * 60);
     setAnswers([]);
+    hasRecordedResult.current = false;
   }, [level, settings]);
 
   // Timer Effect
@@ -569,6 +573,14 @@ function MiniTestContent() {
     return () => clearInterval(timer);
   }, [testState, timeLeft]);
 
+  // Record Results Effect
+  useEffect(() => {
+    if (testState === 'results' && questions.length > 0 && !hasRecordedResult.current) {
+      recordQuizResult(score, questions.length, `JLPT ${level} Mini Test`);
+      hasRecordedResult.current = true;
+    }
+  }, [testState, score, questions.length, level, recordQuizResult]);
+
   const handleOptionClick = (optionIndex: number) => {
     if (selectedOption !== null) return;
 
@@ -583,6 +595,9 @@ function MiniTestContent() {
       isCorrect,
       selected: currentQ.options[optionIndex]
     }]);
+
+    // Update mastery for individual items
+    updateMastery(currentQ.prompt, isCorrect);
 
     const delay = settings.showInstantFeedback ? 800 : 300;
 
