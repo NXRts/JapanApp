@@ -6,7 +6,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜ながら (nagara)",
     meaning: "While / Simultaneously",
-    structure: "Kata Kerja (Bentuk Masu dicoret) + ながら",
+    structure: "Verb (Masu-form stem) + ながら",
     explanation: "Used to indicate that the subject is doing two activities at the same time. The main action is the verb that comes after ながら.",
     examples: [
       {
@@ -21,7 +21,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜に違いない (ni chigainai)",
     meaning: "Certainly / Must be",
-    structure: "Bentuk Biasa (Kamus/Ta/Nai) + に違いない",
+    structure: "Bentuk Biasa (Dictionary form/Ta/Nai) + に違いない",
     explanation: "Used to express strong conviction or a conclusion by the speaker based on evidence or intuition.",
     examples: [
       {
@@ -36,7 +36,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜ことになっている",
     meaning: "It has been decided / It is a rule",
-    structure: "Kata Kerja (Kamus/Nai) + ことになっている",
+    structure: "Verb (Dictionary form/Nai) + ことになっている",
     explanation: "States something that has been decided outside of our control, such as rules, customs, habits, or laws that apply objectively.",
     examples: [
       {
@@ -51,7 +51,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜とおりに (toori ni)",
     meaning: "In accordance with / Just as",
-    structure: "Kata Kerja (Kamus/Ta) / Benda+の + とおりに",
+    structure: "Verb (Dictionary form/Ta) / Noun+の + とおりに",
     explanation: "Used to state that someone is performing an action exactly according to a pattern, instruction, or pre-existing expectation.",
     examples: [
       {
@@ -71,7 +71,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜ばよかった (ba yokatta)",
     meaning: "Should have... (Regret)",
-    structure: "Kata Kerja (Bentuk Ba) + よかった",
+    structure: "Verb (Ba-form) + よかった",
     explanation: "Used to express regret about something in the past. 'Ah, I should have done that' (but in reality, I didn't).",
     examples: [
       {
@@ -106,7 +106,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜まま (mama)",
     meaning: "Remaining in a state / Left as is",
-    structure: "Kata Kerja (Ta/Nai) / Kata Benda + の + まま",
+    structure: "Verb (Ta/Nai) / Noun + の + まま",
     explanation: "Indicates that a condition or state is left unchanged after something is done. Often suggests that it should not have been left that way.",
     examples: [
       {
@@ -126,7 +126,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜てからでないと (te kara denai to)",
     meaning: "Unless... / Not until...",
-    structure: "Kata Kerja (Bentuk Te) + からでないと + Bentuk Negatif",
+    structure: "Verb (Te-form) + からでないと + Negative form",
     explanation: "States that the first action must be completely finished before the second thing can be done. If the first condition is not met, the consequence cannot happen.",
     examples: [
       {
@@ -141,7 +141,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜気味 (gimi)",
     meaning: "Feeling a bit... / Tending towards... (Negative tendency)",
-    structure: "Kata Benda / Kata Kerja (Masu dicoret) + 気味",
+    structure: "Noun / Verb (Masu-stem) + 気味",
     explanation: "Expresses that someone has symptoms or feels prone to a certain physical/mental state, usually with a negative connotation or being out of the ordinary.",
     examples: [
       {
@@ -161,7 +161,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜代わりに (kawari ni)",
     meaning: "Instead of / In place of",
-    structure: "Bentuk Biasa / Benda+の + 代わりに",
+    structure: "Bentuk Biasa / Noun+の + 代わりに",
     explanation: "Used when one thing is used to replace or represent something else, or as compensation/reciprocity for something.",
     examples: [
       {
@@ -181,7 +181,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜だらけ (darake)",
     meaning: "Full of / Covered with (Negative things)",
-    structure: "Kata Benda + だらけ",
+    structure: "Noun + だらけ",
     explanation: "Describes that something is filled with unpleasant, dirty, or visually unwanted things (like dust, mud, mistakes).",
     examples: [
       {
@@ -201,7 +201,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜ところだ (tokoro da)",
     meaning: "Just about to / In the middle of / Just finished",
-    structure: "Kata Kerja (Kamus/Te-iru/Ta) + ところだ",
+    structure: "Verb (Dictionary form/Te-iru/Ta) + ところだ",
     explanation: "Indicates a very specific 'point in time' of an action. Dictionary form = about to be done. Te-iru = exactly being done now. Ta = just finished this second.",
     examples: [
       {
@@ -241,7 +241,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜さえ (sae)",
     meaning: "Even",
-    structure: "Kata Benda + さえ",
+    structure: "Noun + さえ",
     explanation: "Used to provide an extreme example, implying that 'if even this extreme case happens/doesn't happen, how much more so for ordinary things'.",
     examples: [
       {
@@ -261,7 +261,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜さえ〜ば (sae...ba)",
     meaning: "As long as... (The only condition)",
-    structure: "Kata Benda + さえ + Kata Kerja (Ba)",
+    structure: "Noun + さえ + Verb (Ba)",
     explanation: "States that if that ONE minimum condition is met, then everything will be fine/taken care of.",
     examples: [
       {
@@ -281,7 +281,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜っぱなし (ppanashi)",
     meaning: "Left as is (in a bad state)",
-    structure: "Kata Kerja (Masu dicoret) + っぱなし",
+    structure: "Verb (Masu-stem) + っぱなし",
     explanation: "Similar to 〜まま, but 〜っぱなし is usually used for a negative condition where someone leaves something that should be changed/tidied up.",
     examples: [
       {
@@ -301,7 +301,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜たびに (tabi ni)",
     meaning: "Every time / Whenever",
-    structure: "Kata Kerja (Kamus) / Benda+の + たびに",
+    structure: "Verb (Dictionary form) / Noun+の + たびに",
     explanation: "Emphasizes that every time event A happens, then event B will ALWAYS happen without exception.",
     examples: [
       {
@@ -321,7 +321,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜とたんに (to totan ni)",
     meaning: "Just as (this) happened, immediately...",
-    structure: "Kata Kerja (Ta) + とたんに",
+    structure: "Verb (Ta) + とたんに",
     explanation: "States that exactly after the first event takes place, a second event happens suddenly, often unexpectedly.",
     examples: [
       {
@@ -341,7 +341,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜に対して (ni taishite)",
     meaning: "Towards / In contrast to",
-    structure: "Kata Benda + に対して",
+    structure: "Noun + に対して",
     explanation: "Has two meanings: 1) Attitude/action 'towards' a subject. 2) Shows a contrast 'as opposed to / compared to'.",
     examples: [
       {
@@ -381,7 +381,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜うちに (uchi ni)",
     meaning: "While / Before (it's too late)",
-    structure: "Kata Kerja (Te-iru/Nai) / Kata Sifat / Benda+の + うちに",
+    structure: "Verb (Te-iru/Nai) / Adjective / Noun+の + うちに",
     explanation: "Suggests doing something while the conditions still allow (before the situation changes for the worse/becomes impossible).",
     examples: [
       {
@@ -401,7 +401,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜ようにする (you ni suru)",
     meaning: "Endeavor to / Make an effort to",
-    structure: "Kata Kerja (Kamus/Nai) + ようにする",
+    structure: "Verb (Dictionary form/Nai) + ようにする",
     explanation: "Indicates a continuous effort or intention to make a certain state happen or become a habit.",
     examples: [
       {
@@ -421,7 +421,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜ようになる (you ni naru)",
     meaning: "To reach the point where / Come to be that",
-    structure: "Kata Kerja (Kamus/Potensial) + ようになる",
+    structure: "Verb (Dictionary form/Potensial) + ようになる",
     explanation: "Indicates a change in state, from not being able to being able, or from not being used to being used to something.",
     examples: [
       {
@@ -441,7 +441,7 @@ export const n3Grammar: GrammarPoint[] = [
     level: "N3",
     title: "〜ことにする (koto ni suru)",
     meaning: "Decide to...",
-    structure: "Kata Kerja (Kamus/Nai) + ことにする",
+    structure: "Verb (Dictionary form/Nai) + ことにする",
     explanation: "States a subjective decision made by oneself, usually for a habit or future action.",
     examples: [
       {

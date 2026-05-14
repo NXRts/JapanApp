@@ -6,7 +6,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜かねる (kaneru)",
     meaning: "Difficult to / Cannot (due to psychological reasons)",
-    structure: "Kata Kerja (Bentuk Masu dicoret) + かねる",
+    structure: "Verb (Masu-form stem) + かねる",
     explanation: "Expresses an inability to do something not because of a lack of physical skill, but because of psychological reasons, social norms, or ethics (objection, hesitation, hard to accept at heart). Often used in formal business.",
     examples: [
       {
@@ -26,7 +26,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜ざるを得ない (zaru o enai)",
     meaning: "Forced to / Have no choice but to",
-    structure: "Kata Kerja (Nai dicoret) + ざるを得ない (*Suru menjadi sezaru)",
+    structure: "Verb (Nai stem) + ざるを得ない (*Suru menjadi sezaru)",
     explanation: "An extreme situation where despite someone possibly not wanting to do something, circumstances force them so that there is no choice but to do it.",
     examples: [
       {
@@ -46,7 +46,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜ことなしに (koto nashi ni)",
     meaning: "Without doing...",
-    structure: "Kata Kerja Kamus + ことなしに",
+    structure: "Verb Dictionary form + ことなしに",
     explanation: "Very formal. Emphasizes that if the main action is performed without a certain prerequisite or secondary action (A), then the result (B) will be difficult to achieve or impossible.",
     examples: [
       {
@@ -61,7 +61,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜余儀なくされる (yogi naku sareru)",
     meaning: "Forced to / Compelled by circumstances",
-    structure: "Kata Benda + を余儀なくされる",
+    structure: "Noun + を余儀なくされる",
     explanation: "Used in news or very formal writing. Means the subject who has no power to refuse is pushed into an unwanted situation due to unexpected conditions (natural disasters, crises, etc.).",
     examples: [
       {
@@ -96,7 +96,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜を余儀なくさせる (o yoginaku saseru)",
     meaning: "To force (someone/something) to do...",
-    structure: "Kata Benda + を余儀なくさせる",
+    structure: "Noun + を余儀なくさせる",
     explanation: "Causative form of 'yogi naku sareru'. Means a thing (like a disaster, major problem) forces another entity into an unavoidable situation.",
     examples: [
       {
@@ -111,7 +111,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜がてら (gatera)",
     meaning: "While (doing the main action), at the same time...",
-    structure: "Kata Kerja (Masu dicoret) / Kata Benda Verbal + がてら",
+    structure: "Verb (Masu-stem) / Noun Verbal + がてら",
     explanation: "States that while performing the main task (usually a light movement like walking), the speaker takes the opportunity to perform a secondary task.",
     examples: [
       {
@@ -126,7 +126,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜かたわら (katawara)",
     meaning: "While (managing a long-term career/activity)",
-    structure: "Kata Kerja (Kamus) / Benda+の + かたわら",
+    structure: "Verb (Dictionary form) / Noun+の + かたわら",
     explanation: "States that in addition to doing a primary profession or work (school, office work), someone also has a second serious activity (such as running a business, writing a novel).",
     examples: [
       {
@@ -141,7 +141,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜かたがた (katagata)",
     meaning: "As a way to... and at the same time...",
-    structure: "Kata Benda Verbal + かたがた",
+    structure: "Noun Verbal + かたがた",
     explanation: "Very formal. Used in letters or official requests to express that one visit has two noble purposes at the same time (e.g., visiting and at the same time expressing gratitude).",
     examples: [
       {
@@ -156,7 +156,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜であれ (de are)",
     meaning: "Even if / Regardless of whether it is...",
-    structure: "Kata Benda / Kata Tanya + であれ",
+    structure: "Noun / Kata Tanya + であれ",
     explanation: "Indicates the fact that whatever conditions exist (A), they will not change the speaker's actions or principles (B). Same as 'de mo'.",
     examples: [
       {
@@ -171,7 +171,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜であれ〜であれ (de are... de are)",
     meaning: "Whether it be A or B",
-    structure: "Benda1 + であれ + Benda2 + であれ",
+    structure: "Noun1 + であれ + Noun2 + であれ",
     explanation: "Mentions two extreme examples (such as old or young, male or female), and states that the principle of the sentence applies equally without differentiating between the two.",
     examples: [
       {
@@ -186,7 +186,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜なり〜なり (nari... nari)",
     meaning: "Whether it be A or B, please...",
-    structure: "Kata Benda / Kerja Kamus + なり",
+    structure: "Noun / Kerja Dictionary form + なり",
     explanation: "Suggests choices from a group of similar items. It gives the impression 'don't be confused, take whatever action from any of them'.",
     examples: [
       {
@@ -216,7 +216,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜べからず (bekarazu)",
     meaning: "Strictly prohibited...",
-    structure: "Kata Kerja Kamus + べからず",
+    structure: "Verb Dictionary form + べからず",
     explanation: "A very ancient and strict way of writing 'Must not'. Often found on warning signs and written proclamations in the past.",
     examples: [
       {
@@ -231,7 +231,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜に即して (ni soku shite)",
     meaning: "Precisely adjusted to (reality/experience)",
-    structure: "Kata Benda + に即して",
+    structure: "Noun + に即して",
     explanation: "Acting in accordance with certain strict standards, usually law, fact, rule, or reality of life, without deviating from it.",
     examples: [
       {
@@ -246,7 +246,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜なきにしもあらず (naki ni shimo arazu)",
     meaning: "Not completely impossible / Still a small possibility",
-    structure: "Kata Benda + なきにしもあらず",
+    structure: "Noun + なきにしもあらず",
     explanation: "A roundabout expression that basically means 'Cannot be said to be zero, so maybe there's still a bit'. An old literary form of 'nai koto wa nai'.",
     examples: [
       {
@@ -276,7 +276,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜に当たる (ni ataru)",
     meaning: "Equivalent to / Falls into the category of",
-    structure: "Kata Benda + に当たる",
+    structure: "Noun + に当たる",
     explanation: "States that one entity has the same weight, is equivalent in value, or falls into a specific category present in another group.",
     examples: [
       {
@@ -291,7 +291,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜まじき (majiki)",
     meaning: "Unworthy of... / Not fitting for...",
-    structure: "Kata Kerja Kamus + まじき + Benda(Orang/Posisi)",
+    structure: "Verb Dictionary form + まじき + Noun(Orang/Posisi)",
     explanation: "Strong moral criticism. Indicates that based on their position or profession, the action is absolutely unforgivable or unacceptable (like 'Something unworthy of a teacher').",
     examples: [
       {
@@ -306,7 +306,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜ごとき (gotoki)",
     meaning: "Something at the level of... / Something like...",
-    structure: "Kata Benda + のごとき",
+    structure: "Noun + のごとき",
     explanation: "Very belittling. Expresses contempt that the mentioned party is of a very low level, unimportant, or only of that class.",
     examples: [
       {
@@ -321,7 +321,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "いわんや (iwanya)",
     meaning: "Let alone / Even more so",
-    structure: "いわんや + Kata Benda / Subjek",
+    structure: "いわんや + Noun / Subjek",
     explanation: "Old writing style from literary language. States 'If even X is impossible, LET ALONE Y (which is much harder)'.",
     examples: [
       {
@@ -336,7 +336,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜に足らない (ni taranai)",
     meaning: "Not worth... / Unworthy of (being judged/discussed)",
-    structure: "Kata Kerja Kamus / Benda + に（は）足らない",
+    structure: "Verb Dictionary form / Noun + に（は）足らない",
     explanation: "Means 'The value is too low so it's a waste of time to discuss or worry about'.",
     examples: [
       {
@@ -351,7 +351,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜がたい (gatai)",
     meaning: "Hard to believe / Hard to accept",
-    structure: "Kata Kerja (Masu dicoret) + がたい",
+    structure: "Verb (Masu-stem) + がたい",
     explanation: "Different from 'Nikui' (physically difficult). 'Gatai' means mentally/emotionally impossible. Usually paired with cognitive verbs (believe, forgive, imagine, etc.).",
     examples: [
       {
@@ -366,7 +366,7 @@ export const n1Grammar: GrammarPoint[] = [
     level: "N1",
     title: "〜ながらも (nagara mo)",
     meaning: "Although (within limitations)...",
-    structure: "Kata Benda / Kata Sifat / Kata Kerja(Masu dicoret) + ながらも",
+    structure: "Noun / Adjective / Verb(Masu-stem) + ながらも",
     explanation: "Same meaning as 'keredomo' (although). Gives the impression that despite all negative conditions, something still happens.",
     examples: [
       {

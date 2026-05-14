@@ -618,7 +618,7 @@ function MiniTestContent() {
             { label: 'Home', href: '/' },
             { label: 'JLPT Mastery', href: '/jlpt' }
           ]} 
-          current="Mini Test" 
+          current={`${level} Mini Test`} 
         />
 
         <AnimatePresence mode="wait">
@@ -638,6 +638,21 @@ function MiniTestContent() {
               </Subtitle>
 
               <SettingSection>
+                <SettingGroup>
+                  <SettingLabel>JLPT Level</SettingLabel>
+                  <SettingOptions>
+                    {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
+                      <SettingChip 
+                        key={lvl} 
+                        $active={level === lvl}
+                        onClick={() => router.push(`/jlpt/mini-test?level=${lvl}`)}
+                      >
+                        {lvl}
+                      </SettingChip>
+                    ))}
+                  </SettingOptions>
+                </SettingGroup>
+
                 <SettingGroup>
                   <SettingLabel>Question Count</SettingLabel>
                   <SettingOptions>
