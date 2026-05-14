@@ -80,7 +80,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜ます (masu)",
     meaning: "Polite verb form",
-    structure: "Kata Kerja (Bentuk Masu) + ます",
+    structure: "Verb (Masu-form) + ます",
     explanation: "The suffix for formal/polite verb forms. Used to state positive actions happening now, habits, or future actions.",
     examples: [
       {
@@ -100,7 +100,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜ません (masen)",
     meaning: "Polite negative verb form",
-    structure: "Kata Kerja (Bentuk Masu) + ません",
+    structure: "Verb (Masu-form) + ません",
     explanation: "The negative form of 〜ます. Used to politely state that an action is not being performed (present/future).",
     examples: [
       {
@@ -120,7 +120,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜ました (mashita)",
     meaning: "Past polite verb form (Completed)",
-    structure: "Kata Kerja (Bentuk Masu) + ました",
+    structure: "Verb (Masu-form) + ました",
     explanation: "The polite past tense form for verbs. Used to state actions that have already happened or have been completed.",
     examples: [
       {
@@ -140,7 +140,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜ませんでした (masen deshita)",
     meaning: "Past negative polite verb form",
-    structure: "Kata Kerja (Bentuk Masu) + ませんでした",
+    structure: "Verb (Masu-form) + ませんでした",
     explanation: "The polite past negative form for verbs. It means an action was not performed in the past.",
     examples: [
       {
@@ -160,7 +160,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "Partikel に (Waktu)",
     meaning: "At (specific time)",
-    structure: "Waktu Spesifik + に + Kata Kerja",
+    structure: "Waktu Spesifik + に + Verb",
     explanation: "The particle に is used to indicate a specific point in time when an action occurs (such as hour, date, day, month). It is not used for relative time markers like 'today' or 'tomorrow'.",
     examples: [
       {
@@ -180,7 +180,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "Partikel に (Tujuan)",
     meaning: "To / For (Destination / Recipient)",
-    structure: "Tempat/Orang + に + Kata Kerja Pindah/Memberi",
+    structure: "Tempat/Orang + に + Verb Pindah/Memberi",
     explanation: "Indicates the destination of movement (going to...) or the direction of an action (giving to...).",
     examples: [
       {
@@ -200,7 +200,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "Partikel へ (e)",
     meaning: "To (Direction of movement)",
-    structure: "Tempat + へ + Kata Kerja Pergerakan (行く, 来る, 帰る)",
+    structure: "Tempat + へ + Verb Pergerakan (行く, 来る, 帰る)",
     explanation: "Similar to に for destination, but emphasizes the direction of movement more. Written as 'he' but pronounced 'e'.",
     examples: [
       {
@@ -220,7 +220,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "Partikel を (o)",
     meaning: "Direct object marker",
-    structure: "Objek + を + Kata Kerja Transitif",
+    structure: "Objek + を + Verb Transitif",
     explanation: "The particle を (written 'wo' but pronounced 'o') is used to mark the direct object of an action verb (the object that receives the action).",
     examples: [
       {
@@ -240,7 +240,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "Partikel で (Tempat)",
     meaning: "At / In (Location of action)",
-    structure: "Tempat + で + Kata Kerja Aksi",
+    structure: "Tempat + で + Verb Aksi",
     explanation: "Indicates the location where an activity or event takes place. Different from に which only shows the location of static existence.",
     examples: [
       {
@@ -280,7 +280,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "Partikel と (to)",
     meaning: "And / With",
-    structure: "Kata Benda 1 + と + Kata Benda 2 (atau Bersama Orang + と)",
+    structure: "Noun 1 + と + Noun 2 (or With Someone + と)",
     explanation: "Can be used to combine objects ('and') specifically, or to show a companion in an activity ('together with').",
     examples: [
       {
@@ -300,7 +300,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "Partikel も (mo)",
     meaning: "Also / Too",
-    structure: "Kata Benda + も",
+    structure: "Noun + も",
     explanation: "Replaces the particle は, が, or を to state that something 'also' has the same property or performs the same action as what has been mentioned before.",
     examples: [
       {
@@ -340,7 +340,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "あります / います",
     meaning: "There is / To exist",
-    structure: "Benda/Orang + が + あります/います",
+    structure: "Noun/Orang + が + あります/います",
     explanation: "あります is used to state the existence of inanimate objects or plants. Whereas います is used for living things that can move on their own like humans and animals.",
     examples: [
       {
@@ -380,7 +380,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜てください (te kudasai)",
     meaning: "Please do...",
-    structure: "Kata Kerja (Bentuk Te) + ください",
+    structure: "Verb (Te-form) + ください",
     explanation: "Used to ask someone to do something in a polite manner.",
     examples: [
       {
@@ -400,7 +400,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜てもいいです (te mo ii desu)",
     meaning: "May do... (Permission)",
-    structure: "Kata Kerja (Bentuk Te) + もいいです(か)",
+    structure: "Verb (Te-form) + もいいです(か)",
     explanation: "Giving or asking for permission to do something. Add 'ka' at the end to ask 'May I...?'",
     examples: [
       {
@@ -420,7 +420,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜てはいけません (te wa ikemasen)",
     meaning: "Must not do (Prohibition)",
-    structure: "Kata Kerja (Bentuk Te) + はいけません",
+    structure: "Verb (Te-form) + はいけません",
     explanation: "Used to prohibit or indicate that an action is not allowed / strictly prohibited.",
     examples: [
       {
@@ -440,7 +440,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜ないでください (nai de kudasai)",
     meaning: "Please don't do...",
-    structure: "Kata Kerja (Bentuk Nai) + でください",
+    structure: "Verb (Nai-form) + でください",
     explanation: "A polite request for someone NOT to do something.",
     examples: [
       {
@@ -460,7 +460,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜たいです (tai desu)",
     meaning: "Want to do...",
-    structure: "Kata Kerja (Bentuk Masu dicoret) + たいです",
+    structure: "Verb (Masu-form stem) + たいです",
     explanation: "Expresses one's own desire to perform an action. Behaves like an i-adjective.",
     examples: [
       {
@@ -480,7 +480,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜がほしいです (ga hoshii desu)",
     meaning: "Want (something)",
-    structure: "Kata Benda + がほしいです",
+    structure: "Noun + がほしいです",
     explanation: "Expresses a desire for an inanimate object or something that can be possessed, not an action.",
     examples: [
       {
@@ -500,7 +500,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜ことができます (koto ga dekimasu)",
     meaning: "Can / Able to do",
-    structure: "Kata Kerja (Bentuk Kamus) + ことができます",
+    structure: "Verb (Dictionary form) + ことができます",
     explanation: "A polite way to state ability or possibility to perform something.",
     examples: [
       {
@@ -520,7 +520,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜たり、〜たりします (tari, tari shimasu)",
     meaning: "Doing things like... and...",
-    structure: "Kata Kerja 1 (Bentuk Ta) + り、Kata Kerja 2 (Bentuk Ta) + りします",
+    structure: "Verb 1 (Ta-form) + り、Verb 2 (Ta-form) + りします",
     explanation: "Used to list several examples of actions from many that are performed. It does not imply chronological order like the 'te' particle. The last verb is always followed by 'shimasu' (or 'shimashita' for the past).",
     examples: [
       {
@@ -540,7 +540,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜前に (mae ni)",
     meaning: "Before...",
-    structure: "Kata Kerja (Kamus) / Kata Benda + の / Waktu + 前に",
+    structure: "Verb (Dictionary form) / Noun + の / Waktu + 前に",
     explanation: "Used to indicate that an action is performed before another action or event occurs.",
     examples: [
       {
@@ -560,7 +560,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜後で (ato de)",
     meaning: "After...",
-    structure: "Kata Kerja (Bentuk Ta) / Kata Benda + の + 後で",
+    structure: "Verb (Ta-form) / Noun + の + 後で",
     explanation: "Used to indicate that an action is performed after another action is completed. It is very important to remember that the verb uses the Ta-form (past) before 'ato de'.",
     examples: [
       {
@@ -620,7 +620,7 @@ export const n5Grammar: GrammarPoint[] = [
     level: "N5",
     title: "〜つもりです (tsumori desu)",
     meaning: "Intend / Plan to",
-    structure: "Kata Kerja (Bentuk Kamus / Nai) + つもりです",
+    structure: "Verb (Dictionary form / Nai) + つもりです",
     explanation: "Used to state a plan or strong intention of the speaker that has been decided beforehand.",
     examples: [
       {

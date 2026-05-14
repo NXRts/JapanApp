@@ -6,7 +6,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜ている (te iru)",
     meaning: "Doing / State of continuation",
-    structure: "Kata Kerja (Bentuk Te) + いる",
+    structure: "Verb (Te-form) + いる",
     explanation: "Has two main meanings: 1) Expresses an ongoing action (present continuous). 2) Expresses a state that is the result of a past action and still continues.",
     examples: [
       {
@@ -26,7 +26,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜たことがある",
     meaning: "Have done before (Experience)",
-    structure: "Kata Kerja (Bentuk Ta) + ことがある",
+    structure: "Verb (Ta-form) + ことがある",
     explanation: "Used to talk about past experiences. Means 'have done something'. Not used for routine actions.",
     examples: [
       {
@@ -46,7 +46,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜つもり (tsumori)",
     meaning: "Intend / Plan to",
-    structure: "Kata Kerja (Kamus / Nai) + つもりです",
+    structure: "Verb (Dictionary form / Nai) + つもりです",
     explanation: "Used to express a strong intention or plan decided beforehand. Usually not used to ask the intentions of superiors.",
     examples: [
       {
@@ -66,7 +66,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜予定 (yotei)",
     meaning: "Schedule / Plan",
-    structure: "Kata Kerja (Kamus) / Kata Benda + の + 予定です",
+    structure: "Verb (Dictionary form) / Noun + の + 予定です",
     explanation: "Used to express a fixed plan or schedule that has been set (usually objectively or formally).",
     examples: [
       {
@@ -86,7 +86,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜てしまう (te shimau)",
     meaning: "Completed / Unintentional (regret)",
-    structure: "Kata Kerja (Bentuk Te) + しまう / しまいました",
+    structure: "Verb (Te-form) + しまう / しまいました",
     explanation: "Expresses two things: 1) Completing an action entirely. 2) Regret over something that happened unintentionally.",
     examples: [
       {
@@ -106,7 +106,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜ておく (te oku)",
     meaning: "Do in preparation",
-    structure: "Kata Kerja (Bentuk Te) + おく / おきます",
+    structure: "Verb (Te-form) + おく / おきます",
     explanation: "Performing an action as preparation for the future, or leaving something in its current state.",
     examples: [
       {
@@ -126,7 +126,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜そうです (sou desu - Hearsay)",
     meaning: "I heard / It is said that",
-    structure: "Bentuk Biasa (Kamus/Ta/Nai) + そうです",
+    structure: "Bentuk Biasa (Dictionary form/Ta/Nai) + そうです",
     explanation: "Used to convey information heard from another source (rumor/hearsay). The source is often marked with 〜によると (according to...).",
     examples: [
       {
@@ -146,7 +146,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜そうです (sou desu - Appearance)",
     meaning: "Looks like / Appears to be",
-    structure: "Kata Kerja (Masu dicoret) / Kata Sifat (i dicoret) + そうです",
+    structure: "Verb (Masu-stem) / Adjective (i stem) + そうです",
     explanation: "Expresses a guess or impression captured by the eyes (visual). Different from hearsay form which uses the plain form.",
     examples: [
       {
@@ -166,7 +166,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜すぎる (sugiru)",
     meaning: "Too much / Excessively",
-    structure: "Kata Kerja (Masu dicoret) / Kata Sifat (i dicoret) + すぎる",
+    structure: "Verb (Masu-stem) / Adjective (i stem) + すぎる",
     explanation: "Indicates that a condition or action is excessive, exceeding reasonable limits (usually negative connotation).",
     examples: [
       {
@@ -186,7 +186,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜ほうがいい (hou ga ii)",
     meaning: "Had better / Should",
-    structure: "Kata Kerja (Ta / Nai) + ほうがいいです",
+    structure: "Verb (Ta / Nai) + ほうがいいです",
     explanation: "Used to give strong advice or suggestions to others, implying that something bad might happen if the advice is not followed.",
     examples: [
       {
@@ -226,7 +226,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜なら (nara)",
     meaning: "If (Assumption/Suggestion)",
-    structure: "Kata Benda / Kata Kerja Biasa + なら",
+    structure: "Noun / Verb Biasa + なら",
     explanation: "Used when giving advice or views based on a topic just raised by the listener.",
     examples: [
       {
@@ -246,7 +246,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜たら (tara)",
     meaning: "If / After",
-    structure: "Kata Kerja / Sifat (Bentuk Lampau) + ら",
+    structure: "Verb / Sifat (Past form) + ら",
     explanation: "Used for the 'if' supposition or expressing an action that will happen 'after' a future condition is met.",
     examples: [
       {
@@ -266,7 +266,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜ば (Bentuk Syarat / Conditional 'ba')",
     meaning: "If (Condition)",
-    structure: "Kata Kerja (Bentuk Ba)",
+    structure: "Verb (Ba-form)",
     explanation: "A conditional form focused on the necessary conditions to produce a certain result. (Change last U syllable to E, add 'ba').",
     examples: [
       {
@@ -286,7 +286,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜てあげる / 〜てもらう / 〜てくれる",
     meaning: "To give / receive (Action)",
-    structure: "Kata Kerja (Bentuk Te) + あげる / もらう / くれる",
+    structure: "Verb (Te-form) + あげる / もらう / くれる",
     explanation: "Used to express the activity of giving or receiving 'help' or 'kindness'. Kureru (others do for me), Morau (I receive the action), Ageru (I do for others).",
     examples: [
       {
@@ -306,7 +306,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜れる / られる (Bentuk Pasif)",
     meaning: "Passive form (to be ...)",
-    structure: "Kata Kerja Kelompok 1 (Ubah U jadi A + れる), Kelompok 2 (Ubah RU jadi られる)",
+    structure: "Verb Group 1 (Change U jadi A + れる), Group 2 (Ubah RU to られる)",
     explanation: "Used when the subject receives an action from another person or object. In Japanese, the passive is also often used to show that the speaker is annoyed/affected by someone else's action.",
     examples: [
       {
@@ -326,7 +326,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜せる / させる (Bentuk Kausatif)",
     meaning: "Causative form (to make/let someone do)",
-    structure: "Kata Kerja Kelompok 1 (Ubah U jadi A + せる), Kelompok 2 (Ubah RU jadi させる)",
+    structure: "Verb Group 1 (Change U jadi A + せる), Group 2 (Ubah RU to させる)",
     explanation: "Used when someone makes, orders, or lets another person do an action. If it's forced (ordering), use particle に. If it's permission (letting), use particle を.",
     examples: [
       {
@@ -346,7 +346,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜やすい / 〜にくい",
     meaning: "Easy to... / Difficult to...",
-    structure: "Kata Kerja (Masu dicoret) + やすい / にくい",
+    structure: "Verb (Masu-stem) + やすい / にくい",
     explanation: "Used to state whether an action is easy (yasui) or difficult (nikui) to perform, either due to the inherent nature of the object or due to the situation.",
     examples: [
       {
@@ -366,7 +366,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜ようにする (youni suru)",
     meaning: "Try to / Make sure to",
-    structure: "Kata Kerja (Kamus / Nai) + ようにする",
+    structure: "Verb (Dictionary form / Nai) + ようにする",
     explanation: "Expresses a conscious intention or effort to continuously do or not do something as a habit.",
     examples: [
       {
@@ -386,7 +386,7 @@ export const n4Grammar: GrammarPoint[] = [
     level: "N4",
     title: "〜ために (tame ni)",
     meaning: "For the sake of / In order to",
-    structure: "Kata Kerja (Kamus) / Kata Benda + の + ために",
+    structure: "Verb (Dictionary form) / Noun + の + ために",
     explanation: "Used to show a clear purpose of an action that will be performed with effort (not just a passive intention).",
     examples: [
       {

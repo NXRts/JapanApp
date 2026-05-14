@@ -6,7 +6,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜について (ni tsuite)",
     meaning: "About / Concerning",
-    structure: "Kata Benda + について",
+    structure: "Noun + について",
     explanation: "Used when talking, thinking, or investigating a topic. Equivalent to 'about' in English.",
     examples: [
       {
@@ -21,7 +21,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜に関して (ni kanshite)",
     meaning: "Regarding / Related to",
-    structure: "Kata Benda + に関して",
+    structure: "Noun + に関して",
     explanation: "Similar to について (ni tsuite) but more formal and often used in written texts, business, or official announcements.",
     examples: [
       {
@@ -36,7 +36,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜上で (ue de)",
     meaning: "Upon (doing ...) / After ...",
-    structure: "Kata Kerja (Ta) / Benda+の + 上で",
+    structure: "Verb (Ta) / Noun+の + 上で",
     explanation: "Indicates a condition or process that must be passed first. Often used in situations where the first stage is a prerequisite for making a decision or action in the second stage.",
     examples: [
       {
@@ -56,7 +56,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜に沿って (ni sotte)",
     meaning: "Along / In accordance with (guidelines)",
-    structure: "Kata Benda + に沿って",
+    structure: "Noun + に沿って",
     explanation: "Means parallel or following the flow of something (like a road, river). In an abstract sense, it means acting in compliance or accordance with expectations, manuals, plans, policies.",
     examples: [
       {
@@ -76,7 +76,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜べきだ (beki da)",
     meaning: "Should / Ought to",
-    structure: "Kata Kerja (Kamus) + べきだ",
+    structure: "Verb (Dictionary form) + べきだ",
     explanation: "Contains an element of moral, ethical obligation, or common sense that something is 'indeed appropriate' to do. Stronger than 〜ほうがいい.",
     examples: [
       {
@@ -96,7 +96,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜きり / っきり (kiri)",
     meaning: "Only / Ever since (unchanged)",
-    structure: "Kata Kerja (Ta) / Kata Benda + きり",
+    structure: "Verb (Ta) / Noun + きり",
     explanation: "1) Expresses 'only' (strong limitation). 2) Something remains unchanged since the last event (often followed by the connotation that the expected result never happened).",
     examples: [
       {
@@ -116,7 +116,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜がち (gachi)",
     meaning: "Tend to / Often (negative connotation)",
-    structure: "Kata Benda / Kata Kerja (Masu dicoret) + がち",
+    structure: "Noun / Verb (Masu-stem) + がち",
     explanation: "A tendency to be in a certain condition, or an action that often happens easily, often used to imply a complaint or warning.",
     examples: [
       {
@@ -136,7 +136,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜につれて (ni tsurete)",
     meaning: "As... / Along with",
-    structure: "Kata Kerja Kamus / Kata Benda Verbal + につれて",
+    structure: "Verb Dictionary form / Noun Verbal + につれて",
     explanation: "Shows gradual and proportional change. As condition A changes, thing B also changes simultaneously.",
     examples: [
       {
@@ -151,7 +151,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜にしては (ni shite wa)",
     meaning: "Considering that... / For a...",
-    structure: "Kata Benda / Kata Kerja Biasa + にしては",
+    structure: "Noun / Verb Biasa + にしては",
     explanation: "Expresses surprise because the reality is different from the standard expectations usually attached to something.",
     examples: [
       {
@@ -171,7 +171,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜際に (sai ni)",
     meaning: "On the occasion of / When",
-    structure: "Kata Kerja (Kamus/Ta) / Benda+の + 際に",
+    structure: "Verb (Dictionary form/Ta) / Noun+の + 際に",
     explanation: "Exactly the same as 〜時 (toki) but with a much more formal tone. Usually used in written announcements, manuals, or public voice announcements.",
     examples: [
       {
@@ -186,7 +186,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜とともに (to tomo ni)",
     meaning: "Along with / At the same time",
-    structure: "Kata Kerja Kamus / Benda + とともに",
+    structure: "Verb Dictionary form / Noun + とともに",
     explanation: "Used when two changes or events occur in parallel at the same time, or can also mean 'A and B (simultaneously)'.",
     examples: [
       {
@@ -201,7 +201,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜ものか (mono ka)",
     meaning: "No way... / Not at all...",
-    structure: "Kata Kerja Biasa / Sifat / Benda + ものか",
+    structure: "Verb Biasa / Sifat / Noun + ものか",
     explanation: "A strong rejection, showing the speaker's emotion that they strictly will not do something or consider something impossible.",
     examples: [
       {
@@ -221,7 +221,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜以外 (igai)",
     meaning: "Except / Other than",
-    structure: "Kata Benda + 以外",
+    structure: "Noun + 以外",
     explanation: "Expresses an exception. 'Except for this, everything else is...' or 'Besides this'.",
     examples: [
       {
@@ -236,7 +236,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜抜きで (nuki de)",
     meaning: "Without...",
-    structure: "Kata Benda + 抜きで",
+    structure: "Noun + 抜きで",
     explanation: "Something that is usually or properly present/involved, but is intentionally removed or not included.",
     examples: [
       {
@@ -256,7 +256,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜こそ (koso)",
     meaning: "Precisely / Especially",
-    structure: "Kata Benda + こそ",
+    structure: "Noun + こそ",
     explanation: "Gives a very strong emphasis on the preceding word, eliminating other possibilities.",
     examples: [
       {
@@ -291,7 +291,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜からには (kara ni wa)",
     meaning: "Now that... / Since...",
-    structure: "Kata Kerja (Kamus/Ta) + からには",
+    structure: "Verb (Dictionary form/Ta) + からには",
     explanation: "Expresses a responsibility or strong intention, 'since a situation has already occurred, naturally one must (take a strong action)'",
     examples: [
       {
@@ -306,7 +306,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜わりに (wari ni)",
     meaning: "For a... / Considering...",
-    structure: "Bentuk Biasa / Benda+の + わりに",
+    structure: "Bentuk Biasa / Noun+の + わりに",
     explanation: "Similar to にしては, states that the result is out of proportion to the basic conditions.",
     examples: [
       {
@@ -321,7 +321,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜気味 (gimi)",
     meaning: "Feeling a bit... / Agak... (Negative tendency)",
-    structure: "Kata Benda / Kata Kerja (Masu dicoret) + 気味",
+    structure: "Noun / Verb (Masu-stem) + 気味",
     explanation: "Expresses that someone has symptoms or feels prone to a certain physical/mental state, usually with a negative connotation or being out of the ordinary.",
     examples: [
       {
@@ -366,7 +366,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜に過ぎない (ni suginai)",
     meaning: "Merely / Nothing more than...",
-    structure: "Bentuk Biasa / Kata Benda + に過ぎない",
+    structure: "Bentuk Biasa / Noun + に過ぎない",
     explanation: "Emphasizes that it's not something big or excessive, but 'merely' like that. Used to downplay something that might be considered large.",
     examples: [
       {
@@ -386,7 +386,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜上に (ue ni)",
     meaning: "In addition to / Not only",
-    structure: "Bentuk Biasa (Kata Sifat/Benda+の) + 上に",
+    structure: "Bentuk Biasa (Adjective/Noun+の) + 上に",
     explanation: "Adds an extra point, often having the same polarity (good added with good, bad added with bad).",
     examples: [
       {
@@ -401,7 +401,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜限り (kagiri)",
     meaning: "As long as / To the extent that",
-    structure: "Kata Kerja (Kamus/Te-iru/Ta) + 限り",
+    structure: "Verb (Dictionary form/Te-iru/Ta) + 限り",
     explanation: "Sets a limit, where as long as condition A is met then B will continue.",
     examples: [
       {
@@ -416,7 +416,7 @@ export const n2Grammar: GrammarPoint[] = [
     level: "N2",
     title: "〜に代えて (ni kaete)",
     meaning: "Representing / In place of",
-    structure: "Kata Benda + に代えて",
+    structure: "Noun + に代えて",
     explanation: "Used when the position of one party is taken over or the action normally done by A is represented by B. More formal than 'kawari ni'.",
     examples: [
       {
