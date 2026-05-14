@@ -880,6 +880,7 @@ function MiniTestContent() {
                 stats={[
                   { label: 'Correct', value: score, color: '#10b981' },
                   { label: 'Incorrect', value: questions.length - score, color: '#ef4444' },
+                  { label: 'EXP Gained', value: `+${score * 10}`, color: '#fbbf24' },
                   { label: 'Time', value: formatTime(600 - timeLeft), color: 'var(--primary)' },
                   { label: 'Level', value: level, color: 'var(--primary)' }
                 ]} 
