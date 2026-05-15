@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { playJapaneseAudio } from '@/lib/audio';
 
 const CardPerspective = styled.div<{ $zIndex: number }>`
   position: absolute;
@@ -211,11 +212,7 @@ export default function SwipeableCard({ card, active, index, onSwipe }: Swipeabl
   
   const playAudio = (e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
-    const utterance = new SpeechSynthesisUtterance(card.audioText || card.front);
-    utterance.lang = 'ja-JP';
-    utterance.rate = 0.85;
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
+    playJapaneseAudio(card.audioText || card.front);
   };
 
   const SWIPE_THRESHOLD = 120; // px
