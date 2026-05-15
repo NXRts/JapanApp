@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { toRomaji } from 'wanakana';
 import { Card, Inner, Face, Back, AudioButton } from './KanaCard.styled';
+import { playJapaneseAudio } from '@/lib/audio';
 
 export function KanaCard({ char }: { char: string }) {
   const [flipped, setFlipped] = useState(false);
@@ -10,18 +11,7 @@ export function KanaCard({ char }: { char: string }) {
 
   const playAudio = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card flip
-    if (!window.speechSynthesis) {
-      console.warn('Speech synthesis not supported');
-      return;
-    }
-
-    // Cancel any ongoing speech
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(char);
-    utterance.lang = 'ja-JP';
-    utterance.rate = 0.8; // Slightly slower for clarity
-    window.speechSynthesis.speak(utterance);
+    playJapaneseAudio(char);
   };
 
   // Cleanup speech synthesis on unmount
