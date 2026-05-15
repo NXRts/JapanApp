@@ -8,6 +8,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { listeningExercises, ListeningQuiz } from '@/data/listening';
 import { useProgress } from '@/context/ProgressContext';
 import { ClickableJapaneseText } from '@/components/common/ClickableJapaneseText';
+import { playJapaneseAudio } from '@/lib/audio';
 
 const Container = styled.div`
   max-width: 850px;
@@ -468,22 +469,12 @@ export default function ListeningDetailPage() {
 
   const playTTS = async () => {
     const speakLine = (line: { text: string; voiceSettings: { pitch: number; rate: number } }) => 
-      new Promise<void>((resolve) => {
-        const u = new SpeechSynthesisUtterance(line.text);
-        u.lang = 'ja-JP';
-        u.pitch = line.voiceSettings.pitch;
-        u.rate = line.voiceSettings.rate;
-        
-        u.onend = () => {
-          setTimeout(resolve, 600); // 600ms pause between speakers
-        };
-        u.onerror = (e) => {
-          if (e.error !== 'interrupted' && e.error !== 'canceled') {
-            console.warn('SpeechSynthesis warning:', e.error);
-          }
-          resolve(); 
-        };
-        window.speechSynthesis.speak(u);
+      new Promise<void>(async (resolve) => {
+        await playJapaneseAudio(line.text, {
+          pitch: line.voiceSettings.pitch,
+          rate: line.voiceSettings.rate
+        });
+        setTimeout(resolve, 600); // 600ms pause between speakers
       });
 
     for (const line of exercise.dialogue) {

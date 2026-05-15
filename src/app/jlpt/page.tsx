@@ -766,10 +766,7 @@ export default function DictionaryPage() {
     
     if (itemId) {
       setCurrentlyPlayingId(itemId);
-      playJapaneseAudio(text);
-      // Fallback cleanup since we don't have a promise anymore, 
-      // or we can use onend event if needed, but for now let's keep it simple.
-      setTimeout(() => setCurrentlyPlayingId(null), 1000);
+      playJapaneseAudio(text).finally(() => setCurrentlyPlayingId(null));
     } else {
       playJapaneseAudio(text);
     }

@@ -8,6 +8,7 @@ import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { speakingExercises, KaiwaLine } from '@/data/speaking';
 import { useProgress } from '@/context/ProgressContext';
 import { ClickableJapaneseText } from '@/components/common/ClickableJapaneseText';
+import { playJapaneseAudio } from '@/lib/audio';
 
 const Container = styled.div`
   max-width: 800px;
@@ -297,26 +298,12 @@ export default function KaiwaRoleplayPage() {
     }
   }, [currentLineIdx, exercise, mounted]);
 
-  const playAI_TTS = (currentLine: KaiwaLine) => {
-      if (synthRef.current) {
-        synthRef.current.cancel();
-        let voices = synthRef.current.getVoices();
-        let jpVoices = voices.filter(v => v.lang.includes('ja'));
-        
-        const utterance = new SpeechSynthesisUtterance(currentLine.text);
-        utterance.lang = 'ja-JP';
-        if (jpVoices.length > 0) utterance.voice = jpVoices[0]; // pick first ja voice
-        if (currentLine.voiceSettings) {
-          utterance.pitch = currentLine.voiceSettings.pitch;
-          utterance.rate = currentLine.voiceSettings.rate;
-        }
-
-        utterance.onend = () => {
-          setTimeout(() => setCurrentLineIdx(prev => prev + 1), 600);
-        };
-        
-        synthRef.current.speak(utterance);
-      }
+  const playAI_TTS = async (currentLine: KaiwaLine) => {
+    await playJapaneseAudio(currentLine.text, {
+      pitch: currentLine.voiceSettings?.pitch,
+      rate: currentLine.voiceSettings?.rate
+    });
+    setTimeout(() => setCurrentLineIdx(prev => prev + 1), 600);
   };
 
   // Handle finalize manually when transcript stops changing (or onend)
