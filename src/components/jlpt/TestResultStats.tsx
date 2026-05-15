@@ -21,7 +21,7 @@ const ResultGrid = styled(motion.div)`
   margin-bottom: 3rem;
 
   @media (min-width: 640px) {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
 `;
 

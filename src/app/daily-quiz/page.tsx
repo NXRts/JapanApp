@@ -184,7 +184,7 @@ const ResultOverlay = styled.div`
   border-radius: 32px;
   border: 1px solid var(--border);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-  max-width: 600px;
+  max-width: 800px;
   width: 100%;
   margin: 0 auto;
 `;
