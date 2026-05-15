@@ -3,6 +3,7 @@
 import { useState, useEffect, memo } from 'react';
 import { toRomaji } from 'wanakana';
 import { Card, Inner, Face, Back, ReadingGroup, Label, Readings, ReadingItem, AudioButton, LanguageContainer, LanguageButton, Meanings, MeaningText } from './KanjiCard.styled';
+import { playJapaneseAudio } from '@/lib/audio';
 
 interface ReadingDetail {
   onyomi: { kana: string; romaji: string }[];
@@ -52,18 +53,7 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
 
   const playAudio = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card flip
-    if (!window.speechSynthesis) {
-      console.warn('Speech synthesis not supported');
-      return;
-    }
-
-    // Cancel any ongoing speech
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(char);
-    utterance.lang = 'ja-JP';
-    utterance.rate = 0.8; // Slightly slower for clarity
-    window.speechSynthesis.speak(utterance);
+    playJapaneseAudio(char);
   };
 
   // Cleanup speech synthesis on unmount

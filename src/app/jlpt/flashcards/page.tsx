@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { searchDictionary, allVocabulary, allKanji, allGrammar, DictionaryResult } from '@/lib/dictionary';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { playJapaneseAudio } from '@/lib/audio';
 
 // --- Styled Components ---
 
@@ -755,13 +756,7 @@ function FlashcardContent() {
   const playAudio = (e: React.MouseEvent, text: string) => {
     e.preventDefault();
     e.stopPropagation();
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ja-JP';
-      utterance.rate = 0.8;
-      window.speechSynthesis.speak(utterance);
-    }
+    playJapaneseAudio(text);
   };
 
   const handleNext = () => {

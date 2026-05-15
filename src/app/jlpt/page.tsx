@@ -10,6 +10,7 @@ import KanaKeyboard from '@/components/KanaKeyboard';
 import { HandwritingModal } from '@/components/dictionary/HandwritingModal';
 import { VoiceSearchModal } from '@/components/dictionary/VoiceSearchModal';
 import { ImageSearchModal } from '@/components/dictionary/ImageSearchModal';
+import { playJapaneseAudio } from '@/lib/audio';
 
 const KANA_LIST = [
   'あ', 'い', 'う', 'え', 'お',
@@ -762,20 +763,15 @@ export default function DictionaryPage() {
   const playAudio = (e: React.MouseEvent, text: string, itemId?: string) => {
     e.preventDefault();
     e.stopPropagation();
-    if (typeof window !== 'undefined' && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'ja-JP';
-      utterance.rate = 0.8;
-
-      if (itemId) {
-        setCurrentlyPlayingId(itemId);
-        const clearPlaying = () => setCurrentlyPlayingId(null);
-        utterance.onend = clearPlaying;
-        utterance.onerror = clearPlaying;
-      }
-
-      window.speechSynthesis.speak(utterance);
+    
+    if (itemId) {
+      setCurrentlyPlayingId(itemId);
+      playJapaneseAudio(text);
+      // Fallback cleanup since we don't have a promise anymore, 
+      // or we can use onend event if needed, but for now let's keep it simple.
+      setTimeout(() => setCurrentlyPlayingId(null), 1000);
+    } else {
+      playJapaneseAudio(text);
     }
   };
 
