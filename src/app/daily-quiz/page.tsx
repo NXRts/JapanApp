@@ -7,6 +7,7 @@ import { toRomaji } from 'wanakana';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { SeededRandom, getTodaySeed } from '@/utils/seededRandom';
 import { useProgress } from '@/context/ProgressContext';
+import { TestResultStats } from '@/components/jlpt/TestResultStats';
 
 // Styled Components (Reusing similar style to KanaQuizPage for consistency)
 const Container = styled.div`
@@ -257,6 +258,7 @@ export default function KanaQuizPage() {
     const [isFinished, setIsFinished] = useState(false);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
     const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
+    const [userAnswers, setUserAnswers] = useState<{char: string, answer: string, selected: string, isCorrect: boolean}[]>([]);
 
     const TOTAL_QUESTIONS = 10;
     const TODAY_SEED = getTodaySeed();
@@ -308,13 +310,14 @@ export default function KanaQuizPage() {
             setScore(0);
             setIsFinished(false);
             setSelectedOption(null);
+            setUserAnswers([]);
 
         } catch (error) {
             console.error("Failed to generate quiz", error);
         } finally {
             setLoading(false);
         }
-    }, [TODAY_SEED, progress.quizHistory, TOTAL_QUESTIONS]);
+    }, [TODAY_SEED, TOTAL_QUESTIONS]); // Removed progress.quizHistory to prevent auto-reset after recording result
 
     useEffect(() => {
         generateQuiz();
@@ -325,6 +328,15 @@ export default function KanaQuizPage() {
         setSelectedOption(option);
 
         const isCorrect = option === questions[currentIndex].answer;
+        const finalScoreForThisQuestion = isCorrect ? score + 1 : score;
+        
+        setUserAnswers(prev => [...prev, {
+            char: questions[currentIndex].char,
+            answer: questions[currentIndex].answer,
+            selected: option,
+            isCorrect
+        }]);
+
         if (isCorrect) {
             setScore(s => s + 1);
         }
@@ -338,11 +350,11 @@ export default function KanaQuizPage() {
                 setCurrentIndex(i => i + 1);
                 setSelectedOption(null);
             } else {
-                setIsFinished(true);
                 // Record overall quiz result - label as daily-challenge
-                recordQuizResult(score + (isCorrect ? 1 : 0), TOTAL_QUESTIONS, 'daily-challenge');
+                recordQuizResult(finalScoreForThisQuestion, TOTAL_QUESTIONS, 'daily-challenge');
+                setIsFinished(true);
             }
-        }, 1500);
+        }, 800);
     };
 
     if (loading || questions.length === 0) {
@@ -374,17 +386,48 @@ export default function KanaQuizPage() {
                 />
                 <ResultOverlay>
                     <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🏆</div>
-                    <h2>Daily Challenge Complete!</h2>
-                    <p style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                        {score === TOTAL_QUESTIONS ? "Perfect! You're mastering Japanese!" : "Great effort! Come back tomorrow for a new set."}
-                    </p>
+                    <h2 style={{ marginBottom: '2rem' }}>Daily Challenge Complete!</h2>
+                    
+                    <TestResultStats 
+                        stats={[
+                            { label: 'Correct', value: score, color: '#10b981' },
+                            { label: 'Incorrect', value: TOTAL_QUESTIONS - score, color: '#ef4444' },
+                            { label: 'EXP Gained', value: `+${score * 10}`, color: '#fbbf24' },
+                            { label: 'Streak', value: `${progress.streak} Days`, color: '#6366f1' }
+                        ]} 
+                    />
+
+                    <div style={{ marginTop: '2rem', textAlign: 'left' }}>
+                        <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>Review Today's Items</h3>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '1rem', marginBottom: '2.5rem' }}>
+                            {userAnswers.map((ua, idx) => (
+                                <div key={idx} style={{ 
+                                    padding: '1rem', 
+                                    borderRadius: '16px', 
+                                    background: 'rgba(var(--surface-rgb), 0.5)', 
+                                    border: `1px solid ${ua.isCorrect ? 'rgba(16, 185, 129, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`,
+                                    textAlign: 'center'
+                                }}>
+                                    <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{ua.char}</div>
+                                    <div style={{ fontSize: '0.8rem', color: ua.isCorrect ? '#10b981' : '#ef4444', fontWeight: 700 }}>
+                                        {ua.isCorrect ? '✓ ' + ua.answer : '✗ ' + ua.selected}
+                                    </div>
+                                    {!ua.isCorrect && (
+                                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '0.2rem' }}>
+                                            Correct: {ua.answer}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
                     <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
                         <Link href="/quiz" style={{ textDecoration: 'none' }}>
                             <Button>Back to Quizzes</Button>
                         </Link>
-                        <Link href="/quiz" style={{ textDecoration: 'none' }}>
-                            <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none' }}>Other Quizzes</Button>
+                        <Link href="/stats" style={{ textDecoration: 'none' }}>
+                            <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none' }}>Mastery Stats</Button>
                         </Link>
                     </div>
                 </ResultOverlay>
