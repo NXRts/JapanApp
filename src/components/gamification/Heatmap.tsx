@@ -2,24 +2,21 @@
 
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { useTheme } from '@/context/ThemeContext';
 
 interface HeatmapProps {
   activityLog: Record<string, number>;
 }
 
 const Container = styled.div<{ $cellSize: number }>`
-  --local-surface:     var(--surface, #1E293B);
-  --local-surface-2:   var(--background, #0F172A);
-  --local-border:      var(--border, #334155);
-  --local-text:        var(--foreground, #F8FAFC);
-  --local-text-muted:  var(--text-secondary, #94A3B8);
+  --local-surface:     var(--surface, #FFFFFF);
+  --local-surface-2:   var(--background, #F8FAFC);
+  --local-border:      var(--border, #E2E8F0);
+  --local-text:        var(--foreground, #0F172A);
+  --local-text-muted:  var(--text-secondary, #64748B);
   --local-accent:      var(--primary, #4F46E5);
 
-  --h0: #1E293B; /* Solid slate-800 to cover background */
-  --h1: #312E81; /* Solid indigo-900 */
-  --h2: #4338CA; /* Solid indigo-700 */
-  --h3: #4F46E5; /* Solid indigo-600 */
-  --h4: #818CF8; /* Solid indigo-400 */
+  /* h0 (Empty) and active levels are now handled dynamically via props/context */
 
   --radius:   28px;
   --cell:     ${props => props.$cellSize}px;
@@ -173,7 +170,7 @@ const WeekCol = styled.div`
   gap: var(--gap);
 `;
 
-const DayCell = styled.div<{ $level: number; $empty?: boolean }>`
+const DayCell = styled.div<{ $level: number; $empty?: boolean; $mode: 'light' | 'dark' }>`
   width: var(--cell);
   height: var(--cell);
   border-radius: 4px;
@@ -181,12 +178,10 @@ const DayCell = styled.div<{ $level: number; $empty?: boolean }>`
   position: relative;
   transition: transform 0.12s ease, filter 0.12s ease;
   visibility: ${({ $empty }) => $empty ? 'hidden' : 'visible'};
-  background: ${({ $level }) => {
-    if ($level === 0) return 'var(--h0)';
-    if ($level === 1) return 'var(--h1)';
-    if ($level === 2) return 'var(--h2)';
-    if ($level === 3) return 'var(--h3)';
-    return 'var(--h4)';
+  background: ${({ $level, $mode }) => {
+    if ($level === 0) return $mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : '#E2E8F0';
+    const opacity = $level === 1 ? 0.25 : $level === 2 ? 0.5 : $level === 3 ? 0.75 : 1;
+    return `rgba(var(--primary-rgb), ${opacity})`;
   }};
 
   ${({ $empty }) => !$empty && `
@@ -213,16 +208,14 @@ const LegendCells = styled.div`
   gap: 4px;
 `;
 
-const LegendCell = styled.div<{ $level: number }>`
+const LegendCell = styled.div<{ $level: number; $mode: 'light' | 'dark' }>`
   width: 14px;
   height: 14px;
   border-radius: 4px;
-  background: ${({ $level }) => {
-    if ($level === 0) return 'var(--h0)';
-    if ($level === 1) return 'var(--h1)';
-    if ($level === 2) return 'var(--h2)';
-    if ($level === 3) return 'var(--h3)';
-    return 'var(--h4)';
+  background: ${({ $level, $mode }) => {
+    if ($level === 0) return $mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : '#E2E8F0';
+    const opacity = $level === 1 ? 0.25 : $level === 2 ? 0.5 : $level === 3 ? 0.75 : 1;
+    return `rgba(var(--primary-rgb), ${opacity})`;
   }};
 `;
 
@@ -352,6 +345,7 @@ export function generateMockActivityLog(): Record<string, number> {
 }
 
 export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
+  const { mode } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [cellSize, setCellSize] = useState(13);
   const [visibleWeeks, setVisibleWeeks] = useState(53);
@@ -569,6 +563,7 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
                       key={di} 
                       $level={cell.level}
                       $empty={cell.isFuture}
+                      $mode={mode}
                       onMouseEnter={(e) => handleMouseEnter(e, cell.date, cell.level, cell.isFuture)}
                       onMouseMove={(e) => handleMouseMove(e, cell.isFuture)}
                       onMouseLeave={handleMouseLeave}
@@ -597,11 +592,11 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
         <Legend>
           Less
           <LegendCells>
-            <LegendCell $level={0} />
-            <LegendCell $level={1} />
-            <LegendCell $level={2} />
-            <LegendCell $level={3} />
-            <LegendCell $level={4} />
+            <LegendCell $level={0} $mode={mode} />
+            <LegendCell $level={1} $mode={mode} />
+            <LegendCell $level={2} $mode={mode} />
+            <LegendCell $level={3} $mode={mode} />
+            <LegendCell $level={4} $mode={mode} />
           </LegendCells>
           More
         </Legend>
