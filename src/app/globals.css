@@ -45,6 +45,33 @@
   --rm-pink: #BE185D;
   --rm-orange: #F97316;
   --rm-blue: #2563EB;
+
+  /* Heatmap Colors - Light Mode */
+  --hm-h0: #E2E8F0;
+  --hm-h1: #C7D2FE;
+  --hm-h2: #818CF8;
+  --hm-h3: #4F46E5;
+  --hm-h4: #312E81;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground: #F8FAFC;
+    --background: #0F172A;
+    --surface: #1E293B;
+    --text-secondary: #94A3B8;
+    --border: #334155;
+
+    --navbar-bg: rgba(15, 23, 42, 0.85);
+    --navbar-border: rgba(51, 65, 85, 0.6);
+
+    /* Heatmap Colors - Dark Mode */
+    --hm-h0: #1E293B;
+    --hm-h1: #312E81;
+    --hm-h2: #4338CA;
+    --hm-h3: #4F46E5;
+    --hm-h4: #818CF8;
+  }
 }
 
 * {
