@@ -26,11 +26,11 @@ const Container = styled.div`
 const ValuesSection = styled.section`
   position: relative;
   padding: 8rem 2rem;
-  background: #0F172A; /* Harmonious Slate Navy */
+  background: var(--background);
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 
   @media (max-width: 768px) {
     padding: 5rem 1.5rem;
@@ -230,21 +230,20 @@ const SectionHeader = styled.div`
 const SectionTitle = styled.h2`
   font-size: 2.5rem;
   font-weight: 700;
-  color: #FFFFFF; /* High contrast white */
+  color: var(--foreground);
   margin-bottom: 1rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
   span {
-    color: var(--primary-light); /* Brighter indigo */
+    color: var(--primary);
   }
 `;
 
 const SectionSubtitle = styled.p`
-  color: #CBD5E1; /* Slate 300 for high legibility */
+  color: var(--text-secondary);
   font-size: 1.1rem;
   max-width: 600px;
   margin: 0 auto;
-  opacity: 0.9;
+  line-height: 1.6;
 `;
 
 const ValuesGrid = styled.div`
@@ -383,12 +382,12 @@ const TimelineItem = styled.div<TimelineItemProps>`
     top: 0;
     width: 22px;
     height: 22px;
-    background: #0F172A; /* Match navy background */
+    background: var(--background);
     border: 4px solid var(--accent);
     border-radius: 50%;
     z-index: 10;
     transform: translateX(-50%);
-    box-shadow: 0 0 10px rgba(244, 63, 94, 0.2);
+    box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.2);
   }
 
   @media (min-width: 768px) {
