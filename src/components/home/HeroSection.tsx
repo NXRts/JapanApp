@@ -14,17 +14,17 @@ const Section = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   text-align: center;
-  padding: 12vh 1.5rem 4rem;
+  padding: 10rem 1.5rem 6rem;
   min-height: 100dvh;
   width: 100%;
   position: relative;
   gap: 3rem;
   
   @media (max-width: 768px) {
-    padding: 10vh 1rem 4rem;
-    min-height: 100dvh;
+    padding: 8rem 1rem 3rem;
+    min-height: auto;
     gap: 2rem;
   }
 `;
