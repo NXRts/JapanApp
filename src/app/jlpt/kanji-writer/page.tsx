@@ -8,6 +8,7 @@ import { getStroke } from 'perfect-freehand';
 import confetti from 'canvas-confetti';
 
 import { useProgress } from '@/context/ProgressContext';
+import { useTheme } from '@/context/ThemeContext';
 
 // Utility for perfect-freehand
 function getSvgPathFromStroke(stroke: number[][]) {
@@ -650,6 +651,7 @@ const LoadingDots = styled.div`
 // --- COMPONENT ---
 
 export default function KanjiWriterPage() {
+  const { mode } = useTheme();
   const [currentLevel, setCurrentLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1'>('N5');
   const [currentKanji, setCurrentKanji] = useState<any>(KANJI_DATA['N5'][0]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -800,6 +802,9 @@ export default function KanjiWriterPage() {
     const drawPath = (path: Point[]) => {
       if (path.length < 2) return;
       
+      const strokeColor = mode === 'light' ? '#0F172A' : '#ffffff';
+      const shadowColor = mode === 'light' ? 'rgba(15, 23, 42, 0.3)' : 'rgba(255, 255, 255, 0.3)';
+
       if (brushType === 'aesthetic') {
         const strokeOptions = {
           size: 16,
@@ -814,8 +819,8 @@ export default function KanjiWriterPage() {
         const pathData = getSvgPathFromStroke(strokeOutline);
         const path2D = new Path2D(pathData);
 
-        ctx.fillStyle = '#ffffff'; 
-        ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
+        ctx.fillStyle = strokeColor; 
+        ctx.shadowColor = shadowColor;
         ctx.shadowBlur = 4;
         ctx.fill(path2D);
       } else {
@@ -824,11 +829,11 @@ export default function KanjiWriterPage() {
         for (let i = 1; i < path.length; i++) {
           ctx.lineTo(path[i].x, path[i].y);
         }
-        ctx.strokeStyle = '#ffffff';
+        ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 12;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
-        ctx.shadowColor = 'rgba(255, 255, 255, 0.2)';
+        ctx.shadowColor = shadowColor;
         ctx.shadowBlur = 2;
         ctx.stroke();
       }
@@ -836,7 +841,7 @@ export default function KanjiWriterPage() {
 
     strokes.forEach(drawPath);
     if (activeStroke.length > 0) drawPath(activeStroke);
-  }, [brushType]);
+  }, [brushType, mode]);
 
   const validateStroke = useCallback((userPath: Point[], svgPathString: string) => {
     if (!svgPathString || userPath.length < 2) return { ok: true };
@@ -937,10 +942,12 @@ export default function KanjiWriterPage() {
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const guideColor = mode === 'light' ? 'rgba(0, 0, 0, 0.15)' : 'rgba(255, 255, 255, 0.25)';
+
     // If uniform mode, use Kaku (Gothic) font guide for straighter lines
     if (brushType === 'uniform' || svgPaths.length === 0) {
       ctx.font = '900 240px sans-serif'; // "Kaku" / Gothic style
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.fillStyle = guideColor;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText(currentKanji?.char || '', canvas.width / 2, canvas.height / 2 + 15);
@@ -950,7 +957,7 @@ export default function KanjiWriterPage() {
       const scale = canvas.width / 109;
       ctx.scale(scale, scale);
       
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
+      ctx.strokeStyle = guideColor;
       ctx.lineWidth = 10;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
@@ -960,11 +967,16 @@ export default function KanjiWriterPage() {
       });
       ctx.restore();
     }
-  }, [currentKanji, svgPaths, brushType]);
+  }, [currentKanji, svgPaths, brushType, mode]);
 
   useEffect(() => {
     drawGuide();
   }, [drawGuide]);
+
+  // Redraw strokes immediately if the theme mode changes
+  useEffect(() => {
+    redrawCanvas(userStrokes, currentStroke);
+  }, [mode, redrawCanvas, userStrokes, currentStroke]);
 
   const clearCanvas = useCallback(() => {
     const canvas = drawCanvasRef.current;
