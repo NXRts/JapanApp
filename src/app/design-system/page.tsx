@@ -1,146 +1,135 @@
 'use client';
 
 import styled from 'styled-components';
+import React from 'react';
+
+const PageWrapper = styled.div`
+  min-height: 100vh;
+  padding: 40px 20px;
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+`;
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 6rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 5rem;
+  background-color: #ffffff;
+  padding: 50px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--surface);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+`;
+
+const PageTitle = styled.h1`
   color: var(--foreground);
-`;
-
-const Header = styled.div`
-  text-align: center;
-  margin-bottom: 2rem;
-`;
-
-const Title = styled.h1`
-  font-size: 3rem;
+  border-bottom: 4px solid var(--primary);
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+  font-size: 2.25rem;
   font-weight: 800;
-  color: var(--primary);
-  margin-bottom: 1rem;
-`;
-
-const Subtitle = styled.p`
-  font-size: 1.25rem;
-  color: var(--text-secondary);
-`;
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+  }
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2rem;
-  font-weight: 700;
   border-bottom: 2px solid var(--border);
-  padding-bottom: 0.5rem;
+  padding-bottom: 8px;
+  margin-top: 50px;
+  margin-bottom: 20px;
   color: var(--foreground);
+  font-size: 1.5rem;
+  font-weight: 700;
+`;
+
+const ActionableBox = styled.div`
+  background-color: #f0fdf4;
+  border-left: 5px solid #10b981;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 0 8px 8px 0;
+  
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(16, 185, 129, 0.1);
+  }
+
+  h4 {
+    margin-top: 0;
+    color: #065f46;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    
+    @media (prefers-color-scheme: dark) {
+      color: #34d399;
+    }
+  }
+`;
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  font-size: 0.95rem;
+
+  th, td {
+    text-align: left;
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  th {
+    background-color: var(--background);
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+`;
+
+const Code = styled.code`
+  background: var(--background);
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #db2777;
+  font-family: monospace;
+`;
+
+const Pre = styled.pre`
+  background: #1e293b;
+  color: #f8fafc;
+  padding: 15px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  margin: 15px 0;
+`;
+
+const ColorSwatchBox = styled.div<{ bg: string }>`
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  margin-right: 12px;
+  vertical-align: middle;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  background-color: ${props => props.bg};
 `;
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
+  margin-bottom: 20px;
 `;
 
-const ColorSwatch = styled.div<{ bg: string }>`
-  background-color: ${props => props.bg};
-  height: 100px;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  align-items: flex-end;
-  padding: 1rem;
-`;
-
-const ColorInfo = styled.div`
-  background: rgba(255, 255, 255, 0.9);
-  padding: 0.5rem;
-  border-radius: 8px;
-  width: 100%;
-  
-  @media (prefers-color-scheme: dark) {
-    background: rgba(0, 0, 0, 0.7);
-  }
-`;
-
-const ColorName = styled.div`
-  font-weight: 600;
-  font-size: 0.9rem;
-`;
-
-const ColorVar = styled.div`
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  font-family: monospace;
-`;
-
-const FontShowcase = styled.div`
-  background: var(--surface);
-  padding: 2rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-`;
-
-const TextSample = styled.div<{ size: string, weight: number }>`
-  font-size: ${props => props.size};
-  font-weight: ${props => props.weight};
-  margin-bottom: 1rem;
-  line-height: 1.2;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-`;
-
-const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'outline' }>`
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--radius);
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
-
-  ${props => props.variant === 'primary' && `
-    background: var(--primary);
-    color: white;
-    box-shadow: var(--shadow-md);
-    &:hover { background: var(--primary-dark); }
-  `}
-
-  ${props => props.variant === 'secondary' && `
-    background: var(--secondary);
-    color: white;
-    box-shadow: var(--shadow-md);
-    &:hover { opacity: 0.9; }
-  `}
-
-  ${props => props.variant === 'outline' && `
-    background: transparent;
-    border: 2px solid var(--primary);
-    color: var(--primary);
-    &:hover { background: var(--primary); color: white; }
-  `}
-
-  ${props => !props.variant && `
-    background: var(--surface);
-    color: var(--foreground);
-    border: 1px solid var(--border);
-    &:hover { background: var(--background); }
-  `}
-`;
-
-const Card = styled.div`
+const InteractiveCard = styled.div`
   background: var(--surface);
   padding: 2rem;
   border-radius: var(--radius);
@@ -154,160 +143,200 @@ const Card = styled.div`
   }
 `;
 
-export default function DesignSystem() {
-  const colors = [
-    { name: 'Primary', var: 'var(--primary)', hex: '#4F46E5' },
-    { name: 'Primary Light', var: 'var(--primary-light)', hex: '#818CF8' },
-    { name: 'Primary Dark', var: 'var(--primary-dark)', hex: '#3730A3' },
-    { name: 'Secondary', var: 'var(--secondary)', hex: '#10B981' },
-    { name: 'Accent', var: 'var(--accent)', hex: '#F43F5E' },
-    { name: 'Background', var: 'var(--background)', hex: '#F1F5F9' },
-    { name: 'Surface', var: 'var(--surface)', hex: '#FFFFFF' },
-    { name: 'Foreground', var: 'var(--foreground)', hex: '#0F172A' },
-  ];
+const Button = styled.button<{ variant?: 'primary' | 'secondary' | 'outline' | 'specialty' }>`
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
 
-  const levels = [
-    { name: 'Level Purple', var: 'var(--rm-purple)', hex: '#6D28D9' },
-    { name: 'Level Pink', var: 'var(--rm-pink)', hex: '#BE185D' },
-    { name: 'Level Orange', var: 'var(--rm-orange)', hex: '#F97316' },
-    { name: 'Level Blue', var: 'var(--rm-blue)', hex: '#2563EB' },
-  ];
+  ${props => props.variant === 'primary' && `
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+    &:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3); }
+  `}
 
+  ${props => props.variant === 'secondary' && `
+    background: var(--secondary);
+    color: white;
+    &:hover { transform: translateY(-2px); opacity: 0.9; }
+  `}
+
+  ${props => props.variant === 'outline' && `
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    &:hover { background: var(--primary); color: white; }
+  `}
+  
+  ${props => props.variant === 'specialty' && `
+    background: rgba(0, 212, 255, 0.05);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    color: #00d4ff;
+    &:hover { background: #00d4ff; color: white; transform: translateY(-3px); }
+  `}
+
+  ${props => !props.variant && `
+    background: var(--surface);
+    color: var(--foreground);
+    border: 1px solid var(--border);
+    &:hover { background: var(--background); }
+  `}
+`;
+
+export default function DesignSystemPage() {
   return (
-    <Container>
-      <Header>
-        <Title>Design System & Style Guide</Title>
-        <Subtitle>Dokumentasi Warna, Tipografi, dan Komponen UI Japan-App</Subtitle>
-      </Header>
+    <PageWrapper>
+      <Container>
+        <PageTitle>Comprehensive Technical & UI/UX Audit</PageTitle>
+        <p style={{ marginBottom: '20px', color: 'var(--text-secondary)' }}>
+          <strong>Auditor Roles:</strong> Senior UI/UX Auditor, Frontend Engineer, & Software Architect<br/>
+          <strong>Fokus Audit:</strong> Desain Sistem, Arsitektur Frontend, Aliran Data, dan Standar Kualitas.
+        </p>
 
-      <Section>
-        <SectionTitle>Palette Warna Utama</SectionTitle>
-        <Grid>
-          {colors.map((color) => (
-            <ColorSwatch key={color.name} bg={color.var}>
-              <ColorInfo>
-                <ColorName>{color.name}</ColorName>
-                <ColorVar>{color.var}</ColorVar>
-                <ColorVar>{color.hex}</ColorVar>
-              </ColorInfo>
-            </ColorSwatch>
-          ))}
-        </Grid>
-      </Section>
+        {/* SECTION 1 */}
+        <SectionTitle>1. Sistem Warna (Color Palette & Accessibility)</SectionTitle>
+        <p>Aplikasi menggunakan skema warna berbasis tema (Light/Dark mode) dengan implementasi CSS Variables murni.</p>
+        
+        <Table>
+          <thead>
+            <tr>
+              <th>Peran Warna</th>
+              <th>Kode HEX</th>
+              <th>Preview</th>
+              <th>Analisis Kontras (WCAG)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Primary (Indigo)</td>
+              <td><Code>#4F46E5</Code></td>
+              <td><ColorSwatchBox bg="var(--primary)" /></td>
+              <td><span style={{color: '#10B981', fontWeight: 700}}>Pass (AAA)</span> terhadap teks putih. Sangat aman.</td>
+            </tr>
+            <tr>
+              <td>Primary Light</td>
+              <td><Code>#818CF8</Code></td>
+              <td><ColorSwatchBox bg="var(--primary-light)" /></td>
+              <td><span style={{color: '#F59E0B', fontWeight: 700}}>Warning (AA)</span> - Kurang kontras jika dipakai untuk teks kecil di atas latar putih.</td>
+            </tr>
+            <tr>
+              <td>Secondary (Emerald)</td>
+              <td><Code>#10B981</Code></td>
+              <td><ColorSwatchBox bg="var(--secondary)" /></td>
+              <td><span style={{color: '#10B981', fontWeight: 700}}>Pass</span> terhadap latar putih.</td>
+            </tr>
+            <tr>
+              <td>Background (Light)</td>
+              <td><Code>#F1F5F9</Code></td>
+              <td><ColorSwatchBox bg="var(--background)" /></td>
+              <td><span style={{color: '#10B981', fontWeight: 700}}>Pass</span> kontras tinggi dengan teks gelap.</td>
+            </tr>
+          </tbody>
+        </Table>
 
-      <Section>
-        <SectionTitle>Warna Roadmap / Level</SectionTitle>
-        <Grid>
-          {levels.map((color) => (
-            <ColorSwatch key={color.name} bg={color.var}>
-              <ColorInfo>
-                <ColorName>{color.name}</ColorName>
-                <ColorVar>{color.var}</ColorVar>
-                <ColorVar>{color.hex}</ColorVar>
-              </ColorInfo>
-            </ColorSwatch>
-          ))}
-        </Grid>
-      </Section>
+        {/* SECTION 2 */}
+        <SectionTitle>2. Tipografi (Typography & Hierarchy)</SectionTitle>
+        <ul>
+            <li style={{marginBottom: '10px'}}><strong>Font Family:</strong> <Code>'Inter'</Code> (Alfabet Latin) & <Code>'Noto Sans JP'</Code> (Karakter Jepang). Pilihan terbaik untuk aplikasi bahasa.</li>
+            <li style={{marginBottom: '10px'}}><strong>Hirarki Teks:</strong>
+                <ul style={{marginTop: '10px', marginLeft: '20px'}}>
+                    <li style={{marginBottom: '5px'}}><strong>Hero Title (H1):</strong> <Code>4.5rem</Code>, Font Weight <Code>900</Code>, Line Height <Code>1.1</Code>. Sangat tepat untuk Display Type.</li>
+                    <li><strong>Body Text & Caption:</strong> Ukuran Body menggunakan <Code>1rem</Code>. Caption/Level menggunakan <Code>0.72rem</Code> monospace.</li>
+                </ul>
+            </li>
+        </ul>
+        <div style={{ background: 'var(--background)', padding: '20px', borderRadius: '8px', border: '1px solid var(--border)', marginTop: '20px' }}>
+          <h1 style={{ fontSize: '3rem', fontWeight: 800, margin: 0 }}>Heading Besar (H1)</h1>
+          <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', marginTop: '10px' }}>Subtitle dengan kontras sekunder (H2/P)</p>
+          <p style={{ fontSize: '1rem', marginTop: '10px' }}>Body text regular dengan ukuran standar yang sangat nyaman dibaca oleh pengguna. 日本語のテキスト。</p>
+        </div>
 
-      <Section>
-        <SectionTitle>Tipografi (Inter & Noto Sans JP)</SectionTitle>
-        <FontShowcase>
-          <TextSample size="3rem" weight={800}>Heading 1 (800) - こんにちは</TextSample>
-          <TextSample size="2.25rem" weight={700}>Heading 2 (700) - 日本語を学ぶ</TextSample>
-          <TextSample size="1.875rem" weight={600}>Heading 3 (600) - The quick brown fox</TextSample>
-          <TextSample size="1.25rem" weight={500}>Subtitle (500) - Jumps over the lazy dog</TextSample>
-          <TextSample size="1rem" weight={400}>Body (400) - Ini adalah font reguler untuk konten teks. Lorem ipsum dolor sit amet.</TextSample>
-        </FontShowcase>
-      </Section>
-
-      <Section>
-        <SectionTitle>Komponen Tombol (Buttons)</SectionTitle>
-        <ButtonGroup>
+        {/* SECTION 3 */}
+        <SectionTitle>3. Komponen UI Interaktif (Live Showcase)</SectionTitle>
+        <p style={{marginBottom: '20px'}}>Berikut adalah komponen UI asli (Live) yang di-render langsung di halaman ini berdasarkan gaya CSS sistem:</p>
+        
+        <h3 style={{marginBottom: '15px'}}>A. Gaya Tombol (Buttons)</h3>
+        <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', marginBottom: '30px' }}>
           <Button variant="primary">Primary Button</Button>
           <Button variant="secondary">Secondary Button</Button>
           <Button variant="outline">Outline Button</Button>
-          <Button>Default/Ghost Button</Button>
-        </ButtonGroup>
-      </Section>
+          <Button>Default Button</Button>
+          <Button variant="specialty">JLPT Challenge</Button>
+        </div>
 
-      <Section>
-        <SectionTitle>Kartu Interaktif (Cards)</SectionTitle>
+        <h3 style={{marginBottom: '15px'}}>B. Interactive Cards</h3>
         <Grid>
-          <Card>
+          <InteractiveCard>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Materi Hiragana</h3>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
               Pelajari dasar huruf Jepang dengan metode interaktif.
             </p>
-            <Button variant="primary">Mulai Belajar</Button>
-          </Card>
-          <Card>
+            <Button variant="primary" style={{width: '100%'}}>Mulai Belajar</Button>
+          </InteractiveCard>
+          <InteractiveCard>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Latihan Kanji</h3>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
               Uji kemampuan menulis dan membaca Kanji Anda.
             </p>
-            <Button variant="outline">Latihan Sekarang</Button>
-          </Card>
-          <Card>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Statistik</h3>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-              Lihat perkembangan belajar Anda hari ini.
-            </p>
-            <Button>Lihat Detail</Button>
-          </Card>
+            <Button variant="outline" style={{width: '100%'}}>Latihan Sekarang</Button>
+          </InteractiveCard>
         </Grid>
-      </Section>
-      
-      <Section>
-        <SectionTitle>Audit Insights & Recommendations</SectionTitle>
-        <Grid style={{ gridTemplateColumns: '1fr' }}>
-          <Card style={{ borderLeft: '4px solid var(--accent)' }}>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--accent)' }}>⚠️ Peringatan Kontras (Accessibility)</h3>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-              Tombol "Specialty Button" (JLPT Challenge) dengan teks Cyan (#00d4ff) pada background terang memiliki rasio kontras yang rendah menurut standar WCAG.
-            </p>
-            <div style={{ padding: '1rem', background: '#ffffff', borderRadius: '8px', border: '1px solid var(--border)' }}>
-              <span style={{ color: '#00d4ff', fontWeight: 'bold' }}>JLPT Challenge (Current - Sulit dibaca)</span>
-              <br/>
-              <span style={{ color: '#0284c7', fontWeight: 'bold', marginTop: '0.5rem', display: 'inline-block' }}>JLPT Challenge (Rekomendasi - Lebih terbaca: #0284c7)</span>
-            </div>
-          </Card>
 
-          <Card style={{ borderLeft: '4px solid var(--secondary)' }}>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--secondary)' }}>📱 Optimasi Mobile (Tap Target)</h3>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-              Pada <strong>Navbar Mobile</strong>, padding tombol Hamburger di bawah 600px menyusut menjadi <code>0.2rem</code>. 
-              Ini membuat area sentuh (tap target) kurang dari standar kelayakan UX (44x44px). 
-            </p>
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-               <button style={{ padding: '0.2rem', border: '1px solid var(--accent)', background: 'var(--surface)', color: 'var(--foreground)', cursor: 'pointer' }}>Tap Kecil (Saat ini)</button>
-               <span style={{ color: 'var(--text-secondary)' }}>vs</span>
-               <button style={{ padding: '0.7rem', border: '1px solid var(--secondary)', background: 'var(--surface)', color: 'var(--foreground)', cursor: 'pointer' }}>Tap Ideal (Rekomendasi)</button>
-            </div>
-          </Card>
+        {/* SECTION 4 */}
+        <SectionTitle>4. Audit Aset Visual & Referensi Ikon</SectionTitle>
+        <p>Pemeriksaan pada file <Code>src/components/icons/AppIcons.tsx</Code> menunjukkan pembuatan SVG manual (*hardcoded*).</p>
+        <ActionableBox>
+            <h4>💡 Actionable Insight (Software Architect):</h4>
+            <p style={{marginBottom: '10px'}}>Membangun SVG manual di satu file besar tidak <em>scalable</em>. Sangat direkomendasikan untuk beralih menggunakan pustaka pihak ketiga yang dijamin konsisten dan dioptimalkan (Tree-shakable).</p>
+            <strong>Referensi Ikon Modern:</strong>
+            <ul style={{marginTop: '10px', marginLeft: '20px'}}>
+                <li><strong>Lucide React:</strong> Gaya <em>outline</em> murni, ketebalan seragam (default 2px). (<Code>npm install lucide-react</Code>).</li>
+                <li><strong>Heroicons:</strong> Dibuat oleh pembuat Tailwind, sangat padu dengan gaya UI aplikasi ini.</li>
+            </ul>
+        </ActionableBox>
 
-          <Card style={{ borderLeft: '4px solid #8b5cf6' }}>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: '#8b5cf6' }}>📐 Audit Aset Ikon (Architecture)</h3>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-              Ditemukan SVG yang di-<em>hardcode</em> secara manual pada <code>AppIcons.tsx</code>. Sebagian besar konsisten bergaya <em>Outline</em>, namun ada satu yang bocor bergaya <em>Solid</em> (<code>StarIcon</code>).
-            </p>
-            <div style={{ padding: '1rem', background: 'rgba(139, 92, 246, 0.1)', borderRadius: '8px', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
-              <strong>Rekomendasi:</strong> Migrasi ke pustaka <code>lucide-react</code> atau <code>heroicons</code> agar manajemen <em>icon</em> lebih <em>scalable</em>, <em>tree-shakable</em>, dan ukuran <em>stroke</em> selalu dijamin seragam (2px).
-            </div>
-          </Card>
+        {/* SECTION 5 */}
+        <SectionTitle>5. Pemetaan Aliran Data & Referensi API</SectionTitle>
+        <p>Berdasarkan <Code>ProgressContext.tsx</Code>, aplikasi ini sangat bergantung pada <em>Client-Side Storage</em> (<Code>localStorage</Code>) untuk menyimpan data vital pengguna.</p>
+        
+        <Pre>
+{`{
+  "user_id": "usr_9a8b7c6d",
+  "level": 5,
+  "total_exp": 1240,
+  "current_streak": 3,
+  "srs_items": {
+    "日": {
+      "level": 3,
+      "correct": 5,
+      "next_review": "2026-05-18T10:00:00Z"
+    }
+  }
+}`}
+        </Pre>
+        <ActionableBox>
+            <h4>💡 Actionable Insight (Data Flow):</h4>
+            <p>Logika penyimpanan <Code>localStorage</Code> di <Code>useEffect</Code> berjalan <em>synchronous</em>. Jika data bertambah besar (ribuan kanji), ini akan menyebabkan <strong>UI Blocking (Lag)</strong>. Pertimbangkan beralih menggunakan <strong>IndexedDB</strong> melalui <em>library</em> ringan seperti <Code>localforage</Code> atau integrasi langsung dengan Supabase PostgreSQL.</p>
+        </ActionableBox>
 
-          <Card style={{ borderLeft: '4px solid #3b82f6' }}>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: '#3b82f6' }}>💾 Pemetaan Aliran Data (State Management)</h3>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-              Data *Progress*, *Exp*, dan data Spaced Repetition (SRS) saat ini disimpan secara *synchronous* di dalam <code>localStorage</code> (pada <code>ProgressContext.tsx</code>).
-            </p>
-            <div style={{ padding: '1rem', background: 'rgba(59, 130, 246, 0.1)', borderRadius: '8px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
-              <strong>Risiko:</strong> Menyimpan <em>string</em> JSON raksasa secara *synchronous* akan memicu <strong>UI Blocking (Lag)</strong> saat data kanji membesar. <br/><br/>
-              <strong>Rekomendasi Integrasi:</strong> Pindahkan ke IndexedDB (menggunakan <code>localforage</code>) atau bangun sistem <em>Cloud-Sync API</em> (via <strong>Supabase</strong> atau <strong>Firebase</strong>).
-            </div>
-          </Card>
-        </Grid>
-      </Section>
-    </Container>
+        {/* SECTION 6 */}
+        <SectionTitle>6. Desain Interaksi & Pengalaman Pengguna (UX)</SectionTitle>
+        <ul style={{marginLeft: '20px'}}>
+            <li style={{marginBottom: '10px'}}><strong>Pola Membaca (F-Shape):</strong> Tata letak mengikuti kebiasaan baca Barat. CTA utama tersorot secara terpusat (Central Focus).</li>
+            <li style={{marginBottom: '10px'}}><strong>Tombol Hamburger (Mobile):</strong> Area sentuh (<em>padding: 0.2rem</em> pada layar &lt; 600px) jauh di bawah standar ergonomi (min 44px).</li>
+            <li style={{marginBottom: '10px'}}><strong>Animasi Menu Mobile:</strong> Menu turun dari atas, namun tidak ada <em>overlay/backdrop</em> penutup pada konten sisa di bawahnya.</li>
+        </ul>
+        
+        <hr style={{ marginTop: '50px', border: 0, borderTop: '1px solid var(--border)' }} />
+        <p style={{ textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '20px' }}>
+          Comprehensive Audit &copy; 2026 - Japan-App System Design & Technical Report.
+        </p>
+
+      </Container>
+    </PageWrapper>
   );
 }
