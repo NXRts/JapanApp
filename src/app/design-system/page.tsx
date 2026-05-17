@@ -194,20 +194,20 @@ export default function DesignSystemPage() {
         <PageTitle>Comprehensive Technical & UI/UX Audit</PageTitle>
         <p style={{ marginBottom: '20px', color: 'var(--text-secondary)' }}>
           <strong>Auditor Roles:</strong> Senior UI/UX Auditor, Frontend Engineer, & Software Architect<br/>
-          <strong>Fokus Audit:</strong> Desain Sistem, Arsitektur Frontend, Aliran Data, dan Standar Kualitas.
+          <strong>Audit Focus:</strong> System Design, Frontend Architecture, Data Flow, and Quality Standards.
         </p>
 
         {/* SECTION 1 */}
-        <SectionTitle>1. Sistem Warna (Color Palette & Accessibility)</SectionTitle>
-        <p>Aplikasi menggunakan skema warna berbasis tema (Light/Dark mode) dengan implementasi CSS Variables murni.</p>
+        <SectionTitle>1. Color System (Color Palette & Accessibility)</SectionTitle>
+        <p>The application uses a theme-based color scheme (Light/Dark mode) with pure CSS Variables implementation.</p>
         
         <Table>
           <thead>
             <tr>
-              <th>Peran Warna</th>
-              <th>Kode HEX</th>
+              <th>Color Role</th>
+              <th>HEX Code</th>
               <th>Preview</th>
-              <th>Analisis Kontras (WCAG)</th>
+              <th>Contrast Analysis (WCAG)</th>
             </tr>
           </thead>
           <tbody>
@@ -215,51 +215,57 @@ export default function DesignSystemPage() {
               <td>Primary (Indigo)</td>
               <td><Code>#4F46E5</Code></td>
               <td><ColorSwatchBox bg="var(--primary)" /></td>
-              <td><span style={{color: '#10B981', fontWeight: 700}}>Pass (AAA)</span> terhadap teks putih. Sangat aman.</td>
+              <td><span style={{color: '#10B981', fontWeight: 700}}>Pass (AAA)</span> against white text. Very safe.</td>
             </tr>
             <tr>
               <td>Primary Light</td>
               <td><Code>#818CF8</Code></td>
               <td><ColorSwatchBox bg="var(--primary-light)" /></td>
-              <td><span style={{color: '#F59E0B', fontWeight: 700}}>Warning (AA)</span> - Kurang kontras jika dipakai untuk teks kecil di atas latar putih.</td>
+              <td><span style={{color: '#F59E0B', fontWeight: 700}}>Warning (AA)</span> - Low contrast if used for small text on a white background.</td>
             </tr>
             <tr>
               <td>Secondary (Emerald)</td>
               <td><Code>#10B981</Code></td>
               <td><ColorSwatchBox bg="var(--secondary)" /></td>
-              <td><span style={{color: '#10B981', fontWeight: 700}}>Pass</span> terhadap latar putih.</td>
+              <td><span style={{color: '#10B981', fontWeight: 700}}>Pass</span> against a white background.</td>
             </tr>
             <tr>
               <td>Background (Light)</td>
               <td><Code>#F1F5F9</Code></td>
               <td><ColorSwatchBox bg="var(--background)" /></td>
-              <td><span style={{color: '#10B981', fontWeight: 700}}>Pass</span> kontras tinggi dengan teks gelap.</td>
+              <td><span style={{color: '#10B981', fontWeight: 700}}>Pass</span> High contrast with dark text.</td>
+            </tr>
+            <tr>
+              <td>Background (Dark)</td>
+              <td><Code>#0F172A</Code></td>
+              <td><ColorSwatchBox bg="var(--background)" /></td>
+              <td><span style={{color: '#10B981', fontWeight: 700}}>Pass</span> High contrast with light text.</td>
             </tr>
           </tbody>
         </Table>
 
         {/* SECTION 2 */}
-        <SectionTitle>2. Tipografi (Typography & Hierarchy)</SectionTitle>
+        <SectionTitle>2. Typography (Typography & Hierarchy)</SectionTitle>
         <ul>
-            <li style={{marginBottom: '10px'}}><strong>Font Family:</strong> <Code>'Inter'</Code> (Alfabet Latin) & <Code>'Noto Sans JP'</Code> (Karakter Jepang). Pilihan terbaik untuk aplikasi bahasa.</li>
-            <li style={{marginBottom: '10px'}}><strong>Hirarki Teks:</strong>
+            <li style={{marginBottom: '10px'}}><strong>Font Family:</strong> <Code>'Inter'</Code> (Latin Alphabet) & <Code>'Noto Sans JP'</Code> (Japanese Characters). The best choice for language applications.</li>
+            <li style={{marginBottom: '10px'}}><strong>Text Hierarchy:</strong>
                 <ul style={{marginTop: '10px', marginLeft: '20px'}}>
-                    <li style={{marginBottom: '5px'}}><strong>Hero Title (H1):</strong> <Code>4.5rem</Code>, Font Weight <Code>900</Code>, Line Height <Code>1.1</Code>. Sangat tepat untuk Display Type.</li>
-                    <li><strong>Body Text & Caption:</strong> Ukuran Body menggunakan <Code>1rem</Code>. Caption/Level menggunakan <Code>0.72rem</Code> monospace.</li>
+                    <li style={{marginBottom: '5px'}}><strong>Hero Title (H1):</strong> <Code>4.5rem</Code>, Font Weight <Code>900</Code>, Line Height <Code>1.1</Code>. Highly appropriate for Display Type.</li>
+                    <li><strong>Body Text & Caption:</strong> Body size uses <Code>1rem</Code>. Caption/Level uses <Code>0.72rem</Code> monospace.</li>
                 </ul>
             </li>
         </ul>
         <div style={{ background: 'var(--background)', padding: '20px', borderRadius: '8px', border: '1px solid var(--border)', marginTop: '20px' }}>
-          <h1 style={{ fontSize: '3rem', fontWeight: 800, margin: 0 }}>Heading Besar (H1)</h1>
-          <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', marginTop: '10px' }}>Subtitle dengan kontras sekunder (H2/P)</p>
-          <p style={{ fontSize: '1rem', marginTop: '10px' }}>Body text regular dengan ukuran standar yang sangat nyaman dibaca oleh pengguna. 日本語のテキスト。</p>
+          <h1 style={{ fontSize: '3rem', fontWeight: 800, margin: 0 }}>Large Heading (H1)</h1>
+          <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', marginTop: '10px' }}>Subtitle with secondary contrast (H2/P)</p>
+          <p style={{ fontSize: '1rem', marginTop: '10px' }}>Regular body text with a standard size that is very comfortable for users to read. 日本語のテキスト。</p>
         </div>
 
         {/* SECTION 3 */}
-        <SectionTitle>3. Komponen UI Interaktif (Live Showcase)</SectionTitle>
-        <p style={{marginBottom: '20px'}}>Berikut adalah komponen UI asli (Live) yang di-render langsung di halaman ini berdasarkan gaya CSS sistem:</p>
+        <SectionTitle>3. Interactive UI Components (Live Showcase)</SectionTitle>
+        <p style={{marginBottom: '20px'}}>Below are the actual (Live) UI components rendered directly on this page based on the system CSS styles:</p>
         
-        <h3 style={{marginBottom: '15px'}}>A. Gaya Tombol (Buttons)</h3>
+        <h3 style={{marginBottom: '15px'}}>A. Button Styles</h3>
         <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', marginBottom: '30px' }}>
           <Button variant="primary">Primary Button</Button>
           <Button variant="secondary">Secondary Button</Button>
@@ -271,37 +277,37 @@ export default function DesignSystemPage() {
         <h3 style={{marginBottom: '15px'}}>B. Interactive Cards</h3>
         <Grid>
           <InteractiveCard>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Materi Hiragana</h3>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Hiragana Materials</h3>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-              Pelajari dasar huruf Jepang dengan metode interaktif.
+              Learn the basics of Japanese characters with interactive methods.
             </p>
-            <Button variant="primary" style={{width: '100%'}}>Mulai Belajar</Button>
+            <Button variant="primary" style={{width: '100%'}}>Start Learning</Button>
           </InteractiveCard>
           <InteractiveCard>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Latihan Kanji</h3>
+            <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Kanji Practice</h3>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-              Uji kemampuan menulis dan membaca Kanji Anda.
+              Test your Kanji writing and reading skills.
             </p>
-            <Button variant="outline" style={{width: '100%'}}>Latihan Sekarang</Button>
+            <Button variant="outline" style={{width: '100%'}}>Practice Now</Button>
           </InteractiveCard>
         </Grid>
 
         {/* SECTION 4 */}
-        <SectionTitle>4. Audit Aset Visual & Referensi Ikon</SectionTitle>
-        <p>Pemeriksaan pada file <Code>src/components/icons/AppIcons.tsx</Code> menunjukkan pembuatan SVG manual (*hardcoded*).</p>
+        <SectionTitle>4. Visual Asset Audit & Icon References</SectionTitle>
+        <p>Examination of the <Code>src/components/icons/AppIcons.tsx</Code> file reveals manual (*hardcoded*) SVG creation.</p>
         <ActionableBox>
             <h4>💡 Actionable Insight (Software Architect):</h4>
-            <p style={{marginBottom: '10px'}}>Membangun SVG manual di satu file besar tidak <em>scalable</em>. Sangat direkomendasikan untuk beralih menggunakan pustaka pihak ketiga yang dijamin konsisten dan dioptimalkan (Tree-shakable).</p>
-            <strong>Referensi Ikon Modern:</strong>
+            <p style={{marginBottom: '10px'}}>Building manual SVGs in one large file is not scalable. It is highly recommended to switch to third-party libraries that are guaranteed consistent and optimized (Tree-shakable).</p>
+            <strong>Modern Icon References:</strong>
             <ul style={{marginTop: '10px', marginLeft: '20px'}}>
-                <li><strong>Lucide React:</strong> Gaya <em>outline</em> murni, ketebalan seragam (default 2px). (<Code>npm install lucide-react</Code>).</li>
-                <li><strong>Heroicons:</strong> Dibuat oleh pembuat Tailwind, sangat padu dengan gaya UI aplikasi ini.</li>
+                <li><strong>Lucide React:</strong> Pure outline style, uniform thickness (2px default). (<Code>npm install lucide-react</Code>).</li>
+                <li><strong>Heroicons:</strong> Created by the makers of Tailwind, perfectly complementing this application's UI style.</li>
             </ul>
         </ActionableBox>
 
         {/* SECTION 5 */}
-        <SectionTitle>5. Pemetaan Aliran Data & Referensi API</SectionTitle>
-        <p>Berdasarkan <Code>ProgressContext.tsx</Code>, aplikasi ini sangat bergantung pada <em>Client-Side Storage</em> (<Code>localStorage</Code>) untuk menyimpan data vital pengguna.</p>
+        <SectionTitle>5. Data Flow Mapping & API References</SectionTitle>
+        <p>Based on <Code>ProgressContext.tsx</Code>, this application relies heavily on <em>Client-Side Storage</em> (<Code>localStorage</Code>) to save vital user data.</p>
         
         <Pre>
 {`{
@@ -320,15 +326,15 @@ export default function DesignSystemPage() {
         </Pre>
         <ActionableBox>
             <h4>💡 Actionable Insight (Data Flow):</h4>
-            <p>Logika penyimpanan <Code>localStorage</Code> di <Code>useEffect</Code> berjalan <em>synchronous</em>. Jika data bertambah besar (ribuan kanji), ini akan menyebabkan <strong>UI Blocking (Lag)</strong>. Pertimbangkan beralih menggunakan <strong>IndexedDB</strong> melalui <em>library</em> ringan seperti <Code>localforage</Code> atau integrasi langsung dengan Supabase PostgreSQL.</p>
+            <p>The <Code>localStorage</Code> save logic in <Code>useEffect</Code> runs <em>synchronously</em>. If data grows large (thousands of kanji), this will cause <strong>UI Blocking (Lag)</strong>. Consider switching to <strong>IndexedDB</strong> via a lightweight library like <Code>localforage</Code> or direct integration with Supabase PostgreSQL.</p>
         </ActionableBox>
 
         {/* SECTION 6 */}
-        <SectionTitle>6. Desain Interaksi & Pengalaman Pengguna (UX)</SectionTitle>
+        <SectionTitle>6. Interaction Design & User Experience (UX)</SectionTitle>
         <ul style={{marginLeft: '20px'}}>
-            <li style={{marginBottom: '10px'}}><strong>Pola Membaca (F-Shape):</strong> Tata letak mengikuti kebiasaan baca Barat. CTA utama tersorot secara terpusat (Central Focus).</li>
-            <li style={{marginBottom: '10px'}}><strong>Tombol Hamburger (Mobile):</strong> Area sentuh (<em>padding: 0.2rem</em> pada layar &lt; 600px) jauh di bawah standar ergonomi (min 44px).</li>
-            <li style={{marginBottom: '10px'}}><strong>Animasi Menu Mobile:</strong> Menu turun dari atas, namun tidak ada <em>overlay/backdrop</em> penutup pada konten sisa di bawahnya.</li>
+            <li style={{marginBottom: '10px'}}><strong>Reading Pattern (F-Shape):</strong> The layout follows Western reading habits. The main CTA is centrally highlighted (Central Focus).</li>
+            <li style={{marginBottom: '10px'}}><strong>Hamburger Button (Mobile):</strong> The touch area (<em>padding: 0.2rem</em> on screens &lt; 600px) is far below ergonomic standards (min 44px).</li>
+            <li style={{marginBottom: '10px'}}><strong>Mobile Menu Animation:</strong> The menu drops from the top, but there is no <em>overlay/backdrop</em> covering the remaining content below it.</li>
         </ul>
         
         <hr style={{ marginTop: '50px', border: 0, borderTop: '1px solid var(--border)' }} />
