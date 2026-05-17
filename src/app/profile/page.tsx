@@ -35,7 +35,8 @@ const ProfileHeader = styled.div`
   @media (max-width: 600px) {
     flex-direction: column;
     text-align: center;
-    padding: 2rem 1.5rem;
+    padding: 1.5rem;
+    gap: 1.25rem;
   }
 `;
 
@@ -54,9 +55,9 @@ const AvatarCircle = styled.div`
   flex-shrink: 0;
 
   @media (max-width: 600px) {
-    width: 100px;
-    height: 100px;
-    font-size: 2.5rem;
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
   }
 `;
 
@@ -134,7 +135,7 @@ const StatValue = styled.div`
   color: var(--foreground);
 
   @media (max-width: 600px) {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 `;
 
@@ -243,6 +244,12 @@ const AchievementGrid = styled.div<{ $isDragging?: boolean }>`
   &::-webkit-scrollbar-thumb {
     background: rgba(var(--primary-rgb), 0.2);
     border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding: 1rem;
   }
 `;
 
