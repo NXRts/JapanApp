@@ -45,7 +45,7 @@ const SectionTitle = styled.h2`
   }
   
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: 1.75rem;
     margin-bottom: 3rem;
   }
 `;
@@ -145,8 +145,8 @@ const TestimonialText = styled.p`
   opacity: 0.9;
   
   @media (max-width: 768px) {
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 0.85rem;
+    line-height: 1.5;
     margin-bottom: 1.5rem;
   }
 `;
@@ -191,7 +191,7 @@ const UserMeta = styled.div`
     gap: 0.5rem;
 
     @media (max-width: 768px) {
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
   }
   
@@ -201,7 +201,7 @@ const UserMeta = styled.div`
     font-weight: 600;
 
     @media (max-width: 768px) {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
     }
   }
 `;

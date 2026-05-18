@@ -54,8 +54,8 @@ const Title = styled.h1`
   }
   
   @media (max-width: 768px) {
-    font-size: 2.75rem;
-    margin-bottom: 1.25rem;
+    font-size: 2.1rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -67,7 +67,7 @@ const Subtitle = styled.p`
   line-height: 1.6;
   
   @media (max-width: 768px) {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     margin-bottom: 2rem;
   }
 `;
@@ -197,7 +197,7 @@ const StatNumber = styled.span`
   margin-bottom: 0.5rem;
   
   @media (max-width: 768px) {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     margin-bottom: 0;
   }
 `;
@@ -208,6 +208,10 @@ const StatLabel = styled.span`
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.15em;
+
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
+  }
 `;
 
 interface HeroSectionProps {

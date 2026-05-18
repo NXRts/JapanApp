@@ -39,8 +39,8 @@ const SectionTitle = styled.h2`
   }
   
   @media (max-width: 768px) {
-    font-size: 2rem;
-    margin-bottom: 3rem;
+    font-size: 1.75rem;
+    margin-bottom: 2.5rem;
   }
 `;
 
@@ -107,12 +107,21 @@ const CardTitle = styled.h3`
   font-weight: 800;
   margin-bottom: 1rem;
   color: var(--foreground);
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const CardDescription = styled.p`
   color: var(--text-secondary);
   line-height: 1.65;
   font-size: 0.95rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
 `;
 
 export function FeaturesSection() {
