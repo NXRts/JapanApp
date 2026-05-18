@@ -95,11 +95,11 @@ const BenefitText = styled.div`
   
   @media (max-width: 768px) {
     h3 {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       margin-bottom: 0.25rem;
     }
     p {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       line-height: 1.5;
     }
   }
@@ -151,7 +151,7 @@ const SectionTitle = styled.h2`
   }
   
   @media (max-width: 768px) {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
     margin-bottom: 2.5rem;
     padding-bottom: 1rem;
   }

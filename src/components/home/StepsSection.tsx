@@ -40,7 +40,7 @@ const SectionTitle = styled.h2`
   }
   
   @media (max-width: 768px) {
-    font-size: 2rem;
+    font-size: 1.75rem;
     margin-bottom: 3rem;
   }
 `;
@@ -131,7 +131,7 @@ const Dot = styled.div`
     margin-bottom: 1rem;
     width: 40px;
     height: 40px;
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -165,12 +165,20 @@ const StepTitle = styled.h3`
   font-weight: 800;
   color: var(--foreground);
   margin-bottom: 0.75rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const StepDescription = styled.p`
   color: var(--text-secondary);
   line-height: 1.6;
   font-size: 0.95rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
 `;
 
 export function StepsSection() {

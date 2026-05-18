@@ -69,7 +69,7 @@ const Title = styled.h2`
   letter-spacing: -0.02em;
   
   @media (max-width: 768px) {
-    font-size: 2.25rem;
+    font-size: 2rem;
   }
 `;
 
@@ -83,7 +83,7 @@ const Subtitle = styled.p`
   line-height: 1.6;
 
   @media (max-width: 768px) {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     margin-bottom: 2.5rem;
   }
 `;
@@ -131,7 +131,7 @@ const PrimaryButton = styled(Link)`
   @media (max-width: 640px) {
     width: 100%;
     padding: 1.1rem 1.5rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   &:hover {
@@ -164,7 +164,7 @@ const SecondaryButton = styled(Link)`
   @media (max-width: 640px) {
     width: 100%;
     padding: 1.1rem 1.5rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   &:hover {

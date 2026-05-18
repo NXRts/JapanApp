@@ -34,7 +34,7 @@ const SectionTitle = styled.h2`
   }
   
   @media (max-width: 768px) {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
     margin-bottom: 2rem;
   }
 `;
@@ -99,12 +99,20 @@ const Title = styled.h3`
   font-weight: 700;
   color: var(--foreground);
   margin-bottom: 0.75rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const Description = styled.p`
   color: var(--text-secondary);
   line-height: 1.6;
   font-size: 1rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+  }
 `;
 
 export function WhatsNewSection() {
