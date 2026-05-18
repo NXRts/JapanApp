@@ -16,14 +16,14 @@ const Section = styled.section`
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 10rem 1.5rem 6rem;
+  padding: 0.5rem 1.5rem 6rem;
   min-height: 100dvh;
   width: 100%;
   position: relative;
   gap: 3rem;
   
   @media (max-width: 768px) {
-    padding: 8rem 1rem 3rem;
+    padding: 0.5rem 1rem 3rem;
     min-height: auto;
     gap: 2rem;
   }
