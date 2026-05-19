@@ -23,7 +23,7 @@ const Section = styled.section`
   gap: 3rem;
   
   @media (max-width: 768px) {
-    padding: 0.5rem 1rem 3rem;
+    padding: 5.5rem 1rem 3rem;
     min-height: auto;
     gap: 2rem;
   }
@@ -54,8 +54,9 @@ const Title = styled.h1`
   }
   
   @media (max-width: 768px) {
-    font-size: 2.1rem;
+    font-size: 2.5rem;
     margin-bottom: 1rem;
+    line-height: 1.15;
   }
 `;
 
@@ -80,10 +81,17 @@ const ButtonGroup = styled.div`
   margin-bottom: 2rem;
   
   @media (max-width: 768px) {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     width: 100%;
-    max-width: 340px;
-    gap: 1rem;
+    max-width: 440px;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    
+    /* Force Daily Quiz button (last-child) to span full width */
+    a:last-child {
+      grid-column: span 2;
+    }
   }
 `;
 
@@ -100,7 +108,8 @@ const NavButton = styled(Link)`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 1.1rem 1.5rem;
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
   }
 `;
 
@@ -229,10 +238,22 @@ const RoadmapButton = styled(PrimaryButton)`
     box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.4);
     transform: translateY(-3px);
   }
+  
+  @media (max-width: 768px) {
+    grid-column: span 2;
+    font-size: 0.9rem;
+    padding: 0.9rem 1.5rem;
+  }
 `;
 
 const MainPrimaryButton = styled(PrimaryButton)`
   min-width: 220px;
+  
+  @media (max-width: 768px) {
+    grid-column: span 2;
+    font-size: 0.9rem;
+    padding: 0.9rem 1.5rem;
+  }
 `;
 
 export function HeroSection({ isDailyCompleted }: HeroSectionProps) {
