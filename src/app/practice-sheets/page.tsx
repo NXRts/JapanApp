@@ -319,11 +319,14 @@ const SettingRow = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 0.85rem;
+  padding: 0.35rem 0;
+  gap: 12px;
 `;
 
 const SettingLabel = styled.span`
   font-weight: 600;
   color: var(--foreground);
+  line-height: 1.3;
 `;
 
 const SelectControl = styled.select`
@@ -335,6 +338,8 @@ const SelectControl = styled.select`
   color: var(--foreground);
   outline: none;
   cursor: pointer;
+  max-width: 160px;
+  flex-shrink: 0;
   
   &:focus {
     border-color: var(--primary);
@@ -345,18 +350,81 @@ const RangeContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 120px;
+  width: 130px;
+  flex-shrink: 0;
   
-  input {
-    flex: 1;
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
     cursor: pointer;
+    width: 100%;
+    min-width: 0;
+    flex: 1;
   }
+
+  /* Webkit Track */
+  input[type="range"]::-webkit-slider-runnable-track {
+    background: var(--border);
+    height: 6px;
+    border-radius: 999px;
+  }
+
+  /* Webkit Thumb */
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -5px;
+    background-color: var(--primary);
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    transition: background-color 0.15s, transform 0.15s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background-color: var(--primary-light);
+    transform: scale(1.15);
+  }
+
+  /* Moz Track */
+  input[type="range"]::-moz-range-track {
+    background: var(--border);
+    height: 6px;
+    border-radius: 999px;
+  }
+
+  /* Moz Thumb */
+  input[type="range"]::-moz-range-thumb {
+    border: none;
+    background-color: var(--primary);
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    transition: background-color 0.15s, transform 0.15s;
+  }
+  input[type="range"]::-moz-range-thumb:hover {
+    background-color: var(--primary-light);
+    transform: scale(1.15);
+  }
+  
   span {
     font-size: 0.8rem;
     font-weight: 700;
-    width: 25px;
+    width: 32px;
     text-align: right;
+    color: var(--foreground);
+    flex-shrink: 0;
   }
+`;
+
+const CheckboxControl = styled.input`
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  flex-shrink: 0;
 `;
 
 const PrintButton = styled.button`
@@ -622,6 +690,7 @@ const FooterCredits = styled.div`
 `;
 
 export default function PracticeSheetsPage() {
+  const [mounted, setMounted] = useState(false);
   // Navigation & Data tabs
   const [activeTab, setActiveTab] = useState<'kana' | 'kanji' | 'custom'>('kana');
   const [kanaTab, setKanaTab] = useState<'hiragana' | 'katakana'>('hiragana');
@@ -648,6 +717,7 @@ export default function PracticeSheetsPage() {
 
   // Load selections / settings from localStorage on mount
   useEffect(() => {
+    setMounted(true);
     try {
       const savedSettings = localStorage.getItem('sheet-generator-settings');
       if (savedSettings) {
@@ -830,7 +900,7 @@ export default function PracticeSheetsPage() {
     return pages;
   };
 
-  const charactersToRender = getActiveCharacters();
+  const charactersToRender = mounted ? getActiveCharacters() : [];
   const { size: cellSizePx, cellsPerRow, rowsPerPage } = getCellParameters();
   const paginatedPages = paginateCharacters(charactersToRender, rowsPerPage);
 
@@ -991,7 +1061,7 @@ export default function PracticeSheetsPage() {
                   onChange={handleCustomTextChange}
                 />
                 <CheckboxLabel>
-                  <input 
+                  <CheckboxControl 
                     type="checkbox" 
                     checked={convertRomaji} 
                     onChange={toggleConvertRomaji}
@@ -1081,31 +1151,28 @@ export default function PracticeSheetsPage() {
 
               <SettingRow>
                 <SettingLabel>Include Romaji/Meaning</SettingLabel>
-                <input 
+                <CheckboxControl 
                   type="checkbox" 
                   checked={showHeaders} 
                   onChange={(e) => setShowHeaders(e.target.checked)}
-                  style={{ cursor: 'pointer', width: '18px', height: '18px' }}
                 />
               </SettingRow>
 
               <SettingRow>
                 <SettingLabel>Paper Header fields</SettingLabel>
-                <input 
+                <CheckboxControl 
                   type="checkbox" 
                   checked={showMetadata} 
                   onChange={(e) => setShowMetadata(e.target.checked)}
-                  style={{ cursor: 'pointer', width: '18px', height: '18px' }}
                 />
               </SettingRow>
 
               <SettingRow>
                 <SettingLabel>Landscape Orientation</SettingLabel>
-                <input 
+                <CheckboxControl 
                   type="checkbox" 
                   checked={landscape} 
                   onChange={(e) => setLandscape(e.target.checked)}
-                  style={{ cursor: 'pointer', width: '18px', height: '18px' }}
                 />
               </SettingRow>
             </div>
