@@ -541,11 +541,12 @@ const A4Sheet = styled.div<{ $landscape?: boolean }>`
     width: 100% !important;
     height: auto !important;
     min-height: 0 !important;
-    padding: 0 !important;
+    padding: 15mm 12mm !important;
     margin: 0 !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     transform: none !important;
+    box-sizing: border-box !important;
   }
 `;
 
@@ -1311,10 +1312,10 @@ export default function PracticeSheetsPage() {
             display: none !important;
           }
           
-          /* Set paper layout size and margins */
+          /* Set paper layout size and margins - margin: 0 hides default browser headers & footers */
           @page {
             size: ${landscape ? 'A4 landscape' : 'A4 portrait'};
-            margin: 10mm 15mm !important;
+            margin: 0 !important;
           }
           
           body {
@@ -1337,9 +1338,10 @@ export default function PracticeSheetsPage() {
             box-shadow: none !important;
             border-radius: 0 !important;
             margin: 0 !important;
-            padding: 0 !important;
+            padding: 15mm 12mm !important;
             width: 100% !important;
             height: auto !important;
+            box-sizing: border-box !important;
             background: transparent !important;
             page-break-after: always !important;
             page-break-inside: avoid !important;
