@@ -863,16 +863,28 @@ export default function PracticeSheetsPage() {
     );
   };
 
-  // Character layout parameters based on cell size
+  // Character layout parameters based on cell size and paper orientation
   const getCellParameters = () => {
-    switch (cellSize) {
-      case 'large':
-        return { size: 70, cellsPerRow: 8, rowsPerPage: 8 };
-      case 'small':
-        return { size: 42, cellsPerRow: 13, rowsPerPage: 15 };
-      case 'medium':
-      default:
-        return { size: 55, cellsPerRow: 10, rowsPerPage: 11 };
+    if (landscape) {
+      switch (cellSize) {
+        case 'large':
+          return { size: 70, cellsPerRow: 13, rowsPerPage: 5 };
+        case 'small':
+          return { size: 38, cellsPerRow: 22, rowsPerPage: 10 };
+        case 'medium':
+        default:
+          return { size: 50, cellsPerRow: 17, rowsPerPage: 7 };
+      }
+    } else {
+      switch (cellSize) {
+        case 'large':
+          return { size: 70, cellsPerRow: 8, rowsPerPage: 8 };
+        case 'small':
+          return { size: 38, cellsPerRow: 15, rowsPerPage: 15 };
+        case 'medium':
+        default:
+          return { size: 50, cellsPerRow: 12, rowsPerPage: 11 };
+      }
     }
   };
 
