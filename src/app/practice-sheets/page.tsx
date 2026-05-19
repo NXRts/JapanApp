@@ -519,8 +519,11 @@ const A4Sheet = styled.div<{ $landscape?: boolean }>`
   display: flex;
   flex-direction: column;
   position: relative;
-  page-break-after: always;
   font-family: 'Noto Sans JP', sans-serif;
+  
+  &:not(:last-child) {
+    page-break-after: always;
+  }
   
   @media (max-width: 1024px) {
     /* Scale sheet previews on smaller viewports */
@@ -539,14 +542,16 @@ const A4Sheet = styled.div<{ $landscape?: boolean }>`
   
   @media print {
     width: 100% !important;
-    height: auto !important;
+    height: ${props => props.$landscape ? '210mm' : '297mm'} !important;
+    max-height: ${props => props.$landscape ? '210mm' : '297mm'} !important;
     min-height: 0 !important;
-    padding: 15mm 12mm !important;
+    padding: 12mm 12mm 10mm 12mm !important;
     margin: 0 !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     transform: none !important;
     box-sizing: border-box !important;
+    overflow: hidden !important;
   }
 `;
 
@@ -598,6 +603,8 @@ const CharacterRow = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+  page-break-inside: avoid;
+  break-inside: avoid;
 `;
 
 const RowHeaderLabel = styled.div`
@@ -871,20 +878,20 @@ export default function PracticeSheetsPage() {
         case 'large':
           return { size: 70, cellsPerRow: 13, rowsPerPage: 5 };
         case 'small':
-          return { size: 38, cellsPerRow: 22, rowsPerPage: 10 };
+          return { size: 38, cellsPerRow: 22, rowsPerPage: 7 };
         case 'medium':
         default:
-          return { size: 50, cellsPerRow: 17, rowsPerPage: 7 };
+          return { size: 50, cellsPerRow: 17, rowsPerPage: 6 };
       }
     } else {
       switch (cellSize) {
         case 'large':
           return { size: 70, cellsPerRow: 8, rowsPerPage: 8 };
         case 'small':
-          return { size: 38, cellsPerRow: 15, rowsPerPage: 15 };
+          return { size: 38, cellsPerRow: 15, rowsPerPage: 11 };
         case 'medium':
         default:
-          return { size: 50, cellsPerRow: 12, rowsPerPage: 11 };
+          return { size: 50, cellsPerRow: 12, rowsPerPage: 9 };
       }
     }
   };
@@ -1124,8 +1131,8 @@ export default function PracticeSheetsPage() {
                   onChange={(e) => setCellSize(e.target.value as any)}
                 >
                   <option value="large">Large (8 rows/page)</option>
-                  <option value="medium">Medium (11 rows/page)</option>
-                  <option value="small">Small (15 rows/page)</option>
+                  <option value="medium">Medium (9 rows/page)</option>
+                  <option value="small">Small (11 rows/page)</option>
                 </SelectControl>
               </SettingRow>
 
@@ -1192,12 +1199,14 @@ export default function PracticeSheetsPage() {
           </div>
 
           <div style={{ marginTop: '0.5rem' }}>
-            <PrintButton onClick={handlePrint} disabled={charactersToRender.length === 0}>
-              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 19.164h10.56M16.5 15.75v3.437m-9 0V15.75M9 10.5h6M5.22 10.5h13.56c.928 0 1.62.83 1.48 1.744l-1.05 6.75a1.5 1.5 0 01-1.48 1.256H6.07a1.5 1.5 0 01-1.48-1.256l-1.05-6.75a1.5 1.5 0 011.48-1.744zM16.5 7.5v-3a1.5 1.5 0 00-1.5-1.5h-6A1.5 1.5 0 007.5 4.5v3M19.5 10.5h.008v.008h-.008V10.5z" />
-              </svg>
-              Print Practice Sheet
-            </PrintButton>
+            {mounted && (
+              <PrintButton onClick={handlePrint} disabled={charactersToRender.length === 0}>
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 19.164h10.56M16.5 15.75v3.437m-9 0V15.75M9 10.5h6M5.22 10.5h13.56c.928 0 1.62.83 1.48 1.744l-1.05 6.75a1.5 1.5 0 01-1.48 1.256H6.07a1.5 1.5 0 01-1.48-1.256l-1.05-6.75a1.5 1.5 0 011.48-1.744zM16.5 7.5v-3a1.5 1.5 0 00-1.5-1.5h-6A1.5 1.5 0 007.5 4.5v3M19.5 10.5h.008v.008h-.008V10.5z" />
+                </svg>
+                Print Practice Sheet
+              </PrintButton>
+            )}
           </div>
         </Sidebar>
 
@@ -1338,13 +1347,19 @@ export default function PracticeSheetsPage() {
             box-shadow: none !important;
             border-radius: 0 !important;
             margin: 0 !important;
-            padding: 15mm 12mm !important;
+            padding: 12mm 12mm 10mm 12mm !important;
             width: 100% !important;
-            height: auto !important;
+            height: ${landscape ? '210mm' : '297mm'} !important;
+            max-height: ${landscape ? '210mm' : '297mm'} !important;
             box-sizing: border-box !important;
             background: transparent !important;
-            page-break-after: always !important;
             page-break-inside: avoid !important;
+            overflow: hidden !important;
+          }
+          
+          .A4Sheet:not(:last-child) {
+            page-break-after: always !important;
+            break-after: page !important;
           }
         }
       `}</style>
