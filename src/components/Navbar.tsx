@@ -441,6 +441,9 @@ export function Navbar() {
               <StyledLink href="/materi" $active={pathname.startsWith('/materi')}>Materials</StyledLink>
             </NavItem>
             <NavItem>
+              <StyledLink href="/practice-sheets" $active={pathname === '/practice-sheets'}>Sheets</StyledLink>
+            </NavItem>
+            <NavItem>
               <StyledLink href="/jlpt" $active={pathname.startsWith('/jlpt')}>JLPT</StyledLink>
             </NavItem>
             <NavItem>
@@ -524,7 +527,11 @@ export function Navbar() {
             Materials
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
-          <MobileLink href="/jlpt" $active={pathname.startsWith('/jlpt')} $isOpen={isMobileMenuOpen} $delay={0.3} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink href="/practice-sheets" $active={pathname === '/practice-sheets'} $isOpen={isMobileMenuOpen} $delay={0.28} onClick={() => setIsMobileMenuOpen(false)}>
+            Practice Sheets
+            <span><ArrowRightIcon size={18} /></span>
+          </MobileLink>
+          <MobileLink href="/jlpt" $active={pathname.startsWith('/jlpt')} $isOpen={isMobileMenuOpen} $delay={0.31} onClick={() => setIsMobileMenuOpen(false)}>
             JLPT
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>

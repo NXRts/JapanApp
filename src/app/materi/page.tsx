@@ -252,6 +252,28 @@ export default function MateriHubPage() {
             </ActionButton>
           </CardContent>
         </HubCardLink>
+
+        {/* Practice Sheets Hub */}
+        <HubCardLink href="/practice-sheets">
+          <CardContent>
+            <IconWrapper $color="244, 63, 94"> {/* Rose color */}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                <path d="M6 14h12v8H6z" />
+              </svg>
+            </IconWrapper>
+            <CardTitle>Practice Sheets</CardTitle>
+            <CardDescription>
+              Generate custom Japanese Genkouyoushi grids for Kana and Kanji to print out and practice handwriting offline.
+            </CardDescription>
+            <ActionButton $color="244, 63, 94">
+              Print Sheets
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </ActionButton>
+          </CardContent>
+        </HubCardLink>
       </HubGrid>
     </Container>
   );
