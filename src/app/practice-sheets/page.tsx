@@ -103,6 +103,13 @@ const Sidebar = styled.div`
   gap: 1.5rem;
   box-shadow: var(--shadow-md);
   
+  @media (max-width: 768px) {
+    width: 100%;
+    &.inactive-mobile-pane {
+      display: none !important;
+    }
+  }
+  
   @media print {
     display: none;
   }
@@ -450,11 +457,114 @@ const PrintButton = styled.button`
   }
 `;
 
+const MobileNavigationTabs = styled.div`
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 6px;
+    margin-bottom: 1.5rem;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  @media print {
+    display: none !important;
+  }
+`;
+
+const MobileNavButton = styled.button<{ $active: boolean }>`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  background: ${props => props.$active ? 'var(--primary)' : 'transparent'};
+  color: ${props => props.$active ? 'white' : 'var(--text-secondary)'};
+  cursor: pointer;
+  transition: all 0.25s ease;
+  
+  &:hover {
+    color: ${props => props.$active ? 'white' : 'var(--foreground)'};
+  }
+`;
+
+const MobileOnlyPreviewBtn = styled.button`
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0.85rem;
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary);
+    border: 1px solid var(--primary-light);
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 0.75rem;
+    transition: all 0.2s;
+    
+    &:hover {
+      background: rgba(var(--primary-rgb), 0.15);
+      transform: translateY(-1px);
+    }
+  }
+  
+  @media print {
+    display: none !important;
+  }
+`;
+
+const MobileOnlyPrintWrapper = styled.div`
+  display: none;
+  
+  @media (max-width: 768px) {
+    display: block;
+    width: 100%;
+    max-width: 794px;
+    margin-bottom: 1.25rem;
+    
+    button {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
+    }
+  }
+  
+  @media print {
+    display: none !important;
+  }
+`;
+
 // Preview Frame Styles
 const PreviewPane = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 0.25rem;
+    box-sizing: border-box;
+    &.inactive-mobile-pane {
+      display: none !important;
+    }
+  }
   
   @media print {
     display: block;
@@ -699,6 +809,7 @@ const FooterCredits = styled.div`
 
 export default function PracticeSheetsPage() {
   const [mounted, setMounted] = useState(false);
+  const [mobileActiveTab, setMobileActiveTab] = useState<'settings' | 'preview'>('settings');
   // Navigation & Data tabs
   const [activeTab, setActiveTab] = useState<'kana' | 'kanji' | 'custom'>('kana');
   const [kanaTab, setKanaTab] = useState<'hiragana' | 'katakana'>('hiragana');
@@ -936,9 +1047,34 @@ export default function PracticeSheetsPage() {
         <Subtitle>Generate beautiful, custom Japanese handwriting grids (Genkouyoushi) to practice offline.</Subtitle>
       </LayoutHeader>
 
+      {mounted && (
+        <MobileNavigationTabs>
+          <MobileNavButton 
+            $active={mobileActiveTab === 'settings'} 
+            onClick={() => setMobileActiveTab('settings')}
+          >
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.991l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128c.332-.183.582-.495.645-.869l.214-1.28z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Setelan
+          </MobileNavButton>
+          <MobileNavButton 
+            $active={mobileActiveTab === 'preview'} 
+            onClick={() => setMobileActiveTab('preview')}
+          >
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Pratinjau ({paginatedPages.length} Hlm)
+          </MobileNavButton>
+        </MobileNavigationTabs>
+      )}
+
       <MainGrid>
         {/* Sidebar Controls */}
-        <Sidebar>
+        <Sidebar className={mobileActiveTab === 'settings' ? 'active-mobile-pane' : 'inactive-mobile-pane'}>
           <div>
             <SectionTitle>
               <span>1. Choose Characters</span>
@@ -1207,11 +1343,22 @@ export default function PracticeSheetsPage() {
                 Print Practice Sheet
               </PrintButton>
             )}
+
+            {/* Mobile-Only Action to switch to Preview tab */}
+            {mounted && (
+              <MobileOnlyPreviewBtn onClick={() => setMobileActiveTab('preview')}>
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.43 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Lihat Pratinjau ({paginatedPages.length} Hlm)
+              </MobileOnlyPreviewBtn>
+            )}
           </div>
         </Sidebar>
 
         {/* Live Preview Pane */}
-        <PreviewPane>
+        <PreviewPane className={mobileActiveTab === 'preview' ? 'active-mobile-pane' : 'inactive-mobile-pane'}>
           <QuickTips>
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -1220,6 +1367,18 @@ export default function PracticeSheetsPage() {
               <strong>Print Optimizations:</strong> When the browser print window opens, make sure to <strong>disable Headers and Footers</strong>, set your margins to <strong>Default/None</strong>, and enable <strong>Background Graphics</strong> for crisp guides!
             </div>
           </QuickTips>
+
+          {/* Mobile-Only Print Button in Preview Pane */}
+          {mounted && charactersToRender.length > 0 && (
+            <MobileOnlyPrintWrapper>
+              <PrintButton onClick={handlePrint}>
+                <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.72 19.164h10.56M16.5 15.75v3.437m-9 0V15.75M9 10.5h6M5.22 10.5h13.56c.928 0 1.62.83 1.48 1.744l-1.05 6.75a1.5 1.5 0 01-1.48 1.256H6.07a1.5 1.5 0 01-1.48-1.256l-1.05-6.75a1.5 1.5 0 011.48-1.744zM16.5 7.5v-3a1.5 1.5 0 00-1.5-1.5h-6A1.5 1.5 0 007.5 4.5v3M19.5 10.5h.008v.008h-.008V10.5z" />
+                </svg>
+                Print Practice Sheet
+              </PrintButton>
+            </MobileOnlyPrintWrapper>
+          )}
 
           {charactersToRender.length > 0 ? (
             <>
