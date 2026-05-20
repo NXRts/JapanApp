@@ -35,6 +35,9 @@ export interface DictionaryResult {
   partOfSpeech?: string; // For jpjp
   meanings?: string[]; // For jpjp
   source: 'local' | 'jisho' | 'kamus' | 'angka' | 'kanji-db' | 'tatoeba' | 'wiktionary';
+  category?: 'noun' | 'verb' | 'adjective' | 'adverb' | 'other' | string;
+  indonesian?: string;
+  english?: string;
 }
 
 const libraryVocabulary = Object.values(jlptWordsData).map((item: any) => ({
@@ -44,14 +47,16 @@ const libraryVocabulary = Object.values(jlptWordsData).map((item: any) => ({
   romaji: item.reading,  // We'll use kana reading as the romaji fallback
   meaning: item.english && item.english !== 'No definition' ? item.english : 'No definition',
   level: item.level as string,
+  type: 'vocabulary' as const,
+  source: 'kamus' as const,
 }));
 
-export const allVocabulary = [
-  ...n5Vocabulary,
-  ...n4Vocabulary,
-  ...n3Vocabulary,
-  ...n2Vocabulary,
-  ...n1Vocabulary,
+export const allVocabulary: DictionaryResult[] = [
+  ...n5Vocabulary.map(v => ({ ...v, type: 'vocabulary' as const, source: 'local' as const })),
+  ...n4Vocabulary.map(v => ({ ...v, type: 'vocabulary' as const, source: 'local' as const })),
+  ...n3Vocabulary.map(v => ({ ...v, type: 'vocabulary' as const, source: 'local' as const })),
+  ...n2Vocabulary.map(v => ({ ...v, type: 'vocabulary' as const, source: 'local' as const })),
+  ...n1Vocabulary.map(v => ({ ...v, type: 'vocabulary' as const, source: 'local' as const })),
   ...libraryVocabulary,
 ];
 
@@ -216,11 +221,15 @@ export async function searchDictionary(
   if (category === 'vocabulary' || category === 'all') {
     allVocabulary.forEach((item) => {
       if (levelFilter !== 'all' && item.level !== levelFilter) return;
+      const word = item.word;
+      const reading = item.reading;
+      const romaji = item.romaji;
+      const meaning = item.meaning;
       if (
-        item.word.toLowerCase().includes(normalizedQuery) ||
-        (item.reading && item.reading.toLowerCase().includes(normalizedQuery)) ||
-        (item.romaji && item.romaji.toLowerCase().includes(normalizedQuery)) ||
-        (item.meaning && item.meaning.toLowerCase().includes(normalizedQuery))
+        (word && word.toLowerCase().includes(normalizedQuery)) ||
+        (reading && reading.toLowerCase().includes(normalizedQuery)) ||
+        (romaji && romaji.toLowerCase().includes(normalizedQuery)) ||
+        (meaning && meaning.toLowerCase().includes(normalizedQuery))
       ) {
         localResults.push({
           id: item.id,

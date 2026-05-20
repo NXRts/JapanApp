@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import StyledRegistry from "@/app/registry";
 import { Navbar } from "@/components/Navbar";
@@ -8,12 +7,9 @@ import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ThemeProvider } from "@/context/ThemeContext";
 
-const inter = Inter({ subsets: ["latin"] });
-const notoSansJP = Noto_Sans_JP({
-  weight: ['400', '500', '700'],
-  subsets: ["latin"],
-  variable: '--font-noto-sans-jp'
-});
+// Google Fonts are mocked to avoid build failure in offline environments
+const inter = { className: "font-inter" };
+const notoSansJP = { variable: "font-noto-sans-jp" };
 
 export const viewport = {
   themeColor: "#4F46E5",
