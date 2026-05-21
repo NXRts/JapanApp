@@ -368,7 +368,7 @@ export default function MemoryMatchPage() {
             const newMatches = m + 1;
             if (newMatches === PAIRS_COUNT) {
               setGameStatus('won');
-              addExp(500); // Reward for winning
+              addExp(120); // Reward for winning (balanced)
             } else if (showRomaji && newMoves >= MAX_MOVES) {
               setGameStatus('lost');
             }
@@ -433,6 +433,25 @@ export default function MemoryMatchPage() {
                 ? `You matched all ${PAIRS_COUNT} pairs in ${moves} moves.`
                 : `You reached the limit of ${MAX_MOVES} moves. Keep practicing without Romaji if you prefer no limit!`}
             </p>
+            {gameStatus === 'won' && (
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                color: '#f59e0b',
+                background: 'rgba(245, 158, 11, 0.1)',
+                padding: '0.6rem 1.5rem',
+                borderRadius: '999px',
+                fontWeight: 800,
+                fontSize: '1.25rem',
+                marginBottom: '2rem',
+                border: '1px solid rgba(245, 158, 11, 0.2)',
+                boxShadow: '0 4px 12px rgba(245, 158, 11, 0.1)'
+              }}>
+                ⭐ +120 EXP Gained
+              </div>
+            )}
+            <br />
             <Button onClick={generateGame}>Play Again</Button>
           </GameOverScreen>
         ) : (
