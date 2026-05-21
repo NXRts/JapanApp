@@ -221,10 +221,15 @@ const HamburgerBtn = styled.button<{ $isOpen: boolean }>`
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0; /* Reset padding for precise ergonomic touch target */
   }
 
   @media (max-width: 600px) {
-    padding: 0.2rem; /* Tighter padding on small screens */
+    width: 44px;
+    height: 44px;
+    padding: 0; /* Maintain minimum 44px x 44px touch target on smaller mobile screens */
   }
   
   svg {
@@ -286,12 +291,31 @@ const LevelBadge = styled.div`
   }
 `;
 
-const MobileMenu = styled.div<{ $isOpen: boolean }>`
+const MobileMenuOverlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
-  top: 70px; /* Precise alignment below the navbar */
+  top: 56px; /* Start below the navbar bar — tidak menutupi navbar */
   left: 0;
   width: 100%;
-  height: calc(100dvh - 70px);
+  height: calc(100dvh - 56px);
+  background: rgba(0, 0, 0, 0.2); /* Lebih ringan agar tidak terlalu gelap */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100; /* Behind MobileMenu (101) but above page content */
+  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? 'all' : 'none')};
+  transition: opacity 0.3s ease;
+  
+  @media (min-width: 1101px) {
+    display: none;
+  }
+`;
+
+const MobileMenu = styled.div<{ $isOpen: boolean }>`
+  position: fixed;
+  top: 56px; /* Tepat di bawah navbar (NavContainer height = 56px) */
+  left: 0;
+  width: 100%;
+  height: calc(100dvh - 56px);
   background: var(--surface); /* Solid background to match navbar */
   z-index: 101;
   padding: 2rem 2.5rem; /* Balanced internal padding */
@@ -509,6 +533,7 @@ export function Navbar() {
           </RightNavContainer>
         </NavContainer>
 
+        <MobileMenuOverlay $isOpen={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(false)} />
         <MobileMenu $isOpen={isMobileMenuOpen}>
           <MobileLink href="/" $active={pathname === '/'} $isOpen={isMobileMenuOpen} $delay={0.1} onClick={() => setIsMobileMenuOpen(false)}>
             Home
