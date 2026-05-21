@@ -165,6 +165,11 @@ export default function GamePage() {
     const [isGameOver, setIsGameOver] = useState(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
+    const scoreRef = useRef(score);
+
+    useEffect(() => {
+        scoreRef.current = score;
+    }, [score]);
 
     // Fetch Kana list on mount
     useEffect(() => {
@@ -186,18 +191,25 @@ export default function GamePage() {
 
     // Timer logic
     useEffect(() => {
-        let timer: NodeJS.Timeout;
-        if (isPlaying && timeLeft > 0) {
-            timer = setInterval(() => {
-                setTimeLeft(prev => prev - 1);
-            }, 1000);
-        } else if (timeLeft === 0 && isPlaying) {
-            setIsPlaying(false);
-            setIsGameOver(true);
-            addExp(score * 20); // 20 EXP per correct word
-        }
+        if (!isPlaying) return;
+
+        const timer = setInterval(() => {
+            setTimeLeft(prev => {
+                if (prev <= 1) {
+                    clearInterval(timer);
+                    setTimeout(() => {
+                        setIsPlaying(false);
+                        setIsGameOver(true);
+                        addExp(scoreRef.current * 20);
+                    }, 0);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+
         return () => clearInterval(timer);
-    }, [isPlaying, timeLeft, score, addExp]);
+    }, [isPlaying, addExp]);
 
     const startGame = () => {
         if (kanaList.length === 0) return;
@@ -276,7 +288,7 @@ export default function GamePage() {
 
                 {isGameOver && (
                     <div>
-                        <h2>Time's Up!</h2>
+                        <h2>{"Time's Up!"}</h2>
                         <KanaDisplay style={{ fontSize: '4rem', margin: '1rem 0' }}>{score}</KanaDisplay>
                         <p style={{ color: 'var(--text-secondary)', fontSize: '1.25rem', marginBottom: '2rem' }}>
                             characters typed correctly.

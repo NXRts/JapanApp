@@ -358,7 +358,7 @@ export default function ConjugationDrillsPage() {
     if (inputType === 'manual-typing') {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, [inputType]);
+  }, [inputType, difficulty]);
 
   const startGame = () => {
     setScore(0);
