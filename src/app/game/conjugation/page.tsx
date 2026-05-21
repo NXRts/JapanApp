@@ -4,6 +4,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { conjugationData, ConjugationVerb } from '@/data/conjugation_drills';
+import { useProgress } from '@/context/ProgressContext';
 
 // --- Styled Components ---
 
@@ -290,6 +291,13 @@ export default function ConjugationDrillsPage() {
 
   // Game State
   const [score, setScore] = useState(0);
+  const { addExp } = useProgress();
+  const scoreRef = useRef(score);
+
+  useEffect(() => {
+    scoreRef.current = score;
+  }, [score]);
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   
   const [currentVerb, setCurrentVerb] = useState<ConjugationVerb | null>(null);
@@ -371,6 +379,7 @@ export default function ConjugationDrillsPage() {
     setTimeout(() => {
       if (currentQuestionIndex + 1 >= TOTAL_QUESTIONS) {
         setGameState('result');
+        addExp(scoreRef.current * 15);
       } else {
         setCurrentQuestionIndex(i => i + 1);
         generateQuestion();
@@ -549,6 +558,22 @@ export default function ConjugationDrillsPage() {
               <Subtitle>Latihan yang bagus.</Subtitle>
             </Header>
             <FinalScore>{score} / {TOTAL_QUESTIONS}</FinalScore>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              color: '#10b981',
+              background: 'rgba(16, 185, 129, 0.1)',
+              padding: '0.6rem 1.5rem',
+              borderRadius: '999px',
+              fontWeight: 800,
+              fontSize: '1.25rem',
+              marginBottom: '2rem',
+              border: '1px solid rgba(16, 185, 129, 0.2)',
+              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.1)'
+            }}>
+              🏆 +{score * 15} EXP Gained
+            </div>
             <ResultMessage>
               {score === TOTAL_QUESTIONS ? 'Sempurna! Kamu master konjugasi.' : 
                score >= 7 ? 'Kerja bagus! Sedikit lagi menuju sempurna.' : 

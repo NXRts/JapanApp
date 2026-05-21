@@ -200,7 +200,7 @@ export default function GamePage() {
                     setTimeout(() => {
                         setIsPlaying(false);
                         setIsGameOver(true);
-                        addExp(scoreRef.current * 20);
+                        addExp(scoreRef.current * 4);
                     }, 0);
                     return 0;
                 }
@@ -290,9 +290,26 @@ export default function GamePage() {
                     <div>
                         <h2>{"Time's Up!"}</h2>
                         <KanaDisplay style={{ fontSize: '4rem', margin: '1rem 0' }}>{score}</KanaDisplay>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '1.25rem', marginBottom: '2rem' }}>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '1.25rem', marginBottom: '1.5rem' }}>
                             characters typed correctly.
                         </p>
+                        <div style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          color: '#3b82f6',
+                          background: 'rgba(59, 130, 246, 0.1)',
+                          padding: '0.6rem 1.5rem',
+                          borderRadius: '999px',
+                          fontWeight: 800,
+                          fontSize: '1.25rem',
+                          marginBottom: '2rem',
+                          border: '1px solid rgba(59, 130, 246, 0.2)',
+                          boxShadow: '0 4px 12px rgba(59, 130, 246, 0.1)'
+                        }}>
+                          ⚡ +{score * 4} EXP Gained
+                        </div>
+                        <br />
                         <Button onClick={startGame}>Play Again</Button>
                     </div>
                 )}

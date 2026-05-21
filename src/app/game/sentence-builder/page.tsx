@@ -757,7 +757,7 @@ export default function SentenceBuilderPage() {
 
     if (isMatched) {
       setStatus('success');
-      addExp(100); // 100 EXP per correct sentence
+      addExp(15); // 15 EXP per correct sentence (balanced)
     } else {
       setStatus('error');
     }
@@ -815,7 +815,7 @@ export default function SentenceBuilderPage() {
         </TopRow>
 
         <TargetSentenceBox>
-          <TranslationText>"{currentLevel.translation}"</TranslationText>
+          <TranslationText>&ldquo;{currentLevel.translation}&rdquo;</TranslationText>
           <RomajiHint>Hints: {currentLevel.romajiHint}</RomajiHint>
         </TargetSentenceBox>
 
@@ -838,7 +838,24 @@ export default function SentenceBuilderPage() {
             <ActionButton $variant="success" onClick={nextLevel}>
               {levelIndex < gameSentences.length - 1 ? 'Next Sentence →' : 'Play Again'}
             </ActionButton>
-            <FeedbackMessage $success={true}>Seikai! (Correct!)</FeedbackMessage>
+            <FeedbackMessage $success={true}>
+              🎉 Seikai! (Correct!){' '}
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.25rem',
+                color: '#10b981',
+                background: 'rgba(16, 185, 129, 0.1)',
+                padding: '0.25rem 0.75rem',
+                borderRadius: '999px',
+                fontWeight: 800,
+                fontSize: '0.9rem',
+                marginLeft: '0.5rem',
+                border: '1px solid rgba(16, 185, 129, 0.2)'
+              }}>
+                🏆 +15 EXP
+              </span>
+            </FeedbackMessage>
           </>
         ) : (
           <>
