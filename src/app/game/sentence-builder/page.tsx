@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { DndContext, DragOverlay, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragStartEvent, DragEndEvent } from '@dnd-kit/core';
+import { DndContext, DragOverlay, closestCenter, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors, DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { useProgress } from '@/context/ProgressContext';
 import {
   arrayMove,
@@ -726,6 +726,12 @@ export default function SentenceBuilderPage() {
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 5, // minimum drag distance before taking over
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 150,      // tahan 150ms agar scroll normal tidak tertangkap
+        tolerance: 8,    // toleransi gerakan 8px selama delay
       },
     }),
     useSensor(KeyboardSensor, {

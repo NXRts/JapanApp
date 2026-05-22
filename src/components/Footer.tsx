@@ -134,6 +134,7 @@ const FooterMain = styled.div`
   @media (max-width: 480px) {
     grid-template-columns: 1fr;
     gap: 2.5rem;
+    padding: 3rem 1rem;
   }
 `;
 

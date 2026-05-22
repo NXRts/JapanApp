@@ -18,6 +18,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 2.5rem 2rem;
   min-height: 90vh;
+
+  @media (max-width: 600px) {
+    padding: 1.5rem 1rem;
+  }
 `;
 
 const GameArea = styled.div`
@@ -27,6 +31,11 @@ const GameArea = styled.div`
   padding: 3rem;
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
   animation: ${fadeIn} 0.5s ease-out;
+
+  @media (max-width: 600px) {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
 `;
 
 const Header = styled.div`
@@ -41,6 +50,10 @@ const Title = styled.h1`
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  @media (max-width: 600px) {
+    font-size: 1.75rem;
+  }
 `;
 
 const Subtitle = styled.p`
@@ -56,6 +69,11 @@ const OptionsPanel = styled.div`
   padding: 2rem;
   margin-bottom: 2.5rem;
   text-align: left;
+
+  @media (max-width: 600px) {
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const OptionGroup = styled.div`
@@ -135,6 +153,10 @@ const TargetVerb = styled.div`
   font-weight: 800;
   margin-bottom: 0.5rem;
   color: var(--foreground);
+
+  @media (max-width: 600px) {
+    font-size: 2.75rem;
+  }
 `;
 
 const VerbMeaning = styled.div`
@@ -152,6 +174,12 @@ const InstructionBox = styled.div`
   display: inline-block;
   font-weight: 700;
   font-size: 1.25rem;
+
+  @media (max-width: 600px) {
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 12px;
+  }
 `;
 
 const OptionsGrid = styled.div`
@@ -257,12 +285,22 @@ const FinalScore = styled.div`
   font-weight: 800;
   color: #10b981;
   margin: 2rem 0;
+
+  @media (max-width: 600px) {
+    font-size: 3.5rem;
+    margin: 1.25rem 0;
+  }
 `;
 
 const ResultMessage = styled.h2`
   font-size: 2rem;
   margin-bottom: 3rem;
   color: var(--foreground);
+
+  @media (max-width: 600px) {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+  }
 `;
 
 // --- Logic Helpers ---

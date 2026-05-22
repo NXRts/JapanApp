@@ -114,7 +114,7 @@ button {
   font-family: inherit;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar (Desktop only) */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -130,4 +130,19 @@ button {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
+}
+
+/* Hide scrollbar on mobile devices */
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  * {
+    scrollbar-width: none;
+  }
+}
+
+/* Ensure all interactive elements are optimized for touch */
+button, a, [role="button"] {
+  touch-action: manipulation;
 }
