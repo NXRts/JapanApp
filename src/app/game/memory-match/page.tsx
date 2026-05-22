@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import Link from 'next/link';
+import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { toRomaji } from 'wanakana';
 import { useProgress } from '@/context/ProgressContext';
 
@@ -24,33 +24,14 @@ const Container = styled.div`
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
   margin-bottom: 2rem;
   max-width: 800px;
 
   @media (max-width: 600px) {
-    flex-direction: column;
-    gap: 1rem;
-  }
-`;
-
-const BackButton = styled(Link)`
-  color: var(--text-secondary);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-  transition: all 0.2s;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.05);
-
-  &:hover {
-    color: var(--primary);
-    background: rgba(245, 158, 11, 0.1);
+    justify-content: center;
   }
 `;
 
@@ -396,13 +377,15 @@ export default function MemoryMatchPage() {
 
   return (
     <Container>
+      <Breadcrumbs 
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Games Hub', href: '/game' }
+        ]} 
+        current="Memory Match" 
+      />
+
       <Header>
-        <BackButton href="/game">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5M12 19l-7-7 7-7" />
-          </svg>
-          Games Hub
-        </BackButton>
         <TitleBadge>
           Memory Match
           <RefreshButton
