@@ -277,6 +277,10 @@ export default function GamePage() {
                         <Input
                             ref={inputRef}
                             type="text"
+                            inputMode="text"
+                            autoCapitalize="none"
+                            autoCorrect="off"
+                            spellCheck={false}
                             value={inputVal}
                             onChange={handleInputChange}
                             placeholder="Type romaji here..."

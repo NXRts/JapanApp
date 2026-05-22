@@ -10,6 +10,10 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 2.5rem 2rem;
   min-height: 90vh;
+
+  @media (max-width: 600px) {
+    padding: 1.5rem 1rem;
+  }
 `;
 
 const Header = styled.div`
@@ -24,6 +28,10 @@ const Title = styled.h1`
   background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  @media (max-width: 600px) {
+    font-size: 2rem;
+  }
 `;
 
 const Subtitle = styled.p`
@@ -32,12 +40,21 @@ const Subtitle = styled.p`
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+
+  @media (max-width: 600px) {
+    font-size: 1rem;
+  }
 `;
 
 const GameGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
 `;
 
 const GameCardLink = styled(Link)`
