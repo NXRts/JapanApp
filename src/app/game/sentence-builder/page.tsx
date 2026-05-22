@@ -294,14 +294,14 @@ function shuffleArray<T>(array: T[]): T[] {
 const Container = styled.div`
   max-width: 1000px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   @media (max-width: 600px) {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
   }
 `;
 
