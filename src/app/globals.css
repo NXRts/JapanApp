@@ -146,3 +146,17 @@ button {
 button, a, [role="button"] {
   touch-action: manipulation;
 }
+
+/* Device Mode: Mobile View Utilities */
+html.device-mobile main {
+  padding-bottom: 60px;
+}
+
+@media (max-width: 1100px) {
+  html.device-mobile footer {
+    display: none !important;
+  }
+  html.device-mobile .scroll-to-top {
+    display: none !important;
+  }
+}

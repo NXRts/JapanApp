@@ -61,6 +61,7 @@ export const metadata: Metadata = {
 };
 
 import { ProgressProvider } from "@/context/ProgressContext";
+import { DeviceModeProvider } from "@/context/DeviceModeContext";
 
 export default function RootLayout({
   children,
@@ -71,16 +72,18 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning className={`${inter.className} ${notoSansJP.variable}`}>
         <ThemeProvider>
-          <ProgressProvider>
-            <StyledRegistry>
-              <Navbar />
-              <main style={{ flex: 1, position: 'relative' }}>
-                {children}
-              </main>
-              <Footer />
-              <ScrollToTop />
-            </StyledRegistry>
-          </ProgressProvider>
+          <DeviceModeProvider>
+            <ProgressProvider>
+              <StyledRegistry>
+                <Navbar />
+                <main style={{ flex: 1, position: 'relative' }}>
+                  {children}
+                </main>
+                <Footer />
+                <ScrollToTop />
+              </StyledRegistry>
+            </ProgressProvider>
+          </DeviceModeProvider>
         </ThemeProvider>
       </body>
     </html>

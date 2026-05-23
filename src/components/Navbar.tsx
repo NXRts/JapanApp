@@ -8,6 +8,8 @@ import dynamic from 'next/dynamic';
 import { useProgress } from '@/context/ProgressContext';
 import { isItemDue } from '@/lib/srs';
 import { ArrowRightIcon, UserIcon } from './icons/AppIcons';
+import { useDeviceMode } from '@/context/DeviceModeContext';
+import { DeviceModeSwitcher } from '@/components/DeviceModeSwitcher';
 
 const SettingsModal = dynamic(() => import('./SettingsModal').then((mod) => mod.SettingsModal), { ssr: false });
 const DictionarySearchOverlay = dynamic(() => import('./dictionary/DictionarySearchOverlay'), { ssr: false });
@@ -407,12 +409,59 @@ const MobileDictBtn = styled.div<{ $isOpen: boolean; $delay: number }>`
   }
 `;
 
+const BottomBar = styled.div<{ $isMounted: boolean }>`
+  display: none;
+  
+  @media (max-width: 1100px) {
+    display: ${({ $isMounted }) => ($isMounted ? 'flex' : 'none')};
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+`;
+
+const BottomTab = styled(Link) <{ $active?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  text-decoration: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  flex: 1;
+  height: 100%;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2.2;
+    transition: transform 0.2s ease;
+  }
+
+  &:active svg {
+    transform: scale(0.9);
+  }
+`;
+
 export function Navbar() {
   const pathname = usePathname();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isDictionaryOpen, setIsDictionaryOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { progress } = useProgress();
+  const { deviceMode, isMounted } = useDeviceMode();
 
   const dueItemsCount = Object.values(progress.srs).filter(isItemDue).length;
 
@@ -494,6 +543,8 @@ export function Navbar() {
           </NavList>
 
           <RightNavContainer>
+            <DeviceModeSwitcher />
+            
             <Link href="/stats" style={{ textDecoration: 'none' }}>
               <LevelBadge title={`${progress.exp} Total EXP`}>
                 LVL {level} <span className="level-bar">{'▰'.repeat(Math.round(percent / 20)) + '▱'.repeat(5 - Math.round(percent / 20))}</span>
@@ -519,17 +570,19 @@ export function Navbar() {
               </SettingsBtn>
             </div>
 
-            <HamburgerBtn
-              $isOpen={isMobileMenuOpen}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
-              ) : (
-                <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg>
-              )}
-            </HamburgerBtn>
+            {isMounted && deviceMode !== 'mobile' && (
+              <HamburgerBtn
+                $isOpen={isMobileMenuOpen}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
+                ) : (
+                  <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg>
+                )}
+              </HamburgerBtn>
+            )}
           </RightNavContainer>
         </NavContainer>
 
@@ -610,6 +663,42 @@ export function Navbar() {
 
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
       {isDictionaryOpen && <DictionarySearchOverlay onClose={() => setIsDictionaryOpen(false)} />}
+
+      {isMounted && deviceMode === 'mobile' && (
+        <BottomBar $isMounted={isMounted}>
+          <BottomTab href="/" $active={pathname === '/'}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            Belajar
+          </BottomTab>
+          <BottomTab href="/game" $active={pathname.startsWith('/game')}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="6" width="20" height="12" rx="3" />
+              <line x1="6" y1="12" x2="10" y2="12" />
+              <line x1="8" y1="10" x2="8" y2="14" />
+              <line x1="15" y1="13" x2="15.01" y2="13" />
+              <line x1="18" y1="11" x2="18.01" y2="11" />
+            </svg>
+            Game
+          </BottomTab>
+          <BottomTab href="/jlpt" $active={pathname.startsWith('/jlpt')}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+            JLPT
+          </BottomTab>
+          <BottomTab href="/profile" $active={pathname === '/profile'}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            Profil
+          </BottomTab>
+        </BottomBar>
+      )}
     </>
   );
 }
