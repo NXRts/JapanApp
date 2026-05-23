@@ -175,13 +175,17 @@ const SettingsBtn = styled.button<{ $isOpen?: boolean }>`
   }
 `;
 
-const SearchBtn = styled(SettingsBtn)`
+const SearchBtn = styled(SettingsBtn)<{ $hideOnMobile?: boolean }>`
   svg {
     fill: none;
   }
+
+  @media (max-width: 600px) {
+    display: ${({ $hideOnMobile }) => ($hideOnMobile ? 'none' : 'flex')} !important;
+  }
 `;
 
-const UserBtn = styled(Link)`
+const UserBtn = styled(Link)<{ $hideOnMobile?: boolean }>`
   background: transparent;
   border: none;
   cursor: pointer;
@@ -202,6 +206,7 @@ const UserBtn = styled(Link)`
 
   @media (max-width: 600px) {
     padding: 5px;
+    display: ${({ $hideOnMobile }) => ($hideOnMobile ? 'none' : 'flex')} !important;
   }
 
   svg {
@@ -277,6 +282,10 @@ const LevelBadge = styled.div`
   color: var(--primary);
   cursor: pointer;
   transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  flex-shrink: 0;
   
   &:hover {
     background: rgba(var(--primary-rgb), 0.15);
@@ -552,14 +561,23 @@ export function Navbar() {
             </Link>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-              <SearchBtn $isOpen={isMobileMenuOpen} onClick={() => setIsDictionaryOpen(true)} title="Dictionary (Jisho)">
+              <SearchBtn 
+                $isOpen={isMobileMenuOpen} 
+                onClick={() => setIsDictionaryOpen(true)} 
+                title="Dictionary (Jisho)"
+                $hideOnMobile={deviceMode === 'pc'}
+              >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="11" cy="11" r="8" />
                   <path d="m21 21-4.3-4.3" />
                 </svg>
               </SearchBtn>
 
-              <UserBtn href="/profile" title="Profile">
+              <UserBtn 
+                href="/profile" 
+                title="Profile"
+                $hideOnMobile={deviceMode === 'pc'}
+              >
                 <UserIcon size={22} />
               </UserBtn>
 
