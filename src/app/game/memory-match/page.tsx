@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { toRomaji } from 'wanakana';
 import { useProgress } from '@/context/ProgressContext';
+import { useDeviceMode } from '@/context/DeviceModeContext';
+import Link from 'next/link';
 
 // Styled Components
 const Container = styled.div`
@@ -93,6 +95,63 @@ const GameBoard = styled.div`
     padding: 1.5rem;
     border-radius: 24px;
   }
+`;
+
+const LessonHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2rem;
+  gap: 1rem;
+`;
+
+const CloseLessonBtn = styled(Link)`
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--foreground);
+  }
+`;
+
+const LessonProgressBarContainer = styled.div`
+  flex: 1;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+`;
+
+const LessonProgressBarFill = styled.div<{ $percent: number }>`
+  width: ${({ $percent }) => $percent}%;
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  border-radius: 99px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+`;
+
+const LessonHearts = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ef4444;
+  white-space: nowrap;
 `;
 
 const StatsRow = styled.div`
@@ -227,6 +286,9 @@ interface Card {
 }
 
 export default function MemoryMatchPage() {
+  const { deviceMode, isMounted } = useDeviceMode();
+  const isMobileView = isMounted && deviceMode === 'mobile';
+
   const [cards, setCards] = useState<Card[]>([]);
   const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
   const [moves, setMoves] = useState(0);
@@ -235,9 +297,10 @@ export default function MemoryMatchPage() {
   const [showRomaji, setShowRomaji] = useState(false);
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lives, setLives] = useState(5);
 
-  const PAIRS_COUNT = 8; // Number of pairs to match (16 cards total)
-  const MAX_MOVES = 30; // Limit when Easy Mode (showRomaji) is on
+  const PAIRS_COUNT = isMobileView ? 4 : 8; // Number of pairs to match (8 cards mobile, 16 desktop)
+  const MAX_MOVES = isMobileView ? 15 : 30; // Limit when Easy Mode (showRomaji) is on
 
   const shuffleArray = <T,>(array: T[]): T[] => {
     const newArray = [...array];
@@ -289,6 +352,7 @@ export default function MemoryMatchPage() {
       setFlippedIndices([]);
       setMoves(0);
       setMatches(0);
+      setLives(5);
       setGameStatus('playing');
 
       // Reset rotation animation after a short delay
@@ -349,7 +413,7 @@ export default function MemoryMatchPage() {
             const newMatches = m + 1;
             if (newMatches === PAIRS_COUNT) {
               setGameStatus('won');
-              addExp(120); // Reward for winning (balanced)
+              addExp(isMobileView ? 60 : 120); // Reward for winning (balanced)
             } else if (showRomaji && newMoves >= MAX_MOVES) {
               setGameStatus('lost');
             }
@@ -367,7 +431,16 @@ export default function MemoryMatchPage() {
             return copy;
           });
           setFlippedIndices([]);
-          if (showRomaji && newMoves >= MAX_MOVES) {
+          
+          if (isMobileView) {
+            setLives(prev => {
+              const next = prev - 1;
+              if (next <= 0) {
+                setGameStatus('lost');
+              }
+              return next;
+            });
+          } else if (showRomaji && newMoves >= MAX_MOVES) {
             setGameStatus('lost');
           }
         }, 1000);
@@ -377,29 +450,43 @@ export default function MemoryMatchPage() {
 
   return (
     <Container>
-      <Breadcrumbs 
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Games Hub', href: '/game' }
-        ]} 
-        current="Memory Match" 
-      />
+      {isMobileView ? (
+        <LessonHeader>
+          <CloseLessonBtn href="/game" title="Tutup Sesi">✕</CloseLessonBtn>
+          <LessonProgressBarContainer>
+            <LessonProgressBarFill $percent={matches > 0 ? (matches / PAIRS_COUNT) * 100 : 0} />
+          </LessonProgressBarContainer>
+          <LessonHearts>
+            ❤️ {lives}
+          </LessonHearts>
+        </LessonHeader>
+      ) : (
+        <>
+          <Breadcrumbs 
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Games Hub', href: '/game' }
+            ]} 
+            current="Memory Match" 
+          />
 
-      <Header>
-        <TitleBadge>
-          Memory Match
-          <RefreshButton
-            $isRefreshing={isRefreshing}
-            onClick={generateGame}
-            title="Restart Game"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-              <path d="M3 3v5h5" />
-            </svg>
-          </RefreshButton>
-        </TitleBadge>
-      </Header>
+          <Header>
+            <TitleBadge>
+              Memory Match
+              <RefreshButton
+                $isRefreshing={isRefreshing}
+                onClick={generateGame}
+                title="Restart Game"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                  <path d="M3 3v5h5" />
+                </svg>
+              </RefreshButton>
+            </TitleBadge>
+          </Header>
+        </>
+      )}
 
       <GameBoard>
         {isLoading ? (
@@ -431,7 +518,7 @@ export default function MemoryMatchPage() {
                 border: '1px solid rgba(245, 158, 11, 0.2)',
                 boxShadow: '0 4px 12px rgba(245, 158, 11, 0.1)'
               }}>
-                ⭐ +120 EXP Gained
+                ⭐ +{isMobileView ? 60 : 120} EXP Gained
               </div>
             )}
             <br />

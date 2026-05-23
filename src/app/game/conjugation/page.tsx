@@ -5,6 +5,8 @@ import styled, { keyframes } from 'styled-components';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { conjugationData, ConjugationVerb } from '@/data/conjugation_drills';
 import { useProgress } from '@/context/ProgressContext';
+import { useDeviceMode } from '@/context/DeviceModeContext';
+import Link from 'next/link';
 
 // --- Styled Components ---
 
@@ -22,6 +24,63 @@ const Container = styled.div`
   @media (max-width: 600px) {
     padding: 1.5rem 1rem;
   }
+`;
+
+const LessonHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2rem;
+  gap: 1rem;
+`;
+
+const CloseLessonBtn = styled(Link)`
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--foreground);
+  }
+`;
+
+const LessonProgressBarContainer = styled.div`
+  flex: 1;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+`;
+
+const LessonProgressBarFill = styled.div<{ $percent: number }>`
+  width: ${({ $percent }) => $percent}%;
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  border-radius: 99px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+`;
+
+const LessonHearts = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ef4444;
+  white-space: nowrap;
 `;
 
 const GameArea = styled.div`
@@ -318,9 +377,10 @@ const formLabels: Record<FormType, string> = {
   causative: 'Bentuk Kausatif (Menyuruh/Membiarkan)'
 };
 
-const TOTAL_QUESTIONS = 10;
-
 export default function ConjugationDrillsPage() {
+  const { deviceMode, isMounted } = useDeviceMode();
+  const isMobileView = isMounted && deviceMode === 'mobile';
+
   const [gameState, setGameState] = useState<'start' | 'playing' | 'result'>('start');
   
   // Options State
@@ -337,6 +397,7 @@ export default function ConjugationDrillsPage() {
   }, [score]);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [lives, setLives] = useState(5);
   
   const [currentVerb, setCurrentVerb] = useState<ConjugationVerb | null>(null);
   const [targetForm, setTargetForm] = useState<FormType>('masu');
@@ -348,6 +409,8 @@ export default function ConjugationDrillsPage() {
   const [typedAnswer, setTypedAnswer] = useState('');
   const [typingFeedback, setTypingFeedback] = useState<'correct' | 'wrong' | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const totalQuestions = isMobileView ? 5 : 10;
 
   // Generate a question
   const generateQuestion = useCallback(() => {
@@ -408,6 +471,7 @@ export default function ConjugationDrillsPage() {
 
   const startGame = () => {
     setScore(0);
+    setLives(5);
     setCurrentQuestionIndex(0);
     generateQuestion();
     setGameState('playing');
@@ -415,15 +479,19 @@ export default function ConjugationDrillsPage() {
 
   const moveToNextQuestion = () => {
     setTimeout(() => {
-      if (currentQuestionIndex + 1 >= TOTAL_QUESTIONS) {
+      if (currentQuestionIndex + 1 >= totalQuestions) {
         setGameState('result');
-        addExp(scoreRef.current * 15);
+        if (isMobileView) {
+          addExp(40); // 40 EXP for mobile completion
+        } else {
+          addExp(scoreRef.current * 15);
+        }
       } else {
         setCurrentQuestionIndex(i => i + 1);
         generateQuestion();
       }
     }, 1500);
-  }
+  };
 
   // Handle Answer for Multiple Choice
   const handleMCAnswer = (answer: string) => {
@@ -434,8 +502,23 @@ export default function ConjugationDrillsPage() {
     const isCorrect = answer === currentVerb.forms[targetForm];
     if (isCorrect) {
       setScore(s => s + 1);
+    } else {
+      if (isMobileView) {
+        setLives(prev => {
+          const next = prev - 1;
+          if (next <= 0) {
+            setTimeout(() => {
+              setGameState('result');
+            }, 1500);
+          }
+          return next;
+        });
+      }
     }
-    moveToNextQuestion();
+    
+    if (!isMobileView || (lives > 1 || isCorrect)) {
+      moveToNextQuestion();
+    }
   };
 
   // Handle Answer for Manual Typing
@@ -450,20 +533,45 @@ export default function ConjugationDrillsPage() {
       setScore(s => s + 1);
     } else {
       setTypingFeedback('wrong');
+      if (isMobileView) {
+        setLives(prev => {
+          const next = prev - 1;
+          if (next <= 0) {
+            setTimeout(() => {
+              setGameState('result');
+            }, 1500);
+          }
+          return next;
+        });
+      }
     }
     
-    moveToNextQuestion();
+    if (!isMobileView || (lives > 1 || isCorrect)) {
+      moveToNextQuestion();
+    }
   };
 
   return (
     <Container>
-      <Breadcrumbs 
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Games Hub', href: '/game' }
-        ]} 
-        current="Conjugation Drills" 
-      />
+      {isMobileView && gameState === 'playing' ? (
+        <LessonHeader>
+          <CloseLessonBtn href="/game" title="Tutup Sesi">✕</CloseLessonBtn>
+          <LessonProgressBarContainer>
+            <LessonProgressBarFill $percent={((currentQuestionIndex + (selectedAnswer !== null || typingFeedback !== null ? 1 : 0)) / totalQuestions) * 100} />
+          </LessonProgressBarContainer>
+          <LessonHearts>
+            ❤️ {lives}
+          </LessonHearts>
+        </LessonHeader>
+      ) : (
+        <Breadcrumbs 
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Games Hub', href: '/game' }
+          ]} 
+          current="Conjugation Drills" 
+        />
+      )}
 
       <GameArea>
         {gameState === 'start' && (
@@ -522,10 +630,12 @@ export default function ConjugationDrillsPage() {
 
         {gameState === 'playing' && currentVerb && (
           <>
-            <TopBar>
-              <Score>Score: {score}</Score>
-              <QuestionCount>Question {currentQuestionIndex + 1} / {TOTAL_QUESTIONS}</QuestionCount>
-            </TopBar>
+            {!isMobileView && (
+              <TopBar>
+                <Score>Score: {score}</Score>
+                <QuestionCount>Question {currentQuestionIndex + 1} / {totalQuestions}</QuestionCount>
+              </TopBar>
+            )}
 
             <QuestionContainer>
               <TargetVerb>{currentVerb.dictionary}</TargetVerb>
@@ -592,29 +702,32 @@ export default function ConjugationDrillsPage() {
         {gameState === 'result' && (
           <ResultScreen>
             <Header>
-              <Title>Selesai!</Title>
-              <Subtitle>Latihan yang bagus.</Subtitle>
+              <Title>{isMobileView && lives === 0 ? 'Game Over! 😢' : 'Selesai!'}</Title>
+              <Subtitle>{isMobileView && lives === 0 ? 'Kamu kehabisan nyawa.' : 'Latihan yang bagus.'}</Subtitle>
             </Header>
-            <FinalScore>{score} / {TOTAL_QUESTIONS}</FinalScore>
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              color: '#10b981',
-              background: 'rgba(16, 185, 129, 0.1)',
-              padding: '0.6rem 1.5rem',
-              borderRadius: '999px',
-              fontWeight: 800,
-              fontSize: '1.25rem',
-              marginBottom: '2rem',
-              border: '1px solid rgba(16, 185, 129, 0.2)',
-              boxShadow: '0 4px 12px rgba(16, 185, 129, 0.1)'
-            }}>
-              🏆 +{score * 15} EXP Gained
-            </div>
+            <FinalScore>{score} / {totalQuestions}</FinalScore>
+            {!(isMobileView && lives === 0) && (
+              <div style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                color: '#10b981',
+                background: 'rgba(16, 185, 129, 0.1)',
+                padding: '0.6rem 1.5rem',
+                borderRadius: '999px',
+                fontWeight: 800,
+                fontSize: '1.25rem',
+                marginBottom: '2rem',
+                border: '1px solid rgba(16, 185, 129, 0.2)',
+                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.1)'
+              }}>
+                🏆 +{isMobileView ? 40 : score * 15} EXP Gained
+              </div>
+            )}
             <ResultMessage>
-              {score === TOTAL_QUESTIONS ? 'Sempurna! Kamu master konjugasi.' : 
-               score >= 7 ? 'Kerja bagus! Sedikit lagi menuju sempurna.' : 
+              {isMobileView && lives === 0 ? 'Jangan menyerah! Teruslah belajar dan coba lagi.' :
+               score === totalQuestions ? 'Sempurna! Kamu master konjugasi.' : 
+               score >= (isMobileView ? 4 : 7) ? 'Kerja bagus! Sedikit lagi menuju sempurna.' : 
                'Teruslah berlatih! Kamu pasti bisa.'}
             </ResultMessage>
             <StartButton onClick={startGame}>Main Lagi</StartButton>

@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { DndContext, DragOverlay, closestCenter, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors, DragStartEvent, DragEndEvent } from '@dnd-kit/core';
 import { useProgress } from '@/context/ProgressContext';
+import { useDeviceMode } from '@/context/DeviceModeContext';
+import Link from 'next/link';
 import {
   arrayMove,
   SortableContext,
@@ -302,6 +304,87 @@ const Container = styled.div`
 
   @media (max-width: 600px) {
     padding: 1.5rem 1rem;
+  }
+`;
+
+const LessonHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2rem;
+  gap: 1rem;
+`;
+
+const CloseLessonBtn = styled(Link)`
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--foreground);
+  }
+`;
+
+const LessonProgressBarContainer = styled.div`
+  flex: 1;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+`;
+
+const LessonProgressBarFill = styled.div<{ $percent: number }>`
+  width: ${({ $percent }) => $percent}%;
+  height: 100%;
+  background: linear-gradient(90deg, #8b5cf6 0%, #6d28d9 100%);
+  border-radius: 99px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
+`;
+
+const LessonHearts = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #ef4444;
+  white-space: nowrap;
+`;
+
+const GameOverScreen = styled.div`
+  text-align: center;
+  padding: 2rem 0;
+`;
+
+const Button = styled.button`
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);
+  margin-top: 2rem;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.4);
   }
 `;
 
@@ -648,35 +731,43 @@ const SortableWordChip = ({ id, word, romaji, showRomaji }: { id: string, word: 
 
 
 export default function SentenceBuilderPage() {
+  const { deviceMode, isMounted } = useDeviceMode();
+  const isMobileView = isMounted && deviceMode === 'mobile';
+
   const [levelIndex, setLevelIndex] = useState(0);
   const [gameSentences, setGameSentences] = useState<SentenceLevel[]>([]);
   const [words, setWords] = useState<WordItem[]>([]);
   const [status, setStatus] = useState<'playing' | 'error' | 'success'>('playing');
   const [showRomaji, setShowRomaji] = useState(false);
+  const [lives, setLives] = useState(5);
+  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
 
-  // Must mount before we can safely use dnd-kit on the client
-  const [isMounted, setIsMounted] = useState(false);
-
-  const initGame = () => {
-    const shuffledSubset = shuffleArray(ALL_SENTENCES).slice(0, 10);
-    setGameSentences(shuffledSubset);
-    loadLevelWithData(0, shuffledSubset);
-  };
-
-  useEffect(() => {
-    setIsMounted(true);
-    initGame();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const loadLevelWithData = (idx: number, sentences: SentenceLevel[]) => {
+  const loadLevelWithData = useCallback((idx: number, sentences: SentenceLevel[]) => {
     const levelData = sentences[idx];
     if (!levelData) return;
 
     setWords(shuffleArray(levelData.items));
     setStatus('playing');
     setLevelIndex(idx);
-  };
+  }, []);
+
+  const initGame = useCallback((mobile: boolean) => {
+    const count = mobile ? 5 : 10;
+    const shuffledSubset = shuffleArray(ALL_SENTENCES).slice(0, count);
+    setGameSentences(shuffledSubset);
+    setLives(5);
+    setGameStatus('playing');
+    loadLevelWithData(0, shuffledSubset);
+  }, [loadLevelWithData]);
+
+  useEffect(() => {
+    if (isMounted) {
+      const timer = setTimeout(() => {
+        initGame(deviceMode === 'mobile');
+      }, 0);
+      return () => clearTimeout(timer);
+    }
+  }, [isMounted, deviceMode, initGame]);
 
   const loadLevel = (idx: number) => {
     loadLevelWithData(idx, gameSentences);
@@ -742,9 +833,20 @@ export default function SentenceBuilderPage() {
 
     if (isMatched) {
       setStatus('success');
-      addExp(15); // 15 EXP per correct sentence (balanced)
+      if (!isMobileView) {
+        addExp(15); // 15 EXP per correct sentence on PC
+      }
     } else {
       setStatus('error');
+      if (isMobileView) {
+        setLives(prev => {
+          const next = prev - 1;
+          if (next <= 0) {
+            setGameStatus('lost');
+          }
+          return next;
+        });
+      }
     }
   };
 
@@ -752,8 +854,13 @@ export default function SentenceBuilderPage() {
     if (levelIndex < gameSentences.length - 1) {
       loadLevel(levelIndex + 1);
     } else {
-      // Completed all levels! Reset and generate a new batch of 10
-      initGame();
+      if (isMobileView) {
+        setGameStatus('won');
+        addExp(40); // 40 EXP for mobile completion
+      } else {
+        // Completed all levels! Reset and generate a new batch of 10
+        initGame(false);
+      }
     }
   };
 
@@ -763,94 +870,145 @@ export default function SentenceBuilderPage() {
 
   return (
     <Container>
-      <Breadcrumbs 
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Games Hub', href: '/game' }
-        ]} 
-        current="Sentence Builder" 
-      />
+      {isMobileView ? (
+        <LessonHeader>
+          <CloseLessonBtn href="/game" title="Tutup Sesi">✕</CloseLessonBtn>
+          <LessonProgressBarContainer>
+            <LessonProgressBarFill $percent={((levelIndex + (status === 'success' ? 1 : 0)) / gameSentences.length) * 100} />
+          </LessonProgressBarContainer>
+          <LessonHearts>
+            ❤️ {lives}
+          </LessonHearts>
+        </LessonHeader>
+      ) : (
+        <>
+          <Breadcrumbs 
+            items={[
+              { label: 'Home', href: '/' },
+              { label: 'Games Hub', href: '/game' }
+            ]} 
+            current="Sentence Builder" 
+          />
 
-      <Header>
-        <HeaderActions>
-          <TitleBadge>Sentence Builder</TitleBadge>
-          <RefreshButton onClick={swapCurrentQuestion} aria-label="Reroll Question">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-              <path d="M3 3v5h5" />
-            </svg>
-          </RefreshButton>
-        </HeaderActions>
-      </Header>
+          <Header>
+            <HeaderActions>
+              <TitleBadge>Sentence Builder</TitleBadge>
+              <RefreshButton onClick={swapCurrentQuestion} aria-label="Reroll Question">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                  <path d="M3 3v5h5" />
+                </svg>
+              </RefreshButton>
+            </HeaderActions>
+          </Header>
+        </>
+      )}
 
       <GameArea>
-        <TopRow>
-          <LevelIndicator>
-            Sentence {levelIndex + 1} of {gameSentences.length}
-          </LevelIndicator>
-          <ShowRomajiToggle>
-            <ToggleSwitch>
-              <input
-                type="checkbox"
-                checked={showRomaji}
-                onChange={(e) => setShowRomaji(e.target.checked)}
-              />
-              <span />
-            </ToggleSwitch>
-            Show Romaji
-          </ShowRomajiToggle>
-        </TopRow>
-
-        <TargetSentenceBox>
-          <TranslationText>&ldquo;{currentLevel.translation}&rdquo;</TranslationText>
-          <RomajiHint>Hints: {currentLevel.romajiHint}</RomajiHint>
-        </TargetSentenceBox>
-
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <DropZoneWrapper $isError={status === 'error'} $isSuccess={status === 'success'}>
-            <SortableContext items={words.map(w => w.id)} strategy={horizontalListSortingStrategy}>
-              {words.map((word) => (
-                <SortableWordChip key={word.id} id={word.id} word={word.kana} romaji={word.romaji} showRomaji={showRomaji} />
-              ))}
-            </SortableContext>
-          </DropZoneWrapper>
-        </DndContext>
-
-        {status === 'success' ? (
-          <>
-            <ActionButton $variant="success" onClick={nextLevel}>
-              {levelIndex < gameSentences.length - 1 ? 'Next Sentence →' : 'Play Again'}
-            </ActionButton>
-            <FeedbackMessage $success={true}>
-              🎉 Seikai! (Correct!){' '}
-              <span style={{
+        {gameStatus !== 'playing' ? (
+          <GameOverScreen>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: gameStatus === 'won' ? '#8b5cf6' : '#ef4444' }}>
+              {gameStatus === 'won' ? 'You Won! 🎉' : 'Game Over! 😢'}
+            </h2>
+            <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+              {gameStatus === 'won'
+                ? `You successfully built all ${gameSentences.length} sentences.`
+                : `You lost all your lives. Keep learning and try again!`}
+            </p>
+            {gameStatus === 'won' && (
+              <div style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.25rem',
-                color: '#10b981',
-                background: 'rgba(16, 185, 129, 0.1)',
-                padding: '0.25rem 0.75rem',
+                gap: '0.5rem',
+                color: '#8b5cf6',
+                background: 'rgba(139, 92, 246, 0.1)',
+                padding: '0.6rem 1.5rem',
                 borderRadius: '999px',
                 fontWeight: 800,
-                fontSize: '0.9rem',
-                marginLeft: '0.5rem',
-                border: '1px solid rgba(16, 185, 129, 0.2)'
+                fontSize: '1.25rem',
+                marginBottom: '2rem',
+                border: '1px solid rgba(139, 92, 246, 0.2)',
+                boxShadow: '0 4px 12px rgba(139, 92, 246, 0.1)'
               }}>
-                🏆 +15 EXP
-              </span>
-            </FeedbackMessage>
-          </>
+                ⭐ +40 EXP Gained
+              </div>
+            )}
+            <br />
+            <Button onClick={() => initGame(isMobileView)}>Play Again</Button>
+          </GameOverScreen>
         ) : (
           <>
-            <ActionButton onClick={checkSentence}>
-              Check Answer
-            </ActionButton>
-            {status === 'error' && (
-              <FeedbackMessage $success={false}>Incorrect order. Try again!</FeedbackMessage>
+            <TopRow>
+              <LevelIndicator>
+                Sentence {levelIndex + 1} of {gameSentences.length}
+              </LevelIndicator>
+              <ShowRomajiToggle>
+                <ToggleSwitch>
+                  <input
+                    type="checkbox"
+                    checked={showRomaji}
+                    onChange={(e) => setShowRomaji(e.target.checked)}
+                  />
+                  <span />
+                </ToggleSwitch>
+                Show Romaji
+              </ShowRomajiToggle>
+            </TopRow>
+
+            <TargetSentenceBox>
+              <TranslationText>&ldquo;{currentLevel.translation}&rdquo;</TranslationText>
+              <RomajiHint>Hints: {currentLevel.romajiHint}</RomajiHint>
+            </TargetSentenceBox>
+
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <DropZoneWrapper $isError={status === 'error'} $isSuccess={status === 'success'}>
+                <SortableContext items={words.map(w => w.id)} strategy={horizontalListSortingStrategy}>
+                  {words.map((word) => (
+                    <SortableWordChip key={word.id} id={word.id} word={word.kana} romaji={word.romaji} showRomaji={showRomaji} />
+                  ))}
+                </SortableContext>
+              </DropZoneWrapper>
+            </DndContext>
+
+            {status === 'success' ? (
+              <>
+                <ActionButton $variant="success" onClick={nextLevel}>
+                  {levelIndex < gameSentences.length - 1 ? 'Next Sentence →' : 'Finish Lesson 🎉'}
+                </ActionButton>
+                <FeedbackMessage $success={true}>
+                  🎉 Seikai! (Correct!){' '}
+                  {!isMobileView && (
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
+                      color: '#10b981',
+                      background: 'rgba(16, 185, 129, 0.1)',
+                      padding: '0.25rem 0.75rem',
+                      borderRadius: '999px',
+                      fontWeight: 800,
+                      fontSize: '0.9rem',
+                      marginLeft: '0.5rem',
+                      border: '1px solid rgba(16, 185, 129, 0.2)'
+                    }}>
+                      🏆 +15 EXP
+                    </span>
+                  )}
+                </FeedbackMessage>
+              </>
+            ) : (
+              <>
+                <ActionButton onClick={checkSentence}>
+                  Check Answer
+                </ActionButton>
+                {status === 'error' && (
+                  <FeedbackMessage $success={false}>Incorrect order. Try again!</FeedbackMessage>
+                )}
+              </>
             )}
           </>
         )}
