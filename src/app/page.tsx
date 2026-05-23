@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import { useProgress } from '@/context/ProgressContext';
+import { useDeviceMode } from '@/context/DeviceModeContext';
+import { RoadmapNodeDrawer } from '@/components/home/RoadmapNodeDrawer';
+import { lessonsData, Lesson } from '@/data/lessonsData';
 
 // Immediate imports for above-the-fold content
 import { HeroSection } from '@/components/home/HeroSection';
@@ -17,20 +20,6 @@ const StepsSection = dynamic(() => import('@/components/home/StepsSection').then
 const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection').then(mod => mod.TestimonialsSection), { ssr: false });
 const FAQSection = dynamic(() => import('@/components/home/FAQSection').then(mod => mod.FAQSection), { ssr: false });
 const CTASection = dynamic(() => import('@/components/home/CTASection').then(mod => mod.CTASection), { ssr: false });
-
-import { useDeviceMode } from '@/context/DeviceModeContext';
-import { RoadmapNodeDrawer } from '@/components/home/RoadmapNodeDrawer';
-
-interface LessonNode {
-  id: string;
-  title: string;
-  description: string;
-  expReward: number;
-  href: string;
-  icon: string;
-  badge?: string;
-  color?: string;
-}
 
 const Container = styled.div`
   display: flex;
@@ -48,6 +37,48 @@ const MobileContainer = styled.div`
   flex-direction: column;
   position: relative;
   min-height: 100vh;
+  font-family: 'Nunito', 'Outfit', sans-serif;
+`;
+
+// Level Selector Styles
+const LevelSelector = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1.75rem;
+  padding: 4px 2px;
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+`;
+
+const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
+  flex: 1;
+  min-width: 72px;
+  padding: 0.65rem 0.5rem;
+  border-radius: 16px;
+  border: 2px solid ${({ $active, $activeColor }) => ($active ? $activeColor : 'var(--border)')};
+  border-bottom-width: 5px;
+  background: ${({ $active, $activeColor }) => ($active ? `rgba(${this}, 0.08)` : 'var(--surface)')};
+  color: ${({ $active, $activeColor }) => ($active ? $activeColor : 'var(--text-secondary)')};
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  outline: none;
+  white-space: nowrap;
+  text-align: center;
+  box-shadow: ${({ $active }) => ($active ? '0 4px 10px rgba(0, 0, 0, 0.06)' : 'none')};
+
+  ${({ $active, $activeColor }) => $active && `
+    background: ${$activeColor}15; /* Transparent overlay */
+  `}
+
+  &:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+  }
 `;
 
 const UnitCard = styled.div<{ $color?: string }>`
@@ -100,7 +131,7 @@ const RoadmapPath = styled.div`
   align-items: center;
   position: relative;
   padding: 1rem 0;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
 `;
 
 const PathLine = styled.div`
@@ -180,7 +211,7 @@ const StatBanner = styled.div`
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 0.75rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   box-shadow: var(--shadow-sm);
 `;
 
@@ -192,12 +223,38 @@ const StatBannerItem = styled.div`
   font-size: 0.9rem;
 `;
 
+const LockBanner = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+`;
+
+interface SelectedNodeData {
+  title: string;
+  description: string;
+  expReward: number;
+  href: string;
+  icon: string;
+  badge?: string;
+  color?: string;
+}
+
 export default function Home() {
   const { progress } = useProgress();
   const { deviceMode, isMounted } = useDeviceMode();
   const [mounted, setMounted] = useState(false);
-  const [selectedNode, setSelectedNode] = useState<LessonNode | null>(null);
+  const [selectedNode, setSelectedNode] = useState<SelectedNodeData | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedLevel, setSelectedLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1'>('N5');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -205,6 +262,48 @@ export default function Home() {
     }, 0);
     return () => clearTimeout(timer);
   }, []);
+
+  // Level config with custom colors
+  const levels = [
+    { code: 'N5' as const, label: 'JLPT N5', color: '#10b981' }, // Emerald
+    { code: 'N4' as const, label: 'JLPT N4', color: '#8b5cf6' }, // Violet
+    { code: 'N3' as const, label: 'JLPT N3', color: '#ea580c' }, // Orange
+    { code: 'N2' as const, label: 'JLPT N2', color: '#3b82f6' }, // Blue
+    { code: 'N1' as const, label: 'JLPT N1', color: '#dc2626' }  // Red
+  ];
+
+  const activeLevelColor = levels.find(l => l.code === selectedLevel)?.color || '#10b981';
+
+  // Group lessons from lessonsData by unitId for the active selectedLevel
+  const levelLessons = lessonsData.filter(lesson => lesson.level === selectedLevel);
+  
+  const unitsMap: Record<string, { id: string; title: string; description: string; color: string; lessons: typeof levelLessons }> = {};
+  
+  levelLessons.forEach(lesson => {
+    if (!unitsMap[lesson.unitId]) {
+      unitsMap[lesson.unitId] = {
+        id: lesson.unitId,
+        title: lesson.unitTitle,
+        description: lesson.unitDescription,
+        color: lesson.unitColor,
+        lessons: []
+      };
+    }
+    unitsMap[lesson.unitId].lessons.push(lesson);
+  });
+
+  const activeUnits = Object.values(unitsMap);
+
+  // Verification logic: A lesson is unlocked if it is the first N5 lesson or if the previous lesson in lessonsData is completed
+  const isLessonUnlocked = (lessonId: string) => {
+    if (lessonId === 'n5-u1-l1') return true;
+    
+    const idx = lessonsData.findIndex(l => l.id === lessonId);
+    if (idx <= 0) return true;
+    
+    const prevLesson = lessonsData[idx - 1];
+    return progress.completedExercises?.includes(prevLesson.id);
+  };
 
   const today = new Date().toISOString().split('T')[0];
   const isDailyCompleted = progress.quizHistory.some(
@@ -239,130 +338,23 @@ export default function Home() {
     );
   }
 
-  // Duolingo Units Data
-  const units = [
-    {
-      id: 'unit-1',
-      title: 'Unit 1: Hiragana & Katakana Foundations 🎌',
-      description: 'Master the basic Japanese sound systems & alphabets',
-      color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-      badgeColor: '#10b981',
-      unlocked: true,
-      lessons: [
-        {
-          id: 'lesson-1',
-          title: 'Hiragana & Katakana Intro',
-          description: 'Learn to write and identify basic kana characters using flashcards.',
-          expReward: 20,
-          href: '/study/kana-flashcards',
-          icon: '🎌',
-          badge: 'Materi Dasar'
-        },
-        {
-          id: 'lesson-2',
-          title: 'Kana Speed Typing',
-          description: 'Type Romaji mappings for Kana characters under time pressure!',
-          expReward: 30,
-          href: '/game/speed-typing',
-          icon: '⌨️',
-          badge: 'Tantangan Ketik'
-        },
-        {
-          id: 'lesson-3',
-          title: 'Memory Match Game',
-          description: 'Match Romaji with Katakana/Hiragana pairs in minimal moves.',
-          expReward: 40,
-          href: '/game/memory-match',
-          icon: '🧠',
-          badge: 'Tantangan Memori'
-        }
-      ]
-    },
-    {
-      id: 'unit-2',
-      title: 'Unit 2: Basic Vocabulary & Kanji 📝',
-      description: 'Build your Japanese word library and core characters',
-      color: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
-      badgeColor: '#8b5cf6',
-      unlocked: progress.exp >= 100,
-      lessons: [
-        {
-          id: 'lesson-4',
-          title: 'Everyday Words',
-          description: 'Study vocabulary across categories like food, family, and directions.',
-          expReward: 25,
-          href: '/study/vocabulary',
-          icon: '📖',
-          badge: 'Kosa Kata'
-        },
-        {
-          id: 'lesson-5',
-          title: 'Sentence Construction',
-          description: 'Arrange words in the correct SOV order to build perfect sentences.',
-          expReward: 35,
-          href: '/game/sentence-builder',
-          icon: '🧩',
-          badge: 'Penyusunan Kalimat'
-        },
-        {
-          id: 'lesson-6',
-          title: 'Core Kanji Practice',
-          description: 'Learn meaning, stroke order, and readings for core JLPT N5 Kanji.',
-          expReward: 40,
-          href: '/study/kanji',
-          icon: '✍️',
-          badge: 'Menulis Kanji'
-        }
-      ]
-    },
-    {
-      id: 'unit-3',
-      title: 'Unit 3: Grammar & Conjugation 🔄',
-      description: 'Unlock grammar structures and verb transformations',
-      color: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
-      badgeColor: '#ea580c',
-      unlocked: progress.exp >= 300,
-      lessons: [
-        {
-          id: 'lesson-7',
-          title: 'Grammar Essentials',
-          description: 'Study particle usages and fundamental sentence patterns.',
-          expReward: 30,
-          href: '/study/grammar-drills',
-          icon: '📘',
-          badge: 'Tata Bahasa'
-        },
-        {
-          id: 'lesson-8',
-          title: 'Verb Conjugation Drills',
-          description: 'Conjugate verbs into Te, Masu, Past, and negative forms in real-time!',
-          expReward: 45,
-          href: '/game/conjugation',
-          icon: '🔄',
-          badge: 'Konjugasi Verba'
-        },
-        {
-          id: 'lesson-9',
-          title: 'Roleplay Conversational',
-          description: 'Practice speaking aloud in real-world situational dialogues.',
-          expReward: 50,
-          href: '/study/speaking',
-          icon: '🗣️',
-          badge: 'Percakapan AI'
-        }
-      ]
-    }
-  ];
-
   // Serpentine offset pattern: Center, Right, Left, Center...
   const getOffset = (index: number) => {
-    const pattern = [0, 45, -45, 0];
+    const pattern = [0, 42, -42, 0];
     return pattern[index % pattern.length];
   };
 
-  const handleNodeClick = (lesson: LessonNode, unlocked: boolean) => {
+  const handleNodeClick = (lesson: Lesson, unlocked: boolean) => {
     if (!unlocked) return;
-    setSelectedNode(lesson);
+    setSelectedNode({
+      title: lesson.title,
+      description: lesson.description,
+      expReward: lesson.expReward,
+      href: `/lesson?id=${lesson.id}`,
+      icon: lesson.icon,
+      badge: lesson.badge,
+      color: lesson.unitColor
+    });
     setIsDrawerOpen(true);
   };
 
@@ -386,14 +378,33 @@ export default function Home() {
             </StatBannerItem>
           </StatBanner>
 
+          {/* Level Tab Bar Selector */}
+          <LevelSelector>
+            {levels.map(level => (
+              <LevelTab
+                key={level.code}
+                $active={selectedLevel === level.code}
+                $activeColor={level.color}
+                onClick={() => setSelectedLevel(level.code)}
+              >
+                {level.label}
+              </LevelTab>
+            ))}
+          </LevelSelector>
+
+          {/* Locked indicators warnings */}
+          {levelLessons.length === 0 && (
+            <LockBanner>
+              📭 Belum ada materi untuk level ini.
+            </LockBanner>
+          )}
+
           {/* Render Units */}
-          {units.map((unit) => (
+          {activeUnits.map((unit) => (
             <div key={unit.id}>
               <UnitCard $color={unit.color}>
                 <UnitHeader>
-                  <UnitBadge>
-                    {unit.unlocked ? 'Tersedia' : 'Terkunci (Req. EXP)'}
-                  </UnitBadge>
+                  <UnitBadge>Pelajaran Aktif</UnitBadge>
                   <UnitTitle>{unit.title}</UnitTitle>
                   <UnitDesc>{unit.description}</UnitDesc>
                 </UnitHeader>
@@ -403,12 +414,12 @@ export default function Home() {
                 <PathLine />
                 {unit.lessons.map((lesson, index) => {
                   const offset = getOffset(index);
-                  const isUnlocked = unit.unlocked;
+                  const isUnlocked = isLessonUnlocked(lesson.id);
                   return (
                     <NodeContainer key={lesson.id}>
                       <NodeButton
                         $unlocked={isUnlocked}
-                        $color={unit.badgeColor}
+                        $color={levels.find(l => l.code === selectedLevel)?.color}
                         $offset={offset}
                         onClick={() => handleNodeClick(lesson, isUnlocked)}
                         title={lesson.title}

@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { toRomaji } from 'wanakana';
 import { useProgress } from '@/context/ProgressContext';
+import { useDeviceMode } from '@/context/DeviceModeContext';
+import Link from 'next/link';
 
 // Styled Components
 const Container = styled.div`
@@ -63,6 +65,53 @@ const TitleBadge = styled.div`
   padding: 0.5rem 1.25rem;
   border-radius: 999px;
   border: 1px solid rgba(79, 70, 229, 0.2);
+`;
+
+const LessonHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 2rem;
+  gap: 1rem;
+`;
+
+const CloseLessonBtn = styled(Link)`
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--foreground);
+  }
+`;
+
+const LessonProgressBarContainer = styled.div`
+  flex: 1;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+`;
+
+const LessonProgressBarFill = styled.div<{ $percent: number }>`
+  width: ${({ $percent }) => $percent}%;
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5 0%, #3b82f6 100%);
+  border-radius: 99px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(79, 70, 229, 0.3);
 `;
 
 const StatsRow = styled.div`
@@ -136,6 +185,9 @@ const Button = styled.button`
 `;
 
 export default function GamePage() {
+    const { deviceMode, isMounted } = useDeviceMode();
+    const isMobileView = isMounted && deviceMode === 'mobile';
+
     const [kanaList, setKanaList] = useState<string[]>([]);
     const [currentKana, setCurrentKana] = useState<string>('');
     const [inputVal, setInputVal] = useState('');
@@ -171,7 +223,7 @@ export default function GamePage() {
 
     // Timer logic
     useEffect(() => {
-        if (!isPlaying) return;
+        if (!isPlaying || isMobileView) return;
 
         const timer = setInterval(() => {
             setTimeLeft(prev => {
@@ -194,7 +246,7 @@ export default function GamePage() {
     const startGame = () => {
         if (kanaList.length === 0) return;
         setScore(0);
-        setTimeLeft(60);
+        setTimeLeft(isMobileView ? 0 : 60);
         setIsGameOver(false);
         setIsPlaying(true);
         setCurrentKana(getRandomKana());
@@ -212,32 +264,57 @@ export default function GamePage() {
         const targetRomaji = toRomaji(currentKana);
 
         if (val.toLowerCase().trim() === targetRomaji) {
-            setScore(prev => prev + 1);
-            setCurrentKana(getRandomKana());
-            setInputVal('');
+            const nextScore = score + 1;
+            setScore(nextScore);
+            
+            if (isMobileView && nextScore >= 10) {
+                setTimeout(() => {
+                    setIsPlaying(false);
+                    setIsGameOver(true);
+                    addExp(40); // 40 EXP for 10 Kana Mobile Challenge
+                }, 0);
+            } else {
+                setCurrentKana(getRandomKana());
+                setInputVal('');
+            }
         }
     };
 
     return (
         <Container>
-            <Breadcrumbs 
-                items={[
-                    { label: 'Home', href: '/' },
-                    { label: 'Games Hub', href: '/game' }
-                ]} 
-                current="Kana Speed Typing" 
-            />
+            {isMobileView ? (
+                <LessonHeader>
+                    <CloseLessonBtn href="/game" title="Tutup Sesi">✕</CloseLessonBtn>
+                    <LessonProgressBarContainer>
+                        <LessonProgressBarFill $percent={score > 0 ? (score / 10) * 100 : 0} />
+                    </LessonProgressBarContainer>
+                    <div style={{ width: '38px' }} />
+                </LessonHeader>
+            ) : (
+                <>
+                    <Breadcrumbs 
+                        items={[
+                            { label: 'Home', href: '/' },
+                            { label: 'Games Hub', href: '/game' }
+                        ]} 
+                        current="Kana Speed Typing" 
+                    />
 
-            <Header>
-                <TitleBadge>Kana Speed Typing</TitleBadge>
-            </Header>
+                    <Header>
+                        <TitleBadge>Kana Speed Typing</TitleBadge>
+                    </Header>
+                </>
+            )}
 
             <GameCard>
                 {!isPlaying && !isGameOver && (
                     <div>
                         <h2 style={{ marginBottom: '1rem' }}>Kana Speed Typing</h2>
                         <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                            Type the Romaji mapping for the Kana character shown. You have 60 seconds to get as many right as possible!
+                            {isMobileView 
+                                ? 'Type the Romaji mapping for the Kana character shown. Type 10 characters correctly to complete the challenge!'
+                                : 'Type the Romaji mapping for the Kana character shown. You have 60 seconds to get as many right as possible!'
+                            }
                         </p>
                         <Button onClick={startGame} disabled={kanaList.length === 0}>
                             {kanaList.length === 0 ? 'Loading...' : 'Start Game'}
@@ -247,13 +324,12 @@ export default function GamePage() {
 
                 {isPlaying && (
                     <div>
-                        <StatsRow>
-                            <div>Score: <span style={{ color: 'var(--primary)' }}>{score}</span></div>
-                            <div style={{ color: timeLeft <= 10 ? '#ef4444' : 'inherit' }}>
-                                Time: {timeLeft}s
-                            </div>
-                        </StatsRow>
-
+                        {!isMobileView && <div style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+                            Time Left: <span style={{ color: timeLeft <= 10 ? '#ef4444' : 'var(--foreground)', fontWeight: 'bold' }}>{timeLeft}s</span>
+                        </div>}
+                        <div style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+                            Score: <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{score}</span> {isMobileView && '/ 10'}
+                        </div>
                         <KanaDisplay>{currentKana}</KanaDisplay>
 
                         <Input
@@ -274,10 +350,10 @@ export default function GamePage() {
 
                 {isGameOver && (
                     <div>
-                        <h2>{"Time's Up!"}</h2>
+                        <h2>{isMobileView ? "Challenge Completed! 🎉" : "Time's Up!"}</h2>
                         <KanaDisplay style={{ fontSize: '4rem', margin: '1rem 0' }}>{score}</KanaDisplay>
                         <p style={{ color: 'var(--text-secondary)', fontSize: '1.25rem', marginBottom: '1.5rem' }}>
-                            characters typed correctly.
+                            {isMobileView ? 'You successfully matched 10 Kana characters.' : 'characters typed correctly.'}
                         </p>
                         <div style={{
                           display: 'inline-flex',
@@ -293,7 +369,7 @@ export default function GamePage() {
                           border: '1px solid rgba(59, 130, 246, 0.2)',
                           boxShadow: '0 4px 12px rgba(59, 130, 246, 0.1)'
                         }}>
-                          ⚡ +{score * 4} EXP Gained
+                          ⚡ +{isMobileView ? 40 : score * 4} EXP Gained
                         </div>
                         <br />
                         <Button onClick={startGame}>Play Again</Button>

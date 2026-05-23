@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
 import { useProgress } from '@/context/ProgressContext';
+import { useDeviceMode } from '@/context/DeviceModeContext';
 
 const PageWrapper = styled.div`
   min-height: 90vh;
@@ -12,6 +13,53 @@ const PageWrapper = styled.div`
   /* Premium radial background */
   background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
   overflow-x: hidden;
+`;
+
+const LessonHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 2rem;
+  gap: 1rem;
+`;
+
+const CloseLessonBtn = styled(Link)`
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--foreground);
+  }
+`;
+
+const LessonProgressBarContainer = styled.div`
+  flex: 1;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+`;
+
+const LessonProgressBarFill = styled.div<{ $percent: number }>`
+  width: ${({ $percent }) => $percent}%;
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  border-radius: 99px;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
 `;
 
 const Container = styled.div`
@@ -401,6 +449,9 @@ type VocabItem = {
 };
 
 export default function VocabularyFlashcards() {
+  const { deviceMode, isMounted } = useDeviceMode();
+  const isMobileView = isMounted && deviceMode === 'mobile';
+
   const [level, setLevel] = useState('hiragana');
   const [vocabList, setVocabList] = useState<VocabItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -421,7 +472,10 @@ export default function VocabularyFlashcards() {
 
   // Fetch List
   useEffect(() => {
-    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(true);
+    }, 0);
+
     fetch(`/api/vocabulary/${level}`)
       .then(res => res.json())
       .then((data: VocabItem[]) => {
@@ -448,6 +502,8 @@ export default function VocabularyFlashcards() {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
+
+    return () => clearTimeout(timer);
   }, [level, progress.srs]);
 
   const currentVocab = vocabList[currentIndex];
@@ -486,6 +542,10 @@ export default function VocabularyFlashcards() {
     markExerciseCompleted(`vocab-${level}`);
     setSessionStats({ correct: 0, total: 0 });
     setCurrentIndex(0);
+
+    if (isMobileView) {
+      window.location.href = '/';
+    }
   };
 
   const prevCard = () => {
@@ -535,10 +595,10 @@ export default function VocabularyFlashcards() {
 
   if (sessionStats.total >= SESSION_LIMIT) {
     return (
-      <PageWrapper>
+      <PageWrapper style={isMobileView ? { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' } : {}}>
         <Container>
-          <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'var(--surface)', borderRadius: '24px', border: '1px solid var(--border)', marginTop: '4rem' }}>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Session Complete! 🎉</h2>
+          <div style={{ textAlign: 'center', padding: isMobileView ? '3rem 2rem' : '4rem 2rem', background: 'var(--surface)', borderRadius: isMobileView ? '32px' : '24px', border: '1px solid var(--border)', maxWidth: isMobileView ? '450px' : 'none', width: '100%', boxShadow: isMobileView ? 'var(--shadow-lg)' : 'none', marginTop: isMobileView ? '0' : '4rem' }}>
+            <h2 style={{ fontSize: isMobileView ? '2.2rem' : '2.5rem', marginBottom: '1rem', color: '#10b981' }}>Session Complete! 🎉</h2>
             <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
               You reviewed {SESSION_LIMIT} Vocabulary words.
             </p>
@@ -548,7 +608,7 @@ export default function VocabularyFlashcards() {
             <p style={{ color: '#10b981', fontWeight: 'bold', marginBottom: '3rem' }}>+50 EXP Bonus!</p>
             <button 
               onClick={handleFinishSession}
-              style={{ background: 'var(--primary)', color: 'white', padding: '1rem 3rem', borderRadius: '99px', fontSize: '1.2rem', fontWeight: 800, border: 'none', cursor: 'pointer', boxShadow: '0 4px 15px rgba(79, 70, 229, 0.3)' }}
+              style={{ background: 'var(--primary)', color: 'white', padding: '1rem 3rem', borderRadius: '99px', fontSize: '1.2rem', fontWeight: 800, border: 'none', cursor: 'pointer', boxShadow: '0 4px 15px rgba(79, 70, 229, 0.3)', width: isMobileView ? '100%' : 'auto' }}
             >
               Continue Learning
             </button>
@@ -563,43 +623,55 @@ export default function VocabularyFlashcards() {
   return (
     <PageWrapper>
       <Container>
-        <Breadcrumbs 
-          items={[
-            { label: 'Home', href: '/' },
-            { label: 'Study', href: '/study' }
-          ]} 
-          current="Vocabulary Flashcards" 
-        />
-        <Header>
-          <DropdownContainer>
-            <DropdownTrigger
-              $isOpen={isDropdownOpen}
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              {level.charAt(0).toUpperCase() + level.slice(1)}
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </DropdownTrigger>
+        {isMobileView ? (
+          <LessonHeader>
+            <CloseLessonBtn href="/" title="Tutup Sesi">✕</CloseLessonBtn>
+            <LessonProgressBarContainer>
+              <LessonProgressBarFill $percent={(sessionStats.total / SESSION_LIMIT) * 100} />
+            </LessonProgressBarContainer>
+            <div style={{ width: '38px' }} />
+          </LessonHeader>
+        ) : (
+          <>
+            <Breadcrumbs 
+              items={[
+                { label: 'Home', href: '/' },
+                { label: 'Study', href: '/study' }
+              ]} 
+              current="Vocabulary Flashcards" 
+            />
+            <Header>
+              <DropdownContainer>
+                <DropdownTrigger
+                  $isOpen={isDropdownOpen}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  {level.charAt(0).toUpperCase() + level.slice(1)}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </DropdownTrigger>
 
-            {isDropdownOpen && (
-              <DropdownMenu>
-                {['hiragana', 'katakana', 'dakuten', 'handakuten', 'yoon'].map(l => (
-                  <DropdownItem
-                    key={l}
-                    $isActive={level === l}
-                    onClick={() => {
-                      setLevel(l);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    {l.charAt(0).toUpperCase() + l.slice(1)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            )}
-          </DropdownContainer>
-        </Header>
+                {isDropdownOpen && (
+                  <DropdownMenu>
+                    {['hiragana', 'katakana', 'dakuten', 'handakuten', 'yoon'].map(l => (
+                      <DropdownItem
+                        key={l}
+                        $isActive={level === l}
+                        onClick={() => {
+                          setLevel(l);
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        {l.charAt(0).toUpperCase() + l.slice(1)}
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                )}
+              </DropdownContainer>
+            </Header>
+          </>
+        )}
 
         <FlashcardContainer>
           <SectionTitle>Memorization Mode</SectionTitle>
@@ -633,11 +705,13 @@ export default function VocabularyFlashcards() {
           <ActionButtons>
             {!flipped ? (
               <>
-                <IconBtn onClick={prevCard} aria-label="Previous Word">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                  </svg>
-                </IconBtn>
+                {!isMobileView && (
+                  <IconBtn onClick={prevCard} aria-label="Previous Word">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                  </IconBtn>
+                )}
 
                 <ActionBtn onClick={() => setFlipped(true)}>
                   Reveal Answer
