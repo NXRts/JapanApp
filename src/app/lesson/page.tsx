@@ -5,6 +5,7 @@ import styled, { keyframes, css } from 'styled-components';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useProgress } from '@/context/ProgressContext';
 import { lessonsData, Lesson, Question } from '@/data/lessonsData';
+import { generatorBank } from '@/data/generatorBank';
 import Link from 'next/link';
 
 // ==========================================
@@ -628,6 +629,199 @@ const playIncorrectSound = () => {
 };
 
 // ==========================================
+// PROCEDURAL DYNAMIC QUESTION GENERATOR ENGINE
+// ==========================================
+const tokenizeSentence = (sentence: string): string[] => {
+  const clean = sentence.replace(/[。！、]/g, '');
+  if (clean === 'わたしはたなかです') return ['わたし', 'は', 'たなか', 'es', 'です']; // Add standard distractors/morphemes
+  if (clean === 'みずをのみます') return ['みず', 'を', 'のみます'];
+  if (clean === 'がっこうにいきます') return ['がっこう', 'に', 'いきます'];
+  if (clean === 'すしがたべたいes') return ['すし', 'が', 'たべたい', 'です'];
+  if (clean === 'すしがたべたいです') return ['すし', 'が', 'たべたい', 'es', 'です'];
+  if (clean === 'きのうテレビをみた') return ['きのう', 'テレビ', 'を', 'みた'];
+  if (clean === 'ちょっとまってください') return ['ちょっと', 'まって', 'ください'];
+  if (clean === '雨が降りそうです') return ['雨', 'が', '降りそう', 'es', 'です'];
+  if (clean === '田中と申します') return ['田中', 'と', '申します'];
+  if (clean === '先生が召し上がります') return ['先生', 'が', '召し上がります'];
+  if (clean === 'この問題について考えます') return ['この', '問題', 'について', '考えます'];
+  if (clean === '東京において会議が行われた') return ['東京', 'において', '会議', 'が', '行われた'];
+  if (clean === '本日をもって閉店いたします') return ['本日', 'をもって', '閉店', 'いたします'];
+  if (clean === '行くくなり行かないくなり、返事をして') return ['行くく', 'なり', '行かないく', 'なり', '返事', 'を', 'して'];
+  
+  return clean.split(/(?!$)/u);
+};
+
+function generateDynamicQuestions(lesson: Lesson): Question[] {
+  const level = lesson.level;
+  const bank = generatorBank[level];
+  if (!bank) return lesson.questions;
+
+  const generated: Question[] = [];
+  const lessonId = lesson.id;
+
+  let vocabPool = bank.vocabulary;
+  let grammarPool = bank.grammar;
+
+  const titleLower = lesson.title.toLowerCase();
+  const descLower = lesson.description.toLowerCase();
+
+  // Smart vocabulary filtering
+  if (titleLower.includes('vokal') || descLower.includes('vokal')) {
+    vocabPool = bank.vocabulary.filter(v => v.category === 'vowels');
+  } else if (titleLower.includes('sapaan') || descLower.includes('sapaan') || titleLower.includes('aisatsu')) {
+    vocabPool = bank.vocabulary.filter(v => v.category === 'greetings');
+  } else if (titleLower.includes('makanan') || descLower.includes('makanan') || titleLower.includes('kuliner')) {
+    vocabPool = bank.vocabulary.filter(v => v.category === 'food');
+  } else if (titleLower.includes('arah') || titleLower.includes('lokasi') || titleLower.includes('stasiun')) {
+    vocabPool = bank.vocabulary.filter(v => v.category === 'travel' || v.category === 'places' || v.category === 'directions');
+  } else if (titleLower.includes('kerja') || titleLower.includes('aktivitas')) {
+    vocabPool = bank.vocabulary.filter(v => v.category === 'verbs');
+  } else if (titleLower.includes('sopan') || titleLower.includes('keigo') || titleLower.includes('hormat')) {
+    vocabPool = bank.vocabulary.filter(v => v.category === 'verbs' || v.category === 'traits');
+  } else if (titleLower.includes('katakana')) {
+    vocabPool = bank.vocabulary.filter(v => /[\u30a0-\u30ff]/.test(v.japanese));
+  }
+
+  if (!vocabPool || vocabPool.length === 0) {
+    vocabPool = bank.vocabulary;
+  }
+
+  // Smart grammar filtering
+  if (titleLower.includes('keinginan') || descLower.includes('keinginan') || titleLower.includes('~tai')) {
+    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('tai'));
+  } else if (titleLower.includes('lampau') || titleLower.includes('~ta') || titleLower.includes('lalu')) {
+    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('ta'));
+  } else if (titleLower.includes('kelihatannya') || titleLower.includes('~sou') || titleLower.includes('dugaan')) {
+    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('sou'));
+  } else if (titleLower.includes('sopan') || titleLower.includes('keigo') || titleLower.includes('hormat')) {
+    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('kenjougo') || g.pattern.toLowerCase().includes('sonkeigo'));
+  } else if (titleLower.includes('mengenai') || titleLower.includes('tentang')) {
+    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('about') || g.pattern.toLowerCase().includes('tsuite'));
+  } else if (titleLower.includes('batas') || titleLower.includes('motte')) {
+    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('motte'));
+  }
+
+  if (!grammarPool || grammarPool.length === 0) {
+    grammarPool = bank.grammar;
+  }
+
+  const targetCount = 10;
+
+  const shuffle = <T,>(arr: T[]): T[] => {
+    const newArr = [...arr];
+    for (let i = newArr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+    }
+    return newArr;
+  };
+
+  for (let i = 0; i < targetCount; i++) {
+    const id = `${lessonId}-q-dyn-${i + 1}`;
+    const typeIndex = i % 5;
+
+    if (typeIndex === 0) {
+      // 1. Multiple choice
+      const item = vocabPool[i % vocabPool.length];
+      const categoryItems = vocabPool.filter(v => v.category === item.category && v.japanese !== item.japanese);
+      const remainingPool = vocabPool.filter(v => v.japanese !== item.japanese);
+      const pool = categoryItems.length >= 3 ? categoryItems : remainingPool;
+      const distractors = shuffle(pool).slice(0, 3).map(p => p.english);
+      const options = shuffle([...distractors, item.english]);
+
+      generated.push({
+        id,
+        type: 'multiple-choice',
+        questionText: `Apakah arti yang tepat untuk kosakata bahasa Jepang berikut: 「${item.japanese}」?`,
+        options,
+        answer: item.english,
+        hint: `Dilafalkan sebagai "${item.romaji || ''}"`
+      });
+    } 
+    else if (typeIndex === 1) {
+      // 2. Listening
+      const item = vocabPool[(i + 2) % vocabPool.length];
+      const distractors = shuffle(vocabPool.filter(v => v.japanese !== item.japanese)).slice(0, 3).map(p => p.english);
+      const options = shuffle([...distractors, item.english]);
+
+      generated.push({
+        id,
+        type: 'listening',
+        audioText: item.japanese,
+        questionText: `Dengarkan suara audio berikut dan pilihlah terjemahan bahasa Indonesia yang tepat!`,
+        options,
+        answer: item.english,
+        hint: `Fokus pada pengucapan kata: "${item.japanese}"`
+      });
+    } 
+    else if (typeIndex === 2 && grammarPool.length > 0) {
+      // 3. Sentence builder
+      const item = grammarPool[i % grammarPool.length];
+      const sentenceWords = tokenizeSentence(item.exampleSentence);
+      const distractors = ['ね', 'よ', 'が', 'を'].filter(d => !sentenceWords.includes(d));
+      const options = shuffle([...sentenceWords, ...distractors.slice(0, 2)]);
+
+      generated.push({
+        id,
+        type: 'sentence-builder',
+        questionText: `Susunlah kartu-kartu kata di bawah ini menjadi kalimat yang tepat: "${item.englishTranslation}"`,
+        options,
+        answer: sentenceWords.join(' '),
+        hint: `Gunakan partikel yang sesuai dengan tata bahasa Jepang.`
+      });
+    } 
+    else if (typeIndex === 3 && grammarPool.length > 0) {
+      // 4. Fill in the blank
+      const item = grammarPool[(i + 1) % grammarPool.length];
+      generated.push({
+        id,
+        type: 'fill-in-the-blank',
+        questionText: `Pilihlah jawaban yang tepat untuk melengkapi bagian rumpang berikut:\n「${item.exampleSentence.replace(item.answer, ' ___ ')}」\n(${item.englishTranslation})`,
+        options: item.options,
+        answer: item.answer,
+        hint: item.explanation
+      });
+    } 
+    else {
+      // 5. Typing
+      const item = vocabPool[(i + 4) % vocabPool.length];
+      const isVowel = item.category === 'vowels';
+      const answerText = isVowel 
+        ? (item.romaji || '').trim().toLowerCase()
+        : item.english.split(' / ')[0].trim().toLowerCase();
+
+      generated.push({
+        id,
+        type: 'typing',
+        questionText: isVowel
+          ? `Ketiklah padanan Romaji untuk huruf Hiragana berikut: 「${item.japanese}」`
+          : `Ketik arti bahasa Indonesia untuk kosakata berikut: 「${item.japanese}」`,
+        options: [],
+        answer: answerText,
+        hint: isVowel
+          ? `Dibaca seperti bunyi vokal "${answerText.toUpperCase()}".`
+          : `Ucapannya adalah "${item.romaji || ''}".`
+      });
+    }
+  }
+
+  // Ensure count remains exact
+  while (generated.length < targetCount) {
+    const fallbackItem = vocabPool[generated.length % vocabPool.length];
+    generated.push({
+      id: `${lessonId}-q-dyn-fallback-${generated.length + 1}`,
+      type: 'multiple-choice',
+      questionText: `Apakah arti kata: 「${fallbackItem.japanese}」?`,
+      options: shuffle([fallbackItem.english, 'Salah 1', 'Salah 2', 'Salah 3']),
+      answer: fallbackItem.english,
+      hint: `Romaji: ${fallbackItem.romaji || ''}`
+    });
+  }
+
+  return generated;
+}
+
+// ==========================================
 // CORE CONTENT COMPONENT
 // ==========================================
 function LessonPlayerContent() {
@@ -638,7 +832,7 @@ function LessonPlayerContent() {
 
   const lessonId = searchParams.get('id') || 'n5-u1-l1';
   const lesson = lessonsData.find((l) => l.id === lessonId) || lessonsData[0];
-  const questions = lesson.questions;
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   // State Management
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -654,10 +848,14 @@ function LessonPlayerContent() {
   const [hasVoiceTriggered, setHasVoiceTriggered] = useState(false);
   const [elapsedTime, setElapsedTime] = useState<number>(0);
 
-  // Initialize start time on mount safely
+  // Initialize questions and start time safely on client-side mount
   useEffect(() => {
-    startTime.current = Date.now();
-  }, []);
+    const timer = setTimeout(() => {
+      setQuestions(generateDynamicQuestions(lesson));
+      startTime.current = Date.now();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [lessonId, lesson]);
 
   const activeQuestion = questions[currentIdx];
 
@@ -691,6 +889,7 @@ function LessonPlayerContent() {
   };
 
   const isCheckActive = () => {
+    if (!activeQuestion) return false;
     if (isAnswered) return true;
     if (activeQuestion.type === 'multiple-choice' || activeQuestion.type === 'listening') {
       return selectedOption !== null;
@@ -705,6 +904,7 @@ function LessonPlayerContent() {
   };
 
   const handleCheckAnswer = () => {
+    if (!activeQuestion) return;
     if (isAnswered) {
       // Proceed to next question
       if (currentIdx < questions.length - 1) {
@@ -783,6 +983,18 @@ function LessonPlayerContent() {
       e.preventDefault();
     }
   };
+
+  if (questions.length === 0) {
+    return (
+      <FullscreenContainer>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', minHeight: '60vh' }}>
+          <TrophyGraphic style={{ animation: 'float 2s ease-in-out infinite' }}>🎌</TrophyGraphic>
+          <VictoryTitle>Memuat Pelajaran...</VictoryTitle>
+          <VictorySubtitle>Sistem sedang meracik soal dinamis untuk Anda.</VictorySubtitle>
+        </div>
+      </FullscreenContainer>
+    );
+  }
 
   if (isFinished) {
     const elapsedMinutes = Math.floor(elapsedTime / 60);
