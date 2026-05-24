@@ -583,6 +583,9 @@ export function Navbar() {
                 <NavItem>
                   <StyledLink href="/contact" $active={pathname === '/contact'}>Contact</StyledLink>
                 </NavItem>
+                <NavItem>
+                  <StyledLink href="/admin/generator" $active={pathname === '/admin/generator'}>Generator ⚙️</StyledLink>
+                </NavItem>
               </NavList>
 
               <RightNavContainer>
