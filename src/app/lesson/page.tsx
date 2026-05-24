@@ -651,10 +651,27 @@ const tokenizeSentence = (sentence: string): string[] => {
   return clean.split(/(?!$)/u);
 };
 
+const shuffle = <T,>(arr: T[]): T[] => {
+  const newArr = [...arr];
+  for (let i = newArr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+  }
+  return newArr;
+};
+
 function generateDynamicQuestions(lesson: Lesson): Question[] {
   // Prioritize pre-curated questions in lessonsData if they are present!
   if (lesson.questions && lesson.questions.length > 0) {
-    return lesson.questions;
+    return lesson.questions.map(q => {
+      if (q.options && q.options.length > 0) {
+        return {
+          ...q,
+          options: shuffle(q.options)
+        };
+      }
+      return q;
+    });
   }
 
   const level = lesson.level;
@@ -711,15 +728,6 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
   }
 
   const targetCount = 10;
-
-  const shuffle = <T,>(arr: T[]): T[] => {
-    const newArr = [...arr];
-    for (let i = newArr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-    }
-    return newArr;
-  };
 
   for (let i = 0; i < targetCount; i++) {
     const id = `${lessonId}-q-dyn-${i + 1}`;
