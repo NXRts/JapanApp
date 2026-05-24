@@ -218,6 +218,7 @@ export const generatorBank: Record<'N5' | 'N4' | 'N3' | 'N2' | 'N1', GeneratorBa
       {
         pattern: 'なり ~ なり (Alternatif)',
         exampleSentence: '行くくなり行かないくなり、返事をして。',
+        englishTranslation: 'Baik pergi atau tidak pergi, tolong beri jawaban.',
         options: ['なり / なり', 'とか / とか', 'だの / だの', 'つつ / つつ'],
         answer: 'なり / なり',
         explanation: '~nari ~nari memberikan dua contoh alternatif tindakan ekstrem yang bisa dipilih pembicara.'
