@@ -652,9 +652,14 @@ const tokenizeSentence = (sentence: string): string[] => {
 };
 
 function generateDynamicQuestions(lesson: Lesson): Question[] {
+  // Prioritize pre-curated questions in lessonsData if they are present!
+  if (lesson.questions && lesson.questions.length > 0) {
+    return lesson.questions;
+  }
+
   const level = lesson.level;
   const bank = generatorBank[level];
-  if (!bank) return lesson.questions;
+  if (!bank) return [];
 
   const generated: Question[] = [];
   const lessonId = lesson.id;
