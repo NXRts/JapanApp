@@ -66,12 +66,13 @@ const DrawerContainer = styled.div<{ $isOpen: boolean }>`
 
   @media (min-width: 600px) {
     max-width: 500px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 32px;
     bottom: 2rem;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    /* Update slideUp animation mapping in desktop if needed, but translate works */
   }
 `;
 
