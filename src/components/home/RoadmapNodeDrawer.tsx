@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Link from 'next/link';
+import { LessonIcon } from './LessonIcon';
 
 interface NodeData {
   title: string;
@@ -109,16 +110,23 @@ const CloseButton = styled.button`
 `;
 
 const EmojiBadge = styled.div<{ $color?: string }>`
-  font-size: 3rem;
-  width: 80px;
-  height: 80px;
-  border-radius: 24px;
-  background: ${({ $color }) => $color || 'rgba(var(--primary-rgb), 0.1)'};
+  width: 90px;
+  height: 90px;
+  border-radius: 28px;
+  background: radial-gradient(circle at center, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border: 3px solid ${({ $color }) => $color || 'var(--primary)'};
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.25rem;
-  box-shadow: 0 8px 24px -8px rgba(0,0,0,0.15);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 20px ${({ $color }) => ($color ? `${$color}40` : 'rgba(var(--primary-rgb), 0.25)')};
+  position: relative;
+  overflow: hidden;
+  
+  @media (prefers-color-scheme: light) {
+    background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08), 0 0 15px ${({ $color }) => ($color ? `${$color}25` : 'rgba(var(--primary-rgb), 0.15)')};
+  }
 `;
 
 const Title = styled.h3`
@@ -209,7 +217,14 @@ export function RoadmapNodeDrawer({ isOpen, onClose, nodeData }: RoadmapNodeDraw
           </svg>
         </CloseButton>
         
-        <EmojiBadge $color={nodeData.color}>{nodeData.icon}</EmojiBadge>
+        <EmojiBadge $color={nodeData.color}>
+          <LessonIcon
+            icon={nodeData.icon}
+            badge={nodeData.badge || ''}
+            color={nodeData.color || '#10b981'}
+            unlocked={true}
+          />
+        </EmojiBadge>
         {nodeData.badge && <Badge>{nodeData.badge}</Badge>}
         <Title>{nodeData.title}</Title>
         <Description>{nodeData.description}</Description>
