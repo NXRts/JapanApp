@@ -4,7 +4,18 @@ A premium, interactive Japanese learning companion application built with Next.j
 
 ## ✨ Features
 
-- **🗺️ Learning Roadmap**: A professional, grid-based curriculum (Swimlane Roadmap) that guides beginners through Writing, Vocabulary, and Grammar stages.
+- **🗺️ Visual Learning Roadmap (Duolingo Style)**: An exquisitely overhauled serpentine learning path using **custom vector SVG animated portals** (Alphabet, Vocabulary, Grammar, Conversation, Kanji, Finance, Travel, Trophy) instead of basic emojis.
+  - **Tactile 3D Buttons**: Immersive buttons with 3D mechanical active-press compression and smooth hover scales.
+  - **Neon Active Portal**: Active lessons float gently and pulse with a **breathing neon aura ring** matching the level's theme (Emerald N5, Violet N4, Orange N3, Blue N2, Red N1).
+  - **Frosted Glass Labels**: Exquisite capsule labels utilizing modern `backdrop-filter: blur(12px)`.
+  - **Perfect Alignment**: Prescise horizontal-center alignment on both desktop viewports and notched mobile devices.
+- **⚙️ Admin Curriculum Curator Dashboard (`/admin/generator`)**: A high-fidelity administrative workbench to generate and playtest curriculum datasets.
+  - **Local & AI Generator Engine**: Instant procedural formulation of JLPT N5-N1 questions based on local curate banks or Gemini API prompts.
+  - **Interactive Playtest Sandbox**: Real-time Duolingo-style playing simulator to drag-and-drop cards and answer questions prior to exporting.
+  - **Glowing Code Output**: Single-click copy or instant download of `.json` structured bank arrays.
+- **📚 Rich JLPT Syllabus Database (`lessonsData.ts`)**: Fully populated path from N5 to N1.
+  - **JLPT N5 Expansion**: 10 full units (240 questions) mapping basic survival skills like ordering food, convenience store transactions, basic directions, housing, and travel.
+  - **Interactive Question Varieties**: Supports multiple choice, typing, listening exercises powered by Web Speech API, sentence-building card sets, and fill-in-the-blank particle matching.
 - **✍️ Kanji Grid & Practice**: Explore and learn Kanji characters with organized visualization and drawing practice modules.
 - **🔤 Kana Mastery**: Deep-dive tools for mastering Hiragana and Katakana (Basic, Dakuten, Handakuten, and Yoon).
 - **💡 Study Hub**: Dedicated sections for Listening, Reading, and Speaking practice to build holistic fluency.
