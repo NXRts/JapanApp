@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import dynamic from 'next/dynamic';
 import { useProgress } from '@/context/ProgressContext';
 import { useDeviceMode } from '@/context/DeviceModeContext';
 import { RoadmapNodeDrawer } from '@/components/home/RoadmapNodeDrawer';
+import { LessonIcon, CheckIcon } from '@/components/home/LessonIcon';
 import { lessonsData, Lesson } from '@/data/lessonsData';
 
 // Immediate imports for above-the-fold content
@@ -139,13 +140,42 @@ const PathLine = styled.div`
   top: 0;
   bottom: 0;
   left: 50%;
-  width: 6px;
-  border-left: 6px dashed rgba(255, 255, 255, 0.08);
-  transform: translateX(-3px);
+  width: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 99px;
+  transform: translateX(-4px);
   z-index: 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+
+  /* Glowing vertical tracking dash */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 2px;
+    width: 4px;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.15),
+      rgba(255, 255, 255, 0.15) 12px,
+      transparent 12px,
+      transparent 24px
+    );
+  }
 
   @media (prefers-color-scheme: light) {
-    border-left-color: rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    &::after {
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.08),
+        rgba(0, 0, 0, 0.08) 12px,
+        transparent 12px,
+        transparent 24px
+      );
+    }
   }
 `;
 
@@ -153,56 +183,189 @@ const NodeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1.25rem 0;
+  margin: 1.5rem 0;
   position: relative;
   z-index: 1;
 `;
 
-const NodeButton = styled.button<{ $unlocked: boolean; $color?: string; $offset: number }>`
-  width: 72px;
-  height: 72px;
+const pulseGlow = keyframes`
+  0% {
+    box-shadow: 0 0 0 0px var(--pulse-color), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(255, 255, 255, 0), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0), 0 8px 24px rgba(0, 0, 0, 0.35);
+  }
+`;
+
+const floatingNode = keyframes`
+  0% {
+    transform: translateX(var(--offset-px)) translateY(0px);
+  }
+  50% {
+    transform: translateX(var(--offset-px)) translateY(-5px);
+  }
+  100% {
+    transform: translateX(var(--offset-px)) translateY(0px);
+  }
+`;
+
+const NodeButton = styled.button<{ 
+  $unlocked: boolean; 
+  $active: boolean; 
+  $completed: boolean; 
+  $color: string; 
+  $offset: number 
+}>`
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
-  background: ${({ $unlocked, $color }) => ($unlocked ? $color || 'var(--primary)' : 'var(--border)')};
-  border: none;
-  border-bottom: 6px solid ${({ $unlocked }) => ($unlocked ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.1)')};
-  color: white;
-  font-size: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: ${({ $unlocked }) => ($unlocked ? 'pointer' : 'not-allowed')};
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   transform: translateX(${({ $offset }) => $offset}px);
-  transition: all 0.1s ease;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
+  border: none;
+  outline: none;
+  
+  /* Glowing / tactile properties depending on state */
+  ${({ $unlocked, $active, $completed, $color }) => {
+    if (!$unlocked) {
+      return css`
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        opacity: 0.65;
+        
+        @media (prefers-color-scheme: light) {
+          background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+          border: 2px solid rgba(0, 0, 0, 0.06);
+          opacity: 0.75;
+        }
+      `;
+    }
 
+    if ($active) {
+      // Current active node - high pulse, full vivid color
+      return css`
+        background: radial-gradient(circle at center, ${$color} 0%, ${$color}dd 100%);
+        border: 3px solid #ffffff;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.2);
+        --pulse-color: ${$color}80;
+        z-index: 10;
+        
+        /* Floating and pulsing animations combined */
+        animation: ${pulseGlow} 2s infinite ease-in-out, ${floatingNode} 3s infinite ease-in-out;
+      `;
+    }
+
+    if ($completed) {
+      // Completed node - luxurious dark orb with glowing boundary ring matching level color
+      return css`
+        background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        border: 3px solid ${$color};
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25), 0 0 12px ${$color}40, inset 0 2px 4px rgba(255, 255, 255, 0.1);
+        
+        @media (prefers-color-scheme: light) {
+          background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1), 0 0 10px ${$color}30, inset 0 2px 4px rgba(255, 255, 255, 0.8);
+        }
+      `;
+    }
+
+    // Unlocked but not active and not completed
+    return css`
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+      border: 3px solid ${$color}aa;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+      
+      @media (prefers-color-scheme: light) {
+        background: radial-gradient(circle at center, #ffffff 0%, #f8fafc 100%);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+      }
+    `;
+  }}
+
+  /* Hover scale up slightly */
+  &:hover {
+    ${({ $unlocked }) =>
+      $unlocked &&
+      css`
+        transform: translateX(var(--offset-px)) scale(1.08) translateY(-2px);
+        filter: brightness(1.1);
+      `}
+  }
+
+  /* 3D mechanical active click */
   &:active {
     ${({ $unlocked }) =>
       $unlocked &&
-      `
-      transform: translateX(var(--offset-px)) translateY(3px);
-      border-bottom-width: 3px;
-    `}
+      css`
+        transform: translateX(var(--offset-px)) scale(0.96) translateY(2px);
+        transition: all 0.05s ease;
+      `}
   }
 `;
 
 const NodeLabel = styled.div<{ $offset: number }>`
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   color: var(--foreground);
-  margin-top: 0.5rem;
+  margin-top: 0.65rem;
   transform: translateX(${({ $offset }) => $offset}px);
-  background: var(--surface);
-  padding: 4px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
+  
+  /* Glassmorphism capsule */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  
+  padding: 5px 14px;
+  border-radius: 99px;
   max-width: 150px;
   text-align: center;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  transition: all 0.2s ease;
+
+  @media (prefers-color-scheme: light) {
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
 `;
+
+const CompletedBadge = styled.div<{ $color: string }>`
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #10b981;
+  border: 2px solid var(--background);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 6px rgba(16, 185, 129, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+
+  @keyframes popIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+`;
+
+
 
 const StatBanner = styled.div`
   display: flex;
@@ -415,17 +578,33 @@ export default function Home() {
                 {unit.lessons.map((lesson, index) => {
                   const offset = getOffset(index);
                   const isUnlocked = isLessonUnlocked(lesson.id);
+                  const isCompleted = progress.completedExercises?.includes(lesson.id) || false;
+                  const isActive = isUnlocked && !isCompleted;
+                  const levelColor = levels.find(l => l.code === selectedLevel)?.color || '#10b981';
+
                   return (
                     <NodeContainer key={lesson.id}>
                       <NodeButton
                         $unlocked={isUnlocked}
-                        $color={levels.find(l => l.code === selectedLevel)?.color}
+                        $active={isActive}
+                        $completed={isCompleted}
+                        $color={levelColor}
                         $offset={offset}
                         onClick={() => handleNodeClick(lesson, isUnlocked)}
                         title={lesson.title}
                         style={{ '--offset-px': `${offset}px` } as React.CSSProperties}
                       >
-                        {isUnlocked ? lesson.icon : '🔒'}
+                        <LessonIcon
+                          icon={lesson.icon}
+                          badge={lesson.badge}
+                          color={levelColor}
+                          unlocked={isUnlocked}
+                        />
+                        {isUnlocked && isCompleted && (
+                          <CompletedBadge $color={levelColor}>
+                            <CheckIcon />
+                          </CompletedBadge>
+                        )}
                       </NodeButton>
                       <NodeLabel $offset={offset}>{lesson.title}</NodeLabel>
                     </NodeContainer>
