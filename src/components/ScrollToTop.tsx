@@ -29,6 +29,13 @@ const ScrollButton = styled.button<{ $visible: boolean }>`
     transform: translateY(-4px);
   }
 
+  @media (max-width: 1100px) {
+    bottom: calc(75px + env(safe-area-inset-bottom));
+    right: 20px;
+    width: 46px;
+    height: 46px;
+  }
+
   svg {
     width: 24px;
     height: 24px;
