@@ -6,8 +6,8 @@ import dynamic from 'next/dynamic';
 import { useProgress } from '@/context/ProgressContext';
 import { useDeviceMode } from '@/context/DeviceModeContext';
 import { RoadmapNodeDrawer } from '@/components/home/RoadmapNodeDrawer';
-import { LessonIcon, CheckIcon } from '@/components/home/LessonIcon';
 import { lessonsData, Lesson } from '@/data/lessonsData';
+import React from 'react';
 
 // Immediate imports for above-the-fold content
 import { HeroSection } from '@/components/home/HeroSection';
@@ -97,133 +97,273 @@ const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
   }
 `;
 
+// ========================================================
+// PREMIUM SVG VECTOR ICONS FOR STATE REPRESENTATION (CUSTOM DESIGNS)
+// ========================================================
+
+function CheckIcon3D() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M20 6L9 17L4 12" stroke="white" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.15))' }} />
+    </svg>
+  );
+}
+
+function ActiveStarIcon() {
+  return (
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>
+      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#starGoldGrad)" stroke="#ffffff" strokeWidth="1.5" strokeLinejoin="round" />
+      <defs>
+        <linearGradient id="starGoldGrad" x1="12" y1="2" x2="12" y2="21" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#ffe680" />
+          <stop offset="0.4" stopColor="#fbbf24" />
+          <stop offset="1" stopColor="#d97706" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+function LockIcon3D() {
+  return (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.2))' }}>
+      <path d="M7 10V7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7V10" stroke="#94a3b8" strokeWidth="3" strokeLinecap="round" />
+      <rect x="4" y="10" width="16" height="12" rx="3" fill="#64748b" stroke="#475569" strokeWidth="1.5" />
+      <circle cx="12" cy="15" r="2" fill="#1e293b" />
+      <path d="M12 16V19" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function DarumaCharacterSVG() {
+  return (
+    <svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))' }}>
+      <circle cx="32" cy="32" r="30" fill="#dc2626" stroke="#991b1b" strokeWidth="2.5" />
+      <path d="M12 40C12 40 20 48 32 48C44 48 52 40 52 40" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" />
+      <path d="M16 26C16 18 20 14 32 14C44 14 48 18 48 26C48 34 40 38 32 38C24 38 16 34 16 26Z" fill="#fffbeb" stroke="#fef3c7" strokeWidth="1.5" />
+      <path d="M22 20C24 18 27 20 28 22" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M42 20C40 18 37 20 36 22" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="25" cy="25" r="4" fill="#1e293b" />
+      <circle cx="25" cy="25" r="1.2" fill="#ffffff" />
+      <circle cx="39" cy="25" r="4" fill="#1e293b" />
+      <circle cx="39" cy="25" r="1.2" fill="#ffffff" />
+      <circle cx="20" cy="29" r="2" fill="#f87171" opacity="0.6" />
+      <circle cx="44" cy="29" r="2" fill="#f87171" opacity="0.6" />
+      <path d="M26 31C28 33 30 33 32 31C34 33 36 33 38 31" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M32 31V35" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" />
+      <rect x="27" y="41" width="10" height="5" rx="1.5" fill="#fbbf24" />
+      <path d="M30 43.5H34" stroke="#dc2626" strokeWidth="1.2" />
+    </svg>
+  );
+}
+
+function TreasureChestSVG({ open = false }: { open?: boolean }) {
+  return (
+    <svg width="52" height="52" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))' }}>
+      <ellipse cx="32" cy="52" rx="18" ry="4" fill="rgba(0,0,0,0.25)" />
+      {open ? (
+        <>
+          <path d="M8 32H56V48C56 50.2 54.2 52 52 52H12C9.8 52 8 50.2 8 48V32Z" fill="#78350f" stroke="#451a03" strokeWidth="2" />
+          <path d="M8 32H14V52H8V32ZM50 32H56V52H50V32ZM20 32H24V52H20V32ZM40 32H44V52H40V32Z" fill="#fbbf24" stroke="#d97706" strokeWidth="1" />
+          <path d="M12 32C12 24 52 24 52 32" fill="url(#chestGlow)" opacity="0.85" />
+          <path d="M6 14L32 6L58 14V22L32 30L6 22V14Z" fill="#92400e" stroke="#451a03" strokeWidth="2" />
+          <path d="M6 14L32 20L58 14" stroke="#fbbf24" strokeWidth="1.5" />
+          <circle cx="28" cy="30" r="3.5" fill="#fbbf24" stroke="#d97706" strokeWidth="0.8" />
+          <circle cx="36" cy="31" r="4" fill="#f59e0b" stroke="#b45309" strokeWidth="0.8" />
+          <circle cx="32" cy="28" r="3" fill="#fbbf24" />
+        </>
+      ) : (
+        <>
+          <path d="M10 28H54V48C54 50.2 52.2 52 50 52H14C11.8 52 10 50.2 10 48V28Z" fill="#78350f" stroke="#451a03" strokeWidth="2.5" />
+          <path d="M10 28C10 28 10 14 32 14C54 14 54 28 54 28H10Z" fill="#92400e" stroke="#451a03" strokeWidth="2.5" />
+          <path d="M10 28H15V52H10V28ZM49 28H54V52H49V28Z" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5" />
+          <path d="M22 15C22 15 22 28 22 52H26V15H22ZM38 15C38 15 38 28 38 52H42V15H38Z" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5" />
+          <rect x="28" y="24" width="8" height="10" rx="1.5" fill="#d97706" stroke="#451a03" strokeWidth="1.5" />
+          <circle cx="32" cy="29" r="1.5" fill="#1e293b" />
+        </>
+      )}
+      <defs>
+        <linearGradient id="chestGlow" x1="32" y1="20" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#fbbf24" />
+          <stop offset="1" stopColor="#fbbf24" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+}
+
+// ========================================================
+// STYLED COMPONENTS & STYLING FOR GAMIFIED ROADMAP
+// ========================================================
+
 const UnitCard = styled.div<{ $color?: string }>`
   background: ${({ $color }) => $color || 'linear-gradient(135deg, #10b981 0%, #059669 100%)'};
   border-radius: 24px;
-  padding: 1.5rem;
+  padding: 1.25rem 1.5rem;
   color: white;
-  margin-bottom: 2.5rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  margin-bottom: 2.25rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   position: relative;
   overflow: hidden;
-  border-bottom: 6px solid rgba(0, 0, 0, 0.2);
+  border-bottom: 6px solid rgba(0, 0, 0, 0.22);
 `;
 
-const UnitHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  position: relative;
-  z-index: 2;
-`;
-
-const UnitBadge = styled.span`
+const UnitSection = styled.span`
   font-size: 0.72rem;
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.2rem 0.6rem;
-  border-radius: 99px;
-  width: fit-content;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+  display: block;
+  margin-bottom: 0.15rem;
 `;
 
 const UnitTitle = styled.h2`
-  font-size: 1.35rem;
-  font-weight: 800;
+  font-size: 1.15rem;
+  font-weight: 900;
   line-height: 1.3;
-  margin-top: 0.25rem;
+  margin-top: 0.15rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 `;
 
 const UnitDesc = styled.p`
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   opacity: 0.9;
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
+  line-height: 1.4;
 `;
 
 const RoadmapPath = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: block;
   position: relative;
-  padding: 1rem 0;
-  margin-bottom: 2.5rem;
+  width: 320px;
+  margin: 0 auto 2.5rem;
 `;
 
-const PathLine = styled.div`
+const PathLineSVG = styled.svg`
   position: absolute;
   top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 8px;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 99px;
-  transform: translateX(-4px);
+  left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 
-  /* Glowing vertical tracking dash */
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 2px;
-    width: 4px;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.15),
-      rgba(255, 255, 255, 0.15) 12px,
-      transparent 12px,
-      transparent 24px
-    );
+  path {
+    stroke-dasharray: none;
+    animation: neonSplinePulse 3s infinite ease-in-out;
   }
 
-  @media (prefers-color-scheme: light) {
-    background: rgba(0, 0, 0, 0.05);
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-    &::after {
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.08),
-        rgba(0, 0, 0, 0.08) 12px,
-        transparent 12px,
-        transparent 24px
-      );
+  @keyframes neonSplinePulse {
+    0%, 100% {
+      opacity: 0.85;
+      stroke-width: 8px;
+    }
+    50% {
+      opacity: 1;
+      stroke-width: 10px;
     }
   }
 `;
 
-const NodeContainer = styled.div`
+const NodeContainer = styled.div<{ $index: number }>`
+  position: absolute;
+  top: ${({ $index }) => $index * 135}px;
+  height: 135px;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1.5rem 0;
-  position: relative;
+  justify-content: center;
   z-index: 1;
 `;
 
-const pulseGlow = keyframes`
-  0% {
-    box-shadow: 0 0 0 0px var(--pulse-color), 0 8px 24px rgba(0, 0, 0, 0.35);
-  }
-  70% {
-    box-shadow: 0 0 0 14px rgba(255, 255, 255, 0), 0 8px 24px rgba(0, 0, 0, 0.35);
-  }
-  100% {
-    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0), 0 8px 24px rgba(0, 0, 0, 0.35);
+const FloatingWrapper = styled.div<{ $active: boolean; $offset: number }>`
+  transform: translateX(${({ $offset }) => $offset}px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  
+  ${({ $active }) => $active && css`
+    animation: floatingActive 2.4s infinite ease-in-out;
+  `}
+
+  @keyframes floatingActive {
+    0%, 100% {
+      transform: translateX(${({ $offset }) => $offset}px) translateY(0px);
+    }
+    50% {
+      transform: translateX(${({ $offset }) => $offset}px) translateY(-5px);
+    }
   }
 `;
 
-const floatingNode = keyframes`
-  0% {
-    transform: translateX(var(--offset-px)) translateY(0px);
+const PulsingRing = styled.div<{ $color: string }>`
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border-radius: 50%;
+  border: 4px solid ${({ $color }) => $color};
+  opacity: 0;
+  pointer-events: none;
+  animation: pulseRingDouble 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+  z-index: 0;
+
+  &:nth-child(2) {
+    animation-delay: 1s;
   }
-  50% {
-    transform: translateX(var(--offset-px)) translateY(-5px);
+
+  @keyframes pulseRingDouble {
+    0% {
+      transform: scale(0.95);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.35);
+      opacity: 0;
+    }
   }
-  100% {
-    transform: translateX(var(--offset-px)) translateY(0px);
+`;
+
+const ActiveTooltip = styled.div<{ $color: string }>`
+  position: absolute;
+  top: -38px;
+  background: ${({ $color }) => $color};
+  color: white;
+  font-weight: 900;
+  font-size: 0.72rem;
+  padding: 4px 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  animation: floatTooltip 1.2s infinite ease-in-out;
+  white-space: nowrap;
+  z-index: 12;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px 5px 0;
+    border-style: solid;
+    border-color: ${({ $color }) => $color} transparent;
+  }
+
+  @keyframes floatTooltip {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-3px);
+    }
   }
 `;
 
@@ -232,7 +372,6 @@ const NodeButton = styled.button<{
   $active: boolean; 
   $completed: boolean; 
   $color: string; 
-  $offset: number 
 }>`
   width: 76px;
   height: 76px;
@@ -241,110 +380,91 @@ const NodeButton = styled.button<{
   align-items: center;
   justify-content: center;
   cursor: ${({ $unlocked }) => ($unlocked ? 'pointer' : 'not-allowed')};
-  transform: translateX(${({ $offset }) => $offset}px);
-  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   border: none;
   outline: none;
-  
-  /* Glowing / tactile properties depending on state */
+  transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 2;
+
+  /* 3D Tactile Design */
   ${({ $unlocked, $active, $completed, $color }) => {
     if (!$unlocked) {
       return css`
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        border: 2px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        opacity: 0.65;
-        
-        @media (prefers-color-scheme: light) {
-          background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
-          border: 2px solid rgba(0, 0, 0, 0.06);
-          opacity: 0.75;
-        }
-      `;
-    }
+        background: #334155;
+        border-bottom: 6px solid #1e293b;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        opacity: 0.7;
 
-    if ($active) {
-      // Current active node - high pulse, full vivid color
-      return css`
-        background: radial-gradient(circle at center, ${$color} 0%, ${$color}dd 100%);
-        border: 3px solid #ffffff;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.2);
-        --pulse-color: ${$color}80;
-        z-index: 10;
-        
-        /* Floating and pulsing animations combined */
-        animation: ${pulseGlow} 2s infinite ease-in-out, ${floatingNode} 3s infinite ease-in-out;
+        @media (prefers-color-scheme: light) {
+          background: #cbd5e1;
+          border-bottom: 6px solid #94a3b8;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+        }
       `;
     }
 
     if ($completed) {
-      // Completed node - luxurious dark orb with glowing boundary ring matching level color
       return css`
-        background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-        border: 3px solid ${$color};
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25), 0 0 12px ${$color}40, inset 0 2px 4px rgba(255, 255, 255, 0.1);
-        
-        @media (prefers-color-scheme: light) {
-          background: radial-gradient(circle at center, #ffffff 0%, #f1f5f9 100%);
-          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1), 0 0 10px ${$color}30, inset 0 2px 4px rgba(255, 255, 255, 0.8);
-        }
+        background: #58cc02;
+        border-bottom: 6px solid #389600;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
       `;
     }
 
-    // Unlocked but not active and not completed
+    if ($active) {
+      return css`
+        background: ${$color};
+        border-bottom: 6px solid rgba(0, 0, 0, 0.3);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      `;
+    }
+
     return css`
-      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-      border: 3px solid ${$color}aa;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.1);
-      
-      @media (prefers-color-scheme: light) {
-        background: radial-gradient(circle at center, #ffffff 0%, #f8fafc 100%);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08), inset 0 2px 4px rgba(255, 255, 255, 0.8);
-      }
+      background: ${$color}dd;
+      border-bottom: 6px solid rgba(0, 0, 0, 0.25);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     `;
   }}
 
-  /* Hover scale up slightly */
   &:hover {
     ${({ $unlocked }) =>
       $unlocked &&
       css`
-        transform: translateX(var(--offset-px)) scale(1.08) translateY(-2px);
-        filter: brightness(1.1);
+        transform: scale(1.06) translateY(-2px);
+        filter: brightness(1.08);
       `}
   }
 
-  /* 3D mechanical active click */
   &:active {
     ${({ $unlocked }) =>
       $unlocked &&
       css`
-        transform: translateX(var(--offset-px)) scale(0.96) translateY(2px);
+        transform: scale(0.96) translateY(4px) !important;
+        border-bottom-width: 2px !important;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
         transition: all 0.05s ease;
       `}
   }
 `;
 
-const NodeLabel = styled.div<{ $offset: number }>`
-  font-size: 0.76rem;
+const NodeLabel = styled.div`
+  font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--foreground);
-  margin-top: 0.65rem;
-  transform: translateX(${({ $offset }) => $offset}px);
+  margin-top: 0.55rem;
   
   /* Glassmorphism capsule */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   background: rgba(15, 23, 42, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
   
-  padding: 5px 14px;
+  padding: 4px 12px;
   border-radius: 99px;
-  max-width: 150px;
+  max-width: 140px;
   text-align: center;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -354,29 +474,156 @@ const NodeLabel = styled.div<{ $offset: number }>`
   @media (prefers-color-scheme: light) {
     background: rgba(255, 255, 255, 0.75);
     border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
   }
 `;
 
-const CompletedBadge = styled.div<{ $color: string }>`
+const DecorContainer = styled.div<{ $side: 'left' | 'right'; $y: number }>`
   position: absolute;
-  bottom: -2px;
-  right: -2px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #10b981;
-  border: 2px solid var(--background);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 6px rgba(16, 185, 129, 0.5);
+  top: ${({ $y }) => $y - 30}px;
+  ${({ $side }) => ($side === 'left' ? 'left: 12px;' : 'right: 12px;')}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+  animation: floatDecor 3s infinite ease-in-out;
+  cursor: pointer;
+
+  @keyframes floatDecor {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+`;
+
+const SpeechBubble = styled.div`
+  position: absolute;
+  top: -34px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  color: var(--foreground);
+  font-weight: 800;
+  font-size: 0.68rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  white-space: nowrap;
+  z-index: 6;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px 5px 0;
+    border-style: solid;
+    border-color: var(--surface) transparent;
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 7px 7px 0;
+    border-style: solid;
+    border-color: var(--border) transparent;
+    z-index: -1;
+  }
+`;
+
+const RewardTag = styled.div`
+  position: absolute;
+  top: -20px;
+  background: #fbbf24;
+  color: #78350f;
+  font-weight: 900;
+  font-size: 0.62rem;
+  padding: 1.5px 6px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(251, 191, 36, 0.25);
+  text-transform: uppercase;
+  border: 1.2px solid #d97706;
+  white-space: nowrap;
+  z-index: 6;
+`;
+
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
-  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  z-index: 1000;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease-out;
 
-  @keyframes popIn {
-    from { transform: scale(0); }
-    to { transform: scale(1); }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+`;
+
+const ModalContent = styled.div`
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 28px;
+  width: 100%;
+  max-width: 320px;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  border-bottom: 8px solid var(--border);
+  animation: scaleIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  @keyframes scaleIn {
+    from { transform: scale(0.85); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+`;
+
+const ModalTitle = styled.h3`
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--foreground);
+  margin-top: 0.75rem;
+`;
+
+const ModalText = styled.p`
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0.65rem 0 1.25rem;
+  line-height: 1.45;
+`;
+
+const ModalButton = styled.button<{ $color?: string }>`
+  background: ${({ $color }) => $color || '#10b981'};
+  color: white;
+  border: none;
+  outline: none;
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 14px;
+  cursor: pointer;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.2);
+  transition: all 0.15s ease;
+  width: 100%;
+
+  &:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
   }
 `;
 
@@ -427,12 +674,49 @@ interface SelectedNodeData {
 }
 
 export default function Home() {
-  const { progress } = useProgress();
+  const { progress, addExp } = useProgress();
   const { deviceMode, isMounted } = useDeviceMode();
   const [mounted, setMounted] = useState(false);
   const [selectedNode, setSelectedNode] = useState<SelectedNodeData | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1'>('N5');
+
+  // Gamified chest states
+  const [claimedChests, setClaimedChests] = useState<Record<string, boolean>>({});
+  const [showChestModal, setShowChestModal] = useState(false);
+  const [chestModalType, setChestModalType] = useState<'success' | 'already'>('success');
+
+  // Load claimed chests from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('japan-app-claimed-chests');
+      if (saved) {
+        try {
+          setClaimedChests(JSON.parse(saved));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+  }, []);
+
+  const handleChestClick = (unitId: string) => {
+    const chestKey = `${selectedLevel}-${unitId}`;
+    if (claimedChests[chestKey]) {
+      setChestModalType('already');
+      setShowChestModal(true);
+      return;
+    }
+
+    const newClaimed = { ...claimedChests, [chestKey]: true };
+    setClaimedChests(newClaimed);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('japan-app-claimed-chests', JSON.stringify(newClaimed));
+    }
+    addExp(50);
+    setChestModalType('success');
+    setShowChestModal(true);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -516,10 +800,63 @@ export default function Home() {
     );
   }
 
-  // Serpentine offset pattern: Center, Right, Left, Center...
+  // Serpentine offset pattern: Center, Right, Center, Left...
   const getOffset = (index: number) => {
-    const pattern = [0, 42, -42, 0];
+    const pattern = [0, 50, 0, -50];
     return pattern[index % pattern.length];
+  };
+
+  // Curve spline path generator
+  const getCurveDPath = (numLessons: number) => {
+    if (numLessons <= 0) return '';
+    if (numLessons === 1) {
+      return `M 160 50 L 160 50`;
+    }
+    
+    let d = '';
+    const getX = (idx: number) => {
+      const offset = [0, 50, 0, -50][idx % 4];
+      return 160 + offset;
+    };
+    const getY = (idx: number) => idx * 135 + 50;
+    
+    d += `M ${getX(0)} ${getY(0)}`;
+    for (let i = 0; i < numLessons - 1; i++) {
+      const x1 = getX(i);
+      const y1 = getY(i);
+      const x2 = getX(i + 1);
+      const y2 = getY(i + 1);
+      const dy = 55; // vertical bezier control offset
+      d += ` C ${x1} ${y1 + dy}, ${x2} ${y2 - dy}, ${x2} ${y2}`;
+    }
+    return d;
+  };
+
+  // Helper to construct dynamic Duolingo unit section & labels
+  const getSectionTitle = (unitId: string, unitTitle: string) => {
+    const cleanTitle = unitTitle.replace(/Unit \d+:\s*/i, '').replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '').trim();
+    const match = unitId.match(/u(\d+)/i);
+    const unitNum = match ? parseInt(match[1], 10) : 1;
+    
+    let sectionNum = 1;
+    let sectionName = "Interaksi Dasar & Bertahan Hidup";
+    
+    if (unitNum > 10) {
+      sectionNum = 4;
+      sectionName = "Kehidupan Profesional & Akademik";
+    } else if (unitNum > 6) {
+      sectionNum = 3;
+      sectionName = "Komunikasi Menengah & Budaya";
+    } else if (unitNum > 3) {
+      sectionNum = 2;
+      sectionName = "Kehidupan Sehari-hari di Jepang";
+    }
+    
+    return {
+      section: `BAGIAN ${sectionNum}: ${sectionName.toUpperCase()}`,
+      unitLabel: `UNIT ${unitNum}`,
+      title: cleanTitle
+    };
   };
 
   const handleNodeClick = (lesson: Lesson, unlocked: boolean) => {
@@ -578,56 +915,97 @@ export default function Home() {
           )}
 
           {/* Render Units */}
-          {activeUnits.map((unit) => (
-            <div key={unit.id}>
-              <UnitCard $color={unit.color}>
-                <UnitHeader>
-                  <UnitBadge>Pelajaran Aktif</UnitBadge>
-                  <UnitTitle>{unit.title}</UnitTitle>
+          {activeUnits.map((unit) => {
+            const sectHeader = getSectionTitle(unit.id, unit.title);
+            const numLessons = unit.lessons.length;
+            const chestKey = `${selectedLevel}-${unit.id}`;
+            const isChestOpened = claimedChests[chestKey] || false;
+
+            return (
+              <div key={unit.id}>
+                <UnitCard $color={unit.color}>
+                  <UnitSection>{sectHeader.section}</UnitSection>
+                  <UnitTitle>{sectHeader.unitLabel}: {sectHeader.title}</UnitTitle>
                   <UnitDesc>{unit.description}</UnitDesc>
-                </UnitHeader>
-              </UnitCard>
+                </UnitCard>
 
-              <RoadmapPath>
-                <PathLine />
-                {unit.lessons.map((lesson, index) => {
-                  const offset = getOffset(index);
-                  const isUnlocked = isLessonUnlocked(lesson.id);
-                  const isCompleted = progress.completedExercises?.includes(lesson.id) || false;
-                  const isActive = isUnlocked && !isCompleted;
-                  const levelColor = levels.find(l => l.code === selectedLevel)?.color || '#10b981';
+                <RoadmapPath style={{ height: `${numLessons * 135}px` }}>
+                  {/* Dynamic smooth Bezier spline connecting the buttons */}
+                  <PathLineSVG width="320" height={numLessons * 135} viewBox={`0 0 320 ${numLessons * 135}`}>
+                    <path
+                      d={getCurveDPath(numLessons)}
+                      stroke={activeLevelColor}
+                      strokeWidth="8"
+                      strokeLinecap="round"
+                      fill="none"
+                    />
+                  </PathLineSVG>
 
-                  return (
-                    <NodeContainer key={lesson.id}>
-                      <NodeButton
-                        $unlocked={isUnlocked}
-                        $active={isActive}
-                        $completed={isCompleted}
-                        $color={levelColor}
-                        $offset={offset}
-                        onClick={() => handleNodeClick(lesson, isUnlocked)}
-                        title={lesson.title}
-                        style={{ '--offset-px': `${offset}px` } as React.CSSProperties}
-                      >
-                        <LessonIcon
-                          icon={lesson.icon}
-                          badge={lesson.badge}
-                          color={levelColor}
-                          unlocked={isUnlocked}
-                        />
-                        {isUnlocked && isCompleted && (
-                          <CompletedBadge $color={levelColor}>
-                            <CheckIcon />
-                          </CompletedBadge>
+                  {unit.lessons.map((lesson, index) => {
+                    const offset = getOffset(index);
+                    const isUnlocked = isLessonUnlocked(lesson.id);
+                    const isCompleted = progress.completedExercises?.includes(lesson.id) || false;
+                    const isActive = isUnlocked && !isCompleted;
+                    const levelColor = levels.find(l => l.code === selectedLevel)?.color || '#10b981';
+
+                    // Node center Y for decorations positioning
+                    const nodeY = index * 135 + 50;
+
+                    return (
+                      <React.Fragment key={lesson.id}>
+                        {/* Left float Daruma Character at index 1 */}
+                        {index === 1 && (
+                          <DecorContainer $side="left" $y={nodeY}>
+                            <SpeechBubble>Semangat! 🔥</SpeechBubble>
+                            <DarumaCharacterSVG />
+                          </DecorContainer>
                         )}
-                      </NodeButton>
-                      <NodeLabel $offset={offset}>{lesson.title}</NodeLabel>
-                    </NodeContainer>
-                  );
-                })}
-              </RoadmapPath>
-            </div>
-          ))}
+
+                        {/* Right float Treasure Chest at index 3 */}
+                        {index === 3 && (
+                          <DecorContainer $side="right" $y={nodeY} onClick={() => handleChestClick(unit.id)}>
+                            <RewardTag>{isChestOpened ? 'DIBUKA' : '+50 EXP'}</RewardTag>
+                            <TreasureChestSVG open={isChestOpened} />
+                          </DecorContainer>
+                        )}
+
+                        <NodeContainer $index={index}>
+                          <FloatingWrapper $active={isActive} $offset={offset}>
+                            {isActive && (
+                              <>
+                                <PulsingRing $color={levelColor} />
+                                <PulsingRing $color={levelColor} />
+                                <ActiveTooltip $color={levelColor}>MULAI</ActiveTooltip>
+                              </>
+                            )}
+
+                            <NodeButton
+                              $unlocked={isUnlocked}
+                              $active={isActive}
+                              $completed={isCompleted}
+                              $color={levelColor}
+                              onClick={() => handleNodeClick(lesson, isUnlocked)}
+                              title={lesson.title}
+                            >
+                              {isCompleted ? (
+                                <CheckIcon3D />
+                              ) : isActive ? (
+                                <ActiveStarIcon />
+                              ) : (
+                                <LockIcon3D />
+                              )}
+                            </NodeButton>
+                            
+                            <NodeLabel>{lesson.title}</NodeLabel>
+                          </FloatingWrapper>
+                        </NodeContainer>
+                      </React.Fragment>
+                    );
+                  })}
+                </RoadmapPath>
+              </div>
+            );
+          })}
 
           {/* Node detail bottom drawer sheet */}
           <RoadmapNodeDrawer
@@ -635,6 +1013,38 @@ export default function Home() {
             onClose={() => setIsDrawerOpen(false)}
             nodeData={selectedNode}
           />
+
+          {/* Peti Harta Karun Claim Modal */}
+          {showChestModal && (
+            <ModalOverlay onClick={() => setShowChestModal(false)}>
+              <ModalContent onClick={(e) => e.stopPropagation()}>
+                <div style={{ transform: 'scale(1.2)', margin: '1rem 0' }}>
+                  <TreasureChestSVG open={chestModalType === 'success'} />
+                </div>
+                {chestModalType === 'success' ? (
+                  <>
+                    <ModalTitle>Peti Terbuka! 🎁</ModalTitle>
+                    <ModalText>
+                      Selamat! Kamu menemukan peti harta karun tersembunyi dan berhasil mengklaim <strong style={{ color: '#eab308' }}>+50 EXP</strong> tambahan!
+                    </ModalText>
+                    <ModalButton $color="#10b981" onClick={() => setShowChestModal(false)}>
+                      KLAIM HADIAH ⭐
+                    </ModalButton>
+                  </>
+                ) : (
+                  <>
+                    <ModalTitle>Peti Kosong 💨</ModalTitle>
+                    <ModalText>
+                      Kamu sudah membuka peti harta karun ini sebelumnya. Teruskan belajar untuk menemukan peti lainnya di unit berikutnya!
+                    </ModalText>
+                    <ModalButton $color="#64748b" onClick={() => setShowChestModal(false)}>
+                      TUTUP
+                    </ModalButton>
+                  </>
+                )}
+              </ModalContent>
+            </ModalOverlay>
+          )}
         </MobileContainer>
       </>
     );
