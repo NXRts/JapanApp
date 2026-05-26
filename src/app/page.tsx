@@ -681,42 +681,7 @@ export default function Home() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1'>('N5');
 
-  // Gamified chest states
-  const [claimedChests, setClaimedChests] = useState<Record<string, boolean>>({});
-  const [showChestModal, setShowChestModal] = useState(false);
-  const [chestModalType, setChestModalType] = useState<'success' | 'already'>('success');
 
-  // Load claimed chests from localStorage
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('japan-app-claimed-chests');
-      if (saved) {
-        try {
-          setClaimedChests(JSON.parse(saved));
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
-  }, []);
-
-  const handleChestClick = (unitId: string) => {
-    const chestKey = `${selectedLevel}-${unitId}`;
-    if (claimedChests[chestKey]) {
-      setChestModalType('already');
-      setShowChestModal(true);
-      return;
-    }
-
-    const newClaimed = { ...claimedChests, [chestKey]: true };
-    setClaimedChests(newClaimed);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('japan-app-claimed-chests', JSON.stringify(newClaimed));
-    }
-    addExp(50);
-    setChestModalType('success');
-    setShowChestModal(true);
-  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -918,8 +883,6 @@ export default function Home() {
           {activeUnits.map((unit) => {
             const sectHeader = getSectionTitle(unit.id, unit.title);
             const numLessons = unit.lessons.length;
-            const chestKey = `${selectedLevel}-${unit.id}`;
-            const isChestOpened = claimedChests[chestKey] || false;
 
             return (
               <div key={unit.id}>
@@ -930,17 +893,6 @@ export default function Home() {
                 </UnitCard>
 
                 <RoadmapPath style={{ height: `${numLessons * 135}px` }}>
-                  {/* Dynamic smooth Bezier spline connecting the buttons */}
-                  <PathLineSVG width="320" height={numLessons * 135} viewBox={`0 0 320 ${numLessons * 135}`}>
-                    <path
-                      d={getCurveDPath(numLessons)}
-                      stroke={activeLevelColor}
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      fill="none"
-                    />
-                  </PathLineSVG>
-
                   {unit.lessons.map((lesson, index) => {
                     const offset = getOffset(index);
                     const isUnlocked = isLessonUnlocked(lesson.id);
@@ -948,58 +900,37 @@ export default function Home() {
                     const isActive = isUnlocked && !isCompleted;
                     const levelColor = levels.find(l => l.code === selectedLevel)?.color || '#10b981';
 
-                    // Node center Y for decorations positioning
-                    const nodeY = index * 135 + 50;
-
                     return (
-                      <React.Fragment key={lesson.id}>
-                        {/* Left float Daruma Character at index 1 */}
-                        {index === 1 && (
-                          <DecorContainer $side="left" $y={nodeY}>
-                            <SpeechBubble>Semangat! 🔥</SpeechBubble>
-                            <DarumaCharacterSVG />
-                          </DecorContainer>
-                        )}
+                      <NodeContainer key={lesson.id} $index={index}>
+                        <FloatingWrapper $active={isActive} $offset={offset}>
+                          {isActive && (
+                            <>
+                              <PulsingRing $color={levelColor} />
+                              <PulsingRing $color={levelColor} />
+                              <ActiveTooltip $color={levelColor}>MULAI</ActiveTooltip>
+                            </>
+                          )}
 
-                        {/* Right float Treasure Chest at index 3 */}
-                        {index === 3 && (
-                          <DecorContainer $side="right" $y={nodeY} onClick={() => handleChestClick(unit.id)}>
-                            <RewardTag>{isChestOpened ? 'DIBUKA' : '+50 EXP'}</RewardTag>
-                            <TreasureChestSVG open={isChestOpened} />
-                          </DecorContainer>
-                        )}
-
-                        <NodeContainer $index={index}>
-                          <FloatingWrapper $active={isActive} $offset={offset}>
-                            {isActive && (
-                              <>
-                                <PulsingRing $color={levelColor} />
-                                <PulsingRing $color={levelColor} />
-                                <ActiveTooltip $color={levelColor}>MULAI</ActiveTooltip>
-                              </>
+                          <NodeButton
+                            $unlocked={isUnlocked}
+                            $active={isActive}
+                            $completed={isCompleted}
+                            $color={levelColor}
+                            onClick={() => handleNodeClick(lesson, isUnlocked)}
+                            title={lesson.title}
+                          >
+                            {isCompleted ? (
+                              <CheckIcon3D />
+                            ) : isActive ? (
+                              <ActiveStarIcon />
+                            ) : (
+                              <LockIcon3D />
                             )}
-
-                            <NodeButton
-                              $unlocked={isUnlocked}
-                              $active={isActive}
-                              $completed={isCompleted}
-                              $color={levelColor}
-                              onClick={() => handleNodeClick(lesson, isUnlocked)}
-                              title={lesson.title}
-                            >
-                              {isCompleted ? (
-                                <CheckIcon3D />
-                              ) : isActive ? (
-                                <ActiveStarIcon />
-                              ) : (
-                                <LockIcon3D />
-                              )}
-                            </NodeButton>
-                            
-                            <NodeLabel>{lesson.title}</NodeLabel>
-                          </FloatingWrapper>
-                        </NodeContainer>
-                      </React.Fragment>
+                          </NodeButton>
+                          
+                          <NodeLabel>{lesson.title}</NodeLabel>
+                        </FloatingWrapper>
+                      </NodeContainer>
                     );
                   })}
                 </RoadmapPath>
@@ -1013,38 +944,6 @@ export default function Home() {
             onClose={() => setIsDrawerOpen(false)}
             nodeData={selectedNode}
           />
-
-          {/* Peti Harta Karun Claim Modal */}
-          {showChestModal && (
-            <ModalOverlay onClick={() => setShowChestModal(false)}>
-              <ModalContent onClick={(e) => e.stopPropagation()}>
-                <div style={{ transform: 'scale(1.2)', margin: '1rem 0' }}>
-                  <TreasureChestSVG open={chestModalType === 'success'} />
-                </div>
-                {chestModalType === 'success' ? (
-                  <>
-                    <ModalTitle>Peti Terbuka! 🎁</ModalTitle>
-                    <ModalText>
-                      Selamat! Kamu menemukan peti harta karun tersembunyi dan berhasil mengklaim <strong style={{ color: '#eab308' }}>+50 EXP</strong> tambahan!
-                    </ModalText>
-                    <ModalButton $color="#10b981" onClick={() => setShowChestModal(false)}>
-                      KLAIM HADIAH ⭐
-                    </ModalButton>
-                  </>
-                ) : (
-                  <>
-                    <ModalTitle>Peti Kosong 💨</ModalTitle>
-                    <ModalText>
-                      Kamu sudah membuka peti harta karun ini sebelumnya. Teruskan belajar untuk menemukan peti lainnya di unit berikutnya!
-                    </ModalText>
-                    <ModalButton $color="#64748b" onClick={() => setShowChestModal(false)}>
-                      TUTUP
-                    </ModalButton>
-                  </>
-                )}
-              </ModalContent>
-            </ModalOverlay>
-          )}
         </MobileContainer>
       </>
     );
