@@ -47,7 +47,7 @@ const LevelSelector = styled.div`
   gap: 0.5rem;
   overflow-x: auto;
   margin-bottom: 1.75rem;
-  padding: 4px 2px;
+  padding: 6px 4px;
   scrollbar-width: none; /* Firefox */
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
@@ -56,25 +56,40 @@ const LevelSelector = styled.div`
 
 const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
   flex: 1;
-  min-width: 72px;
-  padding: 0.65rem 0.5rem;
+  min-width: 80px;
+  height: 44px;
   border-radius: 16px;
   border: 2px solid ${({ $active, $activeColor }) => ($active ? $activeColor : 'var(--border)')};
-  border-bottom-width: 5px;
-  background: ${({ $active, $activeColor }) => ($active ? `rgba(${this}, 0.08)` : 'var(--surface)')};
+  border-bottom: 4px solid ${({ $active, $activeColor }) => ($active ? $activeColor : 'rgba(0, 0, 0, 0.15)')};
+  background: ${({ $active }) => ($active ? 'rgba(255, 255, 255, 0.02)' : 'var(--surface)')};
   color: ${({ $active, $activeColor }) => ($active ? $activeColor : 'var(--text-secondary)')};
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  font-family: inherit;
   cursor: pointer;
-  transition: all 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
   outline: none;
   white-space: nowrap;
-  text-align: center;
-  box-shadow: ${({ $active }) => ($active ? '0 4px 10px rgba(0, 0, 0, 0.06)' : 'none')};
+  box-shadow: ${({ $active }) => ($active ? '0 4px 12px rgba(0, 0, 0, 0.12)' : 'none')};
 
-  ${({ $active, $activeColor }) => $active && `
-    background: ${$activeColor}15; /* Transparent overlay */
+  ${({ $active, $activeColor }) => $active && css`
+    background: ${$activeColor}15; /* Transparent overlay matching level color */
+    text-shadow: 0 0 8px ${$activeColor}20;
   `}
+
+  @media (prefers-color-scheme: light) {
+    border-bottom-color: ${({ $active, $activeColor }) => ($active ? $activeColor : 'rgba(0, 0, 0, 0.08)')};
+  }
+
+  &:hover {
+    ${({ $active }) => !$active && css`
+      border-color: var(--text-secondary);
+      color: var(--foreground);
+    `}
+  }
 
   &:active {
     transform: translateY(2px);
