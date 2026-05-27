@@ -300,34 +300,7 @@ const FloatingWrapper = styled.div<{ $active: boolean; $offset: number }>`
   }
 `;
 
-const PulsingRing = styled.div<{ $color: string }>`
-  position: absolute;
-  top: -6px;
-  left: -6px;
-  right: -6px;
-  bottom: -6px;
-  border-radius: 50%;
-  border: 4px solid ${({ $color }) => $color};
-  opacity: 0;
-  pointer-events: none;
-  animation: pulseRingDouble 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
-  z-index: 0;
 
-  &:nth-child(2) {
-    animation-delay: 1s;
-  }
-
-  @keyframes pulseRingDouble {
-    0% {
-      transform: scale(0.95);
-      opacity: 0.8;
-    }
-    100% {
-      transform: scale(1.35);
-      opacity: 0;
-    }
-  }
-`;
 
 const ActiveTooltip = styled.div<{ $color: string }>`
   position: absolute;
@@ -904,11 +877,7 @@ export default function Home() {
                       <NodeContainer key={lesson.id} $index={index}>
                         <FloatingWrapper $active={isActive} $offset={offset}>
                           {isActive && (
-                            <>
-                              <PulsingRing $color={levelColor} />
-                              <PulsingRing $color={levelColor} />
-                              <ActiveTooltip $color={levelColor}>MULAI</ActiveTooltip>
-                            </>
+                            <ActiveTooltip $color={levelColor}>MULAI</ActiveTooltip>
                           )}
 
                           <NodeButton
