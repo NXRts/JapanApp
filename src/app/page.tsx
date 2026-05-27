@@ -420,36 +420,7 @@ const NodeButton = styled.button<{
   }
 `;
 
-const NodeLabel = styled.div`
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--foreground);
-  margin-top: 0.55rem;
-  
-  /* Glassmorphism capsule */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-  
-  padding: 4px 12px;
-  border-radius: 99px;
-  max-width: 140px;
-  text-align: center;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: all 0.2s ease;
 
-  @media (prefers-color-scheme: light) {
-    background: rgba(255, 255, 255, 0.75);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-  }
-`;
 
 const DecorContainer = styled.div<{ $side: 'left' | 'right'; $y: number }>`
   position: absolute;
@@ -896,8 +867,6 @@ export default function Home() {
                               <LockIcon3D />
                             )}
                           </NodeButton>
-                          
-                          <NodeLabel>{lesson.title}</NodeLabel>
                         </FloatingWrapper>
                       </NodeContainer>
                     );
