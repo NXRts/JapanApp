@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import dynamic from 'next/dynamic';
 import { useProgress } from '@/context/ProgressContext';
@@ -131,63 +131,6 @@ function LockIcon3D() {
       <rect x="4" y="10" width="16" height="12" rx="3" fill="#64748b" stroke="#475569" strokeWidth="1.5" />
       <circle cx="12" cy="15" r="2" fill="#1e293b" />
       <path d="M12 16V19" stroke="#1e293b" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function DarumaCharacterSVG() {
-  return (
-    <svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))' }}>
-      <circle cx="32" cy="32" r="30" fill="#dc2626" stroke="#991b1b" strokeWidth="2.5" />
-      <path d="M12 40C12 40 20 48 32 48C44 48 52 40 52 40" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" />
-      <path d="M16 26C16 18 20 14 32 14C44 14 48 18 48 26C48 34 40 38 32 38C24 38 16 34 16 26Z" fill="#fffbeb" stroke="#fef3c7" strokeWidth="1.5" />
-      <path d="M22 20C24 18 27 20 28 22" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M42 20C40 18 37 20 36 22" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="25" cy="25" r="4" fill="#1e293b" />
-      <circle cx="25" cy="25" r="1.2" fill="#ffffff" />
-      <circle cx="39" cy="25" r="4" fill="#1e293b" />
-      <circle cx="39" cy="25" r="1.2" fill="#ffffff" />
-      <circle cx="20" cy="29" r="2" fill="#f87171" opacity="0.6" />
-      <circle cx="44" cy="29" r="2" fill="#f87171" opacity="0.6" />
-      <path d="M26 31C28 33 30 33 32 31C34 33 36 33 38 31" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M32 31V35" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" />
-      <rect x="27" y="41" width="10" height="5" rx="1.5" fill="#fbbf24" />
-      <path d="M30 43.5H34" stroke="#dc2626" strokeWidth="1.2" />
-    </svg>
-  );
-}
-
-function TreasureChestSVG({ open = false }: { open?: boolean }) {
-  return (
-    <svg width="52" height="52" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))' }}>
-      <ellipse cx="32" cy="52" rx="18" ry="4" fill="rgba(0,0,0,0.25)" />
-      {open ? (
-        <>
-          <path d="M8 32H56V48C56 50.2 54.2 52 52 52H12C9.8 52 8 50.2 8 48V32Z" fill="#78350f" stroke="#451a03" strokeWidth="2" />
-          <path d="M8 32H14V52H8V32ZM50 32H56V52H50V32ZM20 32H24V52H20V32ZM40 32H44V52H40V32Z" fill="#fbbf24" stroke="#d97706" strokeWidth="1" />
-          <path d="M12 32C12 24 52 24 52 32" fill="url(#chestGlow)" opacity="0.85" />
-          <path d="M6 14L32 6L58 14V22L32 30L6 22V14Z" fill="#92400e" stroke="#451a03" strokeWidth="2" />
-          <path d="M6 14L32 20L58 14" stroke="#fbbf24" strokeWidth="1.5" />
-          <circle cx="28" cy="30" r="3.5" fill="#fbbf24" stroke="#d97706" strokeWidth="0.8" />
-          <circle cx="36" cy="31" r="4" fill="#f59e0b" stroke="#b45309" strokeWidth="0.8" />
-          <circle cx="32" cy="28" r="3" fill="#fbbf24" />
-        </>
-      ) : (
-        <>
-          <path d="M10 28H54V48C54 50.2 52.2 52 50 52H14C11.8 52 10 50.2 10 48V28Z" fill="#78350f" stroke="#451a03" strokeWidth="2.5" />
-          <path d="M10 28C10 28 10 14 32 14C54 14 54 28 54 28H10Z" fill="#92400e" stroke="#451a03" strokeWidth="2.5" />
-          <path d="M10 28H15V52H10V28ZM49 28H54V52H49V28Z" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5" />
-          <path d="M22 15C22 15 22 28 22 52H26V15H22ZM38 15C38 15 38 28 38 52H42V15H38Z" fill="#fbbf24" stroke="#d97706" strokeWidth="1.5" />
-          <rect x="28" y="24" width="8" height="10" rx="1.5" fill="#d97706" stroke="#451a03" strokeWidth="1.5" />
-          <circle cx="32" cy="29" r="1.5" fill="#1e293b" />
-        </>
-      )}
-      <defs>
-        <linearGradient id="chestGlow" x1="32" y1="20" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#fbbf24" />
-          <stop offset="1" stopColor="#fbbf24" stopOpacity="0" />
-        </linearGradient>
-      </defs>
     </svg>
   );
 }
@@ -645,36 +588,45 @@ export default function Home() {
 
   const activeLevelColor = levels.find(l => l.code === selectedLevel)?.color || '#10b981';
 
-  // Group lessons from lessonsData by unitId for the active selectedLevel
-  const levelLessons = lessonsData.filter(lesson => lesson.level === selectedLevel);
-  
-  const unitsMap: Record<string, { id: string; title: string; description: string; color: string; lessons: typeof levelLessons }> = {};
-  
-  levelLessons.forEach(lesson => {
-    if (!unitsMap[lesson.unitId]) {
-      unitsMap[lesson.unitId] = {
-        id: lesson.unitId,
-        title: lesson.unitTitle,
-        description: lesson.unitDescription,
-        color: lesson.unitColor,
-        lessons: []
-      };
+  // O(1) lesson relationship index lookup map to optimize lesson unlock status checks
+  const lessonRelations = useMemo(() => {
+    const map = new Map<string, string>();
+    for (let i = 1; i < lessonsData.length; i++) {
+      map.set(lessonsData[i].id, lessonsData[i - 1].id);
     }
-    unitsMap[lesson.unitId].lessons.push(lesson);
-  });
+    return map;
+  }, []);
 
-  const activeUnits = Object.values(unitsMap);
+  // Group lessons from lessonsData by unitId for the active selectedLevel (memoized to avoid raw evaluations)
+  const levelLessons = useMemo(() => {
+    return lessonsData.filter(lesson => lesson.level === selectedLevel);
+  }, [selectedLevel]);
+  
+  const activeUnits = useMemo(() => {
+    const unitsMap: Record<string, { id: string; title: string; description: string; color: string; lessons: typeof levelLessons }> = {};
+    
+    levelLessons.forEach(lesson => {
+      if (!unitsMap[lesson.unitId]) {
+        unitsMap[lesson.unitId] = {
+          id: lesson.unitId,
+          title: lesson.unitTitle,
+          description: lesson.unitDescription,
+          color: lesson.unitColor,
+          lessons: []
+        };
+      }
+      unitsMap[lesson.unitId].lessons.push(lesson);
+    });
+    return Object.values(unitsMap);
+  }, [levelLessons]);
 
-  // Verification logic: A lesson is unlocked if it is the first N5 lesson or if the previous lesson in lessonsData is completed
-  const isLessonUnlocked = (lessonId: string) => {
+  // Verification logic: A lesson is unlocked if it is the first N5 lesson or if the previous lesson is completed (O(1) lookup)
+  const isLessonUnlocked = useCallback((lessonId: string) => {
     if (lessonId === 'n5-u1-l1') return true;
-    
-    const idx = lessonsData.findIndex(l => l.id === lessonId);
-    if (idx <= 0) return true;
-    
-    const prevLesson = lessonsData[idx - 1];
-    return progress.completedExercises?.includes(prevLesson.id);
-  };
+    const prevId = lessonRelations.get(lessonId);
+    if (!prevId) return true;
+    return progress.completedExercises?.includes(prevId);
+  }, [progress.completedExercises, lessonRelations]);
 
   const today = new Date().toISOString().split('T')[0];
   const isDailyCompleted = progress.quizHistory.some(
@@ -715,31 +667,7 @@ export default function Home() {
     return pattern[index % pattern.length];
   };
 
-  // Curve spline path generator
-  const getCurveDPath = (numLessons: number) => {
-    if (numLessons <= 0) return '';
-    if (numLessons === 1) {
-      return `M 160 50 L 160 50`;
-    }
-    
-    let d = '';
-    const getX = (idx: number) => {
-      const offset = [0, 50, 0, -50][idx % 4];
-      return 160 + offset;
-    };
-    const getY = (idx: number) => idx * 135 + 50;
-    
-    d += `M ${getX(0)} ${getY(0)}`;
-    for (let i = 0; i < numLessons - 1; i++) {
-      const x1 = getX(i);
-      const y1 = getY(i);
-      const x2 = getX(i + 1);
-      const y2 = getY(i + 1);
-      const dy = 55; // vertical bezier control offset
-      d += ` C ${x1} ${y1 + dy}, ${x2} ${y2 - dy}, ${x2} ${y2}`;
-    }
-    return d;
-  };
+
 
   // Helper to construct dynamic Duolingo unit section & labels
   const getSectionTitle = (unitId: string, unitTitle: string) => {
