@@ -118,7 +118,7 @@ const Description = styled.p`
 export function WhatsNewSection() {
   return (
     <Section>
-      <SectionTitle><span>What's New</span></SectionTitle>
+      <SectionTitle><span>What&apos;s New</span></SectionTitle>
       <WhatsNewGrid>
         <Card href="/jlpt/kanji-writer">
           <Badge>New Tool</Badge>

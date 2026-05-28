@@ -67,26 +67,29 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   // Load from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('user-progress');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setProgress({
-          ...INITIAL_DATA,
-          ...parsed,
-          srs: parsed.srs || {},
-          mastery: parsed.mastery || {},
-          quizHistory: parsed.quizHistory || [],
-          streak: parsed.streak || 0,
-          exp: parsed.exp || 0,
-          activityLog: parsed.activityLog || {},
-          completedExercises: parsed.completedExercises || [],
-        });
-      } catch (e) {
-        console.error('Failed to parse progress data', e);
+    const timer = setTimeout(() => {
+      const saved = localStorage.getItem('user-progress');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setProgress({
+            ...INITIAL_DATA,
+            ...parsed,
+            srs: parsed.srs || {},
+            mastery: parsed.mastery || {},
+            quizHistory: parsed.quizHistory || [],
+            streak: parsed.streak || 0,
+            exp: parsed.exp || 0,
+            activityLog: parsed.activityLog || {},
+            completedExercises: parsed.completedExercises || [],
+          });
+        } catch (e) {
+          console.error('Failed to parse progress data', e);
+        }
       }
-    }
-    setIsLoaded(true);
+      setIsLoaded(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Save to localStorage
@@ -96,8 +99,34 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }
   }, [progress, isLoaded]);
 
+  // Handle streak and last active date
+  const checkStreak = useCallback(() => {
+    const today = new Date().toISOString().split('T')[0];
+    
+    if (progress.lastActiveDate === today) return;
+
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+    setProgress(prev => {
+      let newStreak = prev.streak;
+      if (prev.lastActiveDate === yesterdayStr) {
+        newStreak += 1;
+      } else if (prev.lastActiveDate !== today) {
+        newStreak = 1;
+      }
+
+      return {
+        ...prev,
+        streak: newStreak,
+        lastActiveDate: today,
+      };
+    });
+  }, [progress.lastActiveDate]);
+
   // Handle EXP and Activity
-  const addExp = (amount: number) => {
+  const addExp = useCallback((amount: number) => {
     const today = new Date().toISOString().split('T')[0];
     setProgress(prev => {
       const oldLevel = Math.floor(Math.sqrt(prev.exp / 100)) + 1;
@@ -118,36 +147,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       };
     });
     checkStreak();
-  };
+  }, [triggerAlert, checkStreak]);
 
-  // Handle streak and last active date
-  const checkStreak = () => {
-    const today = new Date().toISOString().split('T')[0];
-    
-    if (progress.lastActiveDate === today) return;
-
-    const lastDate = progress.lastActiveDate ? new Date(progress.lastActiveDate) : null;
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
-
-    setProgress(prev => {
-      let newStreak = prev.streak;
-      if (prev.lastActiveDate === yesterdayStr) {
-        newStreak += 1;
-      } else if (prev.lastActiveDate !== today) {
-        newStreak = 1;
-      }
-
-      return {
-        ...prev,
-        streak: newStreak,
-        lastActiveDate: today,
-      };
-    });
-  };
-
-  const updateMastery = (char: string, isCorrect: boolean) => {
+  const updateMastery = useCallback((char: string, isCorrect: boolean) => {
     setProgress(prev => {
       const current = prev.mastery[char] || { correct: 0, incorrect: 0, lastAttempt: '' };
       const newMastery = {
@@ -174,9 +176,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         mastery: newMastery
       };
     });
-  };
+  }, [triggerAlert]);
 
-  const updateSRS = (char: string, quality: number) => {
+  const updateSRS = useCallback((char: string, quality: number) => {
     setProgress(prev => {
       const currentItem = prev.srs[char];
       const nextItem = calculateNextSRS(currentItem, quality);
@@ -188,9 +190,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         }
       };
     });
-  };
+  }, []);
 
-  const recordQuizResult = (score: number, total: number, type: string) => {
+  const recordQuizResult = useCallback((score: number, total: number, type: string) => {
     checkStreak(); // Record activity on quiz completion
     addExp(score * 10); // Reward 10 EXP per correct answer
     setProgress(prev => ({
@@ -205,18 +207,61 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         ...prev.quizHistory.slice(0, 49), // Keep last 50
       ]
     }));
-  };
+  }, [checkStreak, addExp]);
 
-  const markExerciseCompleted = (id: string) => {
-    if (progress.completedExercises?.includes(id)) return;
-    
-    addExp(50); // Reward 50 EXP for completing a module
-    
-    setProgress(prev => ({
-      ...prev,
-      completedExercises: [...(prev.completedExercises || []), id]
-    }));
-  };
+  const markExerciseCompleted = useCallback((id: string) => {
+    setProgress(prev => {
+      if (prev.completedExercises?.includes(id)) return prev;
+      
+      const today = new Date().toISOString().split('T')[0];
+      const oldLevel = Math.floor(Math.sqrt(prev.exp / 100)) + 1;
+      const newExp = prev.exp + 50;
+      const newLevel = Math.floor(Math.sqrt(newExp / 100)) + 1;
+      
+      if (newLevel > oldLevel) {
+        triggerAlert('level', `Level Up!`, `You've reached level ${newLevel}! Keep it up!`);
+      }
+
+      const newActivityLog = { ...prev.activityLog };
+      newActivityLog[today] = (newActivityLog[today] || 0) + 50;
+
+      return {
+        ...prev,
+        exp: newExp,
+        activityLog: newActivityLog,
+        completedExercises: [...(prev.completedExercises || []), id]
+      };
+    });
+    checkStreak();
+  }, [triggerAlert, checkStreak]);
+
+  const getDueItems = useCallback(() => {
+    const now = new Date();
+    return Object.entries(progress.srs)
+      .filter(([, item]) => new Date(item.nextReviewDate) <= now)
+      .map(([id, item]) => ({ id, ...item }));
+  }, [progress.srs]);
+
+  const resetProgress = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      // 1. Atomic wipe of all storage (Learning + Theme settings)
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // 2. Comprehensive cookie sweep for both basic path and current domain
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf('=');
+        const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=' + window.location.hostname;
+      }
+
+      // 3. Instant hard-navigation to ensure a clean slate and prevent React from re-saving state
+      window.location.replace('/');
+    }
+  }, []);
 
   const contextValue = React.useMemo(() => ({
     progress,
@@ -226,33 +271,19 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     updateSRS,
     addExp,
     markExerciseCompleted,
-    getDueItems: () => {
-      const now = new Date();
-      return Object.entries(progress.srs)
-        .filter(([_, item]) => new Date(item.nextReviewDate) <= now)
-        .map(([id, item]) => ({ id, ...item }));
-    },
-    resetProgress: () => {
-      if (typeof window !== 'undefined') {
-        // 1. Atomic wipe of all storage (Learning + Theme settings)
-        localStorage.clear();
-        sessionStorage.clear();
-
-        // 2. Comprehensive cookie sweep for both basic path and current domain
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i];
-          const eqPos = cookie.indexOf('=');
-          const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
-          document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
-          document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=' + window.location.hostname;
-        }
-
-        // 3. Instant hard-navigation to ensure a clean slate and prevent React from re-saving state
-        window.location.replace('/');
-      }
-    }
-  }), [progress]);
+    getDueItems,
+    resetProgress
+  }), [
+    progress,
+    updateMastery,
+    recordQuizResult,
+    checkStreak,
+    updateSRS,
+    addExp,
+    markExerciseCompleted,
+    getDueItems,
+    resetProgress
+  ]);
 
   return (
     <ProgressContext.Provider value={contextValue}>

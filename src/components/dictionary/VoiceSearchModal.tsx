@@ -93,59 +93,40 @@ const CloseBtn = styled.button`
   &:hover { color: var(--foreground); }
 `;
 
+interface ISpeechRecognition {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onstart: (() => void) | null;
+  onresult: ((event: ISpeechRecognitionEvent) => void) | null;
+  onerror: ((event: ISpeechRecognitionErrorEvent) => void) | null;
+  onend: (() => void) | null;
+  start: () => void;
+  stop: () => void;
+  finalTranscript?: string;
+}
+
+interface ISpeechRecognitionEvent {
+  resultIndex: number;
+  results: {
+    length: number;
+    [key: number]: {
+      [key: number]: {
+        transcript: string;
+      };
+    };
+  };
+}
+
+interface ISpeechRecognitionErrorEvent {
+  error: string;
+}
+
 export function VoiceSearchModal({ isOpen, onClose, onResult }: { isOpen: boolean, onClose: () => void, onResult: (text: string) => void }) {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [error, setError] = useState('');
-  const recognitionRef = useRef<any>(null);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        recognitionRef.current = new SpeechRecognition();
-        recognitionRef.current.continuous = false;
-        recognitionRef.current.interimResults = true;
-        recognitionRef.current.lang = 'ja-JP';
-
-        recognitionRef.current.onstart = () => {
-          setIsListening(true);
-          setError('');
-          setTranscript('');
-        };
-
-        recognitionRef.current.onresult = (event: any) => {
-          let currentTranscript = '';
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
-            currentTranscript += event.results[i][0].transcript;
-          }
-          setTranscript(currentTranscript);
-        };
-
-        recognitionRef.current.onerror = (event: any) => {
-          console.error("Speech recognition error", event.error);
-          setIsListening(false);
-          if (event.error === 'not-allowed') {
-            setError('Microphone access denied.');
-          } else {
-            setError('An error occurred. Try again.');
-          }
-        };
-
-        recognitionRef.current.onend = () => {
-          setIsListening(false);
-          // Give it a tiny bit of time before yielding result so the user sees it
-          setTimeout(() => {
-            if (recognitionRef.current?.finalTranscript) {
-               // handle logic if needed
-            }
-          }, 500);
-        };
-      } else {
-        setError('Speech recognition not supported in this browser.');
-      }
-    }
-  }, []);
+  const recognitionRef = useRef<ISpeechRecognition | null>(null);
 
   // Handle finalize manually since onend fires asynchronously
   useEffect(() => {
@@ -160,22 +141,75 @@ export function VoiceSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      
+      // Lazily initialize SpeechRecognition on demand when opened
+      if (!recognitionRef.current && typeof window !== 'undefined') {
+        const WindowSpeech = window as unknown as {
+          SpeechRecognition?: new () => ISpeechRecognition;
+          webkitSpeechRecognition?: new () => ISpeechRecognition;
+        };
+        const SpeechRecognition = WindowSpeech.SpeechRecognition || WindowSpeech.webkitSpeechRecognition;
+        
+        if (SpeechRecognition) {
+          const rec = new SpeechRecognition();
+          rec.continuous = false;
+          rec.interimResults = true;
+          rec.lang = 'ja-JP';
+
+          rec.onstart = () => {
+            setIsListening(true);
+            setError('');
+            setTranscript('');
+          };
+
+          rec.onresult = (event: ISpeechRecognitionEvent) => {
+            let currentTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; ++i) {
+              currentTranscript += event.results[i][0].transcript;
+            }
+            setTranscript(currentTranscript);
+          };
+
+          rec.onerror = (event: ISpeechRecognitionErrorEvent) => {
+            console.error("Speech recognition error", event.error);
+            setIsListening(false);
+            if (event.error === 'not-allowed') {
+              setError('Microphone access denied.');
+            } else {
+              setError('An error occurred. Try again.');
+            }
+          };
+
+          rec.onend = () => {
+            setIsListening(false);
+          };
+
+          recognitionRef.current = rec;
+        } else {
+          // Defer to avoid synchronous setState inside effect
+          setTimeout(() => setError('Speech recognition not supported in this browser.'), 0);
+        }
+      }
+
       // Auto start on open if supported
-      if (recognitionRef.current && !error.includes('not supported')) {
+      if (recognitionRef.current && !error.includes('supported')) {
         try {
           recognitionRef.current.start();
-        } catch(e) {}
+        } catch { /* recognition already started */ }
       }
     } else {
       document.body.style.overflow = 'unset';
       if (recognitionRef.current) {
-        try { recognitionRef.current.stop(); } catch(e) {}
+        try { recognitionRef.current.stop(); } catch { /* already stopped */ }
       }
-      setIsListening(false);
-      setTranscript('');
-      setError('');
+      // Defer state resets to avoid synchronous setState in effect body
+      setTimeout(() => {
+        setIsListening(false);
+        setTranscript('');
+        setError('');
+      }, 0);
     }
-  }, [isOpen]);
+  }, [isOpen, error]);
 
   const toggleListening = () => {
     if (error && error.includes('supported')) return;
@@ -185,7 +219,7 @@ export function VoiceSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
     } else {
       try {
         recognitionRef.current?.start();
-      } catch(e) {}
+      } catch { /* recognition already started */ }
     }
   };
 

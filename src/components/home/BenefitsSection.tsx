@@ -171,7 +171,7 @@ export function BenefitsSection() {
             </BenefitIcon>
             <BenefitText>
               <h3>Scientific Retention (SRS)</h3>
-              <p>Forget the forgetting curve. Our <b>SRS technology</b> ensures you memorize characters for life by predicting your brain's optimal review time.</p>
+              <p>Forget the forgetting curve. Our <b>SRS technology</b> ensures you memorize characters for life by predicting your brain&apos;s optimal review time.</p>
             </BenefitText>
           </BenefitItem>
           <BenefitItem>

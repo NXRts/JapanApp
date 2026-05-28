@@ -1,7 +1,6 @@
 import jlptWordsData from '../../public/JLPT_Vocabulary/data/results/JLPTWordsEnriched.json';
 import numbersData from '../../public/JLPT_Vocabulary/data/Angka.json';
 import kanjiData from '../../public/JLPT_Vocabulary/data/results/KanjiDictionary.json';
-import grammarData from '../../public/JLPT_Vocabulary/data/results/GrammarDictionary.json';
 import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
 import { n4Vocabulary } from '@/data/jlpt/n4/vocabulary';
 import { n3Vocabulary } from '@/data/jlpt/n3/vocabulary';
@@ -14,6 +13,12 @@ import { n3Grammar } from '@/data/jlpt/n3/grammar';
 import { n2Grammar } from '@/data/jlpt/n2/grammar';
 import { n1Grammar } from '@/data/jlpt/n1/grammar';
 import { toRomaji } from 'wanakana';
+
+export interface ExampleItem {
+  japanese: string;
+  romaji?: string;
+  english?: string;
+}
 
 export interface DictionaryResult {
   id: string;
@@ -30,7 +35,7 @@ export interface DictionaryResult {
   meaning: string;
   structure?: string; // For grammar
   explanation?: string; // For grammar
-  examples?: any[]; // For grammar/jpjp
+  examples?: ExampleItem[]; // For grammar/jpjp
   romaji?: string;
   partOfSpeech?: string; // For jpjp
   meanings?: string[]; // For jpjp
@@ -40,16 +45,27 @@ export interface DictionaryResult {
   english?: string;
 }
 
-const libraryVocabulary = Object.values(jlptWordsData).map((item: any) => ({
-  id: `lib-${item.id}`,
-  word: item.word,
-  reading: item.reading,
-  romaji: item.reading,  // We'll use kana reading as the romaji fallback
-  meaning: item.english && item.english !== 'No definition' ? item.english : 'No definition',
-  level: item.level as string,
-  type: 'vocabulary' as const,
-  source: 'kamus' as const,
-}));
+interface JLPTWordRaw {
+  id: string | number;
+  word: string;
+  reading: string;
+  english?: string;
+  level?: string | number;
+}
+
+const libraryVocabulary = Object.values(jlptWordsData).map((item: unknown) => {
+  const typed = item as JLPTWordRaw;
+  return {
+    id: `lib-${typed.id}`,
+    word: typed.word,
+    reading: typed.reading,
+    romaji: typed.reading,  // We'll use kana reading as the romaji fallback
+    meaning: typed.english && typed.english !== 'No definition' ? typed.english : 'No definition',
+    level: String(typed.level || ''),
+    type: 'vocabulary' as const,
+    source: 'kamus' as const,
+  };
+});
 
 export const allVocabulary: DictionaryResult[] = [
   ...n5Vocabulary.map(v => ({ ...v, type: 'vocabulary' as const, source: 'local' as const })),
@@ -68,21 +84,40 @@ export const allGrammar: DictionaryResult[] = [
   ...n1Grammar.map(g => ({ ...g, type: 'grammar' as const, source: 'local' as const })),
 ];
 
-export const allKanji: DictionaryResult[] = Object.values(kanjiData).map((item: any) => ({
-  id: `kanji-${item.kanji}`,
-  type: 'kanji',
-  level: item.jlpt ? `N${item.jlpt}` : 'Hyogai',
-  kanji: item.kanji,
-  onyomi: item.onyomi || [],
-  kunyomi: item.kunyomi || [],
-  stroke_count: item.stroke_count,
-  grade: item.grade,
-  meaning: item.english && item.english !== 'No definition' ? item.english : 'No definition',
-  source: 'kanji-db',
-}));
+interface KanjiRaw {
+  kanji: string;
+  jlpt?: string | number;
+  onyomi?: string[];
+  kunyomi?: string[];
+  stroke_count?: number;
+  grade?: number;
+  english?: string;
+}
+
+export const allKanji: DictionaryResult[] = Object.values(kanjiData).map((item: unknown) => {
+  const typed = item as KanjiRaw;
+  return {
+    id: `kanji-${typed.kanji}`,
+    type: 'kanji' as const,
+    level: typed.jlpt ? `N${typed.jlpt}` : 'Hyogai',
+    kanji: typed.kanji,
+    onyomi: typed.onyomi || [],
+    kunyomi: typed.kunyomi || [],
+    stroke_count: typed.stroke_count,
+    grade: typed.grade,
+    meaning: typed.english && typed.english !== 'No definition' ? typed.english : 'No definition',
+    source: 'kanji-db' as const,
+  };
+});
+
+interface NumberDataRaw {
+  kanji: string;
+  hiragana: string;
+  romaji: string;
+}
 
 export const allNumbers = Object.entries(numbersData).flatMap(([category, items]) => 
-  Object.entries(items).map(([num, data]: [string, any]) => ({
+  Object.entries(items as Record<string, NumberDataRaw>).map(([num, data]) => ({
     id: `num-${num}`,
     type: 'vocabulary' as const,
     level: category.replace('_', ' '),
@@ -114,14 +149,19 @@ export async function searchDictionary(
       const response = await fetch(`/api/proxy/sentences?keyword=${encodeURIComponent(normalizedQuery)}`);
       if (!response.ok) return [];
       const data = await response.json();
-      return (data.data || []).map((item: any, idx: number) => ({
+      interface SentenceRaw {
+        japanese: string;
+        english: string;
+        romaji?: string;
+      }
+      return ((data.data || []) as SentenceRaw[]).map((item, idx: number) => ({
         id: `sentence-${idx}`,
-        type: 'sentences',
+        type: 'sentences' as const,
         level: '?',
         word: item.japanese,
         meaning: item.english,
         romaji: item.romaji,
-        source: 'tatoeba'
+        source: 'tatoeba' as const
       }));
     } catch (e) {
       console.warn('Sentence search error:', e);
@@ -134,9 +174,16 @@ export async function searchDictionary(
       const response = await fetch(`/api/proxy/jpjp?keyword=${encodeURIComponent(normalizedQuery)}`);
       if (!response.ok) return [];
       const data = await response.json();
-      return (data.data || []).map((item: any, idx: number) => ({
+      interface JPJPRaw {
+        word: string;
+        reading: string;
+        partOfSpeech?: string;
+        meanings: string[];
+        examples?: ExampleItem[];
+      }
+      return ((data.data || []) as JPJPRaw[]).map((item, idx: number) => ({
         id: `jpjp-${idx}`,
-        type: 'jpjp',
+        type: 'jpjp' as const,
         level: '?',
         word: item.word,
         reading: item.reading,
@@ -144,7 +191,7 @@ export async function searchDictionary(
         meaning: item.meanings.join(', '),
         meanings: item.meanings,
         examples: item.examples,
-        source: 'wiktionary'
+        source: 'wiktionary' as const
       }));
     } catch (e) {
       console.warn('JPJP search error:', e);
@@ -281,7 +328,12 @@ export async function searchDictionary(
     }
     const data = await response.json();
     
-    const jishoResults: DictionaryResult[] = (data.data || []).map((item: any) => ({
+    interface JishoRaw {
+      japanese: { word?: string; reading: string }[];
+      jlpt?: string[];
+      senses: { english_definitions: string[] }[];
+    }
+    const jishoResults: DictionaryResult[] = ((data.data || []) as JishoRaw[]).map((item) => ({
       id: item.japanese[0].word || item.japanese[0].reading,
       type: 'vocabulary' as const,
       level: item.jlpt?.[0]?.toUpperCase().replace('JLPT-', '') || '?',
