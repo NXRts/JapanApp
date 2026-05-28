@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import styled from 'styled-components';
+import styled, { css, createGlobalStyle } from 'styled-components';
 import { usePathname } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { useProgress } from '@/context/ProgressContext';
@@ -14,7 +14,7 @@ import { DeviceModeSwitcher } from '@/components/DeviceModeSwitcher';
 const SettingsModal = dynamic(() => import('./SettingsModal').then((mod) => mod.SettingsModal), { ssr: false });
 const DictionarySearchOverlay = dynamic(() => import('./dictionary/DictionarySearchOverlay'), { ssr: false });
 
-const NavRoot = styled.nav`
+const NavRoot = styled.nav<{ $hideOnDesktop?: boolean }>`
   position: sticky;
   top: 0;
   z-index: 100;
@@ -23,6 +23,12 @@ const NavRoot = styled.nav`
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--navbar-border);
   transition: all 0.3s ease;
+
+  ${({ $hideOnDesktop }) => $hideOnDesktop && css`
+    @media (min-width: 1101px) {
+      display: none;
+    }
+  `}
 
   @media (max-width: 768px) {
     background: var(--surface); /* Solid white/surface color on mobile */
@@ -464,6 +470,247 @@ const BottomTab = styled(Link) <{ $active?: boolean }>`
   }
 `;
 
+// ========================================================
+// PREMIUM SIDEBAR SVG NAVIGATION ICONS
+// ========================================================
+
+function HomeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+      <polyline points="9 22 9 12 15 12 15 22" />
+    </svg>
+  );
+}
+
+function GameIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="6" width="20" height="12" rx="3" />
+      <line x1="6" y1="12" x2="10" y2="12" />
+      <line x1="8" y1="10" x2="8" y2="14" />
+      <line x1="15" y1="13" x2="15.01" y2="13" />
+      <line x1="18" y1="11" x2="18.01" y2="11" />
+    </svg>
+  );
+}
+
+function JlptIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+    </svg>
+  );
+}
+
+function ProfileIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+}
+
+function StatsIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2v20M17 5v17M7 9v13" />
+    </svg>
+  );
+}
+
+function AboutIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="16" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12.01" y2="8" />
+    </svg>
+  );
+}
+
+// ========================================================
+// PREMIUM DESKTOP SIDEBAR STYLED COMPONENTS & GLOBAL PADDING
+// ========================================================
+
+const GlobalSidebarPadding = createGlobalStyle`
+  @media (min-width: 1101px) {
+    main, footer {
+      padding-left: 240px !important;
+    }
+  }
+`;
+
+const SidebarRoot = styled.aside`
+  display: none;
+
+  @media (min-width: 1101px) {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 240px;
+    background: var(--surface);
+    border-right: 2px solid var(--border);
+    padding: 1.5rem 1.25rem;
+    z-index: 999;
+    font-family: 'Nunito', 'Outfit', sans-serif;
+  }
+`;
+
+const SidebarLogo = styled(Link)`
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-decoration: none;
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2rem;
+  padding: 0.5rem;
+  
+  span {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+`;
+
+const SidebarNavList = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+`;
+
+const SidebarNavItem = styled(Link)<{ $active?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background: rgba(var(--primary-rgb), 0.08);
+    color: var(--primary);
+    transform: translateX(4px);
+  }
+
+  &:active {
+    transform: scale(0.97) translateX(4px);
+  }
+
+  ${({ $active }) => $active && css`
+    background: rgba(var(--primary-rgb), 0.12);
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    
+    svg {
+      transform: scale(1.1);
+    }
+  `}
+`;
+
+const SidebarFooter = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-top: 2px solid var(--border);
+  padding-top: 1.25rem;
+  margin-top: auto;
+`;
+
+const SidebarLevelCard = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(var(--primary-rgb), 0.06);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 0.85rem;
+  text-decoration: none;
+  color: var(--foreground);
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.1);
+  }
+`;
+
+const SidebarLevelHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: var(--primary);
+`;
+
+const SidebarProgressBar = styled.div`
+  height: 8px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+`;
+
+const SidebarProgressFill = styled.div<{ $width: number }>`
+  height: 100%;
+  width: ${({ $width }) => $width}%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+  border-radius: 99px;
+`;
+
+const SidebarActionButtons = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`;
+
+const SidebarActionButton = styled.button`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.6rem;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.06);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
 export function Navbar() {
   const pathname = usePathname();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -499,9 +746,87 @@ export function Navbar() {
   // We handle it via onClick on Links usually
   if (pathname === '/login' || pathname === '/register') return null;
 
+  const isWidescreenMobileSim = isMounted && deviceMode === 'mobile';
+
   return (
     <>
-      <NavRoot>
+      {isWidescreenMobileSim && <GlobalSidebarPadding />}
+      
+      {/* Permanent Left Sidebar for Desktop view */}
+      {isWidescreenMobileSim && (
+        <SidebarRoot>
+          <SidebarLogo href="/">
+            🇯🇵 <span>JapanApp</span>
+          </SidebarLogo>
+          
+          <SidebarNavList>
+            <SidebarNavItem href="/" $active={pathname === '/'}>
+              <HomeIcon />
+              Belajar
+            </SidebarNavItem>
+            
+            <SidebarNavItem href="/game" $active={pathname.startsWith('/game')}>
+              <GameIcon />
+              Game
+            </SidebarNavItem>
+            
+            <SidebarNavItem href="/jlpt" $active={pathname.startsWith('/jlpt')}>
+              <JlptIcon />
+              JLPT
+            </SidebarNavItem>
+            
+            <SidebarNavItem href="/profile" $active={pathname === '/profile'}>
+              <ProfileIcon />
+              Profil
+            </SidebarNavItem>
+            
+            <SidebarNavItem href="/stats" $active={pathname === '/stats'}>
+              <StatsIcon />
+              Stats
+            </SidebarNavItem>
+            
+            <SidebarNavItem href="/about" $active={pathname === '/about'}>
+              <AboutIcon />
+              Tentang
+            </SidebarNavItem>
+          </SidebarNavList>
+          
+          <SidebarFooter>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.25rem' }}>
+              <DeviceModeSwitcher />
+            </div>
+            
+            <SidebarLevelCard href="/stats" title={`${progress.exp} Total EXP`}>
+              <SidebarLevelHeader>
+                <span>LEVEL {level}</span>
+                <span>{progress.exp} EXP</span>
+              </SidebarLevelHeader>
+              <SidebarProgressBar>
+                <SidebarProgressFill $width={percent} />
+              </SidebarProgressBar>
+            </SidebarLevelCard>
+            
+            <SidebarActionButtons>
+              <SidebarActionButton onClick={() => setIsDictionaryOpen(true)} title="Dictionary (Jisho)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+                Kamus
+              </SidebarActionButton>
+              
+              <SidebarActionButton onClick={() => setIsSettingsOpen(true)} title="Settings">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
+                </svg>
+                Setelan
+              </SidebarActionButton>
+            </SidebarActionButtons>
+          </SidebarFooter>
+        </SidebarRoot>
+      )}
+
+      <NavRoot $hideOnDesktop={isWidescreenMobileSim}>
         <NavContainer>
           {isMounted && deviceMode === 'mobile' ? (
             <>
