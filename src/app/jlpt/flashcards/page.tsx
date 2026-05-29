@@ -25,7 +25,7 @@ const Container = styled.div`
   align-items: center;
 
   @media (max-width: 640px) {
-    padding: 1.5rem 1rem;
+    padding: 1rem 0.75rem;
   }
 `;
 
@@ -36,9 +36,13 @@ const Header = styled.div`
   margin-bottom: 2.5rem;
   width: 100%;
 
+  @media (max-width: 640px) {
+    margin-bottom: 1rem;
+  }
+
   @media (max-width: 600px) {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.75rem;
   }
 `;
 
@@ -63,6 +67,7 @@ const CardArea = styled.div`
 
   @media (max-width: 640px) {
     gap: 0.5rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -109,7 +114,7 @@ const FlashcardContainer = styled.div`
   flex-direction: column;
 
   @media (max-width: 640px) {
-    min-height: 420px;
+    min-height: 340px;
   }
 `;
 
@@ -137,7 +142,7 @@ const FlashcardSide = styled.div`
   align-items: center;
 
   @media (max-width: 640px) {
-    padding: 3rem 1rem 4.5rem 1rem;
+    padding: 1.5rem 1rem 3.5rem 1rem;
   }
 `;
 
@@ -200,6 +205,10 @@ const SpeakerIcon = styled.button`
   &:hover {
     color: var(--primary);
   }
+
+  @media (max-width: 640px) {
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const MainWord = styled.h1`
@@ -212,7 +221,7 @@ const MainWord = styled.h1`
   word-break: break-word;
 
   @media (max-width: 640px) {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
   }
 `;
 

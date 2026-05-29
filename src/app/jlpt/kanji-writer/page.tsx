@@ -71,7 +71,8 @@ const PageContainer = styled.div`
   color: var(--foreground);
 
   @media (max-width: 768px) {
-    padding: 1rem;
+    padding: 1rem 0.75rem;
+    gap: 1rem;
   }
 `;
 
@@ -85,7 +86,8 @@ const HeaderRow = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.5rem;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -96,12 +98,20 @@ const PageHeader = styled.div`
     letter-spacing: -0.03em;
     color: var(--foreground);
     margin: 0;
+
+    @media (max-width: 768px) {
+      font-size: 1.6rem;
+    }
   }
   p {
     font-size: 0.85rem;
     color: var(--text-secondary);
     margin-top: 4px;
     font-family: 'DM Mono', monospace;
+
+    @media (max-width: 768px) {
+      font-size: 0.78rem;
+    }
   }
 `;
 
@@ -128,6 +138,11 @@ const LevelTab = styled.button<{ $active?: boolean }>`
     border-color: var(--primary);
     color: ${({ $active }) => $active ? '#fff' : 'var(--primary)'};
   }
+
+  @media (max-width: 768px) {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+  }
 `;
 
 const WriterGrid = styled.div`
@@ -138,6 +153,7 @@ const WriterGrid = styled.div`
 
   @media (max-width: 960px) {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 `;
 

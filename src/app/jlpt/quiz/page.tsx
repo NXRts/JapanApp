@@ -24,7 +24,7 @@ const Container = styled.div`
   background: radial-gradient(circle at center, rgba(var(--primary-rgb, 79, 70, 229), 0.05) 0%, transparent 70%);
 
   @media (max-width: 640px) {
-    padding: 1.5rem 1rem;
+    padding: 1rem 0.75rem;
   }
 `;
 
@@ -37,7 +37,8 @@ const Header = styled.div`
 
   @media (max-width: 600px) {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -65,8 +66,8 @@ const QuizCard = styled.div`
   transition: all 0.5s ease;
 
   @media (max-width: 600px) {
-    padding: 2.5rem 1.5rem;
-    border-radius: 24px;
+    padding: 1.5rem 1rem;
+    border-radius: 20px;
   }
 `;
 
@@ -79,9 +80,9 @@ const ProgressInfo = styled.div`
   color: var(--text-secondary);
 
   @media (max-width: 600px) {
-    top: 40px;
-    right: 20px;
-    font-size: 0.85rem;
+    top: 15px;
+    right: 15px;
+    font-size: 0.8rem;
   }
 `;
 
@@ -96,8 +97,8 @@ const QuestionText = styled.div`
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
   
   @media (max-width: 600px) {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
@@ -109,8 +110,8 @@ const OptionsGrid = styled.div`
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr; 
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
   }
 `;
 

@@ -34,7 +34,7 @@ const PageWrapper = styled.div`
   padding: 2rem;
 
   @media (max-width: 768px) {
-    padding: 1rem;
+    padding: 1rem 0.75rem;
   }
 `;
 
@@ -44,6 +44,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+
+  @media (max-width: 640px) {
+    gap: 1.25rem;
+  }
 `;
 
 const GlassCard = styled(motion.div)`
@@ -58,7 +62,8 @@ const GlassCard = styled(motion.div)`
   overflow: hidden;
 
   @media (max-width: 640px) {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1.25rem;
+    border-radius: 20px;
   }
 `;
 
@@ -69,12 +74,21 @@ const Title = styled.h1`
   background: linear-gradient(135deg, var(--foreground) 0%, var(--primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  @media (max-width: 640px) {
+    font-size: 1.8rem;
+  }
 `;
 
 const Subtitle = styled.p`
   color: var(--text-secondary);
   font-size: 1.1rem;
   margin-bottom: 2rem;
+
+  @media (max-width: 640px) {
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+  }
 `;
 
 const TestHeader = styled.div`
@@ -82,11 +96,19 @@ const TestHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+
+  @media (max-width: 640px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 const StatsRow = styled.div`
   display: flex;
   gap: 1.5rem;
+
+  @media (max-width: 640px) {
+    gap: 1rem;
+  }
 `;
 
 const StatItem = styled.div`
@@ -118,6 +140,12 @@ const TimerDisplay = styled.div<{ $warning: boolean }>`
   padding: 0.5rem 1rem;
   border-radius: 12px;
   transition: all 0.3s ease;
+
+  @media (max-width: 640px) {
+    font-size: 1.15rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+  }
 `;
 
 const ProgressBar = styled.div`
@@ -127,6 +155,11 @@ const ProgressBar = styled.div`
   border-radius: 99px;
   margin-bottom: 3rem;
   overflow: hidden;
+
+  @media (max-width: 640px) {
+    margin-bottom: 1.5rem;
+    height: 6px;
+  }
 `;
 
 const ProgressFill = styled(motion.div)`
@@ -139,6 +172,10 @@ const QuestionContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
+
+  @media (max-width: 640px) {
+    gap: 1.25rem;
+  }
 `;
 
 const QuestionType = styled.div`
@@ -154,6 +191,11 @@ const QuestionType = styled.div`
   letter-spacing: 0.1em;
   align-self: flex-start;
   box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.1);
+
+  @media (max-width: 640px) {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.7rem;
+  }
 `;
 
 const Prompt = styled.h2`
@@ -166,7 +208,7 @@ const Prompt = styled.h2`
   -webkit-text-fill-color: transparent;
 
   @media (max-width: 640px) {
-    font-size: 2.25rem;
+    font-size: 2.2rem;
   }
 `;
 
@@ -177,6 +219,11 @@ const SubPrompt = styled.p`
   font-weight: 500;
   opacity: 0.8;
   line-height: 1.5;
+
+  @media (max-width: 640px) {
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+  }
 `;
 
 const OptionsGrid = styled.div`
@@ -186,7 +233,7 @@ const OptionsGrid = styled.div`
 
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.6rem;
   }
 `;
 
@@ -232,6 +279,19 @@ const OptionButton = styled(motion.button)<{ $status?: 'correct' | 'incorrect' |
     font-size: 0.9rem;
     font-weight: 800;
     flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    gap: 0.75rem;
+
+    span.label {
+      width: 26px;
+      height: 26px;
+      font-size: 0.8rem;
+    }
   }
 `;
 
@@ -384,6 +444,13 @@ const SettingSection = styled.div`
   background: rgba(var(--foreground-rgb), 0.03);
   border-radius: 24px;
   border: 1px solid var(--border);
+
+  @media (max-width: 640px) {
+    padding: 1rem;
+    gap: 1rem;
+    border-radius: 16px;
+    margin-top: 1rem;
+  }
 `;
 
 const SettingGroup = styled.div`
@@ -420,6 +487,12 @@ const SettingChip = styled.button<{ $active: boolean }>`
   &:hover {
     border-color: var(--primary);
     color: var(--primary);
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.82rem;
+    border-radius: 8px;
   }
 `;
 
