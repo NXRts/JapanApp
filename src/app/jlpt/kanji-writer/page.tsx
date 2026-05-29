@@ -29,33 +29,35 @@ function getSvgPathFromStroke(stroke: number[][]) {
 function playSuccessChime() {
   try {
     const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const osc1 = audioCtx.createOscillator();
-    const osc2 = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-
-    osc1.type = 'sine';
-    osc2.type = 'triangle';
-
-    osc1.frequency.setValueAtTime(880, audioCtx.currentTime); // A5 note
-    osc2.frequency.setValueAtTime(1108.73, audioCtx.currentTime + 0.1); // C#6 note
-
-    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.05);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-
-    osc1.connect(gainNode);
-    osc2.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-
-    osc1.start(audioCtx.currentTime);
-    osc1.stop(audioCtx.currentTime + 0.5);
+    const now = audioCtx.currentTime;
     
-    osc2.start(audioCtx.currentTime + 0.1);
-    osc2.stop(audioCtx.currentTime + 0.6);
+    // Create a beautiful, soft, warm 3-note arpeggio (C5 -> E5 -> G5)
+    const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+    
+    notes.forEach((freq, index) => {
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      
+      osc.type = 'sine'; // Pure sine wave for a soft, warm, bell-like tone
+      osc.frequency.setValueAtTime(freq, now + index * 0.08); // Arpeggiated entry
+      
+      gainNode.gain.setValueAtTime(0, now + index * 0.08);
+      // Extremely gentle volume ramp-up to prevent popping
+      gainNode.gain.linearRampToValueAtTime(0.04, now + index * 0.08 + 0.03);
+      // Smooth exponential decay over 0.5 seconds for a clean release
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, now + index * 0.08 + 0.5);
+      
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      
+      osc.start(now + index * 0.08);
+      osc.stop(now + index * 0.08 + 0.55);
+    });
   } catch (e) {
     console.error("Audio Context not supported or blocked", e);
   }
 }
+
 
 // --- STYLES ---
 
