@@ -689,6 +689,7 @@ interface ExternalSentence {
   japanese: string;
   english: string;
   romaji?: string;
+  indonesian?: string;
 }
 
 interface JpjpDefinition {
@@ -994,11 +995,12 @@ function FlashcardContent() {
      if (activeTab !== 'kanji') return [];
      const kanjiObj = relatedKanjis[activeSelectedKanjiIndex];
      if (!kanjiObj || !kanjiObj.kanji) return [];
+     const targetKanji: string = kanjiObj.kanji;
      const allExamples = [...(currentItem?.examples || []), ...usageInPractice];
      const unique: { japanese: string; english?: string; romaji?: string }[] = [];
      const seen = new Set();
      allExamples.forEach(ex => {
-       if (ex.japanese && ex.japanese.includes(kanjiObj.kanji) && !seen.has(ex.japanese)) {
+       if (ex.japanese && ex.japanese.includes(targetKanji) && !seen.has(ex.japanese)) {
          seen.add(ex.japanese);
          unique.push(ex);
        }

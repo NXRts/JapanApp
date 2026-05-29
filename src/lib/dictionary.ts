@@ -18,6 +18,7 @@ export interface ExampleItem {
   japanese: string;
   romaji?: string;
   english?: string;
+  indonesian?: string;
 }
 
 export interface DictionaryResult {
