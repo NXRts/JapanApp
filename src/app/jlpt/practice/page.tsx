@@ -35,7 +35,7 @@ const Container = styled.div`
   justify-content: center;
 
   @media (max-width: 640px) {
-    padding: 1.5rem 1rem;
+    padding: 1rem 0.75rem;
   }
 `;
 
@@ -49,7 +49,8 @@ const Header = styled.div`
 
   @media (max-width: 600px) {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -111,8 +112,8 @@ const PracticeCard = styled.div`
   animation: ${fadeIn} 0.6s ease-out;
 
   @media (max-width: 600px) {
-    padding: 2.5rem 1.5rem;
-    border-radius: 24px;
+    padding: 1.5rem 1rem;
+    border-radius: 20px;
   }
 `;
 
@@ -123,6 +124,11 @@ const SetupTitle = styled.h2`
   background: linear-gradient(135deg, var(--foreground) 0%, var(--primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  @media (max-width: 600px) {
+    font-size: 1.8rem;
+    margin-bottom: 1.25rem;
+  }
 `;
 
 const SelectionGroup = styled.div`
@@ -130,6 +136,11 @@ const SelectionGroup = styled.div`
   flex-direction: column;
   gap: 2rem;
   margin-bottom: 3rem;
+
+  @media (max-width: 600px) {
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const SelectionLabel = styled.label`
@@ -141,6 +152,11 @@ const SelectionLabel = styled.label`
   display: block;
   margin-bottom: 1rem;
   text-align: left;
+
+  @media (max-width: 600px) {
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+  }
 `;
 
 const LevelGrid = styled.div`
@@ -150,6 +166,7 @@ const LevelGrid = styled.div`
 
   @media (max-width: 600px) {
     grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
   }
 `;
 
@@ -170,6 +187,12 @@ const OptionButton = styled.button<{ $active: boolean }>`
     color: ${({ $active }) => ($active ? 'white' : 'var(--primary)')};
     box-shadow: var(--shadow-sm);
   }
+
+  @media (max-width: 600px) {
+    padding: 0.6rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
 `;
 
 const CategoryGrid = styled.div`
@@ -179,6 +202,7 @@ const CategoryGrid = styled.div`
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
+    gap: 0.5rem;
   }
 `;
 
@@ -194,9 +218,10 @@ const ProgressInfo = styled.div`
   border-radius: 99px;
 
   @media (max-width: 600px) {
-    top: 20px;
-    right: 20px;
-    font-size: 0.85rem;
+    top: 15px;
+    right: 15px;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
   }
 `;
 
@@ -211,8 +236,9 @@ const ItemLevelBadge = styled.div`
   letter-spacing: 0.05em;
 
   @media (max-width: 600px) {
-    top: 20px;
-    left: 20px;
+    top: 15px;
+    left: 15px;
+    font-size: 0.75rem;
   }
 `;
 
@@ -224,8 +250,8 @@ const MainText = styled.h1`
   color: var(--foreground);
   
   @media (max-width: 600px) {
-    font-size: 3rem;
-    margin-bottom: 1.5rem;
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -242,6 +268,11 @@ const ReadingText = styled.div`
   color: var(--text-secondary);
   font-weight: 600;
   margin-bottom: 0.75rem;
+
+  @media (max-width: 600px) {
+    font-size: 1.15rem;
+    margin-bottom: 0.4rem;
+  }
 `;
 
 const MeaningText = styled.div`
@@ -249,6 +280,11 @@ const MeaningText = styled.div`
   font-weight: 700;
   color: var(--primary);
   margin-bottom: 2.5rem;
+
+  @media (max-width: 600px) {
+    font-size: 1.35rem;
+    margin-bottom: 1.25rem;
+  }
 `;
 
 const ActionGrid = styled.div`
@@ -258,7 +294,8 @@ const ActionGrid = styled.div`
   margin-top: 2rem;
 
   @media (max-width: 600px) {
-    gap: 1rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
   }
 `;
 
@@ -268,6 +305,11 @@ const FinalActions = styled.div`
   justify-content: center;
   margin-top: 2.5rem;
   flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
 `;
 
 const BaseButton = styled.button`
@@ -290,6 +332,13 @@ const BaseButton = styled.button`
 
   &:active {
     transform: translateY(-1px);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    gap: 0.4rem;
   }
 `;
 
@@ -319,6 +368,11 @@ const ProgressBarContainer = styled.div`
   border-radius: 999px;
   margin-top: 3rem;
   overflow: hidden;
+
+  @media (max-width: 600px) {
+    margin-top: 1.5rem;
+    height: 6px;
+  }
 `;
 
 const ProgressFill = styled.div<{ $percent: number }>`
@@ -352,6 +406,17 @@ const SpeakerButton = styled.button`
   svg {
     width: 28px;
     height: 28px;
+  }
+
+  @media (max-width: 600px) {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 1.25rem auto;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
   }
 `;
 
