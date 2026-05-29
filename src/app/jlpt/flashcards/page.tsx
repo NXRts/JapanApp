@@ -895,7 +895,7 @@ function FlashcardContent() {
   const usageInPractice = useMemo(() => {
     if (!targetWordForDetails || targetWordForDetails === '?') return [];
     const sentences = new Set<string>();
-    const results: { japanese: string; english: string; romaji?: string; indonesian?: string }[] = [];
+    const results: { japanese: string; english?: string; romaji?: string; indonesian?: string }[] = [];
     
     const extractFrom = (dictionaryList: DictionaryResult[]) => {
       for (const item of dictionaryList) {
@@ -918,7 +918,7 @@ function FlashcardContent() {
     
     return results.filter(ex => {
        if (!currentItem?.examples) return true;
-       return !currentItem.examples.some((cx: { japanese: string; english: string; romaji?: string }) => cx.japanese === ex.japanese);
+       return !currentItem.examples.some((cx: { japanese: string; english?: string; romaji?: string }) => cx.japanese === ex.japanese);
     }).slice(0, 50);
   }, [targetWordForDetails, currentItem]);
 
@@ -931,7 +931,7 @@ function FlashcardContent() {
     } else {
       baseList = allGrammar.filter(g => {
         const matchTitle = g.title && g.title.includes(targetWordForDetails);
-        const matchExamples = g.examples && g.examples.some((ex: { japanese: string; english: string; romaji?: string }) => ex.japanese && ex.japanese.includes(targetWordForDetails));
+        const matchExamples = g.examples && g.examples.some((ex: { japanese: string; english?: string; romaji?: string }) => ex.japanese && ex.japanese.includes(targetWordForDetails));
         return matchTitle || matchExamples;
       });
     }
@@ -995,7 +995,7 @@ function FlashcardContent() {
      const kanjiObj = relatedKanjis[activeSelectedKanjiIndex];
      if (!kanjiObj || !kanjiObj.kanji) return [];
      const allExamples = [...(currentItem?.examples || []), ...usageInPractice];
-     const unique: { japanese: string; english: string; romaji?: string }[] = [];
+     const unique: { japanese: string; english?: string; romaji?: string }[] = [];
      const seen = new Set();
      allExamples.forEach(ex => {
        if (ex.japanese && ex.japanese.includes(kanjiObj.kanji) && !seen.has(ex.japanese)) {
