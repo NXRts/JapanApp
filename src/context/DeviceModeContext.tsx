@@ -18,15 +18,18 @@ export function DeviceModeProvider({ children }: { children: React.ReactNode }) 
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-    const saved = localStorage.getItem('device-mode') as DeviceMode;
-    if (saved === 'pc' || saved === 'mobile') {
-      setDeviceModeState(saved);
-    } else {
-      // Auto-detect: mobile if screen is small
-      const isMobileSize = window.innerWidth <= 768;
-      setDeviceModeState(isMobileSize ? 'mobile' : 'pc');
-    }
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+      const saved = localStorage.getItem('device-mode') as DeviceMode;
+      if (saved === 'pc' || saved === 'mobile') {
+        setDeviceModeState(saved);
+      } else {
+        // Auto-detect: mobile if screen is small
+        const isMobileSize = window.innerWidth <= 768;
+        setDeviceModeState(isMobileSize ? 'mobile' : 'pc');
+      }
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const setDeviceMode = (mode: DeviceMode) => {

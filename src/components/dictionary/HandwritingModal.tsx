@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
@@ -101,7 +101,6 @@ const clearBtnStyle = {
   fontWeight: '600' as const,
 };
 
-type Point = { x: number, y: number };
 type Stroke = { x: number[], y: number[], time: number[] };
 
 export function HandwritingModal({ isOpen, onClose, onSelect }: { isOpen: boolean, onClose: () => void, onSelect: (text: string) => void }) {
@@ -113,6 +112,14 @@ export function HandwritingModal({ isOpen, onClose, onSelect }: { isOpen: boolea
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
   const width = 350; // max width
   const height = 300;
+
+  const clearCanvas = useCallback(() => {
+    if (ctx && canvasRef.current) {
+      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    }
+    setStrokes([]);
+    setCandidates([]);
+  }, [ctx]);
 
   useEffect(() => {
     if (isOpen) {
@@ -138,15 +145,7 @@ export function HandwritingModal({ isOpen, onClose, onSelect }: { isOpen: boolea
       document.body.style.overflow = 'unset';
       clearCanvas();
     }
-  }, [isOpen]);
-
-  const clearCanvas = () => {
-    if (ctx && canvasRef.current) {
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    }
-    setStrokes([]);
-    setCandidates([]);
-  };
+  }, [isOpen, clearCanvas]);
 
   const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
     if (!canvasRef.current) return { x: 0, y: 0 };

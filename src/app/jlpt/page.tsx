@@ -697,7 +697,6 @@ export default function DictionaryPage() {
   const [showConfig, setShowConfig] = useState({ vocabulary: true, ejaan: true, arti: true, rekomendasi: true });
   const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   // Search extra controls
@@ -740,8 +739,6 @@ export default function DictionaryPage() {
     return () => window.removeEventListener('keydown', handleGlobalKeyDown);
   }, []);
   useEffect(() => {
-    setIsMounted(true);
-
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowDictDropdown(false);
@@ -785,14 +782,14 @@ export default function DictionaryPage() {
 
     let csvContent = "Word,Reading,Meaning,Type,Level\n";
     filteredData.forEach(item => {
-      const word = item.type === 'kanji' ? item.kanji : (item.word || (item as any).title);
+      const word = item.type === 'kanji' ? item.kanji : (item.word || item.title);
       const reading = item.type === 'kanji'
         ? `On: ${item.onyomi?.join(', ')} | Kun: ${item.kunyomi?.join(', ')}`
         : (item.reading || item.romaji || '');
       const meaning = item.meaning || '';
       const escapeCell = (str: string) => `"${(str || '').toString().replace(/"/g, '""')}"`;
 
-      csvContent += `${escapeCell(word)},${escapeCell(reading)},${escapeCell(meaning)},${escapeCell(item.type)},${escapeCell(item.level || '')}\n`;
+      csvContent += `${escapeCell(word ?? '')},${escapeCell(reading)},${escapeCell(meaning)},${escapeCell(item.type)},${escapeCell(item.level || '')}\n`;
     });
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -818,7 +815,7 @@ export default function DictionaryPage() {
     setIsPlayingAll(true);
 
     let utteranceEndCount = 0;
-    const itemsWithContent = displayData.filter(i => (i.type === 'kanji' ? i.kanji : (i.word || (i as any).title)));
+    const itemsWithContent = displayData.filter(i => (i.type === 'kanji' ? i.kanji : (i.word || i.title)));
 
     if (itemsWithContent.length === 0) {
       setIsPlayingAll(false);
@@ -831,7 +828,7 @@ export default function DictionaryPage() {
     };
 
     itemsWithContent.forEach((item, idx) => {
-      const text = item.type === 'kanji' ? item.kanji : (item.word || (item as any).title);
+      const text = item.type === 'kanji' ? item.kanji : (item.word || item.title);
       const itemId = `${item.source}-${item.type}-${item.level}-${item.id || idx}`;
 
       if (text) {
@@ -868,7 +865,7 @@ export default function DictionaryPage() {
     const timer = setTimeout(async () => {
       if (query.trim()) {
         // results are found across all JLPT levels. 
-        const results = await searchDictionary(query, activeCategory as any, 'all');
+        const results = await searchDictionary(query, activeCategory as 'vocabulary' | 'grammar' | 'kanji' | 'sentences' | 'jpjp' | 'ai' | 'kana', 'all');
 
         // Filter out ID/EN based on dict
         let filtered = results;
@@ -899,7 +896,7 @@ export default function DictionaryPage() {
     setQuery(val);
   };
 
-  const browseData = React.useMemo(() => {
+  const browseData = React.useMemo((): DictionaryResult[] => {
     if (activeCategory === "kanji") { return allKanji; } else if (activeCategory === "grammar") {
       return allGrammar.map(g => ({
         ...g,
@@ -931,7 +928,7 @@ export default function DictionaryPage() {
   }, [activeCategory]);
 
   const filteredData = React.useMemo(() => {
-    let result = (searchResults || browseData).filter(item => {
+    const result = (searchResults || browseData).filter(item => {
       // If we are actively searching (searchResults is not null), we bypass the level filter 
       // to show all relevant matches across all JLPT levels. 
       // If we are just browsing (searchResults is null), we respect the level filter.
@@ -980,7 +977,7 @@ export default function DictionaryPage() {
                   <input
                     type="radio"
                     checked={activeCategory === item.id}
-                    onChange={() => setActiveCategory(item.id as any)}
+                    onChange={() => setActiveCategory(item.id as typeof activeCategory)}
                   />
                   {item.label}
                 </RadioLabel>
@@ -996,7 +993,7 @@ export default function DictionaryPage() {
                   <input
                     type="radio"
                     checked={activeLevel === lvl}
-                    onChange={() => setActiveLevel(lvl as any)}
+                    onChange={() => setActiveLevel(lvl as typeof activeLevel)}
                   />
                   {lvl}
                 </RadioLabel>
@@ -1114,7 +1111,7 @@ export default function DictionaryPage() {
                 <ModeBtn
                   key={mode.id}
                   $active={activeCategory === mode.id}
-                  onClick={() => setActiveCategory(mode.id as any)}
+                  onClick={() => setActiveCategory(mode.id as typeof activeCategory)}
                 >
                   {mode.id === 'ai' ? (
                     <>
@@ -1208,11 +1205,11 @@ export default function DictionaryPage() {
           ) : (
             <>
               <ItemsGrid>
-                {displayData.map((item: any, idx) => {
+                {displayData.map((item, idx) => {
                   const itemId = `${item.source}-${item.type}-${item.level}-${item.id || idx}`;
                   return (
                     <ItemCard key={itemId} $isPlaying={currentlyPlayingId === itemId}>
-                      <SpeakerButton onClick={(e) => playAudio(e, item.type === 'kanji' ? item.kanji : (item.word || item.title), itemId)}>
+                      <SpeakerButton onClick={(e) => playAudio(e, (item.type === 'kanji' ? item.kanji : (item.word || item.title)) ?? '', itemId)}>
                         <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
                       </SpeakerButton>
                       <ItemContent>
@@ -1268,8 +1265,8 @@ export default function DictionaryPage() {
                               <div style={{ marginTop: '0.75rem' }}>
                                 <strong>Examples:</strong>
                                 <ul style={{ listStyleType: 'none', padding: 0, margin: '0.4rem 0 0 0', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                                  {item.examples.map((ex: any, i: number) => (
-                                    <li key={i} style={{ borderBottom: i !== item.examples.length - 1 ? '1px dashed rgba(255,255,255,0.1)' : 'none', paddingBottom: i !== item.examples.length - 1 ? '0.6rem' : '0' }}>
+                                  {item.examples.map((ex, i: number) => (
+                                    <li key={i} style={{ borderBottom: i !== (item.examples?.length ?? 0) - 1 ? '1px dashed rgba(255,255,255,0.1)' : 'none', paddingBottom: i !== (item.examples?.length ?? 0) - 1 ? '0.6rem' : '0' }}>
                                       <div style={{ color: 'var(--text-primary)' }}>{ex.japanese}</div>
                                       {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{ex.romaji}</div>}
                                       {ex.english && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontStyle: 'italic', marginTop: '0.2rem' }}>&quot;{ex.english}&quot;</div>}

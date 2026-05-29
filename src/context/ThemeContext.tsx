@@ -28,10 +28,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   // Load from local storage on mount
   useEffect(() => {
-    const savedColor = localStorage.getItem('theme-color') as ThemeColor;
-    const savedMode = localStorage.getItem('theme-mode') as ThemeMode;
-    if (savedColor) setColor(savedColor);
-    if (savedMode) setMode(savedMode);
+    const timer = setTimeout(() => {
+      const savedColor = localStorage.getItem('theme-color') as ThemeColor;
+      const savedMode = localStorage.getItem('theme-mode') as ThemeMode;
+      if (savedColor) setColor(savedColor);
+      if (savedMode) setMode(savedMode);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // Update CSS variables when state changes
