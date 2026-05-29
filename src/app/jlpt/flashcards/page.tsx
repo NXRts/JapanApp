@@ -1003,8 +1003,9 @@ function FlashcardContent() {
   const kanjiExamples = useMemo(() => {
      if (activeTab !== 'kanji') return [];
      const kanjiObj = relatedKanjis[activeSelectedKanjiIndex];
-     if (!kanjiObj || !kanjiObj.kanji) return [];
-     const targetKanji: string = kanjiObj.kanji;
+     if (!kanjiObj) return [];
+     const targetKanji = kanjiObj.kanji;
+     if (!targetKanji) return [];
      const allExamples = [...(currentItem?.examples || []), ...usageInPractice];
      const unique: { japanese: string; english?: string; romaji?: string }[] = [];
      const seen = new Set();
