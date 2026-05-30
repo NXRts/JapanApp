@@ -177,8 +177,6 @@ export const GamificationAlert = ({
   onClose: (id: string) => void;
 }) => {
   const [visible, setVisible] = useState(true);
-  // Detect mobile for animation direction
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
 
   const dismiss = () => {
     setVisible(false);
@@ -191,24 +189,14 @@ export const GamificationAlert = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.id]);
 
-  const motionProps = isMobile
-    ? {
-        initial: { opacity: 0, y: 80, scale: 0.92 },
-        animate: { opacity: 1, y: 0, scale: 1 },
-        exit:    { opacity: 0, y: 80, scale: 0.88 },
-      }
-    : {
-        initial: { opacity: 0, x: 60, scale: 0.92 },
-        animate: { opacity: 1, x: 0, scale: 1 },
-        exit:    { opacity: 0, x: 60, scale: 0.88 },
-      };
-
   return (
     <AnimatePresence>
       {visible && (
         <ToastBox
           $type={data.type}
-          {...motionProps}
+          initial={{ opacity: 0, y: -20, scale: 0.92 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -20, scale: 0.88 }}
           transition={{ type: 'spring', damping: 22, stiffness: 300 }}
           onClick={dismiss}
           role="alert"
