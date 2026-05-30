@@ -2,83 +2,162 @@
 
 import React, { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { motion, AnimatePresence, useAnimation } from 'framer-motion';
-import { TrophyIcon, SparklesIcon, FireIcon } from '../icons/AppIcons';
+import { motion, AnimatePresence } from 'framer-motion';
+import { TrophyIcon, SparklesIcon } from '../icons/AppIcons';
 
-const slideUp = keyframes`
-  0% { transform: translate(-50%, 100%); opacity: 0; }
-  15% { transform: translate(-50%, -50%); opacity: 1; }
-  85% { transform: translate(-50%, -50%); opacity: 1; }
-  100% { transform: translate(-50%, -150%); opacity: 0; }
+const shimmer = keyframes`
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 `;
 
-const confetti = keyframes`
-  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+const progressBar = keyframes`
+  from { width: 100%; }
+  to { width: 0%; }
 `;
 
-const AlertContainer = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  z-index: 10000;
-  perspective: 1000px;
-`;
-
-const AlertBox = styled(motion.div)<{ $type: 'level' | 'achievement' }>`
-  background: var(--surface);
-  border: 2px solid ${({ $type }) => $type === 'level' ? 'var(--primary)' : 'var(--secondary)'};
-  border-radius: 24px;
-  padding: 2rem 3rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 
-              0 0 30px ${({ $type }) => $type === 'level' ? 'rgba(var(--primary-rgb), 0.3)' : 'rgba(var(--secondary-rgb), 0.3)'};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  min-width: 320px;
-  text-align: center;
-  cursor: grab;
+const ToastBox = styled(motion.div)<{ $type: 'level' | 'achievement' }>`
   pointer-events: auto;
+  background: var(--surface);
+  border: 1px solid ${({ $type }) =>
+    $type === 'level'
+      ? 'rgba(var(--primary-rgb), 0.5)'
+      : 'rgba(16, 185, 129, 0.45)'};
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 0 20px ${({ $type }) =>
+      $type === 'level'
+        ? 'rgba(var(--primary-rgb), 0.15)'
+        : 'rgba(16, 185, 129, 0.12)'};
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  width: 340px;
+  max-width: calc(100vw - 2rem);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
 
-  &:active { cursor: grabbing; }
+  /* Shimmer stripe at top */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: ${({ $type }) =>
+      $type === 'level'
+        ? 'linear-gradient(90deg, transparent, var(--primary), transparent)'
+        : 'linear-gradient(90deg, transparent, #10b981, transparent)'};
+    background-size: 200% 100%;
+    animation: ${shimmer} 2s linear infinite;
+  }
+
+  /* On mobile: stretch to full width */
+  @media (max-width: 640px) {
+    width: 100%;
+  }
 `;
 
-const IconWrapper = styled.div<{ $type: 'level' | 'achievement' }>`
-  width: 80px;
-  height: 80px;
-  background: ${({ $type }) => $type === 'level' ? 'rgba(var(--primary-rgb), 0.1)' : 'rgba(var(--secondary-rgb), 0.1)'};
-  color: ${({ $type }) => $type === 'level' ? 'var(--primary)' : 'var(--secondary)'};
-  border-radius: 50%;
+const IconBubble = styled.div<{ $type: 'level' | 'achievement' }>`
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  background: ${({ $type }) =>
+    $type === 'level'
+      ? 'rgba(var(--primary-rgb), 0.12)'
+      : 'rgba(16, 185, 129, 0.12)'};
+  color: ${({ $type }) =>
+    $type === 'level' ? 'var(--primary)' : '#10b981'};
 
-  svg { width: 40px; height: 40px; }
+  svg {
+    width: 22px;
+    height: 22px;
+  }
 `;
 
-const Title = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 900;
-  margin: 0;
+const TextGroup = styled.div`
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+`;
+
+const Tag = styled.span<{ $type: 'level' | 'achievement' }>`
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: ${({ $type }) =>
+    $type === 'level' ? 'var(--primary)' : '#10b981'};
+  font-family: 'DM Mono', monospace;
+`;
+
+const Title = styled.div`
+  font-size: 0.95rem;
+  font-weight: 800;
   color: var(--foreground);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 `;
 
-const Description = styled.p`
-  font-size: 1rem;
+const Description = styled.div`
+  font-size: 0.78rem;
   color: var(--text-secondary);
-  margin: 0;
+  line-height: 1.4;
+  margin-top: 0.1rem;
 `;
 
-const Particle = styled.div<{ $delay: number; $left: number }>`
+const CloseBtn = styled.button`
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 1;
+    color: var(--foreground);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+`;
+
+const ProgressBarWrap = styled.div`
   position: absolute;
-  width: 8px;
-  height: 8px;
-  background: var(--primary);
-  border-radius: 2px;
-  left: ${({ $left }) => $left}%;
-  animation: ${confetti} 1s ease-out ${({ $delay }) => $delay}s infinite;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.05);
+`;
+
+const ProgressFill = styled.div<{ $duration: number; $type: 'level' | 'achievement' }>`
+  height: 100%;
+  background: ${({ $type }) =>
+    $type === 'level' ? 'var(--primary)' : '#10b981'};
+  animation: ${progressBar} ${({ $duration }) => $duration}ms linear forwards;
 `;
 
 export type GamificationAlertData = {
@@ -88,64 +167,78 @@ export type GamificationAlertData = {
   id: string;
 };
 
-export const GamificationAlert = ({ 
-  data, 
-  onClose 
-}: { 
-  data: GamificationAlertData; 
-  onClose: (id: string) => void 
+const DURATION = 5000;
+
+export const GamificationAlert = ({
+  data,
+  onClose,
+}: {
+  data: GamificationAlertData;
+  onClose: (id: string) => void;
 }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [visible, setVisible] = useState(true);
+  // Detect mobile for animation direction
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 640;
+
+  const dismiss = () => {
+    setVisible(false);
+    setTimeout(() => onClose(data.id), 350);
+  };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-      setTimeout(() => onClose(data.id), 500);
-    }, 4500);
-    return () => clearTimeout(timer);
-  }, [data.id, onClose]);
+    const t = setTimeout(dismiss, DURATION);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.id]);
 
-  const handleDragEnd = (_: any, info: any) => {
-    if (Math.abs(info.offset.y) > 100 || Math.abs(info.offset.x) > 100) {
-      setIsVisible(false);
-      setTimeout(() => onClose(data.id), 200);
-    }
-  };
+  const motionProps = isMobile
+    ? {
+        initial: { opacity: 0, y: 80, scale: 0.92 },
+        animate: { opacity: 1, y: 0, scale: 1 },
+        exit:    { opacity: 0, y: 80, scale: 0.88 },
+      }
+    : {
+        initial: { opacity: 0, x: 60, scale: 0.92 },
+        animate: { opacity: 1, x: 0, scale: 1 },
+        exit:    { opacity: 0, x: 60, scale: 0.88 },
+      };
 
   return (
     <AnimatePresence>
-      {isVisible && (
-        <AlertContainer>
-          <AlertBox
-            $type={data.type}
-            initial={{ y: 100, x: "-50%", opacity: 0, scale: 0.8 }}
-            animate={{ y: "-50%", x: "-50%", opacity: 1, scale: 1 }}
-            exit={{ y: -200, opacity: 0, scale: 0.5, rotate: 10 }}
-            drag
-            dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-            dragElastic={0.7}
-            onDragEnd={handleDragEnd}
-            transition={{ type: "spring", damping: 15, stiffness: 200 }}
-          >
-            <IconWrapper $type={data.type}>
-              {data.type === 'level' ? <SparklesIcon /> : <TrophyIcon />}
-              <motion.div
-                style={{ position: 'absolute', inset: 0 }}
-                animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </IconWrapper>
+      {visible && (
+        <ToastBox
+          $type={data.type}
+          {...motionProps}
+          transition={{ type: 'spring', damping: 22, stiffness: 300 }}
+          onClick={dismiss}
+          role="alert"
+          aria-live="polite"
+        >
+          <IconBubble $type={data.type}>
+            {data.type === 'level' ? <SparklesIcon /> : <TrophyIcon />}
+          </IconBubble>
+
+          <TextGroup>
+            <Tag $type={data.type}>
+              {data.type === 'level' ? '⬆ Level Up' : '🏆 Achievement'}
+            </Tag>
             <Title>{data.title}</Title>
             <Description>{data.description}</Description>
-            <motion.div 
-              style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.5rem', opacity: 0.6 }}
-              animate={{ opacity: [0.4, 0.8, 0.4] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              Swipe to dismiss
-            </motion.div>
-          </AlertBox>
-        </AlertContainer>
+          </TextGroup>
+
+          <CloseBtn
+            onClick={(e) => { e.stopPropagation(); dismiss(); }}
+            aria-label="Dismiss notification"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+          </CloseBtn>
+
+          <ProgressBarWrap>
+            <ProgressFill $duration={DURATION} $type={data.type} />
+          </ProgressBarWrap>
+        </ToastBox>
       )}
     </AnimatePresence>
   );

@@ -1,8 +1,32 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import styled from 'styled-components';
 import { calculateNextSRS, SRSItem } from '@/lib/srs';
 import { GamificationAlert, GamificationAlertData } from '@/components/gamification/GamificationAlert';
+
+/* Toast container — pojok kanan atas PC, bawah-tengah mobile */
+const ToastStack = styled.div`
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  align-items: flex-end;
+  pointer-events: none;
+
+  @media (max-width: 640px) {
+    top: auto;
+    bottom: 1rem;
+    right: 50%;
+    transform: translateX(50%);
+    width: calc(100vw - 2rem);
+    max-width: 420px;
+    align-items: stretch;
+  }
+`;
 
 interface MasteryRecord {
   correct: number;
@@ -288,13 +312,15 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   return (
     <ProgressContext.Provider value={contextValue}>
       {children}
-      {alerts.map(alert => (
-        <GamificationAlert 
-          key={alert.id} 
-          data={alert} 
-          onClose={closeAlert} 
-        />
-      ))}
+      <ToastStack>
+        {alerts.map(alert => (
+          <GamificationAlert
+            key={alert.id}
+            data={alert}
+            onClose={closeAlert}
+          />
+        ))}
+      </ToastStack>
     </ProgressContext.Provider>
   );
 }
