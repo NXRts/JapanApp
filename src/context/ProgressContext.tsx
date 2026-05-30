@@ -5,12 +5,12 @@ import styled from 'styled-components';
 import { calculateNextSRS, SRSItem } from '@/lib/srs';
 import { GamificationAlert, GamificationAlertData } from '@/components/gamification/GamificationAlert';
 
-/* Toast container — pojok kanan atas PC, bawah-tengah mobile */
+/* Toast container — pojok kanan atas PC (di bawah navbar 56px), bawah-tengah mobile */
 const ToastStack = styled.div`
   position: fixed;
-  top: 1.25rem;
+  top: calc(56px + 0.75rem);
   right: 1.25rem;
-  z-index: 10000;
+  z-index: 9999;
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
