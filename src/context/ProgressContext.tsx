@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { calculateNextSRS, SRSItem } from '@/lib/srs';
 import { GamificationAlert, GamificationAlertData } from '@/components/gamification/GamificationAlert';
 
-/* Toast container — pojok kanan atas PC (di bawah navbar 56px), bawah-tengah mobile */
+/* Toast container — pojok kanan atas, di bawah navbar (56px), semua ukuran layar */
 const ToastStack = styled.div`
   position: fixed;
   top: calc(56px + 0.75rem);
@@ -18,12 +18,8 @@ const ToastStack = styled.div`
   pointer-events: none;
 
   @media (max-width: 640px) {
-    top: auto;
-    bottom: 1rem;
-    right: 50%;
-    transform: translateX(50%);
-    width: calc(100vw - 2rem);
-    max-width: 420px;
+    right: 0.75rem;
+    left: 0.75rem;
     align-items: stretch;
   }
 `;
