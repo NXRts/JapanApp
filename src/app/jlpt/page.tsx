@@ -322,7 +322,7 @@ const ListToolbar = styled.div`
 
   @media (max-width: 640px) {
     flex-direction: column;
-    padding: 1rem 1.25rem;
+    padding: 1rem 0.75rem;
     border-radius: 16px;
     gap: 0.85rem;
   }
@@ -337,7 +337,7 @@ const CheckboxGroup = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    gap: 0.85rem 1.25rem;
+    gap: 0.5rem 0.75rem;
     flex-wrap: wrap;
   }
 `;
@@ -352,8 +352,8 @@ const CheckboxLabel = styled.label`
   font-size: 0.95rem;
 
   @media (max-width: 640px) {
-    font-size: 0.85rem;
-    gap: 0.45rem;
+    font-size: 0.8rem;
+    gap: 0.35rem;
   }
 
   input {
@@ -389,8 +389,8 @@ const CheckboxLabel = styled.label`
     }
 
     @media (max-width: 640px) {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
     }
   }
 `;
