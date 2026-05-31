@@ -250,18 +250,9 @@ const ActionButtonsGrid = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 0.5rem;
 
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0.4rem;
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.4rem;
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
   }
 `;
 
@@ -293,14 +284,28 @@ const ActionButton = styled.button`
   }
 
   @media (max-width: 640px) {
-    padding: 0.6rem 0.3rem;
-    font-size: 0.75rem;
-    gap: 0.25rem;
-    border-radius: 10px;
+    padding: 0.85rem 0.5rem;
+    font-size: 0.82rem;
+    gap: 0.35rem;
+    border-radius: 12px;
 
     svg {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:first-child {
+      grid-column: span 2;
+      flex-direction: row;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.95rem 0.5rem;
+      font-size: 0.88rem;
+      
+      svg {
+        width: 22px;
+        height: 22px;
+      }
     }
   }
 `;
@@ -317,8 +322,9 @@ const ListToolbar = styled.div`
 
   @media (max-width: 640px) {
     flex-direction: column;
-    padding: 0;
-    overflow: hidden;
+    padding: 1rem 1.25rem;
+    border-radius: 16px;
+    gap: 0.85rem;
   }
 `;
 
@@ -329,22 +335,26 @@ const CheckboxGroup = styled.div`
 
   @media (max-width: 640px) {
     width: 100%;
-    padding: 1rem;
+    display: flex;
     justify-content: center;
-    gap: 1.25rem;
-    border-bottom: 1px solid var(--border);
-    background: rgba(var(--foreground-rgb, 255, 255, 255), 0.02);
+    gap: 0.85rem 1.25rem;
+    flex-wrap: wrap;
   }
 `;
 
 const CheckboxLabel = styled.label`
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.55rem;
   font-weight: 700;
   color: var(--foreground);
   cursor: pointer;
   font-size: 0.95rem;
+
+  @media (max-width: 640px) {
+    font-size: 0.85rem;
+    gap: 0.45rem;
+  }
 
   input {
     width: 20px;
@@ -355,6 +365,7 @@ const CheckboxLabel = styled.label`
     background: var(--background);
     cursor: pointer;
     position: relative;
+    flex-shrink: 0;
     transition: all 0.2s;
     
     &:checked {
@@ -376,6 +387,11 @@ const CheckboxLabel = styled.label`
     &:hover {
       border-color: var(--primary);
     }
+
+    @media (max-width: 640px) {
+      width: 18px;
+      height: 18px;
+    }
   }
 `;
 
@@ -386,8 +402,8 @@ const ToolbarIcons = styled.div`
 
   @media (max-width: 640px) {
     width: 100%;
-    padding: 0.5rem 1rem;
-    justify-content: space-around;
+    justify-content: center;
+    gap: 1.5rem;
   }
 
   button {
@@ -400,8 +416,20 @@ const ToolbarIcons = styled.div`
     transition: all 0.2s;
     
     &:hover {
-      background: var(--background);
+      background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
       color: var(--primary);
+    }
+
+    @media (max-width: 640px) {
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      &:hover, &:active {
+        background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+        color: var(--primary);
+      }
     }
   }
 `;
