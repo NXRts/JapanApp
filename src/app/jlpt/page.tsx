@@ -268,15 +268,15 @@ const ActionButtonsGrid = styled.div`
 const ActionButton = styled.button`
   background: var(--primary);
   color: #fff;
-  padding: 0.75rem 0.5rem;
+  padding: 1.25rem 0.5rem;
   border-radius: 14px;
   border: none;
   font-weight: 800;
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.5rem;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-md);
@@ -288,8 +288,8 @@ const ActionButton = styled.button`
   }
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
   }
 
   @media (max-width: 640px) {
@@ -918,7 +918,7 @@ export default function DictionaryPage() {
     e.stopPropagation();
     
     if (itemId) {
-      setCurrentlyPlayingId(itemId);
+      setCurrentlyPlayingId(itemId); 
       playJapaneseAudio(text).finally(() => setCurrentlyPlayingId(null));
     } else {
       playJapaneseAudio(text);
