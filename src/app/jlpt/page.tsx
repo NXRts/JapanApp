@@ -630,6 +630,62 @@ const SearchInputContainer = styled.div`
     border-radius: 16px;
     padding: 0.3rem 0.3rem 0.3rem 0.75rem;
   }
+
+  @media (max-width: 640px) {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    border-radius: 16px;
+    padding: 0.5rem 0.75rem 0.35rem 0.75rem;
+    gap: 0.35rem 0.5rem;
+    
+    /* Search Icon */
+    > svg:first-of-type {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: center;
+      width: 18px;
+      height: 18px;
+    }
+    
+    /* Search Input Text */
+    > input {
+      grid-column: 2;
+      grid-row: 1;
+      font-size: 0.95rem;
+      padding: 0.3rem 0;
+    }
+    
+    /* Clear Search Button (if present) */
+    > button {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+      margin-right: 0.25rem;
+      align-self: center;
+      z-index: 5;
+    }
+    
+    /* Dropdown wrapper for DictSelect */
+    > div {
+      grid-column: 3;
+      grid-row: 1;
+      align-self: center;
+    }
+    
+    /* Auxiliary Utilities Toolbar (IconGroup) in row 2 */
+    > div:first-of-type {
+      grid-column: 1 / span 3;
+      grid-row: 2;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0.25rem 0 0.25rem;
+      margin: 0;
+      border-top: 1px solid var(--border);
+    }
+  }
 `;
 
 const Input = styled.input`
@@ -756,8 +812,10 @@ const DictSelect = styled.button`
   }
 
   @media (max-width: 640px) {
-    padding: 0.35rem 0.5rem;
-    max-width: 44px;
+    padding: 0.4rem 0.65rem;
+    max-width: none;
+    height: 32px;
+    border-radius: 99px;
 
     span.dict-full {
       display: none;
@@ -765,6 +823,13 @@ const DictSelect = styled.button`
     
     span.dict-short {
       display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    svg {
+      width: 12px;
+      height: 12px;
     }
   }
 `;
