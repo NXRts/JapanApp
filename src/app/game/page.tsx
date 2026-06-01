@@ -11,7 +11,7 @@ const Container = styled.div`
   padding: 2.5rem 2rem;
   min-height: 90vh;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     padding: 1.5rem 1rem;
   }
 `;
@@ -19,6 +19,10 @@ const Container = styled.div`
 const Header = styled.div`
   text-align: center;
   margin-bottom: 4rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2.5rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -29,7 +33,7 @@ const Title = styled.h1`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     font-size: 2rem;
   }
 `;
@@ -41,19 +45,19 @@ const Subtitle = styled.p`
   margin: 0 auto;
   line-height: 1.6;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     font-size: 1rem;
   }
 `;
 
 const GameGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 `;
 
@@ -61,7 +65,7 @@ const GameCardLink = styled(Link)`
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 24px;
-  padding: 2.5rem;
+  padding: 2rem;
   text-decoration: none;
   color: var(--foreground);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -69,6 +73,7 @@ const GameCardLink = styled(Link)`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   &::before {
     content: '';
@@ -86,22 +91,31 @@ const GameCardLink = styled(Link)`
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2);
-    border-color: var(--primary);
+    border-color: rgba(var(--primary-rgb), 0.5);
 
     &::before {
       opacity: 1;
     }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+    border-radius: 20px;
   }
 `;
 
 const CardContent = styled.div`
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  flex-grow: 1;
 `;
 
 const IconWrapper = styled.div<{ $color: string }>`
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: 16px;
   background: ${({ $color }) => `rgba(${$color}, 0.1)`};
   color: ${({ $color }) => `rgb(${$color})`};
@@ -109,47 +123,104 @@ const IconWrapper = styled.div<{ $color: string }>`
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+
+  ${GameCardLink}:hover & {
+    transform: scale(1.1) rotate(5deg);
+  }
   
   svg {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
+  }
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+`;
+
+const CardBadge = styled.span<{ $color: string }>`
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: ${({ $color }) => `rgb(${$color})`};
+  background: ${({ $color }) => `rgba(${$color}, 0.1)`};
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  z-index: 10;
+
+  @media (max-width: 768px) {
+    top: 1.25rem;
+    right: 1.25rem;
+    font-size: 0.55rem;
+    padding: 0.15rem 0.4rem;
   }
 `;
 
 const CardTitle = styled.h2`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
+  color: var(--foreground);
   margin-bottom: 0.75rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const CardDescription = styled.p`
   color: var(--text-secondary);
   line-height: 1.5;
+  font-size: 0.95rem;
   margin-bottom: 1.5rem;
   flex-grow: 1;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 `;
 
 const PlayButton = styled.div<{ $color: string }>`
-  align-self: flex-start;
-  padding: 0.75rem 1.5rem;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  background: ${({ $color }) => `rgba(${$color}, 0.1)`};
-  color: ${({ $color }) => `rgb(${$color})`};
-  transition: all 0.2s;
+  margin-top: auto;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: ${({ $color }) => `rgb(${$color})`};
+  opacity: 0.8;
+  transition: gap 0.2s ease;
 
   ${GameCardLink}:hover & {
-    background: ${({ $color }) => `rgb(${$color})`};
-    color: white;
+    gap: 0.75rem;
+    opacity: 1;
   }
 
-  svg {
-    width: 18px;
-    height: 18px;
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    
+    svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 `;
 
@@ -167,6 +238,7 @@ export default function GamesHubPage() {
       <GameGrid>
         {/* Memory Match Game */}
         <GameCardLink href="/game/memory-match">
+          <CardBadge $color="245, 158, 11">PUZZLE</CardBadge>
           <CardContent>
             <IconWrapper $color="245, 158, 11"> {/* Amber color */}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -182,8 +254,9 @@ export default function GamesHubPage() {
             </CardDescription>
             <PlayButton $color="245, 158, 11">
               Play Now
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
               </svg>
             </PlayButton>
           </CardContent>
@@ -191,11 +264,20 @@ export default function GamesHubPage() {
 
         {/* Kana Speed Typing Game */}
         <GameCardLink href="/game/speed-typing">
+          <CardBadge $color="59, 130, 246">REFLEX</CardBadge>
           <CardContent>
             <IconWrapper $color="59, 130, 246"> {/* Blue color */}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 20h9" />
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+                <rect x="2" y="4" width="20" height="16" rx="2" ry="2" />
+                <line x1="6" y1="8" x2="6" y2="8" />
+                <line x1="10" y1="8" x2="10" y2="8" />
+                <line x1="14" y1="8" x2="14" y2="8" />
+                <line x1="18" y1="8" x2="18" y2="8" />
+                <line x1="6" y1="12" x2="6" y2="12" />
+                <line x1="10" y1="12" x2="10" y2="12" />
+                <line x1="14" y1="12" x2="14" y2="12" />
+                <line x1="18" y1="12" x2="18" y2="12" />
+                <line x1="7" y1="16" x2="17" y2="16" />
               </svg>
             </IconWrapper>
             <CardTitle>Kana Speed Typing</CardTitle>
@@ -204,8 +286,9 @@ export default function GamesHubPage() {
             </CardDescription>
             <PlayButton $color="59, 130, 246">
               Play Now
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
               </svg>
             </PlayButton>
           </CardContent>
@@ -213,12 +296,14 @@ export default function GamesHubPage() {
 
         {/* Sentence Builder Game */}
         <GameCardLink href="/game/sentence-builder">
+          <CardBadge $color="139, 92, 246">GRAMMAR</CardBadge>
           <CardContent>
             <IconWrapper $color="139, 92, 246"> {/* Violet color */}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-                <path d="M8 7h6" />
-                <path d="M8 11h8" />
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 8.38 8.38 0 0 1 3.8.9" />
+                <path d="M11 11v6" />
+                <path d="M8 14h6" />
+                <path d="M18 4l-6 6" />
               </svg>
             </IconWrapper>
             <CardTitle>Sentence Builder</CardTitle>
@@ -227,8 +312,9 @@ export default function GamesHubPage() {
             </CardDescription>
             <PlayButton $color="139, 92, 246">
               Start Building
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
               </svg>
             </PlayButton>
           </CardContent>
@@ -236,6 +322,7 @@ export default function GamesHubPage() {
 
         {/* Conjugation Drills Game */}
         <GameCardLink href="/game/conjugation">
+          <CardBadge $color="16, 185, 129">PRACTICE</CardBadge>
           <CardContent>
             <IconWrapper $color="16, 185, 129"> {/* Emerald color */}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -243,9 +330,6 @@ export default function GamesHubPage() {
                 <path d="M12 8h4" />
                 <path d="M12 12h4" />
                 <path d="M12 16h4" />
-                <circle cx="8" cy="8" r="1" />
-                <circle cx="8" cy="12" r="1" />
-                <circle cx="8" cy="16" r="1" />
               </svg>
             </IconWrapper>
             <CardTitle>Conjugation Drills</CardTitle>
@@ -254,8 +338,9 @@ export default function GamesHubPage() {
             </CardDescription>
             <PlayButton $color="16, 185, 129">
               Start Drills
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
               </svg>
             </PlayButton>
           </CardContent>
