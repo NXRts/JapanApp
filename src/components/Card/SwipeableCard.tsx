@@ -227,7 +227,11 @@ export default function SwipeableCard({ card, active, index, onSwipe }: Swipeabl
       setIsDragging(false);
     } else {
        // Capture pointer so dragging works outside the card boundaries
-       (e.target as HTMLElement).setPointerCapture(e.pointerId);
+       try {
+         (e.target as HTMLElement).setPointerCapture(e.pointerId);
+       } catch (err) {
+         console.warn("Failed to set pointer capture safely:", err);
+       }
     }
   };
 
@@ -241,9 +245,13 @@ export default function SwipeableCard({ card, active, index, onSwipe }: Swipeabl
     if (!isDragging || !active) return;
     setIsDragging(false);
     
-    // Release pointer capture
-    if ((e.target as HTMLElement).hasPointerCapture(e.pointerId)) {
+    // Release pointer capture safely
+    try {
+      if ((e.target as HTMLElement).hasPointerCapture(e.pointerId)) {
         (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+      }
+    } catch (err) {
+      console.warn("Failed to release pointer capture safely:", err);
     }
 
     // Check click vs drag

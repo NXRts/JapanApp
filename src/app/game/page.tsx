@@ -177,6 +177,9 @@ const CardTitle = styled.h2`
   @media (max-width: 768px) {
     font-size: 1rem;
     margin-bottom: 0.5rem;
+    min-height: 2.6rem;
+    display: flex;
+    align-items: flex-start;
   }
 `;
 
@@ -195,6 +198,8 @@ const CardDescription = styled.p`
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    flex-grow: 0;
+    max-height: 4.2em;
   }
 `;
 
