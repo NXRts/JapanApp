@@ -79,7 +79,7 @@ const MobileFilters = styled.div`
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 1rem 1.1rem;
+  padding: 1.1rem;
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(10px);
   margin-bottom: 0.5rem;
@@ -90,7 +90,7 @@ const MobileFilters = styled.div`
 
   @media (max-width: 640px) {
     border-radius: 16px;
-    padding: 0.8rem 0.9rem;
+    padding: 0.9rem;
     gap: 0.75rem;
   }
 `;
@@ -102,25 +102,14 @@ const FilterGroup = styled.div`
 `;
 
 const FilterChipRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  overflow-x: auto;
-  scrollbar-width: none; /* Hide Firefox scrollbar */
-  -webkit-overflow-scrolling: touch;
-  
-  /* Vertical padding accommodates shadows. Horizontal padding matches card padding. */
-  padding: 0.5rem 1.1rem;
-  margin: -0.5rem -1.1rem;
-
-  &::-webkit-scrollbar {
-    display: none; /* Hide Chrome/Safari scrollbar */
-  }
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0.2rem 0;
 
   @media (max-width: 640px) {
-    padding: 0.4rem 0.9rem;
-    margin: -0.4rem -0.9rem;
-    gap: 0.35rem;
+    gap: 0.25rem;
   }
 `;
 
@@ -141,7 +130,7 @@ const FilterChip = styled.button<{ $active: boolean }>`
   align-items: center;
   justify-content: center;
   gap: 0.25rem;
-  padding: 0.4rem 0.85rem;
+  padding: 0.4rem 0.5rem;
   border-radius: 99px;
   border: 1px solid ${({ $active }) => $active ? 'var(--primary-dark)' : 'rgba(var(--primary-rgb), 0.15)'};
   background: ${({ $active }) => $active 
@@ -157,6 +146,7 @@ const FilterChip = styled.button<{ $active: boolean }>`
   font-family: inherit;
   box-shadow: ${({ $active }) => $active ? '0 3px 8px -1px rgba(var(--primary-rgb), 0.4)' : 'none'};
   outline: none;
+  width: 100%;
 
   &:hover {
     border-color: ${({ $active }) => $active ? 'var(--primary-dark)' : 'rgba(var(--primary-rgb), 0.4)'};
@@ -178,8 +168,12 @@ const FilterChip = styled.button<{ $active: boolean }>`
   }
 
   @media (max-width: 640px) {
-    padding: 0.35rem 0.75rem;
-    font-size: 0.75rem;
+    padding: 0.35rem 0.2rem;
+    font-size: 0.72rem;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 0.65rem;
   }
 `;
 
@@ -1268,7 +1262,6 @@ export default function DictionaryPage() {
               { id: 'kanji', label: 'Kanji' },
               { id: 'sentences', label: 'Sentences' },
               { id: 'grammar', label: 'Grammar' },
-              { id: 'jpjp', label: 'JA-JA' },
             ].map(item => (
               <FilterChip
                 key={item.id}
