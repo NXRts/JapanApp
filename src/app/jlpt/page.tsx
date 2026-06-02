@@ -104,15 +104,23 @@ const FilterGroup = styled.div`
 const FilterChipRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   overflow-x: auto;
   scrollbar-width: none; /* Hide Firefox scrollbar */
   -webkit-overflow-scrolling: touch;
-  padding: 0.1rem 0.2rem;
-  margin: 0 -0.2rem;
+  
+  /* Vertical padding accommodates shadows. Horizontal padding matches card padding. */
+  padding: 0.5rem 1.1rem;
+  margin: -0.5rem -1.1rem;
 
   &::-webkit-scrollbar {
     display: none; /* Hide Chrome/Safari scrollbar */
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.4rem 0.9rem;
+    margin: -0.4rem -0.9rem;
+    gap: 0.35rem;
   }
 `;
 
@@ -135,10 +143,10 @@ const FilterChip = styled.button<{ $active: boolean }>`
   gap: 0.25rem;
   padding: 0.4rem 0.85rem;
   border-radius: 99px;
-  border: 1px solid ${({ $active }) => $active ? 'transparent' : 'var(--border)'};
+  border: 1px solid ${({ $active }) => $active ? 'var(--primary-dark)' : 'rgba(var(--primary-rgb), 0.15)'};
   background: ${({ $active }) => $active 
-    ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%)' 
-    : 'var(--background)'};
+    ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)' 
+    : 'rgba(var(--primary-rgb), 0.03)'};
   color: ${({ $active }) => $active ? '#ffffff' : 'var(--text-secondary)'};
   font-size: 0.78rem;
   font-weight: ${({ $active }) => $active ? '700' : '600'};
@@ -147,16 +155,26 @@ const FilterChip = styled.button<{ $active: boolean }>`
   flex-shrink: 0;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
-  box-shadow: ${({ $active }) => $active ? '0 4px 10px rgba(var(--primary-rgb), 0.25)' : 'none'};
+  box-shadow: ${({ $active }) => $active ? '0 3px 8px -1px rgba(var(--primary-rgb), 0.4)' : 'none'};
+  outline: none;
 
   &:hover {
-    border-color: ${({ $active }) => $active ? 'transparent' : 'rgba(var(--primary-rgb), 0.4)'};
+    border-color: ${({ $active }) => $active ? 'var(--primary-dark)' : 'rgba(var(--primary-rgb), 0.4)'};
     color: ${({ $active }) => $active ? '#ffffff' : 'var(--primary)'};
+    background: ${({ $active }) => $active 
+      ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)' 
+      : 'rgba(var(--primary-rgb), 0.08)'};
+    filter: ${({ $active }) => $active ? 'brightness(1.08)' : 'none'};
     transform: translateY(-1px);
   }
 
   &:active {
     transform: scale(0.96);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
   }
 
   @media (max-width: 640px) {
