@@ -880,35 +880,83 @@ const DictSelect = styled.button`
 const ModesRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0.25rem;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  width: 100%;
   
-  &::-webkit-scrollbar {
-    display: none;
+  @media (max-width: 1024px) {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.35rem;
+    padding: 0.4rem 0;
+  }
+
+  @media (max-width: 640px) {
+    gap: 0.2rem;
   }
 `;
 
 const ModeBtn = styled.button<{ $active?: boolean }>`
-  background: ${({ $active }) => $active ? 'var(--primary)' : 'var(--surface)'};
-  color: ${({ $active }) => $active ? '#fff' : 'var(--text-secondary)'};
-  border: 1px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
-  padding: 0.5rem 1.25rem;
-  border-radius: 20px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  cursor: pointer;
-  white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s;
-  box-shadow: ${({ $active }) => $active ? '0 4px 10px rgba(var(--primary-rgb), 0.2)' : 'none'};
-  
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 99px;
+  border: 1px solid ${({ $active }) => $active ? 'var(--primary-dark)' : 'rgba(var(--primary-rgb), 0.15)'};
+  background: ${({ $active }) => $active 
+    ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)' 
+    : 'rgba(var(--primary-rgb), 0.03)'};
+  color: ${({ $active }) => $active ? '#ffffff' : 'var(--text-secondary)'};
+  font-size: 0.82rem;
+  font-weight: ${({ $active }) => $active ? '700' : '600'};
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  box-shadow: ${({ $active }) => $active ? '0 3px 8px -1px rgba(var(--primary-rgb), 0.4)' : 'none'};
+  outline: none;
+
   &:hover {
-    border-color: var(--primary);
-    color: ${({ $active }) => $active ? '#fff' : 'var(--primary)'};
+    border-color: ${({ $active }) => $active ? 'var(--primary-dark)' : 'rgba(var(--primary-rgb), 0.4)'};
+    color: ${({ $active }) => $active ? '#ffffff' : 'var(--primary)'};
+    background: ${({ $active }) => $active 
+      ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)' 
+      : 'rgba(var(--primary-rgb), 0.08)'};
+    filter: ${({ $active }) => $active ? 'brightness(1.08)' : 'none'};
     transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    padding: 0.4rem 0.3rem;
+    font-size: 0.75rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.35rem 0.15rem;
+    font-size: 0.7rem;
+    
+    svg {
+      width: 10px;
+      height: 10px;
+      margin-left: 0 !important;
+    }
+  }
+
+  @media (max-width: 360px) {
+    font-size: 0.62rem;
   }
 `;
 
@@ -1435,7 +1483,6 @@ export default function DictionaryPage() {
                 { id: 'kanji', label: 'Kanji' },
                 { id: 'sentences', label: 'Sentences' },
                 { id: 'grammar', label: 'Grammar' },
-                { id: 'jpjp', label: 'Japanese - Japanese' },
               ].map(mode => (
                 <ModeBtn
                   key={mode.id}
