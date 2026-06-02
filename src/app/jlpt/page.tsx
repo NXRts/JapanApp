@@ -605,41 +605,77 @@ const Pagination = styled.div`
   gap: 0.5rem;
   margin-top: 1.5rem;
   padding-bottom: 2rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Prevent wrapping entirely on mobile */
 
   @media (max-width: 640px) {
-    margin-top: 1rem;
-    padding-bottom: 1rem;
-    gap: 0.4rem;
+    margin-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    gap: 0.3rem; /* Tighter spacing on small mobile viewports */
   }
 `;
 
 const PageButton = styled.button<{ $active?: boolean }>`
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  border: 1px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
-  background: ${({ $active }) => $active ? 'var(--primary)' : 'var(--surface)'};
-  color: ${({ $active }) => $active ? '#fff' : 'var(--foreground)'};
+  border: 1px solid ${({ $active }) => $active ? 'var(--primary-dark)' : 'var(--border)'};
+  background: ${({ $active }) => $active 
+    ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)' 
+    : 'var(--surface)'};
+  color: ${({ $active }) => $active ? '#ffffff' : 'var(--foreground)'};
   font-weight: 800;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-sm);
+  box-shadow: ${({ $active }) => $active ? '0 3px 8px -1px rgba(var(--primary-rgb), 0.4)' : 'var(--shadow-sm)'};
+  outline: none;
 
-  &:hover {
-    transform: translateY(-4px);
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     border-color: var(--primary);
-    color: ${({ $active }) => $active ? '#fff' : 'var(--primary)'};
+    color: ${({ $active }) => $active ? '#ffffff' : 'var(--primary)'};
+    background: ${({ $active }) => $active 
+      ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)' 
+      : 'rgba(var(--primary-rgb), 0.05)'};
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.95);
   }
 
   &:disabled {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: not-allowed;
+    border-color: var(--border);
+    background: rgba(var(--foreground-rgb, 0, 0, 0), 0.02);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 640px) {
+    width: 34px;
+    height: 34px;
+    font-size: 0.78rem;
+  }
+`;
+
+const PageEllipsis = styled.span`
+  color: var(--text-secondary);
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 0 0.1rem;
+  user-select: none;
+
+  @media (max-width: 640px) {
+    font-size: 0.75rem;
+    padding: 0 0.02rem;
   }
 `;
 
@@ -1662,26 +1698,65 @@ export default function DictionaryPage() {
 
               {totalPages > 1 && (
                 <Pagination>
-                  <PageButton onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}>&lt;</PageButton>
-                  {[...Array(Math.min(5, totalPages))].map((_, i) => (
-                    <PageButton
-                      key={i + 1}
-                      $active={currentPage === i + 1}
-                      onClick={() => setCurrentPage(i + 1)}
-                    >
-                      {i + 1}
-                    </PageButton>
-                  ))}
-                  {totalPages > 5 && <span style={{ color: 'var(--text-secondary)' }}>...</span>}
-                  {totalPages > 5 && (
-                    <PageButton
-                      $active={currentPage === totalPages}
-                      onClick={() => setCurrentPage(totalPages)}
-                    >
-                      {totalPages}
-                    </PageButton>
-                  )}
-                  <PageButton onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}>&gt;</PageButton>
+                  <PageButton 
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    &lt;
+                  </PageButton>
+                  {(() => {
+                    const pages = [];
+                    if (totalPages <= 5) {
+                      for (let i = 1; i <= totalPages; i++) {
+                        pages.push(i);
+                      }
+                    } else {
+                      pages.push(1);
+                      let start = Math.max(2, currentPage - 1);
+                      let end = Math.min(totalPages - 1, currentPage + 1);
+                      
+                      if (currentPage <= 2) {
+                        end = 4;
+                      } else if (currentPage >= totalPages - 1) {
+                        start = totalPages - 3;
+                      }
+                      
+                      if (start > 2) {
+                        pages.push('ellipsis-start');
+                      }
+                      
+                      for (let i = start; i <= end; i++) {
+                        pages.push(i);
+                      }
+                      
+                      if (end < totalPages - 1) {
+                        pages.push('ellipsis-end');
+                      }
+                      
+                      pages.push(totalPages);
+                    }
+                    
+                    return pages.map((p, idx) => {
+                      if (p === 'ellipsis-start' || p === 'ellipsis-end') {
+                        return <PageEllipsis key={`ellipsis-${idx}`}>...</PageEllipsis>;
+                      }
+                      return (
+                        <PageButton
+                          key={p}
+                          $active={currentPage === p}
+                          onClick={() => setCurrentPage(p as number)}
+                        >
+                          {p}
+                        </PageButton>
+                      );
+                    });
+                  })()}
+                  <PageButton 
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    &gt;
+                  </PageButton>
                 </Pagination>
               )}
 
