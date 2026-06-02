@@ -75,38 +75,55 @@ const Sidebar = styled.aside`
 const MobileFilters = styled.div`
   display: none;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1rem 1.1rem;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
+  margin-bottom: 0.5rem;
 
   @media (max-width: 1024px) {
     display: flex;
   }
+
+  @media (max-width: 640px) {
+    border-radius: 16px;
+    padding: 0.8rem 0.9rem;
+    gap: 0.75rem;
+  }
+`;
+
+const FilterGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 `;
 
 const FilterChipRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
   overflow-x: auto;
-  padding: 0.1rem 0 0.3rem 0;
+  scrollbar-width: none; /* Hide Firefox scrollbar */
+  -webkit-overflow-scrolling: touch;
+  padding: 0.1rem 0.2rem;
+  margin: 0 -0.2rem;
 
   &::-webkit-scrollbar {
-    height: 3px;
-  }
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 2px;
+    display: none; /* Hide Chrome/Safari scrollbar */
   }
 `;
 
 const FilterLabel = styled.span`
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-size: 0.65rem;
+  font-weight: 800;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
+  opacity: 0.85;
+  margin-left: 0.25rem;
   white-space: nowrap;
   flex-shrink: 0;
 `;
@@ -114,23 +131,37 @@ const FilterLabel = styled.span`
 const FilterChip = styled.button<{ $active: boolean }>`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.25rem;
-  padding: 0.25rem 0.65rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 99px;
-  border: 1px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
-  background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb), 0.12)' : 'var(--surface)'};
-  color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
-  font-size: 0.8rem;
-  font-weight: ${({ $active }) => $active ? '700' : '500'};
+  border: 1px solid ${({ $active }) => $active ? 'transparent' : 'var(--border)'};
+  background: ${({ $active }) => $active 
+    ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%)' 
+    : 'var(--background)'};
+  color: ${({ $active }) => $active ? '#ffffff' : 'var(--text-secondary)'};
+  font-size: 0.78rem;
+  font-weight: ${({ $active }) => $active ? '700' : '600'};
   white-space: nowrap;
   cursor: pointer;
   flex-shrink: 0;
-  transition: all 0.15s;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
+  box-shadow: ${({ $active }) => $active ? '0 4px 10px rgba(var(--primary-rgb), 0.25)' : 'none'};
 
   &:hover {
-    border-color: var(--primary);
-    color: var(--primary);
+    border-color: ${({ $active }) => $active ? 'transparent' : 'rgba(var(--primary-rgb), 0.4)'};
+    color: ${({ $active }) => $active ? '#ffffff' : 'var(--primary)'};
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
   }
 `;
 
@@ -1210,37 +1241,41 @@ export default function DictionaryPage() {
     <PageContainer>
       <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="JLPT Mastery" />
       <MobileFilters>
-        <FilterChipRow>
-          <FilterLabel>Category:</FilterLabel>
-          {[
-            { id: 'kana', label: 'Kana' },
-            { id: 'vocabulary', label: 'Words' },
-            { id: 'kanji', label: 'Kanji' },
-            { id: 'sentences', label: 'Sentences' },
-            { id: 'grammar', label: 'Grammar' },
-            { id: 'jpjp', label: 'JA-JA' },
-          ].map(item => (
-            <FilterChip
-              key={item.id}
-              $active={activeCategory === item.id}
-              onClick={() => setActiveCategory(item.id as typeof activeCategory)}
-            >
-              {item.label}
-            </FilterChip>
-          ))}
-        </FilterChipRow>
-        <FilterChipRow>
-          <FilterLabel>Level:</FilterLabel>
-          {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
-            <FilterChip
-              key={lvl}
-              $active={activeLevel === lvl}
-              onClick={() => setActiveLevel(lvl as typeof activeLevel)}
-            >
-              {lvl}
-            </FilterChip>
-          ))}
-        </FilterChipRow>
+        <FilterGroup>
+          <FilterLabel>Category</FilterLabel>
+          <FilterChipRow>
+            {[
+              { id: 'kana', label: 'Kana' },
+              { id: 'vocabulary', label: 'Words' },
+              { id: 'kanji', label: 'Kanji' },
+              { id: 'sentences', label: 'Sentences' },
+              { id: 'grammar', label: 'Grammar' },
+              { id: 'jpjp', label: 'JA-JA' },
+            ].map(item => (
+              <FilterChip
+                key={item.id}
+                $active={activeCategory === item.id}
+                onClick={() => setActiveCategory(item.id as typeof activeCategory)}
+              >
+                {item.label}
+              </FilterChip>
+            ))}
+          </FilterChipRow>
+        </FilterGroup>
+        <FilterGroup>
+          <FilterLabel>Level</FilterLabel>
+          <FilterChipRow>
+            {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
+              <FilterChip
+                key={lvl}
+                $active={activeLevel === lvl}
+                onClick={() => setActiveLevel(lvl as typeof activeLevel)}
+              >
+                {lvl}
+              </FilterChip>
+            ))}
+          </FilterChipRow>
+        </FilterGroup>
       </MobileFilters>
       <LayoutRow>
         <Sidebar>
