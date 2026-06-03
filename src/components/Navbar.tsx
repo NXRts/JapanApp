@@ -506,8 +506,18 @@ function JlptIcon() {
 
 function CharactersIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 8h10M10 4v13M8 12c0-1.5 1-3 3-3s3 1.5 3 3-1.5 3-3 3a4 4 0 0 1-4-3c0-3 4-5.5 8-3.5 2 1 3 3.5 1.5 5.5S12 21 8.5 19.5" />
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <text
+        x="12"
+        y="12"
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontSize="21"
+        fontWeight="800"
+        fontFamily="'Nunito', 'Outfit', 'Noto Sans JP', sans-serif"
+      >
+        あ
+      </text>
     </svg>
   );
 }
@@ -1078,9 +1088,7 @@ export function Navbar() {
             Learn
           </BottomTab>
           <BottomTab href="/characters" $active={pathname.startsWith('/characters')}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 8h10M10 4v13M8 12c0-1.5 1-3 3-3s3 1.5 3 3-1.5 3-3 3a4 4 0 0 1-4-3c0-3 4-5.5 8-3.5 2 1 3 3.5 1.5 5.5S12 21 8.5 19.5" />
-            </svg>
+            <CharactersIcon />
             Characters
           </BottomTab>
           <BottomTab href="/game" $active={pathname.startsWith('/game')}>
