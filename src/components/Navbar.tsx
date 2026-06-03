@@ -504,6 +504,15 @@ function JlptIcon() {
   );
 }
 
+function CharactersIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 8h10M10 4v13M8 12c0-1.5 1-3 3-3s3 1.5 3 3-1.5 3-3 3a4 4 0 0 1-4-3c0-3 4-5.5 8-3.5 2 1 3 3.5 1.5 5.5S12 21 8.5 19.5" />
+    </svg>
+  );
+}
+
+
 function ProfileIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -768,6 +777,11 @@ export function Navbar() {
               Learn
             </SidebarNavItem>
             
+            <SidebarNavItem href="/characters" $active={pathname.startsWith('/characters')}>
+              <CharactersIcon />
+              Characters
+            </SidebarNavItem>
+            
             <SidebarNavItem href="/game" $active={pathname.startsWith('/game')}>
               <GameIcon />
               Game
@@ -877,6 +891,9 @@ export function Navbar() {
                 <NavItem>
                   <StyledLink href="/study" $active={pathname.startsWith('/study')}>Study</StyledLink>
                 </NavItem>
+                <NavItem>
+                  <StyledLink href="/characters" $active={pathname.startsWith('/characters')}>Characters</StyledLink>
+                </NavItem>
 
                 <NavItem>
                   <StyledLink href="/quiz" $active={pathname.startsWith('/quiz')}>Quiz</StyledLink>
@@ -980,6 +997,10 @@ export function Navbar() {
             Study
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
+          <MobileLink href="/characters" $active={pathname.startsWith('/characters')} $isOpen={isMobileMenuOpen} $delay={0.18} onClick={() => setIsMobileMenuOpen(false)}>
+            Characters
+            <span><ArrowRightIcon size={18} /></span>
+          </MobileLink>
           <MobileLink href="/quiz" $active={pathname.startsWith('/quiz')} $isOpen={isMobileMenuOpen} $delay={0.2} onClick={() => setIsMobileMenuOpen(false)}>
             Quiz
             <span><ArrowRightIcon size={18} /></span>
@@ -1055,6 +1076,12 @@ export function Navbar() {
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
             Learn
+          </BottomTab>
+          <BottomTab href="/characters" $active={pathname.startsWith('/characters')}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 8h10M10 4v13M8 12c0-1.5 1-3 3-3s3 1.5 3 3-1.5 3-3 3a4 4 0 0 1-4-3c0-3 4-5.5 8-3.5 2 1 3 3.5 1.5 5.5S12 21 8.5 19.5" />
+            </svg>
+            Characters
           </BottomTab>
           <BottomTab href="/game" $active={pathname.startsWith('/game')}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
