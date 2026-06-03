@@ -688,16 +688,18 @@ const SidebarActionButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 0.6rem;
+  gap: 4px;
+  padding: 0.55rem 0.3rem;
   border-radius: 12px;
   border: 1.5px solid var(--border);
   background: var(--surface);
   color: var(--text-secondary);
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.74rem;
   cursor: pointer;
   transition: all 0.2s ease;
+  min-width: 0;
+  white-space: nowrap;
 
   &:hover {
     color: var(--primary);
@@ -706,8 +708,9 @@ const SidebarActionButton = styled.button`
   }
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
   }
 `;
 
