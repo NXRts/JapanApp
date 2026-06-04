@@ -50,3 +50,5 @@ next-env.d.ts
 
 task.new
 Laporan.html
+
+public/Template/pagination.html
