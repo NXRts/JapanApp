@@ -1142,6 +1142,8 @@ export default function DictionaryPage() {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const dropdownRef = React.useRef<HTMLDivElement>(null);
   const searchWrapperRef = React.useRef<HTMLDivElement>(null);
+  const paginationRef = React.useRef<HTMLDivElement>(null);
+  const shouldScrollToPagination = React.useRef(false);
 
   const handleKeyboardType = (char: string) => {
     setQuery(prev => prev + char);
@@ -1199,6 +1201,16 @@ export default function DictionaryPage() {
   useEffect(() => {
     setShuffleSeed(0);
   }, [activeCategory, activeLevel, query]);
+
+  useEffect(() => {
+    if (shouldScrollToPagination.current) {
+      shouldScrollToPagination.current = false;
+      const timer = setTimeout(() => {
+        paginationRef.current?.scrollIntoView({ block: 'end', behavior: 'smooth' });
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [currentPage]);
 
   const handleDownloadCSV = () => {
     if (!filteredData || filteredData.length === 0) return;
@@ -1289,6 +1301,7 @@ export default function DictionaryPage() {
 
   // Debounce search
   useEffect(() => {
+    setCurrentPage(1);
     const timer = setTimeout(async () => {
       if (query.trim()) {
         // results are found across all JLPT levels. 
@@ -1306,7 +1319,6 @@ export default function DictionaryPage() {
 
         setSearchResults(filtered);
         setIsLoading(false);
-        setCurrentPage(1);
       } else {
         setSearchResults(null);
       }
@@ -1748,13 +1760,13 @@ export default function DictionaryPage() {
               </ItemsGrid>
 
               {totalPages > 1 && (
-                <Pagination>
+                <Pagination ref={paginationRef}>
                   {/* Buttons row */}
                   <PageButtonsWrap>
                     <PageButton 
                       onClick={() => {
+                        shouldScrollToPagination.current = true;
                         setCurrentPage(prev => Math.max(1, prev - 1));
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       disabled={currentPage === 1}
                       title="Previous page"
@@ -1803,8 +1815,8 @@ export default function DictionaryPage() {
                             key={p}
                             $active={currentPage === p}
                             onClick={() => {
+                              shouldScrollToPagination.current = true;
                               setCurrentPage(p as number);
-                              window.scrollTo({ top: 0, behavior: 'smooth' });
                             }}
                           >
                             {p}
@@ -1815,8 +1827,8 @@ export default function DictionaryPage() {
 
                     <PageButton 
                       onClick={() => {
+                        shouldScrollToPagination.current = true;
                         setCurrentPage(prev => Math.min(totalPages, prev + 1));
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       disabled={currentPage === totalPages}
                       title="Next page"
