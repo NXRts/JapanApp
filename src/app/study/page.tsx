@@ -10,7 +10,7 @@ const Container = styled.div`
   padding: 2.5rem 2rem 4rem;
   min-height: 90vh;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     padding: 1.5rem 1rem 3rem;
   }
 `;
@@ -18,6 +18,10 @@ const Container = styled.div`
 const Header = styled.div`
   text-align: center;
   margin-bottom: 4rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2.5rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -28,7 +32,7 @@ const Title = styled.h1`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     font-size: 2rem;
   }
 `;
@@ -40,7 +44,7 @@ const Subtitle = styled.p`
   margin: 0 auto;
   line-height: 1.6;
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     font-size: 1rem;
   }
 `;
@@ -50,9 +54,9 @@ const Grid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
 
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 `;
 
@@ -91,6 +95,11 @@ const CategoryCard = styled(Link)`
       opacity: 1;
     }
   }
+
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+    border-radius: 20px;
+  }
 `;
 
 
@@ -118,6 +127,18 @@ const IconWrapper = styled.div<{ $color: string }>`
     width: 32px;
     height: 32px;
   }
+
+  @media (max-width: 768px) {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const CardTitle = styled.h2`
@@ -125,6 +146,14 @@ const CardTitle = styled.h2`
   color: var(--foreground);
   margin-bottom: 1rem;
   font-weight: 800;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    min-height: 2.6rem;
+    display: flex;
+    align-items: flex-start;
+  }
 `;
 
 const CardDescription = styled.p`
@@ -133,6 +162,18 @@ const CardDescription = styled.p`
   line-height: 1.6;
   margin-bottom: 1.5rem;
   flex-grow: 1;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 0;
+    max-height: 4.2em;
+  }
 `;
 
 const PlayButton = styled.div<{ $color: string }>`
@@ -157,6 +198,24 @@ const PlayButton = styled.div<{ $color: string }>`
     width: 18px;
     height: 18px;
   }
+
+  @media (max-width: 768px) {
+    padding: 0 !important;
+    background: transparent !important;
+    color: ${({ $color }) => `rgb(${$color})`} !important;
+    font-size: 0.8rem;
+    border-radius: 0;
+    
+    ${CategoryCard}:hover & {
+      background: transparent !important;
+      color: ${({ $color }) => `rgb(${$color})`} !important;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
 `;
 
 import { useProgress } from '@/context/ProgressContext';
@@ -171,6 +230,12 @@ const Badge = styled.span`
   font-weight: 800;
   margin-left: 0.5rem;
   box-shadow: 0 2px 5px rgba(239, 68, 68, 0.4);
+
+  @media (max-width: 768px) {
+    font-size: 0.65rem;
+    padding: 0.15rem 0.45rem;
+    margin-left: 0.35rem;
+  }
 `;
 
 export default function StudyHub() {
