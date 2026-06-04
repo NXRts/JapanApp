@@ -792,14 +792,14 @@ export function Navbar() {
               Characters
             </SidebarNavItem>
             
-            <SidebarNavItem href="/game" $active={pathname.startsWith('/game')}>
-              <GameIcon />
-              Game
-            </SidebarNavItem>
-            
             <SidebarNavItem href="/jlpt" $active={pathname.startsWith('/jlpt')}>
               <JlptIcon />
               JLPT
+            </SidebarNavItem>
+            
+            <SidebarNavItem href="/game" $active={pathname.startsWith('/game')}>
+              <GameIcon />
+              Game
             </SidebarNavItem>
             
             <SidebarNavItem href="/profile" $active={pathname === '/profile'}>
@@ -1091,6 +1091,13 @@ export function Navbar() {
             <CharactersIcon />
             Characters
           </BottomTab>
+          <BottomTab href="/jlpt" $active={pathname.startsWith('/jlpt')}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+            JLPT
+          </BottomTab>
           <BottomTab href="/game" $active={pathname.startsWith('/game')}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
               <rect x="2" y="6" width="20" height="12" rx="3" />
@@ -1100,13 +1107,6 @@ export function Navbar() {
               <line x1="18" y1="11" x2="18.01" y2="11" />
             </svg>
             Game
-          </BottomTab>
-          <BottomTab href="/jlpt" $active={pathname.startsWith('/jlpt')}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-            </svg>
-            JLPT
           </BottomTab>
           <BottomTab href="/profile" $active={pathname === '/profile'}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
