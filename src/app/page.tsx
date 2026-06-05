@@ -676,21 +676,21 @@ export default function Home() {
     const unitNum = match ? parseInt(match[1], 10) : 1;
     
     let sectionNum = 1;
-    let sectionName = "Interaksi Dasar & Bertahan Hidup";
+    let sectionName = "Basic Interaction & Survival";
     
     if (unitNum > 10) {
       sectionNum = 4;
-      sectionName = "Kehidupan Profesional & Akademik";
+      sectionName = "Professional & Academic Life";
     } else if (unitNum > 6) {
       sectionNum = 3;
-      sectionName = "Komunikasi Menengah & Budaya";
+      sectionName = "Intermediate Communication & Culture";
     } else if (unitNum > 3) {
       sectionNum = 2;
-      sectionName = "Kehidupan Sehari-hari di Jepang";
+      sectionName = "Daily Life in Japan";
     }
     
     return {
-      section: `BAGIAN ${sectionNum}: ${sectionName.toUpperCase()}`,
+      section: `SECTION ${sectionNum}: ${sectionName.toUpperCase()}`,
       unitLabel: `UNIT ${unitNum}`,
       title: cleanTitle
     };
@@ -747,7 +747,7 @@ export default function Home() {
           {/* Locked indicators warnings */}
           {levelLessons.length === 0 && (
             <LockBanner>
-              📭 Belum ada materi untuk level ini.
+              📭 No material available for this level yet.
             </LockBanner>
           )}
 
@@ -776,7 +776,7 @@ export default function Home() {
                       <NodeContainer key={lesson.id} $index={index}>
                         <FloatingWrapper $active={isActive} $offset={offset}>
                           {isActive && (
-                            <ActiveTooltip $color={levelColor}>MULAI</ActiveTooltip>
+                            <ActiveTooltip $color={levelColor}>START</ActiveTooltip>
                           )}
 
                           <NodeButton

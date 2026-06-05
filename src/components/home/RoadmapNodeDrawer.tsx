@@ -235,7 +235,7 @@ export function RoadmapNodeDrawer({ isOpen, onClose, nodeData }: RoadmapNodeDraw
         </RewardTag>
         
         <StartButton href={nodeData.href} onClick={onClose}>
-          Mulai Pelajaran
+          Start Lesson
         </StartButton>
       </DrawerContainer>
     </>
