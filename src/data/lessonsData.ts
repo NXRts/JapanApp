@@ -2,9 +2,9 @@ export interface Question {
   id: string;
   type: 'multiple-choice' | 'sentence-builder' | 'listening' | 'fill-in-the-blank' | 'typing';
   questionText: string;
-  audioText?: string; // Text to be spoken by standard Web Speech API for listening tasks
-  options: string[]; // Options for multiple choice or cards for sentence builder
-  answer: string; // Correct answer (for sentence-builder: space-separated card values)
+  audioText?: string;
+  options: string[];
+  answer: string;
   hint?: string;
 }
 
@@ -24,613 +24,828 @@ export interface Lesson {
 }
 
 export const lessonsData: Lesson[] = [
-  // ==========================================
-  // JLPT N5: FOUNDATIONS & BASICS
-  // ==========================================
-  // ==========================================
-  // UNIT 1: MEMESAN MAKANAN & MINUMAN DI RESTORAN
-  // ==========================================
   {
-    id: 'n5-u1-l1',
-    level: 'N5',
-    unitId: 'n5-u1',
-    unitTitle: 'Unit 1: Ordering Food & Drinks at a Restaurant 🎌',
-    unitDescription: 'Master how to order food/drinks politely in a Japanese restaurant.',
-    unitColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    title: 'Basic Vowels & Hiragana',
-    description: 'Learn the pronunciation and basic Japanese vowels: あ, い, う, え, お.',
-    expReward: 20,
-    icon: '🎌',
-    badge: 'Hiragana',
-    questions: [
+    "id": "n5-u1-l1",
+    "level": "N5",
+    "unitId": "n5-u1",
+    "unitTitle": "Unit 1: Ordering Food & Drinks at a Restaurant 🎌",
+    "unitDescription": "Master how to order food/drinks politely in a Japanese restaurant.",
+    "unitColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    "title": "Basic Vowels & Hiragana",
+    "description": "Learn the pronunciation and basic Japanese vowels: あ, い, う, え, お.",
+    "expReward": 20,
+    "icon": "🎌",
+    "badge": "Hiragana",
+    "questions": [
       {
-        id: 'n5-u1-l1-q1',
-        type: 'multiple-choice',
-        questionText: 'Pilihlah ejaan Romaji yang tepat untuk huruf Hiragana berikut: あ',
-        options: ['a', 'i', 'u', 'e'],
-        answer: 'a',
-        hint: 'Karakter ini adalah vokal pertama dalam alfabet Jepang.'
+        "id": "n5-u1-l1-q1",
+        "type": "multiple-choice",
+        "questionText": "Choose the correct Romaji spelling for the following Hiragana letter: あ",
+        "options": [
+          "a",
+          "i",
+          "u",
+          "e"
+        ],
+        "answer": "a",
+        "hint": "This character is the first vowel in the Japanese alphabet."
       },
       {
-        id: 'n5-u1-l1-q2',
-        type: 'typing',
-        questionText: 'Ketiklah padanan Romaji untuk huruf Hiragana berikut: い',
-        options: [],
-        answer: 'i',
-        hint: 'Dibaca seperti huruf "i" dalam kata "ibu".'
+        "id": "n5-u1-l1-q2",
+        "type": "typing",
+        "questionText": "Type the Romaji equivalent for the following Hiragana letter: い",
+        "options": [],
+        "answer": "i",
+        "hint": "Pronounced like the letter \"i\" in \"machine\" or \"see\"."
       },
       {
-        id: 'n5-u1-l1-q3',
-        type: 'listening',
-        questionText: 'Dengarkan suara berikut dan pilihlah huruf Hiragana yang tepat!',
-        audioText: 'う',
-        options: ['あ', 'い', 'う', 'え'],
-        answer: 'う',
-        hint: 'Bunyi vokal "u".'
+        "id": "n5-u1-l1-q3",
+        "type": "listening",
+        "questionText": "Listen to the audio and choose the correct Hiragana letter!",
+        "audioText": "う",
+        "options": [
+          "あ",
+          "い",
+          "う",
+          "え"
+        ],
+        "answer": "う",
+        "hint": "Vowel sound \"u\"."
       },
       {
-        id: 'n5-u1-l1-q4',
-        type: 'multiple-choice',
-        questionText: 'Manakah huruf Hiragana yang dibaca sebagai "e"?',
-        options: ['お', 'え', 'う', 'あ'],
-        answer: 'え',
-        hint: 'Bentuknya mirip dengan lambang pengait kecil.'
+        "id": "n5-u1-l1-q4",
+        "type": "multiple-choice",
+        "questionText": "Which Hiragana letter is read as \"e\"?",
+        "options": [
+          "お",
+          "え",
+          "う",
+          "あ"
+        ],
+        "answer": "え",
+        "hint": "Its shape is similar to a small hook symbol."
       },
       {
-        id: 'n5-u1-l1-q5',
-        type: 'sentence-builder',
-        questionText: 'Susunlah kata "A-I" (Cinta dalam bahasa Jepang) dari kartu berikut!',
-        options: ['い', 'う', 'あ', 'え'],
-        answer: 'あ い',
-        hint: 'Gabungkan vokal pertama "A" dan vokal kedua "I".'
+        "id": "n5-u1-l1-q5",
+        "type": "sentence-builder",
+        "questionText": "Arrange the cards to spell the word \"A-I\" (Cinta in Japanese)!",
+        "options": [
+          "い",
+          "う",
+          "あ",
+          "え"
+        ],
+        "answer": "あ い",
+        "hint": "Combine the first vowel \"A\" and the second vowel \"I\"."
       }
     ]
   },
   {
-    id: 'n5-u1-l2',
-    level: 'N5',
-    unitId: 'n5-u1',
-    unitTitle: 'Unit 1: Ordering Food & Drinks at a Restaurant 🎌',
-    unitDescription: 'Master how to order food/drinks politely in a Japanese restaurant.',
-    unitColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    title: 'Restaurant Menu Vocabulary',
-    description: 'Learn the words for ramen, sushi, mizu, and koohii.',
-    expReward: 20,
-    icon: '🍱',
-    badge: 'Kosakata',
-    questions: [
+    "id": "n5-u1-l2",
+    "level": "N5",
+    "unitId": "n5-u1",
+    "unitTitle": "Unit 1: Ordering Food & Drinks at a Restaurant 🎌",
+    "unitDescription": "Master how to order food/drinks politely in a Japanese restaurant.",
+    "unitColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    "title": "Restaurant Menu Vocabulary",
+    "description": "Learn the words for ramen, sushi, mizu, and koohii.",
+    "expReward": 20,
+    "icon": "🍱",
+    "badge": "Vocabulary",
+    "questions": [
       {
-        id: 'n5-u1-l2-q1',
-        type: 'multiple-choice',
-        questionText: 'Apa arti dari kosakata makanan "すし" (sushi)?',
-        options: ['Nasi kepal khas Jepang', 'Mie kuah kaldu', 'Daging sapi panggang', 'Sup kacang merah'],
-        answer: 'Nasi kepal khas Jepang',
-        hint: 'Kombinasi nasi cuka dan ikan mentah segar.'
+        "id": "n5-u1-l2-q1",
+        "type": "multiple-choice",
+        "questionText": "What is the meaning of the food vocabulary \"すし\" (sushi)?",
+        "options": [
+          "Japanese vinegar rice ball",
+          "Noodle soup broth",
+          "Grilled beef",
+          "Red bean soup"
+        ],
+        "answer": "Japanese vinegar rice ball",
+        "hint": "A combination of vinegared rice and fresh raw fish."
       },
       {
-        id: 'n5-u1-l2-q2',
-        type: 'multiple-choice',
-        questionText: 'Apakah terjemahan dari kata "コーヒー" (koohii)?',
-        options: ['Kopi', 'Teh Hijau', 'Air', 'Susu'],
-        answer: 'Kopi',
-        hint: 'Kata serapan asing (Katakana).'
+        "id": "n5-u1-l2-q2",
+        "type": "multiple-choice",
+        "questionText": "What is the translation of the word \"コーヒー\" (koohii)?",
+        "options": [
+          "Coffee",
+          "Green Tea",
+          "Water",
+          "Milk"
+        ],
+        "answer": "Coffee",
+        "hint": "Foreign loanword (Katakana)."
       },
       {
-        id: 'n5-u1-l2-q3',
-        type: 'listening',
-        questionText: 'Dengarkan pelafalan audio berikut dan tentukan arti kata yang tepat!',
-        audioText: 'みず',
-        options: ['Air', 'Teh', 'Kopi', 'Nasi'],
-        answer: 'Air',
-        hint: 'Zat cair vital bebas rasa (Mizu).'
+        "id": "n5-u1-l2-q3",
+        "type": "listening",
+        "questionText": "Listen to the audio pronunciation and determine the correct meaning!",
+        "audioText": "みず",
+        "options": [
+          "Water",
+          "Tea",
+          "Coffee",
+          "Rice"
+        ],
+        "answer": "Water",
+        "hint": "Vital tasteless liquid (Mizu)."
       },
       {
-        id: 'n5-u1-l2-q4',
-        type: 'multiple-choice',
-        questionText: 'Manakah penulisan Katakana yang tepat untuk kata mi khas Jepang "Ramen"?',
-        options: ['ラーメン', 'うどん', 'そば', 'パスタ'],
-        answer: 'ラーメン',
-        hint: 'Kombinasi mi kenyal dan kuah kaldu gurih.'
+        "id": "n5-u1-l2-q4",
+        "type": "multiple-choice",
+        "questionText": "Which Katakana spelling is correct for the Japanese noodle \"Ramen\"?",
+        "options": [
+          "ラーメン",
+          "うどん",
+          "そば",
+          "パスタ"
+        ],
+        "answer": "ラーメン",
+        "hint": "A combination of chewy noodles and savory broth."
       },
       {
-        id: 'n5-u1-l2-q5',
-        type: 'typing',
-        questionText: 'Ketik arti bahasa Indonesia dari kata "おちゃ" (ocha):',
-        options: [],
-        answer: 'teh',
-        hint: 'Minuman teh hijau khas Jepang.'
+        "id": "n5-u1-l2-q5",
+        "type": "typing",
+        "questionText": "Type the English translation for the word \"おちゃ\" (ocha):",
+        "options": [],
+        "answer": "tea",
+        "hint": "Typical Japanese green tea drink."
       }
     ]
   },
   {
-    id: 'n5-u1-l3',
-    level: 'N5',
-    unitId: 'n5-u1',
-    unitTitle: 'Unit 1: Ordering Food & Drinks at a Restaurant 🎌',
-    unitDescription: 'Master how to order food/drinks politely in a Japanese restaurant.',
-    unitColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    title: 'Particles & Counting',
-    description: 'Learn hitotsu, futatsu, mittsu, and object particle wo.',
-    expReward: 20,
-    icon: '🔢',
-    badge: 'Grammar',
-    questions: [
+    "id": "n5-u1-l3",
+    "level": "N5",
+    "unitId": "n5-u1",
+    "unitTitle": "Unit 1: Ordering Food & Drinks at a Restaurant 🎌",
+    "unitDescription": "Master how to order food/drinks politely in a Japanese restaurant.",
+    "unitColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    "title": "Particles & Counting",
+    "description": "Learn hitotsu, futatsu, mittsu, and object particle wo.",
+    "expReward": 20,
+    "icon": "🔢",
+    "badge": "Grammar",
+    "questions": [
       {
-        id: 'n5-u1-l3-q1',
-        type: 'multiple-choice',
-        questionText: 'Manakah kata bantu bilangan untuk menyatakan pesanan sebanyak "satu porsi/buah"?',
-        options: ['ひとつ (hitotsu)', 'ふたつ (futatsu)', 'みっつ (mittsu)', 'よっつ (yottsu)'],
-        answer: 'ひとつ (hitotsu)',
-        hint: 'Hitungan universal dasar berakhiran ~tsu.'
+        "id": "n5-u1-l3-q1",
+        "type": "multiple-choice",
+        "questionText": "Which counter is used to order \"satu porsi/buah\"?",
+        "options": [
+          "ひとつ (hitotsu)",
+          "ふたつ (futatsu)",
+          "みっつ (mittsu)",
+          "よっつ (yottsu)"
+        ],
+        "answer": "ひとつ (hitotsu)",
+        "hint": "Universal basic count ending in ~tsu."
       },
       {
-        id: 'n5-u1-l3-q2',
-        type: 'multiple-choice',
-        questionText: 'Manakah kata bantu bilangan untuk menyatakan pesanan sebanyak "tiga porsi/buah"?',
-        options: ['みっつ (mittsu)', 'ひとつ (hitotsu)', 'ふたつ (futatsu)', 'よっつ (yottsu)'],
-        answer: 'みっつ (mittsu)',
-        hint: 'Hitotsu (1), futatsu (2), mittsu (3).'
+        "id": "n5-u1-l3-q2",
+        "type": "multiple-choice",
+        "questionText": "Which counter is used to order \"tiga porsi/buah\"?",
+        "options": [
+          "みっつ (mittsu)",
+          "ひとつ (hitotsu)",
+          "ふたつ (futatsu)",
+          "よっつ (yottsu)"
+        ],
+        "answer": "みっつ (mittsu)",
+        "hint": "Hitotsu (1), futatsu (2), mittsu (3)."
       },
       {
-        id: 'n5-u1-l3-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi partikel objek penderita yang tepat saat memesan Sushi: \n「すし ___ ふたつください。」',
-        options: ['を', 'は', 'が', 'に'],
-        answer: 'を',
-        hint: 'Partikel penanda objek penderita adalah wo/o (を).'
+        "id": "n5-u1-l3-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Complete the correct object particle when ordering Sushi: \n「すし ___ ふたつください。」",
+        "options": [
+          "を",
+          "は",
+          "が",
+          "に"
+        ],
+        "answer": "を",
+        "hint": "The direct object marker particle is wo/o (を)."
       },
       {
-        id: 'n5-u1-l3-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat bahasa Jepang: "Minta air satu porsi."',
-        options: ['みず', 'を', 'ひとつ', 'ください'],
-        answer: 'みず を ひとつ ください',
-        hint: 'Benda + wo + Kuantitas + kudasai.'
+        "id": "n5-u1-l3-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the Japanese sentence: \"Minta air satu porsi.\"",
+        "options": [
+          "みず",
+          "を",
+          "ひとつ",
+          "ください"
+        ],
+        "answer": "みず を ひとつ ください",
+        "hint": "Object + wo + Quantity + kudasai."
       },
       {
-        id: 'n5-u1-l3-q5',
-        type: 'typing',
-        questionText: 'Ketik dalam Hiragana cara membaca Kanji air berikut: 水',
-        options: [],
-        answer: 'みず',
-        hint: 'Dilafalkan sebagai "mizu".'
+        "id": "n5-u1-l3-q5",
+        "type": "typing",
+        "questionText": "Type in Hiragana the reading of the following air Kanji: 水",
+        "options": [],
+        "answer": "みず",
+        "hint": "Pronounced as \"mizu\"."
       }
     ]
   },
   {
-    id: 'n5-u1-l4',
-    level: 'N5',
-    unitId: 'n5-u1',
-    unitTitle: 'Unit 1: Ordering Food & Drinks at a Restaurant 🎌',
-    unitDescription: 'Master how to order food/drinks politely in a Japanese restaurant.',
-    unitColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    title: 'Making Ordering Sentences',
-    description: 'Learn kudasai, kore wa nan desu ka, and onegaishimasu sentence patterns.',
-    expReward: 20,
-    icon: '🗣️',
-    badge: 'Percakapan',
-    questions: [
+    "id": "n5-u1-l4",
+    "level": "N5",
+    "unitId": "n5-u1",
+    "unitTitle": "Unit 1: Ordering Food & Drinks at a Restaurant 🎌",
+    "unitDescription": "Master how to order food/drinks politely in a Japanese restaurant.",
+    "unitColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    "title": "Making Ordering Sentences",
+    "description": "Learn kudasai, kore wa nan desu ka, and onegaishimasu sentence patterns.",
+    "expReward": 20,
+    "icon": "🗣️",
+    "badge": "Conversation",
+    "questions": [
       {
-        id: 'n5-u1-l4-q1',
-        type: 'multiple-choice',
-        questionText: 'Manakah pola kalimat tanya yang tepat untuk menanyakan "Ini apa?"',
-        options: ['これはなんですか', 'これをください', 'これをお願いします', 'これはいくらですか'],
-        answer: 'これはなんですか',
-        hint: 'Kore wa (ini adalah) + nan (apa) + desu ka (tanya).'
+        "id": "n5-u1-l4-q1",
+        "type": "multiple-choice",
+        "questionText": "Which question sentence pattern is correct to ask \"What is this?\"",
+        "options": [
+          "これはなんですか",
+          "これをください",
+          "これをお願いします",
+          "これはいくらですか"
+        ],
+        "answer": "これはなんですか",
+        "hint": "Kore wa (this is) + nan (what) + desu ka (question)."
       },
       {
-        id: 'n5-u1-l4-q2',
-        type: 'multiple-choice',
-        questionText: 'Jika ingin meminta sesuatu dengan nuansa yang sangat halus dan sopan, akhiran manakah yang ditambahkan?',
-        options: ['をお願いします (wo onegaishimasu)', 'をください (wo kudasai)', 'はなんですか (wa nan desu ka)', 'はいくらですか (wa ikura desu ka)'],
-        answer: 'をお願いします (wo onegaishimasu)',
-        hint: 'Onegaishimasu memberikan tingkat kesopanan yang lebih tinggi di restoran/toko.'
+        "id": "n5-u1-l4-q2",
+        "type": "multiple-choice",
+        "questionText": "If you want to request something politely, which suffix is added?",
+        "options": [
+          "をお願いします (wo onegaishimasu)",
+          "をください (wo kudasai)",
+          "はなんですか (wa nan desu ka)",
+          "はいくらですか (wa ikura desu ka)"
+        ],
+        "answer": "をお願いします (wo onegaishimasu)",
+        "hint": "Onegaishimasu provides a higher level of politeness at restaurants/shops."
       },
       {
-        id: 'n5-u1-l4-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi kalimat memesan ramen: \n「ラーメン ___ お願いします。」',
-        options: ['を', 'は', 'が', 'に'],
-        answer: 'を',
-        hint: 'Sama seperti kudasai, onegaishimasu diawali partikel objek を.'
+        "id": "n5-u1-l4-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Complete the sentence to order ramen: \n「ラーメン ___ お願いします。」",
+        "options": [
+          "を",
+          "は",
+          "が",
+          "に"
+        ],
+        "answer": "を",
+        "hint": "Just like kudasai, onegaishimasu is preceded by the object particle を."
       },
       {
-        id: 'n5-u1-l4-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat bahasa Jepang: "Tolong berikan ini (sambil menunjuk menu)."',
-        options: ['これ', 'を', 'ください'],
-        answer: 'これ を ください',
-        hint: 'Kore (ini) + wo + kudasai.'
+        "id": "n5-u1-l4-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the Japanese sentence: \"Please give me this (while pointing at the menu).\"",
+        "options": [
+          "これ",
+          "を",
+          "ください"
+        ],
+        "answer": "これ を ください",
+        "hint": "Kore (this) + wo + kudasai."
       },
       {
-        id: 'n5-u1-l4-q5',
-        type: 'typing',
-        questionText: 'Ketik ejaan romaji huruf kecil semua untuk kata penunjuk dekat "Ini":',
-        options: [],
-        answer: 'kore',
-        hint: 'Ditulis dengan empat huruf Romaji.'
+        "id": "n5-u1-l4-q5",
+        "type": "typing",
+        "questionText": "Type the lowercase Romaji spelling for the demonstrative pronoun \"Ini\":",
+        "options": [],
+        "answer": "kore",
+        "hint": "Written with four Romaji letters."
       }
     ]
   },
   {
-    id: 'n5-u1-l5',
-    level: 'N5',
-    unitId: 'n5-u1',
-    unitTitle: 'Unit 1: Ordering Food & Drinks at a Restaurant 🎌',
-    unitDescription: 'Master how to order food/drinks politely in a Japanese restaurant.',
-    unitColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    title: 'Unit 1 Final Challenge',
-    description: 'Final synthesis of all materials on ordering food and drinks in a restaurant.',
-    expReward: 30,
-    icon: '🏆',
-    badge: 'Sintesis',
-    questions: [
+    "id": "n5-u1-l5",
+    "level": "N5",
+    "unitId": "n5-u1",
+    "unitTitle": "Unit 1: Ordering Food & Drinks at a Restaurant 🎌",
+    "unitDescription": "Master how to order food/drinks politely in a Japanese restaurant.",
+    "unitColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    "title": "Unit 1 Final Challenge",
+    "description": "Final synthesis of all materials on ordering food and drinks in a restaurant.",
+    "expReward": 30,
+    "icon": "🏆",
+    "badge": "Synthesis",
+    "questions": [
       {
-        id: 'n5-u1-l5-q1',
-        type: 'multiple-choice',
-        questionText: 'Manakah kalimat yang tepat untuk mengatakan "Tolong berikan air" di restoran?',
-        options: ['みずをください', 'おちゃをください', 'これをください', 'コーヒーをください'],
-        answer: 'みずをください',
-        hint: 'みず (Mizu) berarti air, sedangkan "をください" (wo kudasai) digunakan untuk meminta sesuatu.'
+        "id": "n5-u1-l5-q1",
+        "type": "multiple-choice",
+        "questionText": "Which sentence is correct to say \"Tolong berikan air\" at a restaurant?",
+        "options": [
+          "みずをください",
+          "おちゃをください",
+          "これをください",
+          "コーヒーをください"
+        ],
+        "answer": "みずをください",
+        "hint": "Mizu means water, while \"wo kudasai\" is used to request something."
       },
       {
-        id: 'n5-u1-l5-q2',
-        type: 'multiple-choice',
-        questionText: 'Apakah arti dari kosakata katakana "コーヒー" (koohii)?',
-        options: ['Kopi', 'Teh Hijau', 'Air', 'Susu'],
-        answer: 'Kopi',
-        hint: 'コーヒー (koohii) adalah kata serapan Katakana dari bahasa Inggris "coffee".'
+        "id": "n5-u1-l5-q2",
+        "type": "multiple-choice",
+        "questionText": "What is the meaning of the Katakana vocabulary \"コーヒー\" (koohii)?",
+        "options": [
+          "Coffee",
+          "Green Tea",
+          "Water",
+          "Milk"
+        ],
+        "answer": "Coffee",
+        "hint": "コーヒー (koohii) is a Katakana loanword from English \"coffee\"."
       },
       {
-        id: 'n5-u1-l5-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Pilihlah partikel penanda objek yang tepat untuk melengkapi pesanan Sushi berikut: \n「すし ___ ください。」',
-        options: ['を', 'は', 'が', 'に'],
-        answer: 'を',
-        hint: 'Partikel を (o/wo) berfungsi sebagai penanda objek penderita dari tindakan meminta.'
+        "id": "n5-u1-l5-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Choose the correct object marker particle to complete the following Sushi order: \n「すし ___ ください。」",
+        "options": [
+          "を",
+          "は",
+          "が",
+          "に"
+        ],
+        "answer": "を",
+        "hint": "The particle を (o/wo) functions as a direct object marker for the action of requesting."
       },
       {
-        id: 'n5-u1-l5-q4',
-        type: 'multiple-choice',
-        questionText: 'Apakah arti yang tepat untuk kosakata bahasa Jepang berikut: 「すし」?',
-        options: ['Sushi', 'Kopi', 'Ramen', 'Air'],
-        answer: 'Sushi',
-        hint: 'Nasi kepal khas Jepang dengan ikan mentah.'
+        "id": "n5-u1-l5-q4",
+        "type": "multiple-choice",
+        "questionText": "What is the correct meaning for the following Japanese vocabulary: 「すし」?",
+        "options": [
+          "Sushi",
+          "Coffee",
+          "Ramen",
+          "Water"
+        ],
+        "answer": "Sushi",
+        "hint": "Typical Japanese vinegared rice topped with raw fish."
       },
       {
-        id: 'n5-u1-l5-q5',
-        type: 'multiple-choice',
-        questionText: 'Anda ingin menanyakan makanan tidak dikenal yang dihidangkan oleh pelayan di meja Anda. Kalimat tanya manakah yang paling tepat?',
-        options: ['これはなんですか', 'これはみずですか', 'これをください', 'これはいくらですか'],
-        answer: 'これはなんですか',
-        hint: 'Pola kalimat "これはなんですか" digunakan untuk menanyakan "Ini apa?".'
+        "id": "n5-u1-l5-q5",
+        "type": "multiple-choice",
+        "questionText": "You want to ask about an unknown food served by the waiter at your table. Which question is most appropriate?",
+        "options": [
+          "これはなんですか",
+          "これはみずですか",
+          "これをください",
+          "これはいくらですか"
+        ],
+        "answer": "これはなんですか",
+        "hint": "The sentence pattern \"これはなんですか\" is used to ask \"What is this?\"."
       },
       {
-        id: 'n5-u1-l5-q6',
-        type: 'sentence-builder',
-        questionText: 'Susunlah kata-kata acak berikut menjadi kalimat permohonan yang tepat: "Tolong berikan ini." (Memesan dengan menunjuk menu langsung)',
-        options: ['ください', 'を', 'これ'],
-        answer: 'これ を ください',
-        hint: 'Struktur kalimat: これ (Ini) + を (wo) + ください (kudasai).'
+        "id": "n5-u1-l5-q6",
+        "type": "sentence-builder",
+        "questionText": "Arrange the scrambled words below into the correct request sentence: \"Please give me this.\" (Ordering by pointing at the menu directly)",
+        "options": [
+          "ください",
+          "を",
+          "これ"
+        ],
+        "answer": "これ を ください",
+        "hint": "Sentence structure: これ (this) + を (wo) + ください (kudasai)."
       },
       {
-        id: 'n5-u1-l5-q7',
-        type: 'multiple-choice',
-        questionText: 'Manakah cara baca kunyomi yang tepat untuk karakter Kanji air berikut: "水"?',
-        options: ['みず (mizu)', 'おちゃ (ocha)', 'ごはん (gohan)', 'おにく (oniku)'],
-        answer: 'みず (mizu)',
-        hint: 'Karakter Kanji "水" dibaca sebagai "mizu".'
+        "id": "n5-u1-l5-q7",
+        "type": "multiple-choice",
+        "questionText": "Which is the correct Kunyomi reading for the following air Kanji: \"水\"?",
+        "options": [
+          "みず (mizu)",
+          "おちゃ (ocha)",
+          "ごはん (gohan)",
+          "おにく (oniku)"
+        ],
+        "answer": "みず (mizu)",
+        "hint": "The Kanji character \"水\" is read as \"mizu\"."
       },
       {
-        id: 'n5-u1-l5-q8',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi bagian rumpang berikut saat ingin memesan ramen sebanyak "dua mangkuk/porsi": \n「ラーメンを ___ ください。」',
-        options: ['ひとつ', 'ふたつ', 'みっつ', 'よっつ'],
-        answer: 'ふたつ',
-        hint: 'Kata bantu hitung benda: ひとつ (1), ふたつ (2), みっつ (3).'
+        "id": "n5-u1-l5-q8",
+        "type": "fill-in-the-blank",
+        "questionText": "Fill in the blank to order \"dua mangkuk/porsi\" of ramen: \n「ラーメンを ___ ください。」",
+        "options": [
+          "ひとつ",
+          "ふたつ",
+          "みっつ",
+          "よっつ"
+        ],
+        "answer": "ふたつ",
+        "hint": "Object counter: ひとつ (1), ふたつ (2), みっつ (3)."
       },
       {
-        id: 'n5-u1-l5-q9',
-        type: 'sentence-builder',
-        questionText: 'Susunlah potongan kata acak berikut menjadi kalimat pesanan: "Tolong ramen satu porsi."',
-        options: ['ください', 'を', 'ひとつ', 'ラーメン'],
-        answer: 'ラーメン を ひとつ ください',
-        hint: 'Pola kuantitas pesanan: [Makanan] + を + [Kuantitas] + ください.'
+        "id": "n5-u1-l5-q9",
+        "type": "sentence-builder",
+        "questionText": "Arrange the scrambled words below into the order sentence: \"Tolong ramen satu porsi.\"",
+        "options": [
+          "ください",
+          "を",
+          "ひとつ",
+          "ラーメン"
+        ],
+        "answer": "ラーメン を ひとつ ください",
+        "hint": "Order quantity pattern: [Food] + を + [Quantity] + ください."
       },
       {
-        id: 'n5-u1-l5-q10',
-        type: 'multiple-choice',
-        questionText: 'Jika Anda ingin memesan hidangan dengan kalimat yang sangat sopan dan formal seperti "Tolong / Mohon berikan ini", ungkapan manakah yang paling tepat?',
-        options: ['これをください', 'これをお願いします', 'これはなんですか', 'これと整いです'],
-        answer: 'これをお願いします',
-        hint: 'Frasa "をお願いします" (wo onegaishimasu) jauh lebih formal dan santun.'
-      }
-    ]
-  },
-
-  // ==========================================
-  // UNIT 2: BERBELANJA KEBUTUHAN DI MINIMARKET
-  // ==========================================
-  {
-    id: 'n5-u2-l1',
-    level: 'N5',
-    unitId: 'n5-u2',
-    unitTitle: 'Unit 2: Shopping for Needs at a Convenience Store (Konbini) 🏪',
-    unitDescription: 'Master how to shop at a Japanese convenience store.',
-    unitColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    title: 'Convenience Store Vocabulary',
-    description: 'Learn the words for ocha, bento, fukuro, and convenience store items.',
-    expReward: 20,
-    icon: '🏪',
-    badge: 'Kosakata',
-    questions: [
-      {
-        id: 'n5-u2-l1-q1',
-        type: 'multiple-choice',
-        questionText: 'Apa arti dari kosakata minimarket "おかんじょう" (okanjo)?',
-        options: ['Tagihan / Kasir', 'Kantong Belanja', 'Nasi Kotak', 'Teh Hijau'],
-        answer: 'Tagihan / Kasir',
-        hint: 'Digunakan saat menyatakan pembayaran atau menanyakan total tagihan.'
-      },
-      {
-        id: 'n5-u2-l1-q2',
-        type: 'multiple-choice',
-        questionText: 'Apakah terjemahan dari kata "お弁当" (obento)?',
-        options: ['Nasi Kotak / Bekal Makanan', 'Kantong Belanja', 'Kasir Pembayaran', 'Teh Jepang'],
-        answer: 'Nasi Kotak / Bekal Makanan',
-        hint: 'Makanan praktis yang sangat populer dijual di Konbini.'
-      },
-      {
-        id: 'n5-u2-l1-q3',
-        type: 'listening',
-        questionText: 'Dengarkan audio berikut dan tentukan arti kata yang diucapkan!',
-        audioText: 'ふくろ',
-        options: ['Kantong plastik / kantong belanja', 'Nasi kotak', 'Teh', 'Tagihan kasir'],
-        answer: 'Kantong plastik / kantong belanja',
-        hint: 'Fukuro berarti kantong pembungkus.'
-      },
-      {
-        id: 'n5-u2-l1-q4',
-        type: 'multiple-choice',
-        questionText: 'Manakah penulisan Kanji yang tepat untuk mata uang Jepang "Yen"?',
-        options: ['円', '百', '千', '万'],
-        answer: '円',
-        hint: 'Yen digambarkan sebagai lingkaran Kanji "en" (円).'
-      },
-      {
-        id: 'n5-u2-l1-q5',
-        type: 'typing',
-        questionText: 'Ketik arti bahasa Indonesia dari "お茶" (ocha):',
-        options: [],
-        answer: 'teh',
-        hint: 'Minuman teh hijau tawar yang menyehatkan.'
+        "id": "n5-u1-l5-q10",
+        "type": "multiple-choice",
+        "questionText": "If you want to order a dish with a highly polite and formal sentence like \"Tolong / Mohon berikan ini\", which expression is most appropriate?",
+        "options": [
+          "これをください",
+          "これをお願いします",
+          "これはなんですか",
+          "これと整いです"
+        ],
+        "answer": "これをお願いします",
+        "hint": "The phrase \"をお願いします\" (wo onegaishimasu) is much more formal and polite."
       }
     ]
   },
   {
-    id: 'n5-u2-l2',
-    level: 'N5',
-    unitId: 'n5-u2',
-    unitTitle: 'Unit 2: Shopping for Needs at a Convenience Store (Konbini) 🏪',
-    unitDescription: 'Master how to shop at a Japanese convenience store.',
-    unitColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    title: 'Demonstrative Pronouns',
-    description: 'Learn the words kore, sore, and are.',
-    expReward: 20,
-    icon: '👉',
-    badge: 'Grammar',
-    questions: [
+    "id": "n5-u2-l1",
+    "level": "N5",
+    "unitId": "n5-u2",
+    "unitTitle": "Unit 2: Shopping for Needs at a Convenience Store (Konbini) 🏪",
+    "unitDescription": "Master how to shop at a Japanese convenience store.",
+    "unitColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    "title": "Convenience Store Vocabulary",
+    "description": "Learn the words for ocha, bento, fukuro, and convenience store items.",
+    "expReward": 20,
+    "icon": "🏪",
+    "badge": "Vocabulary",
+    "questions": [
       {
-        id: 'n5-u2-l2-q1',
-        type: 'multiple-choice',
-        questionText: 'Manakah kata penunjuk untuk benda yang jauh dari pembicara dan lawan pembicara (Itu di sana)?',
-        options: ['これ (kore)', 'それ (sore)', 'あれ (are)', 'どれ (dore)'],
-        answer: 'あれ (are)',
-        hint: 'Kore (dekat pembicara), sore (dekat lawan bicara), are (jauh dari keduanya).'
+        "id": "n5-u2-l1-q1",
+        "type": "multiple-choice",
+        "questionText": "What is the meaning of the convenience store vocabulary \"おかんじょう\" (okanjo)?",
+        "options": [
+          "Bill / Cashier",
+          "Shopping Bag",
+          "Lunch Box (Bento)",
+          "Green Tea"
+        ],
+        "answer": "Bill / Cashier",
+        "hint": "Used when making payment or asking for the total bill."
       },
       {
-        id: 'n5-u2-l2-q2',
-        type: 'multiple-choice',
-        questionText: 'Kata penunjuk "それ" (sore) digunakan untuk menunjuk benda yang...',
-        options: ['Dekat dengan lawan bicara', 'Dekat dengan pembicara', 'Jauh dari pembicara & lawan bicara', 'Tidak terlihat'],
-        answer: 'Dekat dengan lawan bicara',
-        hint: 'Sore tertuju pada ranah lawan bicara.'
+        "id": "n5-u2-l1-q2",
+        "type": "multiple-choice",
+        "questionText": "What is the translation of the word \"お弁当\" (obento)?",
+        "options": [
+          "Lunch Box (Bento)",
+          "Shopping Bag",
+          "Cashier Payment",
+          "Japanese Tea"
+        ],
+        "answer": "Lunch Box (Bento)",
+        "hint": "A highly popular convenience store bento box."
       },
       {
-        id: 'n5-u2-l2-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi dengan kata penunjuk yang tepat saat memegang benda di tangan Anda: \n「___は私のです。(Ini adalah milik saya.)」',
-        options: ['これ', 'それ', 'あれ', 'どれ'],
-        answer: 'これ',
-        hint: 'Gunakan kore saat benda berada dekat/dalam genggaman pembicara.'
+        "id": "n5-u2-l1-q3",
+        "type": "listening",
+        "questionText": "Listen to the following audio and determine the meaning of the word spoken!",
+        "audioText": "ふくろ",
+        "options": [
+          "Plastic bag / Shopping bag",
+          "Nasi kotak",
+          "Tea",
+          "Cashier bill"
+        ],
+        "answer": "Plastic bag / Shopping bag",
+        "hint": "Fukuro means wrapping bag/shopping bag."
       },
       {
-        id: 'n5-u2-l2-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat bahasa Jepang: "Itu adalah air."',
-        options: ['それ', 'は', 'みず', 'です'],
-        answer: 'それ は みず です',
-        hint: 'Sore (itu) + wa + mizu + desu.'
+        "id": "n5-u2-l1-q4",
+        "type": "multiple-choice",
+        "questionText": "Which is the correct Kanji writing for the Japanese currency \"Yen\"?",
+        "options": [
+          "円",
+          "百",
+          "千",
+          "万"
+        ],
+        "answer": "円",
+        "hint": "Yen is represented by the circle Kanji \"en\" (円)."
       },
       {
-        id: 'n5-u2-l2-q5',
-        type: 'typing',
-        questionText: 'Ketik ejaan romaji huruf kecil semua untuk kata penunjuk jauh "Itu di sana":',
-        options: [],
-        answer: 'are',
-        hint: 'Ditulis dengan tiga huruf Romaji.'
+        "id": "n5-u2-l1-q5",
+        "type": "typing",
+        "questionText": "Type the English translation of \"お茶\" (ocha):",
+        "options": [],
+        "answer": "tea",
+        "hint": "Healthy unsweetened green tea drink."
       }
     ]
   },
   {
-    id: 'n5-u2-l3',
-    level: 'N5',
-    unitId: 'n5-u2',
-    unitTitle: 'Unit 2: Shopping for Needs at a Convenience Store (Konbini) 🏪',
-    unitDescription: 'Master how to shop at a Japanese convenience store.',
-    unitColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    title: 'Numbers & Prices',
-    description: 'Learn the words ikura, en, hyaku, and sen.',
-    expReward: 20,
-    icon: '💴',
-    badge: 'Hitungan',
-    questions: [
+    "id": "n5-u2-l2",
+    "level": "N5",
+    "unitId": "n5-u2",
+    "unitTitle": "Unit 2: Shopping for Needs at a Convenience Store (Konbini) 🏪",
+    "unitDescription": "Master how to shop at a Japanese convenience store.",
+    "unitColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    "title": "Demonstrative Pronouns",
+    "description": "Learn the words kore, sore, and are.",
+    "expReward": 20,
+    "icon": "👉",
+    "badge": "Grammar",
+    "questions": [
       {
-        id: 'n5-u2-l3-q1',
-        type: 'multiple-choice',
-        questionText: 'Manakah kata tanya yang digunakan untuk menanyakan harga barang (Berapa)?',
-        options: ['いくら (ikura)', 'どこ (doko)', 'なん (nan)', 'いつ (itsu)'],
-        answer: 'いくら (ikura)',
-        hint: 'Ikura desu ka berarti berapa harganya.'
+        "id": "n5-u2-l2-q1",
+        "type": "multiple-choice",
+        "questionText": "Which demonstrative pronoun is used for an object far from both the speaker and the listener (Itu di sana)?",
+        "options": [
+          "これ (kore)",
+          "それ (sore)",
+          "あれ (are)",
+          "どれ (dore)"
+        ],
+        "answer": "あれ (are)",
+        "hint": "Kore (near speaker), sore (near listener), are (far from both)."
       },
       {
-        id: 'n5-u2-l3-q2',
-        type: 'multiple-choice',
-        questionText: 'Apakah arti dari Kanji ratusan "百" (hyaku) dan ribuan "千" (sen)?',
-        options: ['100 dan 1000', '10 dan 100', '1000 dan 10000', '1 dan 10'],
-        answer: '100 dan 1000',
-        hint: 'Hyaku dibaca sebagai 100, sedangkan Sen dibaca 1000.'
+        "id": "n5-u2-l2-q2",
+        "type": "multiple-choice",
+        "questionText": "The demonstrative pronoun \"それ\" (sore) is used to point to an object that is...",
+        "options": [
+          "Near the listener",
+          "Near the speaker",
+          "Far from both speaker & listener",
+          "Invisible"
+        ],
+        "answer": "Near the listener",
+        "hint": "Sore refers to the listener's domain."
       },
       {
-        id: 'n5-u2-l3-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi kalimat tanya harga berikut: \n「これはいくら___か。」',
-        options: ['です', 'ます', 'ください', 'の'],
-        answer: 'です',
-        hint: 'Gunakan kopula desu untuk mengakhiri kalimat nominal.'
+        "id": "n5-u2-l2-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Fill in the correct demonstrative pronoun when holding an object in your hand: \n「___は私のです。(This is mine.)」",
+        "options": [
+          "これ",
+          "それ",
+          "あれ",
+          "どれ"
+        ],
+        "answer": "これ",
+        "hint": "Use kore when the object is near or in the speaker's hand."
       },
       {
-        id: 'n5-u2-l3-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat bahasa Jepang: "Bento ini 500 Yen."',
-        options: ['この', 'お弁当', 'は', '五百円', 'です'],
-        answer: 'この お弁当 は 五百円 です',
-        hint: 'Kono obento wa gohyaku-en desu.'
+        "id": "n5-u2-l2-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the Japanese sentence: \"That is water.\"",
+        "options": [
+          "それ",
+          "は",
+          "みず",
+          "です"
+        ],
+        "answer": "それ は みず です",
+        "hint": "Sore (that) + wa + mizu (water) + desu."
       },
       {
-        id: 'n5-u2-l3-q5',
-        type: 'typing',
-        questionText: 'Ketik dalam Romaji huruf kecil semua padanan mata uang Yen Jepang (円):',
-        options: [],
-        answer: 'en',
-        hint: 'Ejaan Romajinya dibaca sebagai "en".'
+        "id": "n5-u2-l2-q5",
+        "type": "typing",
+        "questionText": "Type the lowercase Romaji spelling for the far demonstrative pronoun \"Itu di sana\":",
+        "options": [],
+        "answer": "are",
+        "hint": "Written with three Romaji letters."
       }
     ]
   },
   {
-    id: 'n5-u2-l4',
-    level: 'N5',
-    unitId: 'n5-u2',
-    unitTitle: 'Unit 2: Shopping for Needs at a Convenience Store (Konbini) 🏪',
-    unitDescription: 'Master how to shop at a Japanese convenience store.',
-    unitColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    title: 'Payment Methods',
-    description: 'Learn the words okanjo, kaikei, and payment actions.',
-    expReward: 20,
-    icon: '💳',
-    badge: 'Transaksi',
-    questions: [
+    "id": "n5-u2-l3",
+    "level": "N5",
+    "unitId": "n5-u2",
+    "unitTitle": "Unit 2: Shopping for Needs at a Convenience Store (Konbini) 🏪",
+    "unitDescription": "Master how to shop at a Japanese convenience store.",
+    "unitColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    "title": "Numbers & Prices",
+    "description": "Learn the words ikura, en, hyaku, and sen.",
+    "expReward": 20,
+    "icon": "💴",
+    "badge": "Counting",
+    "questions": [
       {
-        id: 'n5-u2-l4-q1',
-        type: 'multiple-choice',
-        questionText: 'Kosakata manakah yang digunakan untuk meminta tagihan pembayaran di kasir konbini?',
-        options: ['お会計 (okaikei)', 'お弁当 (obento)', 'お袋 (ofukuro)', 'お茶 (ocha)'],
-        answer: 'お会計 (okaikei)',
-        hint: 'Okaikei atau okanjo merujuk pada urusan pembayaran kasir.'
+        "id": "n5-u2-l3-q1",
+        "type": "multiple-choice",
+        "questionText": "Which question word is used to ask for the price of an item (How much)?",
+        "options": [
+          "いくら (ikura)",
+          "どこ (doko)",
+          "なん (nan)",
+          "いつ (itsu)"
+        ],
+        "answer": "いくら (ikura)",
+        "hint": "Ikura desu ka means how much is the price."
       },
       {
-        id: 'n5-u2-l4-q2',
-        type: 'multiple-choice',
-        questionText: 'Apa arti kata "お会計をお願いします" (Okaikei wo onegaishimasu)?',
-        options: ['Tolong total tagihannya / Mohon pembayarannya', 'Tolong berikan saya bento hangat', 'Mohon berikan kantong plastik', 'Tolong teh hangat satu'],
-        answer: 'Tolong total tagihannya / Mohon pembayarannya',
-        hint: 'Pola memesan tagihan/pembayaran sopan.'
+        "id": "n5-u2-l3-q2",
+        "type": "multiple-choice",
+        "questionText": "What is the meaning of the hundreds Kanji \"百\" (hyaku) and thousands Kanji \"千\" (sen)?",
+        "options": [
+          "100 and 1000",
+          "10 and 100",
+          "1000 and 10000",
+          "1 and 10"
+        ],
+        "answer": "100 and 1000",
+        "hint": "Hyaku is read as 100, while Sen is read as 1000."
       },
       {
-        id: 'n5-u2-l4-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi kalimat meminta kantong belanja plastik: \n「袋を ___ ください。」',
-        options: ['を', 'は', 'が', 'に'],
-        answer: 'を',
-        hint: 'Fukuro (kantong) adalah objek penderita tindakan meminta, sehingga gunakan partikel wo.'
+        "id": "n5-u2-l3-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Complete the following price question sentence: \n「これはいくら___か。」",
+        "options": [
+          "です",
+          "ます",
+          "ください",
+          "の"
+        ],
+        "answer": "です",
+        "hint": "Use the copula desu to end nominal sentences."
       },
       {
-        id: 'n5-u2-l4-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat bahasa Jepang: "Mohon pembayarannya (sopan)." ',
-        options: ['お会計', 'を', 'お願いします'],
-        answer: 'お会計 を お願いします',
-        hint: 'Okaikei + wo + onegaishimasu.'
+        "id": "n5-u2-l3-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the Japanese sentence: \"Bento ini 500 Yen.\"",
+        "options": [
+          "この",
+          "お弁当",
+          "は",
+          "五百円",
+          "です"
+        ],
+        "answer": "この お弁当 は 五百円 です",
+        "hint": "Kono obento wa gohyaku-en desu."
       },
       {
-        id: 'n5-u2-l4-q5',
-        type: 'typing',
-        questionText: 'Ketik dalam Hiragana cara membaca kata bekal makanan bento berikut: お弁当',
-        options: [],
-        answer: 'おべんとう',
-        hint: 'Ditulis dengan lima huruf Hiragana.'
+        "id": "n5-u2-l3-q5",
+        "type": "typing",
+        "questionText": "Type in lowercase Romaji the Japanese currency Yen (円):",
+        "options": [],
+        "answer": "en",
+        "hint": "The Romaji spelling is read as \"en\"."
       }
     ]
   },
   {
-    id: 'n5-u2-l5',
-    level: 'N5',
-    unitId: 'n5-u2',
-    unitTitle: 'Unit 2: Shopping for Needs at a Convenience Store (Konbini) 🏪',
-    unitDescription: 'Master how to shop at a Japanese convenience store.',
-    unitColor: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    title: 'Unit 2 Final Challenge',
-    description: 'Comprehensive final synthesis of transactions and shopping in convenience stores.',
-    expReward: 30,
-    icon: '🏆',
-    badge: 'Sintesis',
-    questions: [
+    "id": "n5-u2-l4",
+    "level": "N5",
+    "unitId": "n5-u2",
+    "unitTitle": "Unit 2: Shopping for Needs at a Convenience Store (Konbini) 🏪",
+    "unitDescription": "Master how to shop at a Japanese convenience store.",
+    "unitColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    "title": "Payment Methods",
+    "description": "Learn the words okanjo, kaikei, and payment actions.",
+    "expReward": 20,
+    "icon": "💳",
+    "badge": "Transactions",
+    "questions": [
       {
-        id: 'n5-u2-l5-q1',
-        type: 'multiple-choice',
-        questionText: 'Manakah kata penunjuk untuk benda yang jauh dari pembicara dan lawan pembicara (Itu di sana)?',
-        options: ['これ (kore)', 'それ (sore)', 'あれ (are)', 'どれ (dore)'],
-        answer: 'あれ (are)',
-        hint: 'Kore (dekat pembicara), sore (dekat lawan bicara), are (jauh dari keduanya).'
+        "id": "n5-u2-l4-q1",
+        "type": "multiple-choice",
+        "questionText": "Which vocabulary is used to request the bill at the convenience store register?",
+        "options": [
+          "お会計 (okaikei)",
+          "お弁当 (obento)",
+          "お袋 (ofukuro)",
+          "お茶 (ocha)"
+        ],
+        "answer": "お会計 (okaikei)",
+        "hint": "Okaikei or okanjo refers to the cashier payment."
       },
       {
-        id: 'n5-u2-l5-q2',
-        type: 'multiple-choice',
-        questionText: 'Apa arti dari kosakata minimarket "おかんじょう" (okanjo)?',
-        options: ['Tagihan / Kasir', 'Kantong Belanja', 'Nasi Kotak', 'Teh Hijau'],
-        answer: 'Tagihan / Kasir',
-        hint: 'Digunakan saat menyatakan pembayaran atau menanyakan total tagihan.'
+        "id": "n5-u2-l4-q2",
+        "type": "multiple-choice",
+        "questionText": "What is the meaning of \"お会計をお願いします\" (Okaikei wo onegaishimasu)?",
+        "options": [
+          "Please the total bill / payment",
+          "Please give me a warm bento",
+          "Please give me a plastic bag",
+          "Please one warm tea"
+        ],
+        "answer": "Please the total bill / payment",
+        "hint": "Polite pattern for requesting the bill/payment."
       },
       {
-        id: 'n5-u2-l5-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi kalimat tanya harga berikut: \n「これはいくら___か。」',
-        options: ['です', 'ます', 'ください', 'の'],
-        answer: 'です',
-        hint: 'Kalimat tanya nominal benda diakhiri kopula desu + partikel ka.'
+        "id": "n5-u2-l4-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Complete the sentence to request a plastic shopping bag: \n「袋を ___ ください。」",
+        "options": [
+          "を",
+          "は",
+          "が",
+          "に"
+        ],
+        "answer": "を",
+        "hint": "Fukuro (bag) is the object of the request action, so use the particle wo."
       },
       {
-        id: 'n5-u2-l5-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat bahasa Jepang yang tepat: "Bento ini 500 Yen."',
-        options: ['この', 'お弁当', 'は', '五百円', 'です'],
-        answer: 'この お弁当 は 五百円 です',
-        hint: 'Penyusunan: Kata tunjuk benda + Topik + Partikel wa + Harga + desu.'
+        "id": "n5-u2-l4-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the Japanese sentence: \"Please make the payment (polite).\"",
+        "options": [
+          "お会計",
+          "を",
+          "お願いします"
+        ],
+        "answer": "お会計 を お願いします",
+        "hint": "Okaikei + wo + onegaishimasu."
       },
       {
-        id: 'n5-u2-l5-q5',
-        type: 'typing',
-        questionText: 'Ketik dalam Romaji huruf kecil semua padanan mata uang Yen Jepang (円):',
-        options: [],
-        answer: 'en',
-        hint: 'Ejaan Romajinya dibaca sebagai "en".'
+        "id": "n5-u2-l4-q5",
+        "type": "typing",
+        "questionText": "Type in Hiragana the reading of the following bento lunch box word: お弁当",
+        "options": [],
+        "answer": "おべんとう",
+        "hint": "Written with five Hiragana letters."
       }
     ]
   },
-
-// ==========================================
-  // UNIT 3: MENYAPA ORANG BARU & MEMPERKENALKAN DIRI (JIKOSHOUKAI) 🤝
-  // ==========================================
+  {
+    "id": "n5-u2-l5",
+    "level": "N5",
+    "unitId": "n5-u2",
+    "unitTitle": "Unit 2: Shopping for Needs at a Convenience Store (Konbini) 🏪",
+    "unitDescription": "Master how to shop at a Japanese convenience store.",
+    "unitColor": "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+    "title": "Unit 2 Final Challenge",
+    "description": "Comprehensive final synthesis of transactions and shopping in convenience stores.",
+    "expReward": 30,
+    "icon": "🏆",
+    "badge": "Synthesis",
+    "questions": [
+      {
+        "id": "n5-u2-l5-q1",
+        "type": "multiple-choice",
+        "questionText": "Which demonstrative pronoun is used for an object far from both the speaker and the listener (Itu di sana)?",
+        "options": [
+          "これ (kore)",
+          "それ (sore)",
+          "あれ (are)",
+          "どれ (dore)"
+        ],
+        "answer": "あれ (are)",
+        "hint": "Kore (near speaker), sore (near listener), are (far from both)."
+      },
+      {
+        "id": "n5-u2-l5-q2",
+        "type": "multiple-choice",
+        "questionText": "What is the meaning of the convenience store vocabulary \"おかんじょう\" (okanjo)?",
+        "options": [
+          "Bill / Cashier",
+          "Shopping Bag",
+          "Lunch Box (Bento)",
+          "Green Tea"
+        ],
+        "answer": "Bill / Cashier",
+        "hint": "Used when making payment or asking for the total bill."
+      },
+      {
+        "id": "n5-u2-l5-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Complete the following price question sentence: \n「これはいくら___か。」",
+        "options": [
+          "です",
+          "ます",
+          "ください",
+          "の"
+        ],
+        "answer": "です",
+        "hint": "A nominal question sentence ends with the copula desu + particle ka."
+      },
+      {
+        "id": "n5-u2-l5-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the correct Japanese sentence: \"Bento ini 500 Yen.\"",
+        "options": [
+          "この",
+          "お弁当",
+          "は",
+          "五百円",
+          "です"
+        ],
+        "answer": "この お弁当 は 五百円 です",
+        "hint": "Word order: Demonstrative + Topic + Particle wa + Price + desu."
+      },
+      {
+        "id": "n5-u2-l5-q5",
+        "type": "typing",
+        "questionText": "Type in lowercase Romaji the Japanese currency Yen (円):",
+        "options": [],
+        "answer": "en",
+        "hint": "The Romaji spelling is read as \"en\"."
+      }
+    ]
+  },
   {
     "id": "n5-u3-l1",
     "level": "N5",
@@ -642,48 +857,67 @@ export const lessonsData: Lesson[] = [
     "description": "Kuasai kata-kata kunci perkenalan: hajimemashite, watashi, namae, dan dozo yoroshiku.",
     "expReward": 20,
     "icon": "🤝",
-    "badge": "Kosakata",
+    "badge": "Vocabulary",
     "questions": [
       {
         "id": "n5-u3-l1-q1",
         "type": "multiple-choice",
-        "questionText": "Ungkapan manakah yang diucapkan saat pertama kali menyapa seseorang dalam perkenalan diri?",
-        "options": ["はじめまして (hajimemashite)", "お元気ですか (o-genki desu ka)", "こんにちは (konnichiwa)", "ありがとうございます (arigatou gozaimasu)"],
+        "questionText": "Which phrase is spoken when greeting someone for the first time during a self-introduction?",
+        "options": [
+          "はじめまして (hajimemashite)",
+          "お元気ですか (o-genki desu ka)",
+          "こんにちは (konnichiwa)",
+          "ありがとうございます (arigatou gozaimasu)"
+        ],
         "answer": "はじめまして (hajimemashite)",
-        "hint": "Memiliki arti harfiah \"kita bertemu untuk pertama kalinya\"."
+        "hint": "Literally means \"we meet for the first time\"."
       },
       {
         "id": "n5-u3-l1-q2",
         "type": "typing",
-        "questionText": "Ketiklah ejaan Romaji huruf kecil semua untuk kata \"Saya\":",
+        "questionText": "Type the lowercase Romaji spelling for the word \"Saya\":",
         "options": [],
         "answer": "watashi",
-        "hint": "Ditulis dalam Hiragana: わたし."
+        "hint": "Written in Hiragana: わたし."
       },
       {
         "id": "n5-u3-l1-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio berikut dan pilih kata yang diucapkan!",
+        "questionText": "Listen to the audio and choose the word spoken!",
         "audioText": "なまえ",
-        "options": ["なまえ (namae)", "わたし (watashi)", "くに (kuni)", "ともだち (tomodachi)"],
+        "options": [
+          "なまえ (namae)",
+          "わたし (watashi)",
+          "くに (kuni)",
+          "ともだち (tomodachi)"
+        ],
         "answer": "なまえ (namae)",
-        "hint": "Memiliki arti \"nama\"."
+        "hint": "Means \"name\"."
       },
       {
         "id": "n5-u3-l1-q4",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi kalimat perkenalan diri berikut: \n「わたし ___ 田中 です。(Saya adalah Tanaka.)」",
-        "options": ["は", "を", "が", "に"],
+        "questionText": "Complete the self-introduction sentence: \n「わたし ___ 田anaka です。(I am Tanaka.)」",
+        "options": [
+          "は",
+          "を",
+          "が",
+          "に"
+        ],
         "answer": "は",
-        "hint": "Partikel penanda topik utama kalimat dibaca \"wa\"."
+        "hint": "The main topic marker particle is read as \"wa\"."
       },
       {
         "id": "n5-u3-l1-q5",
         "type": "sentence-builder",
-        "questionText": "Susunlah kalimat berikut menjadi: \"Mohon bimbingannya (Sopan).\"",
-        "options": ["どうぞ", "よろしく", "おねがいします"],
+        "questionText": "Arrange the sentence to mean: \"Please give me your guidance (Polite).\"",
+        "options": [
+          "どうぞ",
+          "よろしく",
+          "おねがいします"
+        ],
         "answer": "どうぞ よろしく おねがいします",
-        "hint": "Gabungkan kata \"douzo\" + \"yoroshiku\" + \"onegaishimasu\"."
+        "hint": "Combine the words \"douzo\" + \"yoroshiku\" + \"onegaishimasu\"."
       }
     ]
   },
@@ -698,48 +932,68 @@ export const lessonsData: Lesson[] = [
     "description": "Master the Kanji 人 (person) and 国 (country) and names of countries.",
     "expReward": 20,
     "icon": "🗻",
-    "badge": "Kanji & Negara",
+    "badge": "Kanji & Countries",
     "questions": [
       {
         "id": "n5-u3-l2-q1",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji \"人\" (orang)?",
-        "options": ["ひと (hito)", "じん (jin)", "にん (nin)", "くに (kuni)"],
+        "questionText": "Which is the correct Kunyomi reading for the Kanji \"人\" (person)?",
+        "options": [
+          "ひと (hito)",
+          "じん (jin)",
+          "にん (nin)",
+          "くに (kuni)"
+        ],
         "answer": "ひと (hito)",
-        "hint": "Digunakan saat berdiri sendiri sebagai kata benda orang."
+        "hint": "Used when standing alone as the noun for person."
       },
       {
         "id": "n5-u3-l2-q2",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah penulisan Katakana yang tepat untuk negara \"Indonesia\"?",
-        "options": ["インドネシア", "インド", "マレーシア", "アメリカ"],
+        "questionText": "Which is the correct Katakana spelling for the country \"Indonesia\"?",
+        "options": [
+          "インドネシア",
+          "インド",
+          "マレーシア",
+          "アメリカ"
+        ],
         "answer": "インドネシア",
-        "hint": "Negara kita tercinta ditulis dalam Katakana."
+        "hint": "The country name Indonesia written in Katakana."
       },
       {
         "id": "n5-u3-l2-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan audio negara berikut dan pilih tulisan Hiragana yang tepat!",
+        "questionText": "Listen to the audio pronunciation of the country and choose the correct Hiragana!",
         "audioText": "にほん",
-        "options": ["にほん", "インド", "アメリカ", "ちゅうごく"],
+        "options": [
+          "にほん",
+          "インド",
+          "アメリカ",
+          "ちゅうごく"
+        ],
         "answer": "にほん",
-        "hint": "Nama negara Jepang."
+        "hint": "The country name Japan."
       },
       {
         "id": "n5-u3-l2-q4",
         "type": "typing",
-        "questionText": "Ketik cara baca Kanji \"国\" (negara) dalam Romaji huruf kecil semua:",
+        "questionText": "Type the lowercase Romaji reading of the country Kanji \"国\":",
         "options": [],
         "answer": "kuni",
-        "hint": "Kunyomi dari Kanji negara."
+        "hint": "Kunyomi of the country Kanji."
       },
       {
         "id": "n5-u3-l2-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat bahasa Jepang: \"Saya orang Jepang (Nihon-jin).\"",
-        "options": ["わたし", "は", "日本人", "です"],
+        "questionText": "Arrange the Japanese sentence: \"I am Japanese (Nihon-jin).\"",
+        "options": [
+          "わたし",
+          "は",
+          "日本人",
+          "です"
+        ],
         "answer": "わたし は 日本人 です",
-        "hint": "Struktur: Saya + wa + Jepang-orang + desu."
+        "hint": "Structure: I + wa + Japanese-person + desu."
       }
     ]
   },
@@ -754,48 +1008,69 @@ export const lessonsData: Lesson[] = [
     "description": "Learn how to state country of origin and nationality using grammatical patterns.",
     "expReward": 20,
     "icon": "📝",
-    "badge": "Tata Bahasa",
+    "badge": "Grammar",
     "questions": [
       {
         "id": "n5-u3-l3-q1",
         "type": "multiple-choice",
-        "questionText": "Pola kalimat manakah yang tepat untuk menyatakan \"Saya datang dari Indonesia\"?",
-        "options": ["インドネシアから来ました", "インドネシアに行きます", "インドネシア人です", "インドネシアにいます"],
+        "questionText": "Which sentence pattern is correct to state \"I came from Indonesia\"?",
+        "options": [
+          "インドネシアから来ました",
+          "インドネシアに行きます",
+          "インドネシア人です",
+          "インドネシアにいます"
+        ],
         "answer": "インドネシアから来ました",
-        "hint": "Pola: [Tempat] + kara (dari) + kimashita (telah datang)."
+        "hint": "Pattern: [Place] + kara (from) + kimashita (came)."
       },
       {
         "id": "n5-u3-l3-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi akhiran kebangsaan untuk kalimat \"Dia adalah orang Amerika\": \n「かれはアメリカ___です。」",
-        "options": ["人 (jin)", "人 (hito)", "国 (kuni)", "語 (go)"],
+        "questionText": "Complete the nationality suffix for the sentence \"He is American\": \n「かれはアメリカ___です。」",
+        "options": [
+          "人 (jin)",
+          "人 (hito)",
+          "国 (kuni)",
+          "語 (go)"
+        ],
         "answer": "人 (jin)",
-        "hint": "Gunakan cara baca onyomi 'jin' (人) untuk menyatakan kebangsaan."
+        "hint": "Use the Onyomi reading 'jin' (人) to express nationality."
       },
       {
         "id": "n5-u3-l3-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan kalimat berikut dan pilih artinya yang paling tepat!",
+        "questionText": "Listen to the pronunciation of the sentence and choose its correct meaning!",
         "audioText": "わたしはインドネシアからきました",
-        "options": ["Saya datang dari Indonesia", "Saya pergi ke Indonesia", "Saya orang Indonesia", "Saya suka Indonesia"],
-        "answer": "Saya datang dari Indonesia",
-        "hint": "Frasa \"kara kimashita\" merujuk pada asal usul tempat."
+        "options": [
+          "I came from Indonesia",
+          "I am going to Indonesia",
+          "I am Indonesian",
+          "I like Indonesia"
+        ],
+        "answer": "I came from Indonesia",
+        "hint": "The phrase \"kara kimashita\" refers to the place of origin."
       },
       {
         "id": "n5-u3-l3-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Apakah Budi orang Jepang?\"",
-        "options": ["ブディさん", "は", "日本人", "です", "か"],
+        "questionText": "Arrange the sentence: \"Is Budi Japanese?\"",
+        "options": [
+          "ブディさん",
+          "は",
+          "日本人",
+          "です",
+          "か"
+        ],
         "answer": "ブディさん は 日本人 です か",
-        "hint": "Subjek + wa + Kebangsaan + desu + ka (partikel tanya)."
+        "hint": "Subject + wa + Nationality + desu + ka (question particle)."
       },
       {
         "id": "n5-u3-l3-q5",
         "type": "typing",
-        "questionText": "Ketiklah bentuk lampau formal sopan dari kata kerja \"datang\" (kuru -> telah datang) dalam Hiragana:",
+        "questionText": "Type the polite formal past tense of the verb \"datang\" (kuru -> has come) in Hiragana:",
         "options": [],
         "answer": "きました",
-        "hint": "Dilafalkan sebagai \"kimashita\"."
+        "hint": "Pronounced as \"kimashita\"."
       }
     ]
   },
@@ -810,48 +1085,67 @@ export const lessonsData: Lesson[] = [
     "description": "Practice two-way dialogue patterns often used when introducing yourself in Japan.",
     "expReward": 20,
     "icon": "🗣️",
-    "badge": "Percakapan",
+    "badge": "Conversation",
     "questions": [
       {
         "id": "n5-u3-l4-q1",
         "type": "multiple-choice",
-        "questionText": "Lawan bicara Anda berkata \"はじめまして。どうぞよろしく。\" Jawaban sopan apa yang harus Anda berikan?",
-        "options": ["こちらこそ、どうぞよろしくおねがいします (kochira koso, douzo yoroshiku onegaishimasu)", "ありがとうございます (arigatou gozaimasu)", "お元気ですか (o-genki desu ka)", "こんにちは (konnichiwa)"],
+        "questionText": "Your conversation partner says \"はじめまして。どうぞよろしく。\" What polite response should you give?",
+        "options": [
+          "こちらこそ、どうぞよろしくおねがいします (kochira koso, douzo yoroshiku onegaishimasu)",
+          "ありがとうございます (arigatou gozaimasu)",
+          "お元気ですか (o-genki desu ka)",
+          "こんにちは (konnichiwa)"
+        ],
         "answer": "こちらこそ、どうぞよろしくおねがいします (kochira koso, douzo yoroshiku onegaishimasu)",
-        "hint": "\"Kochira koso\" berarti \"saya pun juga/sama-sama\"."
+        "hint": "\"Kochira koso\" means \"likewise / same here\"."
       },
       {
         "id": "n5-u3-l4-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang berikut untuk menanyakan asal seseorang: \n「お国は ___ ですか。」",
-        "options": ["どちら", "だれ", "なん", "いくつ"],
+        "questionText": "Complete the blank to ask where someone is from: \n「お国は ___ ですか。」",
+        "options": [
+          "どちら",
+          "だれ",
+          "なん",
+          "いくつ"
+        ],
         "answer": "どちら",
-        "hint": "O-kuni wa dochira desu ka berarti \"Asal negaranya dari mana (sopan)?\""
+        "hint": "O-kuni wa dochira desu ka means \"Where is your country from (polite)?\""
       },
       {
         "id": "n5-u3-l4-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio dan pilihlah arti percakapan pendek berikut!",
+        "questionText": "Listen to the audio and choose the meaning of the short conversation!",
         "audioText": "おなまえは？わたしはブディです",
-        "options": ["Namamu siapa? Saya Budi", "Negaramu di mana? Indonesia", "Budi adalah teman saya", "Sampai jumpa, Budi"],
-        "answer": "Namamu siapa? Saya Budi",
-        "hint": "Menanyakan nama secara ringkas dalam percakapan akrab."
+        "options": [
+          "What is your name? I am Budi",
+          "Where is your country? Indonesia",
+          "Budi is my friend",
+          "Goodbye, Budi"
+        ],
+        "answer": "What is your name? I am Budi",
+        "hint": "Asking someone's name briefly in friendly/casual conversation."
       },
       {
         "id": "n5-u3-l4-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat dialog: \"Sama-sama, mohon bimbingannya.\"",
-        "options": ["こちらこそ", "よろしく", "お願いします"],
+        "questionText": "Arrange the dialogue sentence: \"Likewise, I look forward to working with you.\"",
+        "options": [
+          "こちらこそ",
+          "よろしく",
+          "お願いします"
+        ],
         "answer": "こちらこそ よろしく お願いします",
-        "hint": "Gunakan \"kochira koso\" di awal kalimat."
+        "hint": "Use \"kochira koso\" at the start of the sentence."
       },
       {
         "id": "n5-u3-l4-q5",
         "type": "typing",
-        "questionText": "Ketik dalam Hiragana cara membaca hormat/sopan untuk kata \"Negara\" yang diawali awalan o-:",
+        "questionText": "Type in Hiragana the polite honorific reading for \"Country\" prefixed with o-:",
         "options": [],
         "answer": "おくに",
-        "hint": "Tulis \"o-kuni\" dalam Hiragana."
+        "hint": "Write \"o-kuni\" in Hiragana."
       }
     ]
   },
@@ -866,95 +1160,139 @@ export const lessonsData: Lesson[] = [
     "description": "Test your self-introduction skills thoroughly to master Unit 3.",
     "expReward": 30,
     "icon": "🏆",
-    "badge": "Sintesis",
+    "badge": "Synthesis",
     "questions": [
       {
         "id": "n5-u3-l5-q1",
         "type": "multiple-choice",
-        "questionText": "Ungkapan manakah yang tepat diucapkan pertama kali saat perkenalan diri?",
-        "options": ["はじめまして (hajimemashite)", "こんにちは (konnichiwa)", "どうぞよろしく (douzo yoroshiku)", "さようなら (sayounara)"],
+        "questionText": "Which expression is appropriate to say first during a self-introduction?",
+        "options": [
+          "はじめまして (hajimemashite)",
+          "こんにちは (konnichiwa)",
+          "どうぞよろしく (douzo yoroshiku)",
+          "さようなら (sayounara)"
+        ],
         "answer": "はじめまして (hajimemashite)",
-        "hint": "Bermakna awal perkenalan."
+        "hint": "Means the beginning of an introduction."
       },
       {
         "id": "n5-u3-l5-q2",
         "type": "multiple-choice",
-        "questionText": "Apakah arti dari kalimat \"インドネシアから来ました\"?",
-        "options": ["Saya datang dari Indonesia", "Saya pergi ke Indonesia", "Saya orang Indonesia", "Saya lahir di Indonesia"],
-        "answer": "Saya datang dari Indonesia",
-        "hint": "Menggunakan pola asal tempat ~kara kimashita."
+        "questionText": "What is the meaning of the sentence \"インドネシアから来ました\"?",
+        "options": [
+          "I came from Indonesia",
+          "I am going to Indonesia",
+          "I am Indonesian",
+          "I was born in Indonesia"
+        ],
+        "answer": "I came from Indonesia",
+        "hint": "Using the place of origin pattern ~kara kimashita."
       },
       {
         "id": "n5-u3-l5-q3",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang berikut untuk menyatakan topik diri sendiri: \n「わたし ___ ブディです。」",
-        "options": ["は", "を", "が", "に"],
+        "questionText": "Complete the blank to state the topic about yourself: \n「わたし ___ ブディです。」",
+        "options": [
+          "は",
+          "を",
+          "が",
+          "に"
+        ],
         "answer": "は",
-        "hint": "Partikel penanda topik."
+        "hint": "Topic marker particle."
       },
       {
         "id": "n5-u3-l5-q4",
         "type": "multiple-choice",
-        "questionText": "Manakah Kanji yang tepat untuk kata \"orang\" (hito / jin)?",
-        "options": ["人", "国", "日", "本"],
+        "questionText": "Which is the correct Kanji for \"person\" (hito / jin)?",
+        "options": [
+          "人",
+          "国",
+          "日",
+          "本"
+        ],
         "answer": "人",
-        "hint": "Kanji berbentuk kaki orang melangkah."
+        "hint": "Kanji shaped like a person's legs walking."
       },
       {
         "id": "n5-u3-l5-q5",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah cara menyebut \"Orang Jepang\" secara formal?",
-        "options": ["日本人 (Nihon-jin)", "日本国 (Nihon-koku)", "日本 (Nihon)", "日人 (Hi-to)"],
+        "questionText": "How do you say \"Japanese person\" formally?",
+        "options": [
+          "日本人 (Nihon-jin)",
+          "日本国 (Nihon-koku)",
+          "日本 (Nihon)",
+          "日人 (Hi-to)"
+        ],
         "answer": "日本人 (Nihon-jin)",
-        "hint": "Negara Jepang + Kanji Orang."
+        "hint": "Japan + Kanji for Person."
       },
       {
         "id": "n5-u3-l5-q6",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat perkenalan: \"Nama saya adalah Budi.\"",
-        "options": ["わたし", "の", "なまえ", "は", "ブディ", "です"],
+        "questionText": "Arrange the self-introduction sentence: \"My name is Budi.\"",
+        "options": [
+          "わたし",
+          "の",
+          "なまえ",
+          "は",
+          "ブディ",
+          "です"
+        ],
         "answer": "わたし の なまえ は ブディ です",
-        "hint": "Saya + partikel milik + nama + wa + Budi + desu."
+        "hint": "I + possessive particle + name + wa + Budi + desu."
       },
       {
         "id": "n5-u3-l5-q7",
         "type": "listening",
-        "questionText": "Dengarkan audio and pilihlah negara asal pembicara!",
+        "questionText": "Listen to the audio and choose the speaker's country of origin!",
         "audioText": "わたしはアメリカからきました",
-        "options": ["Amerika", "Indonesia", "Jepang", "Cina"],
+        "options": [
+          "Amerika",
+          "Indonesia",
+          "Japan",
+          "Cina"
+        ],
         "answer": "Amerika",
         "hint": "Ditulis dalam Katakana: アメリカ."
       },
       {
         "id": "n5-u3-l5-q8",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi respon sopan dari perkenalan lawan bicara: \n「___、どうぞよろしくおねがいします。」",
-        "options": ["こちらこそ", "はじめまして", "ありがとう", "こんにちは"],
+        "questionText": "Complete the polite response to the other person's self-introduction: \n「___、どうぞよろしくおねがいします。」",
+        "options": [
+          "こちらこそ",
+          "はじめまして",
+          "ありがとう",
+          "こんにちは"
+        ],
         "answer": "こちらこそ",
-        "hint": "Artinya \"Saya juga\"."
+        "hint": "Means \"Me too / Likewise\"."
       },
       {
         "id": "n5-u3-l5-q9",
         "type": "sentence-builder",
-        "questionText": "Susunlah kalimat tanya berikut: \"Siapakah nama Anda? (Sopan)\"",
-        "options": ["お名前", "は", "何", "です", "か"],
+        "questionText": "Arrange the following question sentence: \"What is your name? (Polite)\"",
+        "options": [
+          "お名前",
+          "は",
+          "何",
+          "です",
+          "か"
+        ],
         "answer": "お名前 は 何 です か",
         "hint": "O-namae + wa + nan + desu + ka."
       },
       {
         "id": "n5-u3-l5-q10",
         "type": "typing",
-        "questionText": "Ketiklah padanan kata \"Negara\" dalam huruf Hiragana (tanpa awalan o-):",
+        "questionText": "Type the Hiragana equivalent of the word \"Country\" (without prefix o-):",
         "options": [],
         "answer": "くに",
-        "hint": "Ejaan Romaji adalah \"kuni\"."
+        "hint": "The Romaji spelling is \"kuni\"."
       }
     ]
   },
-
-  // ==========================================
-  // UNIT 4: MENANYAKAN JALAN DAN LOKASI (DOKO, TOILET, EKI) 🗺️
-  // ==========================================
   {
     "id": "n5-u4-l1",
     "level": "N5",
@@ -966,46 +1304,66 @@ export const lessonsData: Lesson[] = [
     "description": "Kuasai nama fasilitas umum penting: eki, toilet, konbini, hoteru, dan kata tunjuk soko/koko/asoko.",
     "expReward": 20,
     "icon": "🗺️",
-    "badge": "Kosakata",
+    "badge": "Vocabulary",
     "questions": [
       {
         "id": "n5-u4-l1-q1",
         "type": "multiple-choice",
-        "questionText": "Apakah arti dari fasilitas umum \"駅\" (eki)?",
-        "options": ["Stasiun", "Hotel", "Minimarket", "Rumah Sakit"],
-        "answer": "Stasiun",
-        "hint": "Tempat naik kereta densha."
+        "questionText": "What is the meaning of the public facility \"駅\" (eki)?",
+        "options": [
+          "Station",
+          "Hotel",
+          "Minimarket",
+          "Hospital"
+        ],
+        "answer": "Station",
+        "hint": "Place to board the train (densha)."
       },
       {
         "id": "n5-u4-l1-q2",
         "type": "typing",
-        "questionText": "Ketik ejaan katakana dari kata \"Toilet\" dalam bahasa Jepang:",
+        "questionText": "Type the Katakana spelling for the word \"Toilet\" in Japanese:",
         "options": [],
         "answer": "トイレ",
-        "hint": "Menggunakan tiga huruf Katakana: ト・イ・レ."
+        "hint": "Using three Katakana characters: ト・イ・レ."
       },
       {
         "id": "n5-u4-l1-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio lokasi berikut and pilih artinya!",
+        "questionText": "Listen to the audio location and choose its meaning!",
         "audioText": "ホテル",
-        "options": ["Hotel", "Stasiun", "Minimarket", "Taman"],
+        "options": [
+          "Hotel",
+          "Station",
+          "Minimarket",
+          "Park"
+        ],
         "answer": "Hotel",
-        "hint": "Kata serapan asing dari \"Hotel\"."
+        "hint": "Foreign loanword for \"Hotel\"."
       },
       {
         "id": "n5-u4-l1-q4",
         "type": "fill-in-the-blank",
-        "questionText": "Pilih kata tunjuk yang tepat untuk daerah dekat dengan lawan bicara: \n「___はコンビニです。(Di situ adalah minimarket.)」",
-        "options": ["そこ (soko)", "ここ (koko)", "あそこ (asoko)", "doko"],
+        "questionText": "Choose the correct demonstrative pronoun for the area near the listener: \n「___はコンビニです。(Di situ is the convenience store.)」",
+        "options": [
+          "そこ (soko)",
+          "ここ (koko)",
+          "あそこ (asoko)",
+          "doko"
+        ],
         "answer": "そこ (soko)",
-        "hint": "Koko (dekat saya), soko (dekat kamu), asoko (jauh dari kita)."
+        "hint": "Koko (near me), soko (near you), asoko (far from both of us)."
       },
       {
         "id": "n5-u4-l1-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Di sini adalah hotel.\"",
-        "options": ["ここ", "は", "ホテル", "です"],
+        "questionText": "Arrange the sentence: \"Here is a hotel.\"",
+        "options": [
+          "ここ",
+          "は",
+          "ホテル",
+          "です"
+        ],
         "answer": "ここ は ホテル です",
         "hint": "Koko (Di sini) + wa + hoteru + desu."
       }
@@ -1027,43 +1385,63 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u4-l2-q1",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji \"右\" (kanan)?",
-        "options": ["みぎ (migi)", "ひだり (hidari)", "うえ (ue)", "した (shita)"],
+        "questionText": "Which is the correct Kunyomi reading for the Kanji \"右\" (right)?",
+        "options": [
+          "みぎ (migi)",
+          "ひだり (hidari)",
+          "うえ (ue)",
+          "した (shita)"
+        ],
         "answer": "みぎ (migi)",
-        "hint": "Arah kanan, berlawanan dengan hidari."
+        "hint": "Right direction, opposite of hidari."
       },
       {
         "id": "n5-u4-l2-q2",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji \"左\" (kiri)?",
-        "options": ["ひだり (hidari)", "みぎ (migi)", "なか (naka)", "そと (soto)"],
+        "questionText": "Which is the correct Kunyomi reading for the Kanji \"左\" (left)?",
+        "options": [
+          "ひだり (hidari)",
+          "みぎ (migi)",
+          "なか (naka)",
+          "そと (soto)"
+        ],
         "answer": "ひだり (hidari)",
-        "hint": "Arah kiri."
+        "hint": "Left direction."
       },
       {
         "id": "n5-u4-l2-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan audio Kanji berikut dan tentukan artinya!",
+        "questionText": "Listen to the audio pronunciation of the Kanji and determine its meaning!",
         "audioText": "みぎ",
-        "options": ["Kanan", "Kiri", "Atas", "Bawah"],
+        "options": [
+          "Kanan",
+          "Kiri",
+          "Atas",
+          "Bawah"
+        ],
         "answer": "Kanan",
-        "hint": "Pelafalan dari kata \"migi\"."
+        "hint": "Pronunciation of the word \"migi\"."
       },
       {
         "id": "n5-u4-l2-q4",
         "type": "typing",
-        "questionText": "Ketiklah cara baca Hiragana dari Kanji stasiun berikut: 駅",
+        "questionText": "Type the Hiragana reading for the station Kanji: 駅",
         "options": [],
         "answer": "えき",
-        "hint": "Terdiri dari dua huruf Hiragana."
+        "hint": "Consists of two Hiragana letters."
       },
       {
         "id": "n5-u4-l2-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Stasiun ada di sebelah kanan.\"",
-        "options": ["駅", "は", "右", "です"],
+        "questionText": "Arrange the sentence: \"The station is on the right.\"",
+        "options": [
+          "駅",
+          "は",
+          "右",
+          "です"
+        ],
         "answer": "駅 は 右 です",
-        "hint": "Eki + wa + migi + desu."
+        "hint": "Eki (station) + wa + migi (right) + desu."
       }
     ]
   },
@@ -1078,48 +1456,69 @@ export const lessonsData: Lesson[] = [
     "description": "Learn grammatical patterns to ask for the location of a place politely.",
     "expReward": 20,
     "icon": "🧭",
-    "badge": "Tata Bahasa",
+    "badge": "Grammar",
     "questions": [
       {
         "id": "n5-u4-l3-q1",
         "type": "multiple-choice",
-        "questionText": "Pola kalimat manakah yang tepat untuk menanyakan \"Di mana toilet?\"",
-        "options": ["トイレはどこですか", "トイレはこれですか", "トイレはなんですか", "トイレがありますか"],
+        "questionText": "Which sentence pattern is correct to ask \"Where is the toilet?\"",
+        "options": [
+          "トイレはどこですか",
+          "トイレはこれですか",
+          "トイレはなんですか",
+          "トイレがありますか"
+        ],
         "answer": "トイレはどこですか",
-        "hint": "Menggunakan kata tanya doko (どこ) yang berarti di mana."
+        "hint": "Using the question word doko (where)."
       },
       {
         "id": "n5-u4-l3-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi partikel untuk melengkapi kalimat \"Hotel ada di sana\": \n「ホテルはあそこ ___ です。」",
-        "options": ["- (tanpa partikel/langsung desu)", "を", "に", "は"],
+        "questionText": "Complete the particle for the sentence \"The hotel is over there\": \n「ホテルはあそこ ___ です。」",
+        "options": [
+          "- (tanpa partikel/langsung desu)",
+          "を",
+          "に",
+          "は"
+        ],
         "answer": "- (tanpa partikel/langsung desu)",
-        "hint": "Setelah kata tunjuk arah/tempat seperti 'asoko', 'koko', 'soko' dapat langsung ditutup dengan 'desu'."
+        "hint": "After demonstrative pronouns of place like 'asoko', 'koko', 'soko', you can directly end with 'desu'."
       },
       {
         "id": "n5-u4-l3-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio dan pilihlah terjemahan yang paling tepat!",
+        "questionText": "Listen to the audio and choose the correct translation!",
         "audioText": "えきはどこですか",
-        "options": ["Stasiun ada di mana?", "Hotel ada di mana?", "Di mana minimarket?", "Apakah stasiun dekat?"],
-        "answer": "Stasiun ada di mana?",
-        "hint": "Eki berarti stasiun, doko desu ka berarti di mana."
+        "options": [
+          "Where is the station?",
+          "Where is the hotel?",
+          "Where is the convenience store?",
+          "Is the station nearby?"
+        ],
+        "answer": "Where is the station?",
+        "hint": "Eki means station, doko desu ka means where."
       },
       {
         "id": "n5-u4-l3-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat tanya: \"Di manakah stasiun?\"",
-        "options": ["駅", "は", "どこ", "です", "か"],
+        "questionText": "Arrange the question sentence: \"Where is the station?\"",
+        "options": [
+          "駅",
+          "は",
+          "どこ",
+          "です",
+          "か"
+        ],
         "answer": "駅 は どこ です か",
         "hint": "Eki + wa + doko + desu + ka."
       },
       {
         "id": "n5-u4-l3-q5",
         "type": "typing",
-        "questionText": "Ketiklah kata tanya \"di mana\" dalam Hiragana:",
+        "questionText": "Type the question word \"where\" in Hiragana:",
         "options": [],
         "answer": "どこ",
-        "hint": "Ejaan Romajinya adalah \"doko\"."
+        "hint": "The Romaji spelling is \"doko\"."
       }
     ]
   },
@@ -1134,48 +1533,70 @@ export const lessonsData: Lesson[] = [
     "description": "Practice conversations when lost on the street or asking locals for directions.",
     "expReward": 20,
     "icon": "🗣️",
-    "badge": "Percakapan",
+    "badge": "Conversation",
     "questions": [
       {
         "id": "n5-u4-l4-q1",
         "type": "multiple-choice",
-        "questionText": "Sebelum bertanya jalan kepada orang tidak dikenal, ucapan permisi/maaf apakah yang paling sopan digunakan?",
-        "options": ["すみません (sumimasen)", "ありがとう (arigatou)", "はじめまして (hajimemashite)", "さようなら (sayounara)"],
+        "questionText": "Before asking directions from a stranger, which excuse/apology is most politely used?",
+        "options": [
+          "すみません (sumimasen)",
+          "ありがとう (arigatou)",
+          "はじめまして (hajimemashite)",
+          "さようなら (sayounara)"
+        ],
         "answer": "すみません (sumimasen)",
-        "hint": "Digunakan untuk menarik perhatian dengan sopan sebelum bertanya."
+        "hint": "Used to politely get attention before asking."
       },
       {
         "id": "n5-u4-l4-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Seseorang bertanya arah dan Anda ingin menjawab \"Di sebelah kiri.\" Lengkapi kalimat rumpang berikut: \n「___です。」",
-        "options": ["左 (hidari)", "右 (migi)", "あそこ (asoko)", "doko"],
+        "questionText": "Someone asks for directions and you want to reply \"On the left.\" Complete the sentence: \n「___desu。」",
+        "options": [
+          "左 (hidari)",
+          "右 (migi)",
+          "あそこ (asoko)",
+          "doko"
+        ],
         "answer": "左 (hidari)",
-        "hint": "Kiri dibaca 'hidari' (左)."
+        "hint": "Left is read as 'hidari' (left)."
       },
       {
         "id": "n5-u4-l4-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio dan pilihlah terjemahan dialog pendek berikut!",
+        "questionText": "Listen to the audio and choose the translation of the short dialogue!",
         "audioText": "すみません、トイレはどこですか？あそこです。",
-        "options": ["Permisi, toilet di mana? Di sebelah sana.", "Permisi, stasiun di mana? Di sini.", "Tolong berikan tiket toilet. Ini.", "Maaf, hotel di mana? Di sebelah kiri."],
-        "answer": "Permisi, toilet di mana? Di sebelah sana.",
-        "hint": "Asoko merujuk pada letak yang jauh dari kedua pembicara (di sebelah sana)."
+        "options": [
+          "Excuse me, where is the toilet? Over there.",
+          "Excuse me, where is the station? Here.",
+          "Please give me a toilet ticket. Here.",
+          "Sorry, where is the hotel? On the left."
+        ],
+        "answer": "Excuse me, where is the toilet? Over there.",
+        "hint": "Asoko refers to a location far from both speakers (over there)."
       },
       {
         "id": "n5-u4-l4-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat percakapan: \"Permisi, stasiun di mana?\"",
-        "options": ["すみません", "駅", "は", "どこ", "です", "か"],
+        "questionText": "Arrange the dialogue sentence: \"Excuse me, where is the station?\"",
+        "options": [
+          "すみません",
+          "駅",
+          "は",
+          "どこ",
+          "です",
+          "か"
+        ],
         "answer": "すみません 駅 は どこ です か",
-        "hint": "Awali dengan kata maaf/permisi 'sumimasen'."
+        "hint": "Begin with the excuse/apology word 'sumimasen'."
       },
       {
         "id": "n5-u4-l4-q5",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata penunjuk arah jauh \"あそこ\" (asoko):",
+        "questionText": "Type the English translation for the far demonstrative pronoun \"あそこ\" (asoko):",
         "options": [],
-        "answer": "di sana",
-        "hint": "Menunjuk tempat yang jauh dari keduanya."
+        "answer": "over there",
+        "hint": "Points to a place far from both."
       }
     ]
   },
@@ -1190,95 +1611,138 @@ export const lessonsData: Lesson[] = [
     "description": "Test your comprehensive understanding of road navigation and public locations.",
     "expReward": 30,
     "icon": "🏆",
-    "badge": "Sintesis",
+    "badge": "Synthesis",
     "questions": [
       {
         "id": "n5-u4-l5-q1",
         "type": "multiple-choice",
-        "questionText": "Manakah kata tanya yang berarti \"Di mana\"?",
-        "options": ["どこ (doko)", "なん (nan)", "だれ (dare)", "いつ (itsu)"],
+        "questionText": "Which question word means \"Where\"?",
+        "options": [
+          "どこ (doko)",
+          "なん (nan)",
+          "だれ (dare)",
+          "いつ (itsu)"
+        ],
         "answer": "どこ (doko)",
-        "hint": "Menanyakan keberadaan lokasi."
+        "hint": "Asking for location."
       },
       {
         "id": "n5-u4-l5-q2",
         "type": "multiple-choice",
-        "questionText": "Apa arti kata \"駅\" (eki)?",
-        "options": ["Stasiun", "Kamar Mandi", "Minimarket", "Hotel"],
-        "answer": "Stasiun",
-        "hint": "Pusat transportasi kereta."
+        "questionText": "What is the meaning of \"駅\" (eki)?",
+        "options": [
+          "Station",
+          "Bathroom",
+          "Minimarket",
+          "Hotel"
+        ],
+        "answer": "Station",
+        "hint": "Train transportation center."
       },
       {
         "id": "n5-u4-l5-q3",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi kalimat berikut: \"Kamar mandi ada di situ (dekat Anda)\": \n「トイレは ___ です。」",
-        "options": ["そこ (soko)", "ここ (koko)", "あそこ (asoko)", "doko"],
+        "questionText": "Complete the sentence: \"The bathroom is there (near you)\": \n「トイレは ___ です。」",
+        "options": [
+          "そこ (soko)",
+          "ここ (koko)",
+          "あそこ (asoko)",
+          "doko"
+        ],
         "answer": "そこ (soko)",
-        "hint": "Kata tunjuk tempat dekat lawan bicara."
+        "hint": "Demonstrative for place near the listener."
       },
       {
         "id": "n5-u4-l5-q4",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah membaca kunyomi dari karakter Kanji kanan \"右\"?",
-        "options": ["みぎ (migi)", "ひだり (hidari)", "うえ (ue)", "した (shita)"],
+        "questionText": "How do you read the Kunyomi of the right Kanji \"右\"?",
+        "options": [
+          "みぎ (migi)",
+          "ひだり (hidari)",
+          "うえ (ue)",
+          "した (shita)"
+        ],
         "answer": "みぎ (migi)",
-        "hint": "Migi berarti kanan."
+        "hint": "Migi means right."
       },
       {
         "id": "n5-u4-l5-q5",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah membaca kunyomi dari karakter Kanji kiri \"左\"?",
-        "options": ["ひだり (hidari)", "みぎ (migi)", "なか (naka)", "そと (soto)"],
+        "questionText": "How do you read the Kunyomi of the left Kanji \"左\"?",
+        "options": [
+          "ひだり (hidari)",
+          "みぎ (migi)",
+          "なか (naka)",
+          "そと (soto)"
+        ],
         "answer": "ひだり (hidari)",
-        "hint": "Hidari berarti kiri."
+        "hint": "Hidari means left."
       },
       {
         "id": "n5-u4-l5-q6",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Maaf, hotel ada di mana?\"",
-        "options": ["すみません", "ホテル", "は", "どこ", "です", "か"],
+        "questionText": "Arrange the sentence: \"Sorry, where is the hotel?\"",
+        "options": [
+          "すみません",
+          "ホテル",
+          "は",
+          "どこ",
+          "です",
+          "か"
+        ],
         "answer": "すみません ホテル は どこ です か",
-        "hint": "Kata panggil sopan + Topik hotel + wa doko desu ka."
+        "hint": "Polite greeting + hotel topic + wa doko desu ka."
       },
       {
         "id": "n5-u4-l5-q7",
         "type": "listening",
-        "questionText": "Dengarkan audio dan pilihlah letak stasiun yang diucapkan!",
+        "questionText": "Listen to the audio and choose the station location spoken!",
         "audioText": "えきはひだりです",
-        "options": ["Stasiun di sebelah kiri", "Stasiun di sebelah kanan", "Stasiun di sana", "Stasiun di sini"],
-        "answer": "Stasiun di sebelah kiri",
-        "hint": "Eki (stasiun) + wa + hidari (kiri) + desu."
+        "options": [
+          "The station is on the left",
+          "The station is on the right",
+          "The station is over there",
+          "The station is here"
+        ],
+        "answer": "The station is on the left",
+        "hint": "Eki (station) + wa + hidari (left) + desu."
       },
       {
         "id": "n5-u4-l5-q8",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang dialog berikut: \nA: 「すみません、コンビニはどこですか。」\nB: 「コンビニはあそこ ___ 。」",
-        "options": ["です", "をください", "ですか", "にいます"],
+        "questionText": "Complete the dialogue blank:",
+        "options": [
+          "です",
+          "をください",
+          "ですか",
+          "にいます"
+        ],
         "answer": "です",
-        "hint": "Pernyataan diakhiri dengan desu."
+        "hint": "Statements are ended with desu."
       },
       {
         "id": "n5-u4-l5-q9",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat jawaban arah: \"Stasiun ada di sebelah kanan.\"",
-        "options": ["駅", "は", "右", "です"],
+        "questionText": "Arrange the direction answer: \"The station is on the right.\"",
+        "options": [
+          "駅",
+          "は",
+          "右",
+          "です"
+        ],
         "answer": "駅 は 右 です",
-        "hint": "Eki + wa + migi (右) + desu."
+        "hint": "Eki + wa + migi (right) + desu."
       },
       {
         "id": "n5-u4-l5-q10",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata penunjuk arah dekat \"ここ\" (koko):",
+        "questionText": "Type the English translation for the near demonstrative pronoun \"ここ\" (koko):",
         "options": [],
-        "answer": "di sini",
-        "hint": "Menunjuk tempat dekat si pembicara."
+        "answer": "here",
+        "hint": "Points to a place near the speaker."
       }
     ]
   },
-
-  // ==========================================
-  // UNIT 5: JADWAL DAN WAKTU (JI, FUN, NAN-JI, ~KARA ~MADE) ⏰
-  // ==========================================
   {
     "id": "n5-u5-l1",
     "level": "N5",
@@ -1290,46 +1754,66 @@ export const lessonsData: Lesson[] = [
     "description": "Kuasai kata-kira waktu: ima, ji, fun, nan-ji, asa, yoru, asa, gogo, dan gozen.",
     "expReward": 20,
     "icon": "⏰",
-    "badge": "Kosakata",
+    "badge": "Vocabulary",
     "questions": [
       {
         "id": "n5-u5-l1-q1",
         "type": "multiple-choice",
-        "questionText": "Kosakata apakah yang memiliki arti \"sekarang\" dalam keterangan waktu Jepang?",
-        "options": ["いま (ima)", "きょう (kyou)", "あした (ashita)", "きのう (kinou)"],
+        "questionText": "Which vocabulary word means \"now\" in Japanese time expressions?",
+        "options": [
+          "いま (ima)",
+          "きょう (kyou)",
+          "あした (ashita)",
+          "きのう (kinou)"
+        ],
         "answer": "いま (ima)",
-        "hint": "Ditulis dengan Kanji: 今."
+        "hint": "Written with Kanji: 今."
       },
       {
         "id": "n5-u5-l1-q2",
         "type": "typing",
-        "questionText": "Ketiklah sebutan jam 3 (jam tiga) dalam Hiragana (hati-hati pengucapannya khusus):",
+        "questionText": "Type 3 o'clock in Hiragana (note the special pronunciation):",
         "options": [],
         "answer": "さんじ",
-        "hint": "San + ji (jam) -> さんじ."
+        "hint": "San + ji (hour) -> さんじ."
       },
       {
         "id": "n5-u5-l1-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio keterangan waktu berikut and pilih artinya!",
+        "questionText": "Listen to the audio time expression and choose its meaning!",
         "audioText": "あさ",
-        "options": ["Pagi", "Siang", "Malam", "Sore"],
-        "answer": "Pagi",
-        "hint": "Asa berarti pagi hari."
+        "options": [
+          "Morning",
+          "Afternoon",
+          "Night",
+          "Evening"
+        ],
+        "answer": "Morning",
+        "hint": "Asa means morning."
       },
       {
         "id": "n5-u5-l1-q4",
         "type": "fill-in-the-blank",
-        "questionText": "Pilih kosakata PM (setelah jam 12 siang) yang tepat untuk melengkapi jam: \n「いまは ___ 三時です。(Sekarang jam 3 sore.)」",
-        "options": ["ごご (gogo)", "ごぜん (gozen)", "あさ (asa)", "よる (yoru)"],
+        "questionText": "Choose the correct PM vocabulary (after 12 PM) to complete the hour: \n「いまは ___ 三時です。(It is 3 PM now.)」",
+        "options": [
+          "ごご (gogo)",
+          "ごぜん (gozen)",
+          "あさ (asa)",
+          "よる (yoru)"
+        ],
         "answer": "ごご (gogo)",
         "hint": "Gozen (AM), Gogo (PM)."
       },
       {
         "id": "n5-u5-l1-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Sekarang adalah pagi hari.\"",
-        "options": ["いま", "は", "あさ", "です"],
+        "questionText": "Arrange the sentence: \"Now it is morning.\"",
+        "options": [
+          "いま",
+          "は",
+          "あさ",
+          "です"
+        ],
         "answer": "いま は あさ です",
         "hint": "Ima + wa + asa + desu."
       }
@@ -1351,43 +1835,63 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u5-l2-q1",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji \"今\" (sekarang)?",
-        "options": ["いま (ima)", "きょう (kyou)", "あした (ashita)", "とき (toki)"],
+        "questionText": "Which is the correct Kunyomi reading for the Kanji \"今\" (now)?",
+        "options": [
+          "いま (ima)",
+          "きょう (kyou)",
+          "あした (ashita)",
+          "とき (toki)"
+        ],
         "answer": "いま (ima)",
-        "hint": "Ima berarti sekarang."
+        "hint": "Ima means now."
       },
       {
         "id": "n5-u5-l2-q2",
         "type": "multiple-choice",
-        "questionText": "Manakah Kanji yang melambangkan kata \"Jam\" (ji)?",
-        "options": ["時", "分", "今", "日"],
+        "questionText": "Which Kanji represents the word \"Hour\" (ji)?",
+        "options": [
+          "時",
+          "分",
+          "今",
+          "日"
+        ],
         "answer": "時",
-        "hint": "Digunakan sebagai sufiks hitungan jam, dibaca 'ji'."
+        "hint": "Used as an hour suffix, read as 'ji'."
       },
       {
         "id": "n5-u5-l2-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan audio berikut and tentukan kombinasi angka-waktu yang tepat!",
+        "questionText": "Listen to the audio pronunciation and determine the correct number-time combination!",
         "audioText": "ごじ",
-        "options": ["Jam 5", "Jam 4", "Jam 9", "Jam 7"],
-        "answer": "Jam 5",
-        "hint": "Pelafalan dari 'go' (5) + 'ji' (jam)."
+        "options": [
+          "5 o'clock",
+          "4 o'clock",
+          "9 o'clock",
+          "7 o'clock"
+        ],
+        "answer": "5 o'clock",
+        "hint": "Pronunciation of 'go' (5) + 'ji' (hour)."
       },
       {
         "id": "n5-u5-l2-q4",
         "type": "typing",
-        "questionText": "Ketiklah cara baca Hiragana sufiks menit berikut (untuk bilangan 5 menit): 五分",
+        "questionText": "Type the Hiragana reading for the following minute suffix (for 5 minutes): 五分",
         "options": [],
         "answer": "ごふん",
-        "hint": "Go + fun (menit) -> ごふん."
+        "hint": "Go + fun (minute) -> ごふん."
       },
       {
         "id": "n5-u5-l2-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Sekarang jam satu.\"",
-        "options": ["いま", "は", "一時", "です"],
+        "questionText": "Arrange the sentence: \"It is 1 o'clock now.\"",
+        "options": [
+          "いま",
+          "は",
+          "一時",
+          "です"
+        ],
         "answer": "いま は 一時 です",
-        "hint": "Ima (いま) + wa + ichi-ji (一時) + desu."
+        "hint": "Ima (now) + wa + ichi-ji (1 o'clock) + desu."
       }
     ]
   },
@@ -1402,48 +1906,69 @@ export const lessonsData: Lesson[] = [
     "description": "Master sentence patterns expressing start and end limits of activities (from... to...).",
     "expReward": 20,
     "icon": "📝",
-    "badge": "Tata Bahasa",
+    "badge": "Grammar",
     "questions": [
       {
         "id": "n5-u5-l3-q1",
         "type": "multiple-choice",
-        "questionText": "Partikel manakah yang berarti \"dari\" dan \"sampai\" berturut-turut untuk menyatakan durasi?",
-        "options": ["から (kara) dan まで (made)", "まで (made) dan から (kara)", "に (ni) dan へ (he)", "と (to) dan から (kara)"],
-        "answer": "から (kara) dan まで (made)",
-        "hint": "Dari jam A sampai jam B: A-kara B-made desu."
+        "questionText": "Which particles mean \"from\" and \"until\" respectively to express duration?",
+        "options": [
+          "から (kara) and まで (made)",
+          "まで (made) and から (kara)",
+          "に (ni) and へ (he)",
+          "と (to) and から (kara)"
+        ],
+        "answer": "から (kara) and まで (made)",
+        "hint": "From hour A to hour B: A-kara B-made desu."
       },
       {
         "id": "n5-u5-l3-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi partikel penunjuk waktu spesifik untuk kalimat \"Bangun pada jam 6\": \n「六時 ___ おきます。」",
-        "options": ["に", "を", "は", "へ"],
+        "questionText": "Complete the specific time particle for the sentence \"Wake up at 6 o'clock\": \n「六時 ___ おきます。」",
+        "options": [
+          "に",
+          "を",
+          "は",
+          "へ"
+        ],
         "answer": "に",
-        "hint": "Partikel に (ni) digunakan setelah angka waktu spesifik untuk menandai kapan tindakan dilakukan."
+        "hint": "The particle に (ni) is used after specific times to mark when the action is done."
       },
       {
         "id": "n5-u5-l3-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan kalimat berikut and pilih maknanya!",
+        "questionText": "Listen to the pronunciation of the sentence and choose its meaning!",
         "audioText": "九時から五時までです",
-        "options": ["Dari jam 9 sampai jam 5", "Dari jam 5 sampai jam 9", "Jam 9 lewat 5 menit", "Mulai jam 9 tepat"],
-        "answer": "Dari jam 9 sampai jam 5",
-        "hint": "Kyuu-ji (jam 9) + kara (dari) + go-ji (jam 5) + made (sampai)."
+        "options": [
+          "From 9 to 5 o'clock",
+          "From 5 to 9 o'clock",
+          "9:05",
+          "Starting at 9 o'clock sharp"
+        ],
+        "answer": "From 9 to 5 o'clock",
+        "hint": "Kyuu-ji (9 o'clock) + kara (from) + go-ji (5 o'clock) + made (until)."
       },
       {
         "id": "n5-u5-l3-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat: \"Belajar dari jam satu sampai jam tiga.\"",
-        "options": ["一時", "から", "三時", "まで", "べんきょうします"],
+        "questionText": "Arrange the sentence: \"Study from 1 to 3 o'clock.\"",
+        "options": [
+          "一時",
+          "から",
+          "三時",
+          "まで",
+          "べんきょうします"
+        ],
         "answer": "一時 から 三時 まで べんきょうします",
         "hint": "Ichi-ji + kara + san-ji + made + benkyou-shimasu."
       },
       {
         "id": "n5-u5-l3-q5",
         "type": "typing",
-        "questionText": "Ketiklah pola tanya \"jam berapa\" dalam huruf Hiragana:",
+        "questionText": "Type the question pattern for \"what time\" in Hiragana:",
         "options": [],
         "answer": "なんじ",
-        "hint": "Nan (apa/berapa) + ji (jam) -> なんじ."
+        "hint": "Nan (what/how many) + ji (hour) -> なんじ."
       }
     ]
   },
@@ -1458,48 +1983,69 @@ export const lessonsData: Lesson[] = [
     "description": "Latih percakapan tentang jam kerja, jam sekolah, dan waktu tidur sehari-hari.",
     "expReward": 20,
     "icon": "🗣️",
-    "badge": "Percakapan",
+    "badge": "Conversation",
     "questions": [
       {
         "id": "n5-u5-l4-q1",
         "type": "multiple-choice",
-        "questionText": "Lawan bicara Anda bertanya \"いま何時ですか。\" (Ima nan-ji desu ka?) Jam menunjukkan pukul 08:00 pagi. Jawaban apakah yang tepat?",
-        "options": ["ごぜん八時です (gozen hachi-ji desu)", "ごご八時です (gogo hachi-ji desu)", "八分です (hachi-fun desu)", "八時から五時までです (hachi-ji kara go-ji made desu)"],
+        "questionText": "Your conversation partner asks \"いま何時ですか。\" (Ima nan-ji desu ka?) The clock shows 8:00 AM. Which answer is correct?",
+        "options": [
+          "ごぜん八時です (gozen hachi-ji desu)",
+          "ごご八時です (gogo hachi-ji desu)",
+          "八分です (hachi-fun desu)",
+          "八時から五時までです (hachi-ji kara go-ji made desu)"
+        ],
         "answer": "ごぜん八時です (gozen hachi-ji desu)",
-        "hint": "Pagi menggunakan Gozen (ごぜん). Angka 8 adalah hachi."
+        "hint": "Morning uses Gozen (ごぜん). The number 8 is hachi."
       },
       {
         "id": "n5-u5-l4-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Seseorang bertanya jam mulai kerja perusahaan: \"かいしゃは何時からですか。\" Anda ingin menjawab \"Mulai jam 9.\" Lengkapi kalimat rumpang berikut: \n「___時から来ます。」",
-        "options": ["九 (ku/kyuu)", "七 (shichi)", "四 (yo/yon)", "八 (hachi)"],
+        "questionText": "Someone asks when work starts: \"かいしゃは何時からですか。\" You want to reply \"Starts at 9.\" Complete the sentence: \n「___時から来ます。」",
+        "options": [
+          "九 (ku/kyuu)",
+          "七 (shichi)",
+          "四 (yo/yon)",
+          "八 (hachi)"
+        ],
         "answer": "九 (ku/kyuu)",
-        "hint": "Jam 9 dilafalkan khusus sebagai \"ku-ji\" (九時)."
+        "hint": "9 o'clock is pronounced specially as \"ku-ji\" (九時)."
       },
       {
         "id": "n5-u5-l4-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio dan pilihlah jam tidur pembicara!",
+        "questionText": "Listen to the audio and choose the speaker's bedtime!",
         "audioText": "十一時にねます",
-        "options": ["Tidur jam 11", "Tidur jam 10", "Bangun jam 11", "Tidur jam 12"],
-        "answer": "Tidur jam 11",
-        "hint": "Juu-ichi-ji (jam 11) + ni (pada) + nemasu (tidur)."
+        "options": [
+          "Sleep at 11",
+          "Sleep at 10",
+          "Wake up at 11",
+          "Sleep at 12"
+        ],
+        "answer": "Sleep at 11",
+        "hint": "Juu-ichi-ji (11 o'clock) + ni (at) + nemasu (sleep)."
       },
       {
         "id": "n5-u5-l4-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat percakapan: \"Sekarang jam berapa?\"",
-        "options": ["いま", "は", "何時", "です", "か"],
+        "questionText": "Arrange the dialogue sentence: \"What time is it now?\"",
+        "options": [
+          "いま",
+          "は",
+          "何時",
+          "です",
+          "か"
+        ],
         "answer": "いま は 何時 です か",
         "hint": "Ima + wa + nan-ji + desu + ka."
       },
       {
         "id": "n5-u5-l4-q5",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata kerja \"ねます\" (nemasu):",
+        "questionText": "Type the English translation for the verb \"ねます\" (nemasu):",
         "options": [],
-        "answer": "tidur",
-        "hint": "Tindakan beristirahat di malam hari."
+        "answer": "sleep",
+        "hint": "The action of resting at night."
       }
     ]
   },
@@ -1514,95 +2060,136 @@ export const lessonsData: Lesson[] = [
     "description": "Test your proficiency in reading time and scheduling daily activities.",
     "expReward": 30,
     "icon": "🏆",
-    "badge": "Sintesis",
+    "badge": "Synthesis",
     "questions": [
       {
         "id": "n5-u5-l5-q1",
         "type": "multiple-choice",
-        "questionText": "Jam 4 sore dalam bahasa Jepang diucapkan sebagai:",
-        "options": ["ごごよじ (gogo yo-ji)", "ごごよんじ (gogo yon-ji)", "ごぜんよじ (gozen yo-ji)", "ごぜんよんじ (gozen yon-ji)"],
+        "questionText": "How do you say 4 PM in Japanese:",
+        "options": [
+          "ごごよじ (gogo yo-ji)",
+          "ごごよんじ (gogo yon-ji)",
+          "ごぜんよじ (gozen yo-ji)",
+          "ごぜんよんじ (gozen yon-ji)"
+        ],
         "answer": "ごごよじ (gogo yo-ji)",
-        "hint": "Jam 4 dilafalkan khusus sebagai 'yo-ji'. Sore hari adalah 'gogo'."
+        "hint": "4 o'clock is pronounced specially as 'yo-ji'. Afternoon/PM is 'gogo'."
       },
       {
         "id": "n5-u5-l5-q2",
         "type": "multiple-choice",
-        "questionText": "Keterangan waktu manakah yang dibaca \"いま\" (ima)?",
-        "options": ["今", "時", "分", "日"],
+        "questionText": "Which time expression is read as \"いま\" (ima)?",
+        "options": [
+          "今",
+          "時",
+          "分",
+          "日"
+        ],
         "answer": "今",
-        "hint": "Kanji sekarang."
+        "hint": "The Kanji for now/current."
       },
       {
         "id": "n5-u5-l5-q3",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi kalimat \"Toko buka dari jam 8\": \n「みせは八時 ___ です。」",
-        "options": ["から (kara)", "まで (made)", "に (ni)", "を (wo)"],
+        "questionText": "Complete the sentence \"The shop is open from 8 o'clock\": \n「みせは八時 ___ です。」",
+        "options": [
+          "から (kara)",
+          "まで (made)",
+          "に (ni)",
+          "を (wo)"
+        ],
         "answer": "から (kara)",
-        "hint": "Kara berarti 'dari' atau 'mulai dari'."
+        "hint": "Kara means 'from' or 'starting from'."
       },
       {
         "id": "n5-u5-l5-q4",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah pengucapan \"Jam 7\" yang tepat dalam bahasa Jepang?",
-        "options": ["しちじ (shichi-ji)", "ななじ (nana-ji)", "ひちじ (hichi-ji)", "ななじかん (nana-jikan)"],
+        "questionText": "What is the correct pronunciation of \"7 o'clock\" in Japanese?",
+        "options": [
+          "しちじ (shichi-ji)",
+          "ななじ (nana-ji)",
+          "ひちじ (hichi-ji)",
+          "ななじかん (nana-jikan)"
+        ],
         "answer": "しちじ (shichi-ji)",
-        "hint": "Jam 7 menggunakan sebutan shichi-ji."
+        "hint": "7 o'clock is read as shichi-ji."
       },
       {
         "id": "n5-u5-l5-q5",
         "type": "multiple-choice",
-        "questionText": "Apa arti dari pola \"~から~まで\"?",
-        "options": ["Dari... sampai...", "Sebelum... sesudah...", "Di... ke...", "Dengan... bersama..."],
-        "answer": "Dari... sampai...",
-        "hint": "Menandakan awal dan akhir."
+        "questionText": "What is the meaning of the pattern \"~from~until\" (~kara ~made)?",
+        "options": [
+          "From... to...",
+          "Before... after...",
+          "At... to...",
+          "With... together..."
+        ],
+        "answer": "From... to...",
+        "hint": "Indicates start and end."
       },
       {
         "id": "n5-u5-l5-q6",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Saya tidur pada jam sepuluh.\"",
-        "options": ["わたし", "は", "十時", "に", "ねます"],
+        "questionText": "Arrange the sentence: \"I sleep at 10 o'clock.\"",
+        "options": [
+          "わたし",
+          "は",
+          "十時",
+          "に",
+          "ねます"
+        ],
         "answer": "わたし は 十時 に ねます",
-        "hint": "Subjek + wa + waktu + partikel ni + nemasu."
+        "hint": "Subject + wa + time + particle ni + nemasu."
       },
       {
         "id": "n5-u5-l5-q7",
         "type": "listening",
-        "questionText": "Dengarkan audio and pilih jam bangun tidur pembicara!",
+        "questionText": "Listen to the audio and choose the speaker's wake-up time!",
         "audioText": "ろくじにおきます",
-        "options": ["Bangun jam 6", "Bangun jam 7", "Tidur jam 6", "Pergi jam 6"],
-        "answer": "Bangun jam 6",
-        "hint": "Roku-ji (jam 6) + ni + okimasu (bangun)."
+        "options": [
+          "Wake up at 6",
+          "Wake up at 7",
+          "Sleep at 6",
+          "Go at 6"
+        ],
+        "answer": "Wake up at 6",
+        "hint": "Roku-ji (6 o'clock) + ni + okimasu (wake up)."
       },
       {
         "id": "n5-u5-l5-q8",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang kalimat tanya jam: \n「いま ___ 時ですか。」",
-        "options": ["何 (nan)", "どこ (doko)", "だれ (dare)", "いつ (itsu)"],
+        "questionText": "Complete the blank in the hour question sentence: \n「いま ___ 時ですか。」",
+        "options": [
+          "何 (nan)",
+          "どこ (doko)",
+          "だれ (dare)",
+          "いつ (itsu)"
+        ],
         "answer": "何 (nan)",
-        "hint": "Kombinasi 'nan' + 'ji' (何時) berarti jam berapa."
+        "hint": "The combination of 'nan' + 'ji' (何時) means what time."
       },
       {
         "id": "n5-u5-l5-q9",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat: \"Kerja dari jam delapan pagi.\"",
-        "options": ["ごぜん八時", "から", "はたらきます"],
+        "questionText": "Arrange the sentence: \"Work starts at 8 AM.\"",
+        "options": [
+          "ごぜん八時",
+          "から",
+          "はたらきます"
+        ],
         "answer": "ごぜん八時 から はたらきます",
-        "hint": "Gozen hachi-ji + kara + hatarakimasu (kerja)."
+        "hint": "Gozen hachi-ji + kara + hatarakimasu (work)."
       },
       {
         "id": "n5-u5-l5-q10",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata kerja \"おきます\" (okimasu):",
+        "questionText": "Type the English translation for the verb \"おきます\" (okimasu):",
         "options": [],
-        "answer": "bangun",
-        "hint": "Tindakan bangun tidur di pagi hari."
+        "answer": "wake up",
+        "hint": "The action of waking up in the morning."
       }
     ]
   },
-
-  // ==========================================
-  // UNIT 6: TRANSPORTASI UMUM (KIPPU, CHIKATETSU, BUS, ~DE IKIMASU) 🚌
-  // ==========================================
   {
     "id": "n5-u6-l1",
     "level": "N5",
@@ -1614,20 +2201,25 @@ export const lessonsData: Lesson[] = [
     "description": "Kuasai kata-kata perjalanan: densha, bus, chikatetsu, taxi, kippu, dan kata kerja perpindahan.",
     "expReward": 20,
     "icon": "🚌",
-    "badge": "Kosakata",
+    "badge": "Vocabulary",
     "questions": [
       {
         "id": "n5-u6-l1-q1",
         "type": "multiple-choice",
-        "questionText": "Kosakata kendaraan \"電車\" (densha) memiliki arti:",
-        "options": ["Kereta Api Listrik", "Bus Kota", "Taksi", "Pesawat Terbang"],
-        "answer": "Kereta Api Listrik",
-        "hint": "Moda transportasi publik rel paling populer di perkotaan Jepang."
+        "questionText": "The vehicle vocabulary \"電車\" (densha) means:",
+        "options": [
+          "Electric Train",
+          "City Bus",
+          "Taxi",
+          "Pesawat Terbang"
+        ],
+        "answer": "Electric Train",
+        "hint": "The most popular rail public transportation mode in urban Japan."
       },
       {
         "id": "n5-u6-l1-q2",
         "type": "typing",
-        "questionText": "Ketiklah sebutan \"Tiket Perjalanan\" dalam Hiragana:",
+        "questionText": "Type the word for \"Travel Ticket\" in Hiragana:",
         "options": [],
         "answer": "きっぷ",
         "hint": "Kippu -> きっぷ (menggunakan sokuon kecil tsu)."
@@ -1635,27 +2227,41 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u6-l1-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio kendaraan berikut and pilih tulisan Katakana yang tepat!",
+        "questionText": "Listen to the audio vehicle and choose the correct Katakana spelling!",
         "audioText": "バス",
-        "options": ["バス (basu)", "タクシー (takushii)", "ヘリコプター (herikoputaa)", "バイク (baiku)"],
+        "options": [
+          "バス (basu)",
+          "タクシー (takushii)",
+          "ヘリコプター (herikoputaa)",
+          "バイク (baiku)"
+        ],
         "answer": "バス (basu)",
-        "hint": "Bus kota ditulis dalam Katakana basu."
+        "hint": "City bus is written in Katakana as basu."
       },
       {
         "id": "n5-u6-l1-q4",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi kata kerja perpindahan untuk menyatakan \"datang\": \n「ともだちがうちへ ___ ます。」",
-        "options": ["き (ki)", "いき (iki)", "かえり (kaeri)", "nomi"],
+        "questionText": "Complete the verb of movement to express \"come\": \n「ともだちがうちへ ___ ます。」",
+        "options": [
+          "き (ki)",
+          "いき (iki)",
+          "かえり (kaeri)",
+          "nomi"
+        ],
         "answer": "き (ki)",
-        "hint": "Kimasu berarti datang (kemari)."
+        "hint": "Kimasu means come (here)."
       },
       {
         "id": "n5-u6-l1-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Naik kereta densha.\"",
-        "options": ["電車", "に", "のります"],
+        "questionText": "Arrange the sentence: \"Board the train (densha).\"",
+        "options": [
+          "電車",
+          "に",
+          "のります"
+        ],
         "answer": "電車 に のります",
-        "hint": "Densha + partikel penunjuk naik ni + norimasu."
+        "hint": "Densha (train) + boarding particle 'ni' + norimasu (ride)."
       }
     ]
   },
@@ -1675,41 +2281,60 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u6-l2-q1",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji kendaraan/mobil \"車\"?",
-        "options": ["くるま (kuruma)", "でんしゃ (densha)", "じてんしゃ (jitensha)", "ばしゃ (basha)"],
+        "questionText": "Which is the correct Kunyomi reading for the vehicle/car Kanji \"車\"?",
+        "options": [
+          "くるま (kuruma)",
+          "でんしゃ (densha)",
+          "じてんしゃ (jitensha)",
+          "ばしゃ (basha)"
+        ],
         "answer": "くるま (kuruma)",
-        "hint": "Kuruma berarti mobil/kendaraan beroda."
+        "hint": "Kuruma means car/wheeled vehicle."
       },
       {
         "id": "n5-u6-l2-q2",
         "type": "multiple-choice",
-        "questionText": "Kanji \"行\" memiliki arti dasar gerakan yaitu:",
-        "options": ["Pergi", "Datang", "Pulang", "Lari"],
-        "answer": "Pergi",
-        "hint": "Digunakan dalam kata kerja 'ikimasu' (行きます)."
+        "questionText": "The Kanji \"行\" has the basic movement meaning of:",
+        "options": [
+          "Go",
+          "Come",
+          "Pulang",
+          "Lari"
+        ],
+        "answer": "Go",
+        "hint": "Used in the verb 'ikimasu' (go)."
       },
       {
         "id": "n5-u6-l2-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan audio Kanji gerakan berikut and tentukan artinya!",
+        "questionText": "Listen to the audio pronunciation of the movement Kanji and determine its meaning!",
         "audioText": "きます",
-        "options": ["Datang", "Pergi", "Pulang", "Makan"],
-        "answer": "Datang",
-        "hint": "Onyomi/Kunyomi dari Kanji 来 (rai/ki)."
+        "options": [
+          "Come",
+          "Go",
+          "Pulang",
+          "Eat"
+        ],
+        "answer": "Come",
+        "hint": "Onyomi/Kunyomi of the Kanji 来 (rai/ki)."
       },
       {
         "id": "n5-u6-l2-q4",
         "type": "typing",
-        "questionText": "Ketiklah cara baca Hiragana untuk kata kerja pergi berikut: 行きます",
+        "questionText": "Type the Hiragana reading for the following verb \"go\": 行きます",
         "options": [],
         "answer": "いきます",
-        "hint": "Ikimasu ditulis dengan Hiragana."
+        "hint": "Ikimasu is written with Hiragana."
       },
       {
         "id": "n5-u6-l2-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Mobil (kuruma) datang.\"",
-        "options": ["車", "が", "来ます"],
+        "questionText": "Arrange the sentence: \"The car (kuruma) is coming.\"",
+        "options": [
+          "車",
+          "が",
+          "来ます"
+        ],
         "answer": "車 が 来ます",
         "hint": "Kuruma + partikel ga + kimasu."
       }
@@ -1726,48 +2351,69 @@ export const lessonsData: Lesson[] = [
     "description": "Learn the function of the particle ~de to mark means of transport in travel sentences.",
     "expReward": 20,
     "icon": "📝",
-    "badge": "Tata Bahasa",
+    "badge": "Grammar",
     "questions": [
       {
         "id": "n5-u6-l3-q1",
         "type": "multiple-choice",
-        "questionText": "Partikel manakah yang digunakan untuk menyatakan sarana transportasi (naik/dengan)?",
-        "options": ["で (de)", "に (ni)", "を (wo)", "へ (he)"],
+        "questionText": "Which particle is used to express the mode of transportation (by/with)?",
+        "options": [
+          "で (de)",
+          "に (ni)",
+          "を (wo)",
+          "へ (he)"
+        ],
         "answer": "で (de)",
-        "hint": "Pola: [Kendaraan] + de + ikimasu."
+        "hint": "Pattern: [Vehicle] + de + ikimasu."
       },
       {
         "id": "n5-u6-l3-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi partikel arah tujuan perjalanan berikut: \"Tokyo ___ pergi naik kereta\": \n「電車で東京 ___ 行きます。」",
-        "options": ["へ (dibaca e)", "で", "を", "が"],
+        "questionText": "Complete the direction particle for the journey: \"Go to Tokyo by train\": \n「電車で東京 ___ 行きます。」",
+        "options": [
+          "へ (dibaca e)",
+          "で",
+          "を",
+          "が"
+        ],
         "answer": "へ (dibaca e)",
-        "hint": "Partikel へ (he/dibaca e) digunakan untuk menandai arah/tujuan perpindahan."
+        "hint": "The particle へ (he/read as e) is used to mark the direction/destination of movement."
       },
       {
         "id": "n5-u6-l3-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan kalimat berikut and pilihlah artinya!",
+        "questionText": "Listen to the pronunciation of the sentence and choose its meaning!",
         "audioText": "タクシーでいきます",
-        "options": ["Pergi dengan taksi", "Datang dengan taksi", "Naik taksi di stasiun", "Membayar uang taksi"],
-        "answer": "Pergi dengan taksi",
-        "hint": "Takushii (taksi) + de (dengan) + ikimasu (pergi)."
+        "options": [
+          "Go by taxi",
+          "Come by taxi",
+          "Take a taxi at the station",
+          "Pay the taxi fare"
+        ],
+        "answer": "Go by taxi",
+        "hint": "Takushii (taxi) + de (by) + ikimasu (go)."
       },
       {
         "id": "n5-u6-l3-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat: \"Pergi ke sekolah naik bus.\"",
-        "options": ["バス", "で", "がっこう", "へ", "いきます"],
+        "questionText": "Arrange the sentence: \"Go to school by bus.\"",
+        "options": [
+          "バス",
+          "で",
+          "がっこう",
+          "へ",
+          "いきます"
+        ],
         "answer": "バス で がっこう へ いきます",
         "hint": "Basu + de + gakkou + he + ikimasu."
       },
       {
         "id": "n5-u6-l3-q5",
         "type": "typing",
-        "questionText": "Ketiklah partikel arah dibaca \"e\" tetapi ditulis dengan huruf Hiragana:",
+        "questionText": "Type the direction particle read as \"e\" but written with Hiragana:",
         "options": [],
         "answer": "へ",
-        "hint": "Huruf Hiragana 'he'."
+        "hint": "The Hiragana letter 'he'."
       }
     ]
   },
@@ -1782,48 +2428,68 @@ export const lessonsData: Lesson[] = [
     "description": "Practice conversations about buying tickets at vending machines and asking for stop locations.",
     "expReward": 20,
     "icon": "🗣️",
-    "badge": "Percakapan",
+    "badge": "Conversation",
     "questions": [
       {
         "id": "n5-u6-l4-q1",
         "type": "multiple-choice",
-        "questionText": "Anda ingin membeli tiket kereta sebanyak satu lembar. Kalimat manakah yang harus Anda ucapkan di loket?",
-        "options": ["きっぷをひとつください (kippu wo hitotsu kudasai)", "きっぷをふたつください (kippu wo futatsu kudasai)", "きっぷがありますか (kippu ga arimasu ka)", "きっぷはいくらですか (kippu wa ikura desu ka)"],
+        "questionText": "You want to buy one train ticket. Which sentence should you say at the ticket counter?",
+        "options": [
+          "きっぷをひとつください (kippu wo hitotsu kudasai)",
+          "きっぷをふたつください (kippu wo futatsu kudasai)",
+          "きっぷがありますか (kippu ga arimasu ka)",
+          "きっぷはいくらですか (kippu wa ikura desu ka)"
+        ],
         "answer": "きっぷをひとつください (kippu wo hitotsu kudasai)",
         "hint": "Kippu (tiket) + wo + hitotsu (satu lembar) + kudasai (tolong berikan)."
       },
       {
         "id": "n5-u6-l4-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Seseorang bertanya letak halte bus: \"バスのりばはどこですか。\" Anda menjawab \"Halte bus ada di stasiun.\" Lengkapi kalimat berikut: \n「バスのりばは ___ です。」",
-        "options": ["駅 (eki)", "ホテル (hoteru)", "トイレ (toire)", "コンビニ (konbini)"],
+        "questionText": "Someone asks where the bus stop is: \"バスのりばはどこですか。\" You reply \"The bus stop is at the station.\" Complete the sentence: \n「バスのりばは ___ です。」",
+        "options": [
+          "駅 (eki)",
+          "ホテル (hoteru)",
+          "トイレ (toire)",
+          "コンビニ (konbini)"
+        ],
         "answer": "駅 (eki)",
-        "hint": "Eki berarti stasiun kereta api."
+        "hint": "Eki means train station."
       },
       {
         "id": "n5-u6-l4-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio percakapan berikut and tentukan moda kendaraan yang ditunjuk!",
+        "questionText": "Listen to the conversation audio and determine the mode of transportation mentioned!",
         "audioText": "ちかてつでいきましょう",
-        "options": ["Kereta bawah tanah", "Kereta biasa", "Bus kota", "Berjalan kaki"],
-        "answer": "Kereta bawah tanah",
-        "hint": "Chikatetsu berarti kereta api bawah tanah (subway)."
+        "options": [
+          "Subway",
+          "Regular train",
+          "City bus",
+          "On foot"
+        ],
+        "answer": "Subway",
+        "hint": "Chikatetsu means underground train (subway)."
       },
       {
         "id": "n5-u6-l4-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat dialog: \"Tolong berikan tiket dua buah.\"",
-        "options": ["きっぷ", "を", "ふたつ", "ください"],
+        "questionText": "Arrange the dialogue sentence: \"Please give me two tickets.\"",
+        "options": [
+          "きっぷ",
+          "を",
+          "ふたつ",
+          "ください"
+        ],
         "answer": "きっぷ を ふたつ ください",
         "hint": "Kippu + wo + futatsu (2) + kudasai."
       },
       {
         "id": "n5-u6-l4-q5",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata tanya \"なんの\" (contoh: nanno noriba -> tempat naik apa?):",
+        "questionText": "Type the English translation for the question word \"なんの\" (example: nanno noriba -> what kind of platform/stop?):",
         "options": [],
         "answer": "apa",
-        "hint": "Menanyakan jenis dari kata benda berikutnya."
+        "hint": "Asking for the type/kind of the following noun."
       }
     ]
   },
@@ -1838,95 +2504,138 @@ export const lessonsData: Lesson[] = [
     "description": "Test your competency in traveling using public transportation.",
     "expReward": 30,
     "icon": "🏆",
-    "badge": "Sintesis",
+    "badge": "Synthesis",
     "questions": [
       {
         "id": "n5-u6-l5-q1",
         "type": "multiple-choice",
-        "questionText": "Kereta bawah tanah dalam bahasa Jepang disebut sebagai:",
-        "options": ["ちかてつ (chikatetsu)", "でんしゃ (densha)", "バス (basu)", "タクシー (takushii)"],
+        "questionText": "What is subway called in Japanese?",
+        "options": [
+          "ちかてつ (chikatetsu)",
+          "でんしゃ (densha)",
+          "バス (basu)",
+          "タクシー (takushii)"
+        ],
         "answer": "ちかてつ (chikatetsu)",
-        "hint": "Subway Jepang."
+        "hint": "Japanese subway."
       },
       {
         "id": "n5-u6-l5-q2",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca Kanji \"車\" yang tepat?",
-        "options": ["くるま (kuruma)", "しゃ (sha)", "い (i)", "らい (rai)"],
+        "questionText": "Which is the correct reading of the Kanji \"車\"?",
+        "options": [
+          "くるま (kuruma)",
+          "しゃ (sha)",
+          "い (i)",
+          "らい (rai)"
+        ],
         "answer": "くるま (kuruma)",
-        "hint": "Kunyomi dari Kanji mobil."
+        "hint": "Kunyomi of the car Kanji."
       },
       {
         "id": "n5-u6-l5-q3",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang kalimat berikut: \"Pergi naik taksi\": \n「タクシー ___ 行きます。」",
-        "options": ["で (de)", "を (wo)", "に (ni)", "が (ga)"],
+        "questionText": "Complete the blank: \"Go by taxi\": \n「タクシー ___ 行きます。」",
+        "options": [
+          "で (de)",
+          "を (wo)",
+          "に (ni)",
+          "が (ga)"
+        ],
         "answer": "で (de)",
         "hint": "Partikel penanda sarana alat."
       },
       {
         "id": "n5-u6-l5-q4",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah arti kata kerja perpindahan \"帰ります\" (kaerimasu)?",
-        "options": ["Pulang", "Pergi", "Datang", "Naik"],
+        "questionText": "What does the movement verb \"帰ります\" (kaerimasu) mean?",
+        "options": [
+          "Pulang",
+          "Go",
+          "Come",
+          "Board / Ride"
+        ],
         "answer": "Pulang",
-        "hint": "Pergi kembali ke rumah atau tanah air."
+        "hint": "Go back home or to one's country."
       },
       {
         "id": "n5-u6-l5-q5",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah menyatakan \"Tolong berikan tiket satu lembar\" secara sopan?",
-        "options": ["きっぷをひとつください", "きっぷはいくらですか", "きっぷはあそこです", "きっぷをのります"],
+        "questionText": "How do you say \"Please give me one ticket\" politely?",
+        "options": [
+          "きっぷをひとつください",
+          "きっぷはいくらですか",
+          "きっぷはあそこです",
+          "きっぷをのります"
+        ],
         "answer": "きっぷをひとつください",
         "hint": "Kippu + objek + hitotsu + kudasai."
       },
       {
         "id": "n5-u6-l5-q6",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Pergi ke stasiun naik mobil.\"",
-        "options": ["車", "de", "駅", "へ", "行きます"],
+        "questionText": "Arrange the sentence: \"Go to the station by car.\"",
+        "options": [
+          "車",
+          "で",
+          "駅",
+          "へ",
+          "行きます"
+        ],
         "answer": "車 で 駅 へ 行きます",
         "hint": "Kuruma de + eki he + ikimasu."
       },
       {
         "id": "n5-u6-l5-q7",
         "type": "listening",
-        "questionText": "Dengarkan audio and pilihlah tujuan perjalanan pembicara!",
+        "questionText": "Listen to the audio and choose the speaker's destination!",
         "audioText": "くるまでいきます",
-        "options": ["Pergi naik mobil", "Pergi naik kereta", "Datang naik mobil", "Membeli mobil baru"],
-        "answer": "Pergi naik mobil",
+        "options": [
+          "Go by car",
+          "Go by train",
+          "Come by car",
+          "Buy a new car"
+        ],
+        "answer": "Go by car",
         "hint": "Kuruma de ikimasu."
       },
       {
         "id": "n5-u6-l5-q8",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang arah perjalanan berikut: \n「日本 ___ 来ました。(Telah datang ke Jepang.)」",
-        "options": ["へ", "で", "を", "が"],
+        "questionText": "Complete the travel direction blank: \n「日本 ___ 来ました。(Came to Japan.)」",
+        "options": [
+          "へ",
+          "で",
+          "を",
+          "が"
+        ],
         "answer": "へ",
         "hint": "Partikel penunjuk arah perjalanan 'he'."
       },
       {
         "id": "n5-u6-l5-q9",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat: \"Saya datang naik bus kota.\"",
-        "options": ["わたし", "は", "バス", "で", "来ました"],
+        "questionText": "Arrange the sentence: \"I came by city bus.\"",
+        "options": [
+          "わたし",
+          "は",
+          "バス",
+          "で",
+          "来ました"
+        ],
         "answer": "わたし は バス で 来ました",
         "hint": "Watashi wa + basu de + kimashita."
       },
       {
         "id": "n5-u6-l5-q10",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata benda \"じてんしゃ\" (jitensha):",
+        "questionText": "Type the English translation of the noun \"じてんしゃ\" (jitensha):",
         "options": [],
-        "answer": "sepeda",
+        "answer": "bicycle",
         "hint": "Kendaraan beroda dua tanpa mesin yang dikayuh."
       }
     ]
   },
-
-  // ==========================================
-  // UNIT 7: CHECK-IN HOTEL & KEBERADAAN BARANG (~GA ARIMASU/IMASU) 🏨
-  // ==========================================
   {
     "id": "n5-u7-l1",
     "level": "N5",
@@ -1938,20 +2647,25 @@ export const lessonsData: Lesson[] = [
     "description": "Kuasai kata benda penting: heya (kamar), kagi (kunci), pasupooto (paspor), dan kata hewan neko, inu.",
     "expReward": 20,
     "icon": "🏨",
-    "badge": "Kosakata",
+    "badge": "Vocabulary",
     "questions": [
       {
         "id": "n5-u7-l1-q1",
         "type": "multiple-choice",
-        "questionText": "Kosakata apakah yang memiliki arti \"Kamar\" dalam bahasa Jepang?",
-        "options": ["へや (heya)", "かぎ (kagi)", "ベッド (beddo)", "おふろ (ofuro)"],
+        "questionText": "Which vocabulary word means \"Room\" in Japanese?",
+        "options": [
+          "へや (heya)",
+          "かぎ (kagi)",
+          "ベッド (beddo)",
+          "おふろ (ofuro)"
+        ],
         "answer": "へや (heya)",
-        "hint": "Sering ditulis dengan Kanji: 部屋."
+        "hint": "Often written with the Kanji: 部屋."
       },
       {
         "id": "n5-u7-l1-q2",
         "type": "typing",
-        "questionText": "Ketiklah sebutan \"Kunci\" dalam huruf Hiragana:",
+        "questionText": "Type the word for \"Key\" in Hiragana:",
         "options": [],
         "answer": "かぎ",
         "hint": "Kagi -> かぎ."
@@ -1959,25 +2673,39 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u7-l1-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio kata berikut and pilihlah terjemahan yang tepat!",
+        "questionText": "Listen to the audio word and choose the correct translation!",
         "audioText": "パスポート",
-        "options": ["Paspor", "Kamar hotel", "Kunci hotel", "Dompet"],
-        "answer": "Paspor",
+        "options": [
+          "Passport",
+          "Hotel room",
+          "Hotel key",
+          "Dompet"
+        ],
+        "answer": "Passport",
         "hint": "Dokumen perjalanan resmi luar negeri (Pasupooto)."
       },
       {
         "id": "n5-u7-l1-q4",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang kata benda hidup kucing berikut: \n「へやに ___ がいます。(Di kamar ada kucing.)」",
-        "options": ["ねこ (neko)", "いぬ (inu)", "つくえ (tsukue)", "かぎ (kagi)"],
+        "questionText": "Complete the blank for the living noun cat: \n「へやに ___ がいます。(There is a cat in the room.)」",
+        "options": [
+          "ねこ (neko)",
+          "いぬ (inu)",
+          "つくえ (tsukue)",
+          "かぎ (kagi)"
+        ],
         "answer": "ねこ (neko)",
         "hint": "Hewan lucu berbulu mengeong."
       },
       {
         "id": "n5-u7-l1-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Ada paspor di sini.\"",
-        "options": ["パスポート", "が", "あります"],
+        "questionText": "Arrange the sentence: \"There is a passport here.\"",
+        "options": [
+          "パスポート",
+          "が",
+          "あります"
+        ],
         "answer": "パスポート が あります",
         "hint": "Pasupooto + partikel ga + arimasu."
       }
@@ -1999,32 +2727,47 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u7-l2-q1",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji \"中\" (dalam/tengah)?",
-        "options": ["なか (naka)", "そと (soto)", "うえ (ue)", "した (shita)"],
+        "questionText": "Which is the correct Kunyomi reading for the Kanji \"中\" (inside/middle)?",
+        "options": [
+          "なか (naka)",
+          "そと (soto)",
+          "うえ (ue)",
+          "した (shita)"
+        ],
         "answer": "なか (naka)",
         "hint": "Naka berarti bagian dalam atau tengah."
       },
       {
         "id": "n5-u7-l2-q2",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji \"外\" (luar)?",
-        "options": ["そと (soto)", "なか (naka)", "となり (tonari)", "よこ (yoko)"],
+        "questionText": "Which is the correct Kunyomi reading for the Kanji \"外\" (outside)?",
+        "options": [
+          "そと (soto)",
+          "なか (naka)",
+          "となり (tonari)",
+          "よこ (yoko)"
+        ],
         "answer": "そと (soto)",
         "hint": "Soto berarti bagian luar."
       },
       {
         "id": "n5-u7-l2-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan audio Kanji berikut and pilih artinya!",
+        "questionText": "Listen to the audio pronunciation of the Kanji and choose its meaning!",
         "audioText": "ともだち",
-        "options": ["Teman", "Kamar", "Kunci", "Petugas Hotel"],
-        "answer": "Teman",
-        "hint": "Kunyomi dari Kanji 友 (tomo) -> Tomodachi."
+        "options": [
+          "Friend",
+          "Room",
+          "Key",
+          "Hotel staff"
+        ],
+        "answer": "Friend",
+        "hint": "Kunyomi of the Kanji 友 (tomo) -> Tomodachi."
       },
       {
         "id": "n5-u7-l2-q4",
         "type": "typing",
-        "questionText": "Ketik cara baca Hiragana Kanji tengah berikut: 部屋の中 (Dalam kamar)",
+        "questionText": "Type the Hiragana reading for the middle Kanji: 部屋の中 (Inside the room)",
         "options": [],
         "answer": "へやのなか",
         "hint": "Heya + no + naka -> へやのなか."
@@ -2032,8 +2775,14 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u7-l2-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Teman (tomodachi) ada di luar.\"",
-        "options": ["友だち", "は", "外", "に", "います"],
+        "questionText": "Arrange the sentence: \"My friend (tomodachi) is outside.\"",
+        "options": [
+          "友だち",
+          "は",
+          "外",
+          "に",
+          "います"
+        ],
         "answer": "友だち は 外 に います",
         "hint": "Tomodachi wa + soto ni + imasu."
       }
@@ -2050,45 +2799,66 @@ export const lessonsData: Lesson[] = [
     "description": "Learn the basic differences between the existence pattern of arimasu (inanimate) vs imasu (living things).",
     "expReward": 20,
     "icon": "📝",
-    "badge": "Tata Bahasa",
+    "badge": "Grammar",
     "questions": [
       {
         "id": "n5-u7-l3-q1",
         "type": "multiple-choice",
-        "questionText": "Kata kerja keberadaan manakah yang digunakan saat menyatakan \"Ada kucing (makhluk hidup)\"?",
-        "options": ["います (imasu)", "あります (arimasu)", "おきます (okimasu)", "のります (norimasu)"],
+        "questionText": "Which existence verb is used to express \"There is a cat (living creature)\"?",
+        "options": [
+          "います (imasu)",
+          "あります (arimasu)",
+          "おきます (okimasu)",
+          "のります (norimasu)"
+        ],
         "answer": "います (imasu)",
-        "hint": "Neko adalah hewan, maka gunakan imasu."
+        "hint": "Neko (cat) is an animal, so use imasu."
       },
       {
         "id": "n5-u7-l3-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi kata kerja keberadaan yang tepat untuk kalimat \"Ada paspor (benda mati) di kamar\": \n「部屋にパスポートが ___ 。」",
-        "options": ["あります (arimasu)", "います (imasu)", "きます (kimasu)", "いきます (ikimasu)"],
+        "questionText": "Complete the correct existence verb: \"There is a passport (inanimate object) in the room\": \n「部屋にパスポートが ___ 。」",
+        "options": [
+          "あります (arimasu)",
+          "います (imasu)",
+          "きます (kimasu)",
+          "いきます (ikimasu)"
+        ],
         "answer": "あります (arimasu)",
-        "hint": "Paspor adalah benda mati, sehingga gunakan arimasu."
+        "hint": "Passport is an inanimate object, so use arimasu."
       },
       {
         "id": "n5-u7-l3-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan kalimat berikut and pilihlah artinya!",
+        "questionText": "Listen to the pronunciation of the sentence and choose its meaning!",
         "audioText": "へやにともだちがいます",
-        "options": ["Ada teman di kamar", "Ada teman di luar", "Saya pergi ke kamar teman", "Teman datang ke kamar"],
-        "answer": "Ada teman di kamar",
-        "hint": "Heya ni (di kamar) + tomodachi ga (teman) + imasu (ada)."
+        "options": [
+          "There is a friend in the room",
+          "There is a friend outside",
+          "I go to a friend's room",
+          "A friend comes to the room"
+        ],
+        "answer": "There is a friend in the room",
+        "hint": "Heya ni (in the room) + tomodachi ga (friend) + imasu (exist)."
       },
       {
         "id": "n5-u7-l3-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Di dalam kamar ada kucing.\"",
-        "options": ["部屋の", "中に", "ねこ", "が", "います"],
+        "questionText": "Arrange the sentence: \"There is a cat inside the room.\"",
+        "options": [
+          "部屋の",
+          "中に",
+          "ねこ",
+          "が",
+          "います"
+        ],
         "answer": "部屋の 中に ねこ が います",
         "hint": "Heya no naka ni + neko ga + imasu."
       },
       {
         "id": "n5-u7-l3-q5",
         "type": "typing",
-        "questionText": "Ketiklah bentuk negatif formal (tidak ada) dari kata kerja keberadaan benda mati \"あります\":",
+        "questionText": "Type the formal negative form (there is not) of the existence verb for inanimate objects \"あります\":",
         "options": [],
         "answer": "ありません",
         "hint": "Arimasu berubah menjadi arimasen."
@@ -2106,45 +2876,65 @@ export const lessonsData: Lesson[] = [
     "description": "Latih dialog check-in resepsionis hotel, meminta kunci kamar, dan menanyakan fasilitas.",
     "expReward": 20,
     "icon": "🗣️",
-    "badge": "Percakapan",
+    "badge": "Conversation",
     "questions": [
       {
         "id": "n5-u7-l4-q1",
         "type": "multiple-choice",
-        "questionText": "Resepsionis hotel meminta paspor Anda: \"パスポートをお願いします。\" Tindakan/jawaban apa yang tepat?",
-        "options": ["はい、どうぞ (hai, douzo - Sambil menyerahkan paspor)", "ありがとうございます (arigatou gozaimasu)", "すみません、ありません (sumimasen, arimasen)", "いいえ、ちがいます (iie, chigaimasu)"],
+        "questionText": "The hotel receptionist asks for your passport: \"パスポートをお願いします。\" Which action/response is correct?",
+        "options": [
+          "はい、どうぞ (hai, douzo - Sambil menyerahkan paspor)",
+          "ありがとうございます (arigatou gozaimasu)",
+          "すみません、ありません (sumimasen, arimasen)",
+          "いいえ、ちがいます (iie, chigaimasu)"
+        ],
         "answer": "はい、どうぞ (hai, douzo - Sambil menyerahkan paspor)",
-        "hint": "Hai, douzo digunakan saat memberikan sesuatu kepada orang lain."
+        "hint": "Hai, douzo is used when giving something to others."
       },
       {
         "id": "n5-u7-l4-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Anda ingin menanyakan kunci kamar di resepsionis hotel: \"部屋のかぎは ___ ですか。\"",
-        "options": ["どこ", "だれ", "なん", "いくつ"],
+        "questionText": "You want to ask for your room key at the hotel reception: \"部屋のかぎは ___ ですか。\"",
+        "options": [
+          "どこ",
+          "だれ",
+          "なん",
+          "いくつ"
+        ],
         "answer": "どこ",
-        "hint": "Doko desu ka berarti 'di mana'."
+        "hint": "Doko desu ka means 'where'."
       },
       {
         "id": "n5-u7-l4-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio percakapan berikut and pilih arti benda yang dimaksud!",
+        "questionText": "Listen to the conversation audio and choose the meaning of the object mentioned!",
         "audioText": "かぎがありますか？はい、ここにあります。",
-        "options": ["Apakah kuncinya ada? Ya, ada di sini.", "Apakah kamarnya ada? Ya, ada di sini.", "Apakah paspornya ada? Tidak ada.", "Apakah kuncinya hilang? Tidak."],
-        "answer": "Apakah kuncinya ada? Ya, ada di sini.",
-        "hint": "Kagi (kunci) + arimasu ka (apakah ada) + koko (sini)."
+        "options": [
+          "Is there a key? Yes, there is here.",
+          "Is there a room? Yes, there is here.",
+          "Is there a passport? No, there is none.",
+          "Is the key lost? No."
+        ],
+        "answer": "Is there a key? Yes, there is here.",
+        "hint": "Kagi (key) + arimasu ka (is there) + koko (here)."
       },
       {
         "id": "n5-u7-l4-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat dialog: \"Tolong berikan kunci kamar.\"",
-        "options": ["部屋の", "かぎ", "を", "ください"],
+        "questionText": "Arrange the dialogue sentence: \"Please give me the room key.\"",
+        "options": [
+          "部屋の",
+          "かぎ",
+          "を",
+          "ください"
+        ],
         "answer": "部屋の かぎ を ください",
-        "hint": "Heya no kagi (kunci kamar) + wo + kudasai."
+        "hint": "Heya no kagi (room key) + wo (object particle) + kudasai (please)."
       },
       {
         "id": "n5-u7-l4-q5",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari frasa penyerahan barang \"はい、どうぞ\":",
+        "questionText": "Type the English translation for the hand-over phrase \"はい、どうぞ\":",
         "options": [],
         "answer": "ya silakan",
         "hint": "Atau \"ini, silakan\"."
@@ -2162,95 +2952,138 @@ export const lessonsData: Lesson[] = [
     "description": "Test your understanding of hotel check-in and mastery of arimasu/imasu.",
     "expReward": 30,
     "icon": "🏆",
-    "badge": "Sintesis",
+    "badge": "Synthesis",
     "questions": [
       {
         "id": "n5-u7-l5-q1",
         "type": "multiple-choice",
-        "questionText": "Kata kerja keberadaan yang tepat untuk menyatakan \"Ada anjing (makhluk hidup)\" adalah:",
-        "options": ["います (imasu)", "あります (arimasu)", "きます (kimasu)", "ねます (nemasu)"],
+        "questionText": "The correct existence verb to express \"There is a dog (living creature)\" is:",
+        "options": [
+          "います (imasu)",
+          "あります (arimasu)",
+          "きます (kimasu)",
+          "ねます (nemasu)"
+        ],
         "answer": "います (imasu)",
-        "hint": "Anjing (inu) adalah makhluk hidup."
+        "hint": "Dog (inu) is a living creature."
       },
       {
         "id": "n5-u7-l5-q2",
         "type": "multiple-choice",
-        "questionText": "Kamar hotel dalam bahasa Jepang disebut:",
-        "options": ["へya (heya)", "かgi (kagi)", "うみ (umi)", "まtsuri (matsuri)"],
+        "questionText": "What is a hotel room called in Japanese?",
+        "options": [
+          "へya (heya)",
+          "かgi (kagi)",
+          "うみ (umi)",
+          "まtsuri (matsuri)"
+        ],
         "answer": "へya (heya)",
         "hint": "Dibaca heya."
       },
       {
         "id": "n5-u7-l5-q3",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang keberadaan berikut: \"Ada kunci di dalam kamar\": \n「部屋の中にかぎ ___ あります。」",
-        "options": ["が (ga)", "を (wo)", "は (wa)", "に (ni)"],
+        "questionText": "Complete the existence blank: \"There is a key inside the room\": \n「部屋の中にかぎ ___ あります。」",
+        "options": [
+          "が (ga)",
+          "を (wo)",
+          "は (wa)",
+          "に (ni)"
+        ],
         "answer": "が (ga)",
         "hint": "Subjek penanda keberadaan di depan arimasu/imasu menggunakan partikel ga."
       },
       {
         "id": "n5-u7-l5-q4",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah arti kunyomi dari karakter Kanji \"中\"?",
-        "options": ["Dalam", "Luar", "Atas", "Bawah"],
+        "questionText": "What is the Kunyomi meaning of the Kanji character \"中\"?",
+        "options": [
+          "Dalam",
+          "Luar",
+          "Atas",
+          "Bawah"
+        ],
         "answer": "Dalam",
         "hint": "Dibaca 'naka' yang berarti dalam/tengah."
       },
       {
         "id": "n5-u7-l5-q5",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah arti kunyomi dari karakter Kanji \"外\"?",
-        "options": ["Luar", "Dalam", "Kanan", "Kiri"],
+        "questionText": "What is the Kunyomi meaning of the Kanji character \"外\"?",
+        "options": [
+          "Luar",
+          "Dalam",
+          "Kanan",
+          "Kiri"
+        ],
         "answer": "Luar",
         "hint": "Dibaca 'soto'."
       },
       {
         "id": "n5-u7-l5-q6",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Di dalam kamar ada kucing.\"",
-        "options": ["部屋の", "中に", "ねco", "が", "います"],
+        "questionText": "Arrange the sentence: \"There is a cat inside the room.\"",
+        "options": [
+          "部屋の",
+          "中に",
+          "ねco",
+          "が",
+          "います"
+        ],
         "answer": "部屋の 中に ねco が います",
-        "hint": "Kamar + partikel no + dalam + ni + neko + ga + imasu."
+        "hint": "Heya (room) + particle 'no' (of) + naka (inside) + ni (in) + neko (cat) + ga + imasu (exist)."
       },
       {
         "id": "n5-u7-l5-q7",
         "type": "listening",
-        "questionText": "Dengarkan audio dan pilihlah terjemahan yang tepat!",
+        "questionText": "Listen to the audio and choose the correct translation!",
         "audioText": "パスポートがありません",
-        "options": ["Tidak ada paspor", "Ada paspor", "Paspor saya hilang", "Membawa paspor"],
-        "answer": "Tidak ada paspor",
+        "options": [
+          "There is no passport",
+          "There is a passport",
+          "My passport is lost",
+          "Membawa paspor"
+        ],
+        "answer": "There is no passport",
         "hint": "Pasupooto ga arimasen."
       },
       {
         "id": "n5-u7-l5-q8",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang dialog check-in berikut: \nA: 「パスポートをお願いします。」\nB: 「はい、___ 。」",
-        "options": ["どうぞ", "はじめまして", "ありがとう", "こんにちは"],
+        "questionText": "Complete the check-in dialogue blank: \nA: 「パスポートをお願いします。」\nB: 「はい、___ 。」",
+        "options": [
+          "どうぞ",
+          "はじめまして",
+          "ありがとう",
+          "こんにちは"
+        ],
         "answer": "どうぞ",
         "hint": "Hai, douzo."
       },
       {
         "id": "n5-u7-l5-q9",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat: \"Ada teman di luar kamar.\"",
-        "options": ["部屋の", "外に", "友だち", "が", "います"],
+        "questionText": "Arrange the sentence: \"There is a friend outside the room.\"",
+        "options": [
+          "部屋の",
+          "外に",
+          "友だち",
+          "が",
+          "います"
+        ],
         "answer": "部屋の 外に 友だち が います",
         "hint": "Heya no soto ni + tomodachi ga + imasu."
       },
       {
         "id": "n5-u7-l5-q10",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata benda \"かぎ\" (kagi):",
+        "questionText": "Type the English translation of the noun \"かぎ\" (kagi):",
         "options": [],
-        "answer": "kunci",
-        "hint": "Alat logam untuk membuka pintu atau gembok."
+        "answer": "key",
+        "hint": "A metal tool to open doors or locks."
       }
     ]
   },
-
-  // ==========================================
-  // UNIT 8: ANGGOTA KELUARGA (KAZOKU, CHICHI, HAHA, ~NIN DESU) 👨‍👩‍👧‍👦
-  // ==========================================
   {
     "id": "n5-u8-l1",
     "level": "N5",
@@ -2262,20 +3095,25 @@ export const lessonsData: Lesson[] = [
     "description": "Kuasai kata anggota keluarga sendiri: chichi (ayah), haha (ibu), kazoku (keluarga), kyoudai, otouto, imouto.",
     "expReward": 20,
     "icon": "👨‍👩‍👧‍👦",
-    "badge": "Kosakata",
+    "badge": "Vocabulary",
     "questions": [
       {
         "id": "n5-u8-l1-q1",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah Anda menyebut \"Ibu saya sendiri\" kepada orang lain dalam bahasa Jepang?",
-        "options": ["はは (haha)", "おかあさん (okaasan)", "ちち (chichi)", "おとうさん (otousan)"],
+        "questionText": "How do you refer to your own mother when speaking to others in Japanese?",
+        "options": [
+          "はは (haha)",
+          "おかあさん (okaasan)",
+          "ちち (chichi)",
+          "おとうさん (otousan)"
+        ],
         "answer": "はは (haha)",
-        "hint": "Haha digunakan untuk menyebut ibu kandung sendiri saat berbicara dengan pihak luar."
+        "hint": "Haha is used to refer to one's own mother when speaking to outsiders."
       },
       {
         "id": "n5-u8-l1-q2",
         "type": "typing",
-        "questionText": "Ketiklah kata \"Keluarga\" dalam Hiragana:",
+        "questionText": "Type the word for \"Family\" in Hiragana:",
         "options": [],
         "answer": "かぞく",
         "hint": "Kazoku -> かぞく."
@@ -2283,25 +3121,39 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u8-l1-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio anggota keluarga berikut and tentukan artinya!",
+        "questionText": "Listen to the family member audio and determine the meaning!",
         "audioText": "ちち",
-        "options": ["Ayah saya", "Ibu saya", "Adik laki-laki", "Adik perempuan"],
-        "answer": "Ayah saya",
-        "hint": "Chichi digunakan untuk menyebut ayah kandung sendiri."
+        "options": [
+          "My father",
+          "My mother",
+          "Younger brother",
+          "Younger sister"
+        ],
+        "answer": "My father",
+        "hint": "Chichi is used to refer to one's own father."
       },
       {
         "id": "n5-u8-l1-q4",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang untuk menyebut adik laki-laki sendiri: \n「わたしには ___ がいます。(Saya memiliki adik laki-laki.)」",
-        "options": ["おとうと (otouto)", "いもうと (imouto)", "あに (ani)", "あね (ane)"],
+        "questionText": "Complete the blank to refer to your younger brother: \n「わたしには ___ がいます。(I have a younger brother.)」",
+        "options": [
+          "おとうと (otouto)",
+          "いもうと (imouto)",
+          "あに (ani)",
+          "あね (ane)"
+        ],
         "answer": "おとうと (otouto)",
-        "hint": "Otouto berarti adik laki-laki."
+        "hint": "Otouto means younger brother."
       },
       {
         "id": "n5-u8-l1-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Ada keluarga.\"",
-        "options": ["かぞく", "が", "います"],
+        "questionText": "Arrange the sentence: \"There is a family.\"",
+        "options": [
+          "かぞく",
+          "が",
+          "います"
+        ],
         "answer": "かぞく が います",
         "hint": "Kazoku + partikel ga + imasu (makhluk hidup)."
       }
@@ -2323,32 +3175,47 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u8-l2-q1",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji ayah \"父\"?",
-        "options": ["ちち (chichi)", "はは (haha)", "あに (ani)", "おとうと (otouto)"],
+        "questionText": "Which is the correct Kunyomi reading for the father Kanji \"父\"?",
+        "options": [
+          "ちち (chichi)",
+          "はは (haha)",
+          "あに (ani)",
+          "おとうと (otouto)"
+        ],
         "answer": "ちち (chichi)",
-        "hint": "Chichi dibaca sebagai ayah sendiri."
+        "hint": "Chichi is read as one's own father."
       },
       {
         "id": "n5-u8-l2-q2",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji ibu \"母\"?",
-        "options": ["はは (haha)", "ちち (chichi)", "あね (ane)", "いもうto (imouto)"],
+        "questionText": "Which is the correct Kunyomi reading for the mother Kanji \"母\"?",
+        "options": [
+          "はは (haha)",
+          "ちち (chichi)",
+          "あね (ane)",
+          "いもうto (imouto)"
+        ],
         "answer": "はは (haha)",
-        "hint": "Haha dibaca sebagai ibu sendiri."
+        "hint": "Haha is read as one's own mother."
       },
       {
         "id": "n5-u8-l2-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan audio Kanji keluarga berikut and pilih artinya!",
+        "questionText": "Listen to the audio pronunciation of the family Kanji and choose its meaning!",
         "audioText": "こども",
-        "options": ["Anak", "Orang Tua", "Kakak", "Adik"],
+        "options": [
+          "Anak",
+          "Parents",
+          "Older sibling",
+          "Younger sibling"
+        ],
         "answer": "Anak",
-        "hint": "Kunyomi dari Kanji 子 (ko) + domo -> Kodomo."
+        "hint": "Kunyomi of the Kanji 子 (ko) + domo -> Kodomo."
       },
       {
         "id": "n5-u8-l2-q4",
         "type": "typing",
-        "questionText": "Ketik cara baca Hiragana Kanji ibu berikut: 私の母",
+        "questionText": "Type the Hiragana reading for the mother Kanji: 私の母",
         "options": [],
         "answer": "わたしのはは",
         "hint": "Watashi + no + haha -> わたしのはは."
@@ -2356,8 +3223,14 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u8-l2-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Ayah (chichi) ada di kamar.\"",
-        "options": ["父", "は", "部屋", "に", "います"],
+        "questionText": "Arrange the sentence: \"My father (chichi) is in the room.\"",
+        "options": [
+          "父",
+          "は",
+          "部屋",
+          "に",
+          "います"
+        ],
         "answer": "父 は 部屋 に います",
         "hint": "Chichi + wa + heya + ni + imasu."
       }
@@ -2374,45 +3247,65 @@ export const lessonsData: Lesson[] = [
     "description": "Pelajari cara menghitung jumlah orang (hitori, futari, ~nin) untuk menyatakan anggota keluarga.",
     "expReward": 20,
     "icon": "📝",
-    "badge": "Tata Bahasa",
+    "badge": "Grammar",
     "questions": [
       {
         "id": "n5-u8-l3-q1",
         "type": "multiple-choice",
-        "questionText": "Bagaimanakah cara menyebut hitungan \"satu orang\" dan \"dua orang\" yang tidak teratur dalam bahasa Jepang?",
-        "options": ["ひとり (hitori) dan ふたり (futari)", "いちにん (ichinin) dan ににん (ninin)", "ひとつ (hitotsu) dan ふたつ (futatsu)", "ひだり (hidari) dan みぎ (migi)"],
-        "answer": "ひとり (hitori) dan ふたり (futari)",
-        "hint": "Hitungan satu dan dua orang bersifat tidak teratur (irregular)."
+        "questionText": "How do you count \"one person\" and \"two people\" irregularly in Japanese?",
+        "options": [
+          "ひとり (hitori) and ふたり (futari)",
+          "いちにん (ichinin) and ににん (ninin)",
+          "ひとつ (hitotsu) and ふたつ (futatsu)",
+          "ひだり (hidari) and みぎ (migi)"
+        ],
+        "answer": "ひとり (hitori) and ふたり (futari)",
+        "hint": "Counting one and two people is irregular."
       },
       {
         "id": "n5-u8-l3-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi sufiks hitungan orang untuk \"Tiga orang\": \n「家族は三 ___ です。(Keluarga saya tiga orang.)」",
-        "options": ["人 (nin)", "人 (jin)", "人 (hito)", "つ (tsu)"],
+        "questionText": "Complete the people counter suffix: \"My family is three people\": \n「家族 is 三 ___ です。」",
+        "options": [
+          "人 (nin)",
+          "人 (jin)",
+          "人 (hito)",
+          "つ (tsu)"
+        ],
         "answer": "人 (nin)",
-        "hint": "Mulai dari angka 3, hitungan orang menggunakan sufiks 'nin' (人)."
+        "hint": "Starting from the number 3, counting people uses the suffix 'nin' (person)."
       },
       {
         "id": "n5-u8-l3-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan kalimat berikut and pilihlah artinya!",
+        "questionText": "Listen to the pronunciation of the sentence and choose its meaning!",
         "audioText": "あねがふたりいます",
-        "options": ["Memiliki dua orang kakak perempuan", "Memiliki dua orang adik perempuan", "Kakak perempuan saya ada satu", "Ada dua orang adik laki-laki"],
-        "answer": "Memiliki dua orang kakak perempuan",
-        "hint": "Ane (kakak pr) + ga + futari (2 orang) + imasu (ada/punya)."
+        "options": [
+          "Have two older sisters",
+          "Have two younger sisters",
+          "I have one older sister",
+          "There are two younger brothers"
+        ],
+        "answer": "Have two older sisters",
+        "hint": "Ane (older sister) + ga + futari (2 people) + imasu (have/exist)."
       },
       {
         "id": "n5-u8-l3-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Keluarga saya terdiri dari empat orang.\"",
-        "options": ["家族", "は", "四人", "です"],
+        "questionText": "Arrange the sentence: \"My family consists of four people.\"",
+        "options": [
+          "家族",
+          "は",
+          "四人",
+          "です"
+        ],
         "answer": "家族 は 四人 です",
-        "hint": "Kazoku wa + yonin (4 orang - cara baca khusus) + desu."
+        "hint": "Kazoku wa (family is) + yonin (4 people - special reading) + desu."
       },
       {
         "id": "n5-u8-l3-q5",
         "type": "typing",
-        "questionText": "Ketiklah sebutan \"empat orang\" dalam huruf Hiragana (hati-hati pengucapannya khusus):",
+        "questionText": "Type \"four people\" in Hiragana (note the special pronunciation):",
         "options": [],
         "answer": "よにん",
         "hint": "Bukan yonin tapi 'yonin' ditulis 'よにん'."
@@ -2430,48 +3323,68 @@ export const lessonsData: Lesson[] = [
     "description": "Practice conversations introducing your family members and number of siblings to others.",
     "expReward": 20,
     "icon": "🗣️",
-    "badge": "Percakapan",
+    "badge": "Conversation",
     "questions": [
       {
         "id": "n5-u8-l4-q1",
         "type": "multiple-choice",
-        "questionText": "Seseorang bertanya jumlah keluarga Anda: \"ご家族は何人ですか。\" Anda ingin menjawab \"Keluarga saya lima orang.\" Kalimat manakah yang tepat?",
-        "options": ["家族は五人です (kazoku wa go-nin desu)", "家族は五つです (kazoku wa itsutsu desu)", "家族は五人います (kazoku wa go-nin imasu)", "家族は五人から来ました (kazoku wa go-nin kara kimashita)"],
+        "questionText": "Someone asks your family size: \"ご家族は何人ですか。\" You want to reply \"My family is five people.\" Which sentence is correct?",
+        "options": [
+          "家族は五人です (kazoku wa go-nin desu)",
+          "家族は五つです (kazoku wa itsutsu desu)",
+          "家族は五人います (kazoku wa go-nin imasu)",
+          "家族は五人から来ました (kazoku wa go-nin kara kimashita)"
+        ],
         "answer": "家族は五人です (kazoku wa go-nin desu)",
-        "hint": "Jawaban sopan nominal jumlah anggota keluarga."
+        "hint": "Polite nominal response for the number of family members."
       },
       {
         "id": "n5-u8-l4-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Anda ingin menceritakan saudara kandung \"Saya memiliki satu orang adik perempuan.\" Lengkapi kalimat berikut: \n「いもうとが ___ います。」",
-        "options": ["ひとり (hitori)", "ひとつ (hitotsu)", "ふたり (futari)", "一人 (ichinin)"],
+        "questionText": "You want to say \"I have one younger sister.\" Complete the sentence: \n「いもうとが ___ います。」",
+        "options": [
+          "ひとり (hitori)",
+          "ひとつ (hitotsu)",
+          "ふたり (futari)",
+          "一人 (ichinin)"
+        ],
         "answer": "ひとり (hitori)",
-        "hint": "Satu orang adalah hitori (一人)."
+        "hint": "One person is hitori (一人)."
       },
       {
         "id": "n5-u8-l4-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio percakapan berikut and tentukan jumlah anggota keluarga pembicara!",
+        "questionText": "Listen to the conversation audio and determine the speaker's family size!",
         "audioText": "かぞくはさんにんです",
-        "options": ["3 orang", "4 orang", "2 orang", "5 orang"],
-        "answer": "3 orang",
-        "hint": "San-nin berarti 3 orang."
+        "options": [
+          "3 people",
+          "4 people",
+          "2 people",
+          "5 people"
+        ],
+        "answer": "3 people",
+        "hint": "San-nin means 3 people."
       },
       {
         "id": "n5-u8-l4-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat dialog: \"Saya dan ibu.\"",
-        "options": ["わたし", "と", "はは", "です"],
+        "questionText": "Arrange the dialogue sentence: \"My mother and I.\"",
+        "options": [
+          "わたし",
+          "と",
+          "はは",
+          "です"
+        ],
         "answer": "わたし と はは です",
-        "hint": "Watashi + partikel gabung 'to' (dan) + haha + desu."
+        "hint": "Watashi (I) + coordinating particle 'to' (and) + haha (mother) + desu."
       },
       {
         "id": "n5-u8-l4-q5",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata benda \"きょうだい\" (kyoudai):",
+        "questionText": "Type the English translation of the noun \"きょうだい\" (kyoudai):",
         "options": [],
         "answer": "saudara kandung",
-        "hint": "Merujuk pada saudara laki-laki dan perempuan."
+        "hint": "Refers to brothers and sisters."
       }
     ]
   },
@@ -2486,95 +3399,136 @@ export const lessonsData: Lesson[] = [
     "description": "Test your proficiency in introducing family structure and family size.",
     "expReward": 30,
     "icon": "🏆",
-    "badge": "Sintesis",
+    "badge": "Synthesis",
     "questions": [
       {
         "id": "n5-u8-l5-q1",
         "type": "multiple-choice",
-        "questionText": "Cara menyebut ayah kandung sendiri secara sopan saat bercerita kepada orang lain adalah:",
-        "options": ["ちち (chichi)", "おとうさん (otousan)", "はは (haha)", "おかあさん (okaasan)"],
+        "questionText": "How do you refer to your own father politely when talking to others?",
+        "options": [
+          "ちち (chichi)",
+          "おとうさん (otousan)",
+          "はは (haha)",
+          "おかあさん (okaasan)"
+        ],
         "answer": "ちち (chichi)",
-        "hint": "Chichi untuk ayah sendiri."
+        "hint": "Chichi is for one's own father."
       },
       {
         "id": "n5-u8-l5-q2",
         "type": "multiple-choice",
-        "questionText": "Sufiks hitungan untuk menyatakan \"2 orang\" adalah:",
-        "options": ["ふたり (futari)", "ひとり (hitori)", "ににん (ninin)", "にっつ (nittu)"],
+        "questionText": "The counter suffix for \"2 people\" is:",
+        "options": [
+          "ふたり (futari)",
+          "ひとり (hitori)",
+          "ににん (ninin)",
+          "にっつ (nittu)"
+        ],
         "answer": "ふたり (futari)",
-        "hint": "Futari dibaca untuk 2 orang."
+        "hint": "Futari is read for 2 people."
       },
       {
         "id": "n5-u8-l5-q3",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi kalimat \"Ada ayah di kamar\": \n「部屋にちち ___ います。」",
-        "options": ["が (ga)", "を (wo)", "は (wa)", "に (ni)"],
+        "questionText": "Complete the sentence: \"Father is in the room\": \n「部屋にちち ___ います。」",
+        "options": [
+          "が (ga)",
+          "を (wo)",
+          "は (wa)",
+          "に (ni)"
+        ],
         "answer": "が (ga)",
         "hint": "Penanda subjek keberadaan."
       },
       {
         "id": "n5-u8-l5-q4",
         "type": "multiple-choice",
-        "questionText": "Apakah arti dari Kanji \"母\"?",
-        "options": ["Ibu", "Ayah", "Anak", "Teman"],
-        "answer": "Ibu",
+        "questionText": "What is the meaning of the Kanji \"母\"?",
+        "options": [
+          "Mother",
+          "Father",
+          "Anak",
+          "Friend"
+        ],
+        "answer": "Mother",
         "hint": "Dibaca haha."
       },
       {
         "id": "n5-u8-l5-q5",
         "type": "multiple-choice",
-        "questionText": "Apakah arti dari Kanji \"父\"?",
-        "options": ["Ayah", "Ibu", "Adik", "Kakak"],
-        "answer": "Ayah",
+        "questionText": "What is the meaning of the Kanji \"父\"?",
+        "options": [
+          "Father",
+          "Mother",
+          "Younger sibling",
+          "Older sibling"
+        ],
+        "answer": "Father",
         "hint": "Dibaca chichi."
       },
       {
         "id": "n5-u8-l5-q6",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Keluarga saya terdiri dari tiga orang.\"",
-        "options": ["家族", "は", "三人", "です"],
+        "questionText": "Arrange the sentence: \"My family consists of three people.\"",
+        "options": [
+          "家族",
+          "は",
+          "三人",
+          "です"
+        ],
         "answer": "家族 は 三人 です",
         "hint": "Kazoku + wa + san-nin (三人) + desu."
       },
       {
         "id": "n5-u8-l5-q7",
         "type": "listening",
-        "questionText": "Dengarkan audio dan pilihlah jumlah adik laki-laki yang dimiliki!",
+        "questionText": "Listen to the audio and choose the number of younger brothers owned!",
         "audioText": "おとうとがひとりいます",
-        "options": ["Memiliki satu orang adik laki-laki", "Memiliki dua orang adik laki-laki", "Tidak memiliki adik laki-laki", "Kakak laki-laki saya satu"],
-        "answer": "Memiliki satu orang adik laki-laki",
+        "options": [
+          "Have one younger brother",
+          "Have two younger brothers",
+          "Do not have a younger brother",
+          "I have one older brother"
+        ],
+        "answer": "Have one younger brother",
         "hint": "Otouto ga hitori imasu."
       },
       {
         "id": "n5-u8-l5-q8",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang hitungan orang untuk \"Empat orang\": \n「きょうだいは ___ です。」",
-        "options": ["四人 (yonin)", "四人 (yonin)", "四人 (yonin)", "四人 (yoyin)"],
+        "questionText": "Complete the people counter blank: \"My siblings are four people\": \n「きょうだいは ___ です。」",
+        "options": [
+          "四人 (yonin)",
+          "四人 (yonin)",
+          "四人 (yonin)",
+          "四人 (yoyin)"
+        ],
         "answer": "四人 (yonin)",
         "hint": "Dibaca 'yonin' ditulis 四人."
       },
       {
         "id": "n5-u8-l5-q9",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat: \"Saya memiliki dua orang kakak perempuan.\"",
-        "options": ["あね", "が", "ふたり", "います"],
+        "questionText": "Arrange the sentence: \"I have two older sisters.\"",
+        "options": [
+          "あね",
+          "が",
+          "ふたり",
+          "います"
+        ],
         "answer": "あね が ふたり います",
-        "hint": "Ane (kakak pr) + ga + futari (2 orang) + imasu."
+        "hint": "Ane (older sister) + ga + futari (2 people) + imasu."
       },
       {
         "id": "n5-u8-l5-q10",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata benda \"いもうと\" (imouto):",
+        "questionText": "Type the English translation of the noun \"いもうと\" (imouto):",
         "options": [],
         "answer": "adik perempuan",
-        "hint": "Anggota keluarga saudara perempuan yang lebih muda."
+        "hint": "Family member who is a younger sister."
       }
     ]
   },
-
-  // ==========================================
-  // UNIT 9: KEPEMILIKAN BARANG (PARTIKEL ~NO, DARE NO) 🎒
-  // ==========================================
   {
     "id": "n5-u9-l1",
     "level": "N5",
@@ -2586,20 +3540,25 @@ export const lessonsData: Lesson[] = [
     "description": "Kuasai kata benda barang: kaban (tas), hon (buku), kasa (payung), keitai (HP), dan kata tanya dare (siapa).",
     "expReward": 20,
     "icon": "🎒",
-    "badge": "Kosakata",
+    "badge": "Vocabulary",
     "questions": [
       {
         "id": "n5-u9-l1-q1",
         "type": "multiple-choice",
-        "questionText": "Kosakata barang bawaan \"かばん\" (kaban) memiliki arti:",
-        "options": ["Tas", "Buku", "Payung", "Ponsel"],
-        "answer": "Tas",
-        "hint": "Wadah portabel bertali untuk membawa buku atau barang."
+        "questionText": "The baggage vocabulary \"かばん\" (kaban) means:",
+        "options": [
+          "Bag",
+          "Book",
+          "Umbrella",
+          "Ponsel"
+        ],
+        "answer": "Bag",
+        "hint": "Portable strapped bag to carry books or items."
       },
       {
         "id": "n5-u9-l1-q2",
         "type": "typing",
-        "questionText": "Ketiklah sebutan \"Payung\" dalam huruf Hiragana:",
+        "questionText": "Type the word for \"Umbrella\" in Hiragana:",
         "options": [],
         "answer": "かさ",
         "hint": "Kasa -> かさ."
@@ -2607,27 +3566,42 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u9-l1-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio benda berikut and pilihlah terjemahan yang tepat!",
+        "questionText": "Listen to the audio object and choose the correct translation!",
         "audioText": "ほん",
-        "options": ["Buku", "Tas", "Ponsel", "Kunci"],
-        "answer": "Buku",
+        "options": [
+          "Book",
+          "Bag",
+          "Ponsel",
+          "Key"
+        ],
+        "answer": "Book",
         "hint": "Bahan cetak terjilid dibaca hon."
       },
       {
         "id": "n5-u9-l1-q4",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang kata tanya \"siapa\" berikut: \n「これは ___ のですか。(Ini milik siapa?)」",
-        "options": ["だれ (dare)", "なん (nan)", "どこ (doko)", "いつ (itsu)"],
+        "questionText": "Complete the question word blank: \n「これは ___ のですか。(Whose is this?)」",
+        "options": [
+          "だれ (dare)",
+          "なん (nan)",
+          "どこ (doko)",
+          "いつ (itsu)"
+        ],
         "answer": "だれ (dare)",
-        "hint": "Dare berarti siapa."
+        "hint": "Dare means who."
       },
       {
         "id": "n5-u9-l1-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Tas milik saya.\"",
-        "options": ["わたし", "の", "かばん", "です"],
+        "questionText": "Arrange the sentence: \"The bag is mine.\"",
+        "options": [
+          "わたし",
+          "の",
+          "かばん",
+          "です"
+        ],
         "answer": "わたし の かばん です",
-        "hint": "Watashi (saya) + partikel kepemilikan no + kaban + desu."
+        "hint": "Watashi (I) + possessive particle 'no' + kaban (bag) + desu (is)."
       }
     ]
   },
@@ -2647,32 +3621,47 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u9-l2-q1",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji \"本\" (buku)?",
-        "options": ["ほん (hon)", "もと (moto)", "せん (sen)", "せい (sei)"],
+        "questionText": "Which is the correct Kunyomi reading for the book Kanji \"本\"?",
+        "options": [
+          "ほん (hon)",
+          "もと (moto)",
+          "せん (sen)",
+          "せい (sei)"
+        ],
         "answer": "ほん (hon)",
-        "hint": "Dibaca hon saat berdiri sendiri sebagai buku."
+        "hint": "Read as 'hon' when standing alone as a book."
       },
       {
         "id": "n5-u9-l2-q2",
         "type": "multiple-choice",
-        "questionText": "Kanji gabungan \"先生\" memiliki arti:",
-        "options": ["Guru / Dosen", "Siswa", "Teman", "Orang Tua"],
-        "answer": "Guru / Dosen",
-        "hint": "Ditulis dengan Kanji 'dahulu' (先) dan 'hidup' (生), dibaca 'sensei'."
+        "questionText": "The compound Kanji \"先生\" means:",
+        "options": [
+          "Teacher / Lecturer",
+          "Siswa",
+          "Friend",
+          "Parents"
+        ],
+        "answer": "Teacher / Lecturer",
+        "hint": "Written with the Kanji for 'before' (先) and 'life' (生), read as 'sensei'."
       },
       {
         "id": "n5-u9-l2-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan audio Kanji berikut and tentukan artinya!",
+        "questionText": "Listen to the audio pronunciation of the Kanji and determine its meaning!",
         "audioText": "せんせい",
-        "options": ["Guru", "Murid", "Buku", "Dokter"],
-        "answer": "Guru",
-        "hint": "Sensei berarti guru."
+        "options": [
+          "Teacher",
+          "Student",
+          "Book",
+          "Doctor"
+        ],
+        "answer": "Teacher",
+        "hint": "Sensei means teacher."
       },
       {
         "id": "n5-u9-l2-q4",
         "type": "typing",
-        "questionText": "Ketik cara baca Hiragana dari Kanji guru berikut: 先生",
+        "questionText": "Type the Hiragana reading for the teacher Kanji: 先生",
         "options": [],
         "answer": "せんせい",
         "hint": "Dibaca sebagai sen-sei."
@@ -2680,8 +3669,14 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u9-l2-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Ini adalah buku Guru (sensei).\"",
-        "options": ["これ", "は", "先生の", "本", "です"],
+        "questionText": "Arrange the sentence: \"This is the teacher's (sensei) book.\"",
+        "options": [
+          "これ",
+          "は",
+          "先生の",
+          "本",
+          "です"
+        ],
         "answer": "これ は 先生の 本 です",
         "hint": "Kore wa + sensei no + hon + desu."
       }
@@ -2698,48 +3693,69 @@ export const lessonsData: Lesson[] = [
     "description": "Learn how to connect possessive nouns using the particle ~no (A belongs to B).",
     "expReward": 20,
     "icon": "📝",
-    "badge": "Tata Bahasa",
+    "badge": "Grammar",
     "questions": [
       {
         "id": "n5-u9-l3-q1",
         "type": "multiple-choice",
-        "questionText": "Partikel manakah yang digunakan untuk menyatakan kepemilikan (punya/milik)?",
-        "options": ["の (no)", "に (ni)", "を (wo)", "は (wa)"],
+        "questionText": "Which particle is used to express possession?",
+        "options": [
+          "の (no)",
+          "に (ni)",
+          "を (wo)",
+          "は (wa)"
+        ],
         "answer": "の (no)",
-        "hint": "A no B = B milik A (contoh: watashi no hon = buku milik saya)."
+        "hint": "A no B = B belongs to A (example: watashi no hon = my book)."
       },
       {
         "id": "n5-u9-l3-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi partikel untuk kalimat \"Apakah ini tas milik Anda?\": \n「これはあなた ___ かばんですか。」",
-        "options": ["の", "を", "は", "が"],
+        "questionText": "Complete the particle: \"Is this your bag?\": \n「これはあなた ___ かばんですか。」",
+        "options": [
+          "の",
+          "を",
+          "は",
+          "が"
+        ],
         "answer": "の",
-        "hint": "Anata (Anda) + partikel kepemilikan no + kaban."
+        "hint": "Anata (you) + possessive particle 'no' + kaban (bag)."
       },
       {
         "id": "n5-u9-l3-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan kalimat berikut and pilih artinya!",
+        "questionText": "Listen to the pronunciation of the sentence and choose its meaning!",
         "audioText": "これはだれのかさですか",
-        "options": ["Ini payung milik siapa?", "Apakah ini payung Anda?", "Ini payung milik saya", "Di mana payung saya?"],
-        "answer": "Ini payung milik siapa?",
-        "hint": "Kore wa (ini adalah) + dare no (siapa punya) + kasa desu ka (payung tanya)."
+        "options": [
+          "Whose umbrella is this?",
+          "Is this your umbrella?",
+          "This umbrella is mine",
+          "Where is my umbrella?"
+        ],
+        "answer": "Whose umbrella is this?",
+        "hint": "Kore wa (this is) + dare no (whose) + kasa desu ka (umbrella question)."
       },
       {
         "id": "n5-u9-l3-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat: \"Itu (sore) adalah HP milik teman.\"",
-        "options": ["それ", "は", "友だちの", "スマホ", "です"],
+        "questionText": "Arrange the sentence: \"That (sore) is a friend's smartphone.\"",
+        "options": [
+          "それ",
+          "は",
+          "友だちの",
+          "スマホ",
+          "です"
+        ],
         "answer": "それ は 友だちの スマホ です",
-        "hint": "Sore wa + tomodachi no (teman punya) + sumaho (HP) + desu."
+        "hint": "Sore wa + tomodachi no (friend's) + sumaho (smartphone) + desu."
       },
       {
         "id": "n5-u9-l3-q5",
         "type": "typing",
-        "questionText": "Ketiklah partikel kepemilikan dalam Hiragana:",
+        "questionText": "Type the possessive particle in Hiragana:",
         "options": [],
         "answer": "の",
-        "hint": "Sufiks penyambung kata benda kepunyaan."
+        "hint": "Suffix linking possessive nouns."
       }
     ]
   },
@@ -2754,48 +3770,70 @@ export const lessonsData: Lesson[] = [
     "description": "Practice conversations returning a left-behind umbrella or asking for the owner of items in class.",
     "expReward": 20,
     "icon": "🗣️",
-    "badge": "Percakapan",
+    "badge": "Conversation",
     "questions": [
       {
         "id": "n5-u9-l4-q1",
         "type": "multiple-choice",
-        "questionText": "Seseorang menemukan payung Anda dan bertanya \"これはあなたの傘ですか。\" Anda menjawab \"Bukan, bukan milik saya.\" Kalimat manakah yang tepat?",
-        "options": ["いいえ、わたしのではありません (iie, watashi no dewa arimasen)", "はい、わたしのです (hai, watashi no desu)", "いいえ, あります (iie, arimasen)", "いいえ、ちがいます (iie, chigaimasu)"],
+        "questionText": "Someone finds your umbrella and asks \"これはあなたの傘ですか。\" You reply \"No, it is not mine.\" Which sentence is correct?",
+        "options": [
+          "いいえ、わたしのではありません (iie, watashi no dewa arimasen)",
+          "はい、わたしのです (hai, watashi no desu)",
+          "いいえ, あります (iie, arimasen)",
+          "いいえ、ちがいます (iie, chigaimasu)"
+        ],
         "answer": "いいえ、わたしのではありません (iie, watashi no dewa arimasen)",
-        "hint": "Menolak kepemilikan: Bukan milik saya (iie, watashi no dewa arimasen)."
+        "hint": "Rejecting ownership: Not mine (iie, watashi no dewa arimasen)."
       },
       {
         "id": "n5-u9-l4-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Anda ingin mengembalikan tas tertinggal ke Guru: \"先生、これは先生の ___ ですか。\"",
-        "options": ["かばん (tas)", "ほん (buku)", "かさ (payung)", "かぎ (kunci)"],
-        "answer": "かばん (tas)",
-        "hint": "Tas dalam bahasa Jepang adalah kaban."
+        "questionText": "You want to return a left-behind bag to the teacher: \"先生、これは先生の ___ ですか。\"",
+        "options": [
+          "かばん (bag)",
+          "ほん (book)",
+          "かさ (umbrella)",
+          "かぎ (key)"
+        ],
+        "answer": "かばん (bag)",
+        "hint": "Bag in Japanese is 'kaban'."
       },
       {
         "id": "n5-u9-l4-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio percakapan berikut and pilih arti benda yang dimaksud!",
+        "questionText": "Listen to the conversation audio and choose the meaning of the object mentioned!",
         "audioText": "これはだれのかばんですか。わたしのです。",
-        "options": ["Tas", "Buku", "Payung", "Kunci"],
-        "answer": "Tas",
-        "hint": "Kaban berarti tas."
+        "options": [
+          "Bag",
+          "Book",
+          "Umbrella",
+          "Key"
+        ],
+        "answer": "Bag",
+        "hint": "Kaban means bag."
       },
       {
         "id": "n5-u9-l4-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat dialog: \"Ini adalah tas milik Guru.\"",
-        "options": ["これ", "は", "先生", "の", "かばん", "です"],
+        "questionText": "Arrange the dialogue sentence: \"This is the teacher's bag.\"",
+        "options": [
+          "これ",
+          "は",
+          "先生",
+          "の",
+          "かばん",
+          "です"
+        ],
         "answer": "これ は 先生 の かばん です",
         "hint": "Kore + wa + sensei + no + kaban + desu."
       },
       {
         "id": "n5-u9-l4-q5",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata tanya \"だれ\" (dare):",
+        "questionText": "Type the English translation of the question word \"だれ\" (dare):",
         "options": [],
         "answer": "siapa",
-        "hint": "Kata tanya orang."
+        "hint": "Question word for person."
       }
     ]
   },
@@ -2810,95 +3848,139 @@ export const lessonsData: Lesson[] = [
     "description": "Test your synthesis ability on the concept of ownership of goods in Japanese.",
     "expReward": 30,
     "icon": "🏆",
-    "badge": "Sintesis",
+    "badge": "Synthesis",
     "questions": [
       {
         "id": "n5-u9-l5-q1",
         "type": "multiple-choice",
-        "questionText": "Partikel yang digunakan untuk menyatakan kepemilikan benda adalah:",
-        "options": ["の (no)", "を (wo)", "は (wa)", "に (ni)"],
+        "questionText": "The particle used to express possession is:",
+        "options": [
+          "の (no)",
+          "を (wo)",
+          "は (wa)",
+          "に (ni)"
+        ],
         "answer": "の (no)",
         "hint": "Partikel no."
       },
       {
         "id": "n5-u9-l5-q2",
         "type": "multiple-choice",
-        "questionText": "Payung dalam bahasa Jepang disebut:",
-        "options": ["かさ (kasa)", "かばん (kaban)", "ほん (hon)", "スマホ (sumaho)"],
+        "questionText": "What is umbrella called in Japanese?",
+        "options": [
+          "かさ (kasa)",
+          "かばん (kaban)",
+          "ほん (hon)",
+          "スマホ (sumaho)"
+        ],
         "answer": "かさ (kasa)",
-        "hint": "Benda pelindung hujan dibaca kasa."
+        "hint": "Rain protection item read as kasa."
       },
       {
         "id": "n5-u9-l5-q3",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang kalimat: \"Tas ini milik Budi\": \n「このかばんはブディさん ___ です。」",
-        "options": ["の (no)", "は (wa)", "が (ga)", "を (wo)"],
+        "questionText": "Complete the blank: \"This bag belongs to Budi\": \n「このかばんはブディさん ___ です。」",
+        "options": [
+          "の (no)",
+          "は (wa)",
+          "が (ga)",
+          "を (wo)"
+        ],
         "answer": "の (no)",
         "hint": "Partikel kepemilikan."
       },
       {
         "id": "n5-u9-l5-q4",
         "type": "multiple-choice",
-        "questionText": "Apakah arti dari Kanji \"本\"?",
-        "options": ["Buku", "Teman", "Mobil", "Stasiun"],
-        "answer": "Buku",
+        "questionText": "What is the meaning of the Kanji \"本\"?",
+        "options": [
+          "Book",
+          "Friend",
+          "Car",
+          "Station"
+        ],
+        "answer": "Book",
         "hint": "Dibaca hon."
       },
       {
         "id": "n5-u9-l5-q5",
         "type": "multiple-choice",
-        "questionText": "Apakah arti dari Kanji gabungan \"先生\"?",
-        "options": ["Guru", "Murid", "Teman", "Keluarga"],
-        "answer": "Guru",
+        "questionText": "What is the meaning of the compound Kanji \"先生\"?",
+        "options": [
+          "Teacher",
+          "Student",
+          "Friend",
+          "Family"
+        ],
+        "answer": "Teacher",
         "hint": "Dibaca sensei."
       },
       {
         "id": "n5-u9-l5-q6",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Ini adalah tas milik saya.\"",
-        "options": ["これ", "は", "わたし", "の", "かばん", "です"],
+        "questionText": "Arrange the sentence: \"This is my bag.\"",
+        "options": [
+          "これ",
+          "は",
+          "わたし",
+          "の",
+          "かばん",
+          "です"
+        ],
         "answer": "これ は わたし の かばん です",
         "hint": "Kore + wa + watashi + no + kaban + desu."
       },
       {
         "id": "n5-u9-l5-q7",
         "type": "listening",
-        "questionText": "Dengarkan audio dan pilihlah terjemahan yang tepat!",
+        "questionText": "Listen to the audio and choose the correct translation!",
         "audioText": "これは先生のスマホです",
-        "options": ["Ini ponsel milik Guru", "Ini buku milik Guru", "Apakah ini ponsel Guru?", "Ini ponsel milik saya"],
-        "answer": "Ini ponsel milik Guru",
+        "options": [
+          "This is the teacher's phone",
+          "This is the teacher's book",
+          "Is this the teacher's phone?",
+          "This phone is mine"
+        ],
+        "answer": "This is the teacher's phone",
         "hint": "Kore wa + sensei no + sumaho desu."
       },
       {
         "id": "n5-u9-l5-q8",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang tanya pemilik berikut: \n「それは ___ のですか。(Itu milik siapa?)」",
-        "options": ["だれ (dare)", "なん (nan)", "どこ (doko)", "いつ (itsu)"],
+        "questionText": "Complete the question blank: \n「それは ___ のですか。(Whose is that?)」",
+        "options": [
+          "だれ (dare)",
+          "なん (nan)",
+          "どこ (doko)",
+          "いつ (itsu)"
+        ],
         "answer": "だれ (dare)",
-        "hint": "Dare berarti siapa."
+        "hint": "Dare means who."
       },
       {
         "id": "n5-u9-l5-q9",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat: \"Payung ini milik Guru.\"",
-        "options": ["この", "かさ", "は", "先生の", "です"],
+        "questionText": "Arrange the sentence: \"This umbrella belongs to the teacher.\"",
+        "options": [
+          "この",
+          "かさ",
+          "は",
+          "先生の",
+          "です"
+        ],
         "answer": "この かさ は 先生の です",
-        "hint": "Kono kasa wa + sensei no + desu (benda ditiadakan karena dipindah ke depan)."
+        "hint": "Kono kasa wa (this umbrella) + sensei no (teacher's) + desu (is) - the object is omitted since it is moved to the front."
       },
       {
         "id": "n5-u9-l5-q10",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata benda \"かばん\" (kaban):",
+        "questionText": "Type the English translation of the noun \"かばん\" (kaban):",
         "options": [],
-        "answer": "tas",
-        "hint": "Tempat membawa buku."
+        "answer": "bag",
+        "hint": "Place to carry books."
       }
     ]
   },
-
-  // ==========================================
-  // UNIT 10: MENGAJAK BERWISATA (~NI IKIMASU, ~MASHOU) 🗼
-  // ==========================================
   {
     "id": "n5-u10-l1",
     "level": "N5",
@@ -2910,20 +3992,25 @@ export const lessonsData: Lesson[] = [
     "description": "Kuasai kata benda alam/wisata: umi (laut), yama (gunung), kouen (taman), matsuri, dan issho ni.",
     "expReward": 20,
     "icon": "🗼",
-    "badge": "Kosakata",
+    "badge": "Vocabulary",
     "questions": [
       {
         "id": "n5-u10-l1-q1",
         "type": "multiple-choice",
-        "questionText": "Kosakata wisata alam \"海\" (umi) memiliki arti:",
-        "options": ["Laut / Pantai", "Gunung", "Sungai", "Taman"],
-        "answer": "Laut / Pantai",
+        "questionText": "The nature tourism vocabulary \"海\" (umi) means:",
+        "options": [
+          "Sea / Beach",
+          "Mountain",
+          "River",
+          "Park"
+        ],
+        "answer": "Sea / Beach",
         "hint": "Tempat berair asin yang luas, dibaca umi."
       },
       {
         "id": "n5-u10-l1-q2",
         "type": "typing",
-        "questionText": "Ketiklah sebutan \"Taman Kota\" dalam huruf Hiragana:",
+        "questionText": "Type the word for \"City Park\" in Hiragana:",
         "options": [],
         "answer": "kouen",
         "hint": "Kouen -> こうえん."
@@ -2931,25 +4018,39 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u10-l1-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio berikut and pilihlah terjemahan festival yang tepat!",
+        "questionText": "Listen to the audio and choose the correct festival translation!",
         "audioText": "まつり",
-        "options": ["Festival / Perayaan", "Liburan", "Taman", "Keramaian"],
-        "answer": "Festival / Perayaan",
-        "hint": "Perayaan festival tradisional Jepang dibaca matsuri."
+        "options": [
+          "Festival / Celebration",
+          "Liburan",
+          "Park",
+          "Keramaian"
+        ],
+        "answer": "Festival / Celebration",
+        "hint": "Traditional Japanese festival celebration read as matsuri."
       },
       {
         "id": "n5-u10-l1-q4",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang kata keterangan \"bersama-sama\" berikut: \n「___ に行きましょう。(Ayo pergi bersama-sama.)」",
-        "options": ["いっしょ (issho)", "いつも (itsumo)", "とても (totemo)", "ゆっくり (yukkuri)"],
+        "questionText": "Complete the blank for the adverb \"together\": \n「___ に行きましょう。(Let's go together.)」",
+        "options": [
+          "いっしょ (issho)",
+          "いつも (itsumo)",
+          "とても (totemo)",
+          "ゆっくり (yukkuri)"
+        ],
         "answer": "いっしょ (issho)",
         "hint": "Issho ni berarti bersama-sama."
       },
       {
         "id": "n5-u10-l1-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Pergi ke taman.\"",
-        "options": ["こうえん", "へ", "いきます"],
+        "questionText": "Arrange the sentence: \"Go to the park.\"",
+        "options": [
+          "こうえん",
+          "へ",
+          "いきます"
+        ],
         "answer": "こうえん へ いきます",
         "hint": "Kouen + partikel arah he + ikimasu."
       }
@@ -2971,32 +4072,47 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u10-l2-q1",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji gunung \"山\"?",
-        "options": ["やま (yama)", "かわ (kawa)", "うみ (umi)", "いけ (ike)"],
+        "questionText": "Which is the correct Kunyomi reading for the mountain Kanji \"山\"?",
+        "options": [
+          "やま (yama)",
+          "かわ (kawa)",
+          "うみ (umi)",
+          "いけ (ike)"
+        ],
         "answer": "やま (yama)",
-        "hint": "Gunung dibaca yama."
+        "hint": "Mountain is read as yama."
       },
       {
         "id": "n5-u10-l2-q2",
         "type": "multiple-choice",
-        "questionText": "Manakah cara baca kunyomi yang tepat untuk Kanji sungai \"川\"?",
-        "options": ["かわ (kawa)", "やま (yama)", "うみ (umi)", "もり (mori)"],
+        "questionText": "Which is the correct Kunyomi reading for the river Kanji \"川\"?",
+        "options": [
+          "かわ (kawa)",
+          "やま (yama)",
+          "うみ (umi)",
+          "もり (mori)"
+        ],
         "answer": "かわ (kawa)",
         "hint": "Aliran air alami dibaca kawa."
       },
       {
         "id": "n5-u10-l2-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan audio Kanji alam berikut and pilih artinya!",
+        "questionText": "Listen to the audio pronunciation of the nature Kanji and choose its meaning!",
         "audioText": "やま",
-        "options": ["Gunung", "Sungai", "Laut", "Danau"],
-        "answer": "Gunung",
-        "hint": "Yama berarti gunung."
+        "options": [
+          "Mountain",
+          "River",
+          "Sea",
+          "Lake"
+        ],
+        "answer": "Mountain",
+        "hint": "Yama means mountain."
       },
       {
         "id": "n5-u10-l2-q4",
         "type": "typing",
-        "questionText": "Ketik cara baca Hiragana Kanji pergi berikut: Kyotoへ行きます",
+        "questionText": "Type the Hiragana reading for the go Kanji: Kyotoへ行きます",
         "options": [],
         "answer": "きょうとへいきます",
         "hint": "Kyoto + he + ikimasu."
@@ -3004,8 +4120,12 @@ export const lessonsData: Lesson[] = [
       {
         "id": "n5-u10-l2-q5",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Pergi ke gunung Fuji.\"",
-        "options": ["富士山", "へ", "行きます"],
+        "questionText": "Arrange the sentence: \"Go to Mount Fuji.\"",
+        "options": [
+          "富士山",
+          "へ",
+          "行きます"
+        ],
         "answer": "富士山 へ 行きます",
         "hint": "Fujisan + he + ikimasu."
       }
@@ -3022,45 +4142,64 @@ export const lessonsData: Lesson[] = [
     "description": "Learn polite invitation patterns ~mashou (let's) and invitation question pattern ~masen ka.",
     "expReward": 20,
     "icon": "📝",
-    "badge": "Tata Bahasa",
+    "badge": "Grammar",
     "questions": [
       {
         "id": "n5-u10-l3-q1",
         "type": "multiple-choice",
-        "questionText": "Bentuk ajakan sopan \"Ayo makan\" diubah dari kata \"たべます\" (tabemasu) menjadi:",
-        "options": ["たべましょう (tabemashou)", "たべますか (tabemasu ka)", "たべましょうか (tabemashou ka)", "たべません (tabemasen)"],
+        "questionText": "The polite invitation \"Let's eat\" is changed from \"たべます\" (tabemasu) to:",
+        "options": [
+          "たべましょう (tabemashou)",
+          "たべますか (tabemasu ka)",
+          "たべましょうか (tabemashou ka)",
+          "たべません (tabemasen)"
+        ],
         "answer": "たべましょう (tabemashou)",
-        "hint": "Hilangkan 'masu' lalu tambahkan 'mashou' untuk menyatakan ayo."
+        "hint": "Remove 'masu' then add 'mashou' to express 'let's'."
       },
       {
         "id": "n5-u10-l3-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang kalimat ajakan bersahabat: \"Bagaimana kalau pergi ke laut bersama?\": \n「いっしょに海へ行き ___ か。」",
-        "options": ["ません (masen)", "ます (masu)", "ましょう (mashou)", "たい (tai)"],
+        "questionText": "Complete the friendly invitation blank: \"How about going to the sea together?\": \n「いっしょに海へ行き ___ か。」",
+        "options": [
+          "ません (masen)",
+          "ます (masu)",
+          "ましょう (mashou)",
+          "たい (tai)"
+        ],
         "answer": "ません (masen)",
-        "hint": "Pola '~masen ka' digunakan untuk mengajak seseorang secara sopan dan memberikan ruang menolak."
+        "hint": "The '~masen ka' pattern is used to invite someone politely while giving them room to decline."
       },
       {
         "id": "n5-u10-l3-q3",
         "type": "listening",
-        "questionText": "Dengarkan pelafalan kalimat berikut and pilih artinya!",
+        "questionText": "Listen to the pronunciation of the sentence and choose its meaning!",
         "audioText": "いっしょにいきましょう",
-        "options": ["Ayo pergi bersama-sama", "Mau pergi ke mana?", "Apakah Anda pergi bersama?", "Saya tidak ingin pergi bersama"],
-        "answer": "Ayo pergi bersama-sama",
-        "hint": "Issho ni (bersama) + ikimashou (ayo pergi)."
+        "options": [
+          "Let's go together",
+          "Where do you want to go?",
+          "Are you going together?",
+          "I do not want to go together"
+        ],
+        "answer": "Let's go together",
+        "hint": "Issho ni (together) + ikimashou (let's go)."
       },
       {
         "id": "n5-u10-l3-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat: \"Ayo makan sushi di restoran.\"",
-        "options": ["すし", "を", "たべましょう"],
+        "questionText": "Arrange the sentence: \"Let's eat sushi at a restaurant.\"",
+        "options": [
+          "すし",
+          "を",
+          "たべましょう"
+        ],
         "answer": "すし を たべましょう",
         "hint": "Sushi + wo + tabemashou."
       },
       {
         "id": "n5-u10-l3-q5",
         "type": "typing",
-        "questionText": "Ketiklah bentuk ajakan dari kata kerja \"いきます\" (pergi -> ayo pergi):",
+        "questionText": "Type the invitation form of the verb \"いきます\" (go -> let's go):",
         "options": [],
         "answer": "いきましょう",
         "hint": "Hilangkan masu tambah mashou."
@@ -3078,48 +4217,67 @@ export const lessonsData: Lesson[] = [
     "description": "Practice dialogue making plans to travel to Kyoto or watch the matsuri summer festival.",
     "expReward": 20,
     "icon": "🗣️",
-    "badge": "Percakapan",
+    "badge": "Conversation",
     "questions": [
       {
         "id": "n5-u10-l4-q1",
         "type": "multiple-choice",
-        "questionText": "Teman Anda mengajak: \"いっしょに京都へ行きませんか。\" Anda setuju dan menjawab \"Ya, ayo pergi.\" Kalimat manakah yang paling tepat?",
-        "options": ["ええ、行きましょう (ee, ikimashou)", "いいえ、行きません (iie, ikimasen)", "はい、どうぞ (hai, douzo)", "すみません、どこですか (sumimasen, doko desu ka)"],
+        "questionText": "Your friend invites you: \"いっしょに京都へ行きませんか。\" You agree and reply \"Yes, let's go.\" Which sentence is most appropriate?",
+        "options": [
+          "ええ、行きましょう (ee, ikimashou)",
+          "いいえ、行きません (iie, ikimasen)",
+          "はい、どうぞ (hai, douzo)",
+          "すみません、どこですか (sumimasen, doko desu ka)"
+        ],
         "answer": "ええ、行きましょう (ee, ikimashou)",
-        "hint": "Ee (ya) + ikimashou (ayo pergi) adalah cara menyetujui ajakan."
+        "hint": "Ee (yes) + ikimashou (let's go) is the way to accept an invitation."
       },
       {
         "id": "n5-u10-l4-q2",
         "type": "fill-in-the-blank",
-        "questionText": "Anda ingin mengajak melihat festival kembang api matsuri: \"いっしょにまつりへ ___ か。」",
-        "options": ["行きませんか", "行きます", "行きましょう", "行きたいです"],
+        "questionText": "You want to invite someone to see a fireworks festival: \"いっしょにまつりへ ___ か。」",
+        "options": [
+          "行きませんか",
+          "行きます",
+          "行きましょう",
+          "行きたいです"
+        ],
         "answer": "行きませんか",
-        "hint": "Gunakan bentuk '~masen ka' untuk kalimat ajakan tanya."
+        "hint": "Use the '~masen ka' form for a questioning invitation sentence."
       },
       {
         "id": "n5-u10-l4-q3",
         "type": "listening",
-        "questionText": "Dengarkan audio percakapan berikut and tentukan destinasi yang diajak!",
+        "questionText": "Listen to the conversation audio and determine the destination of the invitation!",
         "audioText": "うみへいきましょう。ええ、いきましょう。",
-        "options": ["Laut / Pantai", "Gunung", "Taman Kota", "Kuil Kyoto"],
-        "answer": "Laut / Pantai",
-        "hint": "Umi berarti laut."
+        "options": [
+          "Sea / Beach",
+          "Mountain",
+          "City Park",
+          "Kuil Kyoto"
+        ],
+        "answer": "Sea / Beach",
+        "hint": "Umi means sea."
       },
       {
         "id": "n5-u10-l4-q4",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat dialog: \"Ayo pergi bersama-sama.\"",
-        "options": ["いっしょ", "に", "行きましょう"],
+        "questionText": "Arrange the dialogue sentence: \"Let's go together.\"",
+        "options": [
+          "いっしょ",
+          "に",
+          "行きましょう"
+        ],
         "answer": "いっしょ に 行きましょう",
         "hint": "Issho ni + ikimashou."
       },
       {
         "id": "n5-u10-l4-q5",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari persetujuan ajakan \"ええ、行きましょう\":",
+        "questionText": "Type the English translation of the agreement \"ええ、行きましょう\":",
         "options": [],
         "answer": "ya ayo pergi",
-        "hint": "Atau \"baiklah, ayo pergi\"."
+        "hint": "Or \"all right, let's go\"."
       }
     ]
   },
@@ -3134,495 +4292,678 @@ export const lessonsData: Lesson[] = [
     "description": "Test your competence in discussing plans and inviting someone to vacation together.",
     "expReward": 30,
     "icon": "🏆",
-    "badge": "Sintesis",
+    "badge": "Synthesis",
     "questions": [
       {
         "id": "n5-u10-l5-q1",
         "type": "multiple-choice",
-        "questionText": "Kata kerja \"Ayo pergi\" dalam ragam ajakan sopan adalah:",
-        "options": ["いきましょう (ikimashou)", "いきますか (ikimasu ka)", "いきました (ikimashita)", "いきたいです (ikitai desu)"],
+        "questionText": "The verb \"Let's go\" in the polite invitation form is:",
+        "options": [
+          "いきましょう (ikimashou)",
+          "いきますか (ikimasu ka)",
+          "いきました (ikimashita)",
+          "いきたいです (ikitai desu)"
+        ],
         "answer": "いきましょう (ikimashou)",
         "hint": "Ikimashou."
       },
       {
         "id": "n5-u10-l5-q2",
         "type": "multiple-choice",
-        "questionText": "Festival musim panas dalam bahasa Jepang dinamakan:",
-        "options": ["まつり (matsuri)", "うみ (umi)", "やま (yama)", "こうえん (kouen)"],
+        "questionText": "What is a summer festival called in Japanese?",
+        "options": [
+          "まつり (matsuri)",
+          "うみ (umi)",
+          "やま (yama)",
+          "こうえん (kouen)"
+        ],
         "answer": "まつり (matsuri)",
         "hint": "Matsuri."
       },
       {
         "id": "n5-u10-l5-q3",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang kalimat: \"Ayo minum teh bersama\": \n「いっしょにお茶を ___ 。」",
-        "options": ["のみましょう (nomimashou)", "のみます (nomimasu)", "のみたい (nomitai)", "のみません (nomimasen)"],
+        "questionText": "Complete the blank: \"Let's drink tea together\": \n「いっしょにお茶を ___ 。」",
+        "options": [
+          "のみましょう (nomimashou)",
+          "のみます (nomimasu)",
+          "のみたい (nomitai)",
+          "のみません (nomimasen)"
+        ],
         "answer": "のみましょう (nomimashou)",
-        "hint": "Bentuk ajakan untuk kata kerja minum."
+        "hint": "Invitation form for the verb drink."
       },
       {
         "id": "n5-u10-l5-q4",
         "type": "multiple-choice",
-        "questionText": "Apakah arti kunyomi dari karakter Kanji \"山\"?",
-        "options": ["Gunung", "Sungai", "Laut", "Taman"],
-        "answer": "Gunung",
+        "questionText": "What is the Kunyomi meaning of the Kanji character \"山\"?",
+        "options": [
+          "Mountain",
+          "River",
+          "Sea",
+          "Park"
+        ],
+        "answer": "Mountain",
         "hint": "Dibaca yama."
       },
       {
         "id": "n5-u10-l5-q5",
         "type": "multiple-choice",
-        "questionText": "Apakah arti kunyomi dari karakter Kanji \"川\"?",
-        "options": ["Sungai", "Gunung", "Danau", "Laut"],
-        "answer": "Sungai",
+        "questionText": "What is the Kunyomi meaning of the Kanji character \"川\"?",
+        "options": [
+          "River",
+          "Mountain",
+          "Lake",
+          "Sea"
+        ],
+        "answer": "River",
         "hint": "Dibaca kawa."
       },
       {
         "id": "n5-u10-l5-q6",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat berikut: \"Ayo pergi ke taman kota.\"",
-        "options": ["こうえん", "へ", "行きましょう"],
+        "questionText": "Arrange the sentence: \"Let's go to the city park.\"",
+        "options": [
+          "こうえん",
+          "へ",
+          "行きましょう"
+        ],
         "answer": "こうえん へ 行きましょう",
         "hint": "Kouen + he + ikimashou."
       },
       {
         "id": "n5-u10-l5-q7",
         "type": "listening",
-        "questionText": "Dengarkan audio dan pilihlah tujuan wisata yang diucapkan!",
+        "questionText": "Listen to the audio and choose the travel destination spoken!",
         "audioText": "いっしょにうみへいきませんか",
-        "options": ["Mengajak pergi ke laut", "Mengajak pergi ke gunung", "Pergi ke taman sendirian", "Ayo pulang ke rumah"],
-        "answer": "Mengajak pergi ke laut",
+        "options": [
+          "Inviting to go to the sea",
+          "Inviting to go to the mountain",
+          "Go to the park alone",
+          "Ayo pulang ke rumah"
+        ],
+        "answer": "Inviting to go to the sea",
         "hint": "Issho ni umi he ikimasen ka."
       },
       {
         "id": "n5-u10-l5-q8",
         "type": "fill-in-the-blank",
-        "questionText": "Lengkapi rumpang dialog ajakan berikut: \nA: 「いっしょに山へ行きませんか。」\nB: 「ええ、___。」",
-        "options": ["行きましょう", "行きます", "どうぞ", "こんにちは"],
+        "questionText": "Complete the invitation dialogue blank: \nA: 「いっしょに山へ行きませんか。」\nB: 「ええ、___。」",
+        "options": [
+          "行きましょう",
+          "行きます",
+          "どうぞ",
+          "こんにちは"
+        ],
         "answer": "行きましょう",
         "hint": "Ee, ikimashou."
       },
       {
         "id": "n5-u10-l5-q9",
         "type": "sentence-builder",
-        "questionText": "Susun kalimat: \"Ayo pergi ke Kyoto bersama-sama.\"",
-        "options": ["いっしょ", "に", "京都", "へ", "行きましょう"],
+        "questionText": "Arrange the sentence: \"Let's go to Kyoto together.\"",
+        "options": [
+          "いっしょ",
+          "に",
+          "京都",
+          "へ",
+          "行きましょう"
+        ],
         "answer": "いっしょ に 京都 へ 行きましょう",
         "hint": "Issho ni + Kyoto + he + ikimashou."
       },
       {
         "id": "n5-u10-l5-q10",
         "type": "typing",
-        "questionText": "Ketiklah arti bahasa Indonesia dari kata benda \"こうえん\" (kouen):",
+        "questionText": "Type the English translation of the noun \"こうえん\" (kouen):",
         "options": [],
-        "answer": "taman",
+        "answer": "park",
         "hint": "Tempat bersantai publik yang asri."
       }
     ]
   },
-
-  // ==========================================
-  // JLPT N4: ELEMENTARY GRAMMAR & CONJUGATION
-  // ==========================================
-  {id: 'n4-u1-l1',
-    level: 'N4',
-    unitId: 'n4-u1',
-    unitTitle: 'Unit 11: Directions, Desires & Life 🗺️',
-    unitDescription: 'Master vocabulary for navigation, personal desires, and N4 casual expressions.',
-    unitColor: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
-    title: 'Asking for Directions & Locations',
-    description: 'Learn how to navigate and ask for the position of public places in Japan.',
-    expReward: 25,
-    icon: '🗺️',
-    badge: 'Tanya Jawab',
-    questions: [
+  {
+    "id": "n4-u1-l1",
+    "level": "N4",
+    "unitId": "n4-u1",
+    "unitTitle": "Unit 11: Directions, Desires & Life 🗺️",
+    "unitDescription": "Master vocabulary for navigation, personal desires, and N4 casual expressions.",
+    "unitColor": "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)",
+    "title": "Asking for Directions & Locations",
+    "description": "Learn how to navigate and ask for the position of public places in Japan.",
+    "expReward": 25,
+    "icon": "🗺️",
+    "badge": "Tanya Jawab",
+    "questions": [
       {
-        id: 'n4-u1-l1-q1',
-        type: 'multiple-choice',
-        questionText: 'Kosakata "えき" (eki) memiliki arti:',
-        options: ['Bandara', 'Stasiun', 'Taman', 'Rumah Sakit'],
-        answer: 'Stasiun',
-        hint: 'Tempat kereta api berhenti dan berangkat.'
+        "id": "n4-u1-l1-q1",
+        "type": "multiple-choice",
+        "questionText": "The vocabulary \"えき\" (eki) means:",
+        "options": [
+          "Bandara",
+          "Station",
+          "Park",
+          "Hospital"
+        ],
+        "answer": "Station",
+        "hint": "The place where trains stop and depart."
       },
       {
-        id: 'n4-u1-l1-q2',
-        type: 'listening',
-        questionText: 'Dengarkan audio dan pilihlah kata tanya lokasi yang tepat!',
-        audioText: 'どこ',
-        options: ['だれ', 'どこ', 'いつ', 'なに'],
-        answer: 'どこ',
-        hint: 'Kata tanya untuk menanyakan tempat ("Di mana").'
+        "id": "n4-u1-l1-q2",
+        "type": "listening",
+        "questionText": "Listen to the audio and choose the correct location question word!",
+        "audioText": "どこ",
+        "options": [
+          "だれ",
+          "どこ",
+          "いつ",
+          "なに"
+        ],
+        "answer": "どこ",
+        "hint": "Question word for asking place (\"Where\")."
       },
       {
-        id: 'n4-u1-l1-q3',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat tanya: "Stasiun ada di mana?"',
-        options: ['えき', 'は', 'どこ', 'です', 'か', 'に'],
-        answer: 'えき は どこ です か',
-        hint: 'Topik (eki wa) + Tanya (doko) + Copula tanya (desu ka).'
+        "id": "n4-u1-l1-q3",
+        "type": "sentence-builder",
+        "questionText": "Arrange the question sentence: \"Where is the station?\"",
+        "options": [
+          "えき",
+          "は",
+          "どこ",
+          "です",
+          "か",
+          "に"
+        ],
+        "answer": "えき は どこ です か",
+        "hint": "Topic (eki wa) + Question (doko) + Question Copula (desu ka)."
       },
       {
-        id: 'n4-u1-l1-q4',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi partikel subjek penanda keberadaan: "トイレ___あります。"',
-        options: ['は', 'が', 'を', 'に'],
-        answer: 'が',
-        hint: 'Menggunakan kata "arimasu", partikel subjek di depan biasanya menggunakan "ga" (が).'
+        "id": "n4-u1-l1-q4",
+        "type": "fill-in-the-blank",
+        "questionText": "Complete the subject particle marking existence: \"トイレ___あります。\"",
+        "options": [
+          "は",
+          "が",
+          "を",
+          "に"
+        ],
+        "answer": "が",
+        "hint": "When using the word \"arimasu\", the subject particle in front is usually \"ga\" (ga)."
       },
       {
-        id: 'n4-u1-l1-q5',
-        type: 'typing',
-        questionText: 'Ketik arti bahasa Jepang dari kata penunjuk "Di sana (jauh dari pembicara & lawan bicara)" dalam Hiragana:',
-        options: [],
-        answer: 'あそこ',
-        hint: 'Koko (sini), soko (situ), ... (sana).'
+        "id": "n4-u1-l1-q5",
+        "type": "typing",
+        "questionText": "Type the Japanese translation of the demonstrative pronoun \"Over there (far from both speaker & listener)\" in Hiragana:",
+        "options": [],
+        "answer": "あそこ",
+        "hint": "Koko (sini), soko (situ), ... (sana)."
       }
     ]
   },
   {
-    id: 'n4-u1-l2',
-    level: 'N4',
-    unitId: 'n4-u1',
-    unitTitle: 'Unit 11: Directions, Desires & Life 🗺️',
-    unitDescription: 'Master vocabulary for navigation, personal desires, and N4 casual expressions.',
-    unitColor: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
-    title: 'Expressing Desires (~tai)',
-    description: 'Learn how to express what you want to do using the ~tai grammar pattern.',
-    expReward: 25,
-    icon: '💭',
-    badge: 'Tata Bahasa',
-    questions: [
+    "id": "n4-u1-l2",
+    "level": "N4",
+    "unitId": "n4-u1",
+    "unitTitle": "Unit 11: Directions, Desires & Life 🗺️",
+    "unitDescription": "Master vocabulary for navigation, personal desires, and N4 casual expressions.",
+    "unitColor": "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)",
+    "title": "Expressing Desires (~tai)",
+    "description": "Learn how to express what you want to do using the ~tai grammar pattern.",
+    "expReward": 25,
+    "icon": "💭",
+    "badge": "Grammar",
+    "questions": [
       {
-        id: 'n4-u1-l2-q1',
-        type: 'multiple-choice',
-        questionText: 'Bagaimana cara mengubah kata kerja "たべます" (tabemono/makan) menjadi "ingin makan"?',
-        options: ['たべたい', 'たべた', 'たべるそう', 'たべます'],
-        answer: 'たべたい',
-        hint: 'Hilangkan akhiran "masu" lalu tambahkan akhiran "tai".'
+        "id": "n4-u1-l2-q1",
+        "type": "multiple-choice",
+        "questionText": "How do you change the verb \"たべます\" (eat) to \"want to eat\"?",
+        "options": [
+          "たべたい",
+          "たべた",
+          "たべるそう",
+          "たべます"
+        ],
+        "answer": "たべたい",
+        "hint": "Hilangkan akhiran \"masu\" lalu tambahkan akhiran \"tai\"."
       },
       {
-        id: 'n4-u1-l2-q2',
-        type: 'listening',
-        questionText: 'Dengarkan kalimat berikut dan pilihlah artinya!',
-        audioText: '日本に行きたいです',
-        options: ['Saya ingin pergi ke Jepang', 'Saya sudah pergi ke Jepang', 'Saya tidak mau pergi ke Jepang', 'Saya suka Jepang'],
-        answer: 'Saya ingin pergi ke Jepang',
-        hint: 'Nihon (Jepang) + ni (ke) + ikitai (ingin pergi) + desu.'
+        "id": "n4-u1-l2-q2",
+        "type": "listening",
+        "questionText": "Listen to the sentence and choose its meaning!",
+        "audioText": "日本に行きたいです",
+        "options": [
+          "I want to go to Japan",
+          "I have been to Japan",
+          "I do not want to go to Japan",
+          "I like Japan"
+        ],
+        "answer": "I want to go to Japan",
+        "hint": "Nihon (Japan) + ni (to) + ikitai (want to go) + desu."
       },
       {
-        id: 'n4-u1-l2-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi dengan bentuk ~tai dari kata kerja "のむ" (minum): "みずを___です。"',
-        options: ['のみたい', 'のむたい', 'のみたい', 'のまたい'],
-        answer: 'のみたい',
-        hint: 'Nomu -> stem-masu nya adalah nomi, gabung dengan tai menjadi "nomitai".'
+        "id": "n4-u1-l2-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Complete with the ~tai form of the verb \"のむ\" (drink): \"みずを___です。\"",
+        "options": [
+          "のみたい",
+          "のむたい",
+          "のみたい",
+          "のまたい"
+        ],
+        "answer": "のみたい",
+        "hint": "Nomu -> its masu-stem is nomi, combine with tai to become \"nomitai\"."
       },
       {
-        id: 'n4-u1-l2-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat: "Saya ingin makan sushi."',
-        options: ['すし', 'が', 'たべたい', 'です', 'を', 'のみたい'],
-        answer: 'すし が たべたい です',
-        hint: 'Pada pola ~tai, partikel "o" sering digantikan oleh "ga" untuk memberikan penekanan objek keinginan.'
+        "id": "n4-u1-l2-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the sentence: \"I want to eat sushi.\"",
+        "options": [
+          "すし",
+          "が",
+          "たべたい",
+          "です",
+          "を",
+          "のみたい"
+        ],
+        "answer": "すし が たべたい です",
+        "hint": "In the ~tai pattern, the particle \"o\" is often replaced by \"ga\" to emphasize the object of desire."
       },
       {
-        id: 'n4-u1-l2-q5',
-        type: 'typing',
-        questionText: 'Ketik lawan kata dari "Ikitai" (Ingin pergi) yaitu "Tidak ingin pergi" (Ikitakunai) dalam Hiragana:',
-        options: [],
-        answer: 'いきたくない',
-        hint: 'Ikitai -> ubah "i" terakhir menjadi "kunai".'
+        "id": "n4-u1-l2-q5",
+        "type": "typing",
+        "questionText": "Type the opposite of \"Ikitai\" (Want to go), which is \"Do not want to go\" (Ikitakunai), in Hiragana:",
+        "options": [],
+        "answer": "いきたくない",
+        "hint": "Ikitai -> ubah \"i\" terakhir menjadi \"kunai\"."
       }
     ]
   },
   {
-    id: 'n4-u2-l1',
-    level: 'N4',
-    unitId: 'n4-u2',
-    unitTitle: 'Unit 12: Past Activities & Future Plans 📅',
-    unitDescription: 'Learn how to talk about the past and formulate future plans.',
-    unitColor: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
-    title: 'The Past (~ta form)',
-    description: 'Use the informal past tense (~ta) to tell history or past events.',
-    expReward: 25,
-    icon: '⏳',
-    badge: 'Konjugasi',
-    questions: [
+    "id": "n4-u2-l1",
+    "level": "N4",
+    "unitId": "n4-u2",
+    "unitTitle": "Unit 12: Past Activities & Future Plans 📅",
+    "unitDescription": "Learn how to talk about the past and formulate future plans.",
+    "unitColor": "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)",
+    "title": "The Past (~ta form)",
+    "description": "Use the informal past tense (~ta) to tell history or past events.",
+    "expReward": 25,
+    "icon": "⏳",
+    "badge": "Konjugasi",
+    "questions": [
       {
-        id: 'n4-u2-l1-q1',
-        type: 'multiple-choice',
-        questionText: 'Apa bentuk lampau informal (~ta form) dari kata kerja "かう" (membeli)?',
-        options: ['かった', 'かいた', 'かったり', 'かいます'],
-        answer: 'かった',
-        hint: 'Kata kerja berakhiran -u, -tsu, -ru berubah menjadi -tta.'
+        "id": "n4-u2-l1-q1",
+        "type": "multiple-choice",
+        "questionText": "What is the informal past tense (~ta form) of the verb \"かう\" (buy)?",
+        "options": [
+          "かった",
+          "かいた",
+          "かったり",
+          "かいます"
+        ],
+        "answer": "かった",
+        "hint": "Verbs ending in -u, -tsu, -ru change to -tta."
       },
       {
-        id: 'n4-u2-l1-q2',
-        type: 'listening',
-        questionText: 'Dengarkan kalimat ini dan tentukan maknanya!',
-        audioText: '昨日テレビを見た',
-        options: ['Kemarin melihat televisi', 'Besok mau nonton televisi', 'Sekarang sedang nonton tv', 'Tidak suka tv'],
-        answer: 'Kemarin melihat televisi',
-        hint: 'Kinoo (kemarin) + terebi (TV) + o (objek) + mita (sudah melihat).'
+        "id": "n4-u2-l1-q2",
+        "type": "listening",
+        "questionText": "Listen to this sentence and determine its meaning!",
+        "audioText": "昨日テレビを見た",
+        "options": [
+          "I watched television yesterday",
+          "I want to watch television tomorrow",
+          "Watching TV now",
+          "Do not like TV"
+        ],
+        "answer": "I watched television yesterday",
+        "hint": "Kinoo (yesterday) + terebi (TV) + o (object) + mita (watched)."
       },
       {
-        id: 'n4-u2-l1-q3',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat: "Sudah makan roti."',
-        options: ['パン', 'を', 'たべた', 'のみた', 'ごはん'],
-        answer: 'パン を たべた',
-        hint: 'Pan + wo + tabeta (bentuk lampau dari taberu).'
+        "id": "n4-u2-l1-q3",
+        "type": "sentence-builder",
+        "questionText": "Arrange the sentence: \"I already ate bread.\"",
+        "options": [
+          "パン",
+          "を",
+          "たべた",
+          "のみた",
+          "ごはん"
+        ],
+        "answer": "パン を たべた",
+        "hint": "Pan (bread) + wo + tabeta (past tense of taberu)."
       },
       {
-        id: 'n4-u2-l1-q4',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi kalimat pengandaian: "雨が___たら、行きません。"',
-        options: ['ふる', 'ふっ', 'ふり', 'ふれ'],
-        answer: 'ふっ',
-        hint: 'Menggunakan pola pengandaian ~tara: bentuk lampau "futta" + "ra" -> "futtara".'
+        "id": "n4-u2-l1-q4",
+        "type": "fill-in-the-blank",
+        "questionText": "Complete the conditional sentence: \"雨が___たら、行きません。\"",
+        "options": [
+          "ふる",
+          "ふっ",
+          "ふり",
+          "ふれ"
+        ],
+        "answer": "ふっ",
+        "hint": "Using the conditional pattern ~tara: past tense \"futta\" + \"ra\" -> \"futtara\"."
       },
       {
-        id: 'n4-u2-l1-q5',
-        type: 'typing',
-        questionText: 'Ketik bentuk lampau (~ta form) dari kata kerja "する" (melakukan) dalam Hiragana:',
-        options: [],
-        answer: 'した',
-        hint: 'Suru berubah menjadi "shita".'
-      }
-    ]
-  },
-
-  // ==========================================
-  // JLPT N3: INTERMEDIATE GRAMMAR & SPEECH
-  // ==========================================
-  {
-    id: 'n3-u1-l1',
-    level: 'N3',
-    unitId: 'n3-u1',
-    unitTitle: 'Unit 13: Speculation & N3 Conversational Language 🔄',
-    unitDescription: 'Master expressions of speculation, advanced conditionals, and formal polite language.',
-    unitColor: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
-    title: 'Appearance & Hearsay (~sou)',
-    description: 'Bedakan penggunaan pola ~sou yang menyatakan "kelihatannya" vs "katanya".',
-    expReward: 30,
-    icon: '🔄',
-    badge: 'Tata Bahasa N3',
-    questions: [
-      {
-        id: 'n3-u1-l1-q1',
-        type: 'multiple-choice',
-        questionText: 'Ungkapan "おいしそう" (oishisou) memiliki arti:',
-        options: ['Katanya enak', 'Kelihatannya enak', 'Sangat enak', 'Tidak enak'],
-        answer: 'Kelihatannya enak',
-        hint: 'Mengubah kata sifat-i "oishii" dengan membuang "i" lalu ditambah "sou".'
-      },
-      {
-        id: 'n3-u1-l1-q2',
-        type: 'listening',
-        questionText: 'Dengarkan kalimat ini dan tentukan arti gramatikanya!',
-        audioText: '雨が降りそうです',
-        options: ['Kelihatannya akan turun hujan', 'Hujan sudah turun deras', 'Hujan jarang turun di sini', 'Saya tidak suka hujan'],
-        answer: 'Kelihatannya akan turun hujan',
-        hint: 'Ame (hujan) + ga + furisou (kelihatannya akan turun).'
-      },
-      {
-        id: 'n3-u1-l1-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Pilih akhiran yang tepat untuk menyatakan "katanya besok cerah": "明日は晴れる___です。"',
-        options: ['そう', 'らしい', 'みたい', 'はず'],
-        answer: 'そう',
-        hint: 'Bentuk kamus + "sou desu" menyatakan kabar angin / perkataan orang lain ("katanya").'
-      },
-      {
-        id: 'n3-u1-l1-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat: "Katanya dia (laki-laki) akan datang."',
-        options: ['かれ', 'は', 'くる', 'そう', 'です', 'おいしい'],
-        answer: 'かれ は くる そう です',
-        hint: 'Kare (dia lk) + wa + kuru (datang - kamus) + sou desu (katanya).'
-      },
-      {
-        id: 'n3-u1-l1-q5',
-        type: 'typing',
-        questionText: 'Ketik dalam Hiragana padanan kata sifat "Kelihatannya sehat/praktis" dari kata dasar "Genki" (sehat):',
-        options: [],
-        answer: 'げんきそう',
-        hint: 'Kata sifat-na langsung ditambahkan "sou" -> genkisou.'
+        "id": "n4-u2-l1-q5",
+        "type": "typing",
+        "questionText": "Type the past tense (~ta form) of the verb \"する\" (do) in Hiragana:",
+        "options": [],
+        "answer": "した",
+        "hint": "Suru berubah menjadi \"shita\"."
       }
     ]
   },
   {
-    id: 'n3-u1-l2',
-    level: 'N3',
-    unitId: 'n3-u1',
-    unitTitle: 'Unit 13: Speculation & N3 Conversational Language 🔄',
-    unitDescription: 'Master expressions of speculation, advanced conditionals, and formal polite language.',
-    unitColor: 'linear-gradient(135deg, #ea580c 0%, #c2410c 100%)',
-    title: 'Basic Polite Language (Keigo)',
-    description: 'Understand the division of honorific language Sonkeigo and humble language Keigo.',
-    expReward: 30,
-    icon: '👔',
-    badge: 'Keigo',
-    questions: [
+    "id": "n3-u1-l1",
+    "level": "N3",
+    "unitId": "n3-u1",
+    "unitTitle": "Unit 13: Speculation & N3 Conversational Language 🔄",
+    "unitDescription": "Master expressions of speculation, advanced conditionals, and formal polite language.",
+    "unitColor": "linear-gradient(135deg, #ea580c 0%, #c2410c 100%)",
+    "title": "Appearance & Hearsay (~sou)",
+    "description": "Bedakan penggunaan pola ~sou yang menyatakan \"kelihatannya\" vs \"katanya\".",
+    "expReward": 30,
+    "icon": "🔄",
+    "badge": "N3 Grammar",
+    "questions": [
       {
-        id: 'n3-u1-l2-q1',
-        type: 'multiple-choice',
-        questionText: 'Manakah kosakata Kenjougo (merendah) yang digunakan untuk menggantikan kata "いきます" (pergi)?',
-        options: ['まいります', 'いらっしゃいます', 'めしあがります', 'おっしゃいます'],
-        answer: 'まいります',
-        hint: 'Mairimasu digunakan saat merendahkan diri sendiri di depan atasan/klien.'
+        "id": "n3-u1-l1-q1",
+        "type": "multiple-choice",
+        "questionText": "The phrase \"おいしそう\" (oishisou) means:",
+        "options": [
+          "They say it's delicious",
+          "It looks delicious",
+          "Very delicious",
+          "Not delicious / Bad taste"
+        ],
+        "answer": "It looks delicious",
+        "hint": "Conjugating the i-adjective \"oishii\" by dropping \"i\" and adding \"sou\"."
       },
       {
-        id: 'n3-u1-l2-q2',
-        type: 'listening',
-        questionText: 'Dengarkan kalimat hormat ini dan tentukan maknanya!',
-        audioText: '何をお召し上がりになりますか',
-        options: ['Anda mau makan/minum apa?', 'Kapan Anda akan datang?', 'Di mana rumah Anda?', 'Apa nama proyek Anda?'],
-        answer: 'Anda mau makan/minum apa?',
-        hint: 'Nani (apa) + o + meshiagari ni narimasu ka (bentuk hormat makan/minum).'
+        "id": "n3-u1-l1-q2",
+        "type": "listening",
+        "questionText": "Listen to this sentence and determine its grammatical meaning!",
+        "audioText": "雨が降りそうです",
+        "options": [
+          "It looks like it will rain",
+          "It is already raining heavily",
+          "It rarely rains here",
+          "I do not like rain"
+        ],
+        "answer": "It looks like it will rain",
+        "hint": "Ame (rain) + ga + furisou (looks like it will rain)."
       },
       {
-        id: 'n3-u1-l2-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi sapaan resepsionis: "いらっしゃい___。"',
-        options: ['ます', 'ませ', 'です', 'ください'],
-        answer: 'ませ',
-        hint: 'Sapaan selamat datang standar di toko/restoran Jepang: "Iraisshaimase".'
+        "id": "n3-u1-l1-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Choose the correct suffix to say \"they say tomorrow is sunny\": \"明日は晴れる___です。\"",
+        "options": [
+          "そう",
+          "らしい",
+          "みたい",
+          "はず"
+        ],
+        "answer": "そう",
+        "hint": "Dictionary form + \"sou desu\" expresses hearsay / what others say (\"they say\")."
       },
       {
-        id: 'n3-u1-l2-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat merendah: "Saya Tanaka (yang bernama Tanaka)."',
-        options: ['たなか', 'と', 'もうします', 'おっしゃいます', 'わたし', 'は'],
-        answer: 'たなか と もうします',
-        hint: 'Nama + to + moushimasu (bentuk Kenjougo dari iu/berkata).'
+        "id": "n3-u1-l1-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the sentence: \"They say he will come.\"",
+        "options": [
+          "かれ",
+          "は",
+          "くる",
+          "そう",
+          "です",
+          "おいしい"
+        ],
+        "answer": "かれ は くる そう です",
+        "hint": "Kare (he) + wa + kuru (come - dictionary form) + sou desu (they say)."
       },
       {
-        id: 'n3-u1-l2-q5',
-        type: 'typing',
-        questionText: 'Ketik padanan Sonkeigo (hormat) untuk kata kerja "いう" (berkata) dalam Hiragana:',
-        options: [],
-        answer: 'おっしゃる',
-        hint: 'Mengatakan dalam bentuk kamus hormat (Oshiyaru -> oosshaimasu).'
+        "id": "n3-u1-l1-q5",
+        "type": "typing",
+        "questionText": "Type in Hiragana the adjective equivalent of \"Looks healthy/well\" from the root word \"Genki\" (healthy):",
+        "options": [],
+        "answer": "げんきそう",
+        "hint": "Na-adjectives are directly followed by \"sou\" -> genkisou."
       }
     ]
   },
-
-  // ==========================================
-  // JLPT N2: PRE-ADVANCED & SPECIALIZED THEMES
-  // ==========================================
   {
-    id: 'n2-u1-l1',
-    level: 'N2',
-    unitId: 'n2-u1',
-    unitTitle: 'Unit 14: Nuances of Formal & Business Writing 💼',
-    unitDescription: 'Master particle usage in articles, opinions, and N2 complex grammatical relations.',
-    unitColor: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-    title: 'About & Based On (~ni tsuite)',
-    description: 'Use formal writing particles like ~ni tsuite and ~ni oite with precision.',
-    expReward: 40,
-    icon: '💼',
-    badge: 'Grammar N2',
-    questions: [
+    "id": "n3-u1-l2",
+    "level": "N3",
+    "unitId": "n3-u1",
+    "unitTitle": "Unit 13: Speculation & N3 Conversational Language 🔄",
+    "unitDescription": "Master expressions of speculation, advanced conditionals, and formal polite language.",
+    "unitColor": "linear-gradient(135deg, #ea580c 0%, #c2410c 100%)",
+    "title": "Basic Polite Language (Keigo)",
+    "description": "Understand the division of honorific language Sonkeigo and humble language Keigo.",
+    "expReward": 30,
+    "icon": "👔",
+    "badge": "Keigo",
+    "questions": [
       {
-        id: 'n2-u1-l1-q1',
-        type: 'multiple-choice',
-        questionText: 'Tata bahasa "~について" (~ni tsuite) memiliki fungsi utama untuk:',
-        options: ['Menjelaskan perbandingan', 'Menyatakan topik pembicaraan/tentang', 'Menunjukkan durasi waktu', 'Menyatakan sebab-akibat'],
-        answer: 'Menyatakan topik pembicaraan/tentang',
-        hint: 'Sering diterjemahkan sebagai "mengenai" atau "tentang".'
+        "id": "n3-u1-l2-q1",
+        "type": "multiple-choice",
+        "questionText": "Which Kenjougo (humble) vocabulary is used to replace the word \"いきます\" (go)?",
+        "options": [
+          "まいります",
+          "いらっしゃいます",
+          "めしあがります",
+          "おっしゃいます"
+        ],
+        "answer": "まいります",
+        "hint": "Mairimasu is used when humbling oneself in front of a boss/client."
       },
       {
-        id: 'n2-u1-l1-q2',
-        type: 'listening',
-        questionText: 'Dengarkan kalimat akademik berikut dan pilih artinya!',
-        audioText: 'この問題について考えます',
-        options: ['Saya akan memikirkan tentang masalah ini', 'Masalah ini sudah selesai dipecahkan', 'Jangan memikirkan masalah tersebut', 'Masalah ini tidak penting'],
-        answer: 'Saya akan memikirkan tentang masalah ini',
-        hint: 'Kono mondai (masalah ini) + ni tsuite (tentang) + kangaemasu (memikirkan).'
+        "id": "n3-u1-l2-q2",
+        "type": "listening",
+        "questionText": "Listen to this respectful sentence and determine its meaning!",
+        "audioText": "何をお召し上がりになりますか",
+        "options": [
+          "What do you want to eat/drink?",
+          "When will you come?",
+          "Where is your house?",
+          "What is the name of your project?"
+        ],
+        "answer": "What do you want to eat/drink?",
+        "hint": "Nani (what) + o + meshiagari ni narimasu ka (honorific form of eating/drinking)."
       },
       {
-        id: 'n2-u1-l1-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Lengkapi partikel penanda tempat formal N2 (di/pada): "東京___オリンピックが行われた。"',
-        options: ['において', 'について', 'にとって', 'として'],
-        answer: 'において',
-        hint: '~ni oite adalah bentuk formal/tertulis dari partikel "de" (di/pada).'
+        "id": "n3-u1-l2-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Complete the receptionist's greeting: \"いらっしゃい___。\"",
+        "options": [
+          "ます",
+          "ませ",
+          "です",
+          "ください"
+        ],
+        "answer": "ませ",
+        "hint": "Standard welcome greeting at Japanese shops/restaurants: \"Iraisshaimase\"."
       },
       {
-        id: 'n2-u1-l1-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat formal: "Rapat diadakan di perusahaan."',
-        options: ['かいしゃ', 'において', 'かいぎ', 'が', 'おこなわれる', 'について'],
-        answer: 'かいしゃ において かいぎ が おこなわれる',
-        hint: 'Tempat (kaisha ni oite) + Subjek (kaigi ga) + diadakan (okonawareru).'
+        "id": "n3-u1-l2-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the humble sentence: \"I am Tanaka (called Tanaka).\"",
+        "options": [
+          "たなか",
+          "と",
+          "もうします",
+          "おっしゃいます",
+          "わたし",
+          "は"
+        ],
+        "answer": "たなか と もうします",
+        "hint": "Name + to + moushimasu (Kenjougo form of saying name)."
       },
       {
-        id: 'n2-u1-l1-q5',
-        type: 'typing',
-        questionText: 'Ketik cara baca Kanji berikut dalam Hiragana: 会議',
-        options: [],
-        answer: 'かいぎ',
-        hint: 'Ejaan Romajinya "kaigi" (rapat/pertemuan).'
+        "id": "n3-u1-l2-q5",
+        "type": "typing",
+        "questionText": "Type the Sonkeigo (respectful) equivalent of the verb \"いう\" (say) in Hiragana:",
+        "options": [],
+        "answer": "おっしゃる",
+        "hint": "Saying in the dictionary honorific form (Oshiyaru -> osshaimasu)."
       }
     ]
   },
-
-  // ==========================================
-  // JLPT N1: ADVANCED MASTERY & ABSTRACT CONCEPTS
-  // ==========================================
   {
-    id: 'n1-u1-l1',
-    level: 'N1',
-    unitId: 'n1-u1',
-    unitTitle: 'Unit 15: Classical Literature & Abstract Concepts 🎓',
-    unitDescription: 'Master archaic expressions, advanced literary structures, and N1 proverbs.',
-    unitColor: 'linear-gradient(135deg, #dc2626 0%, #991b1b 100%)',
-    title: 'Final Limit Pattern (~wo motte)',
-    description: 'Understand the use of Japan\'s highest literary writing styles to end events.',
-    expReward: 50,
-    icon: '🎓',
-    badge: 'Mastery N1',
-    questions: [
+    "id": "n2-u1-l1",
+    "level": "N2",
+    "unitId": "n2-u1",
+    "unitTitle": "Unit 14: Nuances of Formal & Business Writing 💼",
+    "unitDescription": "Master particle usage in articles, opinions, and N2 complex grammatical relations.",
+    "unitColor": "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)",
+    "title": "About & Based On (~ni tsuite)",
+    "description": "Use formal writing particles like ~ni tsuite and ~ni oite with precision.",
+    "expReward": 40,
+    "icon": "💼",
+    "badge": "Grammar N2",
+    "questions": [
       {
-        id: 'n1-u1-l1-q1',
-        type: 'multiple-choice',
-        questionText: 'Pola kalimat N1 "~をもって" (~wo motte) saat mengakhiri suatu kegiatan memiliki arti:',
-        options: ['Dengan menggunakan / dengan ini', 'Karena alasan darurat', 'Segera setelah', 'Hanya terbatas pada'],
-        answer: 'Dengan menggunakan / dengan ini',
-        hint: 'Menyatakan batas waktu formal ("Dengan ini, [kegiatan] dinyatakan berakhir").'
+        "id": "n2-u1-l1-q1",
+        "type": "multiple-choice",
+        "questionText": "The grammar pattern \"~について\" (~ni tsuite) has the primary function of:",
+        "options": [
+          "Explaining comparisons",
+          "Expressing the topic of conversation/about",
+          "Showing time duration",
+          "Expressing cause and effect"
+        ],
+        "answer": "Expressing the topic of conversation/about",
+        "hint": "Sering diterjemahkan sebagai \"mengenai\" atau \"tentang\"."
       },
       {
-        id: 'n1-u1-l1-q2',
-        type: 'listening',
-        questionText: 'Dengarkan kalimat pengumuman resmi berikut dan tentukan maknanya!',
-        audioText: '本日をもって閉店いたします',
-        options: ['Dengan ini toko tutup per hari ini', 'Toko akan dibuka besok hari', 'Toko kami mengalami kebakaran hari ini', 'Kami akan merenovasi toko segera'],
-        answer: 'Dengan ini toko tutup per hari ini',
-        hint: 'Honjitsu (hari ini) + wo motte (dengan/batas) + heiten itashimasu (tutup toko).'
+        "id": "n2-u1-l1-q2",
+        "type": "listening",
+        "questionText": "Listen to the academic sentence and choose its meaning!",
+        "audioText": "この問題について考えます",
+        "options": [
+          "I will think about this problem",
+          "This problem has already been solved",
+          "Do not think about that problem",
+          "This problem is not important"
+        ],
+        "answer": "I will think about this problem",
+        "hint": "Kono mondai (this problem) + ni tsuite (about) + kangaemasu (think)."
       },
       {
-        id: 'n1-u1-l1-q3',
-        type: 'fill-in-the-blank',
-        questionText: 'Pilih partikel sastra N1 pilihan alternatif: "行く___行かない___、返事をしてください。"',
-        options: ['なり / なり', 'とか / とか', 'だの / だo', 'つつ / つつ'],
-        answer: 'なり / なり',
-        hint: '~nari ~nari berarti "apakah... atau..." (pilihlah salah satu untuk melakukan tindakan).'
+        "id": "n2-u1-l1-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Complete the formal N2 place particle (in/at): \"東京___オリンピックが行われた。\"",
+        "options": [
+          "において",
+          "について",
+          "にとって",
+          "として"
+        ],
+        "answer": "において",
+        "hint": "~ni oite is the formal/written form of the particle \"de\" (in/at)."
       },
       {
-        id: 'n1-u1-l1-q4',
-        type: 'sentence-builder',
-        questionText: 'Susun kalimat N1: "Apabila ada keluhan, silakan hubungi kami."',
-        options: ['質問', 'なり', '意見', 'なり', '連絡', 'してください'],
-        answer: '質問 なり 意見 なり 連絡 してください',
-        hint: 'Shitsumon (pertanyaan) nari + iken (opini) nari + renraku shite kudasai.'
+        "id": "n2-u1-l1-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the formal sentence: \"The meeting was held at the company.\"",
+        "options": [
+          "かいしゃ",
+          "において",
+          "かいぎ",
+          "が",
+          "おこなわれる",
+          "について"
+        ],
+        "answer": "かいしゃ において かいぎ が おこなわれる",
+        "hint": "Place (kaisha ni oite) + Subject (kaigi ga) + held (okonawareru)."
       },
       {
-        id: 'n1-u1-l1-q5',
-        type: 'typing',
-        questionText: 'Ketik dalam Hiragana cara membaca kata kebajikan formal "謙遜" (Rendah Hati):',
-        options: [],
-        answer: 'けんそん',
-        hint: 'Ejaan Romaji-nya adalah "kenson".'
+        "id": "n2-u1-l1-q5",
+        "type": "typing",
+        "questionText": "Type the Hiragana reading for the following Kanji: 会議",
+        "options": [],
+        "answer": "かいぎ",
+        "hint": "Ejaan Romajinya \"kaigi\" (rapat/pertemuan)."
+      }
+    ]
+  },
+  {
+    "id": "n1-u1-l1",
+    "level": "N1",
+    "unitId": "n1-u1",
+    "unitTitle": "Unit 15: Classical Literature & Abstract Concepts 🎓",
+    "unitDescription": "Master archaic expressions, advanced literary structures, and N1 proverbs.",
+    "unitColor": "linear-gradient(135deg, #dc2626 0%, #991b1b 100%)",
+    "title": "Final Limit Pattern (~wo motte)",
+    "description": "Understand the use of Japan's highest literary writing styles to end events.",
+    "expReward": 50,
+    "icon": "🎓",
+    "badge": "Mastery N1",
+    "questions": [
+      {
+        "id": "n1-u1-l1-q1",
+        "type": "multiple-choice",
+        "questionText": "The N1 sentence pattern \"~をもって\" (~wo motte) when ending an activity means:",
+        "options": [
+          "By using / with this",
+          "Due to emergency reasons",
+          "Immediately after",
+          "Only limited to"
+        ],
+        "answer": "By using / with this",
+        "hint": "Expressing a formal deadline (\"With this, [activity] is declared finished\")."
+      },
+      {
+        "id": "n1-u1-l1-q2",
+        "type": "listening",
+        "questionText": "Listen to the official announcement sentence and determine its meaning!",
+        "audioText": "本日をもって閉店いたします",
+        "options": [
+          "With this, the shop closes as of today",
+          "The shop will open tomorrow",
+          "Our shop caught fire today",
+          "We will renovate the shop soon"
+        ],
+        "answer": "With this, the shop closes as of today",
+        "hint": "Honjitsu (today) + wo motte (with/limit) + heiten itashimasu (close shop)."
+      },
+      {
+        "id": "n1-u1-l1-q3",
+        "type": "fill-in-the-blank",
+        "questionText": "Choose the literary N1 alternative particle: \"行く___行かない___、返事をしてください。\"",
+        "options": [
+          "なり / なり",
+          "とか / とか",
+          "だの / だの",
+          "つつ / つつ"
+        ],
+        "answer": "なり / なり",
+        "hint": "~nari ~nari means \"whether... or...\" (choose one action to take)."
+      },
+      {
+        "id": "n1-u1-l1-q4",
+        "type": "sentence-builder",
+        "questionText": "Arrange the N1 sentence: \"If there are complaints, please contact us.\"",
+        "options": [
+          "質問",
+          "なり",
+          "意見",
+          "なり",
+          "連絡",
+          "してください"
+        ],
+        "answer": "質問 なり 意見 なり 連絡 してください",
+        "hint": "Shitsumon (question) nari + iken (opinion) nari + renraku shite kudasai."
+      },
+      {
+        "id": "n1-u1-l1-q5",
+        "type": "typing",
+        "questionText": "Type in Hiragana the reading of the formal virtue word \"謙遜\" (Humble):",
+        "options": [],
+        "answer": "けんそん",
+        "hint": "Its Romaji spelling is \"kenson\"."
       }
     ]
   }
