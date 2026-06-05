@@ -626,7 +626,7 @@ const ExitModalText = styled.p`
   line-height: 1.4;
   margin-bottom: 2.25rem;
   text-align: center;
-  font-family: 'Nunito', 'Outfit', sans-serif;
+  font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
   max-width: 320px;
 `;
 
@@ -640,7 +640,7 @@ const ExitModalButtonContainer = styled.div`
 const ExitKeepLearningBtn = styled.button`
   width: 100%;
   padding: 1.1rem 2rem;
-  border-radius: 99px; /* Duolingo pill shape */
+  border-radius: 16px; /* matched to application's premium button radius */
   font-size: 1.05rem;
   font-weight: 800;
   cursor: pointer;
@@ -651,7 +651,7 @@ const ExitKeepLearningBtn = styled.button`
   background: #1cb0f6; /* Duolingo blue */
   border-bottom: 4px solid #1890d8; /* Duolingo 3D bottom border */
   color: #ffffff;
-  font-family: 'Nunito', 'Outfit', sans-serif;
+  font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
 
   &:hover {
     filter: brightness(1.05);
@@ -674,7 +674,7 @@ const ExitEndSessionBtn = styled.button`
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-family: 'Nunito', 'Outfit', sans-serif;
+  font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
   transition: opacity 0.1s;
 
   &:hover {
