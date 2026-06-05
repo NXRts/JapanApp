@@ -745,10 +745,10 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
       generated.push({
         id,
         type: 'multiple-choice',
-        questionText: `Apakah arti yang tepat untuk kosakata bahasa Jepang berikut: 「${item.japanese}」?`,
+        questionText: `What is the correct meaning for the following Japanese vocabulary: 「${item.japanese}」?`,
         options,
         answer: item.english,
-        hint: `Dilafalkan sebagai "${item.romaji || ''}"`
+        hint: `Pronounced as "${item.romaji || ''}"`
       });
     } 
     else if (typeIndex === 1) {
@@ -761,10 +761,10 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
         id,
         type: 'listening',
         audioText: item.japanese,
-        questionText: `Dengarkan suara audio berikut dan pilihlah terjemahan bahasa Indonesia yang tepat!`,
+        questionText: `Listen to the audio and select the correct translation!`,
         options,
         answer: item.english,
-        hint: `Fokus pada pengucapan kata: "${item.japanese}"`
+        hint: `Focus on the pronunciation of: "${item.japanese}"`
       });
     } 
     else if (typeIndex === 2 && grammarPool.length > 0) {
@@ -777,10 +777,10 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
       generated.push({
         id,
         type: 'sentence-builder',
-        questionText: `Susunlah kartu-kartu kata di bawah ini menjadi kalimat yang tepat: "${item.englishTranslation}"`,
+        questionText: `Arrange the word cards below into the correct sentence: "${item.englishTranslation}"`,
         options,
         answer: sentenceWords.join(' '),
-        hint: `Gunakan partikel yang sesuai dengan tata bahasa Jepang.`
+        hint: `Use the appropriate particles for Japanese grammar.`
       });
     } 
     else if (typeIndex === 3 && grammarPool.length > 0) {
@@ -789,7 +789,7 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
       generated.push({
         id,
         type: 'fill-in-the-blank',
-        questionText: `Pilihlah jawaban yang tepat untuk melengkapi bagian rumpang berikut:\n「${item.exampleSentence.replace(item.answer, ' ___ ')}」\n(${item.englishTranslation})`,
+        questionText: `Choose the correct answer to fill in the blank:\n「${item.exampleSentence.replace(item.answer, ' ___ ')}」\n(${item.englishTranslation})`,
         options: item.options,
         answer: item.answer,
         hint: item.explanation
@@ -807,13 +807,13 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
         id,
         type: 'typing',
         questionText: isVowel
-          ? `Ketiklah padanan Romaji untuk huruf Hiragana berikut: 「${item.japanese}」`
-          : `Ketik arti bahasa Indonesia untuk kosakata berikut: 「${item.japanese}」`,
+          ? `Type the Romaji equivalent for the following Hiragana: 「${item.japanese}」`
+          : `Type the translation for the following vocabulary: 「${item.japanese}」`,
         options: [],
         answer: answerText,
         hint: isVowel
-          ? `Dibaca seperti bunyi vokal "${answerText.toUpperCase()}".`
-          : `Ucapannya adalah "${item.romaji || ''}".`
+          ? `Pronounced like the vowel sound "${answerText.toUpperCase()}".`
+          : `The pronunciation is "${item.romaji || ''}".`
       });
     }
   }
@@ -824,8 +824,8 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
     generated.push({
       id: `${lessonId}-q-dyn-fallback-${generated.length + 1}`,
       type: 'multiple-choice',
-      questionText: `Apakah arti kata: 「${fallbackItem.japanese}」?`,
-      options: shuffle([fallbackItem.english, 'Salah 1', 'Salah 2', 'Salah 3']),
+      questionText: `What is the meaning of: 「${fallbackItem.japanese}」?`,
+      options: shuffle([fallbackItem.english, 'Wrong 1', 'Wrong 2', 'Wrong 3']),
       answer: fallbackItem.english,
       hint: `Romaji: ${fallbackItem.romaji || ''}`
     });
@@ -992,7 +992,7 @@ function LessonPlayerContent() {
 
   // Exit prompt confirmation
   const handleExit = (e: React.MouseEvent) => {
-    if (!window.confirm('Keluar dari pelajaran? Kemajuan sesi ini akan hilang.')) {
+    if (!window.confirm('Exit lesson? Your progress in this session will be lost.')) {
       e.preventDefault();
     }
   };
@@ -1002,8 +1002,8 @@ function LessonPlayerContent() {
       <FullscreenContainer>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', minHeight: '60vh' }}>
           <TrophyGraphic style={{ animation: 'float 2s ease-in-out infinite' }}>🎌</TrophyGraphic>
-          <VictoryTitle>Memuat Pelajaran...</VictoryTitle>
-          <VictorySubtitle>Sistem sedang meracik soal dinamis untuk Anda.</VictorySubtitle>
+          <VictoryTitle>Loading Lesson...</VictoryTitle>
+          <VictorySubtitle>The system is preparing dynamic questions for you.</VictorySubtitle>
         </div>
       </FullscreenContainer>
     );
@@ -1017,8 +1017,8 @@ function LessonPlayerContent() {
       <FullscreenContainer>
         <VictoryOverlay>
           <TrophyGraphic>🏆</TrophyGraphic>
-          <VictoryTitle>Pelajaran Selesai!</VictoryTitle>
-          <VictorySubtitle>Kerja bagus! Sesi ini melatih pemahaman Anda secara komprehensif.</VictorySubtitle>
+          <VictoryTitle>Lesson Completed!</VictoryTitle>
+          <VictorySubtitle>Great job! This session trained your comprehension comprehensively.</VictorySubtitle>
 
           <StatsGrid>
             <StatCard $color="#fbbf24">
@@ -1026,7 +1026,7 @@ function LessonPlayerContent() {
               <span className="value">+{lesson.expReward} EXP</span>
             </StatCard>
             <StatCard $color="#3b82f6">
-              <span className="label">Waktu</span>
+              <span className="label">Time</span>
               <span className="value">
                 {elapsedMinutes > 0 ? `${elapsedMinutes}m ` : ''}{elapsedSeconds}s
               </span>
@@ -1034,7 +1034,7 @@ function LessonPlayerContent() {
           </StatsGrid>
 
           <ContinueBtn onClick={() => router.push('/')}>
-            Lanjutkan
+            Continue
           </ContinueBtn>
         </VictoryOverlay>
       </FullscreenContainer>
@@ -1046,14 +1046,14 @@ function LessonPlayerContent() {
       <FullscreenContainer>
         <GameOverOverlay>
           <div className="hearts-broken">💔</div>
-          <VictoryTitle style={{ color: '#ef4444' }}>Kehabisan Nyawa!</VictoryTitle>
-          <VictorySubtitle>Jangan menyerah! Latihan membuat Anda semakin mahir. Mari coba lagi!</VictorySubtitle>
+          <VictoryTitle style={{ color: '#ef4444' }}>Out of Hearts!</VictoryTitle>
+          <VictorySubtitle>Don't give up! Practice makes perfect. Let's try again!</VictorySubtitle>
 
           <RetryBtn onClick={handleRetry}>
-            Coba Lagi
+            Try Again
           </RetryBtn>
           <ExitBtn href="/" onClick={handleExit}>
-            Keluar Ke Roadmap
+            Back to Roadmap
           </ExitBtn>
         </GameOverOverlay>
       </FullscreenContainer>
@@ -1079,11 +1079,11 @@ function LessonPlayerContent() {
       <ContentWrapper>
         <QuestionBox $shake={shakeBox}>
           <QuestionCategory>
-            {activeQuestion.type === 'listening' ? 'Mendengarkan' : 
-             activeQuestion.type === 'sentence-builder' ? 'Menyusun Kalimat' : 
-             activeQuestion.type === 'typing' ? 'Ketik Jawaban' : 
-             activeQuestion.type === 'fill-in-the-blank' ? 'Isi Rumpang' : 
-             'Pilihan Ganda'}
+            {activeQuestion.type === 'listening' ? 'Listening' : 
+             activeQuestion.type === 'sentence-builder' ? 'Sentence Builder' : 
+             activeQuestion.type === 'typing' ? 'Type Answer' : 
+             activeQuestion.type === 'fill-in-the-blank' ? 'Fill in the Blank' : 
+             'Multiple Choice'}
           </QuestionCategory>
 
           <QuestionText>{activeQuestion.questionText}</QuestionText>
@@ -1113,7 +1113,7 @@ function LessonPlayerContent() {
                     <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                   </svg>
                 </SpeakerButton>
-                <AudioHint>Klik untuk memutar suara</AudioHint>
+                <AudioHint>Click to play sound</AudioHint>
               </AudioContainer>
 
               <OptionGrid>
@@ -1164,7 +1164,7 @@ function LessonPlayerContent() {
           {activeQuestion.type === 'typing' && (
             <TypingInput
               type="text"
-              placeholder="Ketik bahasa Indonesianya..."
+              placeholder="Type the translation..."
               value={typedAnswer}
               onChange={(e) => setTypedAnswer(e.target.value)}
               disabled={isAnswered}
@@ -1176,7 +1176,7 @@ function LessonPlayerContent() {
             <>
               <TypingInput
                 type="text"
-                placeholder="Ketik partikel yang rumpang (misal: は, を, に)..."
+                placeholder="Type the missing particle (e.g. は, を, に)..."
                 value={typedAnswer}
                 onChange={(e) => setTypedAnswer(e.target.value)}
                 disabled={isAnswered}
@@ -1208,12 +1208,12 @@ function LessonPlayerContent() {
               </FeedbackIcon>
               <div>
                 <FeedbackTitle $state={isCorrect ? 'correct' : 'incorrect'}>
-                  {isCorrect ? 'Luar Biasa!' : 'Jawaban Kurang Tepat'}
+                  {isCorrect ? 'Awesome!' : 'Incorrect Answer'}
                 </FeedbackTitle>
                 <FeedbackDetail>
                   {isCorrect ? 
-                    'Jawaban Anda 100% tepat.' : 
-                    `Jawaban yang benar: ${activeQuestion.answer}`}
+                    'Your answer is correct.' : 
+                    `Correct answer: ${activeQuestion.answer}`}
                 </FeedbackDetail>
               </div>
             </FeedbackTextContainer>
@@ -1224,7 +1224,7 @@ function LessonPlayerContent() {
             $state={isAnswered ? (isCorrect ? 'correct' : 'incorrect') : 'hidden'}
             onClick={() => isCheckActive() && handleCheckAnswer()}
           >
-            {isAnswered ? 'Lanjutkan' : 'Periksa'}
+            {isAnswered ? 'Continue' : 'Check'}
           </CheckButton>
         </FeedbackContent>
       </FeedbackPanel>
@@ -1238,7 +1238,7 @@ export default function LessonPlayerPage() {
     <Suspense fallback={
       <FullscreenContainer style={{ justifyContent: 'center' }}>
         <div style={{ fontSize: '1.25rem', color: 'var(--text-secondary)' }}>
-          Memuat Pelajaran...
+          Loading Lesson...
         </div>
       </FullscreenContainer>
     }>
