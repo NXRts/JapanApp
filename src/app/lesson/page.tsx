@@ -566,6 +566,129 @@ const ExitBtn = styled(Link)`
   }
 `;
 
+// Exit Confirmation Modal Styled Components
+const ExitModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 15, 30, 0.88); /* dark immersive overlay */
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    align-items: flex-end; /* anchor to bottom on mobile */
+    padding: 0;
+  }
+  @media (min-width: 769px) {
+    padding: 1rem;
+  }
+`;
+
+const ExitModalContainer = styled.div`
+  background: #131924; /* deep dark background matching screenshot */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 28px 28px 0 0;
+    padding: 2.5rem 2rem calc(2.5rem + env(safe-area-inset-bottom));
+    border-top: 2px solid #2e3856;
+    animation: ${slideUp} 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @media (min-width: 769px) {
+    max-width: 440px;
+    width: 100%;
+    border-radius: 28px;
+    padding: 3rem 2.5rem;
+    border: 2px solid #2e3856;
+    box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.5), 0 9px 46px 8px rgba(0, 0, 0, 0.4);
+    animation: ${popIn} 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+`;
+
+
+
+const ExitModalText = styled.p`
+  color: #ffffff; /* bright white for warning message */
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.4;
+  margin-bottom: 2.25rem;
+  text-align: center;
+  font-family: 'Nunito', 'Outfit', sans-serif;
+  max-width: 320px;
+`;
+
+const ExitModalButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+`;
+
+const ExitKeepLearningBtn = styled.button`
+  width: 100%;
+  padding: 1.1rem 2rem;
+  border-radius: 99px; /* Duolingo pill shape */
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  background: #1cb0f6; /* Duolingo blue */
+  border-bottom: 4px solid #1890d8; /* Duolingo 3D bottom border */
+  color: #ffffff;
+  font-family: 'Nunito', 'Outfit', sans-serif;
+
+  &:hover {
+    filter: brightness(1.05);
+  }
+
+  &:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
+  }
+`;
+
+const ExitEndSessionBtn = styled.button`
+  width: 100%;
+  padding: 1rem;
+  background: transparent;
+  border: none;
+  color: #ff4b4b; /* Duolingo red */
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: 'Nunito', 'Outfit', sans-serif;
+  transition: opacity 0.1s;
+
+  &:hover {
+    text-decoration: none;
+    opacity: 0.8;
+  }
+
+  &:active {
+    opacity: 0.6;
+  }
+`;
+
+
+
 // ==========================================
 // UTILITIES
 // ==========================================
@@ -848,6 +971,7 @@ function LessonPlayerContent() {
   const [questions, setQuestions] = useState<Question[]>([]);
 
   // State Management
+  const [showExitModal, setShowExitModal] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [hearts, setHearts] = useState(5);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -990,12 +1114,7 @@ function LessonPlayerContent() {
     startTime.current = Date.now();
   };
 
-  // Exit prompt confirmation
-  const handleExit = (e: React.MouseEvent) => {
-    if (!window.confirm('Exit lesson? Your progress in this session will be lost.')) {
-      e.preventDefault();
-    }
-  };
+
 
   if (questions.length === 0) {
     return (
@@ -1052,7 +1171,7 @@ function LessonPlayerContent() {
           <RetryBtn onClick={handleRetry}>
             Try Again
           </RetryBtn>
-          <ExitBtn href="/" onClick={handleExit}>
+          <ExitBtn href="/">
             Back to Roadmap
           </ExitBtn>
         </GameOverOverlay>
@@ -1064,10 +1183,27 @@ function LessonPlayerContent() {
 
   return (
     <FullscreenContainer>
+      {showExitModal && (
+        <ExitModalOverlay>
+          <ExitModalContainer>
+
+            <ExitModalText>
+              Don't go yet! Your progress will be lost if you stop now
+            </ExitModalText>
+            <ExitModalButtonContainer>
+              <ExitKeepLearningBtn onClick={() => setShowExitModal(false)}>
+                Keep Learning
+              </ExitKeepLearningBtn>
+              <ExitEndSessionBtn onClick={() => router.push('/')}>
+                End Session
+              </ExitEndSessionBtn>
+            </ExitModalButtonContainer>
+          </ExitModalContainer>
+        </ExitModalOverlay>
+      )}
+
       <LessonHeader>
-        <Link href="/" onClick={handleExit} passHref legacyBehavior={false}>
-          <CloseButton aria-label="Exit Lesson">✕</CloseButton>
-        </Link>
+        <CloseButton aria-label="Exit Lesson" onClick={() => setShowExitModal(true)}>✕</CloseButton>
         <ProgressBar>
           <ProgressFill $percent={progressPercent} />
         </ProgressBar>
