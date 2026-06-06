@@ -967,6 +967,7 @@ function LessonPlayerContent() {
   const startTime = useRef<number | null>(null);
 
   const lessonId = searchParams.get('id') || 'n5-u1-l1';
+  const returnUrl = searchParams.get('from') === 'practice' ? '/practice' : '/';
   const lesson = lessonsData.find((l) => l.id === lessonId) || lessonsData[0];
   const [questions, setQuestions] = useState<Question[]>([]);
 
@@ -1152,7 +1153,7 @@ function LessonPlayerContent() {
             </StatCard>
           </StatsGrid>
 
-          <ContinueBtn onClick={() => router.push('/')}>
+          <ContinueBtn onClick={() => router.push(returnUrl)}>
             Continue
           </ContinueBtn>
         </VictoryOverlay>
@@ -1171,8 +1172,8 @@ function LessonPlayerContent() {
           <RetryBtn onClick={handleRetry}>
             Try Again
           </RetryBtn>
-          <ExitBtn href="/">
-            Back to Roadmap
+          <ExitBtn href={returnUrl}>
+            {returnUrl === '/practice' ? 'Back to Practice Hub' : 'Back to Roadmap'}
           </ExitBtn>
         </GameOverOverlay>
       </FullscreenContainer>
@@ -1194,7 +1195,7 @@ function LessonPlayerContent() {
               <ExitKeepLearningBtn onClick={() => setShowExitModal(false)}>
                 Keep Learning
               </ExitKeepLearningBtn>
-              <ExitEndSessionBtn onClick={() => router.push('/')}>
+              <ExitEndSessionBtn onClick={() => router.push(returnUrl)}>
                 End Session
               </ExitEndSessionBtn>
             </ExitModalButtonContainer>

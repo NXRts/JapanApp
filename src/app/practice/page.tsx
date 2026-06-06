@@ -364,7 +364,7 @@ export default function PracticeHubPage() {
             <ActionButton 
               $color="#1cb0f6" 
               $shadowColor="#1890d8"
-              onClick={() => router.push(`/lesson?id=${practiceLessonId}`)}
+              onClick={() => router.push(`/lesson?id=${practiceLessonId}&from=practice`)}
             >
               Start Practice (+20 EXP)
             </ActionButton>
@@ -386,7 +386,7 @@ export default function PracticeHubPage() {
             <ActionButton 
               $color="#818cf8" 
               $shadowColor="#4f46e5"
-              onClick={() => router.push(`/lesson?id=${listeningLessonId}`)}
+              onClick={() => router.push(`/lesson?id=${listeningLessonId}&from=practice`)}
             >
               Practice Audio (+15 EXP)
             </ActionButton>
