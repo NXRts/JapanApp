@@ -411,7 +411,7 @@ export default function PracticeHubPage() {
               $color="#f59e0b" 
               $shadowColor="#d97706"
               disabled={mistakesCount === 0}
-              onClick={() => router.push('/characters')}
+              onClick={() => router.push('/characters?practice=true')}
             >
               {mistakesCount > 0 ? `Review ${mistakesCount} Mistakes` : 'Zero Mistakes! 🔥'}
             </ActionButton>
