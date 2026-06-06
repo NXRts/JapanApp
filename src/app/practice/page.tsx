@@ -33,6 +33,8 @@ const PageWrapper = styled.div`
   min-height: 90vh;
   background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.03) 0%, transparent 60%);
   padding: 2rem 1.5rem;
+  width: 100%;
+  overflow-x: hidden;
 
   @media (max-width: 768px) {
     padding: 1.5rem 1rem 5rem; /* bottom padding for mobile navigation bar */
@@ -42,6 +44,7 @@ const PageWrapper = styled.div`
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -123,8 +126,8 @@ const PracticeCard = styled.div<{ $gradient?: string }>`
 
   @media (max-width: 768px) {
     flex-direction: column-reverse;
-    padding: 1.75rem 1.5rem;
-    gap: 1.5rem;
+    padding: 1.5rem 1.25rem;
+    gap: 1.25rem;
     text-align: center;
   }
 `;
@@ -203,6 +206,13 @@ const ActionButton = styled.button<{ $color: string; $shadowColor: string }>`
     cursor: not-allowed;
     box-shadow: none;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.8rem 1.25rem;
+    font-size: 0.88rem;
+    width: 100%;
+    max-width: 320px;
+  }
 `;
 
 // ==========================================
@@ -266,26 +276,26 @@ const TargetBoardSvg = () => (
 const HeadphonesSvg = () => (
   <FloatingHeadphonesSvg viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
     {/* Headphone Arch */}
-    <path d="M30 75C30 48.4 51.6 30 70 30C88.4 30 110 48.4 110 75" stroke="#818CF8" strokeWidth="7" strokeLinecap="round" />
+    <path d="M38 74C38 53 55 38 70 38C85 38 102 53 102 74" stroke="#818CF8" strokeWidth="7" strokeLinecap="round" />
     
     {/* Glowing secondary line */}
-    <path d="M38 75C38 55 52 40 70 40C88 40 102 55 102 75" stroke="#4F46E5" strokeWidth="2" strokeDasharray="4 4" />
+    <path d="M44 74C44 58 56 46 70 46C84 46 96 58 96 74" stroke="#4F46E5" strokeWidth="2" strokeDasharray="4 4" />
 
     {/* Earcups (Left & Right) */}
     {/* Left Earcup */}
-    <rect x="22" y="70" width="16" height="30" rx="8" fill="#4F46E5" stroke="var(--border)" strokeWidth="2" />
-    <rect x="20" y="75" width="4" height="20" rx="2" fill="#818CF8" />
+    <rect x="32" y="70" width="13" height="24" rx="6" fill="#4F46E5" stroke="var(--border)" strokeWidth="2" />
+    <rect x="30" y="74" width="3" height="16" rx="1.5" fill="#818CF8" />
     
     {/* Right Earcup */}
-    <rect x="102" y="70" width="16" height="30" rx="8" fill="#4F46E5" stroke="var(--border)" strokeWidth="2" />
-    <rect x="116" y="75" width="4" height="20" rx="2" fill="#818CF8" />
+    <rect x="95" y="70" width="13" height="24" rx="6" fill="#4F46E5" stroke="var(--border)" strokeWidth="2" />
+    <rect x="107" y="74" width="3" height="16" rx="1.5" fill="#818CF8" />
 
     {/* Neon Soundwaves */}
-    <path d="M10 85C5 81 5 74 10 70" stroke="#818CF8" strokeWidth="3" strokeLinecap="round" />
-    <path d="M6 92C-2 87-2 78 6 73" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" />
+    <path d="M22 82C18 79 18 73 22 70" stroke="#818CF8" strokeWidth="3" strokeLinecap="round" />
+    <path d="M19 88C12 84 12 76 19 72" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" />
     
-    <path d="M130 85C135 81 135 74 130 70" stroke="#818CF8" strokeWidth="3" strokeLinecap="round" />
-    <path d="M134 92C142 87 142 78 134 73" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" />
+    <path d="M118 82C122 79 122 73 118 70" stroke="#818CF8" strokeWidth="3" strokeLinecap="round" />
+    <path d="M121 88C128 84 128 76 121 72" stroke="#4F46E5" strokeWidth="2" strokeLinecap="round" />
   </FloatingHeadphonesSvg>
 );
 
