@@ -1191,7 +1191,11 @@ function CharactersPageContent() {
           <PracticeHeader>
             <CloseButton onClick={() => {
               setIsPracticing(false);
-              router.replace('/characters');
+              if (isMistakesReview) {
+                router.push('/practice');
+              } else {
+                router.replace('/characters');
+              }
             }}>✕</CloseButton>
             <ProgressTrack>
               <ProgressFill $percent={((currentQuestionIndex) / questions.length) * 100} />
@@ -1337,7 +1341,11 @@ function CharactersPageContent() {
 
               <BottomActionBtn onClick={() => {
                 setIsPracticing(false);
-                router.replace('/characters');
+                if (isMistakesReview) {
+                  router.push('/practice');
+                } else {
+                  router.replace('/characters');
+                }
               }}>
                 Finish
               </BottomActionBtn>
