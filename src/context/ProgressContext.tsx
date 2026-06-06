@@ -176,7 +176,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         ...prev.mastery,
         [char]: {
           correct: current.correct + (isCorrect ? 1 : 0),
-          incorrect: current.incorrect + (isCorrect ? 0 : 1),
+          incorrect: isCorrect ? Math.max(0, current.incorrect - 1) : current.incorrect + 1,
           lastAttempt: new Date().toISOString(),
         }
       };

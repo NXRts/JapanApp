@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef, Suspense } from 'react';
 import styled, { keyframes, css } from 'styled-components';
 import { useProgress } from '@/context/ProgressContext';
 import { playJapaneseAudio } from '@/lib/audio';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 // ========================================================
 // DATA DEFINITIONS (HIRAGANA & KATAKANA)
@@ -819,10 +820,13 @@ interface Question {
   matchPairsRight?: string[];
 }
 
-export default function CharactersPage() {
+function CharactersPageContent() {
   const { progress, updateMastery, addExp } = useProgress();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'hiragana' | 'katakana'>('hiragana');
   const [isPracticing, setIsPracticing] = useState(false);
+  const [isMistakesReview, setIsMistakesReview] = useState(false);
   
   // Practice session states
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -840,10 +844,10 @@ export default function CharactersPage() {
   const [matchedRight, setMatchedRight] = useState<string[]>([]);
 
   // Generate a practice session quiz
-  const handleStartPractice = () => {
-    const activeGrid = activeTab === 'hiragana' ? HIRAGANA_GRID : KATAKANA_GRID;
-    const activeDakuon = activeTab === 'hiragana' ? HIRAGANA_DAKUON : KATAKANA_DAKUON;
-    const activeCombi = activeTab === 'hiragana' ? HIRAGANA_COMBINATIONS : KATAKANA_COMBINATIONS;
+  const startPractice = (targetTab: 'hiragana' | 'katakana', onlyMistakes = false) => {
+    const activeGrid = targetTab === 'hiragana' ? HIRAGANA_GRID : KATAKANA_GRID;
+    const activeDakuon = targetTab === 'hiragana' ? HIRAGANA_DAKUON : KATAKANA_DAKUON;
+    const activeCombi = targetTab === 'hiragana' ? HIRAGANA_COMBINATIONS : KATAKANA_COMBINATIONS;
 
     // Filter valid characters from grid
     const validGrid = activeGrid.filter((item): item is KanaItem => item !== null);
@@ -851,8 +855,24 @@ export default function CharactersPage() {
 
     if (pool.length < 10) return;
 
-    // Pick 5 random target items
-    const targets = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5);
+    let targets: KanaItem[] = [];
+    if (onlyMistakes) {
+      const mistakesPool = pool.filter(item => (progress.mastery[item.char]?.incorrect || 0) > 0);
+      const nonMistakesPool = pool.filter(item => !((progress.mastery[item.char]?.incorrect || 0) > 0));
+
+      const selectedMistakes = [...mistakesPool].sort(() => 0.5 - Math.random()).slice(0, 5);
+      targets = [...selectedMistakes];
+
+      if (targets.length < 5) {
+        const remainingCount = 5 - targets.length;
+        const fillItems = [...nonMistakesPool].sort(() => 0.5 - Math.random()).slice(0, remainingCount);
+        targets = [...targets, ...fillItems];
+      }
+    } else {
+      // Pick 5 random target items
+      targets = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5);
+    }
+
     const generatedQuestions: Question[] = [];
 
     targets.forEach((target, index) => {
@@ -922,6 +942,45 @@ export default function CharactersPage() {
     setMatchedRight([]);
   };
 
+  const handleStartPractice = () => {
+    setIsMistakesReview(false);
+    startPractice(activeTab, false);
+  };
+
+  const hasTriggeredRef = useRef(false);
+
+  useEffect(() => {
+    if (searchParams && searchParams.get('practice') === 'true' && !hasTriggeredRef.current) {
+      hasTriggeredRef.current = true;
+      setIsMistakesReview(true);
+
+      const hPool = [
+        ...HIRAGANA_GRID.filter((item): item is KanaItem => item !== null),
+        ...HIRAGANA_DAKUON,
+        ...HIRAGANA_COMBINATIONS
+      ].map(x => x.char);
+
+      const kPool = [
+        ...KATAKANA_GRID.filter((item): item is KanaItem => item !== null),
+        ...KATAKANA_DAKUON,
+        ...KATAKANA_COMBINATIONS
+      ].map(x => x.char);
+
+      const hMistakes = hPool.filter(c => (progress.mastery[c]?.incorrect || 0) > 0);
+      const kMistakes = kPool.filter(c => (progress.mastery[c]?.incorrect || 0) > 0);
+
+      let tab: 'hiragana' | 'katakana' = 'hiragana';
+      if (kMistakes.length > 0 && hMistakes.length === 0) {
+        tab = 'katakana';
+        setActiveTab('katakana');
+      } else {
+        setActiveTab('hiragana');
+      }
+
+      startPractice(tab, true);
+    }
+  }, [searchParams, progress.mastery]);
+
   const currentQuestion = questions[currentQuestionIndex];
 
   // Auto-play audio on question load
@@ -958,8 +1017,8 @@ export default function CharactersPage() {
     setIsAnswerChecked(false);
     
     // Save character progress
-    if (currentQuestion && currentQuestion.audioChar && isAnswerCorrect && currentQuestion.type !== 'matching') {
-      updateMastery(currentQuestion.audioChar, true);
+    if (currentQuestion && currentQuestion.audioChar && currentQuestion.type !== 'matching') {
+      updateMastery(currentQuestion.audioChar, isAnswerCorrect);
     }
 
     if (currentQuestionIndex + 1 < questions.length) {
@@ -1057,14 +1116,14 @@ export default function CharactersPage() {
       {!isPracticing ? (
         <>
           <HeaderSection>
-            <MainTitle>Yuk, belajar {activeTab === 'hiragana' ? 'Hiragana' : 'Katakana'}!</MainTitle>
+            <MainTitle>Learn {activeTab === 'hiragana' ? 'Hiragana' : 'Katakana'}!</MainTitle>
             <Subtitle>
               {activeTab === 'hiragana' 
-                ? 'Pelajari sistem penulisan utama dalam bahasa Jepang. Klik kartu untuk mendengarkan pelafalan suaranya.'
-                : 'Pelajari sistem penulisan tambahan untuk kata serapan asing. Klik kartu untuk mendengarkan pelafalan suaranya.'}
+                ? 'Learn the primary writing system of Japanese. Click cards to hear their pronunciation.'
+                : 'Learn the writing system used for foreign loanwords. Click cards to hear their pronunciation.'}
             </Subtitle>
             <PrimaryCTAButton onClick={handleStartPractice}>
-              Pelajari Karakter
+              Practice Characters
             </PrimaryCTAButton>
           </HeaderSection>
 
@@ -1086,8 +1145,8 @@ export default function CharactersPage() {
               </GojuonGrid>
 
               <GroupSection>
-                <GroupTitle>Dakuon dan Handakuon</GroupTitle>
-                <GroupSubtitle>Menambahkan simbol tanda kutip atau lingkaran untuk memodifikasi dan mengubah bunyi suara asal.</GroupSubtitle>
+                <GroupTitle>Dakuon & Handakuon</GroupTitle>
+                <GroupSubtitle>Add modification marks (voicing/half-voicing) to modify consonant sounds.</GroupSubtitle>
                 <DakuonGrid>
                   {(activeTab === 'hiragana' ? HIRAGANA_DAKUON : KATAKANA_DAKUON).map((item, idx) => (
                     <CharacterCard key={`dakuon-${activeTab}-${idx}`} item={item} />
@@ -1096,8 +1155,8 @@ export default function CharactersPage() {
               </GroupSection>
 
               <GroupSection>
-                <GroupTitle>Kombinasi (Yōon)</GroupTitle>
-                <GroupSubtitle>Menggabungkan karakter konsonan dasar dengan karakter kecil ya (ゃ), yu (ゅ), atau yo (ょ) untuk melafalkan suku kata baru.</GroupSubtitle>
+                <GroupTitle>Combinations (Yōon)</GroupTitle>
+                <GroupSubtitle>Combine base consonants with small ya (ゃ), yu (ゅ), or yo (ょ) to speak compound sounds.</GroupSubtitle>
                 <YoonGrid>
                   {(activeTab === 'hiragana' ? HIRAGANA_COMBINATIONS : KATAKANA_COMBINATIONS).map((item, idx) => (
                     <CharacterCard key={`yoon-${activeTab}-${idx}`} item={item} />
@@ -1106,8 +1165,8 @@ export default function CharactersPage() {
               </GroupSection>
 
               <GroupSection>
-                <GroupTitle>Kecil (Sokuon)</GroupTitle>
-                <GroupSubtitle>Karakter tsu kecil (っ / ッ) digunakan untuk melipatgandakan konsonan berikutnya dan menciptakan jeda glotal.</GroupSubtitle>
+                <GroupTitle>Double Consonants (Sokuon)</GroupTitle>
+                <GroupSubtitle>Small tsu (っ / ッ) is used to double the following consonant and create a glottal stop.</GroupSubtitle>
                 <SokuonGrid>
                   {(activeTab === 'hiragana' ? HIRAGANA_SOKUON : KATAKANA_SOKUON).map((item, idx) => (
                     <CharacterCard key={`sokuon-${activeTab}-${idx}`} item={item} />
@@ -1116,8 +1175,8 @@ export default function CharactersPage() {
               </GroupSection>
 
               <GroupSection>
-                <GroupTitle>Huruf Vokal Panjang (Chōon)</GroupTitle>
-                <GroupSubtitle>Pengulangan huruf vokal untuk melafalkan ketukan suku kata ganda yang lebih panjang.</GroupSubtitle>
+                <GroupTitle>Long Vowels (Chōon)</GroupTitle>
+                <GroupSubtitle>Repeat vowel sounds to produce double-beat elongated sounds.</GroupSubtitle>
                 <ChoonGrid>
                   {(activeTab === 'hiragana' ? HIRAGANA_CHOON : KATAKANA_CHOON).map((item, idx) => (
                     <CharacterCard key={`choon-${activeTab}-${idx}`} item={item} />
@@ -1130,7 +1189,10 @@ export default function CharactersPage() {
       ) : (
         <PracticeContainer>
           <PracticeHeader>
-            <CloseButton onClick={() => setIsPracticing(false)}>✕</CloseButton>
+            <CloseButton onClick={() => {
+              setIsPracticing(false);
+              router.replace('/characters');
+            }}>✕</CloseButton>
             <ProgressTrack>
               <ProgressFill $percent={((currentQuestionIndex) / questions.length) * 100} />
             </ProgressTrack>
@@ -1143,16 +1205,16 @@ export default function CharactersPage() {
                 <QuestionBox>
                   <QuestionPrompt>
                     {currentQuestion.type === 'kana-to-romaji' && (
-                      <>Apa terjemahan romaji dari: <span>{currentQuestion.audioChar}</span>?</>
+                      <>What is the romaji translation of: <span>{currentQuestion.audioChar}</span>?</>
                     )}
                     {currentQuestion.type === 'romaji-to-kana' && (
-                      <>Pilih karakter Jepang yang melafalkan: <span>{currentQuestion.correctAnswer}</span></>
+                      <>Select the Japanese character that pronounces: <span>{currentQuestion.correctAnswer}</span></>
                     )}
                     {currentQuestion.type === 'audio-to-kana' && (
-                      <>Dengarkan suaranya dan pilih karakter yang sesuai:</>
+                      <>Listen to the sound and select the matching character:</>
                     )}
                     {currentQuestion.type === 'matching' && (
-                      <>Hubungkan pasangan karakter berikut:</>
+                      <>Connect the matching character pairs:</>
                     )}
                   </QuestionPrompt>
 
@@ -1231,12 +1293,12 @@ export default function CharactersPage() {
                 {isAnswerChecked && (
                   <CheckOverlay $isCorrect={isAnswerCorrect}>
                     <OverlayTitle $isCorrect={isAnswerCorrect}>
-                      {isAnswerCorrect ? 'Luar biasa! ✨' : 'Belum tepat 😢'}
+                      {isAnswerCorrect ? 'Awesome! ✨' : 'Incorrect 😢'}
                     </OverlayTitle>
                     <OverlayText>
                       {isAnswerCorrect 
-                        ? 'Jawaban Anda sepenuhnya benar!' 
-                        : `Jawaban yang benar adalah: ${currentQuestion.correctAnswer}`}
+                        ? 'Your answer is correct.' 
+                        : `Correct answer: ${currentQuestion.correctAnswer}`}
                     </OverlayText>
                   </CheckOverlay>
                 )}
@@ -1246,11 +1308,11 @@ export default function CharactersPage() {
                     onClick={handleCheckAnswer}
                     disabled={currentQuestion?.type !== 'matching' && !selectedChoice}
                   >
-                    Periksa
+                    Check
                   </BottomActionBtn>
                 ) : (
                   <BottomActionBtn onClick={handleNextQuestion}>
-                    Lanjutkan
+                    Continue
                   </BottomActionBtn>
                 )}
               </ActionFooter>
@@ -1259,8 +1321,8 @@ export default function CharactersPage() {
             /* Complete session display panel */
             <CompletePanel>
               <CompleteEmoji>🎉</CompleteEmoji>
-              <QuestionPrompt>Latihan Selesai!</QuestionPrompt>
-              <Subtitle>Kerja bagus! Kemampuan membaca karakter Jepang Anda telah meningkat.</Subtitle>
+              <QuestionPrompt>{isMistakesReview ? 'Mistakes Reviewed!' : 'Practice Completed!'}</QuestionPrompt>
+              <Subtitle>{isMistakesReview ? 'Great job! You have cleared some of your troubled characters.' : 'Great job! Your Japanese character reading skills are improving.'}</Subtitle>
 
               <CompleteScoreCard>
                 <ScoreItem>
@@ -1273,13 +1335,30 @@ export default function CharactersPage() {
                 </ScoreItem>
               </CompleteScoreCard>
 
-              <BottomActionBtn onClick={() => setIsPracticing(false)}>
-                Selesai
+              <BottomActionBtn onClick={() => {
+                setIsPracticing(false);
+                router.replace('/characters');
+              }}>
+                Finish
               </BottomActionBtn>
             </CompletePanel>
           )}
         </PracticeContainer>
       )}
     </PageContainer>
+  );
+}
+
+export default function CharactersPage() {
+  return (
+    <Suspense fallback={
+      <PageContainer>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh', color: 'var(--text-secondary)' }}>
+          Loading Characters...
+        </div>
+      </PageContainer>
+    }>
+      <CharactersPageContent />
+    </Suspense>
   );
 }
