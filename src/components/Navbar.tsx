@@ -522,6 +522,16 @@ function CharactersIcon() {
   );
 }
 
+function PracticeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 12h12" />
+      <path d="M6 8v8M4 7v10M2 9v6" />
+      <path d="M18 8v8M20 7v10M22 9v6" />
+    </svg>
+  );
+}
+
 
 function ProfileIcon() {
   return (
@@ -792,6 +802,11 @@ export function Navbar() {
               Characters
             </SidebarNavItem>
             
+            <SidebarNavItem href="/practice" $active={pathname === '/practice'}>
+              <PracticeIcon />
+              Practice
+            </SidebarNavItem>
+            
             <SidebarNavItem href="/jlpt" $active={pathname.startsWith('/jlpt')}>
               <JlptIcon />
               JLPT
@@ -906,6 +921,10 @@ export function Navbar() {
                 </NavItem>
 
                 <NavItem>
+                  <StyledLink href="/practice" $active={pathname === '/practice'}>Practice</StyledLink>
+                </NavItem>
+
+                <NavItem>
                   <StyledLink href="/quiz" $active={pathname.startsWith('/quiz')}>Quiz</StyledLink>
                 </NavItem>
                 <NavItem>
@@ -1011,6 +1030,10 @@ export function Navbar() {
             Characters
             <span><ArrowRightIcon size={18} /></span>
           </MobileLink>
+          <MobileLink href="/practice" $active={pathname === '/practice'} $isOpen={isMobileMenuOpen} $delay={0.19} onClick={() => setIsMobileMenuOpen(false)}>
+            Practice
+            <span><ArrowRightIcon size={18} /></span>
+          </MobileLink>
           <MobileLink href="/quiz" $active={pathname.startsWith('/quiz')} $isOpen={isMobileMenuOpen} $delay={0.2} onClick={() => setIsMobileMenuOpen(false)}>
             Quiz
             <span><ArrowRightIcon size={18} /></span>
@@ -1090,6 +1113,10 @@ export function Navbar() {
           <BottomTab href="/characters" $active={pathname.startsWith('/characters')}>
             <CharactersIcon />
             Characters
+          </BottomTab>
+          <BottomTab href="/practice" $active={pathname === '/practice'}>
+            <PracticeIcon />
+            Practice
           </BottomTab>
           <BottomTab href="/jlpt" $active={pathname.startsWith('/jlpt')}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
