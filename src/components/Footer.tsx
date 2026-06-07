@@ -42,6 +42,12 @@ const NewsletterSection = styled.div`
     text-align: center;
     padding: 3rem 1.5rem;
   }
+
+  html.device-mobile & {
+    flex-direction: column;
+    text-align: center;
+    padding: 3rem 1.5rem;
+  }
 `;
 
 const NewsletterText = styled.div`
@@ -105,7 +111,14 @@ const NewsletterForm = styled.form`
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
+    flex-direction: column;
+    button {
+      width: 100%;
+    }
+  }
+
+  html.device-mobile & {
     flex-direction: column;
     button {
       width: 100%;
@@ -131,7 +144,13 @@ const FooterMain = styled.div`
     padding: 4rem 1.5rem;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 3rem 1rem;
+  }
+
+  html.device-mobile & {
     grid-template-columns: 1fr;
     gap: 2.5rem;
     padding: 3rem 1rem;
