@@ -36,6 +36,14 @@ const ScrollButton = styled.button<{ $visible: boolean }>`
     height: 46px;
   }
 
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+
+  html.device-mobile & {
+    display: none !important;
+  }
+
   svg {
     width: 24px;
     height: 24px;

@@ -39,12 +39,20 @@ const PageWrapper = styled.div`
   @media (max-width: 768px) {
     padding: 1.5rem 1rem 5rem; /* bottom padding for mobile navigation bar */
   }
+
+  html.device-mobile & {
+    padding: 1.5rem 1rem 5rem;
+  }
 `;
 
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
+
+  html.device-mobile & {
+    max-width: 480px;
+  }
 `;
 
 const Header = styled.div`
@@ -52,6 +60,11 @@ const Header = styled.div`
   margin-bottom: 2.5rem;
 
   @media (max-width: 768px) {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  html.device-mobile & {
     text-align: center;
     margin-bottom: 2rem;
   }
@@ -63,12 +76,28 @@ const Title = styled.h1`
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   color: var(--foreground);
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+
+  html.device-mobile & {
+    font-size: 1.8rem;
+  }
 `;
 
 const Subtitle = styled.p`
   color: var(--text-secondary);
   font-size: 1.05rem;
   line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+  }
+
+  html.device-mobile & {
+    font-size: 0.95rem;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -81,6 +110,11 @@ const SectionTitle = styled.h2`
   margin-top: 2rem;
 
   @media (max-width: 768px) {
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+  }
+
+  html.device-mobile & {
     font-size: 1.1rem;
     margin-top: 1.5rem;
   }
@@ -130,6 +164,13 @@ const PracticeCard = styled.div<{ $gradient?: string }>`
     gap: 1.25rem;
     text-align: center;
   }
+
+  html.device-mobile & {
+    flex-direction: column-reverse;
+    padding: 1.5rem 1.25rem;
+    gap: 1.25rem;
+    text-align: center;
+  }
 `;
 
 const CardContent = styled.div`
@@ -142,6 +183,10 @@ const CardContent = styled.div`
   @media (max-width: 768px) {
     align-items: center;
   }
+
+  html.device-mobile & {
+    align-items: center;
+  }
 `;
 
 const CardTitle = styled.h3`
@@ -149,6 +194,14 @@ const CardTitle = styled.h3`
   font-weight: 800;
   color: var(--foreground);
   margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+  }
+
+  html.device-mobile & {
+    font-size: 1.25rem;
+  }
 `;
 
 const CardDescription = styled.p`
@@ -157,6 +210,16 @@ const CardDescription = styled.p`
   line-height: 1.5;
   margin-bottom: 1.75rem;
   max-width: 460px;
+
+  @media (max-width: 768px) {
+    font-size: 0.88rem;
+    margin-bottom: 1.25rem;
+  }
+
+  html.device-mobile & {
+    font-size: 0.88rem;
+    margin-bottom: 1.25rem;
+  }
 `;
 
 const CardGraphic = styled.div`
@@ -170,6 +233,11 @@ const CardGraphic = styled.div`
   transition: transform 0.3s ease;
 
   @media (max-width: 768px) {
+    width: 120px;
+    height: 120px;
+  }
+
+  html.device-mobile & {
     width: 120px;
     height: 120px;
   }
@@ -208,6 +276,13 @@ const ActionButton = styled.button<{ $color: string; $shadowColor: string }>`
   }
 
   @media (max-width: 768px) {
+    padding: 0.8rem 1.25rem;
+    font-size: 0.88rem;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  html.device-mobile & {
     padding: 0.8rem 1.25rem;
     font-size: 0.88rem;
     width: 100%;
