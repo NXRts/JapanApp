@@ -817,11 +817,6 @@ export function Navbar() {
               Game
             </SidebarNavItem>
             
-            <SidebarNavItem href="/profile" $active={pathname === '/profile'}>
-              <ProfileIcon />
-              Profile
-            </SidebarNavItem>
-            
             <SidebarNavItem href="/stats" $active={pathname === '/stats'}>
               <StatsIcon />
               Stats
@@ -830,6 +825,11 @@ export function Navbar() {
             <SidebarNavItem href="/about" $active={pathname === '/about'}>
               <AboutIcon />
               About
+            </SidebarNavItem>
+
+            <SidebarNavItem href="/profile" $active={pathname === '/profile'}>
+              <ProfileIcon />
+              Profile
             </SidebarNavItem>
           </SidebarNavList>
           
