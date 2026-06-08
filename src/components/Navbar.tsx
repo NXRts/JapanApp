@@ -805,7 +805,7 @@ const LainnyaIconContainer = styled.div`
 const PopoverMenu = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   left: 215px;
-  bottom: 0;
+  top: -12px;
   width: 240px;
   background: var(--surface);
   border: 2px solid var(--border);
