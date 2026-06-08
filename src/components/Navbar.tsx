@@ -868,6 +868,24 @@ function GlobeIcon() {
   );
 }
 
+function QuizIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '18px', height: '18px', flexShrink: 0 }}>
+      <circle cx="12" cy="12" r="10" fill="#22c55e" fillOpacity="0.15" stroke="#22c55e" strokeWidth="2.5" />
+      <path d="M9 12L11 14L15 10" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function BookIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '18px', height: '18px', flexShrink: 0 }}>
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+    </svg>
+  );
+}
+
 export function Navbar() {
   const pathname = usePathname();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -985,14 +1003,18 @@ export function Navbar() {
               </SidebarNavButton>
 
               <PopoverMenu $isOpen={isLainnyaOpen}>
-                <PopoverItem onClick={() => window.open('', '_blank')}>
-                  <CertificateIcon />
-                  Quiz
-                </PopoverItem>
-                <PopoverItem onClick={() => window.open('', '_blank')}>
-                  <GlobeIcon />
-                  Learning Materials
-                </PopoverItem>
+                <Link href="/quiz" style={{ textDecoration: 'none', color: 'inherit' }} onClick={() => setIsLainnyaOpen(false)}>
+                  <PopoverItem>
+                    <QuizIcon />
+                    Quiz
+                  </PopoverItem>
+                </Link>
+                <Link href="/materi" style={{ textDecoration: 'none', color: 'inherit' }} onClick={() => setIsLainnyaOpen(false)}>
+                  <PopoverItem>
+                    <BookIcon />
+                    Learning Materials
+                  </PopoverItem>
+                </Link>
                 
                 <PopoverDivider />
                 
