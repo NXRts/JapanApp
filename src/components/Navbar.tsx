@@ -783,23 +783,15 @@ const SidebarNavButton = styled.button<{ $active?: boolean }>`
   `}
 `;
 
-const LainnyaIconContainer = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #c084fc; /* light purple */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  flex-shrink: 0;
-
-  svg {
-    width: 14px;
-    height: 14px;
-    fill: currentColor;
-  }
-`;
+function MoreIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="12" cy="12" r="2" />
+      <circle cx="18" cy="12" r="2" />
+      <circle cx="6" cy="12" r="2" />
+    </svg>
+  );
+}
 
 const PopoverMenu = styled.div<{ $isOpen: boolean }>`
   position: absolute;
@@ -991,13 +983,7 @@ export function Navbar() {
             {/* LAINNYA / MORE DROPDOWN TOGGLE */}
             <div style={{ position: 'relative' }} ref={lainnyaRef}>
               <SidebarNavButton onClick={() => setIsLainnyaOpen(!isLainnyaOpen)} $active={isLainnyaOpen}>
-                <LainnyaIconContainer>
-                  <svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="2.5" />
-                    <circle cx="19" cy="12" r="2.5" />
-                    <circle cx="5" cy="12" r="2.5" />
-                  </svg>
-                </LainnyaIconContainer>
+                <MoreIcon />
                 Lainnya
               </SidebarNavButton>
 
