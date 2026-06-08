@@ -797,8 +797,7 @@ const LainnyaIconContainer = styled.div`
   svg {
     width: 14px;
     height: 14px;
-    stroke: currentColor;
-    stroke-width: 3.5;
+    fill: currentColor;
   }
 `;
 
@@ -993,10 +992,10 @@ export function Navbar() {
             <div style={{ position: 'relative' }} ref={lainnyaRef}>
               <SidebarNavButton onClick={() => setIsLainnyaOpen(!isLainnyaOpen)} $active={isLainnyaOpen}>
                 <LainnyaIconContainer>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <circle cx="12" cy="12" r="1.5" />
-                    <circle cx="19" cy="12" r="1.5" />
-                    <circle cx="5" cy="12" r="1.5" />
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="2.5" />
+                    <circle cx="19" cy="12" r="2.5" />
+                    <circle cx="5" cy="12" r="2.5" />
                   </svg>
                 </LainnyaIconContainer>
                 Lainnya
