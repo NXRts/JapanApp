@@ -783,29 +783,20 @@ const SidebarNavButton = styled.button<{ $active?: boolean }>`
   `}
 `;
 
-const LainnyaIconContainer = styled.div`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #c084fc; /* light purple */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  flex-shrink: 0;
-
-  svg {
-    width: 14px;
-    height: 14px;
-    stroke: currentColor;
-    stroke-width: 3.5;
-  }
-`;
+function MoreIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <circle cx="12" cy="12" r="2" />
+      <circle cx="18" cy="12" r="2" />
+      <circle cx="6" cy="12" r="2" />
+    </svg>
+  );
+}
 
 const PopoverMenu = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   left: 215px;
-  bottom: 0;
+  top: -12px;
   width: 240px;
   background: var(--surface);
   border: 2px solid var(--border);
@@ -864,6 +855,24 @@ function GlobeIcon() {
       <circle cx="12" cy="12" r="10" />
       <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
       <path d="M2 12h20" />
+    </svg>
+  );
+}
+
+function QuizIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '18px', height: '18px', flexShrink: 0 }}>
+      <circle cx="12" cy="12" r="10" fill="#22c55e" fillOpacity="0.15" stroke="#22c55e" strokeWidth="2.5" />
+      <path d="M9 12L11 14L15 10" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function BookIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '18px', height: '18px', flexShrink: 0 }}>
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
     </svg>
   );
 }
@@ -974,25 +983,23 @@ export function Navbar() {
             {/* LAINNYA / MORE DROPDOWN TOGGLE */}
             <div style={{ position: 'relative' }} ref={lainnyaRef}>
               <SidebarNavButton onClick={() => setIsLainnyaOpen(!isLainnyaOpen)} $active={isLainnyaOpen}>
-                <LainnyaIconContainer>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <circle cx="12" cy="12" r="1.5" />
-                    <circle cx="19" cy="12" r="1.5" />
-                    <circle cx="5" cy="12" r="1.5" />
-                  </svg>
-                </LainnyaIconContainer>
+                <MoreIcon />
                 Lainnya
               </SidebarNavButton>
 
               <PopoverMenu $isOpen={isLainnyaOpen}>
-                <PopoverItem onClick={() => window.open('', '_blank')}>
-                  <CertificateIcon />
-                  Quiz
-                </PopoverItem>
-                <PopoverItem onClick={() => window.open('', '_blank')}>
-                  <GlobeIcon />
-                  Learning Materials
-                </PopoverItem>
+                <Link href="/quiz" style={{ textDecoration: 'none', color: 'inherit' }} onClick={() => setIsLainnyaOpen(false)}>
+                  <PopoverItem>
+                    <QuizIcon />
+                    Quiz
+                  </PopoverItem>
+                </Link>
+                <Link href="/materi" style={{ textDecoration: 'none', color: 'inherit' }} onClick={() => setIsLainnyaOpen(false)}>
+                  <PopoverItem>
+                    <BookIcon />
+                    Learning Materials
+                  </PopoverItem>
+                </Link>
                 
                 <PopoverDivider />
                 
