@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import styled, { css, createGlobalStyle } from 'styled-components';
 import { usePathname } from 'next/navigation';
@@ -743,11 +743,150 @@ const SidebarActionButton = styled.button`
   }
 `;
 
+const SidebarNavButton = styled.button<{ $active?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  background: transparent;
+  border: 2px solid transparent;
+  width: 100%;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  
+  svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s ease;
+  }
+
+  &:hover {
+    background: rgba(var(--primary-rgb), 0.08);
+    color: var(--primary);
+    transform: translateX(4px);
+  }
+
+  &:active {
+    transform: scale(0.97) translateX(4px);
+  }
+
+  ${({ $active }) => $active && css`
+    background: rgba(var(--primary-rgb), 0.12);
+    border: 2px solid var(--primary);
+    color: var(--primary);
+  `}
+`;
+
+const LainnyaIconContainer = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #c084fc; /* light purple */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    stroke-width: 3.5;
+  }
+`;
+
+const PopoverMenu = styled.div<{ $isOpen: boolean }>`
+  position: absolute;
+  left: 215px;
+  bottom: 0;
+  width: 240px;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+  transform: ${({ $isOpen }) => ($isOpen ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)')};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? 'all' : 'none')};
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+`;
+
+const PopoverItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+
+  &:hover {
+    background: rgba(var(--primary-rgb), 0.08);
+    color: var(--primary);
+  }
+`;
+
+const PopoverDivider = styled.div`
+  height: 1.5px;
+  background: var(--border);
+  margin: 0.35rem 0.25rem;
+`;
+
+function CertificateIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '18px', height: '18px', flexShrink: 0 }}>
+      <path d="M12 2L15 5L19 4L18 8L21 11L17 12L16 16L12 15L8 16L7 12L3 11L6 8L5 4L9 5L12 2Z" fill="#22c55e" />
+      <circle cx="12" cy="9.5" r="3.5" fill="white" />
+      <path d="M10 14L12 17L14 14" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function GlobeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '18px', height: '18px', color: '#3b82f6', flexShrink: 0 }}>
+      <circle cx="12" cy="12" r="10" />
+      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+      <path d="M2 12h20" />
+    </svg>
+  );
+}
+
 export function Navbar() {
   const pathname = usePathname();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isDictionaryOpen, setIsDictionaryOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLainnyaOpen, setIsLainnyaOpen] = useState(false);
+  const lainnyaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (lainnyaRef.current && !lainnyaRef.current.contains(event.target as Node)) {
+        setIsLainnyaOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   const { progress } = useProgress();
   const { deviceMode, isMounted } = useDeviceMode();
 
@@ -831,6 +970,45 @@ export function Navbar() {
               <ProfileIcon />
               Profile
             </SidebarNavItem>
+
+            {/* LAINNYA / MORE DROPDOWN TOGGLE */}
+            <div style={{ position: 'relative' }} ref={lainnyaRef}>
+              <SidebarNavButton onClick={() => setIsLainnyaOpen(!isLainnyaOpen)} $active={isLainnyaOpen}>
+                <LainnyaIconContainer>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="1.5" />
+                    <circle cx="19" cy="12" r="1.5" />
+                    <circle cx="5" cy="12" r="1.5" />
+                  </svg>
+                </LainnyaIconContainer>
+                Lainnya
+              </SidebarNavButton>
+
+              <PopoverMenu $isOpen={isLainnyaOpen}>
+                <PopoverItem onClick={() => window.open('', '_blank')}>
+                  <CertificateIcon />
+                  Quiz
+                </PopoverItem>
+                <PopoverItem onClick={() => window.open('', '_blank')}>
+                  <GlobeIcon />
+                  Learning Materials
+                </PopoverItem>
+                
+                <PopoverDivider />
+                
+                <PopoverItem onClick={() => { setIsSettingsOpen(true); setIsLainnyaOpen(false); }}>
+                  Pengaturan
+                </PopoverItem>
+                <Link href="/about" style={{ textDecoration: 'none', color: 'inherit' }} onClick={() => setIsLainnyaOpen(false)}>
+                  <PopoverItem>
+                    Bantuan
+                  </PopoverItem>
+                </Link>
+                <PopoverItem onClick={() => { window.location.href = '/login'; }}>
+                  Keluar
+                </PopoverItem>
+              </PopoverMenu>
+            </div>
           </SidebarNavList>
           
           <SidebarFooter>
