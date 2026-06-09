@@ -14,7 +14,7 @@ const Container = styled.div`
   margin: 0 auto;
 
   @media (max-width: 768px) {
-    padding: 1.5rem 1.5rem 3rem;
+    padding: 1.5rem 0.75rem 3rem;
   }
 `;
 
@@ -23,7 +23,7 @@ const Header = styled.div`
   margin-bottom: 5rem;
 
   @media (max-width: 768px) {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 `;
 
@@ -36,8 +36,8 @@ const Title = styled.h1`
   -webkit-text-fill-color: transparent;
   
   @media (max-width: 768px) {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 2.2rem;
+    margin-bottom: 0.75rem;
   }
 `;
 
@@ -49,8 +49,9 @@ const Subtitle = styled.p`
   line-height: 1.6;
 
   @media (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 0.95rem;
     padding: 0 0.5rem;
+    line-height: 1.5;
   }
 `;
 
@@ -60,8 +61,8 @@ const Grid = styled.div`
   gap: 3rem;
   
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 `;
 
@@ -80,6 +81,10 @@ const BlogCard = styled(Link)`
     transform: translateY(-5px);
     border-color: var(--primary-light);
     box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 768px) {
+    border-radius: 16px;
   }
 `;
 
@@ -111,6 +116,11 @@ const CardImage = styled.div<{ $category: string }>`
     bottom: 0;
     background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.1) 100%);
   }
+
+  @media (max-width: 768px) {
+    height: 100px;
+    font-size: 2.5rem;
+  }
 `;
 
 const CardContent = styled.div`
@@ -118,6 +128,10 @@ const CardContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+  }
 `;
 
 const Meta = styled.div`
@@ -125,6 +139,12 @@ const Meta = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
 `;
 
 const Category = styled.span<{ $category: string }>`
@@ -152,11 +172,20 @@ const Category = styled.span<{ $category: string }>`
       default: return 'var(--text-secondary)';
     }
   }};
+
+  @media (max-width: 768px) {
+    font-size: 0.6rem;
+    padding: 0.15rem 0.5rem;
+  }
 `;
 
 const Date = styled.span`
   font-size: 0.85rem;
   color: var(--text-secondary);
+
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const PostTitle = styled.h3`
@@ -165,6 +194,16 @@ const PostTitle = styled.h3`
   margin-bottom: 1rem;
   color: var(--foreground);
   line-height: 1.3;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.5em;
+  }
 `;
 
 const Excerpt = styled.p`
@@ -172,6 +211,16 @@ const Excerpt = styled.p`
   line-height: 1.6;
   margin-bottom: 1.5rem;
   flex: 1;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 `;
 
 const Footer = styled.div`
@@ -181,6 +230,12 @@ const Footer = styled.div`
   padding-top: 1rem;
   border-top: 1px solid var(--border);
   margin-top: auto;
+
+  @media (max-width: 768px) {
+    padding-top: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
 `;
 
 const Author = styled.div`
@@ -190,6 +245,11 @@ const Author = styled.div`
   font-size: 0.9rem;
   color: var(--foreground);
   font-weight: 500;
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+    gap: 0.25rem;
+  }
 `;
 
 const AuthorAvatar = styled.div`
@@ -197,11 +257,20 @@ const AuthorAvatar = styled.div`
   height: 24px;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--primary), var(--secondary));
+
+  @media (max-width: 768px) {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const ReadTime = styled.span`
   font-size: 0.85rem;
   color: var(--text-secondary);
+
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const SearchContainer = styled.div`
@@ -210,7 +279,7 @@ const SearchContainer = styled.div`
   position: relative;
 
   @media (max-width: 768px) {
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
   }
 `;
 
@@ -237,8 +306,8 @@ const SearchInput = styled.input`
   }
 
   @media (max-width: 768px) {
-    padding: 0.875rem 1.25rem;
-    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
   }
 `;
 
