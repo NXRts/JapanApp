@@ -151,14 +151,26 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [confirmReset, setConfirmReset] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
 
-  // Prevent scroll when modal is open
+  // Prevent scroll when modal is open & handle Escape key closure
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
     } else {
       document.body.style.overflow = 'unset';
     }
-  }, [isOpen]);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'unset'; // Clean up scroll prevention
+    };
+  }, [isOpen, onClose]);
 
   return (
     <Overlay $isOpen={isOpen} onClick={onClose}>
