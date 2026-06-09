@@ -6,6 +6,7 @@ import Link from 'next/link';
 import * as wanakana from 'wanakana';
 import { KANJI_DATA } from '@/data/kanji';
 import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { allKanji, allVocabulary } from '@/lib/dictionary';
 
 // Define static Kana arrays
 const HIRAGANA_ROWS = [
@@ -1155,19 +1156,41 @@ export default function PracticeSheetsPage() {
   }, [gridStyle, practiceMode, cellSize, traceCount, traceOpacity, showMetadata, showHeaders, landscape, sheetType]);
 
   const getCardDetails = (char: string) => {
-    for (const lvl of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
-      const found = KANJI_DATA[lvl]?.find((k) => k.char === char);
-      if (found) {
-        return {
-          char,
-          meaning: found.meaning,
-          on: found.on !== '—' ? found.on : '',
-          kun: found.kun !== '—' ? found.kun : '',
-          strokes: found.strokes,
-          examples: found.examples || []
-        };
+    // 1. Look up in allKanji database
+    const found = allKanji.find((k) => k.kanji === char);
+    if (found) {
+      // Prioritize hardcoded examples in KANJI_DATA if they exist
+      let examples: { word: string; reading: string; meaning: string }[] = [];
+      for (const lvl of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
+        const hFound = KANJI_DATA[lvl]?.find((k) => k.char === char);
+        if (hFound && hFound.examples) {
+          examples = hFound.examples;
+          break;
+        }
       }
+
+      // If no hardcoded examples, dynamically generate from allVocabulary
+      if (examples.length === 0) {
+        examples = allVocabulary
+          .filter((v) => v.word && v.word.includes(char))
+          .slice(0, 4)
+          .map((v) => ({
+            word: v.word || '',
+            reading: v.reading || '',
+            meaning: v.meaning || ''
+          }));
+      }
+
+      return {
+        char,
+        meaning: found.meaning || '',
+        on: found.onyomi && found.onyomi.length > 0 ? found.onyomi.join('・') : '',
+        kun: found.kunyomi && found.kunyomi.length > 0 ? found.kunyomi.join('・') : '',
+        strokes: found.stroke_count || 0,
+        examples
+      };
     }
+
     const isKanaChar = wanakana.isKana(char);
     const romaji = isKanaChar ? wanakana.toRomaji(char) : '';
     return {
@@ -1267,11 +1290,21 @@ export default function PracticeSheetsPage() {
 
   // Get filtered Kanji list
   const getFilteredKanji = () => {
-    const levelData = KANJI_DATA[kanjiLevel] || [];
+    const levelData = allKanji
+      .filter(k => k.level === kanjiLevel)
+      .map(k => ({
+        char: k.kanji || '',
+        meaning: k.meaning || '',
+        on: k.onyomi ? k.onyomi.join('・') : '',
+        kun: k.kunyomi ? k.kunyomi.join('・') : '',
+        strokes: k.stroke_count || 0
+      }));
+
     if (!kanjiSearch) return levelData;
+    const searchLower = kanjiSearch.toLowerCase();
     return levelData.filter(k => 
       k.char.includes(kanjiSearch) || 
-      k.meaning.toLowerCase().includes(kanjiSearch.toLowerCase()) ||
+      k.meaning.toLowerCase().includes(searchLower) ||
       k.on.includes(kanjiSearch) ||
       k.kun.includes(kanjiSearch)
     );
@@ -1307,12 +1340,10 @@ export default function PracticeSheetsPage() {
     if (wanakana.isKana(char)) {
       return wanakana.toRomaji(char);
     }
-    // Search in Kanji lists
-    for (const level of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
-      const found = KANJI_DATA[level]?.find(k => k.char === char);
-      if (found) {
-        return `${found.meaning} (${found.strokes} strokes)`;
-      }
+    // Search in allKanji database
+    const found = allKanji.find(k => k.kanji === char);
+    if (found) {
+      return `${found.meaning} (${found.stroke_count || 0} strokes)`;
     }
     return '';
   };
@@ -1328,7 +1359,8 @@ export default function PracticeSheetsPage() {
 
   const charactersToRender = mounted ? getActiveCharacters() : [];
   const { size: cellSizePx, cellsPerRow, rowsPerPage } = getCellParameters();
-  const paginatedPages = paginateCharacters(charactersToRender, rowsPerPage);
+  const flashcardsPerPage = 8;
+  const paginatedPages = paginateCharacters(charactersToRender, sheetType === 'flashcards' ? flashcardsPerPage : rowsPerPage);
 
   const handlePrint = () => {
     window.print();
