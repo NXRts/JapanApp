@@ -166,7 +166,17 @@ const DropdownMenu = styled.div`
   opacity: 0;
   pointer-events: none;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background: transparent;
+  }
+
   ${NavItem}:hover & {
     opacity: 1;
     pointer-events: all;
