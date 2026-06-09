@@ -147,6 +147,49 @@ const StyledLink = styled(Link) <{ $active?: boolean }>`
   }
 `;
 
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 140px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  
+  ${NavItem}:hover & {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(5px);
+  }
+`;
+
+const DropdownItem = styled(Link)<{ $active?: boolean }>`
+  display: block;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(var(--primary-rgb), 0.08);
+    color: var(--primary);
+  }
+`;
+
 const SettingsBtn = styled.button<{ $isOpen?: boolean }>`
   background: transparent;
   border: none;
@@ -1113,12 +1156,6 @@ export function Navbar() {
                   <StyledLink href="/quiz" $active={pathname.startsWith('/quiz')}>Quiz</StyledLink>
                 </NavItem>
                 <NavItem>
-                  <StyledLink href="/materi" $active={pathname.startsWith('/materi')}>Materials</StyledLink>
-                </NavItem>
-                <NavItem>
-                  <StyledLink href="/practice-sheets" $active={pathname === '/practice-sheets'}>Sheets</StyledLink>
-                </NavItem>
-                <NavItem>
                   <StyledLink href="/jlpt" $active={pathname.startsWith('/jlpt')}>JLPT</StyledLink>
                 </NavItem>
                 <NavItem>
@@ -1134,13 +1171,21 @@ export function Navbar() {
                   <StyledLink href="/stats" $active={pathname === '/stats'}>Stats</StyledLink>
                 </NavItem>
                 <NavItem>
-                  <StyledLink href="/about" $active={pathname === '/about'}>About</StyledLink>
-                </NavItem>
-                <NavItem>
                   <StyledLink href="/profile" $active={pathname === '/profile'}>Profile</StyledLink>
                 </NavItem>
                 <NavItem>
-                  <StyledLink href="/contact" $active={pathname === '/contact'}>Contact</StyledLink>
+                  <StyledLink href="#" onClick={(e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    More
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '12px', height: '12px' }}>
+                      <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                  </StyledLink>
+                  <DropdownMenu>
+                    <DropdownItem href="/materi" $active={pathname.startsWith('/materi')}>Materials</DropdownItem>
+                    <DropdownItem href="/practice-sheets" $active={pathname === '/practice-sheets'}>Sheets</DropdownItem>
+                    <DropdownItem href="/about" $active={pathname === '/about'}>About</DropdownItem>
+                    <DropdownItem href="/contact" $active={pathname === '/contact'}>Contact</DropdownItem>
+                  </DropdownMenu>
                 </NavItem>
               </NavList>
 
