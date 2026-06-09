@@ -807,6 +807,272 @@ const FooterCredits = styled.div`
   color: #777;
 `;
 
+// ========================================================
+// FLASHCARD STYLED COMPONENTS & HELPERS
+// ========================================================
+
+const svgCache: Record<string, string> = {};
+
+function KanjiStrokeSvg({ char }: { char: string }) {
+  const [svgContent, setSvgContent] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!char) return;
+    if (svgCache[char]) {
+      setSvgContent(svgCache[char]);
+      return;
+    }
+    setLoading(true);
+    const hex = char.charCodeAt(0).toString(16).padStart(5, '0');
+    fetch(`https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${hex}.svg`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Not found');
+        return res.text();
+      })
+      .then((text) => {
+        const cleanedText = text
+          .replace(/style="[^"]*"/g, '')
+          .replace(/width="[^"]*"/g, 'width="100%"')
+          .replace(/height="[^"]*"/g, 'height="100%"');
+        svgCache[char] = cleanedText;
+        setSvgContent(cleanedText);
+        setLoading(false);
+      })
+      .catch(() => {
+        setSvgContent(null);
+        setLoading(false);
+      });
+  }, [char]);
+
+  if (loading) {
+    return <div style={{ fontSize: '0.6rem', color: '#888' }}>Loading...</div>;
+  }
+
+  if (!svgContent) {
+    return (
+      <div
+        style={{
+          fontSize: '2.5rem',
+          fontFamily: "'Noto Serif JP', serif",
+          color: '#ccc',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          height: '100%',
+          border: '1px dashed #eee'
+        }}
+      >
+        {char}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="stroke-svg-container"
+      dangerouslySetInnerHTML={{ __html: svgContent }}
+      style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    />
+  );
+}
+
+const FlashcardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 3.5in);
+  grid-template-rows: repeat(4, 2.5in);
+  gap: 0;
+  width: 7in;
+  height: 10in;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background: white;
+  
+  @media print {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    page-break-inside: avoid !important;
+  }
+`;
+
+const FlashcardCell = styled.div`
+  width: 3.5in;
+  height: 2.5in;
+  border: 1px dashed #ccc;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: white;
+  color: black;
+  position: relative;
+  
+  @media print {
+    border: 1px dashed #999;
+  }
+`;
+
+const CardFront = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0.3in;
+  position: relative;
+`;
+
+const CardFrontLeft = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+`;
+
+const CardFrontWord = styled.div`
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.2in;
+  color: #111;
+  font-weight: 600;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+`;
+
+const CardFrontRight = styled.div`
+  flex: 1.2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.1in;
+  font-weight: bold;
+  line-height: 1;
+  color: #000;
+`;
+
+const CardBack = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0.2in 0.25in;
+`;
+
+const CardBackTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 1.1in;
+`;
+
+const CardBackTopLeft = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+`;
+
+const CardBackReadingsLabel = styled.span`
+  font-size: 0.09in;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 1px;
+`;
+
+const CardBackReadingsValue = styled.span`
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.15in;
+  color: #000;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const CardBackMeaning = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-size: 0.14in;
+  font-weight: 700;
+  color: #111;
+  margin-top: 4px;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+const CardBackTopRight = styled.div`
+  width: 0.85in;
+  height: 0.85in;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+  flex-shrink: 0;
+  margin-left: 8px;
+`;
+
+const CardBackDivider = styled.div`
+  width: 100%;
+  height: 1px;
+  background: #eee;
+  margin: 5px 0;
+`;
+
+const CardBackBottom = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+`;
+
+const CardBackExampleRow = styled.div`
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.12in;
+  line-height: 1.3;
+  width: 100%;
+`;
+
+const CardBackExampleWord = styled.span`
+  font-family: 'Noto Sans JP', sans-serif;
+  font-weight: 700;
+  color: #000;
+  white-space: nowrap;
+`;
+
+const CardBackExampleReading = styled.span`
+  font-family: 'Noto Sans JP', sans-serif;
+  color: #666;
+  font-size: 0.1in;
+  white-space: nowrap;
+`;
+
+const CardBackExampleMeaning = styled.span`
+  font-family: 'Inter', sans-serif;
+  color: #444;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+`;
+
 export default function PracticeSheetsPage() {
   const [mounted, setMounted] = useState(false);
   const [mobileActiveTab, setMobileActiveTab] = useState<'settings' | 'preview'>('settings');
@@ -815,6 +1081,7 @@ export default function PracticeSheetsPage() {
   const [kanaTab, setKanaTab] = useState<'hiragana' | 'katakana'>('hiragana');
   const [kanjiLevel, setKanjiLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1'>('N5');
   const [kanjiSearch, setKanjiSearch] = useState('');
+  const [sheetType, setSheetType] = useState<'worksheet' | 'flashcards'>('worksheet');
 
   // Selected Characters
   const [selectedChars, setSelectedChars] = useState<string[]>([]);
@@ -849,6 +1116,7 @@ export default function PracticeSheetsPage() {
         if (parsed.showMetadata !== undefined) setShowMetadata(parsed.showMetadata);
         if (parsed.showHeaders !== undefined) setShowHeaders(parsed.showHeaders);
         if (parsed.landscape !== undefined) setLandscape(parsed.landscape);
+        if (parsed.sheetType) setSheetType(parsed.sheetType);
       }
 
       const savedChars = localStorage.getItem('sheet-generator-chars');
@@ -880,10 +1148,37 @@ export default function PracticeSheetsPage() {
       traceOpacity,
       showMetadata,
       showHeaders,
-      landscape
+      landscape,
+      sheetType
     };
     localStorage.setItem('sheet-generator-settings', JSON.stringify(settings));
-  }, [gridStyle, practiceMode, cellSize, traceCount, traceOpacity, showMetadata, showHeaders, landscape]);
+  }, [gridStyle, practiceMode, cellSize, traceCount, traceOpacity, showMetadata, showHeaders, landscape, sheetType]);
+
+  const getCardDetails = (char: string) => {
+    for (const lvl of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
+      const found = KANJI_DATA[lvl]?.find((k) => k.char === char);
+      if (found) {
+        return {
+          char,
+          meaning: found.meaning,
+          on: found.on !== '—' ? found.on : '',
+          kun: found.kun !== '—' ? found.kun : '',
+          strokes: found.strokes,
+          examples: found.examples || []
+        };
+      }
+    }
+    const isKanaChar = wanakana.isKana(char);
+    const romaji = isKanaChar ? wanakana.toRomaji(char) : '';
+    return {
+      char,
+      meaning: isKanaChar ? 'Kana Character' : 'Custom character',
+      on: isKanaChar ? `Romaji: ${romaji}` : '',
+      kun: '',
+      strokes: 0,
+      examples: []
+    };
+  };
 
   // Save selected characters
   useEffect(() => {
@@ -1077,7 +1372,21 @@ export default function PracticeSheetsPage() {
         <Sidebar className={mobileActiveTab === 'settings' ? 'active-mobile-pane' : 'inactive-mobile-pane'}>
           <div>
             <SectionTitle>
-              <span>1. Choose Characters</span>
+              <span>1. Select Mode</span>
+            </SectionTitle>
+            <TabGroup style={{ marginBottom: '1.5rem' }}>
+              <TabButton $active={sheetType === 'worksheet'} onClick={() => setSheetType('worksheet')}>
+                Worksheet
+              </TabButton>
+              <TabButton $active={sheetType === 'flashcards'} onClick={() => setSheetType('flashcards')}>
+                Flashcards
+              </TabButton>
+            </TabGroup>
+          </div>
+
+          <div>
+            <SectionTitle>
+              <span>2. Choose Characters</span>
             </SectionTitle>
             
             <TabGroup style={{ marginBottom: '1rem' }}>
@@ -1231,108 +1540,121 @@ export default function PracticeSheetsPage() {
             )}
           </div>
 
-          <div>
-            <SectionTitle>
-              <span>2. Sheet Style</span>
-            </SectionTitle>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <SettingRow>
-                <SettingLabel>Grid Guidelines</SettingLabel>
-                <SelectControl 
-                  value={gridStyle} 
-                  onChange={(e) => setGridStyle(e.target.value as any)}
-                >
-                  <option value="genkouyoushi">Genkouyoushi (Dashed +)</option>
-                  <option value="plain">Plain Borders Only</option>
-                </SelectControl>
-              </SettingRow>
-
-              <SettingRow>
-                <SettingLabel>Worksheet Layout</SettingLabel>
-                <SelectControl 
-                  value={practiceMode} 
-                  onChange={(e) => setPracticeMode(e.target.value as any)}
-                >
-                  <option value="trace">Reference + Tracing + Blank</option>
-                  <option value="fullTrace">All Tracing Boxes</option>
-                  <option value="empty">Reference + Blank Grid</option>
-                </SelectControl>
-              </SettingRow>
-
-              <SettingRow>
-                <SettingLabel>Cell Box Size</SettingLabel>
-                <SelectControl 
-                  value={cellSize} 
-                  onChange={(e) => setCellSize(e.target.value as any)}
-                >
-                  <option value="large">Large (8 rows/page)</option>
-                  <option value="medium">Medium (9 rows/page)</option>
-                  <option value="small">Small (11 rows/page)</option>
-                </SelectControl>
-              </SettingRow>
-
-              {practiceMode === 'trace' && (
+          {sheetType === 'worksheet' ? (
+            <div>
+              <SectionTitle>
+                <span>3. Sheet Style</span>
+              </SectionTitle>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <SettingRow>
-                  <SettingLabel>Tracing Guides</SettingLabel>
-                  <RangeContainer>
-                    <input 
-                      type="range" 
-                      min="1" 
-                      max="5" 
-                      value={traceCount} 
-                      onChange={(e) => setTraceCount(Number(e.target.value))}
-                    />
-                    <span>{traceCount}</span>
-                  </RangeContainer>
+                  <SettingLabel>Grid Guidelines</SettingLabel>
+                  <SelectControl 
+                    value={gridStyle} 
+                    onChange={(e) => setGridStyle(e.target.value as any)}
+                  >
+                    <option value="genkouyoushi">Genkouyoushi (Dashed +)</option>
+                    <option value="plain">Plain Borders Only</option>
+                  </SelectControl>
                 </SettingRow>
-              )}
 
-              {practiceMode !== 'empty' && (
                 <SettingRow>
-                  <SettingLabel>Jiplat (Trace) Opacity</SettingLabel>
-                  <RangeContainer>
-                    <input 
-                      type="range" 
-                      min="0.1" 
-                      max="0.5" 
-                      step="0.05"
-                      value={traceOpacity} 
-                      onChange={(e) => setTraceOpacity(Number(e.target.value))}
-                    />
-                    <span>{Math.round(traceOpacity * 100)}%</span>
-                  </RangeContainer>
+                  <SettingLabel>Worksheet Layout</SettingLabel>
+                  <SelectControl 
+                    value={practiceMode} 
+                    onChange={(e) => setPracticeMode(e.target.value as any)}
+                  >
+                    <option value="trace">Reference + Tracing + Blank</option>
+                    <option value="fullTrace">All Tracing Boxes</option>
+                    <option value="empty">Reference + Blank Grid</option>
+                  </SelectControl>
                 </SettingRow>
-              )}
 
-              <SettingRow>
-                <SettingLabel>Include Romaji/Meaning</SettingLabel>
-                <CheckboxControl 
-                  type="checkbox" 
-                  checked={showHeaders} 
-                  onChange={(e) => setShowHeaders(e.target.checked)}
-                />
-              </SettingRow>
+                <SettingRow>
+                  <SettingLabel>Cell Box Size</SettingLabel>
+                  <SelectControl 
+                    value={cellSize} 
+                    onChange={(e) => setCellSize(e.target.value as any)}
+                  >
+                    <option value="large">Large (8 rows/page)</option>
+                    <option value="medium">Medium (9 rows/page)</option>
+                    <option value="small">Small (11 rows/page)</option>
+                  </SelectControl>
+                </SettingRow>
 
-              <SettingRow>
-                <SettingLabel>Paper Header fields</SettingLabel>
-                <CheckboxControl 
-                  type="checkbox" 
-                  checked={showMetadata} 
-                  onChange={(e) => setShowMetadata(e.target.checked)}
-                />
-              </SettingRow>
+                {practiceMode === 'trace' && (
+                  <SettingRow>
+                    <SettingLabel>Tracing Guides</SettingLabel>
+                    <RangeContainer>
+                      <input 
+                        type="range" 
+                        min="1" 
+                        max="5" 
+                        value={traceCount} 
+                        onChange={(e) => setTraceCount(Number(e.target.value))}
+                      />
+                      <span>{traceCount}</span>
+                    </RangeContainer>
+                  </SettingRow>
+                )}
 
-              <SettingRow>
-                <SettingLabel>Landscape Orientation</SettingLabel>
-                <CheckboxControl 
-                  type="checkbox" 
-                  checked={landscape} 
-                  onChange={(e) => setLandscape(e.target.checked)}
-                />
-              </SettingRow>
+                {practiceMode !== 'empty' && (
+                  <SettingRow>
+                    <SettingLabel>Jiplat (Trace) Opacity</SettingLabel>
+                    <RangeContainer>
+                      <input 
+                        type="range" 
+                        min="0.1" 
+                        max="0.5" 
+                        step="0.05"
+                        value={traceOpacity} 
+                        onChange={(e) => setTraceOpacity(Number(e.target.value))}
+                      />
+                      <span>{Math.round(traceOpacity * 100)}%</span>
+                    </RangeContainer>
+                  </SettingRow>
+                )}
+
+                <SettingRow>
+                  <SettingLabel>Include Romaji/Meaning</SettingLabel>
+                  <CheckboxControl 
+                    type="checkbox" 
+                    checked={showHeaders} 
+                    onChange={(e) => setShowHeaders(e.target.checked)}
+                  />
+                </SettingRow>
+
+                <SettingRow>
+                  <SettingLabel>Paper Header fields</SettingLabel>
+                  <CheckboxControl 
+                    type="checkbox" 
+                    checked={showMetadata} 
+                    onChange={(e) => setShowMetadata(e.target.checked)}
+                  />
+                </SettingRow>
+
+                <SettingRow>
+                  <SettingLabel>Landscape Orientation</SettingLabel>
+                  <CheckboxControl 
+                    type="checkbox" 
+                    checked={landscape} 
+                    onChange={(e) => setLandscape(e.target.checked)}
+                  />
+                </SettingRow>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div>
+              <SectionTitle>
+                <span>3. Card Info</span>
+              </SectionTitle>
+              <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.5, background: 'rgba(var(--primary-rgb), 0.05)', padding: '16px', borderRadius: '12px', border: '1px dashed var(--primary-light)' }}>
+                <strong>Flashcards Layout:</strong> Generates standard 3.5" x 2.5" flashcards optimized for 8 cards per page (A4/Letter). 
+                <br/><br/>
+                Prints two-sided automatically with horizontal column flipping so card front and back align perfectly.
+              </div>
+            </div>
+          )}
 
           <div style={{ marginTop: '0.5rem' }}>
             {mounted && (
@@ -1383,77 +1705,171 @@ export default function PracticeSheetsPage() {
           {charactersToRender.length > 0 ? (
             <>
               <PreviewHeading>
-                <span>Live Preview ({paginatedPages.length} {paginatedPages.length === 1 ? 'Page' : 'Pages'})</span>
+                <span>Live Preview ({sheetType === 'worksheet' ? paginatedPages.length : paginatedPages.length * 2} { (sheetType === 'worksheet' ? paginatedPages.length : paginatedPages.length * 2) === 1 ? 'Page' : 'Pages'})</span>
                 <span style={{ fontSize: '0.8rem' }}>Scale adjusts to print layout automatically</span>
               </PreviewHeading>
               
               <div ref={printAreaRef}>
-                {paginatedPages.map((pageChars, pageIdx) => (
-                  <A4Sheet key={pageIdx} $landscape={landscape}>
-                    {/* Paper Header */}
-                    {showMetadata && (
-                      <PaperHeader>
-                        <div className="title-section">
-                          <h2>日本語練習帳 — Japanese Writing Practice</h2>
-                          <p>
-                            {activeTab === 'kana' && `Kana Script Exercise — Sheet ${pageIdx + 1} of ${paginatedPages.length}`}
-                            {activeTab === 'kanji' && `Kanji Writing Exercise — Sheet ${pageIdx + 1} of ${paginatedPages.length}`}
-                            {activeTab === 'custom' && `Custom Handwriting Workbook — Sheet ${pageIdx + 1} of ${paginatedPages.length}`}
-                          </p>
-                        </div>
-                        <div className="meta-section">
-                          <div>Name: <span></span></div>
-                          <div>Date: <span></span></div>
-                        </div>
-                      </PaperHeader>
-                    )}
+                {sheetType === 'worksheet' ? (
+                  paginatedPages.map((pageChars, pageIdx) => (
+                    <A4Sheet key={pageIdx} $landscape={landscape}>
+                      {/* Paper Header */}
+                      {showMetadata && (
+                        <PaperHeader>
+                          <div className="title-section">
+                            <h2>日本語練習帳 — Japanese Writing Practice</h2>
+                            <p>
+                              {activeTab === 'kana' && `Kana Script Exercise — Sheet ${pageIdx + 1} of ${paginatedPages.length}`}
+                              {activeTab === 'kanji' && `Kanji Writing Exercise — Sheet ${pageIdx + 1} of ${paginatedPages.length}`}
+                              {activeTab === 'custom' && `Custom Handwriting Workbook — Sheet ${pageIdx + 1} of ${paginatedPages.length}`}
+                            </p>
+                          </div>
+                          <div className="meta-section">
+                            <div>Name: <span></span></div>
+                            <div>Date: <span></span></div>
+                          </div>
+                        </PaperHeader>
+                      )}
 
-                    {/* Sheet Grid Rows */}
-                    <WorksheetContent>
-                      {pageChars.map((char, rowIdx) => (
-                        <CharacterRow key={rowIdx}>
-                          {showHeaders && (
-                            <RowHeaderLabel>
-                              <span className="romaji">{getCharacterHeaderLabel(char)}</span>
-                            </RowHeaderLabel>
-                          )}
-                          <GridCells>
-                            {/* 1. Reference Cell */}
-                            <WritingCell $size={cellSizePx} $traceOpacity={traceOpacity}>
-                              {char}
-                              {gridStyle === 'genkouyoushi' && <GenkouyoushiLines />}
-                            </WritingCell>
+                      {/* Sheet Grid Rows */}
+                      <WorksheetContent>
+                        {pageChars.map((char, rowIdx) => (
+                          <CharacterRow key={rowIdx}>
+                            {showHeaders && (
+                              <RowHeaderLabel>
+                                <span className="romaji">{getCharacterHeaderLabel(char)}</span>
+                              </RowHeaderLabel>
+                            )}
+                            <GridCells>
+                              {/* 1. Reference Cell */}
+                              <WritingCell $size={cellSizePx} $traceOpacity={traceOpacity}>
+                                {char}
+                                {gridStyle === 'genkouyoushi' && <GenkouyoushiLines />}
+                              </WritingCell>
 
-                            {/* 2. Practice Cells based on set set mode */}
-                            {Array.from({ length: cellsPerRow - 1 }).map((_, cellIdx) => {
-                              const isTrace = 
-                                practiceMode === 'fullTrace' || 
-                                (practiceMode === 'trace' && cellIdx < traceCount);
-                                
+                              {/* 2. Practice Cells based on set set mode */}
+                              {Array.from({ length: cellsPerRow - 1 }).map((_, cellIdx) => {
+                                const isTrace = 
+                                  practiceMode === 'fullTrace' || 
+                                  (practiceMode === 'trace' && cellIdx < traceCount);
+                                  
+                                return (
+                                  <WritingCell 
+                                    key={cellIdx} 
+                                    $size={cellSizePx} 
+                                    $isTrace={isTrace}
+                                    $traceOpacity={traceOpacity}
+                                  >
+                                    {isTrace ? char : ''}
+                                    {gridStyle === 'genkouyoushi' && <GenkouyoushiLines />}
+                                  </WritingCell>
+                                );
+                              })}
+                            </GridCells>
+                          </CharacterRow>
+                        ))}
+                      </WorksheetContent>
+
+                      {/* Sheet Footer Credits */}
+                      <FooterCredits>
+                        <span>Generated via JapanApp Worksheet Studio</span>
+                        <span>Page {pageIdx + 1} of {paginatedPages.length}</span>
+                      </FooterCredits>
+                    </A4Sheet>
+                  ))
+                ) : (
+                  paginatedPages.map((pageChars, pageIdx) => {
+                    const padded = [...pageChars];
+                    while (padded.length < 8) {
+                      padded.push('');
+                    }
+
+                    const frontIndices = [0, 1, 2, 3, 4, 5, 6, 7];
+                    const backIndices = [1, 0, 3, 2, 5, 4, 7, 6];
+
+                    return (
+                      <div key={pageIdx}>
+                        {/* FRONT SHEET */}
+                        <A4Sheet className="flashcard-page" style={{ padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                          <FlashcardGrid>
+                            {frontIndices.map((idx) => {
+                              const char = padded[idx];
+                              if (!char) return <FlashcardCell key={idx} />;
+                              const details = getCardDetails(char);
                               return (
-                                <WritingCell 
-                                  key={cellIdx} 
-                                  $size={cellSizePx} 
-                                  $isTrace={isTrace}
-                                  $traceOpacity={traceOpacity}
-                                >
-                                  {isTrace ? char : ''}
-                                  {gridStyle === 'genkouyoushi' && <GenkouyoushiLines />}
-                                </WritingCell>
+                                <FlashcardCell key={idx}>
+                                  <CardFront>
+                                    <CardFrontLeft>
+                                      {details.examples.slice(0, 4).map((ex, exIdx) => (
+                                        <CardFrontWord key={exIdx}>
+                                          {ex.word}
+                                        </CardFrontWord>
+                                      ))}
+                                    </CardFrontLeft>
+                                    <CardFrontRight>
+                                      {details.char}
+                                    </CardFrontRight>
+                                  </CardFront>
+                                </FlashcardCell>
                               );
                             })}
-                          </GridCells>
-                        </CharacterRow>
-                      ))}
-                    </WorksheetContent>
+                          </FlashcardGrid>
+                        </A4Sheet>
 
-                    {/* Sheet Footer Credits */}
-                    <FooterCredits>
-                      <span>Generated via JapanApp Worksheet Studio</span>
-                      <span>Page {pageIdx + 1} of {paginatedPages.length}</span>
-                    </FooterCredits>
-                  </A4Sheet>
-                ))}
+                        {/* BACK SHEET */}
+                        <A4Sheet className="flashcard-page" style={{ padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                          <FlashcardGrid>
+                            {backIndices.map((idx) => {
+                              const char = padded[idx];
+                              if (!char) return <FlashcardCell key={idx} />;
+                              const details = getCardDetails(char);
+                              return (
+                                <FlashcardCell key={idx}>
+                                  <CardBack>
+                                    <CardBackTop>
+                                      <CardBackTopLeft>
+                                        {details.on && (
+                                          <>
+                                            <CardBackReadingsLabel>Onyomi</CardBackReadingsLabel>
+                                            <CardBackReadingsValue>{details.on}</CardBackReadingsValue>
+                                          </>
+                                        )}
+                                        {details.kun && (
+                                          <>
+                                            <CardBackReadingsLabel>Kunyomi</CardBackReadingsLabel>
+                                            <CardBackReadingsValue>{details.kun}</CardBackReadingsValue>
+                                          </>
+                                        )}
+                                        <CardBackMeaning>
+                                          {details.meaning}
+                                        </CardBackMeaning>
+                                      </CardBackTopLeft>
+                                      <CardBackTopRight>
+                                        <KanjiStrokeSvg char={details.char} />
+                                      </CardBackTopRight>
+                                    </CardBackTop>
+                                    
+                                    {details.examples.length > 0 && <CardBackDivider />}
+                                    
+                                    <CardBackBottom>
+                                      {details.examples.slice(0, 4).map((ex, exIdx) => (
+                                        <CardBackExampleRow key={exIdx}>
+                                          <CardBackExampleWord>{ex.word}</CardBackExampleWord>
+                                          <CardBackExampleReading>{ex.reading}</CardBackExampleReading>
+                                          <CardBackExampleMeaning>{ex.meaning}</CardBackExampleMeaning>
+                                        </CardBackExampleRow>
+                                      ))}
+                                    </CardBackBottom>
+                                  </CardBack>
+                                </FlashcardCell>
+                              );
+                            })}
+                          </FlashcardGrid>
+                        </A4Sheet>
+                      </div>
+                    );
+                  })
+                )}
               </div>
             </>
           ) : (
@@ -1482,7 +1898,7 @@ export default function PracticeSheetsPage() {
           
           /* Set paper layout size and margins - margin: 0 hides default browser headers & footers */
           @page {
-            size: ${landscape ? 'A4 landscape' : 'A4 portrait'};
+            size: ${sheetType === 'flashcards' ? 'A4 portrait' : landscape ? 'A4 landscape' : 'A4 portrait'};
             margin: 0 !important;
           }
           
@@ -1515,8 +1931,24 @@ export default function PracticeSheetsPage() {
             page-break-inside: avoid !important;
             overflow: hidden !important;
           }
+
+          .flashcard-page {
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            height: 297mm !important;
+            max-height: 297mm !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            background: transparent !important;
+            page-break-inside: avoid !important;
+            overflow: hidden !important;
+          }
           
-          .A4Sheet:not(:last-child) {
+          .A4Sheet:not(:last-child), .flashcard-page:not(:last-child) {
             page-break-after: always !important;
             break-after: page !important;
           }
