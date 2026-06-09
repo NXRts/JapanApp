@@ -33,7 +33,7 @@ const ValuesSection = styled.section`
   border-bottom: 1px solid var(--border);
 
   @media (max-width: 768px) {
-    padding: 5rem 1.5rem;
+    padding: 3.5rem 1rem;
   }
 `;
 
@@ -48,7 +48,7 @@ const HeroSection = styled.section`
   position: relative;
   
   @media (max-width: 768px) {
-    padding: 6rem 1rem 4rem;
+    padding: 4.5rem 1rem 3rem;
   }
 `;
 
@@ -78,6 +78,11 @@ const JpTitle = styled.div`
   opacity: 0.8;
   letter-spacing: 0.2em;
   animation: ${fadeIn} 1s ease-out;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const HeroImageWrapper = styled.div`
@@ -95,6 +100,11 @@ const HeroImageWrapper = styled.div`
   img {
     object-fit: cover;
   }
+
+  @media (max-width: 768px) {
+    margin: 1.5rem auto;
+    border-radius: 16px;
+  }
 `;
 
 const HeroSubtitle = styled.p`
@@ -106,7 +116,9 @@ const HeroSubtitle = styled.p`
   animation: ${fadeIn} 1.4s ease-out;
   
   @media (max-width: 768px) {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
   }
 `;
 
@@ -121,7 +133,9 @@ const StatsGrid = styled.div`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
+    padding: 0 1.5rem;
+    margin-bottom: 3rem;
   }
 `;
 
@@ -153,6 +167,24 @@ const StatCard = styled.div`
     letter-spacing: 0.05em;
     font-size: 0.875rem;
   }
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+    max-width: 340px;
+    width: 100%;
+    margin: 0 auto;
+
+    .value {
+      font-size: 2rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .label {
+      font-size: 0.75rem;
+      letter-spacing: 0.03em;
+    }
+  }
 `;
 
 const ContentSection = styled.section`
@@ -171,7 +203,7 @@ const ContentSection = styled.section`
   }
   
   @media (max-width: 768px) {
-    padding: 5rem 1.5rem;
+    padding: 3.5rem 1rem;
   }
 `;
 
@@ -182,7 +214,7 @@ const GridContainer = styled.div`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2rem;
   }
 `;
 
@@ -208,6 +240,11 @@ const BlockTitle = styled.h2`
     background: var(--primary);
     border-radius: 2px;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const BlockParagraph = styled.p`
@@ -219,12 +256,22 @@ const BlockParagraph = styled.p`
   &:last-child {
     margin-bottom: 0;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
 `;
 
 const SectionHeader = styled.div`
   text-align: center;
   margin-bottom: 4rem;
   padding: 0 1rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2.5rem;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -236,6 +283,10 @@ const SectionTitle = styled.h2`
   span {
     color: var(--primary);
   }
+
+  @media (max-width: 768px) {
+    font-size: 1.85rem;
+  }
 `;
 
 const SectionSubtitle = styled.p`
@@ -244,6 +295,10 @@ const SectionSubtitle = styled.p`
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+  }
 `;
 
 const ValuesGrid = styled.div`
@@ -253,6 +308,11 @@ const ValuesGrid = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+    gap: 1.25rem;
+  }
 `;
 
 interface ValueIconProps {
@@ -325,6 +385,33 @@ const ValueCard = styled.div<ValueIconProps>`
     line-height: 1.7;
     font-size: 1.05rem;
   }
+
+  @media (max-width: 768px) {
+    padding: 1.75rem 1.25rem;
+    border-radius: 20px;
+
+    .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      margin-bottom: 1.25rem;
+      
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+  }
 `;
 
 const JourneySection = styled.section`
@@ -332,6 +419,10 @@ const JourneySection = styled.section`
   border-top: 1px solid var(--border);
   position: relative;
   z-index: 1;
+
+  @media (max-width: 768px) {
+    padding: 3.5rem 1rem 1.5rem;
+  }
 `;
 
 const Timeline = styled.div`
@@ -353,6 +444,12 @@ const Timeline = styled.div`
     &::before {
       left: 50%;
       transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    &::before {
+      left: 10px;
     }
   }
 `;
@@ -387,13 +484,40 @@ const TimelineItem = styled.div<TimelineItemProps>`
     border-radius: 50%;
     z-index: 10;
     transform: translateX(-50%);
-    box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.2);
+    box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.25);
   }
 
   @media (min-width: 768px) {
     &::after {
       left: ${props => props.$side === 'right' ? '0' : '100%'};
       right: auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 2rem;
+    padding-left: 32px;
+
+    &::after {
+      left: 10px;
+      width: 14px;
+      height: 14px;
+      border-width: 3px;
+    }
+
+    .content {
+      padding: 1rem;
+      border-radius: 12px;
+
+      h4 {
+        font-size: 1rem;
+        margin-bottom: 0.25rem;
+      }
+
+      p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+      }
     }
   }
 
@@ -431,6 +555,10 @@ const CTASection = styled.section`
   text-align: center;
   position: relative;
   z-index: 1;
+
+  @media (max-width: 768px) {
+    padding: 2.5rem 1rem;
+  }
 `;
 
 const Divider = styled.div`
@@ -459,6 +587,11 @@ const CTACard = styled.div`
     background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent);
     pointer-events: none;
   }
+
+  @media (max-width: 768px) {
+    padding: 3rem 1.25rem;
+    border-radius: 24px;
+  }
 `;
 
 const CTAButtonGroup = styled.div`
@@ -467,6 +600,11 @@ const CTAButtonGroup = styled.div`
   justify-content: center;
   margin-top: 3rem;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    margin-top: 1.75rem;
+    gap: 0.75rem;
+  }
 `;
 
 const DarkButton = styled(Link)`
@@ -483,6 +621,15 @@ const DarkButton = styled(Link)`
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     background: #F8FAFC;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 280px;
+    box-sizing: border-box;
+    text-align: center;
   }
 `;
 
@@ -501,6 +648,15 @@ const OutlineButton = styled(Link)`
     background: rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-3px);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    width: 100%;
+    max-width: 280px;
+    box-sizing: border-box;
+    text-align: center;
   }
 `;
 
@@ -525,6 +681,11 @@ const PrimaryButton = styled(Link)`
   
   &:active {
     transform: translateY(0) scale(1);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.85rem 2rem;
+    font-size: 0.95rem;
   }
 `;
 
