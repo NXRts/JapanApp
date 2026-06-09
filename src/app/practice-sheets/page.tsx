@@ -1156,30 +1156,45 @@ export default function PracticeSheetsPage() {
   }, [gridStyle, practiceMode, cellSize, traceCount, traceOpacity, showMetadata, showHeaders, landscape, sheetType]);
 
   const getCardDetails = (char: string) => {
-    // 1. Look up in allKanji database
+    // 1. Check if character exists in KANJI_DATA (curated list)
+    let curated: any = null;
+    for (const lvl of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
+      const hFound = KANJI_DATA[lvl]?.find((k) => k.char === char);
+      if (hFound) {
+        curated = hFound;
+        break;
+      }
+    }
+
+    if (curated) {
+      return {
+        char,
+        meaning: curated.meaning,
+        on: curated.on,
+        kun: curated.kun,
+        strokes: curated.strokes,
+        examples: curated.examples || []
+      };
+    }
+
+    // 2. Fall back to allKanji database
     const found = allKanji.find((k) => k.kanji === char);
     if (found) {
-      // Prioritize hardcoded examples in KANJI_DATA if they exist
-      let examples: { word: string; reading: string; meaning: string }[] = [];
-      for (const lvl of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
-        const hFound = KANJI_DATA[lvl]?.find((k) => k.char === char);
-        if (hFound && hFound.examples) {
-          examples = hFound.examples;
-          break;
-        }
-      }
-
-      // If no hardcoded examples, dynamically generate from allVocabulary
-      if (examples.length === 0) {
-        examples = allVocabulary
-          .filter((v) => v.word && v.word.includes(char))
-          .slice(0, 4)
-          .map((v) => ({
-            word: v.word || '',
-            reading: v.reading || '',
-            meaning: v.meaning || ''
-          }));
-      }
+      // Dynamically generate examples from allVocabulary, filtering out definitions that don't have English translations
+      const examples = allVocabulary
+        .filter((v) => 
+          v.word && 
+          v.word.includes(char) && 
+          v.meaning && 
+          v.meaning !== 'No definition' && 
+          v.meaning !== 'Tidak ada arti'
+        )
+        .slice(0, 4)
+        .map((v) => ({
+          word: v.word || '',
+          reading: v.reading || '',
+          meaning: v.meaning || ''
+        }));
 
       return {
         char,
@@ -1292,13 +1307,29 @@ export default function PracticeSheetsPage() {
   const getFilteredKanji = () => {
     const levelData = allKanji
       .filter(k => k.level === kanjiLevel)
-      .map(k => ({
-        char: k.kanji || '',
-        meaning: k.meaning || '',
-        on: k.onyomi ? k.onyomi.join('・') : '',
-        kun: k.kunyomi ? k.kunyomi.join('・') : '',
-        strokes: k.stroke_count || 0
-      }));
+      .map(k => {
+        // Check if there is curated high-quality data to override
+        let meaning = k.meaning || '';
+        let on = k.onyomi ? k.onyomi.join('・') : '';
+        let kun = k.kunyomi ? k.kunyomi.join('・') : '';
+        let strokes = k.stroke_count || 0;
+
+        const hFound = KANJI_DATA[kanjiLevel]?.find((x) => x.char === k.kanji);
+        if (hFound) {
+          meaning = hFound.meaning;
+          on = hFound.on;
+          kun = hFound.kun;
+          strokes = hFound.strokes;
+        }
+
+        return {
+          char: k.kanji || '',
+          meaning,
+          on,
+          kun,
+          strokes
+        };
+      });
 
     if (!kanjiSearch) return levelData;
     const searchLower = kanjiSearch.toLowerCase();
@@ -1340,6 +1371,13 @@ export default function PracticeSheetsPage() {
     if (wanakana.isKana(char)) {
       return wanakana.toRomaji(char);
     }
+    // Search in KANJI_DATA (curated list)
+    for (const lvl of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
+      const hFound = KANJI_DATA[lvl]?.find((k) => k.char === char);
+      if (hFound) {
+        return `${hFound.meaning} (${hFound.strokes || 0} strokes)`;
+      }
+    }
     // Search in allKanji database
     const found = allKanji.find(k => k.kanji === char);
     if (found) {
@@ -1359,7 +1397,7 @@ export default function PracticeSheetsPage() {
 
   const charactersToRender = mounted ? getActiveCharacters() : [];
   const { size: cellSizePx, cellsPerRow, rowsPerPage } = getCellParameters();
-  const flashcardsPerPage = 8;
+  const flashcardsPerPage = 4;
   const paginatedPages = paginateCharacters(charactersToRender, sheetType === 'flashcards' ? flashcardsPerPage : rowsPerPage);
 
   const handlePrint = () => {
@@ -1737,7 +1775,7 @@ export default function PracticeSheetsPage() {
           {charactersToRender.length > 0 ? (
             <>
               <PreviewHeading>
-                <span>Live Preview ({sheetType === 'worksheet' ? paginatedPages.length : paginatedPages.length * 2} { (sheetType === 'worksheet' ? paginatedPages.length : paginatedPages.length * 2) === 1 ? 'Page' : 'Pages'})</span>
+                <span>Live Preview ({paginatedPages.length} {paginatedPages.length === 1 ? 'Page' : 'Pages'})</span>
                 <span style={{ fontSize: '0.8rem' }}>Scale adjusts to print layout automatically</span>
               </PreviewHeading>
               
@@ -1812,22 +1850,23 @@ export default function PracticeSheetsPage() {
                 ) : (
                   paginatedPages.map((pageChars, pageIdx) => {
                     const padded = [...pageChars];
-                    while (padded.length < 8) {
+                    while (padded.length < 4) {
                       padded.push('');
                     }
 
-                    const frontIndices = [0, 1, 2, 3, 4, 5, 6, 7];
-                    const backIndices = [1, 0, 3, 2, 5, 4, 7, 6];
-
                     return (
-                      <div key={pageIdx}>
-                        {/* FRONT SHEET */}
-                        <A4Sheet className="flashcard-page" style={{ padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                          <FlashcardGrid>
-                            {frontIndices.map((idx) => {
-                              const char = padded[idx];
-                              if (!char) return <FlashcardCell key={idx} />;
-                              const details = getCardDetails(char);
+                      <A4Sheet key={pageIdx} className="flashcard-page" style={{ padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <FlashcardGrid>
+                          {Array.from({ length: 8 }).map((_, idx) => {
+                            const charIdx = Math.floor(idx / 2);
+                            const isBack = idx % 2 === 1;
+                            const char = padded[charIdx];
+                            if (!char) return <FlashcardCell key={idx} />;
+                            
+                            const details = getCardDetails(char);
+                            
+                            if (!isBack) {
+                              // Card Front
                               return (
                                 <FlashcardCell key={idx}>
                                   <CardFront>
@@ -1844,17 +1883,8 @@ export default function PracticeSheetsPage() {
                                   </CardFront>
                                 </FlashcardCell>
                               );
-                            })}
-                          </FlashcardGrid>
-                        </A4Sheet>
-
-                        {/* BACK SHEET */}
-                        <A4Sheet className="flashcard-page" style={{ padding: 0, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                          <FlashcardGrid>
-                            {backIndices.map((idx) => {
-                              const char = padded[idx];
-                              if (!char) return <FlashcardCell key={idx} />;
-                              const details = getCardDetails(char);
+                            } else {
+                              // Card Back
                               return (
                                 <FlashcardCell key={idx}>
                                   <CardBack>
@@ -1895,10 +1925,10 @@ export default function PracticeSheetsPage() {
                                   </CardBack>
                                 </FlashcardCell>
                               );
-                            })}
-                          </FlashcardGrid>
-                        </A4Sheet>
-                      </div>
+                            }
+                          })}
+                        </FlashcardGrid>
+                      </A4Sheet>
                     );
                   })
                 )}
