@@ -1155,7 +1155,14 @@ export default function PracticeSheetsPage() {
     localStorage.setItem('sheet-generator-settings', JSON.stringify(settings));
   }, [gridStyle, practiceMode, cellSize, traceCount, traceOpacity, showMetadata, showHeaders, landscape, sheetType]);
 
-  const getCardDetails = (char: string) => {
+  const getCardDetails = (char: string): {
+    char: string;
+    meaning: string;
+    on: string;
+    kun: string;
+    strokes: number;
+    examples: { word: string; reading: string; meaning: string }[];
+  } => {
     // 1. Check if character exists in KANJI_DATA (curated list)
     let curated: any = null;
     for (const lvl of ['N5', 'N4', 'N3', 'N2', 'N1'] as const) {
@@ -1871,7 +1878,7 @@ export default function PracticeSheetsPage() {
                                 <FlashcardCell key={idx}>
                                   <CardFront>
                                     <CardFrontLeft>
-                                      {details.examples.slice(0, 4).map((ex, exIdx) => (
+                                      {details.examples.slice(0, 4).map((ex: any, exIdx: number) => (
                                         <CardFrontWord key={exIdx}>
                                           {ex.word}
                                         </CardFrontWord>
@@ -1914,7 +1921,7 @@ export default function PracticeSheetsPage() {
                                     {details.examples.length > 0 && <CardBackDivider />}
                                     
                                     <CardBackBottom>
-                                      {details.examples.slice(0, 4).map((ex, exIdx) => (
+                                      {details.examples.slice(0, 4).map((ex: any, exIdx: number) => (
                                         <CardBackExampleRow key={exIdx}>
                                           <CardBackExampleWord>{ex.word}</CardBackExampleWord>
                                           <CardBackExampleReading>{ex.reading}</CardBackExampleReading>
