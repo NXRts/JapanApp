@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import KanaKeyboard from "@/components/KanaKeyboard";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import { toKana, isRomaji, toRomaji } from "wanakana";
+import { HandwritingModal } from "@/components/dictionary/HandwritingModal";
+import { ImageSearchModal } from "@/components/dictionary/ImageSearchModal";
+import { VoiceSearchModal } from "@/components/dictionary/VoiceSearchModal";
+import { playJapaneseAudio } from "@/lib/audio";
 import {
-  searchDictionary,
   DictionaryResult,
-  allVocabulary,
-  allKanji,
   allGrammar,
+  allKanji,
+  allVocabulary,
+  searchDictionary,
 } from "@/lib/dictionary";
 import Link from "next/link";
-import KanaKeyboard from "@/components/KanaKeyboard";
-import { HandwritingModal } from "@/components/dictionary/HandwritingModal";
-import { VoiceSearchModal } from "@/components/dictionary/VoiceSearchModal";
-import { ImageSearchModal } from "@/components/dictionary/ImageSearchModal";
-import { playJapaneseAudio } from "@/lib/audio";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { isRomaji, toKana, toRomaji } from "wanakana";
 
 const KANA_LIST = [
   "あ",
@@ -2255,13 +2255,21 @@ export default function DictionaryPage() {
                                 {item.onyomi && item.onyomi.length > 0 && (
                                   <ReadingText>
                                     <strong>On:</strong>{" "}
-                                    {item.onyomi.join(", ")}
+                                    {item.onyomi.join(", ")} (
+                                    {item.onyomi
+                                      .map((r) => toRomaji(r))
+                                      .join(", ")}
+                                    )
                                   </ReadingText>
                                 )}
                                 {item.kunyomi && item.kunyomi.length > 0 && (
                                   <ReadingText>
                                     <strong>Kun:</strong>{" "}
-                                    {item.kunyomi.join(", ")}
+                                    {item.kunyomi.join(", ")} (
+                                    {item.kunyomi
+                                      .map((r) => toRomaji(r))
+                                      .join(", ")}
+                                    )
                                   </ReadingText>
                                 )}
                               </div>
