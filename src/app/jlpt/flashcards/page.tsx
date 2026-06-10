@@ -13,6 +13,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
+import { toRomaji } from "wanakana";
 
 // --- Styled Components ---
 
@@ -2800,7 +2801,9 @@ function FlashcardContent() {
                                                   "rgba(59, 130, 246, 0.1)";
                                               }}
                                             >
-                                              <span>{kun}</span>
+                                              <span>
+                                                {kun} ({toRomaji(kun)})
+                                              </span>
                                               <svg
                                                 fill="currentColor"
                                                 viewBox="0 0 24 24"
@@ -2954,7 +2957,9 @@ function FlashcardContent() {
                                                   "rgba(239, 68, 68, 0.1)";
                                               }}
                                             >
-                                              <span>{on}</span>
+                                              <span>
+                                                {on} ({toRomaji(on)})
+                                              </span>
                                               <svg
                                                 fill="currentColor"
                                                 viewBox="0 0 24 24"
@@ -3938,12 +3943,15 @@ function FlashcardContent() {
                             >
                               {k.onyomi && k.onyomi.length > 0 && (
                                 <div>
-                                  <strong>On:</strong> {k.onyomi.join(", ")}
+                                  <strong>On:</strong> {k.onyomi.join(", ")} (
+                                  {k.onyomi.map((r) => toRomaji(r)).join(", ")})
                                 </div>
                               )}
                               {k.kunyomi && k.kunyomi.length > 0 && (
                                 <div>
-                                  <strong>Kun:</strong> {k.kunyomi.join(", ")}
+                                  <strong>Kun:</strong> {k.kunyomi.join(", ")} (
+                                  {k.kunyomi.map((r) => toRomaji(r)).join(", ")}
+                                  )
                                 </div>
                               )}
                             </div>
