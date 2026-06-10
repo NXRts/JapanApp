@@ -836,6 +836,34 @@ const FooterCredits = styled.div`
 
 const svgCache: Record<string, string> = {};
 
+const StrokeSvgWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  path {
+    stroke: #000000 !important;
+    stroke-width: 3.5px !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    fill: none !important;
+  }
+
+  text {
+    font-size: 8px !important;
+    fill: #666666 !important;
+    font-family: sans-serif !important;
+    font-weight: bold !important;
+  }
+`;
+
 function KanjiStrokeSvg({ char }: { char: string }) {
   const [svgContent, setSvgContent] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -856,7 +884,9 @@ function KanjiStrokeSvg({ char }: { char: string }) {
         return res.text();
       })
       .then((text) => {
-        const cleanedText = text
+        const svgStartIndex = text.indexOf("<svg");
+        const svgOnly = svgStartIndex !== -1 ? text.substring(svgStartIndex) : text;
+        const cleanedText = svgOnly
           .replace(/style="[^"]*"/g, "")
           .replace(/width="[^"]*"/g, 'width="100%"')
           .replace(/height="[^"]*"/g, 'height="100%"');
@@ -895,16 +925,8 @@ function KanjiStrokeSvg({ char }: { char: string }) {
   }
 
   return (
-    <div
-      className="stroke-svg-container"
+    <StrokeSvgWrapper
       dangerouslySetInnerHTML={{ __html: svgContent }}
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
     />
   );
 }
