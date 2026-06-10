@@ -2308,7 +2308,7 @@ export default function DictionaryPage() {
                                 )}
                                 {(() => {
                                   const kanjiDetails = getKanjiDetailsForWord(
-                                    item.word || item.title || ""
+                                    item.word || item.title || "",
                                   );
                                   if (kanjiDetails.length === 0) return null;
                                   return (

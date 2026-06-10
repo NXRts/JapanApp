@@ -1288,6 +1288,15 @@ const ModalConfirmBtn = styled.button`
   }
 `;
 
+const convertToRomajiList = (kanaString: string) => {
+  if (!kanaString) return "";
+  return kanaString
+    .split("・")
+    .map((k) => wanakana.toRomaji(k.trim()))
+    .filter(Boolean)
+    .join(", ");
+};
+
 export default function PracticeSheetsPage() {
   const [mounted, setMounted] = useState(false);
   const [mobileActiveTab, setMobileActiveTab] = useState<
@@ -2470,7 +2479,11 @@ export default function PracticeSheetsPage() {
                                                 Onyomi
                                               </CardBackReadingsLabel>
                                               <CardBackReadingsValue>
-                                                {details.on}
+                                                {details.on} (
+                                                {convertToRomajiList(
+                                                  details.on,
+                                                )}
+                                                )
                                               </CardBackReadingsValue>
                                             </>
                                           )}
@@ -2480,7 +2493,11 @@ export default function PracticeSheetsPage() {
                                                 Kunyomi
                                               </CardBackReadingsLabel>
                                               <CardBackReadingsValue>
-                                                {details.kun}
+                                                {details.kun} (
+                                                {convertToRomajiList(
+                                                  details.kun,
+                                                )}
+                                                )
                                               </CardBackReadingsValue>
                                             </>
                                           )}
