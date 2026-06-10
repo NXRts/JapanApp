@@ -2523,7 +2523,9 @@ export default function PracticeSheetsPage() {
                                                 {ex.word}
                                               </CardBackExampleWord>
                                               <CardBackExampleReading>
-                                                {ex.reading}
+                                                {ex.reading} (
+                                                {wanakana.toRomaji(ex.reading)}
+                                                )
                                               </CardBackExampleReading>
                                               <CardBackExampleMeaning>
                                                 {ex.meaning}
