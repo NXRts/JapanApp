@@ -1,19 +1,23 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { useProgress } from '@/context/ProgressContext';
-import { useDeviceMode } from '@/context/DeviceModeContext';
-import { DrawingCanvas } from '@/components/Practice/Canvas';
-import { KanjiWriter } from '@/components/Practice/KanjiWriter';
+import { useState, useEffect } from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { useProgress } from "@/context/ProgressContext";
+import { useDeviceMode } from "@/context/DeviceModeContext";
+import { DrawingCanvas } from "@/components/Practice/Canvas";
+import { KanjiWriter } from "@/components/Practice/KanjiWriter";
 
 const PageWrapper = styled.div`
   min-height: 90vh;
   width: 100%;
   /* Premium radial background */
-  background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
+  background: radial-gradient(
+    circle at top right,
+    rgba(79, 70, 229, 0.05) 0%,
+    transparent 60%
+  );
 `;
 
 const LessonHeader = styled.div`
@@ -91,7 +95,7 @@ const BackButton = styled(Link)`
   transition: all 0.2s;
   padding: 0.5rem 1rem;
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 
   &:hover {
     color: var(--primary);
@@ -127,7 +131,7 @@ const DropdownTrigger = styled.button<{ $isOpen: boolean }>`
 
   svg {
     transition: transform 0.2s;
-    transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0)')};
+    transform: ${({ $isOpen }) => ($isOpen ? "rotate(180deg)" : "rotate(0)")};
     color: var(--text-secondary);
   }
 `;
@@ -146,8 +150,14 @@ const DropdownMenu = styled.div`
   animation: fadeIn 0.2s ease-out;
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 
@@ -155,8 +165,10 @@ const DropdownItem = styled.div<{ $isActive: boolean }>`
   padding: 0.75rem 1rem;
   cursor: pointer;
   font-weight: 500;
-  color: ${({ $isActive }) => ($isActive ? 'var(--primary)' : 'var(--foreground)')};
-  background: ${({ $isActive }) => ($isActive ? 'rgba(79, 70, 229, 0.05)' : 'transparent')};
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--primary)" : "var(--foreground)"};
+  background: ${({ $isActive }) =>
+    $isActive ? "rgba(79, 70, 229, 0.05)" : "transparent"};
   transition: background 0.2s;
 
   &:hover {
@@ -190,19 +202,19 @@ const SectionTitle = styled.h3`
 `;
 
 const CanvasSection = styled.div`
-    background: var(--surface);
-    padding: 2rem;
-    border-radius: 32px;
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 360px; /* Limit width but allow shrink */
-    height: 460px; /* Fixed height to match card */
-    justify-content: center;
-    gap: 1rem;
+  background: var(--surface);
+  padding: 2rem;
+  border-radius: 32px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 360px; /* Limit width but allow shrink */
+  height: 460px; /* Fixed height to match card */
+  justify-content: center;
+  gap: 1rem;
 `;
 
 const DrawingArea = styled.div`
@@ -231,12 +243,12 @@ const CardPerspective = styled.div`
 `;
 
 const CardInner = styled.div<{ $flipped: boolean }>`
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    transform-style: preserve-3d;
-    transform: ${({ $flipped }) => ($flipped ? 'rotateY(180deg)' : 'rotateY(0)')};
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+  transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg)" : "rotateY(0)")};
 `;
 
 const CardFace = styled.div`
@@ -280,12 +292,16 @@ const BigChar = styled.div`
 `;
 
 const PromptText = styled.h2`
-    font-size: 2.5rem; 
-    font-weight: 800;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;
 
 const Details = styled.div`
@@ -293,7 +309,7 @@ const Details = styled.div`
   text-align: left;
   width: 100%;
   font-size: 0.95rem;
-  
+
   h4 {
     color: #4f46e5;
     margin-bottom: 0.25rem;
@@ -302,10 +318,12 @@ const Details = styled.div`
     letter-spacing: 0.05em;
     font-weight: 700;
     margin-top: 1rem;
-    
-    &:first-child { margin-top: 0; }
+
+    &:first-child {
+      margin-top: 0;
+    }
   }
-  
+
   p {
     font-size: 1.1rem;
     line-height: 1.4;
@@ -322,7 +340,7 @@ const ActionButtons = styled.div`
   padding: 0 1rem;
 `;
 
-const ActionBtn = styled.button<{ $type: 'easy' | 'hard' | 'flip' }>`
+const ActionBtn = styled.button<{ $type: "easy" | "hard" | "flip" }>`
   padding: 1rem 2rem;
   border-radius: 999px;
   font-weight: 700;
@@ -334,10 +352,12 @@ const ActionBtn = styled.button<{ $type: 'easy' | 'hard' | 'flip' }>`
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 
   background: ${({ $type }) =>
-    $type === 'easy' ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' :
-      $type === 'hard' ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)' :
-        'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)'};
-  
+    $type === "easy"
+      ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+      : $type === "hard"
+        ? "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)"
+        : "linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)"};
+
   color: white;
 
   &:hover {
@@ -345,7 +365,7 @@ const ActionBtn = styled.button<{ $type: 'easy' | 'hard' | 'flip' }>`
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
     opacity: 0.95;
   }
-  
+
   &:active {
     transform: translateY(-1px);
   }
@@ -359,10 +379,10 @@ interface KanjiDetails {
 
 export default function KanjiFlashcards() {
   const { deviceMode, isMounted } = useDeviceMode();
-  const isMobileView = isMounted && deviceMode === 'mobile';
+  const isMobileView = isMounted && deviceMode === "mobile";
 
-  const [level, setLevel] = useState('n5');
-  const [studyMode, setStudyMode] = useState<'read' | 'write'>('read');
+  const [level, setLevel] = useState("n5");
+  const [studyMode, setStudyMode] = useState<"read" | "write">("read");
   const [kanjiList, setKanjiList] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
@@ -374,7 +394,13 @@ export default function KanjiFlashcards() {
   const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 });
   const SESSION_LIMIT = 10;
 
-  const { progress, updateSRS, addExp, recordQuizResult, markExerciseCompleted } = useProgress();
+  const {
+    progress,
+    updateSRS,
+    addExp,
+    recordQuizResult,
+    markExerciseCompleted,
+  } = useProgress();
 
   // Fetch List
   useEffect(() => {
@@ -383,8 +409,8 @@ export default function KanjiFlashcards() {
     }, 0);
 
     fetch(`/api/kanji/${level}`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         if (Array.isArray(data)) {
           // Smart Shuffle based on SRS
           const sorted = [...data].sort((a, b) => {
@@ -395,7 +421,10 @@ export default function KanjiFlashcards() {
             if (!srsA) return -1;
             if (!srsB) return 1;
 
-            return new Date(srsA.nextReviewDate).getTime() - new Date(srsB.nextReviewDate).getTime();
+            return (
+              new Date(srsA.nextReviewDate).getTime() -
+              new Date(srsB.nextReviewDate).getTime()
+            );
           });
 
           setKanjiList(sorted);
@@ -414,9 +443,9 @@ export default function KanjiFlashcards() {
   const rateRecall = (quality: number) => {
     updateSRS(currentKanji, quality);
     addExp(quality * 3); // More EXP for Kanji
-    setSessionStats(prev => ({
+    setSessionStats((prev) => ({
       correct: prev.correct + (quality > 1 ? 1 : 0),
-      total: prev.total + 1
+      total: prev.total + 1,
     }));
     nextCard();
   };
@@ -426,59 +455,127 @@ export default function KanjiFlashcards() {
     if (!currentKanji) return;
 
     fetch(`https://kanjiapi.dev/v1/kanji/${currentKanji}`)
-      .then(res => res.json())
-      .then(data => setDetails(data))
+      .then((res) => res.json())
+      .then((data) => setDetails(data))
       .catch(() => setDetails(null));
   }, [currentKanji]);
 
   const nextCard = () => {
     setFlipped(false);
-    setClearTrigger(prev => prev + 1); // Auto clear canvas
+    setClearTrigger((prev) => prev + 1); // Auto clear canvas
     setTimeout(() => {
-      setCurrentIndex(prev => (prev + 1) % kanjiList.length);
+      setCurrentIndex((prev) => (prev + 1) % kanjiList.length);
     }, 400); // Wait for flip back
   };
 
   const handleFinishSession = () => {
-    recordQuizResult(sessionStats.correct, sessionStats.total, `Kanji (Level ${level.toUpperCase()})`);
+    recordQuizResult(
+      sessionStats.correct,
+      sessionStats.total,
+      `Kanji (Level ${level.toUpperCase()})`,
+    );
     addExp(50); // Bonus EXP for finishing a session
-    if (level === 'n5') markExerciseCompleted('n5-kanji');
-    if (level === 'n4') markExerciseCompleted('n4-kanji');
-    if (level === 'n3') markExerciseCompleted('n3-kanji-mastery');
-    if (level === 'n2') markExerciseCompleted('n2-kanji-2000');
+    if (level === "n5") markExerciseCompleted("n5-kanji");
+    if (level === "n4") markExerciseCompleted("n4-kanji");
+    if (level === "n3") markExerciseCompleted("n3-kanji-mastery");
+    if (level === "n2") markExerciseCompleted("n2-kanji-2000");
     setSessionStats({ correct: 0, total: 0 });
     // Reshuffle or proceed
     setCurrentIndex(0);
 
     if (isMobileView) {
-      window.location.href = '/';
+      window.location.href = "/";
     }
   };
 
-  if (loading) return (
-    <PageWrapper>
-      <Container>
-        <div style={{ color: 'var(--text-secondary)' }}>Loading Kanji...</div>
-      </Container>
-    </PageWrapper>
-  );
+  if (loading)
+    return (
+      <PageWrapper>
+        <Container>
+          <div style={{ color: "var(--text-secondary)" }}>Loading Kanji...</div>
+        </Container>
+      </PageWrapper>
+    );
 
   if (sessionStats.total >= SESSION_LIMIT) {
     return (
-      <PageWrapper style={isMobileView ? { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' } : {}}>
+      <PageWrapper
+        style={
+          isMobileView
+            ? {
+                minHeight: "100vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }
+            : {}
+        }
+      >
         <Container>
-          <div style={{ textAlign: 'center', padding: isMobileView ? '3rem 2rem' : '4rem 2rem', background: 'var(--surface)', borderRadius: isMobileView ? '32px' : '24px', border: '1px solid var(--border)', maxWidth: isMobileView ? '450px' : 'none', width: '100%', boxShadow: isMobileView ? 'var(--shadow-lg)' : 'none', marginTop: isMobileView ? '0' : '4rem' }}>
-            <h2 style={{ fontSize: isMobileView ? '2.2rem' : '2.5rem', marginBottom: '1rem', color: '#10b981' }}>Session Complete! 🎉</h2>
-            <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+          <div
+            style={{
+              textAlign: "center",
+              padding: isMobileView ? "3rem 2rem" : "4rem 2rem",
+              background: "var(--surface)",
+              borderRadius: isMobileView ? "32px" : "24px",
+              border: "1px solid var(--border)",
+              maxWidth: isMobileView ? "450px" : "none",
+              width: "100%",
+              boxShadow: isMobileView ? "var(--shadow-lg)" : "none",
+              marginTop: isMobileView ? "0" : "4rem",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: isMobileView ? "2.2rem" : "2.5rem",
+                marginBottom: "1rem",
+                color: "#10b981",
+              }}
+            >
+              Session Complete! 🎉
+            </h2>
+            <p
+              style={{
+                fontSize: "1.2rem",
+                color: "var(--text-secondary)",
+                marginBottom: "2rem",
+              }}
+            >
               You reviewed {SESSION_LIMIT} Kanji characters.
             </p>
-            <div style={{ fontSize: '4rem', fontWeight: 900, color: 'var(--primary)', marginBottom: '2rem' }}>
+            <div
+              style={{
+                fontSize: "4rem",
+                fontWeight: 900,
+                color: "var(--primary)",
+                marginBottom: "2rem",
+              }}
+            >
               {sessionStats.correct}/{sessionStats.total}
             </div>
-            <p style={{ color: '#10b981', fontWeight: 'bold', marginBottom: '3rem' }}>+50 EXP Bonus!</p>
-            <button 
+            <p
+              style={{
+                color: "#10b981",
+                fontWeight: "bold",
+                marginBottom: "3rem",
+              }}
+            >
+              +50 EXP Bonus!
+            </p>
+            <button
               onClick={handleFinishSession}
-              style={{ background: 'var(--primary)', color: 'white', padding: '1rem 3rem', borderRadius: '999px', fontSize: '1.2rem', fontWeight: 800, border: 'none', cursor: 'pointer', boxShadow: '0 4px 15px rgba(79, 70, 229, 0.3)', width: isMobileView ? '100%' : 'auto' }}
+              style={{
+                background: "var(--primary)",
+                color: "white",
+                padding: "1rem 3rem",
+                borderRadius: "999px",
+                fontSize: "1.2rem",
+                fontWeight: 800,
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 4px 15px rgba(79, 70, 229, 0.3)",
+                width: isMobileView ? "100%" : "auto",
+              }}
             >
               Continue Learning
             </button>
@@ -488,27 +585,36 @@ export default function KanjiFlashcards() {
     );
   }
 
-  if (!currentKanji) return <PageWrapper><Container>No Kanji found for this level.</Container></PageWrapper>;
+  if (!currentKanji)
+    return (
+      <PageWrapper>
+        <Container>No Kanji found for this level.</Container>
+      </PageWrapper>
+    );
 
   return (
     <PageWrapper>
       <Container>
         {isMobileView ? (
           <LessonHeader>
-            <CloseLessonBtn href="/" title="Tutup Sesi">✕</CloseLessonBtn>
+            <CloseLessonBtn href="/" title="Tutup Sesi">
+              ✕
+            </CloseLessonBtn>
             <LessonProgressBarContainer>
-              <LessonProgressBarFill $percent={(sessionStats.total / SESSION_LIMIT) * 100} />
+              <LessonProgressBarFill
+                $percent={(sessionStats.total / SESSION_LIMIT) * 100}
+              />
             </LessonProgressBarContainer>
-            <div style={{ width: '38px' }} />
+            <div style={{ width: "38px" }} />
           </LessonHeader>
         ) : (
           <>
-            <Breadcrumbs 
+            <Breadcrumbs
               items={[
-                { label: 'Home', href: '/' },
-                { label: 'Study', href: '/study' }
-              ]} 
-              current="Kanji Flashcards" 
+                { label: "Home", href: "/" },
+                { label: "Study", href: "/study" },
+              ]}
+              current="Kanji Flashcards"
             />
             <Header>
               <DropdownContainer>
@@ -517,14 +623,23 @@ export default function KanjiFlashcards() {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   Level {level.toUpperCase()}
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
                 </DropdownTrigger>
 
                 {isDropdownOpen && (
                   <DropdownMenu>
-                    {['n5', 'n4', 'n3', 'n2', 'n1'].map(l => (
+                    {["n5", "n4", "n3", "n2", "n1"].map((l) => (
                       <DropdownItem
                         key={l}
                         $isActive={level === l}
@@ -578,19 +693,42 @@ export default function KanjiFlashcards() {
             <CardPerspective onClick={() => setFlipped(!flipped)}>
               <CardInner $flipped={flipped}>
                 <CardFace>
-                  <div style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '2rem', fontWeight: 600 }}>
+                  <div
+                    style={{
+                      fontSize: "1.2rem",
+                      color: "var(--text-secondary)",
+                      marginBottom: "2rem",
+                      fontWeight: 600,
+                    }}
+                  >
                     Write this Kanji
                   </div>
 
                   {details ? (
                     <>
-                      <div style={{ fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--primary)', fontWeight: 700, marginBottom: '0.5rem' }}>
+                      <div
+                        style={{
+                          fontSize: "0.9rem",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.1em",
+                          color: "var(--primary)",
+                          fontWeight: 700,
+                          marginBottom: "0.5rem",
+                        }}
+                      >
                         MEANING
                       </div>
                       <PromptText>
-                        {details.meanings ? details.meanings[0] : '...'}
+                        {details.meanings ? details.meanings[0] : "..."}
                       </PromptText>
-                      <div style={{ fontSize: '4rem', fontWeight: 700, color: 'var(--foreground)', marginTop: '0.5rem' }}>
+                      <div
+                        style={{
+                          fontSize: "4rem",
+                          fontWeight: 700,
+                          color: "var(--foreground)",
+                          marginTop: "0.5rem",
+                        }}
+                      >
                         {currentKanji}
                       </div>
                     </>
@@ -598,7 +736,14 @@ export default function KanjiFlashcards() {
                     <h2>Loading...</h2>
                   )}
 
-                  <p style={{ marginTop: 'auto', color: 'var(--primary)', fontWeight: 600, fontSize: '0.9rem' }}>
+                  <p
+                    style={{
+                      marginTop: "auto",
+                      color: "var(--primary)",
+                      fontWeight: 600,
+                      fontSize: "0.9rem",
+                    }}
+                  >
                     Tap to Flip ⟳
                   </p>
                 </CardFace>
@@ -607,20 +752,22 @@ export default function KanjiFlashcards() {
                   <BigChar>{currentKanji}</BigChar>
                   {details && (
                     <Details>
-                      {details.on_readings && details.on_readings.length > 0 && (
-                        <>
-                          <h4>Onyomi</h4>
-                          <p>{details.on_readings.join(', ')}</p>
-                        </>
-                      )}
-                      {details.kun_readings && details.kun_readings.length > 0 && (
-                        <>
-                          <h4>Kunyomi</h4>
-                          <p>{details.kun_readings.join(', ')}</p>
-                        </>
-                      )}
+                      {details.on_readings &&
+                        details.on_readings.length > 0 && (
+                          <>
+                            <h4>Onyomi</h4>
+                            <p>{details.on_readings.join(", ")}</p>
+                          </>
+                        )}
+                      {details.kun_readings &&
+                        details.kun_readings.length > 0 && (
+                          <>
+                            <h4>Kunyomi</h4>
+                            <p>{details.kun_readings.join(", ")}</p>
+                          </>
+                        )}
                       <h4>Meanings</h4>
-                      <p>{details.meanings?.slice(0, 3).join(', ')}</p>
+                      <p>{details.meanings?.slice(0, 3).join(", ")}</p>
                     </Details>
                   )}
                 </CardBack>
@@ -633,10 +780,28 @@ export default function KanjiFlashcards() {
                   Reveal Answer
                 </ActionBtn>
               ) : (
-                <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
-                  <ActionBtn $type="hard" style={{ background: '#ef4444' }} onClick={() => rateRecall(1)}>Hard</ActionBtn>
-                  <ActionBtn $type="hard" style={{ background: '#3b82f6' }} onClick={() => rateRecall(3)}>Good</ActionBtn>
-                  <ActionBtn $type="easy" style={{ background: '#10b981' }} onClick={() => rateRecall(5)}>Easy</ActionBtn>
+                <div style={{ display: "flex", gap: "0.75rem", width: "100%" }}>
+                  <ActionBtn
+                    $type="hard"
+                    style={{ background: "#ef4444" }}
+                    onClick={() => rateRecall(1)}
+                  >
+                    Hard
+                  </ActionBtn>
+                  <ActionBtn
+                    $type="hard"
+                    style={{ background: "#3b82f6" }}
+                    onClick={() => rateRecall(3)}
+                  >
+                    Good
+                  </ActionBtn>
+                  <ActionBtn
+                    $type="easy"
+                    style={{ background: "#10b981" }}
+                    onClick={() => rateRecall(5)}
+                  >
+                    Easy
+                  </ActionBtn>
                 </div>
               )}
             </ActionButtons>

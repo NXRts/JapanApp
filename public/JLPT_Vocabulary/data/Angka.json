@@ -25,85 +25,373 @@
   },
   "puluhan": {
     "20": { "kanji": "二十", "hiragana": "にじゅう", "romaji": "ni-juu" },
-    "21": { "kanji": "二十一", "hiragana": "にじゅういち", "romaji": "ni-juu-ichi" },
-    "22": { "kanji": "二十二", "hiragana": "にじゅうに", "romaji": "ni-juu-ni" },
-    "23": { "kanji": "二十三", "hiragana": "にじゅうさん", "romaji": "ni-juu-san" },
-    "24": { "kanji": "二十四", "hiragana": "にじゅうよん", "romaji": "ni-juu-yon" },
-    "25": { "kanji": "二十五", "hiragana": "にじゅうご", "romaji": "ni-juu-go" },
-    "26": { "kanji": "二十六", "hiragana": "にじゅうろく", "romaji": "ni-juu-roku" },
-    "27": { "kanji": "二十七", "hiragana": "にじゅうなな", "romaji": "ni-juu-nana" },
-    "28": { "kanji": "二十八", "hiragana": "にじゅうはち", "romaji": "ni-juu-hachi" },
-    "29": { "kanji": "二十九", "hiragana": "にじゅうきゅう", "romaji": "ni-juu-kyuu" },
+    "21": {
+      "kanji": "二十一",
+      "hiragana": "にじゅういち",
+      "romaji": "ni-juu-ichi"
+    },
+    "22": {
+      "kanji": "二十二",
+      "hiragana": "にじゅうに",
+      "romaji": "ni-juu-ni"
+    },
+    "23": {
+      "kanji": "二十三",
+      "hiragana": "にじゅうさん",
+      "romaji": "ni-juu-san"
+    },
+    "24": {
+      "kanji": "二十四",
+      "hiragana": "にじゅうよん",
+      "romaji": "ni-juu-yon"
+    },
+    "25": {
+      "kanji": "二十五",
+      "hiragana": "にじゅうご",
+      "romaji": "ni-juu-go"
+    },
+    "26": {
+      "kanji": "二十六",
+      "hiragana": "にじゅうろく",
+      "romaji": "ni-juu-roku"
+    },
+    "27": {
+      "kanji": "二十七",
+      "hiragana": "にじゅうなな",
+      "romaji": "ni-juu-nana"
+    },
+    "28": {
+      "kanji": "二十八",
+      "hiragana": "にじゅうはち",
+      "romaji": "ni-juu-hachi"
+    },
+    "29": {
+      "kanji": "二十九",
+      "hiragana": "にじゅうきゅう",
+      "romaji": "ni-juu-kyuu"
+    },
     "30": { "kanji": "三十", "hiragana": "さんじゅう", "romaji": "san-juu" },
-    "31": { "kanji": "三十一", "hiragana": "さんじゅういち", "romaji": "san-juu-ichi" },
-    "32": { "kanji": "三十二", "hiragana": "さんじゅうに", "romaji": "san-juu-ni" },
-    "33": { "kanji": "三十三", "hiragana": "さんじゅうさん", "romaji": "san-juu-san" },
-    "34": { "kanji": "三十四", "hiragana": "さんじゅうよん", "romaji": "san-juu-yon" },
-    "35": { "kanji": "三十五", "hiragana": "さんじゅうご", "romaji": "san-juu-go" },
-    "36": { "kanji": "三十六", "hiragana": "さんじゅうろく", "romaji": "san-juu-roku" },
-    "37": { "kanji": "三十七", "hiragana": "さんじゅうなな", "romaji": "san-juu-nana" },
-    "38": { "kanji": "三十八", "hiragana": "さんじゅうはち", "romaji": "san-juu-hachi" },
-    "39": { "kanji": "三十九", "hiragana": "さんじゅうきゅう", "romaji": "san-juu-kyuu" },
+    "31": {
+      "kanji": "三十一",
+      "hiragana": "さんじゅういち",
+      "romaji": "san-juu-ichi"
+    },
+    "32": {
+      "kanji": "三十二",
+      "hiragana": "さんじゅうに",
+      "romaji": "san-juu-ni"
+    },
+    "33": {
+      "kanji": "三十三",
+      "hiragana": "さんじゅうさん",
+      "romaji": "san-juu-san"
+    },
+    "34": {
+      "kanji": "三十四",
+      "hiragana": "さんじゅうよん",
+      "romaji": "san-juu-yon"
+    },
+    "35": {
+      "kanji": "三十五",
+      "hiragana": "さんじゅうご",
+      "romaji": "san-juu-go"
+    },
+    "36": {
+      "kanji": "三十六",
+      "hiragana": "さんじゅうろく",
+      "romaji": "san-juu-roku"
+    },
+    "37": {
+      "kanji": "三十七",
+      "hiragana": "さんじゅうなな",
+      "romaji": "san-juu-nana"
+    },
+    "38": {
+      "kanji": "三十八",
+      "hiragana": "さんじゅうはち",
+      "romaji": "san-juu-hachi"
+    },
+    "39": {
+      "kanji": "三十九",
+      "hiragana": "さんじゅうきゅう",
+      "romaji": "san-juu-kyuu"
+    },
     "40": { "kanji": "四十", "hiragana": "よんじゅう", "romaji": "yon-juu" },
-    "41": { "kanji": "四十一", "hiragana": "よんじゅういち", "romaji": "yon-juu-ichi" },
-    "42": { "kanji": "四十二", "hiragana": "よんじゅうに", "romaji": "yon-juu-ni" },
-    "43": { "kanji": "四十三", "hiragana": "よんじゅうさん", "romaji": "yon-juu-san" },
-    "44": { "kanji": "四十四", "hiragana": "よんじゅうよん", "romaji": "yon-juu-yon" },
-    "45": { "kanji": "四十五", "hiragana": "よんじゅうご", "romaji": "yon-juu-go" },
-    "46": { "kanji": "四十六", "hiragana": "よんじゅうろく", "romaji": "yon-juu-roku" },
-    "47": { "kanji": "四十七", "hiragana": "よんじゅうなな", "romaji": "yon-juu-nana" },
-    "48": { "kanji": "四十八", "hiragana": "よんじゅうはち", "romaji": "yon-juu-hachi" },
-    "49": { "kanji": "四十九", "hiragana": "よんじゅうきゅう", "romaji": "yon-juu-kyuu" },
+    "41": {
+      "kanji": "四十一",
+      "hiragana": "よんじゅういち",
+      "romaji": "yon-juu-ichi"
+    },
+    "42": {
+      "kanji": "四十二",
+      "hiragana": "よんじゅうに",
+      "romaji": "yon-juu-ni"
+    },
+    "43": {
+      "kanji": "四十三",
+      "hiragana": "よんじゅうさん",
+      "romaji": "yon-juu-san"
+    },
+    "44": {
+      "kanji": "四十四",
+      "hiragana": "よんじゅうよん",
+      "romaji": "yon-juu-yon"
+    },
+    "45": {
+      "kanji": "四十五",
+      "hiragana": "よんじゅうご",
+      "romaji": "yon-juu-go"
+    },
+    "46": {
+      "kanji": "四十六",
+      "hiragana": "よんじゅうろく",
+      "romaji": "yon-juu-roku"
+    },
+    "47": {
+      "kanji": "四十七",
+      "hiragana": "よんじゅうなな",
+      "romaji": "yon-juu-nana"
+    },
+    "48": {
+      "kanji": "四十八",
+      "hiragana": "よんじゅうはち",
+      "romaji": "yon-juu-hachi"
+    },
+    "49": {
+      "kanji": "四十九",
+      "hiragana": "よんじゅうきゅう",
+      "romaji": "yon-juu-kyuu"
+    },
     "50": { "kanji": "五十", "hiragana": "ごじゅう", "romaji": "go-juu" },
-    "51": { "kanji": "五十一", "hiragana": "ごじゅういち", "romaji": "go-juu-ichi" },
-    "52": { "kanji": "五十二", "hiragana": "ごじゅうに", "romaji": "go-juu-ni" },
-    "53": { "kanji": "五十三", "hiragana": "ごじゅうさん", "romaji": "go-juu-san" },
-    "54": { "kanji": "五十四", "hiragana": "ごじゅうよん", "romaji": "go-juu-yon" },
-    "55": { "kanji": "五十五", "hiragana": "ごじゅうご", "romaji": "go-juu-go" },
-    "56": { "kanji": "五十六", "hiragana": "ごじゅうろく", "romaji": "go-juu-roku" },
-    "57": { "kanji": "五十七", "hiragana": "ごじゅうなな", "romaji": "go-juu-nana" },
-    "58": { "kanji": "五十八", "hiragana": "ごじゅうはち", "romaji": "go-juu-hachi" },
-    "59": { "kanji": "五十九", "hiragana": "ごじゅうきゅう", "romaji": "go-juu-kyuu" },
+    "51": {
+      "kanji": "五十一",
+      "hiragana": "ごじゅういち",
+      "romaji": "go-juu-ichi"
+    },
+    "52": {
+      "kanji": "五十二",
+      "hiragana": "ごじゅうに",
+      "romaji": "go-juu-ni"
+    },
+    "53": {
+      "kanji": "五十三",
+      "hiragana": "ごじゅうさん",
+      "romaji": "go-juu-san"
+    },
+    "54": {
+      "kanji": "五十四",
+      "hiragana": "ごじゅうよん",
+      "romaji": "go-juu-yon"
+    },
+    "55": {
+      "kanji": "五十五",
+      "hiragana": "ごじゅうご",
+      "romaji": "go-juu-go"
+    },
+    "56": {
+      "kanji": "五十六",
+      "hiragana": "ごじゅうろく",
+      "romaji": "go-juu-roku"
+    },
+    "57": {
+      "kanji": "五十七",
+      "hiragana": "ごじゅうなな",
+      "romaji": "go-juu-nana"
+    },
+    "58": {
+      "kanji": "五十八",
+      "hiragana": "ごじゅうはち",
+      "romaji": "go-juu-hachi"
+    },
+    "59": {
+      "kanji": "五十九",
+      "hiragana": "ごじゅうきゅう",
+      "romaji": "go-juu-kyuu"
+    },
     "60": { "kanji": "六十", "hiragana": "ろくじゅう", "romaji": "roku-juu" },
-    "61": { "kanji": "六十一", "hiragana": "ろくじゅういち", "romaji": "roku-juu-ichi" },
-    "62": { "kanji": "六十二", "hiragana": "ろくじゅうに", "romaji": "roku-juu-ni" },
-    "63": { "kanji": "六十三", "hiragana": "ろくじゅうさん", "romaji": "roku-juu-san" },
-    "64": { "kanji": "六十四", "hiragana": "ろくじゅうよん", "romaji": "roku-juu-yon" },
-    "65": { "kanji": "六十五", "hiragana": "ろくじゅうご", "romaji": "roku-juu-go" },
-    "66": { "kanji": "六十六", "hiragana": "ろくじゅうろく", "romaji": "roku-juu-roku" },
-    "67": { "kanji": "六十七", "hiragana": "ろくじゅうなな", "romaji": "roku-juu-nana" },
-    "68": { "kanji": "六十八", "hiragana": "ろくじゅうはち", "romaji": "roku-juu-hachi" },
-    "69": { "kanji": "六十九", "hiragana": "ろくじゅうきゅう", "romaji": "roku-juu-kyuu" },
+    "61": {
+      "kanji": "六十一",
+      "hiragana": "ろくじゅういち",
+      "romaji": "roku-juu-ichi"
+    },
+    "62": {
+      "kanji": "六十二",
+      "hiragana": "ろくじゅうに",
+      "romaji": "roku-juu-ni"
+    },
+    "63": {
+      "kanji": "六十三",
+      "hiragana": "ろくじゅうさん",
+      "romaji": "roku-juu-san"
+    },
+    "64": {
+      "kanji": "六十四",
+      "hiragana": "ろくじゅうよん",
+      "romaji": "roku-juu-yon"
+    },
+    "65": {
+      "kanji": "六十五",
+      "hiragana": "ろくじゅうご",
+      "romaji": "roku-juu-go"
+    },
+    "66": {
+      "kanji": "六十六",
+      "hiragana": "ろくじゅうろく",
+      "romaji": "roku-juu-roku"
+    },
+    "67": {
+      "kanji": "六十七",
+      "hiragana": "ろくじゅうなな",
+      "romaji": "roku-juu-nana"
+    },
+    "68": {
+      "kanji": "六十八",
+      "hiragana": "ろくじゅうはち",
+      "romaji": "roku-juu-hachi"
+    },
+    "69": {
+      "kanji": "六十九",
+      "hiragana": "ろくじゅうきゅう",
+      "romaji": "roku-juu-kyuu"
+    },
     "70": { "kanji": "七十", "hiragana": "ななじゅう", "romaji": "nana-juu" },
-    "71": { "kanji": "七十一", "hiragana": "ななじゅういち", "romaji": "nana-juu-ichi" },
-    "72": { "kanji": "七十二", "hiragana": "ななじゅうに", "romaji": "nana-juu-ni" },
-    "73": { "kanji": "七十三", "hiragana": "ななじゅうさん", "romaji": "nana-juu-san" },
-    "74": { "kanji": "七十四", "hiragana": "ななじゅうよん", "romaji": "nana-juu-yon" },
-    "75": { "kanji": "七十五", "hiragana": "ななじゅうご", "romaji": "nana-juu-go" },
-    "76": { "kanji": "七十六", "hiragana": "ななじゅうろく", "romaji": "nana-juu-roku" },
-    "77": { "kanji": "七十七", "hiragana": "ななじゅうなな", "romaji": "nana-juu-nana" },
-    "78": { "kanji": "七十八", "hiragana": "ななじゅうはち", "romaji": "nana-juu-hachi" },
-    "79": { "kanji": "七十九", "hiragana": "ななじゅうきゅう", "romaji": "nana-juu-kyuu" },
+    "71": {
+      "kanji": "七十一",
+      "hiragana": "ななじゅういち",
+      "romaji": "nana-juu-ichi"
+    },
+    "72": {
+      "kanji": "七十二",
+      "hiragana": "ななじゅうに",
+      "romaji": "nana-juu-ni"
+    },
+    "73": {
+      "kanji": "七十三",
+      "hiragana": "ななじゅうさん",
+      "romaji": "nana-juu-san"
+    },
+    "74": {
+      "kanji": "七十四",
+      "hiragana": "ななじゅうよん",
+      "romaji": "nana-juu-yon"
+    },
+    "75": {
+      "kanji": "七十五",
+      "hiragana": "ななじゅうご",
+      "romaji": "nana-juu-go"
+    },
+    "76": {
+      "kanji": "七十六",
+      "hiragana": "ななじゅうろく",
+      "romaji": "nana-juu-roku"
+    },
+    "77": {
+      "kanji": "七十七",
+      "hiragana": "ななじゅうなな",
+      "romaji": "nana-juu-nana"
+    },
+    "78": {
+      "kanji": "七十八",
+      "hiragana": "ななじゅうはち",
+      "romaji": "nana-juu-hachi"
+    },
+    "79": {
+      "kanji": "七十九",
+      "hiragana": "ななじゅうきゅう",
+      "romaji": "nana-juu-kyuu"
+    },
     "80": { "kanji": "八十", "hiragana": "はちじゅう", "romaji": "hachi-juu" },
-    "81": { "kanji": "八十一", "hiragana": "はちじゅういち", "romaji": "hachi-juu-ichi" },
-    "82": { "kanji": "八十二", "hiragana": "はちじゅうに", "romaji": "hachi-juu-ni" },
-    "83": { "kanji": "八十三", "hiragana": "はちじゅうさん", "romaji": "hachi-juu-san" },
-    "84": { "kanji": "八十四", "hiragana": "はちじゅうよん", "romaji": "hachi-juu-yon" },
-    "85": { "kanji": "八十五", "hiragana": "haschijuu-go", "romaji": "hachi-juu-go" },
-    "86": { "kanji": "八十六", "hiragana": "はちじゅうろく", "romaji": "hachi-juu-roku" },
-    "87": { "kanji": "八十七", "hiragana": "はちじゅうなな", "romaji": "hachi-juu-nana" },
-    "88": { "kanji": "八十八", "hiragana": "はちじゅうはち", "romaji": "hachi-juu-hachi" },
-    "89": { "kanji": "八十九", "hiragana": "はちじゅうきゅう", "romaji": "hachi-juu-kyuu" },
+    "81": {
+      "kanji": "八十一",
+      "hiragana": "はちじゅういち",
+      "romaji": "hachi-juu-ichi"
+    },
+    "82": {
+      "kanji": "八十二",
+      "hiragana": "はちじゅうに",
+      "romaji": "hachi-juu-ni"
+    },
+    "83": {
+      "kanji": "八十三",
+      "hiragana": "はちじゅうさん",
+      "romaji": "hachi-juu-san"
+    },
+    "84": {
+      "kanji": "八十四",
+      "hiragana": "はちじゅうよん",
+      "romaji": "hachi-juu-yon"
+    },
+    "85": {
+      "kanji": "八十五",
+      "hiragana": "haschijuu-go",
+      "romaji": "hachi-juu-go"
+    },
+    "86": {
+      "kanji": "八十六",
+      "hiragana": "はちじゅうろく",
+      "romaji": "hachi-juu-roku"
+    },
+    "87": {
+      "kanji": "八十七",
+      "hiragana": "はちじゅうなな",
+      "romaji": "hachi-juu-nana"
+    },
+    "88": {
+      "kanji": "八十八",
+      "hiragana": "はちじゅうはち",
+      "romaji": "hachi-juu-hachi"
+    },
+    "89": {
+      "kanji": "八十九",
+      "hiragana": "はちじゅうきゅう",
+      "romaji": "hachi-juu-kyuu"
+    },
     "90": { "kanji": "九十", "hiragana": "きゅうじゅう", "romaji": "kyuu-juu" },
-    "91": { "kanji": "九十一", "hiragana": "きゅうじゅういち", "romaji": "kyuu-juu-ichi" },
-    "92": { "kanji": "九十二", "hiragana": "きゅうじゅうに", "romaji": "kyuu-juu-ni" },
-    "93": { "kanji": "九十三", "hiragana": "きゅうじゅうさん", "romaji": "kyuu-juu-san" },
-    "94": { "kanji": "九十四", "hiragana": "きゅうじゅうよん", "romaji": "kyuu-juu-yon" },
-    "95": { "kanji": "九十五", "hiragana": "きゅうじゅうご", "romaji": "kyuu-juu-go" },
-    "96": { "kanji": "九十六", "hiragana": "きゅうじゅうろく", "romaji": "kyuu-juu-roku" },
-    "97": { "kanji": "九十七", "hiragana": "きゅうじゅうなな", "romaji": "kyuu-juu-nana" },
-    "98": { "kanji": "九十八", "hiragana": "きゅうじゅうはち", "romaji": "kyuu-juu-hachi" },
-    "99": { "kanji": "九十九", "hiragana": "きゅうじゅうきゅう", "romaji": "kyuu-juu-kyuu" },
+    "91": {
+      "kanji": "九十一",
+      "hiragana": "きゅうじゅういち",
+      "romaji": "kyuu-juu-ichi"
+    },
+    "92": {
+      "kanji": "九十二",
+      "hiragana": "きゅうじゅうに",
+      "romaji": "kyuu-juu-ni"
+    },
+    "93": {
+      "kanji": "九十三",
+      "hiragana": "きゅうじゅうさん",
+      "romaji": "kyuu-juu-san"
+    },
+    "94": {
+      "kanji": "九十四",
+      "hiragana": "きゅうじゅうよん",
+      "romaji": "kyuu-juu-yon"
+    },
+    "95": {
+      "kanji": "九十五",
+      "hiragana": "きゅうじゅうご",
+      "romaji": "kyuu-juu-go"
+    },
+    "96": {
+      "kanji": "九十六",
+      "hiragana": "きゅうじゅうろく",
+      "romaji": "kyuu-juu-roku"
+    },
+    "97": {
+      "kanji": "九十七",
+      "hiragana": "きゅうじゅうなな",
+      "romaji": "kyuu-juu-nana"
+    },
+    "98": {
+      "kanji": "九十八",
+      "hiragana": "きゅうじゅうはち",
+      "romaji": "kyuu-juu-hachi"
+    },
+    "99": {
+      "kanji": "九十九",
+      "hiragana": "きゅうじゅうきゅう",
+      "romaji": "kyuu-juu-kyuu"
+    },
     "100": { "kanji": "百", "hiragana": "ひゃく", "romaji": "hyaku" }
   },
   "ratusan": {
@@ -115,7 +403,11 @@
     "600": { "kanji": "六百", "hiragana": "ろっぴゃく", "romaji": "roppyaku" },
     "700": { "kanji": "七百", "hiragana": "ななひゃく", "romaji": "nanahyaku" },
     "800": { "kanji": "八百", "hiragana": "はっぴゃく", "romaji": "happyaku" },
-    "900": { "kanji": "九百", "hiragana": "きゅうひゃく", "romaji": "kyuuhyaku" }
+    "900": {
+      "kanji": "九百",
+      "hiragana": "きゅうひゃく",
+      "romaji": "kyuuhyaku"
+    }
   },
   "ribuan": {
     "1000": { "kanji": "千", "hiragana": "せん", "romaji": "sen" },
@@ -132,17 +424,53 @@
     "10000": { "kanji": "一万", "hiragana": "いちまん", "romaji": "ichiman" },
     "50000": { "kanji": "五万", "hiragana": "ごまん", "romaji": "goman" },
     "100000": { "kanji": "十万", "hiragana": "じゅうまん", "romaji": "juuman" },
-    "1000000": { "kanji": "百万", "hiragana": "ひゃくまん", "romaji": "hyakuman" },
+    "1000000": {
+      "kanji": "百万",
+      "hiragana": "ひゃくまん",
+      "romaji": "hyakuman"
+    },
     "10000000": { "kanji": "千万", "hiragana": "せんまん", "romaji": "senman" },
-    "100000000": { "kanji": "一億", "hiragana": "いちおく", "romaji": "ichioku" }
+    "100000000": {
+      "kanji": "一億",
+      "hiragana": "いちおく",
+      "romaji": "ichioku"
+    }
   },
   "contoh_kombinasi": {
-    "25": { "kanji": "二十五", "hiragana": "にじゅうご", "romaji": "ni-juu-go" },
-    "42": { "kanji": "四十二", "hiragana": "よんじゅうに", "romaji": "yon-juu-ni" },
-    "99": { "kanji": "九十九", "hiragana": "きゅうじゅうきゅう", "romaji": "kyuu-juu-kyuu" },
-    "150": { "kanji": "百五十", "hiragana": "ひゃくごじゅう", "romaji": "hyaku-go-juu" },
-    "365": { "kanji": "三百六十五", "hiragana": "さんびゃくろくじゅうご", "romaji": "sanbyaku-roku-juu-go" },
-    "1999": { "kanji": "千九百九十九", "hiragana": "せんきゅうひゃくきゅうじゅうきゅう", "romaji": "sen-kyuuhyaku-kyuu-juu-kyuu" },
-    "2026": { "kanji": "二千二十六", "hiragana": "にせんにじゅうろく", "romaji": "nisen-ni-juu-roku" }
+    "25": {
+      "kanji": "二十五",
+      "hiragana": "にじゅうご",
+      "romaji": "ni-juu-go"
+    },
+    "42": {
+      "kanji": "四十二",
+      "hiragana": "よんじゅうに",
+      "romaji": "yon-juu-ni"
+    },
+    "99": {
+      "kanji": "九十九",
+      "hiragana": "きゅうじゅうきゅう",
+      "romaji": "kyuu-juu-kyuu"
+    },
+    "150": {
+      "kanji": "百五十",
+      "hiragana": "ひゃくごじゅう",
+      "romaji": "hyaku-go-juu"
+    },
+    "365": {
+      "kanji": "三百六十五",
+      "hiragana": "さんびゃくろくじゅうご",
+      "romaji": "sanbyaku-roku-juu-go"
+    },
+    "1999": {
+      "kanji": "千九百九十九",
+      "hiragana": "せんきゅうひゃくきゅうじゅうきゅう",
+      "romaji": "sen-kyuuhyaku-kyuu-juu-kyuu"
+    },
+    "2026": {
+      "kanji": "二千二十六",
+      "hiragana": "にせんにじゅうろく",
+      "romaji": "nisen-ni-juu-roku"
+    }
   }
 }

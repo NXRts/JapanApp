@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { AuthLayout } from '@/components/auth/AuthLayout';
+import React from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { AuthLayout } from "@/components/auth/AuthLayout";
 
 const Form = styled.form`
   display: flex;
@@ -33,14 +33,14 @@ const Input = styled.input`
   color: var(--foreground);
   font-size: 1rem;
   transition: all 0.2s ease;
-  
+
   &:focus {
     outline: none;
     border-color: var(--primary);
     background: var(--surface);
     box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
   }
-  
+
   &::placeholder {
     color: var(--text-secondary);
     opacity: 0.6;
@@ -50,7 +50,11 @@ const Input = styled.input`
 const SubmitButton = styled.button`
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   border: none;
   border-radius: 999px;
@@ -77,12 +81,12 @@ const TermsText = styled.p`
   text-align: center;
   line-height: 1.5;
   margin-top: 0.5rem;
-  
+
   a {
     color: var(--primary);
     text-decoration: none;
     font-weight: 600;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -94,12 +98,12 @@ const FooterText = styled.p`
   margin-top: 2rem;
   font-size: 0.9rem;
   color: var(--text-secondary);
-  
+
   a {
     color: var(--primary);
     text-decoration: none;
     font-weight: 700;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -110,53 +114,50 @@ export default function RegisterPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Dummy registration logic
-    alert('This is a dummy registration. Welcome to JapanApp!');
+    alert("This is a dummy registration. Welcome to JapanApp!");
   };
 
   return (
-    <AuthLayout 
-      title="Create Account" 
+    <AuthLayout
+      title="Create Account"
       subtitle="Join the community and start mastering Japanese"
     >
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor="name">Full Name</Label>
-          <Input 
-            type="text" 
-            id="name" 
-            placeholder="John Doe" 
-            required 
-          />
+          <Input type="text" id="name" placeholder="John Doe" required />
         </FormGroup>
 
         <FormGroup>
           <Label htmlFor="email">Email Address</Label>
-          <Input 
-            type="email" 
-            id="email" 
-            placeholder="name@example.com" 
-            required 
+          <Input
+            type="email"
+            id="email"
+            placeholder="name@example.com"
+            required
           />
         </FormGroup>
-        
+
         <FormGroup>
           <Label htmlFor="password">Password</Label>
-          <Input 
-            type="password" 
-            id="password" 
-            placeholder="Min. 8 characters" 
-            required 
+          <Input
+            type="password"
+            id="password"
+            placeholder="Min. 8 characters"
+            required
             minLength={8}
           />
         </FormGroup>
 
         <SubmitButton type="submit">Get Started</SubmitButton>
-        
+
         <TermsText>
-          By signing up, you agree to our <Link href="/register">Terms of Service</Link> and <Link href="/register">Privacy Policy</Link>.
+          By signing up, you agree to our{" "}
+          <Link href="/register">Terms of Service</Link> and{" "}
+          <Link href="/register">Privacy Policy</Link>.
         </TermsText>
       </Form>
-      
+
       <FooterText>
         Already have an account? <Link href="/login">Log In</Link>
       </FooterText>

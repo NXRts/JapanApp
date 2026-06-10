@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
-import { n5Grammar } from '@/data/jlpt/n5/grammar';
-import { n4Grammar } from '@/data/jlpt/n4/grammar';
-import { n3Grammar } from '@/data/jlpt/n3/grammar';
-import { n2Grammar } from '@/data/jlpt/n2/grammar';
-import { n1Grammar } from '@/data/jlpt/n1/grammar';
-import { use } from 'react';
+import styled from "styled-components";
+import Link from "next/link";
+import { n5Grammar } from "@/data/jlpt/n5/grammar";
+import { n4Grammar } from "@/data/jlpt/n4/grammar";
+import { n3Grammar } from "@/data/jlpt/n3/grammar";
+import { n2Grammar } from "@/data/jlpt/n2/grammar";
+import { n1Grammar } from "@/data/jlpt/n1/grammar";
+import { use } from "react";
 
 const Container = styled.div`
   max-width: 800px;
@@ -109,10 +109,20 @@ const EnglishText = styled.div`
   color: var(--foreground);
 `;
 
-export default function GrammarDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default function GrammarDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = use(params);
-  
-  const allGrammar = [...n5Grammar, ...n4Grammar, ...n3Grammar, ...n2Grammar, ...n1Grammar];
+
+  const allGrammar = [
+    ...n5Grammar,
+    ...n4Grammar,
+    ...n3Grammar,
+    ...n2Grammar,
+    ...n1Grammar,
+  ];
   const point = allGrammar.find((p) => p.id === id);
 
   if (!point) {
@@ -129,7 +139,7 @@ export default function GrammarDetailPage({ params }: { params: Promise<{ id: st
   return (
     <Container>
       <BackLink href="/grammar">← Back to Grammar</BackLink>
-      
+
       <Header>
         <Title>{point.title}</Title>
         <Meaning>{point.meaning}</Meaning>

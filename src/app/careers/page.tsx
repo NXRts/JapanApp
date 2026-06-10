@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import styled from 'styled-components';
-import { jobs, values } from './data';
+import Link from "next/link";
+import styled from "styled-components";
+import { jobs, values } from "./data";
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +13,11 @@ const Container = styled.div`
 const HeroSection = styled.section`
   padding: 8rem 2rem 6rem;
   text-align: center;
-  background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(79, 70, 229, 0.05) 0%,
+    transparent 70%
+  );
   margin-top: -70px;
   padding-top: calc(8rem + 70px);
 
@@ -28,9 +32,13 @@ const Title = styled.h1`
   font-weight: 800;
   margin-bottom: 1.5rem;
   color: var(--foreground);
-  
+
   span {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--secondary) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -104,7 +112,7 @@ const ValueIcon = styled.div`
   align-items: center;
   margin-bottom: 1rem;
   color: var(--primary);
-  
+
   svg {
     width: 48px;
     height: 48px;
@@ -179,11 +187,11 @@ const JobMeta = styled.div`
   color: var(--text-secondary);
   font-size: 0.9rem;
   flex-wrap: wrap;
-  
+
   @media (max-width: 768px) {
     gap: 0.5rem;
     font-size: 0.85rem;
-    
+
     span {
       white-space: nowrap;
     }
@@ -217,10 +225,12 @@ export default function CareersPage() {
   return (
     <Container>
       <HeroSection>
-        <Title>Join our <span>Mission</span></Title>
+        <Title>
+          Join our <span>Mission</span>
+        </Title>
         <Subtitle>
-          We're building the future of language learning.
-          Help us connect the world through Japanese culture and language.
+          We're building the future of language learning. Help us connect the
+          world through Japanese culture and language.
         </Subtitle>
       </HeroSection>
 
@@ -245,10 +255,13 @@ export default function CareersPage() {
               <JobInfo>
                 <JobTitle>{job.title}</JobTitle>
                 <JobMeta>
-                  <span>{job.department}</span> • <span>{job.location}</span> • <span>{job.type}</span>
+                  <span>{job.department}</span> • <span>{job.location}</span> •{" "}
+                  <span>{job.type}</span>
                 </JobMeta>
               </JobInfo>
-              <ApplyButton href={`/careers/${job.slug}`}>View Details</ApplyButton>
+              <ApplyButton href={`/careers/${job.slug}`}>
+                View Details
+              </ApplyButton>
             </JobCard>
           ))}
         </JobList>

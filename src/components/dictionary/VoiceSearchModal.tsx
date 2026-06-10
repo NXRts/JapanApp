@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useState, useEffect, useRef } from "react";
+import styled, { keyframes } from "styled-components";
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -13,7 +13,7 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
   backdrop-filter: blur(4px);
   z-index: 1000;
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
-  pointer-events: ${({ $isOpen }) => ($isOpen ? 'auto' : 'none')};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};
   transition: opacity 0.3s ease;
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@ const Modal = styled.div<{ $isOpen: boolean }>`
   width: 90%;
   max-width: 350px;
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-  transform: ${({ $isOpen }) => ($isOpen ? 'scale(1)' : 'scale(0.95)')};
+  transform: ${({ $isOpen }) => ($isOpen ? "scale(1)" : "scale(0.95)")};
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border);
   display: flex;
@@ -47,16 +47,18 @@ const MicButton = styled.button<{ $isListening: boolean }>`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: ${({ $isListening }) => $isListening ? 'var(--primary)' : 'var(--surface)'};
+  background: ${({ $isListening }) =>
+    $isListening ? "var(--primary)" : "var(--surface)"};
   border: 2px solid var(--primary);
-  color: ${({ $isListening }) => $isListening ? 'white' : 'var(--primary)'};
+  color: ${({ $isListening }) => ($isListening ? "white" : "var(--primary)")};
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  animation: ${({ $isListening }) => $isListening ? pulse : 'none'} 1.5s infinite;
+  animation: ${({ $isListening }) => ($isListening ? pulse : "none")} 1.5s
+    infinite;
   transition: all 0.3s;
-  
+
   svg {
     width: 36px;
     height: 36px;
@@ -90,7 +92,9 @@ const CloseBtn = styled.button`
   color: var(--text-secondary);
   cursor: pointer;
   padding: 0;
-  &:hover { color: var(--foreground); }
+  &:hover {
+    color: var(--foreground);
+  }
 `;
 
 interface ISpeechRecognition {
@@ -122,48 +126,58 @@ interface ISpeechRecognitionErrorEvent {
   error: string;
 }
 
-export function VoiceSearchModal({ isOpen, onClose, onResult }: { isOpen: boolean, onClose: () => void, onResult: (text: string) => void }) {
+export function VoiceSearchModal({
+  isOpen,
+  onClose,
+  onResult,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onResult: (text: string) => void;
+}) {
   const [isListening, setIsListening] = useState(false);
-  const [transcript, setTranscript] = useState('');
-  const [error, setError] = useState('');
+  const [transcript, setTranscript] = useState("");
+  const [error, setError] = useState("");
   const recognitionRef = useRef<ISpeechRecognition | null>(null);
 
   // Handle finalize manually since onend fires asynchronously
   useEffect(() => {
     if (!isListening && transcript && !error) {
-       const timer = setTimeout(() => {
-          if (isOpen) onResult(transcript);
-       }, 800);
-       return () => clearTimeout(timer);
+      const timer = setTimeout(() => {
+        if (isOpen) onResult(transcript);
+      }, 800);
+      return () => clearTimeout(timer);
     }
   }, [isListening, transcript, isOpen, onResult, error]);
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      
+      document.body.style.overflow = "hidden";
+
       // Lazily initialize SpeechRecognition on demand when opened
-      if (!recognitionRef.current && typeof window !== 'undefined') {
+      if (!recognitionRef.current && typeof window !== "undefined") {
         const WindowSpeech = window as unknown as {
           SpeechRecognition?: new () => ISpeechRecognition;
           webkitSpeechRecognition?: new () => ISpeechRecognition;
         };
-        const SpeechRecognition = WindowSpeech.SpeechRecognition || WindowSpeech.webkitSpeechRecognition;
-        
+        const SpeechRecognition =
+          WindowSpeech.SpeechRecognition ||
+          WindowSpeech.webkitSpeechRecognition;
+
         if (SpeechRecognition) {
           const rec = new SpeechRecognition();
           rec.continuous = false;
           rec.interimResults = true;
-          rec.lang = 'ja-JP';
+          rec.lang = "ja-JP";
 
           rec.onstart = () => {
             setIsListening(true);
-            setError('');
-            setTranscript('');
+            setError("");
+            setTranscript("");
           };
 
           rec.onresult = (event: ISpeechRecognitionEvent) => {
-            let currentTranscript = '';
+            let currentTranscript = "";
             for (let i = event.resultIndex; i < event.results.length; ++i) {
               currentTranscript += event.results[i][0].transcript;
             }
@@ -173,10 +187,10 @@ export function VoiceSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
           rec.onerror = (event: ISpeechRecognitionErrorEvent) => {
             console.error("Speech recognition error", event.error);
             setIsListening(false);
-            if (event.error === 'not-allowed') {
-              setError('Microphone access denied.');
+            if (event.error === "not-allowed") {
+              setError("Microphone access denied.");
             } else {
-              setError('An error occurred. Try again.');
+              setError("An error occurred. Try again.");
             }
           };
 
@@ -187,64 +201,86 @@ export function VoiceSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
           recognitionRef.current = rec;
         } else {
           // Defer to avoid synchronous setState inside effect
-          setTimeout(() => setError('Speech recognition not supported in this browser.'), 0);
+          setTimeout(
+            () => setError("Speech recognition not supported in this browser."),
+            0,
+          );
         }
       }
 
       // Auto start on open if supported
-      if (recognitionRef.current && !error.includes('supported')) {
+      if (recognitionRef.current && !error.includes("supported")) {
         try {
           recognitionRef.current.start();
-        } catch { /* recognition already started */ }
+        } catch {
+          /* recognition already started */
+        }
       }
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
       if (recognitionRef.current) {
-        try { recognitionRef.current.stop(); } catch { /* already stopped */ }
+        try {
+          recognitionRef.current.stop();
+        } catch {
+          /* already stopped */
+        }
       }
       // Defer state resets to avoid synchronous setState in effect body
       setTimeout(() => {
         setIsListening(false);
-        setTranscript('');
-        setError('');
+        setTranscript("");
+        setError("");
       }, 0);
     }
   }, [isOpen, error]);
 
   const toggleListening = () => {
-    if (error && error.includes('supported')) return;
-    
+    if (error && error.includes("supported")) return;
+
     if (isListening) {
       recognitionRef.current?.stop();
     } else {
       try {
         recognitionRef.current?.start();
-      } catch { /* recognition already started */ }
+      } catch {
+        /* recognition already started */
+      }
     }
   };
 
   return (
     <Overlay $isOpen={isOpen} onClick={onClose}>
-      <Modal $isOpen={isOpen} onClick={e => e.stopPropagation()}>
+      <Modal $isOpen={isOpen} onClick={(e) => e.stopPropagation()}>
         <CloseBtn onClick={onClose}>&times;</CloseBtn>
-        
+
         <StatusText>
-          {error ? <span style={{ color: '#ef4444' }}>{error}</span> : 
-           isListening ? 'Listening...' : 'Tap to speak'}
+          {error ? (
+            <span style={{ color: "#ef4444" }}>{error}</span>
+          ) : isListening ? (
+            "Listening..."
+          ) : (
+            "Tap to speak"
+          )}
         </StatusText>
-        
+
         <MicButton $isListening={isListening} onClick={toggleListening}>
-          <svg fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-            <line x1="12" x2="12" y1="19" y2="22"/>
+          <svg
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+            <line x1="12" x2="12" y1="19" y2="22" />
           </svg>
         </MicButton>
-        
-        <ResultText>
-           {transcript || (isListening ? 'Speak now (in Japanese)...' : '')}
-        </ResultText>
 
+        <ResultText>
+          {transcript || (isListening ? "Speak now (in Japanese)..." : "")}
+        </ResultText>
       </Modal>
     </Overlay>
   );

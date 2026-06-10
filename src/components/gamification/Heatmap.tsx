@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import React, { useMemo, useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
-import { useTheme } from '@/context/ThemeContext';
+import React, { useMemo, useState, useEffect, useRef } from "react";
+import styled from "styled-components";
+import { useTheme } from "@/context/ThemeContext";
 
 interface HeatmapProps {
   activityLog: Record<string, number>;
 }
 
 const Container = styled.div<{ $cellSize: number }>`
-  --local-surface:     var(--surface, #FFFFFF);
-  --local-surface-2:   var(--background, #F8FAFC);
-  --local-border:      var(--border, #E2E8F0);
-  --local-text:        var(--foreground, #0F172A);
-  --local-text-muted:  var(--text-secondary, #64748B);
-  --local-accent:      var(--primary, #4F46E5);
+  --local-surface: var(--surface, #ffffff);
+  --local-surface-2: var(--background, #f8fafc);
+  --local-border: var(--border, #e2e8f0);
+  --local-text: var(--foreground, #0f172a);
+  --local-text-muted: var(--text-secondary, #64748b);
+  --local-accent: var(--primary, #4f46e5);
 
   /* h0 (Empty) and active levels are now handled dynamically via props/context */
 
-  --radius:   28px;
-  --cell:     ${props => props.$cellSize}px;
-  --gap:      4px;
+  --radius: 28px;
+  --cell: ${(props) => props.$cellSize}px;
+  --gap: 4px;
 
   background: var(--local-surface);
   border: 1px solid var(--local-border);
@@ -35,9 +35,13 @@ const Container = styled.div<{ $cellSize: number }>`
   overflow: visible;
   width: 100%;
   color: var(--local-text);
-  font-family: 'Inter', 'Noto Sans JP', sans-serif;
+  font-family: "Inter", "Noto Sans JP", sans-serif;
 
-  *, *::before, *::after { box-sizing: border-box; }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 `;
 
 const CardHeader = styled.div`
@@ -85,7 +89,10 @@ const Chip = styled.div`
   gap: 6px;
   font-weight: 500;
 
-  span { color: var(--local-text); font-weight: 700; }
+  span {
+    color: var(--local-text);
+    font-weight: 700;
+  }
 `;
 
 const HeatmapWrap = styled.div`
@@ -118,11 +125,12 @@ const DayLabels = styled.div`
 const DayLabel = styled.div<{ $hidden?: boolean }>`
   height: var(--cell);
   font-size: 0.75rem;
-  color: ${({ $hidden }) => $hidden ? 'transparent' : 'var(--local-text-muted)'};
+  color: ${({ $hidden }) =>
+    $hidden ? "transparent" : "var(--local-text-muted)"};
   line-height: var(--cell);
   white-space: nowrap;
   font-weight: 600;
-  
+
   @media (max-width: 480px) {
     font-size: 0.75rem;
     width: 36px;
@@ -170,21 +178,31 @@ const WeekCol = styled.div`
   gap: var(--gap);
 `;
 
-const DayCell = styled.div<{ $level: number; $empty?: boolean; $mode: 'light' | 'dark' }>`
+const DayCell = styled.div<{
+  $level: number;
+  $empty?: boolean;
+  $mode: "light" | "dark";
+}>`
   width: var(--cell);
   height: var(--cell);
   border-radius: 4px;
-  cursor: ${({ $empty }) => $empty ? 'default' : 'pointer'};
+  cursor: ${({ $empty }) => ($empty ? "default" : "pointer")};
   position: relative;
-  transition: transform 0.12s ease, filter 0.12s ease;
-  visibility: ${({ $empty }) => $empty ? 'hidden' : 'visible'};
+  transition:
+    transform 0.12s ease,
+    filter 0.12s ease;
+  visibility: ${({ $empty }) => ($empty ? "hidden" : "visible")};
   background: ${({ $level, $mode }) => {
-    if ($level === 0) return $mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : '#E2E8F0';
-    const opacity = $level === 1 ? 0.25 : $level === 2 ? 0.5 : $level === 3 ? 0.75 : 1;
+    if ($level === 0)
+      return $mode === "dark" ? "rgba(255, 255, 255, 0.05)" : "#E2E8F0";
+    const opacity =
+      $level === 1 ? 0.25 : $level === 2 ? 0.5 : $level === 3 ? 0.75 : 1;
     return `rgba(var(--primary-rgb), ${opacity})`;
   }};
 
-  ${({ $empty }) => !$empty && `
+  ${({ $empty }) =>
+    !$empty &&
+    `
     &:hover {
       transform: scale(1.35);
       filter: brightness(1.1);
@@ -208,13 +226,15 @@ const LegendCells = styled.div`
   gap: 4px;
 `;
 
-const LegendCell = styled.div<{ $level: number; $mode: 'light' | 'dark' }>`
+const LegendCell = styled.div<{ $level: number; $mode: "light" | "dark" }>`
   width: 14px;
   height: 14px;
   border-radius: 4px;
   background: ${({ $level, $mode }) => {
-    if ($level === 0) return $mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : '#E2E8F0';
-    const opacity = $level === 1 ? 0.25 : $level === 2 ? 0.5 : $level === 3 ? 0.75 : 1;
+    if ($level === 0)
+      return $mode === "dark" ? "rgba(255, 255, 255, 0.05)" : "#E2E8F0";
+    const opacity =
+      $level === 1 ? 0.25 : $level === 2 ? 0.5 : $level === 3 ? 0.75 : 1;
     return `rgba(var(--primary-rgb), ${opacity})`;
   }};
 `;
@@ -284,19 +304,24 @@ const Tooltip = styled.div<{ $show: boolean; $x: number; $y: number }>`
   pointer-events: none;
   white-space: nowrap;
   z-index: 100;
-  opacity: ${({ $show }) => $show ? 1 : 0};
-  transform: ${({ $show }) => $show ? 'translateY(0)' : 'translateY(4px)'};
-  transition: opacity 0.12s, transform 0.12s;
+  opacity: ${({ $show }) => ($show ? 1 : 0)};
+  transform: ${({ $show }) => ($show ? "translateY(0)" : "translateY(4px)")};
+  transition:
+    opacity 0.12s,
+    transform 0.12s;
   box-shadow: var(--shadow-md, 0 4px 6px -1px rgb(0 0 0 / 0.1));
   left: ${({ $x }) => $x}px;
   top: ${({ $y }) => $y}px;
 
-  strong { color: var(--local-accent); font-weight: 700; }
+  strong {
+    color: var(--local-accent);
+    font-weight: 700;
+  }
 `;
 
 function seededRand(seed: number) {
   let s = seed;
-  return function() {
+  return function () {
     s = (s * 9301 + 49297) % 233280;
     return s / 233280;
   };
@@ -312,35 +337,38 @@ export function generateMockActivityLog(): Record<string, number> {
   startDate.setDate(today.getDate() - 365);
 
   let prevActive = false;
-  
+
   for (let i = 0; i <= 365; i++) {
     const d = new Date(startDate);
     d.setDate(d.getDate() + i);
-    
+
     // Fix timezone shift bug by manually creating local YYYY-MM-DD
     const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
     const dateStr = `${y}-${m}-${day}`;
 
     const r = rand();
     const bias = prevActive ? 0.55 : 0.35;
-    
-    if (i >= 360 || r > (1 - bias)) {
+
+    if (i >= 360 || r > 1 - bias) {
       const r2 = rand();
       let exp = 0;
-      if (r2 < 0.30) exp = 30; // Level 1 (< 50)
-      else if (r2 < 0.60) exp = 150; // Level 2 (< 200)
-      else if (r2 < 0.82) exp = 350; // Level 3 (< 500)
+      if (r2 < 0.3)
+        exp = 30; // Level 1 (< 50)
+      else if (r2 < 0.6)
+        exp = 150; // Level 2 (< 200)
+      else if (r2 < 0.82)
+        exp = 350; // Level 3 (< 500)
       else exp = 600; // Level 4 (>= 500)
-      
+
       log[dateStr] = exp;
       prevActive = true;
     } else {
       prevActive = false;
     }
   }
-  
+
   return log;
 }
 
@@ -349,7 +377,12 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [cellSize, setCellSize] = useState(13);
   const [visibleWeeks, setVisibleWeeks] = useState(53);
-  const [tooltip, setTooltip] = useState({ show: false, x: 0, y: 0, content: '' });
+  const [tooltip, setTooltip] = useState({
+    show: false,
+    x: 0,
+    y: 0,
+    content: "",
+  });
 
   const TOTAL_WEEKS = 52;
   const GAP = 4;
@@ -362,8 +395,10 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
       const cardW = containerRef.current.clientWidth;
       const MARGIN_RIGHT = 0;
       const available = cardW - CARD_PADDING - DAY_LABEL_W - MARGIN_RIGHT;
-      const cell = Math.floor((available - (TOTAL_WEEKS - 1) * GAP) / TOTAL_WEEKS);
-      
+      const cell = Math.floor(
+        (available - (TOTAL_WEEKS - 1) * GAP) / TOTAL_WEEKS,
+      );
+
       const clampedCell = Math.max(6, Math.min(cell, 14));
       setCellSize(clampedCell);
 
@@ -378,9 +413,9 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(computeCellSize, 100);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
       clearTimeout(resizeTimer);
     };
   }, []);
@@ -412,18 +447,18 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
       for (let d = 0; d < 7; d++) {
         const date = new Date(startDate);
         date.setDate(startDate.getDate() + w * 7 + d);
-        
+
         // Fix timezone offset issues by formatting manually to local date
         const y = date.getFullYear();
-        const m = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
+        const m = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
         const dateStr = `${y}-${m}-${day}`;
-        
+
         const exp = finalActivityLog[dateStr] || 0;
-        
+
         // We still calculate level based on exp
         let level = 0;
-        
+
         // Stats are only calculated for days up to 'today' and within the last 365 days
         const cellInRange = date <= today && date >= oneYearAgo;
 
@@ -435,7 +470,13 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
 
         // Make ALL cells visually present (inRange: true) so the grid is a perfect rectangle
         // Future days and >365 days will simply have level 0
-        const cell = { date, dateStr, level, inRange: true, isFuture: date > today };
+        const cell = {
+          date,
+          dateStr,
+          level,
+          inRange: true,
+          isFuture: date > today,
+        };
         week.push(cell);
         allCells.push(cell);
       }
@@ -443,12 +484,25 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
     }
 
     // Month labels logic
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
     const positions: { name: string; weekIdx: number }[] = [];
     let lastMonth = -1;
 
     resultWeeks.forEach((week, wi) => {
-      const firstInRange = week.find(c => c.inRange);
+      const firstInRange = week.find((c) => c.inRange);
       if (firstInRange) {
         const m = firstInRange.date.getMonth();
         if (m !== lastMonth) {
@@ -464,10 +518,10 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
     let tempStreak = 0;
 
     const sortedCells = [...allCells]
-      .filter(c => c.inRange && !c.isFuture)
-      .sort((a,b) => a.date.getTime() - b.date.getTime());
-    
-    sortedCells.forEach(c => {
+      .filter((c) => c.inRange && !c.isFuture)
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    sortedCells.forEach((c) => {
       if (c.level > 0) {
         tempStreak++;
         if (tempStreak > longestStreak) longestStreak = tempStreak;
@@ -481,37 +535,58 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
       else break;
     }
 
-    return { 
-      weeks: resultWeeks, 
+    return {
+      weeks: resultWeeks,
       monthPositions: positions,
       stats: { activeDays, totalSessions, currentStreak, longestStreak },
       oneYearAgo,
-      todayObj: today
+      todayObj: today,
     };
   }, [activityLog]);
 
-  const handleMouseEnter = (e: React.MouseEvent, date: Date, level: number, empty?: boolean) => {
+  const handleMouseEnter = (
+    e: React.MouseEvent,
+    date: Date,
+    level: number,
+    empty?: boolean,
+  ) => {
     if (empty) return;
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const dateStr = `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
-    const activity = level === 0 ? 'No activity' : `<strong>${level}</strong> session${level>1?'s':''}`;
-    
+    const activity =
+      level === 0
+        ? "No activity"
+        : `<strong>${level}</strong> session${level > 1 ? "s" : ""}`;
+
     setTooltip({
       show: true,
       x: e.clientX + 14,
       y: e.clientY - 36,
-      content: `${activity} &nbsp;·&nbsp; ${dateStr}`
+      content: `${activity} &nbsp;·&nbsp; ${dateStr}`,
     });
   };
 
   const handleMouseMove = (e: React.MouseEvent, empty?: boolean) => {
     if (empty) return;
-    setTooltip(prev => ({ ...prev, x: e.clientX + 14, y: e.clientY - 36 }));
+    setTooltip((prev) => ({ ...prev, x: e.clientX + 14, y: e.clientY - 36 }));
   };
 
   const handleMouseLeave = () => {
-    setTooltip(prev => ({ ...prev, show: false }));
+    setTooltip((prev) => ({ ...prev, show: false }));
   };
 
   return (
@@ -520,51 +595,83 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
         <div>
           <CardTitle>Activity Heatmap</CardTitle>
           <CardSubtitle>
-            {oneYearAgo.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} – {todayObj.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} &nbsp;·&nbsp; 365 days
+            {oneYearAgo.toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            })}{" "}
+            –{" "}
+            {todayObj.toLocaleDateString("en-US", {
+              month: "short",
+              year: "numeric",
+            })}{" "}
+            &nbsp;·&nbsp; 365 days
           </CardSubtitle>
         </div>
         <StatChips>
-          <Chip>Total sessions <span>{stats.totalSessions}</span></Chip>
-          <Chip>Active days <span>{stats.activeDays}</span></Chip>
+          <Chip>
+            Total sessions <span>{stats.totalSessions}</span>
+          </Chip>
+          <Chip>
+            Active days <span>{stats.activeDays}</span>
+          </Chip>
         </StatChips>
       </CardHeader>
 
       <HeatmapWrap>
         <HeatmapInner>
           <DayLabels>
-            <DayLabel $hidden data-hidden="true">·</DayLabel>
+            <DayLabel $hidden data-hidden="true">
+              ·
+            </DayLabel>
             <DayLabel>Mon</DayLabel>
-            <DayLabel $hidden data-hidden="true">·</DayLabel>
+            <DayLabel $hidden data-hidden="true">
+              ·
+            </DayLabel>
             <DayLabel>Wed</DayLabel>
-            <DayLabel $hidden data-hidden="true">·</DayLabel>
+            <DayLabel $hidden data-hidden="true">
+              ·
+            </DayLabel>
             <DayLabel>Fri</DayLabel>
-            <DayLabel $hidden data-hidden="true">·</DayLabel>
+            <DayLabel $hidden data-hidden="true">
+              ·
+            </DayLabel>
           </DayLabels>
           <GridArea>
             <MonthLabels>
               {monthPositions
-                .filter(pos => pos.weekIdx >= TOTAL_WEEKS - visibleWeeks)
+                .filter((pos) => pos.weekIdx >= TOTAL_WEEKS - visibleWeeks)
                 .map((pos, i, arr) => {
-                  const relativeIdx = pos.weekIdx - (TOTAL_WEEKS - visibleWeeks);
-                  const nextRelativeIdx = i < arr.length - 1 ? arr[i + 1].weekIdx - (TOTAL_WEEKS - visibleWeeks) : visibleWeeks;
+                  const relativeIdx =
+                    pos.weekIdx - (TOTAL_WEEKS - visibleWeeks);
+                  const nextRelativeIdx =
+                    i < arr.length - 1
+                      ? arr[i + 1].weekIdx - (TOTAL_WEEKS - visibleWeeks)
+                      : visibleWeeks;
                   const spanWeeks = nextRelativeIdx - relativeIdx;
                   return (
                     <MonthLabel key={i} $width={spanWeeks * (cellSize + GAP)}>
                       {pos.name}
                     </MonthLabel>
                   );
-              })}
+                })}
             </MonthLabels>
             <WeekCols>
               {weeks.slice(-visibleWeeks).map((week, wi) => (
                 <WeekCol key={wi}>
                   {week.map((cell, di) => (
-                    <DayCell 
-                      key={di} 
+                    <DayCell
+                      key={di}
                       $level={cell.level}
                       $empty={cell.isFuture}
                       $mode={mode}
-                      onMouseEnter={(e) => handleMouseEnter(e, cell.date, cell.level, cell.isFuture)}
+                      onMouseEnter={(e) =>
+                        handleMouseEnter(
+                          e,
+                          cell.date,
+                          cell.level,
+                          cell.isFuture,
+                        )
+                      }
                       onMouseMove={(e) => handleMouseMove(e, cell.isFuture)}
                       onMouseLeave={handleMouseLeave}
                     />
@@ -579,12 +686,18 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
       <HeatmapFooter>
         <StreakInfo>
           <StreakItem>
-            <StreakValue>{stats.currentStreak}<span className="unit">days</span></StreakValue>
+            <StreakValue>
+              {stats.currentStreak}
+              <span className="unit">days</span>
+            </StreakValue>
             <StreakLabel>Current Streak</StreakLabel>
           </StreakItem>
           <StreakDivider />
           <StreakItem>
-            <StreakValue>{stats.longestStreak}<span className="unit">days</span></StreakValue>
+            <StreakValue>
+              {stats.longestStreak}
+              <span className="unit">days</span>
+            </StreakValue>
             <StreakLabel>Longest Streak</StreakLabel>
           </StreakItem>
         </StreakInfo>
@@ -602,13 +715,12 @@ export const Heatmap: React.FC<HeatmapProps> = ({ activityLog }) => {
         </Legend>
       </HeatmapFooter>
 
-      <Tooltip 
-        $show={tooltip.show} 
-        $x={tooltip.x} 
-        $y={tooltip.y} 
-        dangerouslySetInnerHTML={{ __html: tooltip.content }} 
+      <Tooltip
+        $show={tooltip.show}
+        $x={tooltip.x}
+        $y={tooltip.y}
+        dangerouslySetInnerHTML={{ __html: tooltip.content }}
       />
     </Container>
   );
 };
-

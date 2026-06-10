@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import Link from "next/link";
+import styled from "styled-components";
 
 // Styled Components
 const Container = styled.div`
@@ -29,7 +29,11 @@ const Title = styled.h1`
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--text-secondary) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -76,13 +80,17 @@ const GameCardLink = styled(Link)`
   height: 100%;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.06), transparent 40%);
+    background: radial-gradient(
+      800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(255, 255, 255, 0.06),
+      transparent 40%
+    );
     opacity: 0;
     transition: opacity 0.3s;
     z-index: 0;
@@ -128,7 +136,7 @@ const IconWrapper = styled.div<{ $color: string }>`
   ${GameCardLink}:hover & {
     transform: scale(1.1) rotate(5deg);
   }
-  
+
   svg {
     width: 28px;
     height: 28px;
@@ -139,7 +147,7 @@ const IconWrapper = styled.div<{ $color: string }>`
     height: 40px;
     border-radius: 12px;
     margin-bottom: 1rem;
-    
+
     svg {
       width: 20px;
       height: 20px;
@@ -221,7 +229,7 @@ const PlayButton = styled.div<{ $color: string }>`
 
   @media (max-width: 768px) {
     font-size: 0.8rem;
-    
+
     svg {
       width: 14px;
       height: 14px;
@@ -232,11 +240,12 @@ const PlayButton = styled.div<{ $color: string }>`
 export default function GamesHubPage() {
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Game Hub" />
+      <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Game Hub" />
       <Header>
         <Title>Games Hub</Title>
         <Subtitle>
-          Sharpen your Japanese skills with our interactive and fun mini-games. Find your favorite game below!
+          Sharpen your Japanese skills with our interactive and fun mini-games.
+          Find your favorite game below!
         </Subtitle>
       </Header>
 
@@ -245,8 +254,17 @@ export default function GamesHubPage() {
         <GameCardLink href="/game/memory-match">
           <CardBadge $color="245, 158, 11">PUZZLE</CardBadge>
           <CardContent>
-            <IconWrapper $color="245, 158, 11"> {/* Amber color */}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <IconWrapper $color="245, 158, 11">
+              {" "}
+              {/* Amber color */}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <rect x="3" y="3" width="7" height="7" rx="1" />
                 <rect x="14" y="3" width="7" height="7" rx="1" />
                 <rect x="14" y="14" width="7" height="7" rx="1" />
@@ -255,11 +273,20 @@ export default function GamesHubPage() {
             </IconWrapper>
             <CardTitle>Memory Match</CardTitle>
             <CardDescription>
-              A visual puzzle! Match the Hiragana and Katakana characters having the same sound to clear the board.
+              A visual puzzle! Match the Hiragana and Katakana characters having
+              the same sound to clear the board.
             </CardDescription>
             <PlayButton $color="245, 158, 11">
               Play Now
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ width: "16px", height: "16px" }}
+              >
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
               </svg>
@@ -271,8 +298,17 @@ export default function GamesHubPage() {
         <GameCardLink href="/game/speed-typing">
           <CardBadge $color="59, 130, 246">REFLEX</CardBadge>
           <CardContent>
-            <IconWrapper $color="59, 130, 246"> {/* Blue color */}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <IconWrapper $color="59, 130, 246">
+              {" "}
+              {/* Blue color */}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <rect x="2" y="4" width="20" height="16" rx="2" ry="2" />
                 <line x1="6" y1="8" x2="6" y2="8" />
                 <line x1="10" y1="8" x2="10" y2="8" />
@@ -287,11 +323,20 @@ export default function GamesHubPage() {
             </IconWrapper>
             <CardTitle>Kana Speed Typing</CardTitle>
             <CardDescription>
-              Test your typing reflexes! Type the correct Romaji mapping for the Kana as quickly as you can before the time runs out.
+              Test your typing reflexes! Type the correct Romaji mapping for the
+              Kana as quickly as you can before the time runs out.
             </CardDescription>
             <PlayButton $color="59, 130, 246">
               Play Now
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ width: "16px", height: "16px" }}
+              >
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
               </svg>
@@ -303,8 +348,17 @@ export default function GamesHubPage() {
         <GameCardLink href="/game/sentence-builder">
           <CardBadge $color="139, 92, 246">GRAMMAR</CardBadge>
           <CardContent>
-            <IconWrapper $color="139, 92, 246"> {/* Violet color */}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <IconWrapper $color="139, 92, 246">
+              {" "}
+              {/* Violet color */}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.7 8.38 8.38 0 0 1 3.8.9" />
                 <path d="M11 11v6" />
                 <path d="M8 14h6" />
@@ -313,11 +367,20 @@ export default function GamesHubPage() {
             </IconWrapper>
             <CardTitle>Sentence Builder</CardTitle>
             <CardDescription>
-              Master Japanese grammar! Drag and drop the jumbled words and particles into the correct sequence to build the sentence.
+              Master Japanese grammar! Drag and drop the jumbled words and
+              particles into the correct sequence to build the sentence.
             </CardDescription>
             <PlayButton $color="139, 92, 246">
               Start Building
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ width: "16px", height: "16px" }}
+              >
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
               </svg>
@@ -329,8 +392,17 @@ export default function GamesHubPage() {
         <GameCardLink href="/game/conjugation">
           <CardBadge $color="16, 185, 129">PRACTICE</CardBadge>
           <CardContent>
-            <IconWrapper $color="16, 185, 129"> {/* Emerald color */}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <IconWrapper $color="16, 185, 129">
+              {" "}
+              {/* Emerald color */}
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
                 <path d="M12 8h4" />
                 <path d="M12 12h4" />
@@ -339,11 +411,20 @@ export default function GamesHubPage() {
             </IconWrapper>
             <CardTitle>Conjugation Drills</CardTitle>
             <CardDescription>
-              Master verb conjugations! Quickly identify the correct Masu, Te, Ta, or Nai form of Japanese verbs before time runs out.
+              Master verb conjugations! Quickly identify the correct Masu, Te,
+              Ta, or Nai form of Japanese verbs before time runs out.
             </CardDescription>
             <PlayButton $color="16, 185, 129">
               Start Drills
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '16px', height: '16px' }}>
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ width: "16px", height: "16px" }}
+              >
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
               </svg>

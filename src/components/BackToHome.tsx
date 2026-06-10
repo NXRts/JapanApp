@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import styled from 'styled-components';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import styled from "styled-components";
 
 const Container = styled.div`
   position: absolute;
@@ -44,15 +44,15 @@ const StyledLink = styled(Link)`
   border-radius: 12px;
   margin-left: -1rem; /* Visual alignment with content below */
   pointer-events: auto;
-  
+
   @media (max-width: 768px) {
     margin-left: -0.5rem;
   }
-  
+
   &:hover {
     color: var(--primary);
     background: rgba(79, 70, 229, 0.08); /* Light primary background */
-    
+
     ${ArrowIcon} {
       transform: translateX(-4px);
     }
@@ -60,19 +60,19 @@ const StyledLink = styled(Link)`
 `;
 
 export function BackToHome() {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-    if (pathname === '/') return null;
+  if (pathname === "/") return null;
 
-    return (
-        <Container>
-            <StyledLink href="/">
-                <ArrowIcon viewBox="0 0 24 24">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </ArrowIcon>
-                Back to Home
-            </StyledLink>
-        </Container>
-    );
+  return (
+    <Container>
+      <StyledLink href="/">
+        <ArrowIcon viewBox="0 0 24 24">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </ArrowIcon>
+        Back to Home
+      </StyledLink>
+    </Container>
+  );
 }

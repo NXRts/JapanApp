@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
-import { TrophyIcon, SparklesIcon } from '../icons/AppIcons';
+import React, { useEffect, useState } from "react";
+import styled, { keyframes } from "styled-components";
+import { motion, AnimatePresence } from "framer-motion";
+import { TrophyIcon, SparklesIcon } from "../icons/AppIcons";
 
 const shimmer = keyframes`
   0% { background-position: -200% center; }
@@ -15,22 +15,24 @@ const progressBar = keyframes`
   to { width: 0%; }
 `;
 
-const ToastBox = styled(motion.div)<{ $type: 'level' | 'achievement' }>`
+const ToastBox = styled(motion.div)<{ $type: "level" | "achievement" }>`
   pointer-events: auto;
   background: var(--surface);
-  border: 1px solid ${({ $type }) =>
-    $type === 'level'
-      ? 'rgba(var(--primary-rgb), 0.5)'
-      : 'rgba(16, 185, 129, 0.45)'};
+  border: 1px solid
+    ${({ $type }) =>
+      $type === "level"
+        ? "rgba(var(--primary-rgb), 0.5)"
+        : "rgba(16, 185, 129, 0.45)"};
   border-radius: 16px;
   padding: 1rem 1.25rem;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.28),
-    0 0 0 1px rgba(255,255,255,0.04),
-    0 0 20px ${({ $type }) =>
-      $type === 'level'
-        ? 'rgba(var(--primary-rgb), 0.15)'
-        : 'rgba(16, 185, 129, 0.12)'};
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 0 20px
+      ${({ $type }) =>
+        $type === "level"
+          ? "rgba(var(--primary-rgb), 0.15)"
+          : "rgba(16, 185, 129, 0.12)"};
   display: flex;
   align-items: flex-start;
   gap: 0.85rem;
@@ -43,16 +45,16 @@ const ToastBox = styled(motion.div)<{ $type: 'level' | 'achievement' }>`
 
   /* Shimmer stripe at top */
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     height: 2px;
     background: ${({ $type }) =>
-      $type === 'level'
-        ? 'linear-gradient(90deg, transparent, var(--primary), transparent)'
-        : 'linear-gradient(90deg, transparent, #10b981, transparent)'};
+      $type === "level"
+        ? "linear-gradient(90deg, transparent, var(--primary), transparent)"
+        : "linear-gradient(90deg, transparent, #10b981, transparent)"};
     background-size: 200% 100%;
     animation: ${shimmer} 2s linear infinite;
   }
@@ -63,7 +65,7 @@ const ToastBox = styled(motion.div)<{ $type: 'level' | 'achievement' }>`
   }
 `;
 
-const IconBubble = styled.div<{ $type: 'level' | 'achievement' }>`
+const IconBubble = styled.div<{ $type: "level" | "achievement" }>`
   flex-shrink: 0;
   width: 42px;
   height: 42px;
@@ -72,11 +74,10 @@ const IconBubble = styled.div<{ $type: 'level' | 'achievement' }>`
   align-items: center;
   justify-content: center;
   background: ${({ $type }) =>
-    $type === 'level'
-      ? 'rgba(var(--primary-rgb), 0.12)'
-      : 'rgba(16, 185, 129, 0.12)'};
-  color: ${({ $type }) =>
-    $type === 'level' ? 'var(--primary)' : '#10b981'};
+    $type === "level"
+      ? "rgba(var(--primary-rgb), 0.12)"
+      : "rgba(16, 185, 129, 0.12)"};
+  color: ${({ $type }) => ($type === "level" ? "var(--primary)" : "#10b981")};
 
   svg {
     width: 22px;
@@ -92,14 +93,13 @@ const TextGroup = styled.div`
   gap: 0.2rem;
 `;
 
-const Tag = styled.span<{ $type: 'level' | 'achievement' }>`
+const Tag = styled.span<{ $type: "level" | "achievement" }>`
   font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: ${({ $type }) =>
-    $type === 'level' ? 'var(--primary)' : '#10b981'};
-  font-family: 'DM Mono', monospace;
+  color: ${({ $type }) => ($type === "level" ? "var(--primary)" : "#10b981")};
+  font-family: "DM Mono", monospace;
 `;
 
 const Title = styled.div`
@@ -153,15 +153,18 @@ const ProgressBarWrap = styled.div`
   background: rgba(255, 255, 255, 0.05);
 `;
 
-const ProgressFill = styled.div<{ $duration: number; $type: 'level' | 'achievement' }>`
+const ProgressFill = styled.div<{
+  $duration: number;
+  $type: "level" | "achievement";
+}>`
   height: 100%;
   background: ${({ $type }) =>
-    $type === 'level' ? 'var(--primary)' : '#10b981'};
+    $type === "level" ? "var(--primary)" : "#10b981"};
   animation: ${progressBar} ${({ $duration }) => $duration}ms linear forwards;
 `;
 
 export type GamificationAlertData = {
-  type: 'level' | 'achievement';
+  type: "level" | "achievement";
   title: string;
   description: string;
   id: string;
@@ -197,28 +200,38 @@ export const GamificationAlert = ({
           initial={{ opacity: 0, y: -20, scale: 0.92 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.88 }}
-          transition={{ type: 'spring', damping: 22, stiffness: 300 }}
+          transition={{ type: "spring", damping: 22, stiffness: 300 }}
           onClick={dismiss}
           role="alert"
           aria-live="polite"
         >
           <IconBubble $type={data.type}>
-            {data.type === 'level' ? <SparklesIcon /> : <TrophyIcon />}
+            {data.type === "level" ? <SparklesIcon /> : <TrophyIcon />}
           </IconBubble>
 
           <TextGroup>
             <Tag $type={data.type}>
-              {data.type === 'level' ? '⬆ Level Up' : '🏆 Achievement'}
+              {data.type === "level" ? "⬆ Level Up" : "🏆 Achievement"}
             </Tag>
             <Title>{data.title}</Title>
             <Description>{data.description}</Description>
           </TextGroup>
 
           <CloseBtn
-            onClick={(e) => { e.stopPropagation(); dismiss(); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              dismiss();
+            }}
             aria-label="Dismiss notification"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M18 6 6 18M6 6l12 12" />
             </svg>
           </CloseBtn>

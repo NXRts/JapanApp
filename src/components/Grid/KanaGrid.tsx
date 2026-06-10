@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { KanaCard } from '@/components/Card/KanaCard';
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { KanaCard } from "@/components/Card/KanaCard";
 
 const Container = styled.div`
   max-width: 1400px;
@@ -25,7 +25,7 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin-bottom: 2rem;
   font-size: 2.5rem;
-  background: linear-gradient(to right, #2C3E50, #4CA1AF);
+  background: linear-gradient(to right, #2c3e50, #4ca1af);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 800;
@@ -70,8 +70,8 @@ const TabButton = styled.button<{ $active: boolean }>`
   padding: 0.75rem 2.5rem;
   border: none;
   border-radius: 999px;
-  background: ${({ $active }) => ($active ? 'var(--primary)' : 'transparent')};
-  color: ${({ $active }) => ($active ? 'white' : 'var(--text-secondary)')};
+  background: ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
+  color: ${({ $active }) => ($active ? "white" : "var(--text-secondary)")};
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -79,17 +79,19 @@ const TabButton = styled.button<{ $active: boolean }>`
   min-width: 140px;
 
   &:hover {
-    color: ${({ $active }) => ($active ? 'white' : 'var(--foreground)')};
+    color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
   }
 `;
 
 export function KanaGrid() {
   const [data, setData] = useState<KanaData>({ hiragana: [], katakana: [] });
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'hiragana' | 'katakana'>('hiragana');
+  const [activeTab, setActiveTab] = useState<"hiragana" | "katakana">(
+    "hiragana",
+  );
 
   useEffect(() => {
-    fetch('/api/kana')
+    fetch("/api/kana")
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Failed to load kana: ${res.statusText}`);
@@ -100,12 +102,15 @@ export function KanaGrid() {
         setData(data);
       })
       .catch((error) => {
-        console.error('Error loading kana:', error);
+        console.error("Error loading kana:", error);
       })
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p style={{ textAlign: 'center', marginTop: 100 }}>Loading Kana...</p>;
+  if (loading)
+    return (
+      <p style={{ textAlign: "center", marginTop: 100 }}>Loading Kana...</p>
+    );
 
   return (
     <Container>
@@ -113,34 +118,44 @@ export function KanaGrid() {
 
       <Controls>
         <TabButton
-          $active={activeTab === 'hiragana'}
-          onClick={() => setActiveTab('hiragana')}
+          $active={activeTab === "hiragana"}
+          onClick={() => setActiveTab("hiragana")}
         >
           Hiragana
         </TabButton>
         <TabButton
-          $active={activeTab === 'katakana'}
-          onClick={() => setActiveTab('katakana')}
+          $active={activeTab === "katakana"}
+          onClick={() => setActiveTab("katakana")}
         >
           Katakana
         </TabButton>
       </Controls>
 
       <Grid>
-        {activeTab === 'hiragana'
+        {activeTab === "hiragana"
           ? data.hiragana.map((char) => (
-            <KanaCard key={`h-${char}`} char={char} />
-          ))
+              <KanaCard key={`h-${char}`} char={char} />
+            ))
           : data.katakana.map((char) => (
-            <KanaCard key={`k-${char}`} char={char} />
-          ))
-        }
+              <KanaCard key={`k-${char}`} char={char} />
+            ))}
       </Grid>
 
-      <div style={{ marginTop: '4rem', textAlign: 'center' }}>
-        <p style={{ marginBottom: '1.5rem', color: 'var(--text-secondary)' }}>Mastered both scripts?</p>
-        <Link href="/kanji" style={{ textDecoration: 'none' }}>
-          <TabButton $active={true} style={{ minWidth: '200px', display: 'inline-flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+      <div style={{ marginTop: "4rem", textAlign: "center" }}>
+        <p style={{ marginBottom: "1.5rem", color: "var(--text-secondary)" }}>
+          Mastered both scripts?
+        </p>
+        <Link href="/kanji" style={{ textDecoration: "none" }}>
+          <TabButton
+            $active={true}
+            style={{
+              minWidth: "200px",
+              display: "inline-flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
             Start Learning Kanji
             <span>→</span>
           </TabButton>

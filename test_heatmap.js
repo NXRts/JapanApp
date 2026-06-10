@@ -13,8 +13,8 @@ for (let w = 0; w < TOTAL_WEEKS; w++) {
     const date = new Date(startDate);
     date.setDate(startDate.getDate() + w * 7 + d);
     const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     lastDateStr = `${y}-${m}-${day}`;
   }
 }

@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, Suspense } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { useSearchParams } from 'next/navigation';
-import { searchDictionary, allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
+import React, { useState, useEffect, Suspense } from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { useSearchParams } from "next/navigation";
+import {
+  searchDictionary,
+  allVocabulary,
+  allKanji,
+  allGrammar,
+} from "@/lib/dictionary";
 
 // --- Styled Components ---
 const PageWrapper = styled.div`
@@ -21,7 +26,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: radial-gradient(circle at center, rgba(var(--primary-rgb, 79, 70, 229), 0.05) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--primary-rgb, 79, 70, 229), 0.05) 0%,
+    transparent 70%
+  );
 
   @media (max-width: 640px) {
     padding: 1rem 0.75rem;
@@ -44,13 +53,11 @@ const Header = styled.div`
 
 const HeaderRight = styled.div`
   text-align: right;
-  
+
   @media (max-width: 600px) {
     text-align: left;
   }
 `;
-
-
 
 const QuizCard = styled.div`
   background: var(--surface);
@@ -91,11 +98,15 @@ const QuestionText = styled.div`
   font-weight: 800;
   margin-bottom: 3.5rem;
   line-height: 1.2;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--text-secondary) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
-  
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+
   @media (max-width: 600px) {
     font-size: 2.2rem;
     margin-bottom: 1.5rem;
@@ -109,34 +120,44 @@ const OptionsGrid = styled.div`
   margin-bottom: 2.5rem;
 
   @media (max-width: 600px) {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
     gap: 0.5rem;
     margin-bottom: 1.25rem;
   }
 `;
 
-const OptionButton = styled.button<{ $state?: 'correct' | 'incorrect' | 'neutral' }>`
+const OptionButton = styled.button<{
+  $state?: "correct" | "incorrect" | "neutral";
+}>`
   padding: 1.5rem;
   border-radius: 20px;
-  border: 2px solid ${({ $state }) =>
-        $state === 'correct' ? '#10b981' :
-            $state === 'incorrect' ? '#ef4444' :
-                'var(--border)'};
+  border: 2px solid
+    ${({ $state }) =>
+      $state === "correct"
+        ? "#10b981"
+        : $state === "incorrect"
+          ? "#ef4444"
+          : "var(--border)"};
   background: ${({ $state }) =>
-        $state === 'correct' ? 'rgba(16, 185, 129, 0.1)' :
-            $state === 'incorrect' ? 'rgba(239, 68, 68, 0.1)' :
-                'var(--surface)'};
+    $state === "correct"
+      ? "rgba(16, 185, 129, 0.1)"
+      : $state === "incorrect"
+        ? "rgba(239, 68, 68, 0.1)"
+        : "var(--surface)"};
   color: ${({ $state }) =>
-        $state === 'correct' ? '#10b981' :
-            $state === 'incorrect' ? '#ef4444' :
-                'var(--foreground)'};
+    $state === "correct"
+      ? "#10b981"
+      : $state === "incorrect"
+        ? "#ef4444"
+        : "var(--foreground)"};
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  pointer-events: ${({ $state }) => $state && $state !== 'neutral' ? 'none' : 'auto'};
+  pointer-events: ${({ $state }) =>
+    $state && $state !== "neutral" ? "none" : "auto"};
   box-shadow: ${({ $state }) =>
-        $state === 'neutral' ? '0 4px 6px -1px rgba(0, 0, 0, 0.05)' : 'none'};
+    $state === "neutral" ? "0 4px 6px -1px rgba(0, 0, 0, 0.05)" : "none"};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -144,16 +165,18 @@ const OptionButton = styled.button<{ $state?: 'correct' | 'incorrect' | 'neutral
   gap: 0.4rem;
 
   &:hover {
-    transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-3px)' : 'none'};
-    border-color: ${({ $state }) => $state === 'neutral' ? 'var(--primary)' : ''};
+    transform: ${({ $state }) =>
+      $state === "neutral" ? "translateY(-3px)" : "none"};
+    border-color: ${({ $state }) =>
+      $state === "neutral" ? "var(--primary)" : ""};
   }
-  
+
   span.option-reading {
     font-size: 0.9rem;
     color: var(--text-secondary);
     font-weight: 400;
   }
-  
+
   @media (max-width: 600px) {
     padding: 1rem 0.5rem;
   }
@@ -171,7 +194,11 @@ const ProgressBarContainer = styled.div`
 const ProgressFill = styled.div<{ $percent: number }>`
   height: 100%;
   width: ${({ $percent }) => `${$percent}%`};
-  background: linear-gradient(90deg, var(--primary), var(--primary-dark, #4f46e5));
+  background: linear-gradient(
+    90deg,
+    var(--primary),
+    var(--primary-dark, #4f46e5)
+  );
   transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 99px;
 `;
@@ -195,7 +222,11 @@ const ResultOverlay = styled.div`
 
 const ActionButtonParams = styled(Link)`
   padding: 1rem 3rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark, #4338ca) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark, #4338ca) 100%
+  );
   color: white;
   border: none;
   border-radius: 999px;
@@ -209,7 +240,7 @@ const ActionButtonParams = styled(Link)`
   align-items: center;
   justify-content: center;
   min-width: 160px;
-  
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 20px 25px -5px rgba(var(--primary-rgb, 79, 70, 229), 0.4);
@@ -218,7 +249,11 @@ const ActionButtonParams = styled(Link)`
 
 const RestartButton = styled.button`
   padding: 1rem 3rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark, #4338ca) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark, #4338ca) 100%
+  );
   color: white;
   border: none;
   border-radius: 999px;
@@ -231,7 +266,7 @@ const RestartButton = styled.button`
   align-items: center;
   justify-content: center;
   min-width: 160px;
-  
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 20px 25px -5px rgba(var(--primary-rgb, 79, 70, 229), 0.4);
@@ -253,13 +288,12 @@ const ActionSecondary = styled(Link)`
   align-items: center;
   justify-content: center;
   min-width: 160px;
-  
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   }
 `;
-
 
 // --- Logic ---
 interface QuizQuestion {
@@ -279,214 +313,270 @@ function shuffleArray(array: any[]) {
 function QuizContent() {
   const searchParams = useSearchParams();
 
-  const query = searchParams.get('q') || '';
-  const activeCategory = searchParams.get('category') || 'vocabulary';
-  const activeLevel = searchParams.get('level') || 'All';
+  const query = searchParams.get("q") || "";
+  const activeCategory = searchParams.get("category") || "vocabulary";
+  const activeLevel = searchParams.get("level") || "All";
 
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [quizState, setQuizState] = useState<'loading' | 'playing' | 'results' | 'error'>('loading');
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(null);
-  
+  const [quizState, setQuizState] = useState<
+    "loading" | "playing" | "results" | "error"
+  >("loading");
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
+    null,
+  );
+
   useEffect(() => {
     let isMounted = true;
-    
+
     const generateQuiz = async () => {
-      setQuizState('loading');
+      setQuizState("loading");
       try {
         let baseData: any[] = [];
-        
-        if (query && query.trim() !== '') {
-          baseData = await searchDictionary(query, activeCategory as any, activeLevel);
+
+        if (query && query.trim() !== "") {
+          baseData = await searchDictionary(
+            query,
+            activeCategory as any,
+            activeLevel,
+          );
         } else {
-          if (activeCategory === 'kanji') baseData = allKanji;
-          else if (activeCategory === 'grammar') baseData = allGrammar;
-          else baseData = allVocabulary.filter(v => v.id.startsWith('lib-'));
-          
-          if (activeLevel !== 'All' && activeLevel !== 'all') {
-            baseData = baseData.filter(item => item.level === activeLevel);
+          if (activeCategory === "kanji") baseData = allKanji;
+          else if (activeCategory === "grammar") baseData = allGrammar;
+          else baseData = allVocabulary.filter((v) => v.id.startsWith("lib-"));
+
+          if (activeLevel !== "All" && activeLevel !== "all") {
+            baseData = baseData.filter((item) => item.level === activeLevel);
           }
         }
-        
+
         if (!isMounted) return;
-        
+
         if (baseData.length < 4) {
-          setQuizState('error');
+          setQuizState("error");
           return;
         }
-        
+
         const shuffledBase = shuffleArray(baseData);
-        const selectedQuestions = shuffledBase.slice(0, Math.min(10, shuffledBase.length));
-        
-        const generatedQuestions = selectedQuestions.map(item => {
-          const others = shuffledBase.filter(x => x.id !== item.id);
+        const selectedQuestions = shuffledBase.slice(
+          0,
+          Math.min(10, shuffledBase.length),
+        );
+
+        const generatedQuestions = selectedQuestions.map((item) => {
+          const others = shuffledBase.filter((x) => x.id !== item.id);
           const wrongOptions = shuffleArray(others).slice(0, 3);
           const options = shuffleArray([item, ...wrongOptions]);
           return { item, options };
         });
-        
+
         setQuestions(generatedQuestions);
-        setQuizState('playing');
+        setQuizState("playing");
         setCurrentIndex(0);
         setScore(0);
         setSelectedOptionIndex(null);
       } catch (err) {
-        if (isMounted) setQuizState('error');
+        if (isMounted) setQuizState("error");
       }
     };
-    
+
     generateQuiz();
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, [query, activeCategory, activeLevel]);
 
   const handleOptionClick = (idx: number, isCorrect: boolean) => {
-    if (selectedOptionIndex !== null) return; 
-    
+    if (selectedOptionIndex !== null) return;
+
     setSelectedOptionIndex(idx);
     if (isCorrect) {
-      setScore(prev => prev + 1);
+      setScore((prev) => prev + 1);
     }
 
     setTimeout(() => {
       if (currentIndex < questions.length - 1) {
-        setCurrentIndex(prev => prev + 1);
+        setCurrentIndex((prev) => prev + 1);
         setSelectedOptionIndex(null);
       } else {
-        setQuizState('results');
+        setQuizState("results");
       }
     }, 1500);
   };
-  
+
   const handleRestart = () => {
-    const reShuffled = shuffleArray(questions).map(q => ({
+    const reShuffled = shuffleArray(questions).map((q) => ({
       ...q,
-      options: shuffleArray(q.options)
+      options: shuffleArray(q.options),
     }));
     setQuestions(reShuffled);
     setCurrentIndex(0);
     setScore(0);
     setSelectedOptionIndex(null);
-    setQuizState('playing');
+    setQuizState("playing");
   };
 
   const getQuestionText = (item: any) => {
-    if (item.type === 'kanji') return item.kanji;
-    if (item.type === 'grammar') return item.title;
+    if (item.type === "kanji") return item.kanji;
+    if (item.type === "grammar") return item.title;
     return item.word || item.title;
   };
-  
+
   const getSubTextConfig = (opt: any) => {
-    if (opt.type === 'kanji') {
-      const readings = [
-        ...(opt.onyomi || []),
-        ...(opt.kunyomi || [])
-      ].join(', ');
+    if (opt.type === "kanji") {
+      const readings = [...(opt.onyomi || []), ...(opt.kunyomi || [])].join(
+        ", ",
+      );
       return { read: readings, mean: opt.meaning };
     }
-    if (opt.type === 'grammar') {
-      return { read: '', mean: opt.meaning };
+    if (opt.type === "grammar") {
+      return { read: "", mean: opt.meaning };
     }
-    return { read: opt.reading || opt.romaji || '', mean: opt.meaning };
+    return { read: opt.reading || opt.romaji || "", mean: opt.meaning };
   };
 
   return (
     <PageWrapper>
       <Container>
-        <Breadcrumbs 
+        <Breadcrumbs
           items={[
-            { label: 'Home', href: '/' },
-            { label: 'JLPT Mastery', href: '/jlpt' }
-          ]} 
-          current="Quiz" 
+            { label: "Home", href: "/" },
+            { label: "JLPT Mastery", href: "/jlpt" },
+          ]}
+          current="Quiz"
         />
         <Header>
-          
           <HeaderRight>
-              <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-                  JLPT Custom Quiz
-              </div>
-              <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
-                  Level {activeLevel !== 'All' ? activeLevel : 'All'} • {activeCategory.replace('-', ' ').toUpperCase()}
-              </div>
+            <div
+              style={{
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                color: "var(--primary)",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+              }}
+            >
+              JLPT Custom Quiz
+            </div>
+            <div
+              style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}
+            >
+              Level {activeLevel !== "All" ? activeLevel : "All"} •{" "}
+              {activeCategory.replace("-", " ").toUpperCase()}
+            </div>
           </HeaderRight>
         </Header>
-        
-        {quizState === 'loading' && (
-          <div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-secondary)' }}>
-            <p>Preparing Quiz {activeLevel !== 'All' ? activeLevel : ''}...</p>
+
+        {quizState === "loading" && (
+          <div
+            style={{
+              padding: "4rem",
+              textAlign: "center",
+              color: "var(--text-secondary)",
+            }}
+          >
+            <p>Preparing Quiz {activeLevel !== "All" ? activeLevel : ""}...</p>
           </div>
         )}
-        
-        {quizState === 'error' && (
+
+        {quizState === "error" && (
           <QuizCard>
-            <h2 style={{ color: 'var(--foreground)' }}>Not Enough Data</h2>
-            <p style={{ marginTop: '1rem', textAlign: 'center', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-              Sorry, available data for this filter is less than 4 items.<br/> Please adjust your filters on the JLPT page to generate a Quiz.
+            <h2 style={{ color: "var(--foreground)" }}>Not Enough Data</h2>
+            <p
+              style={{
+                marginTop: "1rem",
+                textAlign: "center",
+                color: "var(--text-secondary)",
+                marginBottom: "2rem",
+              }}
+            >
+              Sorry, available data for this filter is less than 4 items.
+              <br /> Please adjust your filters on the JLPT page to generate a
+              Quiz.
             </p>
-            <ActionButtonParams href="/jlpt">
-              Back to JLPT
-            </ActionButtonParams>
+            <ActionButtonParams href="/jlpt">Back to JLPT</ActionButtonParams>
           </QuizCard>
         )}
-        
-        {quizState === 'playing' && questions.length > 0 && (
+
+        {quizState === "playing" && questions.length > 0 && (
           <QuizCard>
             <ProgressInfo>
-                {currentIndex + 1} / {questions.length}
+              {currentIndex + 1} / {questions.length}
             </ProgressInfo>
-            
-            <QuestionText>{getQuestionText(questions[currentIndex].item)}</QuestionText>
-            
+
+            <QuestionText>
+              {getQuestionText(questions[currentIndex].item)}
+            </QuestionText>
+
             <OptionsGrid>
               {questions[currentIndex].options.map((opt, idx) => {
                 const isCorrect = opt.id === questions[currentIndex].item.id;
-                let state: 'neutral' | 'correct' | 'incorrect' = 'neutral';
-                
+                let state: "neutral" | "correct" | "incorrect" = "neutral";
+
                 if (selectedOptionIndex !== null) {
-                  if (isCorrect) state = 'correct';
-                  else if (idx === selectedOptionIndex) state = 'incorrect';
+                  if (isCorrect) state = "correct";
+                  else if (idx === selectedOptionIndex) state = "incorrect";
                 }
-                
+
                 const texts = getSubTextConfig(opt);
 
                 return (
-                  <OptionButton 
+                  <OptionButton
                     key={idx}
                     $state={state}
                     onClick={() => handleOptionClick(idx, isCorrect)}
                   >
                     <span>{texts.mean}</span>
-                    {texts.read && <span className="option-reading">{texts.read}</span>}
+                    {texts.read && (
+                      <span className="option-reading">{texts.read}</span>
+                    )}
                   </OptionButton>
                 );
               })}
             </OptionsGrid>
-            
+
             <ProgressBarContainer>
-                <ProgressFill $percent={((currentIndex + 1) / questions.length) * 100} />
+              <ProgressFill
+                $percent={((currentIndex + 1) / questions.length) * 100}
+              />
             </ProgressBarContainer>
           </QuizCard>
         )}
-        
-        {quizState === 'results' && (
+
+        {quizState === "results" && (
           <ResultOverlay>
-            <div style={{ fontSize: '3rem', margin: '0 0 1rem 0' }}>🏆</div>
+            <div style={{ fontSize: "3rem", margin: "0 0 1rem 0" }}>🏆</div>
             <h2>Quiz Complete!</h2>
-            <p style={{ fontSize: '1.25rem', marginBottom: '0.5rem', marginTop: '1rem' }}>You scored <strong>{score}</strong> out of <strong>{questions.length}</strong></p>
-            <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                {score === questions.length ? "Amazing! Your score is perfect!" : "Good job! Keep practicing."}
+            <p
+              style={{
+                fontSize: "1.25rem",
+                marginBottom: "0.5rem",
+                marginTop: "1rem",
+              }}
+            >
+              You scored <strong>{score}</strong> out of{" "}
+              <strong>{questions.length}</strong>
             </p>
-            
-            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <p style={{ color: "var(--text-secondary)", marginBottom: "2rem" }}>
+              {score === questions.length
+                ? "Amazing! Your score is perfect!"
+                : "Good job! Keep practicing."}
+            </p>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+            >
               <RestartButton onClick={handleRestart}>Try Again</RestartButton>
-              <ActionSecondary href="/jlpt">
-                Back to JLPT
-              </ActionSecondary>
+              <ActionSecondary href="/jlpt">Back to JLPT</ActionSecondary>
             </div>
           </ResultOverlay>
         )}
-
       </Container>
     </PageWrapper>
   );
@@ -494,7 +584,11 @@ function QuizContent() {
 
 export default function QuizPage() {
   return (
-    <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center' }}>Loading...</div>}>
+    <Suspense
+      fallback={
+        <div style={{ padding: "4rem", textAlign: "center" }}>Loading...</div>
+      }
+    >
       <QuizContent />
     </Suspense>
   );

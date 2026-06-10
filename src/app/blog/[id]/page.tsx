@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import styled, { keyframes } from 'styled-components';
-import { useParams, useRouter } from 'next/navigation';
-import { mockPosts } from '@/data/blog';
-import { useEffect, useState } from 'react';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import styled, { keyframes } from "styled-components";
+import { useParams, useRouter } from "next/navigation";
+import { mockPosts } from "@/data/blog";
+import { useEffect, useState } from "react";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(20px); }
@@ -35,19 +35,22 @@ const Container = styled.div`
   margin: 0 auto;
 `;
 
-
-
 const HeaderBanner = styled.div<{ $category: string }>`
   height: 400px;
   border-radius: 32px;
   margin-bottom: 4rem;
-  background: ${props => {
+  background: ${(props) => {
     switch (props.$category) {
-      case 'kanji': return 'linear-gradient(135deg, #ff4757, #ff6b81)';
-      case 'grammar': return 'linear-gradient(135deg, #3742fa, #5352ed)';
-      case 'culture': return 'linear-gradient(135deg, #ffa502, #eccc68)';
-      case 'learning-tips': return 'linear-gradient(135deg, #2ed573, #7bed9f)';
-      default: return 'var(--primary)';
+      case "kanji":
+        return "linear-gradient(135deg, #ff4757, #ff6b81)";
+      case "grammar":
+        return "linear-gradient(135deg, #3742fa, #5352ed)";
+      case "culture":
+        return "linear-gradient(135deg, #ffa502, #eccc68)";
+      case "learning-tips":
+        return "linear-gradient(135deg, #2ed573, #7bed9f)";
+      default:
+        return "var(--primary)";
     }
   }};
   display: flex;
@@ -58,32 +61,39 @@ const HeaderBanner = styled.div<{ $category: string }>`
   font-weight: 800;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.2);
+  box-shadow:
+    0 30px 60px -15px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   animation: ${fadeInUp} 0.8s ease-out forwards;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+') repeat;
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+")
+      repeat;
     opacity: 0.6;
     mix-blend-mode: overlay;
   }
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.4) 100%);
+    background: radial-gradient(
+      circle at center,
+      transparent 20%,
+      rgba(0, 0, 0, 0.4) 100%
+    );
     pointer-events: none;
   }
 `;
 
 const FloatingIcon = styled.div`
   animation: ${float} 6s ease-in-out infinite;
-  text-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  text-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   z-index: 1;
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: "Noto Sans JP", sans-serif;
 `;
 
 const Meta = styled.div`
@@ -105,31 +115,49 @@ const Category = styled.span<{ $category: string }>`
   border-radius: 999px;
   position: relative;
   overflow: hidden;
-  background: ${props => {
+  background: ${(props) => {
     switch (props.$category) {
-      case 'kanji': return 'rgba(255, 71, 87, 0.1)';
-      case 'grammar': return 'rgba(55, 66, 250, 0.1)';
-      case 'culture': return 'rgba(255, 165, 2, 0.1)';
-      case 'learning-tips': return 'rgba(46, 213, 115, 0.1)';
-      default: return 'var(--surface)';
+      case "kanji":
+        return "rgba(255, 71, 87, 0.1)";
+      case "grammar":
+        return "rgba(55, 66, 250, 0.1)";
+      case "culture":
+        return "rgba(255, 165, 2, 0.1)";
+      case "learning-tips":
+        return "rgba(46, 213, 115, 0.1)";
+      default:
+        return "var(--surface)";
     }
   }};
-  color: ${props => {
+  color: ${(props) => {
     switch (props.$category) {
-      case 'kanji': return '#ff4757';
-      case 'grammar': return '#5352ed';
-      case 'culture': return '#ffa502';
-      case 'learning-tips': return '#2ed573';
-      default: return 'var(--text-secondary)';
+      case "kanji":
+        return "#ff4757";
+      case "grammar":
+        return "#5352ed";
+      case "culture":
+        return "#ffa502";
+      case "learning-tips":
+        return "#2ed573";
+      default:
+        return "var(--text-secondary)";
     }
   }};
   border: 1px solid currentColor;
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
     animation: ${shimmer} 3s infinite;
   }
 `;
@@ -149,9 +177,9 @@ const ReadTime = styled.span`
   font-weight: 500;
   display: flex;
   align-items: center;
-  
+
   &::before {
-    content: '';
+    content: "";
     display: inline-block;
     width: 6px;
     height: 6px;
@@ -171,7 +199,7 @@ const Title = styled.h1`
   letter-spacing: -0.03em;
   animation: ${fadeInUp} 0.8s ease-out 0.25s forwards;
   opacity: 0;
-  
+
   @media (max-width: 768px) {
     font-size: 2.8rem;
   }
@@ -204,7 +232,7 @@ const AuthorAvatar = styled.div`
   border-radius: 50%;
   background: var(--surface);
   border: 3px solid var(--background);
-  background-image: url('https://api.dicebear.com/7.x/notionists/svg?seed=Kenji&backgroundColor=transparent');
+  background-image: url("https://api.dicebear.com/7.x/notionists/svg?seed=Kenji&backgroundColor=transparent");
   background-size: cover;
   background-position: center;
 `;
@@ -234,16 +262,16 @@ const Content = styled.div`
   color: var(--text-secondary);
   animation: ${fadeInUp} 0.8s ease-out 0.45s forwards;
   opacity: 0;
-  
+
   p {
     margin-bottom: 2.5rem;
   }
-  
+
   strong {
     color: var(--foreground);
     font-weight: 700;
   }
-  
+
   h2 {
     font-size: 2.5rem;
     font-weight: 800;
@@ -251,14 +279,14 @@ const Content = styled.div`
     margin: 4.5rem 0 2rem;
     letter-spacing: -0.02em;
   }
-  
+
   h3 {
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--foreground);
     margin: 3.5rem 0 1.5rem;
   }
-  
+
   blockquote {
     border-left: 4px solid var(--primary);
     padding: 2.5rem;
@@ -266,11 +294,15 @@ const Content = styled.div`
     font-style: italic;
     font-size: 1.5rem;
     color: var(--foreground);
-    background: linear-gradient(90deg, rgba(79, 70, 229, 0.08) 0%, transparent 100%);
+    background: linear-gradient(
+      90deg,
+      rgba(79, 70, 229, 0.08) 0%,
+      transparent 100%
+    );
     border-radius: 0 24px 24px 0;
     position: relative;
     line-height: 1.8;
-    
+
     &::before {
       content: '"';
       position: absolute;
@@ -283,15 +315,16 @@ const Content = styled.div`
       line-height: 1;
     }
   }
-  
-  ul, ol {
+
+  ul,
+  ol {
     margin-bottom: 3rem;
     padding-left: 1.5rem;
-    
+
     li {
       margin-bottom: 1rem;
       padding-left: 0.5rem;
-      
+
       &::marker {
         color: var(--primary);
         font-weight: bold;
@@ -319,35 +352,53 @@ export default function BlogPostPage() {
 
   if (!mounted) return null;
 
-  const id = typeof params?.id === 'string' ? params.id : Array.isArray(params?.id) ? params.id[0] : null;
-  const post = mockPosts.find(p => p.id === id);
+  const id =
+    typeof params?.id === "string"
+      ? params.id
+      : Array.isArray(params?.id)
+        ? params.id[0]
+        : null;
+  const post = mockPosts.find((p) => p.id === id);
 
   if (!post) {
     return (
       <NotFoundContainer>
-        <div style={{ alignSelf: 'flex-start', width: '100%' }}>
-          <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/blog' }]} current="Post Not Found" />
+        <div style={{ alignSelf: "flex-start", width: "100%" }}>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Blog", href: "/blog" },
+            ]}
+            current="Post Not Found"
+          />
         </div>
         <Title>Post Not Found</Title>
-
       </NotFoundContainer>
     );
   }
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Blog', href: '/blog' }]} current={post.title} />
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Blog", href: "/blog" },
+        ]}
+        current={post.title}
+      />
       <HeaderBanner $category={post.category}>
         <FloatingIcon>
-          {post.category === 'kanji' && '字'}
-          {post.category === 'grammar' && '文'}
-          {post.category === 'culture' && '和'}
-          {post.category === 'learning-tips' && '学'}
+          {post.category === "kanji" && "字"}
+          {post.category === "grammar" && "文"}
+          {post.category === "culture" && "和"}
+          {post.category === "learning-tips" && "学"}
         </FloatingIcon>
       </HeaderBanner>
 
       <Meta>
-        <Category $category={post.category}>{post.category.replace('-', ' ')}</Category>
+        <Category $category={post.category}>
+          {post.category.replace("-", " ")}
+        </Category>
         <DateText>{post.date}</DateText>
         <ReadTime>{post.readTime}</ReadTime>
       </Meta>

@@ -6,7 +6,7 @@ export class SeededRandom {
   private seed: number;
 
   constructor(seed: string | number) {
-    if (typeof seed === 'string') {
+    if (typeof seed === "string") {
       // Simple string hashing to number
       let hash = 0;
       for (let i = 0; i < seed.length; i++) {
@@ -35,7 +35,10 @@ export class SeededRandom {
     const result = [...array];
     for (let i = result.length - 1; i > 0; i--) {
       const j = Math.floor(this.next() * (i + 1));
-      [result[i], result[result[j] === undefined ? i : j]] = [result[j] === undefined ? result[i] : result[j], result[i]];
+      [result[i], result[result[j] === undefined ? i : j]] = [
+        result[j] === undefined ? result[i] : result[j],
+        result[i],
+      ];
       // Manual swap to be safe with seeding
       const temp = result[i];
       result[i] = result[j];
@@ -43,7 +46,7 @@ export class SeededRandom {
     }
     return result;
   }
-  
+
   // Alternative safer shuffle
   safeShuffle<T>(array: T[]): T[] {
     const result = [...array];
@@ -61,5 +64,5 @@ export class SeededRandom {
  * Get Today's Seed String (YYYY-MM-DD)
  */
 export const getTodaySeed = () => {
-  return new Date().toISOString().split('T')[0];
+  return new Date().toISOString().split("T")[0];
 };

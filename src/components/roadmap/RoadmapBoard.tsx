@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from 'styled-components';
-import { CategoryCard } from './CategoryCard';
-import { GridNode } from './GridNode';
-import { ROADMAP_DATA } from '@/data/roadmap';
+import React from "react";
+import styled from "styled-components";
+import { CategoryCard } from "./CategoryCard";
+import { GridNode } from "./GridNode";
+import { ROADMAP_DATA } from "@/data/roadmap";
 
 const BoardContainer = styled.div`
   width: 100%;
@@ -26,9 +26,9 @@ const TierHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  
+
   &::after {
-    content: '';
+    content: "";
     flex: 1;
     height: 2px;
     background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
@@ -83,12 +83,17 @@ interface RoadmapBoardProps {
 
 export function RoadmapBoard({ userProgress }: RoadmapBoardProps) {
   const getRowColor = (type: string) => {
-    switch(type) {
-      case 'writing': return 'var(--rm-purple)';
-      case 'vocabulary': return 'var(--rm-pink)';
-      case 'grammar': return 'var(--rm-orange)';
-      case 'kanji': return '#10b981';
-      default: return 'var(--primary)';
+    switch (type) {
+      case "writing":
+        return "var(--rm-purple)";
+      case "vocabulary":
+        return "var(--rm-pink)";
+      case "grammar":
+        return "var(--rm-orange)";
+      case "kanji":
+        return "#10b981";
+      default:
+        return "var(--primary)";
     }
   };
 
@@ -98,33 +103,41 @@ export function RoadmapBoard({ userProgress }: RoadmapBoardProps) {
         <TierSection key={chapter.id}>
           <TierHeader>
             <TierBadge>{chapter.level}</TierBadge>
-            <TierTitle>{chapter.title.split(':')[1] || chapter.title}</TierTitle>
+            <TierTitle>
+              {chapter.title.split(":")[1] || chapter.title}
+            </TierTitle>
           </TierHeader>
-          
+
           <NodesGrid>
             {chapter.lessons.map((lesson, lessonIdx) => {
               const isCompleted = userProgress[lesson.id];
-              
+
               // Logic for availability
               let isAvailable = false;
               if (chapterIdx === 0 && lessonIdx === 0) {
                 isAvailable = true;
               } else {
-                const prevLesson = lessonIdx > 0 
-                  ? chapter.lessons[lessonIdx - 1] 
-                  : ROADMAP_DATA[chapterIdx - 1]?.lessons.slice(-1)[0];
-                if (prevLesson && userProgress[prevLesson.id]) isAvailable = true;
+                const prevLesson =
+                  lessonIdx > 0
+                    ? chapter.lessons[lessonIdx - 1]
+                    : ROADMAP_DATA[chapterIdx - 1]?.lessons.slice(-1)[0];
+                if (prevLesson && userProgress[prevLesson.id])
+                  isAvailable = true;
               }
 
-              const status = isCompleted ? 'completed' : (isAvailable ? 'available' : 'locked');
+              const status = isCompleted
+                ? "completed"
+                : isAvailable
+                  ? "available"
+                  : "locked";
 
               return (
-                <GridNode 
+                <GridNode
                   key={lesson.id}
-                  title={lesson.title} 
-                  link={lesson.link} 
-                  status={status} 
-                  rowColor={getRowColor(lesson.type)} 
+                  title={lesson.title}
+                  link={lesson.link}
+                  status={status}
+                  rowColor={getRowColor(lesson.type)}
                 />
               );
             })}

@@ -1,4 +1,4 @@
-import { VocabularyItem } from '../n5/vocabulary';
+import { VocabularyItem } from "../n5/vocabulary";
 
 export const n4Vocabulary: VocabularyItem[] = [
   {
@@ -12,8 +12,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "辞書で意味を調べます。",
       romaji: "Jisho de imi o shirabemasu.",
-      english: "I check the meaning in the dictionary."
-    }
+      english: "I check the meaning in the dictionary.",
+    },
   },
   {
     id: "v-n4-yakusoku",
@@ -26,8 +26,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "友達と約束があります。",
       romaji: "Tomodachi to yakusoku ga arimasu.",
-      english: "I have a promise with a friend."
-    }
+      english: "I have a promise with a friend.",
+    },
   },
   {
     id: "v-n4-hikkosu",
@@ -40,8 +40,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "来月、東京に引っ越します。",
       romaji: "Raigetsu, Toukyou ni hikkoshimasu.",
-      english: "Next month, I will move to Tokyo."
-    }
+      english: "Next month, I will move to Tokyo.",
+    },
   },
   {
     id: "v-n4-kimeru",
@@ -54,8 +54,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "旅行の日を決めた。",
       romaji: "Ryokou no hi o kimeta.",
-      english: "I decided on the day of the trip."
-    }
+      english: "I decided on the day of the trip.",
+    },
   },
   {
     id: "v-n4-shoukai",
@@ -68,8 +68,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "自己紹介をお願いします。",
       romaji: "Jikoshoukai o onegai shimasu.",
-      english: "Please introduce yourself."
-    }
+      english: "Please introduce yourself.",
+    },
   },
   {
     id: "v-n4-isogu",
@@ -82,8 +82,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "時間がないから、急ぎましょう。",
       romaji: "Jikan ga nai kara, isogimashou.",
-      english: "Since there is no time, let's hurry."
-    }
+      english: "Since there is no time, let's hurry.",
+    },
   },
   {
     id: "v-n4-wasureru",
@@ -96,8 +96,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "宿題を忘れてしまいました。",
       romaji: "Shukudai o wasurete shimaimashita.",
-      english: "I accidentally forgot my homework."
-    }
+      english: "I accidentally forgot my homework.",
+    },
   },
   {
     id: "v-n4-warau",
@@ -110,8 +110,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の話を聞いて、みんな笑った。",
       romaji: "Kare no hanashi o kiite, minna waratta.",
-      english: "Hearing his story, everyone laughed."
-    }
+      english: "Hearing his story, everyone laughed.",
+    },
   },
   {
     id: "v-n4-naku",
@@ -124,8 +124,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "赤ちゃんが泣いています。",
       romaji: "Akachan ga naite imasu.",
-      english: "The baby is crying."
-    }
+      english: "The baby is crying.",
+    },
   },
   {
     id: "v-n4-asobu",
@@ -138,8 +138,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "週末は子供と公園で遊びます。",
       romaji: "Shuumatsu wa kodomo to kouen de asobimasu.",
-      english: "On weekends, I play in the park with my child."
-    }
+      english: "On weekends, I play in the park with my child.",
+    },
   },
   {
     id: "v-n4-okureru",
@@ -152,8 +152,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "電車が遅れました。",
       romaji: "Densha ga okuremashita.",
-      english: "The train was late."
-    }
+      english: "The train was late.",
+    },
   },
   {
     id: "v-n4-tetsudau",
@@ -166,8 +166,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "母の料理を手伝います。",
       romaji: "Haha no ryouri o tetsudaimasu.",
-      english: "I help with my mother's cooking."
-    }
+      english: "I help with my mother's cooking.",
+    },
   },
   {
     id: "v-n4-mitsukeru",
@@ -180,8 +180,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "やっと新しい仕事を見つけました。",
       romaji: "Yatto atarashii shigoto o mitsukemashita.",
-      english: "Finally, I found a new job."
-    }
+      english: "Finally, I found a new job.",
+    },
   },
   {
     id: "v-n4-yorokobu",
@@ -194,8 +194,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "プレゼントをもらって喜んだ。",
       romaji: "Purezento o moratte yorokonda.",
-      english: "He was very happy to receive the present."
-    }
+      english: "He was very happy to receive the present.",
+    },
   },
   {
     id: "v-n4-shiai",
@@ -208,8 +208,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "明日はサッカーの試合があります。",
       romaji: "Ashita wa sakkaa no shiai ga arimasu.",
-      english: "There is a soccer match tomorrow."
-    }
+      english: "There is a soccer match tomorrow.",
+    },
   },
   {
     id: "v-n4-seikatsu",
@@ -222,8 +222,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日本の生活に慣れました。",
       romaji: "Nihon no seikatsu ni naremashita.",
-      english: "I've gotten used to life in Japan."
-    }
+      english: "I've gotten used to life in Japan.",
+    },
   },
   {
     id: "v-n4-keshiki",
@@ -236,8 +236,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "山の景色がとてもきれいです。",
       romaji: "Yama no keshiki ga totemo kirei desu.",
-      english: "The mountain view is very beautiful."
-    }
+      english: "The mountain view is very beautiful.",
+    },
   },
   {
     id: "v-n4-koutsuu",
@@ -250,8 +250,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "この町は交通が便利です。",
       romaji: "Kono machi wa koutsuu ga benri desu.",
-      english: "Transportation in this town is convenient."
-    }
+      english: "Transportation in this town is convenient.",
+    },
   },
   {
     id: "v-n4-anzen",
@@ -264,8 +264,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "ここは安全な場所です。",
       romaji: "Koko wa anzen na basho desu.",
-      english: "This is a safe place."
-    }
+      english: "This is a safe place.",
+    },
   },
   {
     id: "v-n4-kiken",
@@ -278,8 +278,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "夜の海は危険です。",
       romaji: "Yoru no umi wa kiken desu.",
-      english: "The sea at night is dangerous."
-    }
+      english: "The sea at night is dangerous.",
+    },
   },
   {
     id: "v-n4-tateru",
@@ -292,8 +292,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "新しい家を建てます。",
       romaji: "Atarashii ie o tatemasu.",
-      english: "I will build a new house."
-    }
+      english: "I will build a new house.",
+    },
   },
   {
     id: "v-n4-kowasu",
@@ -306,8 +306,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "弟がおもちゃを壊しました。",
       romaji: "Otouto ga omocha o kowashimashita.",
-      english: "My younger brother broke his toy."
-    }
+      english: "My younger brother broke his toy.",
+    },
   },
   {
     id: "v-n4-naosu",
@@ -320,8 +320,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "自転車を直してもらいました。",
       romaji: "Jitensha o naoshite moraimashita.",
-      english: "I had my bicycle fixed."
-    }
+      english: "I had my bicycle fixed.",
+    },
   },
   {
     id: "v-n4-sageru",
@@ -334,8 +334,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "熱を下げる薬を飲みます。",
       romaji: "Netsu o sageru kusuri o nomimasu.",
-      english: "I take medicine to lower the fever."
-    }
+      english: "I take medicine to lower the fever.",
+    },
   },
   {
     id: "v-n4-ageru",
@@ -348,8 +348,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "手を上げてください。",
       romaji: "Te o agete kudasai.",
-      english: "Please raise your hand."
-    }
+      english: "Please raise your hand.",
+    },
   },
   {
     id: "v-n4-tsutaeru",
@@ -362,8 +362,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼にメッセージを伝えます。",
       romaji: "Kare ni messeeji o tsutaemasu.",
-      english: "I convey a message to him."
-    }
+      english: "I convey a message to him.",
+    },
   },
   {
     id: "v-n4-shiraseru",
@@ -376,8 +376,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "結果を後で知らせます。",
       romaji: "Kekka o ato de shirasemasu.",
-      english: "I will let you know the result later."
-    }
+      english: "I will let you know the result later.",
+    },
   },
   {
     id: "v-n4-keizai",
@@ -390,8 +390,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日本の経済について勉強します。",
       romaji: "Nihon no keizai ni tsuite benkyou shimasu.",
-      english: "I study about the Japanese economy."
-    }
+      english: "I study about the Japanese economy.",
+    },
   },
   {
     id: "v-n4-rekishi",
@@ -404,8 +404,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "古い歴史がある町です。",
       romaji: "Furui rekishi ga aru machi desu.",
-      english: "It is a town with an old history."
-    }
+      english: "It is a town with an old history.",
+    },
   },
   {
     id: "v-n4-seiji",
@@ -418,8 +418,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼は政治に興味がありません。",
       romaji: "Kare wa seiji ni kyoumi ga arimasen.",
-      english: "He is not interested in politics."
-    }
+      english: "He is not interested in politics.",
+    },
   },
   {
     id: "v-n4-bunka",
@@ -432,8 +432,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日本の文化が大好きです。",
       romaji: "Nihon no bunka ga daisuki desu.",
-      english: "I love Japanese culture."
-    }
+      english: "I love Japanese culture.",
+    },
   },
   {
     id: "v-n4-shakai",
@@ -446,8 +446,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "社会のために働きたいです。",
       romaji: "Shakai no tame ni hatarakitai desu.",
-      english: "I want to work for society."
-    }
+      english: "I want to work for society.",
+    },
   },
   {
     id: "v-n4-kyouiku",
@@ -460,8 +460,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "教育はとても重要です。",
       romaji: "Kyouiku wa totemo juuyou desu.",
-      english: "Education is very important."
-    }
+      english: "Education is very important.",
+    },
   },
   {
     id: "v-n4-kankyou",
@@ -474,8 +474,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "環境を守りましょう。",
       romaji: "Kankyou o mamorimashou.",
-      english: "Let's protect the environment."
-    }
+      english: "Let's protect the environment.",
+    },
   },
   {
     id: "v-n4-ryuugaku",
@@ -488,8 +488,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "来年、アメリカに留学します。",
       romaji: "Rainen, Amerika ni ryuugaku shimasu.",
-      english: "Next year, I will study in America."
-    }
+      english: "Next year, I will study in America.",
+    },
   },
   {
     id: "v-n4-shourai",
@@ -502,8 +502,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "将来の夢は医者になることです。",
       romaji: "Shourai no yume wa isha ni naru koto desu.",
-      english: "My future dream is to become a doctor."
-    }
+      english: "My future dream is to become a doctor.",
+    },
   },
   {
     id: "v-n4-yume",
@@ -516,8 +516,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "昨日の夜、怖い夢を見ました。",
       romaji: "Kinou no yoru, kowai yume o mimashita.",
-      english: "Last night, I had a scary dream."
-    }
+      english: "Last night, I had a scary dream.",
+    },
   },
   {
     id: "v-n4-sugoi",
@@ -530,8 +530,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "あの選手は本当にすごいです。",
       romaji: "Ano senshu wa hontou ni sugoi desu.",
-      english: "That player is really great."
-    }
+      english: "That player is really great.",
+    },
   },
   {
     id: "v-n4-urusai",
@@ -544,8 +544,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "外の工事がうるさいです。",
       romaji: "Soto no kouji ga urusai desu.",
-      english: "The construction outside is very noisy."
-    }
+      english: "The construction outside is very noisy.",
+    },
   },
   {
     id: "v-n4-kibishii",
@@ -558,8 +558,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "私の父はとても厳しいです。",
       romaji: "Watashi no chichi wa totemo kibishii desu.",
-      english: "My father is very strict."
-    }
+      english: "My father is very strict.",
+    },
   },
   {
     id: "v-n4-hantai",
@@ -572,8 +572,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の意見に反対です。",
       romaji: "Kare no iken ni hantai desu.",
-      english: "I am against his opinion."
-    }
+      english: "I am against his opinion.",
+    },
   },
   {
     id: "v-n4-sansei",
@@ -586,8 +586,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "その計画に賛成します。",
       romaji: "Sono keikaku ni sansei shimasu.",
-      english: "I agree with that plan."
-    }
+      english: "I agree with that plan.",
+    },
   },
   {
     id: "v-n4-jiyuu",
@@ -600,8 +600,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "自由に意見を言ってください。",
       romaji: "Jiyuu ni iken o itte kudasai.",
-      english: "Please express your opinion freely."
-    }
+      english: "Please express your opinion freely.",
+    },
   },
   {
     id: "v-n4-kikai",
@@ -614,8 +614,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "この機械の使い方が分かりません。",
       romaji: "Kono kikai no tsukaikata ga wakarimasen.",
-      english: "I don't know how to use this machine."
-    }
+      english: "I don't know how to use this machine.",
+    },
   },
   {
     id: "v-n4-kisoku",
@@ -628,8 +628,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "学校の規則を守りましょう。",
       romaji: "Gakkou no kisoku o mamorimashou.",
-      english: "Let's follow the school rules."
-    }
+      english: "Let's follow the school rules.",
+    },
   },
   {
     id: "v-n4-houritsu",
@@ -642,8 +642,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "法律の勉強をしています。",
       romaji: "Houritsu no benkyou o shite imasu.",
-      english: "I am studying law."
-    }
+      english: "I am studying law.",
+    },
   },
   {
     id: "v-n4-shuukan",
@@ -656,8 +656,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日本の習慣に驚きました。",
       romaji: "Nihon no shuukan ni odorokimashita.",
-      english: "I was surprised by the customs in Japan."
-    }
+      english: "I was surprised by the customs in Japan.",
+    },
   },
   {
     id: "v-n4-keiken",
@@ -670,8 +670,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "色々な経験をしたいです。",
       romaji: "Iroiro na keiken o shitai desu.",
-      english: "I want to have various experiences."
-    }
+      english: "I want to have various experiences.",
+    },
   },
   {
     id: "v-n4-jishin",
@@ -684,8 +684,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "昨日、大きな地震がありました。",
       romaji: "Kinou, ookina jishin ga arimasu.",
-      english: "There was a big earthquake yesterday."
-    }
+      english: "There was a big earthquake yesterday.",
+    },
   },
   {
     id: "v-n4-kaji",
@@ -698,8 +698,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "火事になったら、すぐ逃げてください。",
       romaji: "Kaji ni nattara, sugu nigete kudasai.",
-      english: "If a fire occurs, please run immediately."
-    }
+      english: "If a fire occurs, please run immediately.",
+    },
   },
   {
     id: "v-n4-taifuu",
@@ -712,8 +712,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "台風が来ています。",
       romaji: "Taifuu ga kite imasu.",
-      english: "A typhoon is coming."
-    }
+      english: "A typhoon is coming.",
+    },
   },
   {
     id: "v-n4-jiko",
@@ -726,8 +726,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "交通事故に気を付けてください。",
       romaji: "Koutsuujiko ni ki o tsukete kudasai.",
-      english: "Please be careful of traffic accidents."
-    }
+      english: "Please be careful of traffic accidents.",
+    },
   },
   {
     id: "v-n4-jyunbi",
@@ -740,8 +740,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "旅行の準備をします。",
       romaji: "Ryokou no junbi o shimasu.",
-      english: "I make preparations for the trip."
-    }
+      english: "I make preparations for the trip.",
+    },
   },
   {
     id: "v-n4-renraku",
@@ -754,8 +754,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "着いたら連絡してください。",
       romaji: "Tsuitara renraku shite kudasai.",
-      english: "Please contact me when you arrive."
-    }
+      english: "Please contact me when you arrive.",
+    },
   },
   {
     id: "v-n4-chyuui",
@@ -768,8 +768,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "先生に注意されました。",
       romaji: "Sensei ni chuui saremashita.",
-      english: "I was warned by the teacher."
-    }
+      english: "I was warned by the teacher.",
+    },
   },
   {
     id: "v-n4-shusseki",
@@ -782,8 +782,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "明日の会議に出席します。",
       romaji: "Ashita no kaigi ni shusseki shimasu.",
-      english: "I will attend tomorrow's meeting."
-    }
+      english: "I will attend tomorrow's meeting.",
+    },
   },
   {
     id: "v-n4-kesseki",
@@ -796,8 +796,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "病気で学校を欠席しました。",
       romaji: "Byouki de gakkou o kesseki shimashita.",
-      english: "I was absent from school due to illness."
-    }
+      english: "I was absent from school due to illness.",
+    },
   },
   {
     id: "v-n4-shippai",
@@ -810,8 +810,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "失敗を恐れないでください。",
       romaji: "Shippai o osorenaide kudasai.",
-      english: "Please don't be afraid of failure."
-    }
+      english: "Please don't be afraid of failure.",
+    },
   },
   {
     id: "v-n4-seikou",
@@ -824,8 +824,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "実験は成功しました。",
       romaji: "Jikken wa seikou shimashita.",
-      english: "The experiment was a success."
-    }
+      english: "The experiment was a success.",
+    },
   },
   {
     id: "v-n4-ayamaru",
@@ -838,8 +838,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼に謝りました。",
       romaji: "Kare ni ayamaramashita.",
-      english: "I apologized to him."
-    }
+      english: "I apologized to him.",
+    },
   },
   {
     id: "v-n4-inoru",
@@ -852,8 +852,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "家族の健康を祈ります。",
       romaji: "Kazoku no kenkou o inorimasu.",
-      english: "I pray for my family's health."
-    }
+      english: "I pray for my family's health.",
+    },
   },
   {
     id: "v-n4-okoru",
@@ -866,8 +866,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "父はとても怒っています。",
       romaji: "Chichi wa totemo okotte imasu.",
-      english: "My father is very angry."
-    }
+      english: "My father is very angry.",
+    },
   },
   {
     id: "v-n4-kangaeru",
@@ -880,8 +880,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "将来について考えます。",
       romaji: "Shourai ni tsuite kangaemasu.",
-      english: "I think about the future."
-    }
+      english: "I think about the future.",
+    },
   },
   {
     id: "v-n4-kuraberu",
@@ -894,8 +894,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "二つの車を比べます。",
       romaji: "Futatsu no kuruma o kurabemasu.",
-      english: "I compare two cars."
-    }
+      english: "I compare two cars.",
+    },
   },
   {
     id: "v-n4-shinjiru",
@@ -908,8 +908,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の言葉を信じます。",
       romaji: "Kare no kotoba o shinjimasu.",
-      english: "I believe what he says."
-    }
+      english: "I believe what he says.",
+    },
   },
   {
     id: "v-n4-sodateru",
@@ -922,8 +922,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "子供を育てます。",
       romaji: "Kodomo o sodatemasu.",
-      english: "I am raising a child."
-    }
+      english: "I am raising a child.",
+    },
   },
   {
     id: "v-n4-tashikameru",
@@ -936,8 +936,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "答えを確かめましょう。",
       romaji: "Kotae o tashikamemashou.",
-      english: "Let's check the answer."
-    }
+      english: "Let's check the answer.",
+    },
   },
   {
     id: "v-n4-nigeru",
@@ -950,8 +950,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "泥棒が逃げました。",
       romaji: "Dorobou ga nigemashita.",
-      english: "The thief ran away."
-    }
+      english: "The thief ran away.",
+    },
   },
   {
     id: "v-n4-mukaeru",
@@ -964,8 +964,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "駅まで友達を迎えに行きます。",
       romaji: "Eki made tomodachi o mukae ni ikimasu.",
-      english: "I'll go to the station to meet my friend."
-    }
+      english: "I'll go to the station to meet my friend.",
+    },
   },
   {
     id: "v-n4-yakunitatsu",
@@ -978,8 +978,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "この辞書はとても役に立ちます。",
       romaji: "Kono jisho wa totemo yaku ni tachimasu.",
-      english: "This dictionary is very useful."
-    }
+      english: "This dictionary is very useful.",
+    },
   },
   {
     id: "v-n4-utsukushii",
@@ -992,8 +992,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日本の景色は美しいです。",
       romaji: "Nihon no keshiki wa utsukushii desu.",
-      english: "The scenery in Japan is beautiful."
-    }
+      english: "The scenery in Japan is beautiful.",
+    },
   },
   {
     id: "v-n4-okashii",
@@ -1006,8 +1006,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼のおかしい話に笑いました。",
       romaji: "Kare no okashii hanashi ni waraimashita.",
-      english: "I laughed at his funny story."
-    }
+      english: "I laughed at his funny story.",
+    },
   },
   {
     id: "v-n4-kanashii",
@@ -1020,8 +1020,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "悲しいニュースを聞きました。",
       romaji: "Kanashii nyuusu o kikimashita.",
-      english: "I heard some sad news."
-    }
+      english: "I heard some sad news.",
+    },
   },
   {
     id: "v-n4-kuwashii",
@@ -1034,8 +1034,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼女は日本の歴史に詳しいです。",
       romaji: "Kanojo wa Nihon no rekishi ni kuwashii desu.",
-      english: "She is well-informed about Japanese history."
-    }
+      english: "She is well-informed about Japanese history.",
+    },
   },
   {
     id: "v-n4-hidoi",
@@ -1048,8 +1048,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "今日はひどい雨ですね。",
       romaji: "Kyou wa hidoi ame desu ne.",
-      english: "It's a terrible rain today, isn't it?"
-    }
+      english: "It's a terrible rain today, isn't it?",
+    },
   },
   {
     id: "v-n4-majime",
@@ -1062,8 +1062,8 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼は真面目な学生です。",
       romaji: "Kare wa majime na gakusei desu.",
-      english: "He is a diligent student."
-    }
+      english: "He is a diligent student.",
+    },
   },
   {
     id: "v-n4-zannen",
@@ -1076,7 +1076,7 @@ export const n4Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "行けなくて残念です。",
       romaji: "Ikenakute zannen desu.",
-      english: "It's a pity I can't go."
-    }
-  }
+      english: "It's a pity I can't go.",
+    },
+  },
 ];

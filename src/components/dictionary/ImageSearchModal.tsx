@@ -1,8 +1,7 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
-
+import React, { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -14,7 +13,7 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
   backdrop-filter: blur(4px);
   z-index: 1000;
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
-  pointer-events: ${({ $isOpen }) => ($isOpen ? 'auto' : 'none')};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};
   transition: opacity 0.3s ease;
   display: flex;
   align-items: center;
@@ -28,7 +27,7 @@ const Modal = styled.div<{ $isOpen: boolean }>`
   width: 90%;
   max-width: 450px;
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-  transform: ${({ $isOpen }) => ($isOpen ? 'scale(1)' : 'scale(0.95)')};
+  transform: ${({ $isOpen }) => ($isOpen ? "scale(1)" : "scale(0.95)")};
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border);
   display: flex;
@@ -57,12 +56,17 @@ const CloseBtn = styled.button`
   cursor: pointer;
   padding: 0;
   display: flex;
-  &:hover { color: var(--foreground); }
+  &:hover {
+    color: var(--foreground);
+  }
 `;
 
 const DropZone = styled.div<{ $isDragActive: boolean }>`
-  border: 2px dashed ${({ $isDragActive }) => $isDragActive ? 'var(--primary)' : 'var(--border)'};
-  background: ${({ $isDragActive }) => $isDragActive ? 'rgba(var(--primary-rgb), 0.05)' : 'var(--background)'};
+  border: 2px dashed
+    ${({ $isDragActive }) =>
+      $isDragActive ? "var(--primary)" : "var(--border)"};
+  background: ${({ $isDragActive }) =>
+    $isDragActive ? "rgba(var(--primary-rgb), 0.05)" : "var(--background)"};
   border-radius: 16px;
   padding: 3rem 2rem;
   display: flex;
@@ -73,7 +77,7 @@ const DropZone = styled.div<{ $isDragActive: boolean }>`
   cursor: pointer;
   transition: all 0.2s;
   text-align: center;
-  
+
   &:hover {
     border-color: var(--primary);
     background: rgba(var(--primary-rgb), 0.02);
@@ -85,7 +89,7 @@ const DropZone = styled.div<{ $isDragActive: boolean }>`
     color: var(--text-secondary);
     transition: color 0.2s;
   }
-  
+
   &:hover svg {
     color: var(--primary);
   }
@@ -113,21 +117,31 @@ const Loader = styled.div`
   animation: spin 1s linear infinite;
 
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 `;
 
-export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolean, onClose: () => void, onResult: (text: string) => void }) {
+export function ImageSearchModal({
+  isOpen,
+  onClose,
+  onResult,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onResult: (text: string) => void;
+}) {
   const [isDragActive, setIsDragActive] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [progressText, setProgressText] = useState('Extracting text...');
+  const [progressText, setProgressText] = useState("Extracting text...");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
       setIsProcessing(false);
       setIsDragActive(false);
     }
@@ -136,9 +150,9 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
+    if (e.type === "dragenter" || e.type === "dragover") {
       setIsDragActive(true);
-    } else if (e.type === 'dragleave') {
+    } else if (e.type === "dragleave") {
       setIsDragActive(false);
     }
   };
@@ -147,7 +161,7 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
     e.preventDefault();
     e.stopPropagation();
     setIsDragActive(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       processFile(e.dataTransfer.files[0]);
     }
@@ -161,42 +175,46 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
   };
 
   const processFile = async (file: File) => {
-    if (!file.type.startsWith('image/')) {
-        alert('Please upload an image file.');
-        return;
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload an image file.");
+      return;
     }
 
     setIsProcessing(true);
-    setProgressText('Initializing OCR Engine...');
+    setProgressText("Initializing OCR Engine...");
 
     try {
-      const Tesseract = (await import('tesseract.js')).default;
-      const { data: { text } } = await Tesseract.recognize(
+      const Tesseract = (await import("tesseract.js")).default;
+      const {
+        data: { text },
+      } = await Tesseract.recognize(
         file,
-        'jpn', // 'jpn' ensures accuracy for Japanese Characters 
+        "jpn", // 'jpn' ensures accuracy for Japanese Characters
         {
-          logger: m => {
-            if (m.status === 'recognizing text') {
-              setProgressText(`Recognizing text: ${Math.round(m.progress * 100)}%`);
-            } else if (m.status === 'loading tesseract core') {
-              setProgressText('Loading Tesseract core...');
-            } else if (m.status === 'loading language traineddata') {
-                setProgressText('Downloading language data (First time only)');
+          logger: (m) => {
+            if (m.status === "recognizing text") {
+              setProgressText(
+                `Recognizing text: ${Math.round(m.progress * 100)}%`,
+              );
+            } else if (m.status === "loading tesseract core") {
+              setProgressText("Loading Tesseract core...");
+            } else if (m.status === "loading language traineddata") {
+              setProgressText("Downloading language data (First time only)");
             } else {
-              setProgressText('Processing image...');
+              setProgressText("Processing image...");
             }
-          }
-        }
+          },
+        },
       );
 
       // Clean up text: remove spaces and newlines
-      const cleanText = text.replace(/[\s\n\r]/g, '');
+      const cleanText = text.replace(/[\s\n\r]/g, "");
 
       setIsProcessing(false);
       onResult(cleanText);
     } catch (error) {
       console.error(error);
-      alert('Failed to detect text on the image.');
+      alert("Failed to detect text on the image.");
       setIsProcessing(false);
     }
   };
@@ -209,20 +227,22 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
 
   return (
     <Overlay $isOpen={isOpen} onClick={onClose}>
-      <Modal $isOpen={isOpen} onClick={e => e.stopPropagation()}>
+      <Modal $isOpen={isOpen} onClick={(e) => e.stopPropagation()}>
         <Header>
           <Title>Image OCR Search</Title>
           {!isProcessing && <CloseBtn onClick={onClose}>&times;</CloseBtn>}
         </Header>
-        
+
         {isProcessing ? (
-           <DropZone $isDragActive={false} style={{ cursor: 'wait' }}>
-              <Loader />
-              <TextPrimary>{progressText}</TextPrimary>
-              <TextSecondary>Extracting text using OCR. This might take a moment.</TextSecondary>
-           </DropZone>
+          <DropZone $isDragActive={false} style={{ cursor: "wait" }}>
+            <Loader />
+            <TextPrimary>{progressText}</TextPrimary>
+            <TextSecondary>
+              Extracting text using OCR. This might take a moment.
+            </TextSecondary>
+          </DropZone>
         ) : (
-          <DropZone 
+          <DropZone
             $isDragActive={isDragActive}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}
@@ -230,25 +250,37 @@ export function ImageSearchModal({ isOpen, onClose, onResult }: { isOpen: boolea
             onDrop={handleDrop}
             onClick={handleClick}
           >
-            <input 
-              ref={fileInputRef} 
-              type="file" 
-              accept="image/*" 
-              style={{ display: 'none' }} 
-              onChange={handleFileChange} 
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
             />
-            <svg fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-              <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
-              <circle cx="9" cy="9" r="2"/>
-              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+            <svg
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              viewBox="0 0 24 24"
+            >
+              <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
             </svg>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                <TextPrimary>Click to upload or drag and drop</TextPrimary>
-                <TextSecondary>SVG, PNG, JPG (max. 5MB)</TextSecondary>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.25rem",
+              }}
+            >
+              <TextPrimary>Click to upload or drag and drop</TextPrimary>
+              <TextSecondary>SVG, PNG, JPG (max. 5MB)</TextSecondary>
             </div>
           </DropZone>
         )}
-
       </Modal>
     </Overlay>
   );

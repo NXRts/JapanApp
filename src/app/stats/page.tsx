@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useMemo } from 'react';
-import styled from 'styled-components';
-import { useProgress } from '@/context/ProgressContext';
-import { Heatmap } from '@/components/gamification/Heatmap';
+import React, { useMemo } from "react";
+import styled from "styled-components";
+import { useProgress } from "@/context/ProgressContext";
+import { Heatmap } from "@/components/gamification/Heatmap";
 
 const Container = styled.div`
   max-width: 1100px;
@@ -39,7 +39,7 @@ const SectionTitle = styled.h2`
   }
 
   &::before {
-    content: '';
+    content: "";
     width: 4px;
     height: 1.5rem;
     background: var(--primary);
@@ -149,7 +149,11 @@ const LevelProgressBar = styled.div`
 const ProgressBarFill = styled.div<{ $width: number }>`
   height: 100%;
   width: ${({ $width }) => $width}%;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--primary) 0%,
+    var(--primary-light) 100%
+  );
   border-radius: 5px;
   transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 `;
@@ -207,16 +211,20 @@ const Bar = styled.div<{ $height: number }>`
   width: 100%;
   max-width: 32px;
   height: ${({ $height }) => Math.max($height, 2)}%;
-  background: ${({ $height }) => $height > 0 ? 'var(--primary)' : 'rgba(var(--primary-rgb), 0.1)'};
+  background: ${({ $height }) =>
+    $height > 0 ? "var(--primary)" : "rgba(var(--primary-rgb), 0.1)"};
   border-radius: 6px 6px 2px 2px;
   transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(to top, rgba(255,255,255,0.1), transparent);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.1), transparent);
     border-radius: inherit;
   }
 
@@ -259,7 +267,7 @@ const LegendItem = styled.div<{ $color: string }>`
   font-weight: 500;
 
   &::before {
-    content: '';
+    content: "";
     width: 10px;
     height: 10px;
     border-radius: 2px;
@@ -274,10 +282,10 @@ const MultiProgressBar = styled.div`
   border-radius: 12px;
   display: flex;
   overflow: hidden;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 `;
 
-const ProgressSegment = styled.div<{ $width: number, $color: string }>`
+const ProgressSegment = styled.div<{ $width: number; $color: string }>`
   width: ${({ $width }) => $width}%;
   height: 100%;
   background: ${({ $color }) => $color};
@@ -328,13 +336,17 @@ const ActivityDate = styled.span`
 const ActivityScore = styled.div<{ $perfect: boolean }>`
   font-weight: 800;
   font-size: 1.1rem;
-  color: ${({ $perfect }) => $perfect ? 'var(--secondary)' : 'var(--primary)'};
-  background: ${({ $perfect }) => $perfect ? 'rgba(var(--secondary-rgb), 0.1)' : 'rgba(var(--primary-rgb), 0.1)'};
+  color: ${({ $perfect }) =>
+    $perfect ? "var(--secondary)" : "var(--primary)"};
+  background: ${({ $perfect }) =>
+    $perfect
+      ? "rgba(var(--secondary-rgb), 0.1)"
+      : "rgba(var(--primary-rgb), 0.1)"};
   padding: 0.4rem 1rem;
   border-radius: 10px;
 `;
 
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
 export default function StatsPage() {
   const { progress } = useProgress();
@@ -343,7 +355,8 @@ export default function StatsPage() {
   const level = Math.floor(Math.sqrt(progress.exp / 100)) + 1;
   const currentLevelExp = Math.pow(level - 1, 2) * 100;
   const nextLevelExp = Math.pow(level, 2) * 100;
-  const progressToNext = ((progress.exp - currentLevelExp) / (nextLevelExp - currentLevelExp)) * 100;
+  const progressToNext =
+    ((progress.exp - currentLevelExp) / (nextLevelExp - currentLevelExp)) * 100;
 
   // 1.5 Final Activity Log (uses actual progress data)
   const finalActivityLog = progress.activityLog;
@@ -355,17 +368,17 @@ export default function StatsPage() {
       const d = new Date();
       d.setDate(d.getDate() - i);
       const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const dayStr = String(d.getDate()).padStart(2, '0');
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const dayStr = String(d.getDate()).padStart(2, "0");
       const dateStr = `${y}-${m}-${dayStr}`;
-      const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
+      const dayName = d.toLocaleDateString("en-US", { weekday: "short" });
       days.push({
         label: dayName,
-        value: finalActivityLog[dateStr] || 0
+        value: finalActivityLog[dateStr] || 0,
       });
     }
-    const maxExp = Math.max(...days.map(d => d.value), 100);
-    return days.map(d => ({ ...d, percent: (d.value / maxExp) * 100 }));
+    const maxExp = Math.max(...days.map((d) => d.value), 100);
+    return days.map((d) => ({ ...d, percent: (d.value / maxExp) * 100 }));
   }, [finalActivityLog]);
 
   // 2.5 Display Streak (uses actual progress data)
@@ -373,8 +386,14 @@ export default function StatsPage() {
 
   // 3. SRS Distribution
   const srsStats = useMemo(() => {
-    const counts = { learning: 0, guru: 0, master: 0, enlightened: 0, burned: 0 };
-    Object.values(progress.srs).forEach(item => {
+    const counts = {
+      learning: 0,
+      guru: 0,
+      master: 0,
+      enlightened: 0,
+      burned: 0,
+    };
+    Object.values(progress.srs).forEach((item) => {
       const reps = item.repetitions;
       if (reps < 4) counts.learning++;
       else if (reps < 8) counts.guru++;
@@ -382,7 +401,7 @@ export default function StatsPage() {
       else if (reps < 16) counts.enlightened++;
       else counts.burned++;
     });
-    
+
     const total = Object.values(progress.srs).length || 1;
     return {
       learning: (counts.learning / total) * 100,
@@ -390,7 +409,7 @@ export default function StatsPage() {
       master: (counts.master / total) * 100,
       enlightened: (counts.enlightened / total) * 100,
       burned: (counts.burned / total) * 100,
-      counts
+      counts,
     };
   }, [progress.srs]);
 
@@ -398,16 +417,19 @@ export default function StatsPage() {
   const overallAccuracy = useMemo(() => {
     let correct = 0;
     let total = 0;
-    Object.values(progress.mastery).forEach(m => {
+    Object.values(progress.mastery).forEach((m) => {
       correct += m.correct;
-      total += (m.correct + m.incorrect);
+      total += m.correct + m.incorrect;
     });
     return total === 0 ? 0 : Math.round((correct / total) * 100);
   }, [progress.mastery]);
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Mastery Dashboard" />
+      <Breadcrumbs
+        items={[{ label: "Home", href: "/" }]}
+        current="Mastery Dashboard"
+      />
       <Header>
         <StatLabel>Overview</StatLabel>
         <Title>Mastery Dashboard</Title>
@@ -422,25 +444,53 @@ export default function StatsPage() {
             <LevelProgressBar>
               <ProgressBarFill $width={progressToNext} />
             </LevelProgressBar>
-            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', justifyContent: 'space-between' }}>
+            <div
+              style={{
+                fontSize: "0.8rem",
+                color: "var(--text-secondary)",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
               <span>{progress.exp} total EXP</span>
-              <span>{nextLevelExp - progress.exp} to Level {level + 1}</span>
+              <span>
+                {nextLevelExp - progress.exp} to Level {level + 1}
+              </span>
             </div>
           </ProgressInfo>
         </MainStatCard>
 
         <MainStatCard>
           <StatLabel>Daily Streak</StatLabel>
-          <StatValue>{displayStreak} <span>days</span></StatValue>
-          <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '1rem' }}>
-            {displayStreak > 0 ? "You're on fire! Keep it up." : "Start your streak today!"}
+          <StatValue>
+            {displayStreak} <span>days</span>
+          </StatValue>
+          <div
+            style={{
+              color: "var(--text-secondary)",
+              fontSize: "0.9rem",
+              marginTop: "1rem",
+            }}
+          >
+            {displayStreak > 0
+              ? "You're on fire! Keep it up."
+              : "Start your streak today!"}
           </div>
         </MainStatCard>
 
         <MainStatCard>
           <StatLabel>Overall Accuracy</StatLabel>
-          <StatValue>{overallAccuracy}<span>%</span></StatValue>
-          <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '1rem' }}>
+          <StatValue>
+            {overallAccuracy}
+            <span>%</span>
+          </StatValue>
+          <div
+            style={{
+              color: "var(--text-secondary)",
+              fontSize: "0.9rem",
+              marginTop: "1rem",
+            }}
+          >
             Based on {Object.values(progress.mastery).length} total characters.
           </div>
         </MainStatCard>
@@ -450,17 +500,25 @@ export default function StatsPage() {
           <BarChartContainer>
             {weeklyData.map((day, i) => (
               <BarWrapper key={i}>
-                <div style={{ 
-                  fontSize: '0.75rem', 
-                  fontWeight: 800, 
-                  color: day.value > 0 ? 'var(--primary)' : 'var(--text-secondary)',
-                  opacity: day.value > 0 ? 1 : 0.3,
-                  marginBottom: '2px'
-                }}>
+                <div
+                  style={{
+                    fontSize: "0.75rem",
+                    fontWeight: 800,
+                    color:
+                      day.value > 0
+                        ? "var(--primary)"
+                        : "var(--text-secondary)",
+                    opacity: day.value > 0 ? 1 : 0.3,
+                    marginBottom: "2px",
+                  }}
+                >
                   {day.value}
                 </div>
                 <BarArea>
-                  <Bar $height={day.percent} title={`${day.label}: ${day.value} EXP`} />
+                  <Bar
+                    $height={day.percent}
+                    title={`${day.label}: ${day.value} EXP`}
+                  />
                 </BarArea>
                 <DayLabel>{day.label}</DayLabel>
               </BarWrapper>
@@ -468,7 +526,7 @@ export default function StatsPage() {
           </BarChartContainer>
         </ChartCard>
 
-        <MainStatCard style={{ gridColumn: 'span 1' }}>
+        <MainStatCard style={{ gridColumn: "span 1" }}>
           <StatLabel>SRS Distribution</StatLabel>
           <SRSDistribution>
             <MultiProgressBar>
@@ -479,11 +537,21 @@ export default function StatsPage() {
               <ProgressSegment $width={srsStats.burned} $color="#f43f5e" />
             </MultiProgressBar>
             <SRSLegend>
-              <LegendItem $color="#94a3b8">Learning: {srsStats.counts.learning}</LegendItem>
-              <LegendItem $color="#10b981">Guru: {srsStats.counts.guru}</LegendItem>
-              <LegendItem $color="#3b82f6">Master: {srsStats.counts.master}</LegendItem>
-              <LegendItem $color="#8b5cf6">Enlightened: {srsStats.counts.enlightened}</LegendItem>
-              <LegendItem $color="#f43f5e">Burned: {srsStats.counts.burned}</LegendItem>
+              <LegendItem $color="#94a3b8">
+                Learning: {srsStats.counts.learning}
+              </LegendItem>
+              <LegendItem $color="#10b981">
+                Guru: {srsStats.counts.guru}
+              </LegendItem>
+              <LegendItem $color="#3b82f6">
+                Master: {srsStats.counts.master}
+              </LegendItem>
+              <LegendItem $color="#8b5cf6">
+                Enlightened: {srsStats.counts.enlightened}
+              </LegendItem>
+              <LegendItem $color="#f43f5e">
+                Burned: {srsStats.counts.burned}
+              </LegendItem>
             </SRSLegend>
           </SRSDistribution>
         </MainStatCard>
@@ -496,26 +564,58 @@ export default function StatsPage() {
 
       <Section>
         <SectionTitle>Items to Focus On</SectionTitle>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            gap: "1rem",
+          }}
+        >
           {Object.entries(progress.mastery)
             .sort(([, a], [, b]) => b.incorrect - a.incorrect)
             .filter(([, m]) => m.incorrect > 0)
             .slice(0, 5)
             .map(([char, m]) => (
-              <ActivityItem key={char} style={{ padding: '1rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                  <div style={{ fontSize: '1.5rem', fontWeight: 800 }}>{char}</div>
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+              <ActivityItem key={char} style={{ padding: "1rem" }}>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+                >
+                  <div style={{ fontSize: "1.5rem", fontWeight: 800 }}>
+                    {char}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.8rem",
+                      color: "var(--text-secondary)",
+                    }}
+                  >
                     {m.incorrect} errors
                   </div>
                 </div>
-                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#ef4444' }}>
-                  {Math.round((m.correct / (m.correct + m.incorrect)) * 100)}% Acc
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    fontWeight: 700,
+                    color: "#ef4444",
+                  }}
+                >
+                  {Math.round((m.correct / (m.correct + m.incorrect)) * 100)}%
+                  Acc
                 </div>
               </ActivityItem>
             ))}
-          {Object.values(progress.mastery).every(m => m.incorrect === 0) && (
-            <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)', background: 'var(--surface)', borderRadius: '20px', border: '1px dashed var(--border)', gridColumn: '1 / -1' }}>
+          {Object.values(progress.mastery).every((m) => m.incorrect === 0) && (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "2rem",
+                color: "var(--text-secondary)",
+                background: "var(--surface)",
+                borderRadius: "20px",
+                border: "1px dashed var(--border)",
+                gridColumn: "1 / -1",
+              }}
+            >
               No weak points detected yet. Keep it up!
             </div>
           )}
@@ -526,22 +626,34 @@ export default function StatsPage() {
         <SectionTitle>Recent Activity</SectionTitle>
         <ActivityList>
           {progress.quizHistory.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)', background: 'var(--surface)', borderRadius: '20px', border: '1px dashed var(--border)' }}>
+            <div
+              style={{
+                textAlign: "center",
+                padding: "3rem",
+                color: "var(--text-secondary)",
+                background: "var(--surface)",
+                borderRadius: "20px",
+                border: "1px dashed var(--border)",
+              }}
+            >
               No recent activity found. Start a quiz to see your progress!
             </div>
           ) : (
             progress.quizHistory.slice(0, 5).map((item, i) => {
-              const date = new Date(item.date).toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
+              const date = new Date(item.date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
               });
               const percent = Math.round((item.score / item.total) * 100);
               return (
                 <ActivityItem key={i}>
                   <ActivityInfo>
-                    <ActivityType>{item.type.charAt(0).toUpperCase() + item.type.slice(1)} Quiz</ActivityType>
+                    <ActivityType>
+                      {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{" "}
+                      Quiz
+                    </ActivityType>
                     <ActivityDate>{date}</ActivityDate>
                   </ActivityInfo>
                   <ActivityScore $perfect={percent === 100}>

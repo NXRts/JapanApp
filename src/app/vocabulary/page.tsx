@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import { useState } from 'react';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { n5Vocabulary } from '@/data/jlpt/n5/vocabulary';
-import { n4Vocabulary } from '@/data/jlpt/n4/vocabulary';
-import { n3Vocabulary } from '@/data/jlpt/n3/vocabulary';
-import { n2Vocabulary } from '@/data/jlpt/n2/vocabulary';
-import { n1Vocabulary } from '@/data/jlpt/n1/vocabulary';
+import styled from "styled-components";
+import { useState } from "react";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { n5Vocabulary } from "@/data/jlpt/n5/vocabulary";
+import { n4Vocabulary } from "@/data/jlpt/n4/vocabulary";
+import { n3Vocabulary } from "@/data/jlpt/n3/vocabulary";
+import { n2Vocabulary } from "@/data/jlpt/n2/vocabulary";
+import { n1Vocabulary } from "@/data/jlpt/n1/vocabulary";
 
 const Container = styled.div`
   max-width: 1000px;
@@ -32,7 +32,11 @@ const Header = styled.div`
 const Title = styled.h1`
   font-size: 3.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--text-secondary) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0;
@@ -70,9 +74,11 @@ const LevelSelector = styled.div`
 const LevelButton = styled.button<{ $active: boolean }>`
   padding: 0.75rem 2rem;
   border-radius: 99px;
-  border: 1px solid ${({ $active }) => ($active ? 'var(--primary)' : 'var(--border)')};
-  background: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--surface)')};
-  color: ${({ $active }) => ($active ? '#ffffff' : 'var(--text-secondary)')};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--surface)"};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
@@ -80,7 +86,7 @@ const LevelButton = styled.button<{ $active: boolean }>`
 
   &:hover {
     border-color: var(--primary);
-    color: ${({ $active }) => ($active ? '#ffffff' : 'var(--primary)')};
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--primary)")};
   }
 
   @media (max-width: 768px) {
@@ -193,7 +199,9 @@ const ExampleBox = styled.div`
 `;
 
 export default function VocabularyPage() {
-  const [activeLevel, setActiveLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1' >('N5');
+  const [activeLevel, setActiveLevel] = useState<
+    "N5" | "N4" | "N3" | "N2" | "N1"
+  >("N5");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const currentData = {
@@ -210,52 +218,52 @@ export default function VocabularyPage() {
 
   return (
     <Container>
-      <Breadcrumbs 
+      <Breadcrumbs
         items={[
-          { label: 'Home', href: '/' },
-          { label: 'Materials', href: '/materi' }
-        ]} 
-        current="Vocabulary" 
+          { label: "Home", href: "/" },
+          { label: "Materials", href: "/materi" },
+        ]}
+        current="Vocabulary"
       />
       <Header>
         <Title>Vocabulary</Title>
         <Subtitle>
-          Essential words to build your Japanese foundation. Select your target JLPT level.
+          Essential words to build your Japanese foundation. Select your target
+          JLPT level.
         </Subtitle>
       </Header>
 
       <LevelSelector>
-        <LevelButton 
-          $active={activeLevel === 'N5'} 
-          onClick={() => setActiveLevel('N5')}
+        <LevelButton
+          $active={activeLevel === "N5"}
+          onClick={() => setActiveLevel("N5")}
         >
           JLPT N5
         </LevelButton>
-        <LevelButton 
-          $active={activeLevel === 'N4'} 
-          onClick={() => setActiveLevel('N4')}
+        <LevelButton
+          $active={activeLevel === "N4"}
+          onClick={() => setActiveLevel("N4")}
         >
           JLPT N4
         </LevelButton>
-        <LevelButton 
-          $active={activeLevel === 'N3'} 
-          onClick={() => setActiveLevel('N3')}
+        <LevelButton
+          $active={activeLevel === "N3"}
+          onClick={() => setActiveLevel("N3")}
         >
           JLPT N3
         </LevelButton>
-        <LevelButton 
-          $active={activeLevel === 'N2'} 
-          onClick={() => setActiveLevel('N2')}
+        <LevelButton
+          $active={activeLevel === "N2"}
+          onClick={() => setActiveLevel("N2")}
         >
           JLPT N2
         </LevelButton>
-        <LevelButton 
-          $active={activeLevel === 'N1'} 
-          onClick={() => setActiveLevel('N1')}
+        <LevelButton
+          $active={activeLevel === "N1"}
+          onClick={() => setActiveLevel("N1")}
         >
           JLPT N1
         </LevelButton>
-
       </LevelSelector>
 
       <VocabList>
@@ -267,20 +275,30 @@ export default function VocabularyPage() {
               <Romaji>{item.romaji}</Romaji>
             </Reading>
             <Meaning>{item.meaning}</Meaning>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
               <CategoryBadge>{item.category}</CategoryBadge>
               {item.example && (
                 <ExampleToggle onClick={() => toggleExample(item.id)}>
-                  {expandedId === item.id ? 'Hide Example' : 'Show Example'}
+                  {expandedId === item.id ? "Hide Example" : "Show Example"}
                 </ExampleToggle>
               )}
             </div>
-            
+
             {expandedId === item.id && item.example && (
               <ExampleBox>
-                <div style={{ fontWeight: 700, fontSize: '1.25rem' }}>{item.example.japanese}</div>
-                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>{item.example.romaji}</div>
-                <div style={{ fontSize: '1rem' }}>{item.example.english}</div>
+                <div style={{ fontWeight: 700, fontSize: "1.25rem" }}>
+                  {item.example.japanese}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "var(--text-secondary)",
+                    fontStyle: "italic",
+                  }}
+                >
+                  {item.example.romaji}
+                </div>
+                <div style={{ fontSize: "1rem" }}>{item.example.english}</div>
               </ExampleBox>
             )}
           </VocabCard>

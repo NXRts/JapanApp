@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import React from "react";
+import styled from "styled-components";
+import { motion } from "framer-motion";
 
 interface Stat {
   label: string;
@@ -49,13 +49,17 @@ const ResultCard = styled(motion.div)`
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at top right, rgba(var(--primary-rgb), 0.05), transparent 70%);
+    background: radial-gradient(
+      circle at top right,
+      rgba(var(--primary-rgb), 0.05),
+      transparent 70%
+    );
     pointer-events: none;
   }
 `;
@@ -63,7 +67,7 @@ const ResultCard = styled(motion.div)`
 const ResultValue = styled.div<{ $color?: string }>`
   font-size: 2.25rem;
   font-weight: 900;
-  color: ${({ $color }) => $color || 'var(--primary)'};
+  color: ${({ $color }) => $color || "var(--primary)"};
   line-height: 1;
 `;
 
@@ -83,9 +87,9 @@ export const TestResultStats: React.FC<TestResultStatsProps> = ({ stats }) => {
       variants={{
         visible: {
           transition: {
-            staggerChildren: 0.1
-          }
-        }
+            staggerChildren: 0.1,
+          },
+        },
       }}
     >
       {stats.map((stat, i) => (
@@ -93,7 +97,7 @@ export const TestResultStats: React.FC<TestResultStatsProps> = ({ stats }) => {
           key={i}
           variants={{
             hidden: { opacity: 0, y: 20 },
-            visible: { opacity: 1, y: 0 }
+            visible: { opacity: 1, y: 0 },
           }}
         >
           <ResultLabel>{stat.label}</ResultLabel>

@@ -52,7 +52,7 @@ Berikut adalah analisis mengenai fitur-fitur yang sudah tersedia (diimplementasi
    - Belum ada tombol suara yang memungkinkan pengguna mendengarkan pelafalan asli (Native Speaker) untuk karakter Kanji, Kana, maupun contoh kalimat kosakata.
 
 3. **Pengenalan Suara (Speech Recognition)**
-   - Fitur untuk mengevaluasi kemampuan berbicara pengguna (*speaking practice*) dengan merekam suara pengguna dan memberikan penilaian keakuratan pelafalan.
+   - Fitur untuk mengevaluasi kemampuan berbicara pengguna (_speaking practice_) dengan merekam suara pengguna dan memberikan penilaian keakuratan pelafalan.
 
 4. **Papan Peringkat (Leaderboard) & Fitur Sosial**
    - Belum ada sistem kompetisi antar pengguna (Leaderboard), pamer pencapaian, atau fitur menambahkan "Teman" untuk bertanding skor poin harian.
@@ -64,9 +64,9 @@ Berikut adalah analisis mengenai fitur-fitur yang sudah tersedia (diimplementasi
    - Fitur di mana pengguna bisa mengatur notifikasi atau pengingat belajar (misal: "Ingatkan saya belajar jam 8 malam tiap hari") baik via Push Notification atau Email.
 
 7. **Sistem Achievement / Badges Lanjutan**
-   - Pemberian penghargaan berupa lencana digital visual (Badges) secara spesifik apabila pengguna berhasil melewati *milestone* tertentu (misalnya: *Combo Login 30 Hari*, *Master N5*).
+   - Pemberian penghargaan berupa lencana digital visual (Badges) secara spesifik apabila pengguna berhasil melewati _milestone_ tertentu (misalnya: _Combo Login 30 Hari_, _Master N5_).
 
 8. **Simulasi Ujian JLPT (Mock Test)**
-   - Latihan soal dengan batas waktu sungguhan (Timer) yang dirancang persis seperti ujian JLPT asli, mencakup *Reading*, *Vocabulary*, dan *Listening* (jika dipadukan dengan fitur audio).
+   - Latihan soal dengan batas waktu sungguhan (Timer) yang dirancang persis seperti ujian JLPT asli, mencakup _Reading_, _Vocabulary_, dan _Listening_ (jika dipadukan dengan fitur audio).
 
 Co-authored-by: OUT-1 <[EMAIL_ADDRESS]>

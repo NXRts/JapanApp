@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import styled from 'styled-components';
-import { jobs } from '../data';
+import React from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import styled from "styled-components";
+import { jobs } from "../data";
 
 const Container = styled.div`
   max-width: 800px;
@@ -21,7 +21,7 @@ const BackLink = styled(Link)`
   font-weight: 500;
   margin-bottom: 2rem;
   transition: color 0.2s;
-  
+
   &:hover {
     color: var(--primary);
   }
@@ -65,15 +65,15 @@ const List = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  
+
   li {
     position: relative;
     padding-left: 1.5rem;
     color: var(--text-secondary);
     line-height: 1.6;
-    
+
     &::before {
-      content: '•';
+      content: "•";
       position: absolute;
       left: 0;
       color: var(--primary);
@@ -113,7 +113,7 @@ const ApplyButton = styled.a`
   font-weight: 700;
   font-size: 1.1rem;
   transition: all 0.2s;
-  
+
   &:hover {
     background: var(--primary-dark);
     transform: translateY(-2px);
@@ -122,69 +122,77 @@ const ApplyButton = styled.a`
 `;
 
 export default function JobDetailsPage() {
-    const { slug } = useParams();
-    const job = jobs.find((j) => j.slug === slug);
+  const { slug } = useParams();
+  const job = jobs.find((j) => j.slug === slug);
 
-    if (!job) {
-        return (
-            <Container>
-                <BackLink href="/careers">← Back to Careers</BackLink>
-                <div style={{ textAlign: 'center', marginTop: '4rem' }}>
-                    <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Job Not Found</h1>
-                    <p>The position you are looking for might have been filled or removed.</p>
-                </div>
-            </Container>
-        );
-    }
-
+  if (!job) {
     return (
-        <Container>
-            <BackLink href="/careers">← Back to Careers</BackLink>
-
-            <JobHeader>
-                <JobTitle>{job.title}</JobTitle>
-                <JobMeta>
-                    <span>{job.department}</span>
-                    <span>•</span>
-                    <span>{job.location}</span>
-                    <span>•</span>
-                    <span>{job.type}</span>
-                </JobMeta>
-            </JobHeader>
-
-            <Section>
-                <SectionTitle>About the Role</SectionTitle>
-                <p style={{ lineHeight: 1.6, color: 'var(--text-secondary)' }}>{job.description}</p>
-            </Section>
-
-            <Section>
-                <SectionTitle>Responsibilities</SectionTitle>
-                <List>
-                    {job.responsibilities.map((item, index) => (
-                        <li key={index}>{item}</li>
-                    ))}
-                </List>
-            </Section>
-
-            <Section>
-                <SectionTitle>Requirements</SectionTitle>
-                <List>
-                    {job.requirements.map((item, index) => (
-                        <li key={index}>{item}</li>
-                    ))}
-                </List>
-            </Section>
-
-            <ApplySection>
-                <ApplyTitle>Ready to Join Us?</ApplyTitle>
-                <ApplyText>
-                    Send your resume and a short introduction to our recruiting team.
-                    We can't wait to meet you!
-                </ApplyText>
-                <ApplyButton href={`mailto:careers@japanapp.example?subject=Application for ${job.title}`}>
-                    Apply Now
-                </ApplyButton>
-            </ApplySection>
-        </Container>
+      <Container>
+        <BackLink href="/careers">← Back to Careers</BackLink>
+        <div style={{ textAlign: "center", marginTop: "4rem" }}>
+          <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
+            Job Not Found
+          </h1>
+          <p>
+            The position you are looking for might have been filled or removed.
+          </p>
+        </div>
+      </Container>
     );
+  }
+
+  return (
+    <Container>
+      <BackLink href="/careers">← Back to Careers</BackLink>
+
+      <JobHeader>
+        <JobTitle>{job.title}</JobTitle>
+        <JobMeta>
+          <span>{job.department}</span>
+          <span>•</span>
+          <span>{job.location}</span>
+          <span>•</span>
+          <span>{job.type}</span>
+        </JobMeta>
+      </JobHeader>
+
+      <Section>
+        <SectionTitle>About the Role</SectionTitle>
+        <p style={{ lineHeight: 1.6, color: "var(--text-secondary)" }}>
+          {job.description}
+        </p>
+      </Section>
+
+      <Section>
+        <SectionTitle>Responsibilities</SectionTitle>
+        <List>
+          {job.responsibilities.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </List>
+      </Section>
+
+      <Section>
+        <SectionTitle>Requirements</SectionTitle>
+        <List>
+          {job.requirements.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </List>
+      </Section>
+
+      <ApplySection>
+        <ApplyTitle>Ready to Join Us?</ApplyTitle>
+        <ApplyText>
+          Send your resume and a short introduction to our recruiting team. We
+          can't wait to meet you!
+        </ApplyText>
+        <ApplyButton
+          href={`mailto:careers@japanapp.example?subject=Application for ${job.title}`}
+        >
+          Apply Now
+        </ApplyButton>
+      </ApplySection>
+    </Container>
+  );
 }

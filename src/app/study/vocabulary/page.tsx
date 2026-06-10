@@ -1,17 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { useProgress } from '@/context/ProgressContext';
-import { useDeviceMode } from '@/context/DeviceModeContext';
+import { useState, useEffect } from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { useProgress } from "@/context/ProgressContext";
+import { useDeviceMode } from "@/context/DeviceModeContext";
 
 const PageWrapper = styled.div`
   min-height: 90vh;
   width: 100%;
   /* Premium radial background */
-  background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
+  background: radial-gradient(
+    circle at top right,
+    rgba(79, 70, 229, 0.05) 0%,
+    transparent 60%
+  );
   overflow-x: hidden;
 `;
 
@@ -97,7 +101,7 @@ const BackButton = styled(Link)`
   transition: all 0.2s;
   padding: 0.5rem 1rem;
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 
   &:hover {
     color: var(--primary);
@@ -138,7 +142,7 @@ const DropdownTrigger = styled.button<{ $isOpen: boolean }>`
 
   svg {
     transition: transform 0.2s;
-    transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0)')};
+    transform: ${({ $isOpen }) => ($isOpen ? "rotate(180deg)" : "rotate(0)")};
     color: var(--text-secondary);
   }
 `;
@@ -157,8 +161,14 @@ const DropdownMenu = styled.div`
   animation: fadeIn 0.2s ease-out;
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 
@@ -166,8 +176,10 @@ const DropdownItem = styled.div<{ $isActive: boolean }>`
   padding: 0.75rem 1rem;
   cursor: pointer;
   font-weight: 500;
-  color: ${({ $isActive }) => ($isActive ? 'var(--primary)' : 'var(--foreground)')};
-  background: ${({ $isActive }) => ($isActive ? 'rgba(79, 70, 229, 0.05)' : 'transparent')};
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--primary)" : "var(--foreground)"};
+  background: ${({ $isActive }) =>
+    $isActive ? "rgba(79, 70, 229, 0.05)" : "transparent"};
   transition: background 0.2s;
 
   &:hover {
@@ -184,25 +196,39 @@ const FlashcardContainer = styled.div`
   max-width: 800px;
 `;
 
-const AnimContainer = styled.div<{ $dir: 'next' | 'prev' | null }>`
+const AnimContainer = styled.div<{ $dir: "next" | "prev" | null }>`
   width: 100%;
   display: flex;
   justify-content: center;
-  
+
   animation: ${({ $dir }) => {
-    if ($dir === 'next') return 'slideInNext 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-    if ($dir === 'prev') return 'slideInPrev 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-    return 'none';
+    if ($dir === "next")
+      return "slideInNext 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+    if ($dir === "prev")
+      return "slideInPrev 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+    return "none";
   }};
 
   @keyframes slideInNext {
-    0% { opacity: 0; transform: translateX(80px) scale(0.95); }
-    100% { opacity: 1; transform: translateX(0) scale(1); }
+    0% {
+      opacity: 0;
+      transform: translateX(80px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
   }
-  
+
   @keyframes slideInPrev {
-    0% { opacity: 0; transform: translateX(-80px) scale(0.95); }
-    100% { opacity: 1; transform: translateX(0) scale(1); }
+    0% {
+      opacity: 0;
+      transform: translateX(-80px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
   }
 `;
 
@@ -239,7 +265,7 @@ const CardInner = styled.div<{ $flipped: boolean }>`
   position: absolute;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-style: preserve-3d;
-  transform: ${({ $flipped }) => ($flipped ? 'rotateX(180deg)' : 'rotateX(0)')};
+  transform: ${({ $flipped }) => ($flipped ? "rotateX(180deg)" : "rotateX(0)")};
 `;
 
 const CardFace = styled.div`
@@ -288,10 +314,14 @@ const BigWord = styled.div`
 `;
 
 const HighlightText = styled.h2`
-  font-size: 3rem; 
+  font-size: 3rem;
   font-weight: 800;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -308,14 +338,14 @@ const DetailsStacked = styled.div`
   width: 90%;
   margin: 1rem 0;
   padding: 1.5rem;
-  border: 4px dotted #16A34A; /* Green dotted border from screenshot */
+  border: 4px dotted #16a34a; /* Green dotted border from screenshot */
   border-radius: 12px;
   background-color: var(--surface); /* Keep it matching the app dark theme */
   gap: 0.5rem;
 `;
 
 const ReadingTop = styled.div`
-  color: #16A34A; /* Green matching screenshot */
+  color: #16a34a; /* Green matching screenshot */
   font-size: 3.5rem;
   font-weight: 800;
   line-height: 1.2;
@@ -332,16 +362,16 @@ const WordMid = styled.div`
   font-weight: 700;
   position: relative;
   margin-bottom: 0.5rem;
-  
+
   /* Mock pitch accent line for styling similarity to the screenshot */
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 5px;
     right: -5px;
     width: 35%;
     height: 3px;
-    background-color: #EF4444; /* Red accent line */
+    background-color: #ef4444; /* Red accent line */
     border-radius: 2px;
   }
 
@@ -351,7 +381,7 @@ const WordMid = styled.div`
 `;
 
 const RomajiText = styled.div`
-  color: #16A34A; /* Green */
+  color: #16a34a; /* Green */
   font-size: 2.2rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -362,7 +392,7 @@ const RomajiText = styled.div`
 `;
 
 const MeaningText = styled.div`
-  color: #3B82F6; /* Blue matching screenshot */
+  color: #3b82f6; /* Blue matching screenshot */
   font-size: 1.8rem;
   font-weight: 500;
 
@@ -407,7 +437,7 @@ const IconBtn = styled.button`
     border-color: var(--primary);
     color: var(--primary);
   }
-  
+
   &:active {
     transform: scale(0.95);
   }
@@ -428,14 +458,18 @@ const ActionBtn = styled.button`
   transition: all 0.3s;
   font-size: 1.1rem;
   box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
 
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
   }
-  
+
   &:active {
     transform: translateY(-1px);
   }
@@ -450,15 +484,15 @@ type VocabItem = {
 
 export default function VocabularyFlashcards() {
   const { deviceMode, isMounted } = useDeviceMode();
-  const isMobileView = isMounted && deviceMode === 'mobile';
+  const isMobileView = isMounted && deviceMode === "mobile";
 
-  const [level, setLevel] = useState('hiragana');
+  const [level, setLevel] = useState("hiragana");
   const [vocabList, setVocabList] = useState<VocabItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [slideDir, setSlideDir] = useState<'next' | 'prev' | null>(null);
+  const [slideDir, setSlideDir] = useState<"next" | "prev" | null>(null);
 
   // Touch swipe states
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -468,7 +502,13 @@ export default function VocabularyFlashcards() {
   const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 });
   const SESSION_LIMIT = 10;
 
-  const { progress, updateSRS, addExp, recordQuizResult, markExerciseCompleted } = useProgress();
+  const {
+    progress,
+    updateSRS,
+    addExp,
+    recordQuizResult,
+    markExerciseCompleted,
+  } = useProgress();
 
   // Fetch List
   useEffect(() => {
@@ -477,7 +517,7 @@ export default function VocabularyFlashcards() {
     }, 0);
 
     fetch(`/api/vocabulary/${level}`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((data: VocabItem[]) => {
         if (Array.isArray(data)) {
           // Smart Shuffle based on SRS
@@ -491,7 +531,10 @@ export default function VocabularyFlashcards() {
             if (!srsB) return 1;
 
             // Otherwise, sort by nextReviewDate
-            return new Date(srsA.nextReviewDate).getTime() - new Date(srsB.nextReviewDate).getTime();
+            return (
+              new Date(srsA.nextReviewDate).getTime() -
+              new Date(srsB.nextReviewDate).getTime()
+            );
           });
 
           setVocabList(sorted);
@@ -512,9 +555,9 @@ export default function VocabularyFlashcards() {
     if (currentVocab) {
       updateSRS(currentVocab.word, quality);
       addExp(quality * 2); // Small EXP boost for practice
-      setSessionStats(prev => ({
+      setSessionStats((prev) => ({
         correct: prev.correct + (quality > 1 ? 1 : 0),
-        total: prev.total + 1
+        total: prev.total + 1,
       }));
     }
     nextCard();
@@ -524,27 +567,31 @@ export default function VocabularyFlashcards() {
     if (flipped) {
       setFlipped(false);
       setTimeout(() => {
-        setSlideDir('next');
-        setCurrentIndex(prev => (prev + 1) % vocabList.length);
+        setSlideDir("next");
+        setCurrentIndex((prev) => (prev + 1) % vocabList.length);
       }, 300); // Wait for flip back
     } else {
-      setSlideDir('next');
-      setCurrentIndex(prev => (prev + 1) % vocabList.length);
+      setSlideDir("next");
+      setCurrentIndex((prev) => (prev + 1) % vocabList.length);
     }
   };
 
   const handleFinishSession = () => {
-    recordQuizResult(sessionStats.correct, sessionStats.total, `Vocabulary (${level.replace('-', ' ')})`);
+    recordQuizResult(
+      sessionStats.correct,
+      sessionStats.total,
+      `Vocabulary (${level.replace("-", " ")})`,
+    );
     addExp(50); // Bonus EXP
-    if (level === 'n5-vocab-1') markExerciseCompleted('n5-vocab-1');
-    if (level === 'numbers') markExerciseCompleted('numbers-1-100');
+    if (level === "n5-vocab-1") markExerciseCompleted("n5-vocab-1");
+    if (level === "numbers") markExerciseCompleted("numbers-1-100");
     // Default fallback
     markExerciseCompleted(`vocab-${level}`);
     setSessionStats({ correct: 0, total: 0 });
     setCurrentIndex(0);
 
     if (isMobileView) {
-      window.location.href = '/';
+      window.location.href = "/";
     }
   };
 
@@ -552,12 +599,14 @@ export default function VocabularyFlashcards() {
     if (flipped) {
       setFlipped(false);
       setTimeout(() => {
-        setSlideDir('prev');
-        setCurrentIndex(prev => (prev === 0 ? vocabList.length - 1 : prev - 1));
+        setSlideDir("prev");
+        setCurrentIndex((prev) =>
+          prev === 0 ? vocabList.length - 1 : prev - 1,
+        );
       }, 300); // Wait for flip back
     } else {
-      setSlideDir('prev');
-      setCurrentIndex(prev => (prev === 0 ? vocabList.length - 1 : prev - 1));
+      setSlideDir("prev");
+      setCurrentIndex((prev) => (prev === 0 ? vocabList.length - 1 : prev - 1));
     }
   };
 
@@ -585,30 +634,102 @@ export default function VocabularyFlashcards() {
     }
   };
 
-  if (loading) return (
-    <PageWrapper>
-      <Container>
-        <div style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', marginTop: '4rem' }}>Loading Vocabulary...</div>
-      </Container>
-    </PageWrapper>
-  );
+  if (loading)
+    return (
+      <PageWrapper>
+        <Container>
+          <div
+            style={{
+              color: "var(--text-secondary)",
+              fontSize: "1.2rem",
+              marginTop: "4rem",
+            }}
+          >
+            Loading Vocabulary...
+          </div>
+        </Container>
+      </PageWrapper>
+    );
 
   if (sessionStats.total >= SESSION_LIMIT) {
     return (
-      <PageWrapper style={isMobileView ? { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' } : {}}>
+      <PageWrapper
+        style={
+          isMobileView
+            ? {
+                minHeight: "100vh",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }
+            : {}
+        }
+      >
         <Container>
-          <div style={{ textAlign: 'center', padding: isMobileView ? '3rem 2rem' : '4rem 2rem', background: 'var(--surface)', borderRadius: isMobileView ? '32px' : '24px', border: '1px solid var(--border)', maxWidth: isMobileView ? '450px' : 'none', width: '100%', boxShadow: isMobileView ? 'var(--shadow-lg)' : 'none', marginTop: isMobileView ? '0' : '4rem' }}>
-            <h2 style={{ fontSize: isMobileView ? '2.2rem' : '2.5rem', marginBottom: '1rem', color: '#10b981' }}>Session Complete! 🎉</h2>
-            <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+          <div
+            style={{
+              textAlign: "center",
+              padding: isMobileView ? "3rem 2rem" : "4rem 2rem",
+              background: "var(--surface)",
+              borderRadius: isMobileView ? "32px" : "24px",
+              border: "1px solid var(--border)",
+              maxWidth: isMobileView ? "450px" : "none",
+              width: "100%",
+              boxShadow: isMobileView ? "var(--shadow-lg)" : "none",
+              marginTop: isMobileView ? "0" : "4rem",
+            }}
+          >
+            <h2
+              style={{
+                fontSize: isMobileView ? "2.2rem" : "2.5rem",
+                marginBottom: "1rem",
+                color: "#10b981",
+              }}
+            >
+              Session Complete! 🎉
+            </h2>
+            <p
+              style={{
+                fontSize: "1.2rem",
+                color: "var(--text-secondary)",
+                marginBottom: "2rem",
+              }}
+            >
               You reviewed {SESSION_LIMIT} Vocabulary words.
             </p>
-            <div style={{ fontSize: '4rem', fontWeight: 900, color: 'var(--primary)', marginBottom: '2rem' }}>
+            <div
+              style={{
+                fontSize: "4rem",
+                fontWeight: 900,
+                color: "var(--primary)",
+                marginBottom: "2rem",
+              }}
+            >
               {sessionStats.correct}/{sessionStats.total}
             </div>
-            <p style={{ color: '#10b981', fontWeight: 'bold', marginBottom: '3rem' }}>+50 EXP Bonus!</p>
-            <button 
+            <p
+              style={{
+                color: "#10b981",
+                fontWeight: "bold",
+                marginBottom: "3rem",
+              }}
+            >
+              +50 EXP Bonus!
+            </p>
+            <button
               onClick={handleFinishSession}
-              style={{ background: 'var(--primary)', color: 'white', padding: '1rem 3rem', borderRadius: '99px', fontSize: '1.2rem', fontWeight: 800, border: 'none', cursor: 'pointer', boxShadow: '0 4px 15px rgba(79, 70, 229, 0.3)', width: isMobileView ? '100%' : 'auto' }}
+              style={{
+                background: "var(--primary)",
+                color: "white",
+                padding: "1rem 3rem",
+                borderRadius: "99px",
+                fontSize: "1.2rem",
+                fontWeight: 800,
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 4px 15px rgba(79, 70, 229, 0.3)",
+                width: isMobileView ? "100%" : "auto",
+              }}
             >
               Continue Learning
             </button>
@@ -618,27 +739,36 @@ export default function VocabularyFlashcards() {
     );
   }
 
-  if (!currentVocab) return <PageWrapper><Container>No Vocabulary found for this level.</Container></PageWrapper>;
+  if (!currentVocab)
+    return (
+      <PageWrapper>
+        <Container>No Vocabulary found for this level.</Container>
+      </PageWrapper>
+    );
 
   return (
     <PageWrapper>
       <Container>
         {isMobileView ? (
           <LessonHeader>
-            <CloseLessonBtn href="/" title="Tutup Sesi">✕</CloseLessonBtn>
+            <CloseLessonBtn href="/" title="Tutup Sesi">
+              ✕
+            </CloseLessonBtn>
             <LessonProgressBarContainer>
-              <LessonProgressBarFill $percent={(sessionStats.total / SESSION_LIMIT) * 100} />
+              <LessonProgressBarFill
+                $percent={(sessionStats.total / SESSION_LIMIT) * 100}
+              />
             </LessonProgressBarContainer>
-            <div style={{ width: '38px' }} />
+            <div style={{ width: "38px" }} />
           </LessonHeader>
         ) : (
           <>
-            <Breadcrumbs 
+            <Breadcrumbs
               items={[
-                { label: 'Home', href: '/' },
-                { label: 'Study', href: '/study' }
-              ]} 
-              current="Vocabulary Flashcards" 
+                { label: "Home", href: "/" },
+                { label: "Study", href: "/study" },
+              ]}
+              current="Vocabulary Flashcards"
             />
             <Header>
               <DropdownContainer>
@@ -647,14 +777,29 @@ export default function VocabularyFlashcards() {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   {level.charAt(0).toUpperCase() + level.slice(1)}
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
                 </DropdownTrigger>
 
                 {isDropdownOpen && (
                   <DropdownMenu>
-                    {['hiragana', 'katakana', 'dakuten', 'handakuten', 'yoon'].map(l => (
+                    {[
+                      "hiragana",
+                      "katakana",
+                      "dakuten",
+                      "handakuten",
+                      "yoon",
+                    ].map((l) => (
                       <DropdownItem
                         key={l}
                         $isActive={level === l}
@@ -707,7 +852,16 @@ export default function VocabularyFlashcards() {
               <>
                 {!isMobileView && (
                   <IconBtn onClick={prevCard} aria-label="Previous Word">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
                   </IconBtn>
@@ -718,10 +872,25 @@ export default function VocabularyFlashcards() {
                 </ActionBtn>
               </>
             ) : (
-              <div style={{ display: 'flex', gap: '0.75rem', width: '100%' }}>
-                <ActionBtn style={{ background: '#ef4444' }} onClick={() => rateRecall(1)}>Hard</ActionBtn>
-                <ActionBtn style={{ background: '#3b82f6' }} onClick={() => rateRecall(3)}>Good</ActionBtn>
-                <ActionBtn style={{ background: '#10b981' }} onClick={() => rateRecall(5)}>Easy</ActionBtn>
+              <div style={{ display: "flex", gap: "0.75rem", width: "100%" }}>
+                <ActionBtn
+                  style={{ background: "#ef4444" }}
+                  onClick={() => rateRecall(1)}
+                >
+                  Hard
+                </ActionBtn>
+                <ActionBtn
+                  style={{ background: "#3b82f6" }}
+                  onClick={() => rateRecall(3)}
+                >
+                  Good
+                </ActionBtn>
+                <ActionBtn
+                  style={{ background: "#10b981" }}
+                  onClick={() => rateRecall(5)}
+                >
+                  Easy
+                </ActionBtn>
               </div>
             )}
           </ActionButtons>

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { particleDrills, ParticleDrill } from '@/data/particles_drills';
+import { useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { particleDrills, ParticleDrill } from "@/data/particles_drills";
 
 const Container = styled.div`
   max-width: 800px;
@@ -14,7 +14,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   /* Premium radial background */
-  background: radial-gradient(circle at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%); /* Blue tint for grammar */
+  background: radial-gradient(
+    circle at center,
+    rgba(59, 130, 246, 0.05) 0%,
+    transparent 70%
+  ); /* Blue tint for grammar */
 `;
 
 const Header = styled.div`
@@ -75,7 +79,7 @@ const Sentence = styled.div`
   margin-bottom: 1rem;
   line-height: 1.4;
   color: var(--foreground);
-  
+
   @media (max-width: 600px) {
     font-size: 1.75rem;
   }
@@ -100,39 +104,51 @@ const OptionsGrid = styled.div`
   margin-bottom: 2.5rem;
 
   @media (max-width: 600px) {
-    grid-template-columns: repeat(2, 1fr); 
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
   }
 `;
 
-const OptionButton = styled.button<{ $state?: 'correct' | 'incorrect' | 'neutral' }>`
+const OptionButton = styled.button<{
+  $state?: "correct" | "incorrect" | "neutral";
+}>`
   padding: 1rem;
   border-radius: 16px;
-  border: 2px solid ${({ $state }) =>
-    $state === 'correct' ? '#10b981' :
-      $state === 'incorrect' ? '#ef4444' :
-        'var(--border)'};
+  border: 2px solid
+    ${({ $state }) =>
+      $state === "correct"
+        ? "#10b981"
+        : $state === "incorrect"
+          ? "#ef4444"
+          : "var(--border)"};
   background: ${({ $state }) =>
-    $state === 'correct' ? 'rgba(16, 185, 129, 0.1)' :
-      $state === 'incorrect' ? 'rgba(239, 68, 68, 0.1)' :
-        'var(--surface)'};
+    $state === "correct"
+      ? "rgba(16, 185, 129, 0.1)"
+      : $state === "incorrect"
+        ? "rgba(239, 68, 68, 0.1)"
+        : "var(--surface)"};
   color: ${({ $state }) =>
-    $state === 'correct' ? '#10b981' :
-      $state === 'incorrect' ? '#ef4444' :
-        'var(--foreground)'};
+    $state === "correct"
+      ? "#10b981"
+      : $state === "incorrect"
+        ? "#ef4444"
+        : "var(--foreground)"};
   font-size: 1.5rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  pointer-events: ${({ $state }) => $state && $state !== 'neutral' ? 'none' : 'auto'};
+  pointer-events: ${({ $state }) =>
+    $state && $state !== "neutral" ? "none" : "auto"};
   box-shadow: ${({ $state }) =>
-    $state === 'neutral' ? '0 4px 6px -1px rgba(0, 0, 0, 0.05)' : 'none'};
+    $state === "neutral" ? "0 4px 6px -1px rgba(0, 0, 0, 0.05)" : "none"};
 
   &:hover {
-    transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-2px)' : 'none'};
-    border-color: ${({ $state }) => $state === 'neutral' ? 'var(--primary)' : ''};
+    transform: ${({ $state }) =>
+      $state === "neutral" ? "translateY(-2px)" : "none"};
+    border-color: ${({ $state }) =>
+      $state === "neutral" ? "var(--primary)" : ""};
   }
-  
+
   @media (max-width: 600px) {
     font-size: 1.25rem;
     padding: 0.75rem;
@@ -152,8 +168,14 @@ const ExplanationBox = styled.div`
   animation: slideUp 0.3s ease-out;
 
   @keyframes slideUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 
@@ -168,7 +190,7 @@ const NextButton = styled.button`
   cursor: pointer;
   width: 100%;
   font-size: 1.1rem;
-  
+
   &:hover {
     opacity: 0.9;
   }
@@ -205,7 +227,11 @@ const ResultOverlay = styled.div`
     font-size: 3rem;
     font-weight: 800;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--secondary) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -229,7 +255,11 @@ const ButtonGroup = styled.div`
 
 const Button = styled.button`
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   border: none;
   border-radius: 999px;
@@ -240,7 +270,7 @@ const Button = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
@@ -251,9 +281,9 @@ const SecondaryButton = styled(Button)`
   background: transparent;
   color: var(--foreground);
   box-shadow: inset 0 0 0 2px var(--border);
-  
+
   &:hover {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     box-shadow: inset 0 0 0 2px var(--text-secondary);
   }
 `;
@@ -278,7 +308,7 @@ const InfoTitle = styled.h3`
   gap: 0.75rem;
 
   &::before {
-    content: '💡';
+    content: "💡";
     font-size: 1.5rem;
   }
 `;
@@ -310,7 +340,7 @@ export default function GrammarDrillsPage() {
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  
+
   // Game config
   const TOTAL_QUESTIONS = Math.min(10, particleDrills.length);
 
@@ -336,13 +366,13 @@ export default function GrammarDrillsPage() {
     setSelectedOption(option);
 
     if (option === questions[currentIndex].correctAnswer) {
-      setScore(s => s + 1);
+      setScore((s) => s + 1);
     }
   };
 
   const handleNext = () => {
     if (currentIndex < TOTAL_QUESTIONS - 1) {
-      setCurrentIndex(i => i + 1);
+      setCurrentIndex((i) => i + 1);
       setSelectedOption(null);
     } else {
       setIsFinished(true);
@@ -356,11 +386,17 @@ export default function GrammarDrillsPage() {
       <Container>
         <ResultOverlay>
           <h2>Quiz Complete!</h2>
-          <p>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
+          <p>
+            You scored <strong>{score}</strong> out of{" "}
+            <strong>{TOTAL_QUESTIONS}</strong>
+          </p>
           <ButtonGroup>
             <Button onClick={generateQuiz}>Try Again</Button>
-            <Link href="/study" style={{ textDecoration: 'none', display: 'flex', width: '100%' }}>
-              <SecondaryButton style={{ width: '100%' }}>Exit</SecondaryButton>
+            <Link
+              href="/study"
+              style={{ textDecoration: "none", display: "flex", width: "100%" }}
+            >
+              <SecondaryButton style={{ width: "100%" }}>Exit</SecondaryButton>
             </Link>
           </ButtonGroup>
         </ResultOverlay>
@@ -374,15 +410,22 @@ export default function GrammarDrillsPage() {
     if (!selectedOption) return currentQuestion.displaySentence;
     // Replace [ ] with the selected option, styled based on correctness
     const isCorrect = selectedOption === currentQuestion.correctAnswer;
-    const color = isCorrect ? '#10b981' : '#ef4444';
-    
-    const parts = currentQuestion.displaySentence.split('[ ]');
+    const color = isCorrect ? "#10b981" : "#ef4444";
+
+    const parts = currentQuestion.displaySentence.split("[ ]");
     if (parts.length < 2) return currentQuestion.displaySentence;
 
     return (
       <>
         {parts[0]}
-        <span style={{ color, borderBottom: `2px solid ${color}`, padding: '0 0.5rem', display: 'inline-block' }}>
+        <span
+          style={{
+            color,
+            borderBottom: `2px solid ${color}`,
+            padding: "0 0.5rem",
+            display: "inline-block",
+          }}
+        >
           {selectedOption}
         </span>
         {parts[1]}
@@ -392,12 +435,12 @@ export default function GrammarDrillsPage() {
 
   return (
     <Container>
-      <Breadcrumbs 
+      <Breadcrumbs
         items={[
-          { label: 'Home', href: '/' },
-          { label: 'Study', href: '/study' }
-        ]} 
-        current="Particle Drills" 
+          { label: "Home", href: "/" },
+          { label: "Study", href: "/study" },
+        ]}
+        current="Particle Drills"
       />
       <Header>
         <ScoreBadge>Score: {score}</ScoreBadge>
@@ -409,16 +452,18 @@ export default function GrammarDrillsPage() {
         </ProgressInfo>
 
         <Sentence>
-          {selectedOption ? getSentenceWithAnswer() : currentQuestion.displaySentence}
+          {selectedOption
+            ? getSentenceWithAnswer()
+            : currentQuestion.displaySentence}
         </Sentence>
         <Translation>{currentQuestion.translation}</Translation>
 
         <OptionsGrid>
           {currentQuestion.options.map((opt) => {
-            let state: 'neutral' | 'correct' | 'incorrect' = 'neutral';
+            let state: "neutral" | "correct" | "incorrect" = "neutral";
             if (selectedOption) {
-              if (opt === currentQuestion.correctAnswer) state = 'correct';
-              else if (opt === selectedOption) state = 'incorrect';
+              if (opt === currentQuestion.correctAnswer) state = "correct";
+              else if (opt === selectedOption) state = "incorrect";
             }
 
             return (
@@ -441,7 +486,9 @@ export default function GrammarDrillsPage() {
         )}
 
         <ProgressBarContainer>
-          <ProgressFill $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100} />
+          <ProgressFill
+            $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
+          />
         </ProgressBarContainer>
       </QuizCard>
 
@@ -450,15 +497,24 @@ export default function GrammarDrillsPage() {
         <InfoGrid>
           <InfoItem>
             <h4>Pengacakan Soal</h4>
-            <p>Sistem mengacak urutan soal dari bank data untuk memastikan variasi latihan di setiap sesi.</p>
+            <p>
+              Sistem mengacak urutan soal dari bank data untuk memastikan
+              variasi latihan di setiap sesi.
+            </p>
           </InfoItem>
           <InfoItem>
             <h4>Umpan Balik Instan</h4>
-            <p>Dapatkan konfirmasi langsung benar/salah beserta penjelasan tata bahasa setelah memilih jawaban.</p>
+            <p>
+              Dapatkan konfirmasi langsung benar/salah beserta penjelasan tata
+              bahasa setelah memilih jawaban.
+            </p>
           </InfoItem>
           <InfoItem>
             <h4>Pelacakan Skor</h4>
-            <p>Pantau kemajuan Anda melalui bar indikator dan skor akumulatif di bagian atas.</p>
+            <p>
+              Pantau kemajuan Anda melalui bar indikator dan skor akumulatif di
+              bagian atas.
+            </p>
           </InfoItem>
         </InfoGrid>
       </InfoSection>

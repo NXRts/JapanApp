@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import { useState, useEffect } from "react";
+import styled from "styled-components";
 
 const ScrollButton = styled.button<{ $visible: boolean }>`
   position: fixed;
@@ -20,8 +20,9 @@ const ScrollButton = styled.button<{ $visible: boolean }>`
   box-shadow: var(--shadow-lg);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
-  transform: ${({ $visible }) => ($visible ? 'translateY(0)' : 'translateY(20px)')};
-  pointer-events: ${({ $visible }) => ($visible ? 'auto' : 'none')};
+  transform: ${({ $visible }) =>
+    $visible ? "translateY(0)" : "translateY(20px)"};
+  pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
   z-index: 90;
 
   &:hover {
@@ -56,19 +57,23 @@ export function ScrollToTop() {
       }
     };
 
-    window.addEventListener('scroll', toggleVisible);
-    return () => window.removeEventListener('scroll', toggleVisible);
+    window.addEventListener("scroll", toggleVisible);
+    return () => window.removeEventListener("scroll", toggleVisible);
   }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   };
 
   return (
-    <ScrollButton onClick={scrollToTop} $visible={visible} title="Scroll to top">
+    <ScrollButton
+      onClick={scrollToTop}
+      $visible={visible}
+      title="Scroll to top"
+    >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
       </svg>

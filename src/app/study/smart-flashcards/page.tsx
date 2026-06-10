@@ -1,15 +1,19 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import SwipeableCard, { FlashcardData } from '@/components/Card/SwipeableCard';
+import { useState, useEffect } from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import SwipeableCard, { FlashcardData } from "@/components/Card/SwipeableCard";
 
 const PageWrapper = styled.div`
   min-height: 90vh;
   width: 100%;
-  background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
+  background: radial-gradient(
+    circle at top right,
+    rgba(79, 70, 229, 0.05) 0%,
+    transparent 60%
+  );
   overflow-x: hidden;
 `;
 
@@ -44,7 +48,7 @@ const BackButton = styled(Link)`
   transition: all 0.2s;
   padding: 0.5rem 1rem;
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 
   &:hover {
     color: var(--primary);
@@ -64,27 +68,29 @@ const ControlsContainer = styled.div`
   display: flex;
   gap: 2rem;
   margin-top: 4rem;
-  
+
   button {
     width: 64px;
     height: 64px;
     border-radius: 50%;
     border: none;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+
     &:hover {
       transform: scale(1.1);
     }
-    
+
     &:active {
       transform: scale(0.95);
     }
-    
+
     svg {
       width: 32px;
       height: 32px;
@@ -96,7 +102,7 @@ const StudyBtn = styled.button`
   background: white;
   color: #ef4444;
   border: 2px solid #fee2e2 !important;
-  
+
   &:hover {
     box-shadow: 0 10px 25px rgba(239, 68, 68, 0.2);
   }
@@ -106,7 +112,7 @@ const KnowBtn = styled.button`
   background: white;
   color: #22c55e;
   border: 2px solid #dcfce7 !important;
-  
+
   &:hover {
     box-shadow: 0 10px 25px rgba(34, 197, 94, 0.2);
   }
@@ -124,8 +130,14 @@ const SummaryScreen = styled.div`
   width: 100%;
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
 `;
 
@@ -133,7 +145,11 @@ const Title = styled.h2`
   font-size: 2.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -166,7 +182,11 @@ const ActionBtn = styled.button`
   font-weight: 700;
   font-size: 1.2rem;
   border: none;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   cursor: pointer;
   transition: all 0.3s;
@@ -208,7 +228,7 @@ const DropdownTrigger = styled.button<{ $isOpen: boolean }>`
 
   svg {
     transition: transform 0.2s;
-    transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0)')};
+    transform: ${({ $isOpen }) => ($isOpen ? "rotate(180deg)" : "rotate(0)")};
     color: var(--text-secondary);
   }
 `;
@@ -227,8 +247,14 @@ const DropdownMenu = styled.div`
   animation: fadeIn 0.2s ease-out;
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 
@@ -236,8 +262,10 @@ const DropdownItem = styled.div<{ $isActive: boolean }>`
   padding: 0.75rem 1rem;
   cursor: pointer;
   font-weight: 500;
-  color: ${({ $isActive }) => ($isActive ? 'var(--primary)' : 'var(--foreground)')};
-  background: ${({ $isActive }) => ($isActive ? 'rgba(79, 70, 229, 0.05)' : 'transparent')};
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--primary)" : "var(--foreground)"};
+  background: ${({ $isActive }) =>
+    $isActive ? "rgba(79, 70, 229, 0.05)" : "transparent"};
   transition: background 0.2s;
 
   &:hover {
@@ -246,24 +274,41 @@ const DropdownItem = styled.div<{ $isActive: boolean }>`
   }
 `;
 
-function CustomDropdown({ value, onChange, options }: { value: string, onChange: (val: string) => void, options: string[] }) {
+function CustomDropdown({
+  value,
+  onChange,
+  options,
+}: {
+  value: string;
+  onChange: (val: string) => void;
+  options: string[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
-  const displayValue = value === 'All' ? options[0] : value;
-  
+  const displayValue = value === "All" ? options[0] : value;
+
   return (
     <DropdownContainer>
       <DropdownTrigger $isOpen={isOpen} onClick={() => setIsOpen(!isOpen)}>
         {displayValue}
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
       </DropdownTrigger>
       {isOpen && (
         <DropdownMenu>
-          {options.map(opt => {
-            const actualVal = opt === 'All Levels' ? 'All' : opt;
+          {options.map((opt) => {
+            const actualVal = opt === "All Levels" ? "All" : opt;
             return (
-              <DropdownItem 
+              <DropdownItem
                 key={opt}
                 $isActive={value === actualVal}
                 onClick={() => {
@@ -281,7 +326,7 @@ function CustomDropdown({ value, onChange, options }: { value: string, onChange:
   );
 }
 
-import { allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
+import { allVocabulary, allKanji, allGrammar } from "@/lib/dictionary";
 
 interface DeckCard extends FlashcardData {
   level: string;
@@ -291,32 +336,35 @@ interface DeckCard extends FlashcardData {
 // Map all vocabulary, kanji, and grammar to Flashcard format
 const VOCAB_DECK: DeckCard[] = allVocabulary.map((item: any) => ({
   id: item.id || `word-${Math.random()}`,
-  front: item.word || item.reading || '?',
+  front: item.word || item.reading || "?",
   romaji: item.romaji || `[Level: ${item.level}]`,
-  meaning: item.meaning ? item.meaning.split(',')[0].trim() : 'No definition',
-  audioText: item.reading || item.word || '',
-  level: item.level || '?',
-  category: 'Vocabulary'
+  meaning: item.meaning ? item.meaning.split(",")[0].trim() : "No definition",
+  audioText: item.reading || item.word || "",
+  level: item.level || "?",
+  category: "Vocabulary",
 }));
 
 const KANJI_DECK: DeckCard[] = allKanji.map((item: any) => ({
   id: item.id || `kanji-${Math.random()}`,
-  front: item.kanji || '?',
-  romaji: item.onyomi?.join(', ') || item.kunyomi?.join(', ') || `[Level: ${item.level}]`,
-  meaning: item.indonesian || item.english || 'No definition',
-  audioText: item.kanji || '',
-  level: item.level || '?',
-  category: 'Kanji'
+  front: item.kanji || "?",
+  romaji:
+    item.onyomi?.join(", ") ||
+    item.kunyomi?.join(", ") ||
+    `[Level: ${item.level}]`,
+  meaning: item.indonesian || item.english || "No definition",
+  audioText: item.kanji || "",
+  level: item.level || "?",
+  category: "Kanji",
 }));
 
 const GRAMMAR_DECK: DeckCard[] = allGrammar.map((item: any) => ({
   id: item.id || `grammar-${Math.random()}`,
-  front: item.title || '?',
+  front: item.title || "?",
   romaji: item.structure || `[Level: ${item.level}]`,
-  meaning: item.meaning || 'No definition',
-  audioText: item.title || '',
-  level: item.level || '?',
-  category: 'Grammar'
+  meaning: item.meaning || "No definition",
+  audioText: item.title || "",
+  level: item.level || "?",
+  category: "Grammar",
 }));
 
 const FULL_DECK: DeckCard[] = [...VOCAB_DECK, ...KANJI_DECK, ...GRAMMAR_DECK];
@@ -326,15 +374,15 @@ export default function SmartFlashcardsPage() {
   const [knownCount, setKnownCount] = useState(0);
   const [studyCount, setStudyCount] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
-  const [levelFilter, setLevelFilter] = useState('All');
-  const [categoryFilter, setCategoryFilter] = useState('Vocabulary');
+  const [levelFilter, setLevelFilter] = useState("All");
+  const [categoryFilter, setCategoryFilter] = useState("Vocabulary");
 
   const loadDeck = (lvl: string, cat: string) => {
-    let pool = FULL_DECK.filter(card => card.category === cat);
-    if (lvl !== 'All') {
-      pool = pool.filter(card => card.level === lvl);
+    let pool = FULL_DECK.filter((card) => card.category === cat);
+    if (lvl !== "All") {
+      pool = pool.filter((card) => card.level === lvl);
     }
-    
+
     // Shuffle and cap at 10 items
     const shuffled = [...pool].sort(() => 0.5 - Math.random());
     setDeck(shuffled.slice(0, 10));
@@ -347,18 +395,18 @@ export default function SmartFlashcardsPage() {
     loadDeck(levelFilter, categoryFilter);
   }, [levelFilter, categoryFilter]);
 
-  const handleSwipe = (dir: 'left' | 'right', card: FlashcardData) => {
-    if (dir === 'right') {
-      setKnownCount(prev => prev + 1);
+  const handleSwipe = (dir: "left" | "right", card: FlashcardData) => {
+    if (dir === "right") {
+      setKnownCount((prev) => prev + 1);
     } else {
-      setStudyCount(prev => prev + 1);
+      setStudyCount((prev) => prev + 1);
     }
-    
+
     // Remove the card from the top of the deck
-    setDeck(prevDeck => {
+    setDeck((prevDeck) => {
       const newDeck = [...prevDeck];
       newDeck.shift(); // Remove top card
-      
+
       // If no cards left, show summary
       if (newDeck.length === 0) {
         setTimeout(() => setIsFinished(true), 300);
@@ -368,10 +416,10 @@ export default function SmartFlashcardsPage() {
   };
 
   // Button handlers that simulate swipe
-  const handleSimulateSwipe = (dir: 'left' | 'right') => {
+  const handleSimulateSwipe = (dir: "left" | "right") => {
     if (deck.length === 0) return;
     const currentCard = deck[0];
-    
+
     // Dispatch custom event to the card visually if we wanted to
     // or just process it directly
     handleSwipe(dir, currentCard);
@@ -384,56 +432,71 @@ export default function SmartFlashcardsPage() {
   return (
     <PageWrapper>
       <Container>
-        <Breadcrumbs 
+        <Breadcrumbs
           items={[
-            { label: 'Home', href: '/' },
-            { label: 'Study', href: '/study' }
-          ]} 
-          current="Smart Flashcards" 
+            { label: "Home", href: "/" },
+            { label: "Study", href: "/study" },
+          ]}
+          current="Smart Flashcards"
         />
         <Header>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div style={{ 
-              fontWeight: 700, 
-              color: 'var(--primary)',
-              background: 'rgba(79, 70, 229, 0.1)',
-              padding: '0.5rem 1.25rem',
-              fontSize: '1rem',
-              borderRadius: '999px',
-              border: '1px solid rgba(79, 70, 229, 0.2)'
-            }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div
+              style={{
+                fontWeight: 700,
+                color: "var(--primary)",
+                background: "rgba(79, 70, 229, 0.1)",
+                padding: "0.5rem 1.25rem",
+                fontSize: "1rem",
+                borderRadius: "999px",
+                border: "1px solid rgba(79, 70, 229, 0.2)",
+              }}
+            >
               Remaining: {deck.length}
             </div>
-            <CustomDropdown 
+            <CustomDropdown
               value={categoryFilter}
               onChange={(val) => setCategoryFilter(val)}
-              options={['Vocabulary', 'Kanji', 'Grammar']}
+              options={["Vocabulary", "Kanji", "Grammar"]}
             />
-            <CustomDropdown 
+            <CustomDropdown
               value={levelFilter}
               onChange={(val) => setLevelFilter(val)}
-              options={['All Levels', 'N5', 'N4', 'N3', 'N2', 'N1']}
+              options={["All Levels", "N5", "N4", "N3", "N2", "N1"]}
             />
-            <button 
-              onClick={restart} 
+            <button
+              onClick={restart}
               title="Refresh / Shuffle Deck"
-              style={{ 
-                background: 'rgba(79, 70, 229, 0.1)', 
-                color: 'var(--primary)', 
-                border: 'none', 
-                borderRadius: '50%',
-                width: '36px',
-                height: '36px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                transition: 'transform 0.2s'
+              style={{
+                background: "rgba(79, 70, 229, 0.1)",
+                color: "var(--primary)",
+                border: "none",
+                borderRadius: "50%",
+                width: "36px",
+                height: "36px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                transition: "transform 0.2s",
               }}
-              onMouseOver={(e) => (e.currentTarget.style.transform = 'rotate(30deg)')}
-              onMouseOut={(e) => (e.currentTarget.style.transform = 'rotate(0deg)')}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.transform = "rotate(30deg)")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.transform = "rotate(0deg)")
+              }
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <polyline points="23 4 23 10 17 10"></polyline>
                 <polyline points="1 20 1 14 7 14"></polyline>
                 <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
@@ -457,36 +520,62 @@ export default function SmartFlashcardsPage() {
             </DeckContainer>
 
             {deck.length > 0 && (
-               <ControlsContainer>
-                 <StudyBtn onClick={() => handleSimulateSwipe('left')} aria-label="Study Again">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                     <line x1="18" y1="6" x2="6" y2="18"></line>
-                     <line x1="6" y1="6" x2="18" y2="18"></line>
-                   </svg>
-                 </StudyBtn>
-                 <KnowBtn onClick={() => handleSimulateSwipe('right')} aria-label="Known">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                     <path d="M20 6L9 17l-5-5"></path>
-                   </svg>
-                 </KnowBtn>
-               </ControlsContainer>
+              <ControlsContainer>
+                <StudyBtn
+                  onClick={() => handleSimulateSwipe("left")}
+                  aria-label="Study Again"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </StudyBtn>
+                <KnowBtn
+                  onClick={() => handleSimulateSwipe("right")}
+                  aria-label="Known"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 6L9 17l-5-5"></path>
+                  </svg>
+                </KnowBtn>
+              </ControlsContainer>
             )}
           </>
         ) : (
           <SummaryScreen>
             <Title>Session Complete! 🎉</Title>
-            <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginTop: '1rem' }}>
+            <p
+              style={{
+                fontSize: "1.2rem",
+                color: "var(--text-secondary)",
+                marginTop: "1rem",
+              }}
+            >
               Awesome job! Keep your daily streak going.
             </p>
-            
+
             <StatRow>
               <StatBlock>
                 <p>Mastered</p>
-                <h3 style={{ color: '#22c55e' }}>{knownCount}</h3>
+                <h3 style={{ color: "#22c55e" }}>{knownCount}</h3>
               </StatBlock>
               <StatBlock>
                 <p>To Review</p>
-                <h3 style={{ color: '#ef4444' }}>{studyCount}</h3>
+                <h3 style={{ color: "#ef4444" }}>{studyCount}</h3>
               </StatBlock>
             </StatRow>
 

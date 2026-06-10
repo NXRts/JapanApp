@@ -1,19 +1,39 @@
-'use client';
+"use client";
 
-import styled, { keyframes } from 'styled-components';
-import { useState } from 'react';
+import styled, { keyframes } from "styled-components";
+import { useState } from "react";
 
 // --- Icons ---
 const MailIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect width="20" height="16" x="2" y="4" rx="2" />
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
   </svg>
 );
 
 const DiscordIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M18 6h-11a3 3 0 0 0 -3 3v7a3 3 0 0 0 3 3h11a3 3 0 0 0 3 -3v-7a3 3 0 0 0 -3 -3z" />
-    <path d="M8 12l1 .5" /><path d="M15 12l1 .5" />
+    <path d="M8 12l1 .5" />
+    <path d="M15 12l1 .5" />
     <path d="M9 15h6" />
   </svg>
 );
@@ -25,14 +45,34 @@ const GithubIcon = () => (
 );
 
 const ClockIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="12" cy="12" r="10" />
+    <polyline points="12 6 12 12 16 14" />
   </svg>
 );
 
 const SendIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="22" y1="2" x2="11" y2="13" /><polyline points="22 2 15 22 11 13 2 9 22 2" />
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <line x1="22" y1="2" x2="11" y2="13" />
+    <polyline points="22 2 15 22 11 13 2 9 22 2" />
   </svg>
 );
 
@@ -85,7 +125,7 @@ const Subtitle = styled.p`
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
-  
+
   @media (max-width: 768px) {
     font-size: 1rem;
   }
@@ -143,10 +183,10 @@ const IconWrapper = styled.div<{ $color: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props => `rgba(${props.$color}, 0.1)`};
-  color: ${props => `rgb(${props.$color})`};
+  background: ${(props) => `rgba(${props.$color}, 0.1)`};
+  color: ${(props) => `rgb(${props.$color})`};
   transition: transform 0.3s ease;
-  
+
   @media (max-width: 768px) {
     width: 48px;
     height: 48px;
@@ -171,7 +211,7 @@ const CardLabel = styled.span`
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  
+
   @media (max-width: 768px) {
     font-size: 0.8rem;
   }
@@ -183,7 +223,7 @@ const CardValue = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  
+
   @media (max-width: 768px) {
     font-size: 1rem;
   }
@@ -202,7 +242,7 @@ const ResponseBadge = styled.div`
   margin-top: 1rem;
   width: fit-content;
   border: 1px solid rgba(var(--secondary-rgb), 0.2);
-  
+
   @media (max-width: 768px) {
     font-size: 0.85rem;
     padding: 0.6rem 1rem;
@@ -219,13 +259,17 @@ const FormContainer = styled.div`
   overflow: hidden;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     right: 0;
     width: 150px;
     height: 150px;
-    background: radial-gradient(circle at top right, rgba(var(--accent-rgb), 0.1), transparent);
+    background: radial-gradient(
+      circle at top right,
+      rgba(var(--accent-rgb), 0.1),
+      transparent
+    );
     pointer-events: none;
   }
 
@@ -379,7 +423,7 @@ const FaqTitle = styled.h2`
   margin-bottom: 2rem;
   text-align: center;
   color: var(--foreground);
-  
+
   @media (max-width: 768px) {
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
@@ -419,7 +463,7 @@ const FaqCard = styled.div`
 `;
 
 // --- Components ---
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -437,12 +481,12 @@ export default function ContactPage() {
 
   return (
     <PageContainer>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Contact" />
+      <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Contact" />
       <HeroSection>
         <Title>Say Konnichiwa!</Title>
         <Subtitle>
-          Have questions about materials, quizzes, or just want to say hi? 
-          We always love to hear from our learning community.
+          Have questions about materials, quizzes, or just want to say hi? We
+          always love to hear from our learning community.
         </Subtitle>
       </HeroSection>
 
@@ -488,17 +532,33 @@ export default function ContactPage() {
           {submitted ? (
             <SuccessOverlay>
               <SuccessIcon>
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="40"
+                  height="40"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
               </SuccessIcon>
-              <h2 style={{ fontSize: '2rem', fontWeight: 800 }}>Message Sent!</h2>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-                Thank you for contacting us. Our team will review your message and reply as soon as possible.
+              <h2 style={{ fontSize: "2rem", fontWeight: 800 }}>
+                Message Sent!
+              </h2>
+              <p style={{ color: "var(--text-secondary)", fontSize: "1.1rem" }}>
+                Thank you for contacting us. Our team will review your message
+                and reply as soon as possible.
               </p>
-              <SubmitButton 
-                onClick={() => setSubmitted(false)} 
-                style={{ marginTop: '1rem', width: 'auto', padding: '0.9rem 2rem' }}
+              <SubmitButton
+                onClick={() => setSubmitted(false)}
+                style={{
+                  marginTop: "1rem",
+                  width: "auto",
+                  padding: "0.9rem 2rem",
+                }}
               >
                 Send Another Message
               </SubmitButton>
@@ -517,14 +577,22 @@ export default function ContactPage() {
               </FormRow>
               <FormGroup>
                 <Label>Subject (Optional)</Label>
-                <Input type="text" placeholder="What would you like to talk about?" />
+                <Input
+                  type="text"
+                  placeholder="What would you like to talk about?"
+                />
               </FormGroup>
               <FormGroup>
                 <Label>Your Message</Label>
-                <TextArea placeholder="Write the details of your question or feedback here..." required />
+                <TextArea
+                  placeholder="Write the details of your question or feedback here..."
+                  required
+                />
               </FormGroup>
               <SubmitButton type="submit" disabled={loading}>
-                {loading ? 'Sending...' : (
+                {loading ? (
+                  "Sending..."
+                ) : (
                   <>
                     Send Message <SendIcon />
                   </>
@@ -540,15 +608,24 @@ export default function ContactPage() {
         <FaqGrid>
           <FaqCard>
             <h3>How do I reset my learning progress?</h3>
-            <p>You can do it through Settings &gt; Learning Data &gt; Reset Progress. Be careful, this action cannot be undone.</p>
+            <p>
+              You can do it through Settings &gt; Learning Data &gt; Reset
+              Progress. Be careful, this action cannot be undone.
+            </p>
           </FaqCard>
           <FaqCard>
             <h3>Is this app completely free?</h3>
-            <p>Yes, the main material and quiz features are available for free to everyone. We rely on community support for server operations.</p>
+            <p>
+              Yes, the main material and quiz features are available for free to
+              everyone. We rely on community support for server operations.
+            </p>
           </FaqCard>
           <FaqCard>
             <h3>How do I report an error in the material?</h3>
-            <p>Use the form above with the subject "Error Report" or contact us directly via Discord for a faster response.</p>
+            <p>
+              Use the form above with the subject "Error Report" or contact us
+              directly via Discord for a faster response.
+            </p>
           </FaqCard>
         </FaqGrid>
       </FaqSection>

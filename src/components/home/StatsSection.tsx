@@ -1,21 +1,26 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Section = styled.section`
   padding: 3rem 1rem;
   margin-bottom: 2rem;
   position: relative;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
     width: 200px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--primary-light),
+      transparent
+    );
     opacity: 0.5;
   }
 `;
@@ -27,7 +32,7 @@ const StatsGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   text-align: center;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -44,7 +49,7 @@ const StatItem = styled.div`
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  
+
   @media (max-width: 768px) {
     flex-direction: row;
     justify-content: space-between;
@@ -60,11 +65,15 @@ const StatNumber = styled.div`
   color: var(--primary);
   line-height: 1;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-light) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.2));
-  
+
   @media (max-width: 768px) {
     font-size: 2.5rem;
     margin-bottom: 0;
@@ -87,7 +96,12 @@ export function StatsSection() {
           <StatNumber>2,136</StatNumber>
           <StatLabel>Joyo Kanji</StatLabel>
         </StatItem>
-        <StatItem style={{ borderColor: 'rgba(var(--primary-rgb), 0.3)', boxShadow: '0 0 20px rgba(var(--primary-rgb), 0.1)' }}>
+        <StatItem
+          style={{
+            borderColor: "rgba(var(--primary-rgb), 0.3)",
+            boxShadow: "0 0 20px rgba(var(--primary-rgb), 0.1)",
+          }}
+        >
           <StatNumber>JLPT</StatNumber>
           <StatLabel>N5 to N1 Ready</StatLabel>
         </StatItem>

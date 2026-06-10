@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
-import { useState } from 'react';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { listeningExercises } from '@/data/listening';
-import { useProgress } from '@/context/ProgressContext';
+import styled from "styled-components";
+import Link from "next/link";
+import { useState } from "react";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { listeningExercises } from "@/data/listening";
+import { useProgress } from "@/context/ProgressContext";
 
 const Container = styled.div`
   max-width: 1200px;
@@ -42,7 +42,7 @@ const ExerciseCard = styled(Link)`
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  
+
   &:hover {
     transform: translateY(-5px);
     border-color: #3b82f6;
@@ -50,16 +50,30 @@ const ExerciseCard = styled(Link)`
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent 50%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      circle at top right,
+      rgba(59, 130, 246, 0.05),
+      transparent 50%
+    );
     pointer-events: none;
   }
 `;
 
 const LevelBadge = styled.span<{ $level: string }>`
-  background: ${props => props.$level === 'N5' ? 'var(--primary)' : props.$level === 'N4' ? '#10b981' : props.$level === 'N3' ? '#f59e0b' : '#3b82f6'};
+  background: ${(props) =>
+    props.$level === "N5"
+      ? "var(--primary)"
+      : props.$level === "N4"
+        ? "#10b981"
+        : props.$level === "N3"
+          ? "#f59e0b"
+          : "#3b82f6"};
   color: white;
   padding: 0.3rem 1rem;
   border-radius: 999px;
@@ -108,41 +122,67 @@ const Tag = styled.span`
 const FilterBtn = styled.button<{ $active: boolean }>`
   padding: 0.6rem 1.75rem;
   border-radius: 99px;
-  border: ${props => props.$active ? 'none' : '1px solid var(--border)'};
-  background: ${props => props.$active ? '#3b82f6' : 'var(--surface)'};
-  color: ${props => props.$active ? 'white' : 'var(--foreground)'};
+  border: ${(props) => (props.$active ? "none" : "1px solid var(--border)")};
+  background: ${(props) => (props.$active ? "#3b82f6" : "var(--surface)")};
+  color: ${(props) => (props.$active ? "white" : "var(--foreground)")};
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.$active ? '0 5px 15px rgba(59, 130, 246, 0.3)' : '0 5px 15px rgba(0,0,0,0.05)'};
+    box-shadow: ${(props) =>
+      props.$active
+        ? "0 5px 15px rgba(59, 130, 246, 0.3)"
+        : "0 5px 15px rgba(0,0,0,0.05)"};
   }
 `;
 
 export default function ListeningHub() {
-  const [filter, setFilter] = useState<string>('All');
+  const [filter, setFilter] = useState<string>("All");
   const { progress } = useProgress();
 
-  const filteredExercises = filter === 'All' 
-    ? listeningExercises 
-    : listeningExercises.filter(e => e.level === filter);
+  const filteredExercises =
+    filter === "All"
+      ? listeningExercises
+      : listeningExercises.filter((e) => e.level === filter);
 
-  const levels = ['All', 'N5', 'N4', 'N3', 'N2', 'N1'];
+  const levels = ["All", "N5", "N4", "N3", "N2", "N1"];
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Study', href: '/study' }]} current="Listening" />
-      
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Study", href: "/study" },
+        ]}
+        current="Listening"
+      />
+
       <Header>
         <Title>Listening Comprehension 🎧</Title>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-          Simulate JLPT Choukai. Listen to the audio and answer without reading the text.
+        <p
+          style={{
+            color: "var(--text-secondary)",
+            fontSize: "1.2rem",
+            maxWidth: "600px",
+            margin: "0 auto",
+          }}
+        >
+          Simulate JLPT Choukai. Listen to the audio and answer without reading
+          the text.
         </p>
-        
-        <div style={{ marginTop: '3rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          {levels.map(level => (
+
+        <div
+          style={{
+            marginTop: "3rem",
+            display: "flex",
+            gap: "1rem",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          {levels.map((level) => (
             <FilterBtn
               key={level}
               $active={filter === level}
@@ -155,24 +195,54 @@ export default function ListeningHub() {
       </Header>
 
       <Grid>
-        {filteredExercises.map(exercise => (
-          <ExerciseCard key={exercise.id} href={`/study/listening/${exercise.id}`}>
+        {filteredExercises.map((exercise) => (
+          <ExerciseCard
+            key={exercise.id}
+            href={`/study/listening/${exercise.id}`}
+          >
             <ExerciseHeader>
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                <LevelBadge $level={exercise.level}>{exercise.level}</LevelBadge>
+              <div
+                style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
+              >
+                <LevelBadge $level={exercise.level}>
+                  {exercise.level}
+                </LevelBadge>
                 {progress.completedExercises?.includes(exercise.id) && (
-                  <span style={{ background: '#10b981', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span
+                    style={{
+                      background: "#10b981",
+                      color: "white",
+                      padding: "0.2rem 0.6rem",
+                      borderRadius: "99px",
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.2rem",
+                    }}
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
                     Completed
                   </span>
                 )}
               </div>
-              <span style={{ fontSize: '1.2rem' }}>🔊</span>
+              <span style={{ fontSize: "1.2rem" }}>🔊</span>
             </ExerciseHeader>
             <ExerciseTitle>{exercise.title}</ExerciseTitle>
             <ScenarioText>{exercise.scenario}</ScenarioText>
             <Tags>
-              {exercise.tags.map(tag => (
+              {exercise.tags.map((tag) => (
                 <Tag key={tag}>#{tag}</Tag>
               ))}
             </Tags>

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Image from 'next/image';
+import styled from "styled-components";
+import Image from "next/image";
 
 const Section = styled.section`
   padding: 4rem 2rem;
@@ -38,7 +38,7 @@ const BenefitItem = styled.div`
   display: flex;
   gap: 1.5rem;
   align-items: flex-start;
-  
+
   @media (max-width: 768px) {
     gap: 1rem;
   }
@@ -50,7 +50,11 @@ const BenefitIcon = styled.div`
   height: 80px;
   flex-shrink: 0;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15), rgba(var(--primary-rgb), 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--primary-rgb), 0.15),
+    rgba(var(--primary-rgb), 0.05)
+  );
   border: 1px solid rgba(var(--primary-rgb), 0.1);
   display: flex;
   align-items: center;
@@ -70,7 +74,7 @@ const BenefitIcon = styled.div`
     stroke: currentColor;
     stroke-width: 2;
     fill: none;
-    
+
     @media (max-width: 768px) {
       width: 28px;
       height: 28px;
@@ -86,13 +90,13 @@ const BenefitText = styled.div`
     color: var(--foreground);
     line-height: 1.3;
   }
-  
+
   p {
     color: var(--text-secondary);
     line-height: 1.6;
     font-size: 1.05rem;
   }
-  
+
   @media (max-width: 768px) {
     h3 {
       font-size: 1.1rem;
@@ -116,7 +120,7 @@ const BenefitsMapContainer = styled.div`
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
-  
+
   @media (max-width: 768px) {
     height: 250px;
     width: 100%;
@@ -132,9 +136,9 @@ const SectionTitle = styled.h2`
   color: var(--foreground);
   position: relative;
   padding-bottom: 1.25rem;
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -144,12 +148,12 @@ const SectionTitle = styled.h2`
     background: var(--primary);
     border-radius: 2px;
   }
-  
+
   span {
     position: relative;
     z-index: 1;
   }
-  
+
   @media (max-width: 768px) {
     font-size: 1.6rem;
     margin-bottom: 2.5rem;
@@ -160,41 +164,66 @@ const SectionTitle = styled.h2`
 export function BenefitsSection() {
   return (
     <Section>
-      <SectionTitle><span>Why Learn with Japan App?</span></SectionTitle>
+      <SectionTitle>
+        <span>Why Learn with Japan App?</span>
+      </SectionTitle>
       <BenefitsGrid>
         <BenefitContent>
           <BenefitItem>
             <BenefitIcon>
-              <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                viewBox="0 0 24 24"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
             </BenefitIcon>
             <BenefitText>
               <h3>Scientific Retention (SRS)</h3>
-              <p>Forget the forgetting curve. Our <b>SRS technology</b> ensures you memorize characters for life by predicting your brain&apos;s optimal review time.</p>
+              <p>
+                Forget the forgetting curve. Our <b>SRS technology</b> ensures
+                you memorize characters for life by predicting your brain&apos;s
+                optimal review time.
+              </p>
             </BenefitText>
           </BenefitItem>
           <BenefitItem>
             <BenefitIcon>
-              <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                viewBox="0 0 24 24"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
               </svg>
             </BenefitIcon>
             <BenefitText>
               <h3>OCR & AI Dictionary</h3>
-              <p>Found a word in the real world? Point your camera or draw it on our canvas. Our <b>AI tools</b> identify characters instantly.</p>
+              <p>
+                Found a word in the real world? Point your camera or draw it on
+                our canvas. Our <b>AI tools</b> identify characters instantly.
+              </p>
             </BenefitText>
           </BenefitItem>
           <BenefitItem>
             <BenefitIcon>
-              <svg viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                viewBox="0 0 24 24"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
                 <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
               </svg>
             </BenefitIcon>
             <BenefitText>
               <h3>Gamified Career Paths</h3>
-              <p>Open career doors by mastering JLPT. Earn <b>EXP</b>, climb ranks, and prepare for the job market with our professional resources.</p>
+              <p>
+                Open career doors by mastering JLPT. Earn <b>EXP</b>, climb
+                ranks, and prepare for the job market with our professional
+                resources.
+              </p>
             </BenefitText>
           </BenefitItem>
         </BenefitContent>
@@ -203,11 +232,30 @@ export function BenefitsSection() {
             src="/jp.svg"
             alt="Map of Japan"
             fill
-            style={{ objectFit: 'contain', padding: '2rem', opacity: 0.8 }}
+            style={{ objectFit: "contain", padding: "2rem", opacity: 0.8 }}
           />
-          <div style={{ position: 'absolute', bottom: '2rem', textAlign: 'center', width: '100%', zIndex: 2 }}>
-            <p style={{ fontWeight: '800', fontSize: '1.5rem', color: 'var(--foreground)', textShadow: '0 2px 4px var(--surface)' }}>Your Gateway</p>
-            <p style={{ color: 'var(--text-secondary)', fontWeight: '600' }}>to Japanese Fluency</p>
+          <div
+            style={{
+              position: "absolute",
+              bottom: "2rem",
+              textAlign: "center",
+              width: "100%",
+              zIndex: 2,
+            }}
+          >
+            <p
+              style={{
+                fontWeight: "800",
+                fontSize: "1.5rem",
+                color: "var(--foreground)",
+                textShadow: "0 2px 4px var(--surface)",
+              }}
+            >
+              Your Gateway
+            </p>
+            <p style={{ color: "var(--text-secondary)", fontWeight: "600" }}>
+              to Japanese Fluency
+            </p>
           </div>
         </BenefitsMapContainer>
       </BenefitsGrid>

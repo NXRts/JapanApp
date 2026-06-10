@@ -1,4 +1,4 @@
-import { VocabularyItem } from '../n5/vocabulary';
+import { VocabularyItem } from "../n5/vocabulary";
 
 export const n1Vocabulary: VocabularyItem[] = [
   {
@@ -12,8 +12,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "両国の交渉は決裂した。",
       romaji: "Ryoukoku no koushou wa ketsuretsu shita.",
-      english: "The negotiations between the two countries broke down."
-    }
+      english: "The negotiations between the two countries broke down.",
+    },
   },
   {
     id: "v-n1-dakyou",
@@ -26,8 +26,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "この点については妥協できない。",
       romaji: "Kono ten ni tsuite wa dakyou dekinai.",
-      english: "There can be no compromise on this point."
-    }
+      english: "There can be no compromise on this point.",
+    },
   },
   {
     id: "v-n1-chuushou",
@@ -40,8 +40,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の話は抽象的すぎて分かりにくい。",
       romaji: "Kare no hanashi wa chuushouteki sugite wakarinikui.",
-      english: "What he says is too abstract and difficult to understand."
-    }
+      english: "What he says is too abstract and difficult to understand.",
+    },
   },
   {
     id: "v-n1-hogaraka",
@@ -54,8 +54,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼女はいつも朗らかな声で挨拶をする。",
       romaji: "Kanojo wa itsumo hogaraka na koe de aisatsu o suru.",
-      english: "She always greets people with a cheerful voice."
-    }
+      english: "She always greets people with a cheerful voice.",
+    },
   },
   {
     id: "v-n1-manukarenu",
@@ -68,8 +68,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "責任を免れることはできない。",
       romaji: "Sekinin o manukareru koto wa dekinai.",
-      english: "One cannot escape responsibility."
-    }
+      english: "One cannot escape responsibility.",
+    },
   },
   {
     id: "v-n1-ketsubou",
@@ -82,8 +82,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "食料の欠乏が深刻な問題となっている。",
       romaji: "Shokuryou no ketsubou ga shinkoku na mondai to natte iru.",
-      english: "Food scarcity has become a serious problem."
-    }
+      english: "Food scarcity has become a serious problem.",
+    },
   },
   {
     id: "v-n1-katsuryoku",
@@ -96,8 +96,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "若い人たちの活力が社会を変える。",
       romaji: "Wakai hitotachi no katsuryoku ga shakai o kaeru.",
-      english: "The vitality of young people will change society."
-    }
+      english: "The vitality of young people will change society.",
+    },
   },
   {
     id: "v-n1-mougen",
@@ -110,8 +110,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の言うことは単なる妄言に過ぎない。",
       romaji: "Kare no iu koto wa tan'naru mougen ni suginai.",
-      english: "What he says is nothing more than mere nonsense."
-    }
+      english: "What he says is nothing more than mere nonsense.",
+    },
   },
   {
     id: "v-n1-kyoumei",
@@ -124,8 +124,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の意見に深く共鳴した。",
       romaji: "Kare no iken ni fukaku kyoumei shita.",
-      english: "I deeply resonated with his opinion."
-    }
+      english: "I deeply resonated with his opinion.",
+    },
   },
   {
     id: "v-n1-houkatsu",
@@ -138,8 +138,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "包括的なアプローチが必要だ。",
       romaji: "Houkatsuteki na apuroochi ga hitsuyou da.",
-      english: "A comprehensive approach is necessary."
-    }
+      english: "A comprehensive approach is necessary.",
+    },
   },
   {
     id: "v-n1-mochiiru",
@@ -152,8 +152,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "最新の技術を用いて開発する。",
       romaji: "Saishin no gijutsu o mochiite kaihatsu suru.",
-      english: "Developing using the latest technology."
-    }
+      english: "Developing using the latest technology.",
+    },
   },
   {
     id: "v-n1-obiyakasu",
@@ -166,8 +166,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "平和を脅かす行為は許されない。",
       romaji: "Heiwa o obiyakasu koui wa yurusarenai.",
-      english: "Acts that threaten peace cannot be forgiven."
-    }
+      english: "Acts that threaten peace cannot be forgiven.",
+    },
   },
   {
     id: "v-n1-kuwashii",
@@ -180,8 +180,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "その件について詳しい説明を求めた。",
       romaji: "Sono ken ni tsuite kuwashii setsumei o motometa.",
-      english: "I asked for a detailed explanation of the matter."
-    }
+      english: "I asked for a detailed explanation of the matter.",
+    },
   },
   {
     id: "v-n1-aware",
@@ -194,8 +194,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "哀れな姿を見て涙が出た。",
       romaji: "Aware na sugata o mite namida ga deta.",
-      english: "Tears came to my eyes seeing his pitiful state."
-    }
+      english: "Tears came to my eyes seeing his pitiful state.",
+    },
   },
   {
     id: "v-n1-koushou",
@@ -208,8 +208,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼は高尚な趣味を持っている。",
       romaji: "Kare wa koushou na shumi o motte iru.",
-      english: "He has a noble hobby."
-    }
+      english: "He has a noble hobby.",
+    },
   },
   {
     id: "v-n1-seii",
@@ -222,8 +222,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "誠意をもって対応させていただきます。",
       romaji: "Seii o motte taiou sasete itadakimasu.",
-      english: "We will handle this with full sincerity."
-    }
+      english: "We will handle this with full sincerity.",
+    },
   },
   {
     id: "v-n1-tsuikyuu",
@@ -236,8 +236,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "幸福の追求は人間の権利だ。",
       romaji: "Koufuku no tsuikyuu wa ningen no kenri da.",
-      english: "The pursuit of happiness is a human right."
-    }
+      english: "The pursuit of happiness is a human right.",
+    },
   },
   {
     id: "v-n1-moudou",
@@ -250,8 +250,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "感情に任せて盲動してはいけない。",
       romaji: "Kanjou ni makasete moudou shite wa ikenai.",
-      english: "One must not act blindly based on emotions."
-    }
+      english: "One must not act blindly based on emotions.",
+    },
   },
   {
     id: "v-n1-katsugou",
@@ -264,8 +264,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "国民は新しい指導者を渇望している。",
       romaji: "Kokumin wa atarashii shidousha o katsubou shite iru.",
-      english: "The citizens are craving a new leader."
-    }
+      english: "The citizens are craving a new leader.",
+    },
   },
   {
     id: "v-n1-gizen",
@@ -278,8 +278,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の言葉は偽善に満ちている。",
       romaji: "Kare no kotoba wa gizen ni michite iru.",
-      english: "His words are full of hypocrisy."
-    }
+      english: "His words are full of hypocrisy.",
+    },
   },
   {
     id: "v-n1-aegu",
@@ -292,8 +292,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "不況にあえぐ企業が多い。",
       romaji: "Fukyou ni aegu kigyou ga ooi.",
-      english: "Many companies are suffering from the recession."
-    }
+      english: "Many companies are suffering from the recession.",
+    },
   },
   {
     id: "v-n1-azamuku",
@@ -306,8 +306,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "敵を欺くための作戦だ。",
       romaji: "Teki o azamuku tame no sakusen da.",
-      english: "It's a strategy to deceive the enemy."
-    }
+      english: "It's a strategy to deceive the enemy.",
+    },
   },
   {
     id: "v-n1-itonamu",
@@ -320,8 +320,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "田舎で小さな店を営んでいる。",
       romaji: "Inaka de chiisana mise o itonande iru.",
-      english: "He runs a small shop in the countryside."
-    }
+      english: "He runs a small shop in the countryside.",
+    },
   },
   {
     id: "v-n1-uruou",
@@ -334,8 +334,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "雨で大地が潤った。",
       romaji: "Ame de daichi ga uruotta.",
-      english: "The earth was moistened by the rain."
-    }
+      english: "The earth was moistened by the rain.",
+    },
   },
   {
     id: "v-n1-okotaru",
@@ -348,8 +348,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "日々の努力を怠ってはいけない。",
       romaji: "Hibi no doryoku o okotatte wa ikenai.",
-      english: "One must not neglect daily efforts."
-    }
+      english: "One must not neglect daily efforts.",
+    },
   },
   {
     id: "v-n1-tsuieru",
@@ -362,8 +362,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "長年の努力が水の泡と費えた。",
       romaji: "Naganen no doryoku ga mizu no awa to tsuiteta.",
-      english: "Years of effort went to waste."
-    }
+      english: "Years of effort went to waste.",
+    },
   },
   {
     id: "v-n1-todokooru",
@@ -376,8 +376,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "家賃の支払いが滞っている。",
       romaji: "Yachin no shiharai ga todokoote iru.",
-      english: "The rent payment is delayed."
-    }
+      english: "The rent payment is delayed.",
+    },
   },
   {
     id: "v-n1-ishu",
@@ -390,8 +390,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼に意趣返しをするつもりはない。",
       romaji: "Kare ni ishu gaeshi o suru tsumori wa nai.",
-      english: "I have no intention of getting back at him."
-    }
+      english: "I have no intention of getting back at him.",
+    },
   },
   {
     id: "v-n1-inpei",
@@ -404,8 +404,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "証拠の隠蔽は重大な犯罪だ。",
       romaji: "Shouko no inpei wa juudai na hanzai da.",
-      english: "Concealing evidence is a serious crime."
-    }
+      english: "Concealing evidence is a serious crime.",
+    },
   },
   {
     id: "v-n1-unmei",
@@ -418,8 +418,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "二人の出会いは運命だった。",
       romaji: "Futari no deai wa unmei datta.",
-      english: "Their meeting was fate."
-    }
+      english: "Their meeting was fate.",
+    },
   },
   {
     id: "v-n1-enen",
@@ -432,8 +432,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の自慢話が延々と続いた。",
       romaji: "Kare no jimanbanashi ga en'en to tsuzuita.",
-      english: "His boasting went on and on."
-    }
+      english: "His boasting went on and on.",
+    },
   },
   {
     id: "v-n1-kaitaku",
@@ -446,8 +446,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "新しい分野を開拓する。",
       romaji: "Atarashii bunya o kaitaku suru.",
-      english: "Developing a new field."
-    }
+      english: "Developing a new field.",
+    },
   },
   {
     id: "v-n1-katsuro",
@@ -460,8 +460,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "海外市場に活路を見出す。",
       romaji: "Kaigai shijou ni katsuro o miidasu.",
-      english: "Finding a way out in overseas markets."
-    }
+      english: "Finding a way out in overseas markets.",
+    },
   },
   {
     id: "v-n1-kiban",
@@ -474,8 +474,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "生活の基盤を固める。",
       romaji: "Seikatsu no kiban o katameru.",
-      english: "Strengthening the foundation of life."
-    }
+      english: "Strengthening the foundation of life.",
+    },
   },
   {
     id: "v-n1-kikou",
@@ -488,8 +488,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "この地域の気候は温暖だ。",
       romaji: "Kono chiiki no kikou wa ondan da.",
-      english: "The climate of this region is warm."
-    }
+      english: "The climate of this region is warm.",
+    },
   },
   {
     id: "v-n1-kyouju",
@@ -502,8 +502,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "自由を享受する権利がある。",
       romaji: "Jiyuu o kyouju suru kenri ga aru.",
-      english: "We have the right to enjoy freedom."
-    }
+      english: "We have the right to enjoy freedom.",
+    },
   },
   {
     id: "v-n1-gyouki",
@@ -516,8 +516,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "猟奇的な事件が起きた。",
       romaji: "Ryoukiteki na jiken ga okita.",
-      english: "A bizarre incident occurred."
-    }
+      english: "A bizarre incident occurred.",
+    },
   },
   {
     id: "v-n1-okogamashii",
@@ -530,8 +530,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "私から意見を言うのはおこがましいですが。",
       romaji: "Watashi kara iken o iu no wa okogamashii desu ga.",
-      english: "It's presumptuous of me to offer an opinion, but..."
-    }
+      english: "It's presumptuous of me to offer an opinion, but...",
+    },
   },
   {
     id: "v-n1-obitadashii",
@@ -544,8 +544,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "事故現場には夥しい数の警察官がいた。",
       romaji: "Jiko genba ni wa obitadashii kazu no keisatsukan ga ita.",
-      english: "There were numerous police officers at the accident site."
-    }
+      english: "There were numerous police officers at the accident site.",
+    },
   },
   {
     id: "v-n1-takumashii",
@@ -558,10 +558,9 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "困難を乗り越える逞しい精神力を持つ。",
       romaji: "Konnan o norikoeru takumashii seishinryoku o motsu.",
-      english: "Having a robust mental strength to overcome difficulties."
-    }
-  }
-,
+      english: "Having a robust mental strength to overcome difficulties.",
+    },
+  },
   {
     id: "v-n1-gizen",
     level: "N1",
@@ -573,8 +572,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の言葉は偽善に満ちている。",
       romaji: "Kare no kotoba wa gizen ni michite iru.",
-      english: "His words are full of hypocrisy."
-    }
+      english: "His words are full of hypocrisy.",
+    },
   },
   {
     id: "v-n1-ketsudan",
@@ -587,8 +586,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "重大な決断を下す。",
       romaji: "Juudaina ketsudan o kudasu.",
-      english: "Making a serious decision."
-    }
+      english: "Making a serious decision.",
+    },
   },
   {
     id: "v-n1-keno",
@@ -601,8 +600,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼は嘘に対して嫌悪感を抱く。",
       romaji: "Kare wa uso ni taishite keno-kan o idaku.",
-      english: "He feels disgust towards lies."
-    }
+      english: "He feels disgust towards lies.",
+    },
   },
   {
     id: "v-n1-keni",
@@ -615,8 +614,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼はその分野の権威です。",
       romaji: "Kare wa sono bunya no ken'i desu.",
-      english: "He is an authority in that field."
-    }
+      english: "He is an authority in that field.",
+    },
   },
   {
     id: "v-n1-kouken",
@@ -629,8 +628,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "社会に貢献したい。",
       romaji: "Shakai ni kouken shitai.",
-      english: "I want to contribute to society."
-    }
+      english: "I want to contribute to society.",
+    },
   },
   {
     id: "v-n1-koufun",
@@ -643,8 +642,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "観客は興奮して立ち上がった。",
       romaji: "Kankyaku wa koufun shite tachiagatta.",
-      english: "The spectators stood up in excitement."
-    }
+      english: "The spectators stood up in excitement.",
+    },
   },
   {
     id: "v-n1-kokka",
@@ -657,8 +656,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "国家の安全を守る。",
       romaji: "Kokka no anzen o mamoru.",
-      english: "Protecting national security."
-    }
+      english: "Protecting national security.",
+    },
   },
   {
     id: "v-n1-soumei",
@@ -671,8 +670,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼女はとても聡明な女性だ。",
       romaji: "Kanojo wa totemo soumeina josei da.",
-      english: "She is a very wise woman."
-    }
+      english: "She is a very wise woman.",
+    },
   },
   {
     id: "v-n1-dakyou",
@@ -685,8 +684,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "絶対に妥協はしない。",
       romaji: "Zettai ni dakyou wa shinai.",
-      english: "I will absolutely not compromise."
-    }
+      english: "I will absolutely not compromise.",
+    },
   },
   {
     id: "v-n1-chikuseki",
@@ -699,8 +698,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "疲労が蓄積している。",
       romaji: "Hirou ga chikuseki shite iru.",
-      english: "Fatigue is accumulating."
-    }
+      english: "Fatigue is accumulating.",
+    },
   },
   {
     id: "v-n1-chitsujo",
@@ -713,8 +712,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "社会の秩序を維持する。",
       romaji: "Shakai no chitsujo o iji suru.",
-      english: "Maintaining social order."
-    }
+      english: "Maintaining social order.",
+    },
   },
   {
     id: "v-n1-chuushou",
@@ -727,8 +726,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の説明は抽象的すぎる。",
       romaji: "Kare no setsumei wa chuushouteki sugiru.",
-      english: "His explanation is too abstract."
-    }
+      english: "His explanation is too abstract.",
+    },
   },
   {
     id: "v-n1-touhi",
@@ -741,8 +740,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "現実から逃避してはいけない。",
       romaji: "Genjitsu kara touhi shite wa ikenai.",
-      english: "One must not escape from reality."
-    }
+      english: "One must not escape from reality.",
+    },
   },
   {
     id: "v-n1-toushi",
@@ -755,8 +754,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "株式に投資する。",
       romaji: "Kabushiki ni toushi suru.",
-      english: "Investing in stocks."
-    }
+      english: "Investing in stocks.",
+    },
   },
   {
     id: "v-n1-hinkon",
@@ -769,8 +768,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "貧困問題を解決する。",
       romaji: "Hinkon mondai o kaiketsu suru.",
-      english: "Solving the problem of poverty."
-    }
+      english: "Solving the problem of poverty.",
+    },
   },
   {
     id: "v-n1-fukkyuu",
@@ -783,8 +782,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "停電が復旧した。",
       romaji: "Teiden ga fukkyuu shita.",
-      english: "Power has been restored."
-    }
+      english: "Power has been restored.",
+    },
   },
   {
     id: "v-n1-mujun",
@@ -797,8 +796,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "彼の言動には矛盾がある。",
       romaji: "Kare no gendou ni wa mujun ga aru.",
-      english: "There is a contradiction in his words and actions."
-    }
+      english: "There is a contradiction in his words and actions.",
+    },
   },
   {
     id: "v-n1-yuuyou",
@@ -811,8 +810,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "有用な情報を得る。",
       romaji: "Yuuyouna jouhou o eru.",
-      english: "Obtain useful information."
-    }
+      english: "Obtain useful information.",
+    },
   },
   {
     id: "v-n1-rinri",
@@ -825,8 +824,8 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "医療倫理について話し合う。",
       romaji: "Iryou rinri ni tsuite hanashiau.",
-      english: "Discuss medical ethics."
-    }
+      english: "Discuss medical ethics.",
+    },
   },
   {
     id: "v-n1-reigai",
@@ -839,7 +838,7 @@ export const n1Vocabulary: VocabularyItem[] = [
     example: {
       japanese: "例外は認められません。",
       romaji: "Reigai wa mitomeraremasen.",
-      english: "No exceptions are allowed."
-    }
-  }
+      english: "No exceptions are allowed.",
+    },
+  },
 ];

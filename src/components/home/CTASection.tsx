@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
+import styled from "styled-components";
+import Link from "next/link";
 
 const SectionWrapper = styled.section`
   padding: 6rem 1.5rem 8rem;
@@ -25,26 +25,35 @@ const CTAContainer = styled.div`
   position: relative;
   overflow: hidden;
   box-shadow: 0 30px 60px -12px rgba(79, 70, 229, 0.4);
-  
+
   @media (max-width: 768px) {
     padding: 3.5rem 1.5rem;
     border-radius: 32px;
   }
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+    background:
+      radial-gradient(
+        circle at 20% 30%,
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 70%,
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 50%
+      );
   }
 
   /* Decorative Orbs */
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 300px;
     height: 300px;
@@ -67,7 +76,7 @@ const Title = styled.h2`
   font-weight: 900;
   margin-bottom: 1.5rem;
   letter-spacing: -0.02em;
-  
+
   @media (max-width: 768px) {
     font-size: 2rem;
   }
@@ -139,7 +148,7 @@ const PrimaryButton = styled(Link)`
     background: #f8fafc;
     box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
   }
-  
+
   &:active {
     transform: translateY(-2px) scale(0.98);
   }
@@ -180,15 +189,12 @@ export function CTASection() {
         <TitleBuffer>
           <Title>Ready to Master Japanese?</Title>
           <Subtitle>
-            Join thousands of students using our AI-powered SRS Mastery to crush their JLPT goals. Start your journey today!
+            Join thousands of students using our AI-powered SRS Mastery to crush
+            their JLPT goals. Start your journey today!
           </Subtitle>
           <ActionGroup>
-            <PrimaryButton href="/jlpt">
-              Start JLPT Challenge
-            </PrimaryButton>
-            <SecondaryButton href="/study">
-              Start Studying
-            </SecondaryButton>
+            <PrimaryButton href="/jlpt">Start JLPT Challenge</PrimaryButton>
+            <SecondaryButton href="/study">Start Studying</SecondaryButton>
           </ActionGroup>
         </TitleBuffer>
       </CTAContainer>

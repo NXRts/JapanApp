@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { useState } from 'react';
-import { n5Grammar } from '@/data/jlpt/n5/grammar';
-import { n4Grammar } from '@/data/jlpt/n4/grammar';
-import { n3Grammar } from '@/data/jlpt/n3/grammar';
-import { n2Grammar } from '@/data/jlpt/n2/grammar';
-import { n1Grammar } from '@/data/jlpt/n1/grammar';
+import styled from "styled-components";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { useState } from "react";
+import { n5Grammar } from "@/data/jlpt/n5/grammar";
+import { n4Grammar } from "@/data/jlpt/n4/grammar";
+import { n3Grammar } from "@/data/jlpt/n3/grammar";
+import { n2Grammar } from "@/data/jlpt/n2/grammar";
+import { n1Grammar } from "@/data/jlpt/n1/grammar";
 
 const Container = styled.div`
   max-width: 1000px;
@@ -33,7 +33,11 @@ const Header = styled.div`
 const Title = styled.h1`
   font-size: 3.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--text-secondary) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: 0;
@@ -71,9 +75,11 @@ const LevelSelector = styled.div`
 const LevelButton = styled.button<{ $active: boolean }>`
   padding: 0.75rem 2rem;
   border-radius: 99px;
-  border: 1px solid ${({ $active }) => ($active ? 'var(--primary)' : 'var(--border)')};
-  background: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--surface)')};
-  color: ${({ $active }) => ($active ? '#ffffff' : 'var(--text-secondary)')};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--surface)"};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
@@ -81,7 +87,7 @@ const LevelButton = styled.button<{ $active: boolean }>`
 
   &:hover {
     border-color: var(--primary);
-    color: ${({ $active }) => ($active ? '#ffffff' : 'var(--primary)')};
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--primary)")};
   }
 
   @media (max-width: 768px) {
@@ -124,7 +130,7 @@ const GrammarCard = styled(Link)`
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -158,7 +164,9 @@ const CardMeaning = styled.p`
 `;
 
 export default function GrammarPage() {
-  const [activeLevel, setActiveLevel] = useState<'N5' | 'N4' | 'N3' | 'N2' | 'N1' >('N5');
+  const [activeLevel, setActiveLevel] = useState<
+    "N5" | "N4" | "N3" | "N2" | "N1"
+  >("N5");
 
   const currentData = {
     N5: n5Grammar,
@@ -170,48 +178,49 @@ export default function GrammarPage() {
 
   return (
     <Container>
-      <Breadcrumbs 
+      <Breadcrumbs
         items={[
-          { label: 'Home', href: '/' },
-          { label: 'Materials', href: '/materi' }
-        ]} 
-        current="Grammar" 
+          { label: "Home", href: "/" },
+          { label: "Materials", href: "/materi" },
+        ]}
+        current="Grammar"
       />
       <Header>
         <Title>Grammar Guide</Title>
         <Subtitle>
-          Master Japanese sentence structures and particles. Choose your target JLPT level to begin.
+          Master Japanese sentence structures and particles. Choose your target
+          JLPT level to begin.
         </Subtitle>
       </Header>
 
       <LevelSelector>
-        <LevelButton 
-          $active={activeLevel === 'N5'} 
-          onClick={() => setActiveLevel('N5')}
+        <LevelButton
+          $active={activeLevel === "N5"}
+          onClick={() => setActiveLevel("N5")}
         >
           JLPT N5
         </LevelButton>
-        <LevelButton 
-          $active={activeLevel === 'N4'} 
-          onClick={() => setActiveLevel('N4')}
+        <LevelButton
+          $active={activeLevel === "N4"}
+          onClick={() => setActiveLevel("N4")}
         >
           JLPT N4
         </LevelButton>
-        <LevelButton 
-          $active={activeLevel === 'N3'} 
-          onClick={() => setActiveLevel('N3')}
+        <LevelButton
+          $active={activeLevel === "N3"}
+          onClick={() => setActiveLevel("N3")}
         >
           JLPT N3
         </LevelButton>
-        <LevelButton 
-          $active={activeLevel === 'N2'} 
-          onClick={() => setActiveLevel('N2')}
+        <LevelButton
+          $active={activeLevel === "N2"}
+          onClick={() => setActiveLevel("N2")}
         >
           JLPT N2
         </LevelButton>
-        <LevelButton 
-          $active={activeLevel === 'N1'} 
-          onClick={() => setActiveLevel('N1')}
+        <LevelButton
+          $active={activeLevel === "N1"}
+          onClick={() => setActiveLevel("N1")}
         >
           JLPT N1
         </LevelButton>
@@ -222,7 +231,17 @@ export default function GrammarPage() {
           <GrammarCard key={point.id} href={`/grammar/${point.id}`}>
             <CardTitle>{point.title}</CardTitle>
             <CardMeaning>{point.meaning}</CardMeaning>
-            <div style={{ marginTop: 'auto', color: 'var(--primary)', fontWeight: 700, fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div
+              style={{
+                marginTop: "auto",
+                color: "var(--primary)",
+                fontWeight: 700,
+                fontSize: "0.95rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+              }}
+            >
               Learn more
               <span>→</span>
             </div>

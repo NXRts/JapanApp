@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { toRomaji } from 'wanakana';
+import { useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { toRomaji } from "wanakana";
 
 // Styled Components
 const Container = styled.div`
@@ -15,7 +15,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(79, 70, 229, 0.05) 0%,
+    transparent 70%
+  );
 `;
 
 const Header = styled.div`
@@ -42,7 +46,7 @@ const BackButton = styled(Link)`
   transition: all 0.2s;
   padding: 0.5rem 1rem;
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 
   &:hover {
     color: var(--primary);
@@ -104,7 +108,7 @@ const MatchGrid = styled.div`
   justify-content: space-between;
   gap: 1.5rem;
   margin-bottom: 2.5rem;
-  
+
   @media (max-width: 600px) {
     flex-direction: column;
     gap: 1.5rem;
@@ -118,35 +122,46 @@ const MatchColumn = styled.div`
   flex: 1;
 `;
 
-const MatchButton = styled.button<{ $state?: 'selected' | 'matched' | 'neutral', $isRomaji?: boolean }>`
+const MatchButton = styled.button<{
+  $state?: "selected" | "matched" | "neutral";
+  $isRomaji?: boolean;
+}>`
   padding: 1.25rem;
   border-radius: 16px;
-  border: 2px solid ${({ $state }) =>
-        $state === 'matched' ? '#10b981' :
-            $state === 'selected' ? '#4f46e5' :
-                'var(--border)'};
+  border: 2px solid
+    ${({ $state }) =>
+      $state === "matched"
+        ? "#10b981"
+        : $state === "selected"
+          ? "#4f46e5"
+          : "var(--border)"};
   background: ${({ $state }) =>
-        $state === 'matched' ? 'rgba(16, 185, 129, 0.1)' :
-            $state === 'selected' ? 'rgba(79, 70, 229, 0.1)' :
-                'var(--surface)'};
+    $state === "matched"
+      ? "rgba(16, 185, 129, 0.1)"
+      : $state === "selected"
+        ? "rgba(79, 70, 229, 0.1)"
+        : "var(--surface)"};
   color: ${({ $state }) =>
-        $state === 'matched' ? '#10b981' :
-            $state === 'selected' ? '#4f46e5' :
-                'var(--foreground)'};
-  font-size: ${({ $isRomaji }) => $isRomaji ? '1.25rem' : '1.5rem'};
+    $state === "matched"
+      ? "#10b981"
+      : $state === "selected"
+        ? "#4f46e5"
+        : "var(--foreground)"};
+  font-size: ${({ $isRomaji }) => ($isRomaji ? "1.25rem" : "1.5rem")};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  pointer-events: ${({ $state }) => $state === 'matched' ? 'none' : 'auto'};
-  
+  pointer-events: ${({ $state }) => ($state === "matched" ? "none" : "auto")};
+
   &:hover {
-    transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-2px)' : 'none'};
-    border-color: ${({ $state }) => $state === 'neutral' ? '#4f46e5' : ''};
+    transform: ${({ $state }) =>
+      $state === "neutral" ? "translateY(-2px)" : "none"};
+    border-color: ${({ $state }) => ($state === "neutral" ? "#4f46e5" : "")};
   }
-  
+
   @media (max-width: 600px) {
     padding: 1rem;
-    font-size: ${({ $isRomaji }) => $isRomaji ? '1.1rem' : '1.25rem'};
+    font-size: ${({ $isRomaji }) => ($isRomaji ? "1.1rem" : "1.25rem")};
   }
 `;
 
@@ -196,7 +211,7 @@ const Button = styled.button`
   justify-content: center;
   min-width: 160px;
   margin: 0.5rem;
-  
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
@@ -205,271 +220,327 @@ const Button = styled.button`
 
 // Types
 export interface MatchPairItem {
-    id: string;
-    kana: string;
-    romaji: string;
+  id: string;
+  kana: string;
+  romaji: string;
 }
 
 interface MatchPairsQuestion {
-    id: string;
-    pairs: MatchPairItem[];
-    shuffledKana: MatchPairItem[];
-    shuffledRomaji: MatchPairItem[];
+  id: string;
+  pairs: MatchPairItem[];
+  shuffledKana: MatchPairItem[];
+  shuffledRomaji: MatchPairItem[];
 }
 
 export default function MatchPairsPage() {
-    const [loading, setLoading] = useState(true);
-    const [questions, setQuestions] = useState<MatchPairsQuestion[]>([]);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [score, setScore] = useState(0);
-    const [mistakes, setMistakes] = useState(0);
-    const [isFinished, setIsFinished] = useState(false);
-    const [gameOver, setGameOver] = useState(false); // separate state for losing
+  const [loading, setLoading] = useState(true);
+  const [questions, setQuestions] = useState<MatchPairsQuestion[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [mistakes, setMistakes] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+  const [gameOver, setGameOver] = useState(false); // separate state for losing
 
-    const [selectedKanaPair, setSelectedKanaPair] = useState<string | null>(null);
-    const [selectedRomajiPair, setSelectedRomajiPair] = useState<string | null>(null);
-    const [matchedPairIds, setMatchedPairIds] = useState<string[]>([]);
+  const [selectedKanaPair, setSelectedKanaPair] = useState<string | null>(null);
+  const [selectedRomajiPair, setSelectedRomajiPair] = useState<string | null>(
+    null,
+  );
+  const [matchedPairIds, setMatchedPairIds] = useState<string[]>([]);
 
-    const TOTAL_QUESTIONS = 1; // 1 round per game
-    const MAX_MISTAKES = 2; // allowance
-    const PAIRS_PER_ROUND = 4;
+  const TOTAL_QUESTIONS = 1; // 1 round per game
+  const MAX_MISTAKES = 2; // allowance
+  const PAIRS_PER_ROUND = 4;
 
-    const shuffleArray = <T,>(array: T[]): T[] => {
-        const newArray = [...array];
-        for (let i = newArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  };
+
+  const generateQuiz = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/kana?type=all");
+      const kanaData: string[] = await res.json();
+
+      // basic shuffle
+      const shuffledData = shuffleArray(kanaData);
+
+      const newQuestions: MatchPairsQuestion[] = [];
+      let index = 0;
+
+      for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+        const pairs: MatchPairItem[] = [];
+        for (let j = 0; j < PAIRS_PER_ROUND; j++) {
+          if (index >= shuffledData.length) index = 0;
+          const char = shuffledData[index++];
+          pairs.push({
+            id: `pair-${i}-${j}`,
+            kana: char,
+            romaji: toRomaji(char),
+          });
         }
-        return newArray;
-    };
 
-    const generateQuiz = useCallback(async () => {
-        setLoading(true);
-        try {
-            const res = await fetch('/api/kana?type=all');
-            const kanaData: string[] = await res.json();
+        newQuestions.push({
+          id: `round-${i}`,
+          pairs,
+          shuffledKana: shuffleArray([...pairs]),
+          shuffledRomaji: shuffleArray([...pairs]),
+        });
+      }
 
-            // basic shuffle
-            const shuffledData = shuffleArray(kanaData);
+      setQuestions(newQuestions);
+      setCurrentIndex(0);
+      setScore(0);
+      setMistakes(0);
+      setIsFinished(false);
+      setGameOver(false);
+      setMatchedPairIds([]);
+      setSelectedKanaPair(null);
+      setSelectedRomajiPair(null);
+    } catch (error) {
+      console.error("Failed to generate quiz", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-            const newQuestions: MatchPairsQuestion[] = [];
-            let index = 0;
+  useEffect(() => {
+    generateQuiz();
+  }, [generateQuiz]);
 
-            for (let i = 0; i < TOTAL_QUESTIONS; i++) {
-                const pairs: MatchPairItem[] = [];
-                for (let j = 0; j < PAIRS_PER_ROUND; j++) {
-                    if (index >= shuffledData.length) index = 0;
-                    const char = shuffledData[index++];
-                    pairs.push({
-                        id: `pair-${i}-${j}`,
-                        kana: char,
-                        romaji: toRomaji(char)
-                    });
-                }
+  const handleMatchSelection = (id: string, isRomaji: boolean) => {
+    // Prevent selection if already two selected (wait for timeout)
+    if (selectedKanaPair && selectedRomajiPair) return;
 
-                newQuestions.push({
-                    id: `round-${i}`,
-                    pairs,
-                    shuffledKana: shuffleArray([...pairs]),
-                    shuffledRomaji: shuffleArray([...pairs])
-                });
+    let newKanaPair = selectedKanaPair;
+    let newRomajiPair = selectedRomajiPair;
+
+    if (isRomaji) {
+      newRomajiPair = selectedRomajiPair === id ? null : id;
+      setSelectedRomajiPair(newRomajiPair);
+    } else {
+      newKanaPair = selectedKanaPair === id ? null : id;
+      setSelectedKanaPair(newKanaPair);
+    }
+
+    const currentQ = questions[currentIndex];
+    if (!currentQ) return;
+
+    if (newKanaPair && newRomajiPair) {
+      // Check for match
+      if (newKanaPair === newRomajiPair) {
+        const newMatched = [...matchedPairIds, newKanaPair];
+        setMatchedPairIds(newMatched);
+
+        // Clear selections immediately
+        setSelectedKanaPair(null);
+        setSelectedRomajiPair(null);
+
+        // Round complete check
+        if (newMatched.length === currentQ.pairs.length) {
+          setScore((s) => s + 1);
+          setTimeout(() => {
+            if (currentIndex < TOTAL_QUESTIONS - 1) {
+              setCurrentIndex((i) => i + 1);
+              setMatchedPairIds([]);
+            } else {
+              setIsFinished(true);
             }
+          }, 500);
+        }
+      } else {
+        // Incorrect match
+        const newMistakes = mistakes + 1;
+        setMistakes(newMistakes);
 
-            setQuestions(newQuestions);
-            setCurrentIndex(0);
-            setScore(0);
-            setMistakes(0);
-            setIsFinished(false);
-            setGameOver(false);
-            setMatchedPairIds([]);
+        if (newMistakes >= MAX_MISTAKES) {
+          setTimeout(() => {
+            setGameOver(true);
+            setIsFinished(true);
+          }, 500);
+        } else {
+          // Flash error before clearing selection
+          setTimeout(() => {
             setSelectedKanaPair(null);
             setSelectedRomajiPair(null);
-        } catch (error) {
-            console.error("Failed to generate quiz", error);
-        } finally {
-            setLoading(false);
+          }, 400);
         }
-    }, []);
-
-    useEffect(() => {
-        generateQuiz();
-    }, [generateQuiz]);
-
-    const handleMatchSelection = (id: string, isRomaji: boolean) => {
-        // Prevent selection if already two selected (wait for timeout)
-        if (selectedKanaPair && selectedRomajiPair) return;
-
-        let newKanaPair = selectedKanaPair;
-        let newRomajiPair = selectedRomajiPair;
-
-        if (isRomaji) {
-            newRomajiPair = selectedRomajiPair === id ? null : id;
-            setSelectedRomajiPair(newRomajiPair);
-        } else {
-            newKanaPair = selectedKanaPair === id ? null : id;
-            setSelectedKanaPair(newKanaPair);
-        }
-
-        const currentQ = questions[currentIndex];
-        if (!currentQ) return;
-
-        if (newKanaPair && newRomajiPair) {
-            // Check for match
-            if (newKanaPair === newRomajiPair) {
-                const newMatched = [...matchedPairIds, newKanaPair];
-                setMatchedPairIds(newMatched);
-
-                // Clear selections immediately
-                setSelectedKanaPair(null);
-                setSelectedRomajiPair(null);
-
-                // Round complete check
-                if (newMatched.length === currentQ.pairs.length) {
-                    setScore(s => s + 1);
-                    setTimeout(() => {
-                        if (currentIndex < TOTAL_QUESTIONS - 1) {
-                            setCurrentIndex(i => i + 1);
-                            setMatchedPairIds([]);
-                        } else {
-                            setIsFinished(true);
-                        }
-                    }, 500);
-                }
-            } else {
-                // Incorrect match
-                const newMistakes = mistakes + 1;
-                setMistakes(newMistakes);
-
-                if (newMistakes >= MAX_MISTAKES) {
-                    setTimeout(() => {
-                        setGameOver(true);
-                        setIsFinished(true);
-                    }, 500);
-                } else {
-                    // Flash error before clearing selection
-                    setTimeout(() => {
-                        setSelectedKanaPair(null);
-                        setSelectedRomajiPair(null);
-                    }, 400);
-                }
-            }
-        }
-    };
-
-    if (loading || questions.length === 0) {
-        return (
-            <Container>
-                <Breadcrumbs 
-                    items={[
-                        { label: 'Home', href: '/' },
-                        { label: 'Quiz Hub', href: '/quiz' }
-                    ]} 
-                    current="Match Pairs" 
-                />
-                <div style={{ textAlign: 'center', fontSize: '1.25rem', color: 'var(--text-secondary)', marginTop: '4rem' }}>
-                    Loading cards...
-                </div>
-            </Container>
-        );
+      }
     }
+  };
 
-    if (isFinished) {
-        return (
-            <Container>
-                <Breadcrumbs 
-                    items={[
-                        { label: 'Home', href: '/' },
-                        { label: 'Quiz Hub', href: '/quiz' }
-                    ]} 
-                    current="Match Pairs" 
-                />
-                <ResultOverlay>
-                    <h2>{gameOver ? 'Game Over!' : 'Round Complete!'}</h2>
-                    <p>
-                        {gameOver
-                            ? `You made ${MAX_MISTAKES} mistakes. Keep practicing!`
-                            : `Good job! You matched all pairs with ${mistakes} mistake(s).`}
-                    </p>
-                    <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                        <Button onClick={generateQuiz}>Play Again</Button>
-                        <Link href="/quiz" style={{ textDecoration: 'none' }}>
-                            <Button style={{ background: 'var(--surface)', color: 'var(--foreground)', border: '1px solid var(--border)', boxShadow: 'none' }}>Quiz Hub</Button>
-                        </Link>
-                    </div>
-                </ResultOverlay>
-            </Container>
-        );
-    }
-
-    const currentQuestion = questions[currentIndex];
-
+  if (loading || questions.length === 0) {
     return (
-        <Container>
-            <Breadcrumbs 
-                items={[
-                    { label: 'Home', href: '/' },
-                    { label: 'Quiz Hub', href: '/quiz' }
-                ]} 
-                current="Match Pairs" 
-            />
-            <Header>
-                <TitleBadge>Match the Pairs</TitleBadge>
-            </Header>
-
-            <QuizCard>
-                <div style={{ position: 'absolute', top: 30, right: 30, display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    <ProgressInfo style={{ position: 'relative', top: 0, right: 0 }}>
-                        Round {currentIndex + 1} / {TOTAL_QUESTIONS}
-                    </ProgressInfo>
-                    <div style={{ color: mistakes >= MAX_MISTAKES - 1 ? '#ef4444' : 'var(--text-secondary)', fontWeight: 600, fontSize: '0.95rem' }}>
-                        Mistakes: {mistakes} / {MAX_MISTAKES}
-                    </div>
-                </div>
-
-                <h3 style={{ marginBottom: '2rem', color: 'var(--text-secondary)' }}>Find the correct pairings</h3>
-
-                <MatchGrid>
-                    <MatchColumn>
-                        {currentQuestion.shuffledKana.map((item) => {
-                            const isMatched = matchedPairIds.includes(item.id);
-                            const isSelected = selectedKanaPair === item.id;
-                            const state = isMatched ? 'matched' : (isSelected ? 'selected' : 'neutral');
-
-                            return (
-                                <MatchButton
-                                    key={`kana-${item.id}`}
-                                    $state={state}
-                                    onClick={() => handleMatchSelection(item.id, false)}
-                                >
-                                    {item.kana}
-                                </MatchButton>
-                            );
-                        })}
-                    </MatchColumn>
-                    <MatchColumn>
-                        {currentQuestion.shuffledRomaji.map((item) => {
-                            const isMatched = matchedPairIds.includes(item.id);
-                            const isSelected = selectedRomajiPair === item.id;
-                            const state = isMatched ? 'matched' : (isSelected ? 'selected' : 'neutral');
-
-                            return (
-                                <MatchButton
-                                    key={`romaji-${item.id}`}
-                                    $state={state}
-                                    $isRomaji
-                                    onClick={() => handleMatchSelection(item.id, true)}
-                                >
-                                    {item.romaji}
-                                </MatchButton>
-                            );
-                        })}
-                    </MatchColumn>
-                </MatchGrid>
-
-                <ProgressBarContainer>
-                    <ProgressFill $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100} />
-                </ProgressBarContainer>
-            </QuizCard>
-        </Container>
+      <Container>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Quiz Hub", href: "/quiz" },
+          ]}
+          current="Match Pairs"
+        />
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: "1.25rem",
+            color: "var(--text-secondary)",
+            marginTop: "4rem",
+          }}
+        >
+          Loading cards...
+        </div>
+      </Container>
     );
+  }
+
+  if (isFinished) {
+    return (
+      <Container>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Quiz Hub", href: "/quiz" },
+          ]}
+          current="Match Pairs"
+        />
+        <ResultOverlay>
+          <h2>{gameOver ? "Game Over!" : "Round Complete!"}</h2>
+          <p>
+            {gameOver
+              ? `You made ${MAX_MISTAKES} mistakes. Keep practicing!`
+              : `Good job! You matched all pairs with ${mistakes} mistake(s).`}
+          </p>
+          <div
+            style={{
+              marginTop: "2rem",
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Button onClick={generateQuiz}>Play Again</Button>
+            <Link href="/quiz" style={{ textDecoration: "none" }}>
+              <Button
+                style={{
+                  background: "var(--surface)",
+                  color: "var(--foreground)",
+                  border: "1px solid var(--border)",
+                  boxShadow: "none",
+                }}
+              >
+                Quiz Hub
+              </Button>
+            </Link>
+          </div>
+        </ResultOverlay>
+      </Container>
+    );
+  }
+
+  const currentQuestion = questions[currentIndex];
+
+  return (
+    <Container>
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Quiz Hub", href: "/quiz" },
+        ]}
+        current="Match Pairs"
+      />
+      <Header>
+        <TitleBadge>Match the Pairs</TitleBadge>
+      </Header>
+
+      <QuizCard>
+        <div
+          style={{
+            position: "absolute",
+            top: 30,
+            right: 30,
+            display: "flex",
+            gap: "1rem",
+            alignItems: "center",
+          }}
+        >
+          <ProgressInfo style={{ position: "relative", top: 0, right: 0 }}>
+            Round {currentIndex + 1} / {TOTAL_QUESTIONS}
+          </ProgressInfo>
+          <div
+            style={{
+              color:
+                mistakes >= MAX_MISTAKES - 1
+                  ? "#ef4444"
+                  : "var(--text-secondary)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+            }}
+          >
+            Mistakes: {mistakes} / {MAX_MISTAKES}
+          </div>
+        </div>
+
+        <h3 style={{ marginBottom: "2rem", color: "var(--text-secondary)" }}>
+          Find the correct pairings
+        </h3>
+
+        <MatchGrid>
+          <MatchColumn>
+            {currentQuestion.shuffledKana.map((item) => {
+              const isMatched = matchedPairIds.includes(item.id);
+              const isSelected = selectedKanaPair === item.id;
+              const state = isMatched
+                ? "matched"
+                : isSelected
+                  ? "selected"
+                  : "neutral";
+
+              return (
+                <MatchButton
+                  key={`kana-${item.id}`}
+                  $state={state}
+                  onClick={() => handleMatchSelection(item.id, false)}
+                >
+                  {item.kana}
+                </MatchButton>
+              );
+            })}
+          </MatchColumn>
+          <MatchColumn>
+            {currentQuestion.shuffledRomaji.map((item) => {
+              const isMatched = matchedPairIds.includes(item.id);
+              const isSelected = selectedRomajiPair === item.id;
+              const state = isMatched
+                ? "matched"
+                : isSelected
+                  ? "selected"
+                  : "neutral";
+
+              return (
+                <MatchButton
+                  key={`romaji-${item.id}`}
+                  $state={state}
+                  $isRomaji
+                  onClick={() => handleMatchSelection(item.id, true)}
+                >
+                  {item.romaji}
+                </MatchButton>
+              );
+            })}
+          </MatchColumn>
+        </MatchGrid>
+
+        <ProgressBarContainer>
+          <ProgressFill
+            $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
+          />
+        </ProgressBarContainer>
+      </QuizCard>
+    </Container>
+  );
 }

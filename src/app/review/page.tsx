@@ -1,14 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useMemo } from 'react';
-import styled from 'styled-components';
-import { useProgress } from '@/context/ProgressContext';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import Link from 'next/link';
+import { useState, useEffect, useMemo } from "react";
+import styled from "styled-components";
+import { useProgress } from "@/context/ProgressContext";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import Link from "next/link";
 
 const PageWrapper = styled.div`
   min-height: 90vh;
-  background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
+  background: radial-gradient(
+    circle at top right,
+    rgba(79, 70, 229, 0.05) 0%,
+    transparent 60%
+  );
   padding: 2.5rem 2rem;
 `;
 
@@ -120,7 +124,7 @@ const CardInner = styled.div<{ $flipped: boolean }>`
   position: absolute;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
-  transform: ${({ $flipped }) => ($flipped ? 'rotateY(180deg)' : 'rotateY(0)')};
+  transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg)" : "rotateY(0)")};
 `;
 
 const CardFace = styled.div`
@@ -206,7 +210,7 @@ const ActionBtn = styled.button<{ $color: string }>`
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   &:hover {
     transform: translateY(-2px);
@@ -245,61 +249,119 @@ export default function ReviewPage() {
     setDetails(null);
 
     // Try to fetch details based on type
-    if (currentItem.id.length === 1) { // Likely Kanji
+    if (currentItem.id.length === 1) {
+      // Likely Kanji
       fetch(`https://kanjiapi.dev/v1/kanji/${currentItem.id}`)
-        .then(res => res.json())
-        .then(data => setDetails({ type: 'kanji', ...data }))
-        .catch(() => setDetails({ type: 'unknown' }));
+        .then((res) => res.json())
+        .then((data) => setDetails({ type: "kanji", ...data }))
+        .catch(() => setDetails({ type: "unknown" }));
     } else {
-        // Likely Vocabulary
-        setDetails({ type: 'vocabulary', meaning: 'Vocabulary Item', reading: '...' });
+      // Likely Vocabulary
+      setDetails({
+        type: "vocabulary",
+        meaning: "Vocabulary Item",
+        reading: "...",
+      });
     }
   }, [currentItem]);
 
   const handleRating = (quality: number) => {
     updateSRS(currentItem.id, quality);
     addExp(quality * 2);
-    
+
     setFlipped(false);
     setTimeout(() => {
       if (currentIndex < dueItems.length - 1) {
-        setCurrentIndex(v => v + 1);
+        setCurrentIndex((v) => v + 1);
       } else {
         setDueItems([]); // Finished!
       }
     }, 300);
   };
 
-  if (loading) return <PageWrapper><Container>Checking for reviews...</Container></PageWrapper>;
+  if (loading)
+    return (
+      <PageWrapper>
+        <Container>Checking for reviews...</Container>
+      </PageWrapper>
+    );
 
   if (dueItems.length === 0) {
     return (
       <PageWrapper>
         <Container>
-          <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="SRS Review" />
+          <Breadcrumbs
+            items={[{ label: "Home", href: "/" }]}
+            current="SRS Review"
+          />
           <EmptyState>
             <h2>Semua Beres! 🎉</h2>
-            <p style={{ marginBottom: '0' }}>Tidak ada item yang perlu diulas hari ini. Kerja bagus!</p>
+            <p style={{ marginBottom: "0" }}>
+              Tidak ada item yang perlu diulas hari ini. Kerja bagus!
+            </p>
           </EmptyState>
-          
-          <div style={{ marginTop: '4rem', width: '100%' }}>
-            <h3 style={{ fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 800, color: 'var(--text-secondary)', marginBottom: '1.5rem', textAlign: 'center' }}>
+
+          <div style={{ marginTop: "4rem", width: "100%" }}>
+            <h3
+              style={{
+                fontSize: "1.2rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                fontWeight: 800,
+                color: "var(--text-secondary)",
+                marginBottom: "1.5rem",
+                textAlign: "center",
+              }}
+            >
               Lanjut Belajar
             </h3>
-            <TaskGrid style={{ marginTop: '1rem' }}>
+            <TaskGrid style={{ marginTop: "1rem" }}>
               <TaskCard href="/study/kanji">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="m2 2 5 2"></path><path d="m2 2 2 5"></path></svg>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                  <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                  <path d="m2 2 5 2"></path>
+                  <path d="m2 2 2 5"></path>
+                </svg>
                 <span>Pelajari Kanji Baru</span>
               </TaskCard>
-              
+
               <TaskCard href="/study/vocabulary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="var(--rm-orange)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                <span style={{ color: 'var(--rm-orange)' }}>Hafalkan Kosakata</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="var(--rm-orange)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                <span style={{ color: "var(--rm-orange)" }}>
+                  Hafalkan Kosakata
+                </span>
               </TaskCard>
 
               <TaskCard href="/roadmap">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                <span style={{ color: '#10b981' }}>Lanjut Learning Path</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#10b981"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+                <span style={{ color: "#10b981" }}>Lanjut Learning Path</span>
               </TaskCard>
             </TaskGrid>
           </div>
@@ -311,7 +373,10 @@ export default function ReviewPage() {
   return (
     <PageWrapper>
       <Container>
-        <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="SRS Review" />
+        <Breadcrumbs
+          items={[{ label: "Home", href: "/" }]}
+          current="SRS Review"
+        />
         <Header>
           <Title>Review Sesi</Title>
           <Subtitle>Ulas kembali apa yang telah Anda pelajari.</Subtitle>
@@ -325,30 +390,46 @@ export default function ReviewPage() {
           <CardPerspective onClick={() => setFlipped(!flipped)}>
             <CardInner $flipped={flipped}>
               <CardFace>
-                <ItemType>{details?.type || 'Loading...'}</ItemType>
+                <ItemType>{details?.type || "Loading..."}</ItemType>
                 <Word>{currentItem.id}</Word>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Tap to Reveal</p>
+                <p
+                  style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}
+                >
+                  Tap to Reveal
+                </p>
               </CardFace>
 
               <CardBack>
                 <ItemType>{details?.type}</ItemType>
                 <Word>{currentItem.id}</Word>
                 <InfoGrid>
-                  {details?.type === 'kanji' && (
+                  {details?.type === "kanji" && (
                     <>
                       <InfoRow>
                         <label>Meanings</label>
-                        <span>{details.meanings?.slice(0, 2).join(', ')}</span>
+                        <span>{details.meanings?.slice(0, 2).join(", ")}</span>
                       </InfoRow>
                       <InfoRow>
                         <label>Readings</label>
-                        <span>{[...(details.on_readings || []), ...(details.kun_readings || [])].slice(0, 3).join(', ')}</span>
+                        <span>
+                          {[
+                            ...(details.on_readings || []),
+                            ...(details.kun_readings || []),
+                          ]
+                            .slice(0, 3)
+                            .join(", ")}
+                        </span>
                       </InfoRow>
                     </>
                   )}
-                  {details?.type === 'vocabulary' && (
-                    <div style={{ textAlign: 'center', color: 'var(--text-secondary)' }}>
-                        Details for vocabulary items will be integrated soon.
+                  {details?.type === "vocabulary" && (
+                    <div
+                      style={{
+                        textAlign: "center",
+                        color: "var(--text-secondary)",
+                      }}
+                    >
+                      Details for vocabulary items will be integrated soon.
                     </div>
                   )}
                 </InfoGrid>
@@ -358,14 +439,23 @@ export default function ReviewPage() {
 
           <ActionButtons>
             {!flipped ? (
-              <RevealBtn $color="var(--primary)" onClick={() => setFlipped(true)}>
+              <RevealBtn
+                $color="var(--primary)"
+                onClick={() => setFlipped(true)}
+              >
                 Buka Jawaban
               </RevealBtn>
             ) : (
               <>
-                <ActionBtn $color="#ef4444" onClick={() => handleRating(1)}>Hard</ActionBtn>
-                <ActionBtn $color="#3b82f6" onClick={() => handleRating(3)}>Good</ActionBtn>
-                <ActionBtn $color="#10b981" onClick={() => handleRating(5)}>Easy</ActionBtn>
+                <ActionBtn $color="#ef4444" onClick={() => handleRating(1)}>
+                  Hard
+                </ActionBtn>
+                <ActionBtn $color="#3b82f6" onClick={() => handleRating(3)}>
+                  Good
+                </ActionBtn>
+                <ActionBtn $color="#10b981" onClick={() => handleRating(5)}>
+                  Easy
+                </ActionBtn>
               </>
             )}
           </ActionButtons>
