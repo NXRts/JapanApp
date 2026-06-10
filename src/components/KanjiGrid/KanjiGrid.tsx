@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useMemo } from 'react';
-import styled from 'styled-components';
-import { KanjiCard } from '@/components/Card/KanjiCard';
+import { useEffect, useState, useMemo } from "react";
+import styled from "styled-components";
+import { KanjiCard } from "@/components/Card/KanjiCard";
 
 const Grid = styled.div`
   display: grid;
@@ -35,23 +35,26 @@ const Controls = styled.div`
 
 const LevelButton = styled.button<{ $active: boolean }>`
   padding: 0.75rem 2rem;
-  border: 1px solid ${({ $active }) => ($active ? 'var(--primary)' : 'var(--border)')};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
   border-radius: 999px;
-  background: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--surface)')};
-  color: ${({ $active }) => ($active ? 'white' : 'var(--text-secondary)')};
+  background: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--surface)"};
+  color: ${({ $active }) => ($active ? "white" : "var(--text-secondary)")};
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: ${({ $active }) => ($active ? 'var(--shadow-md)' : 'var(--shadow-sm)')};
+  box-shadow: ${({ $active }) =>
+    $active ? "var(--shadow-md)" : "var(--shadow-sm)"};
 
   &:hover {
     transform: translateY(-2px);
     border-color: var(--primary);
-    color: ${({ $active }) => ($active ? 'white' : 'var(--primary)')};
+    color: ${({ $active }) => ($active ? "white" : "var(--primary)")};
     box-shadow: var(--shadow-md);
   }
-  
+
   &:active {
     transform: translateY(0);
   }
@@ -83,8 +86,8 @@ const SearchInput = styled.input`
 export function KanjiGrid() {
   const [kanjiList, setKanjiList] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [level, setLevel] = useState('n5');
-  const [search, setSearch] = useState('');
+  const [level, setLevel] = useState("n5");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     setLoading(true);
@@ -97,14 +100,14 @@ export function KanjiGrid() {
       })
       .then((data) => {
         if (data.error) {
-          console.error('API Error:', data.error);
+          console.error("API Error:", data.error);
           setKanjiList([]);
         } else {
           setKanjiList(Array.isArray(data) ? data : []);
         }
       })
       .catch((error) => {
-        console.error('Error loading kanji:', error);
+        console.error("Error loading kanji:", error);
         setKanjiList([]);
       })
       .finally(() => setLoading(false));
@@ -112,16 +115,19 @@ export function KanjiGrid() {
 
   // Filter kanji based on search input
   // Since we only have the character char in the list (string[]), we can only filter by character match
-  // In a real app with full metadata, we could match meaning/reading too. 
+  // In a real app with full metadata, we could match meaning/reading too.
   // For now, this effectively "Highlights" or "Finds" the character if it exists in the list for this level.
-  const filteredList = useMemo(() => kanjiList.filter(char => char.includes(search)), [kanjiList, search]);
+  const filteredList = useMemo(
+    () => kanjiList.filter((char) => char.includes(search)),
+    [kanjiList, search],
+  );
 
   return (
     <>
       <Title>JLPT {level.toUpperCase()} Kanji</Title>
 
       <Controls>
-        {['n5', 'n4', 'n3', 'n2', 'n1'].map((l) => (
+        {["n5", "n4", "n3", "n2", "n1"].map((l) => (
           <LevelButton
             key={l}
             $active={level === l}
@@ -132,7 +138,7 @@ export function KanjiGrid() {
         ))}
       </Controls>
 
-      <div style={{ padding: '0 20px' }}>
+      <div style={{ padding: "0 20px" }}>
         <SearchInput
           placeholder="Search Kanji..."
           value={search}
@@ -141,10 +147,12 @@ export function KanjiGrid() {
       </div>
 
       {loading ? (
-        <p style={{ textAlign: 'center', marginTop: 100 }}>Loading Kanji...</p>
+        <p style={{ textAlign: "center", marginTop: 100 }}>Loading Kanji...</p>
       ) : filteredList.length === 0 ? (
-        <p style={{ textAlign: 'center', marginTop: 100 }}>
-          {kanjiList.length === 0 ? "No kanji loaded for this level" : "No kanji found matching your search"}
+        <p style={{ textAlign: "center", marginTop: 100 }}>
+          {kanjiList.length === 0
+            ? "No kanji loaded for this level"
+            : "No kanji found matching your search"}
         </p>
       ) : (
         <Grid>

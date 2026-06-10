@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import styled, { keyframes } from 'styled-components';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import styled, { keyframes } from "styled-components";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import Image from "next/image";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
@@ -44,9 +44,13 @@ const HeroSection = styled.section`
   justify-content: center;
   text-align: center;
   padding: 8rem 1rem 6rem;
-  background: radial-gradient(circle at 50% 50%, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(79, 70, 229, 0.05) 0%,
+    transparent 70%
+  );
   position: relative;
-  
+
   @media (max-width: 768px) {
     padding: 4.5rem 1rem 3rem;
   }
@@ -60,9 +64,13 @@ const Title = styled.h1`
   line-height: 1.1;
   letter-spacing: -0.02em;
   animation: ${fadeIn} 0.8s ease-out;
-  
+
   span {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--secondary) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 2px 10px rgba(79, 70, 229, 0.2));
@@ -70,7 +78,7 @@ const Title = styled.h1`
 `;
 
 const JpTitle = styled.div`
-  font-family: 'Noto Sans JP', sans-serif;
+  font-family: "Noto Sans JP", sans-serif;
   font-size: 1.5rem;
   color: var(--primary);
   font-weight: 500;
@@ -114,7 +122,7 @@ const HeroSubtitle = styled.p`
   margin-bottom: 2.5rem;
   line-height: 1.8;
   animation: ${fadeIn} 1.4s ease-out;
-  
+
   @media (max-width: 768px) {
     font-size: 1rem;
     margin-bottom: 1.75rem;
@@ -196,12 +204,12 @@ const ContentSection = styled.section`
   z-index: 1;
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  
+
   & > div {
     max-width: 1000px;
     margin: 0 auto;
   }
-  
+
   @media (max-width: 768px) {
     padding: 3.5rem 1rem;
   }
@@ -231,7 +239,7 @@ const BlockTitle = styled.h2`
   position: relative;
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -10px;
     left: 0;
@@ -316,7 +324,7 @@ const ValuesGrid = styled.div`
 `;
 
 interface ValueIconProps {
-  $variant?: 'primary' | 'secondary' | 'accent';
+  $variant?: "primary" | "secondary" | "accent";
 }
 
 const ValueCard = styled.div<ValueIconProps>`
@@ -332,14 +340,27 @@ const ValueCard = styled.div<ValueIconProps>`
   &:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
-    border-color: ${props => props.$variant === 'secondary' ? 'var(--secondary)' : props.$variant === 'accent' ? 'var(--accent)' : 'var(--primary)'};
+    border-color: ${(props) =>
+      props.$variant === "secondary"
+        ? "var(--secondary)"
+        : props.$variant === "accent"
+          ? "var(--accent)"
+          : "var(--primary)"};
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 4px;
-    background: ${props => props.$variant === 'secondary' ? 'var(--secondary)' : props.$variant === 'accent' ? 'var(--accent)' : 'var(--primary)'};
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: ${(props) =>
+      props.$variant === "secondary"
+        ? "var(--secondary)"
+        : props.$variant === "accent"
+          ? "var(--accent)"
+          : "var(--primary)"};
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -351,26 +372,51 @@ const ValueCard = styled.div<ValueIconProps>`
   .icon {
     width: 60px;
     height: 60px;
-    background: ${props => {
-    const rgb = props.$variant === 'secondary' ? 'var(--secondary-rgb)' : props.$variant === 'accent' ? 'var(--accent-rgb)' : 'var(--primary-rgb)';
-    return `linear-gradient(135deg, rgba(${rgb}, 0.15), rgba(${rgb}, 0.05))`;
-  }};
-    border: 1px solid ${props => {
-    const rgb = props.$variant === 'secondary' ? 'var(--secondary-rgb)' : props.$variant === 'accent' ? 'var(--accent-rgb)' : 'var(--primary-rgb)';
-    return `rgba(${rgb}, 0.1)`;
-  }};
-    color: ${props => props.$variant === 'secondary' ? 'var(--secondary)' : props.$variant === 'accent' ? 'var(--accent)' : 'var(--primary)'};
+    background: ${(props) => {
+      const rgb =
+        props.$variant === "secondary"
+          ? "var(--secondary-rgb)"
+          : props.$variant === "accent"
+            ? "var(--accent-rgb)"
+            : "var(--primary-rgb)";
+      return `linear-gradient(135deg, rgba(${rgb}, 0.15), rgba(${rgb}, 0.05))`;
+    }};
+    border: 1px solid
+      ${(props) => {
+        const rgb =
+          props.$variant === "secondary"
+            ? "var(--secondary-rgb)"
+            : props.$variant === "accent"
+              ? "var(--accent-rgb)"
+              : "var(--primary-rgb)";
+        return `rgba(${rgb}, 0.1)`;
+      }};
+    color: ${(props) =>
+      props.$variant === "secondary"
+        ? "var(--secondary)"
+        : props.$variant === "accent"
+          ? "var(--accent)"
+          : "var(--primary)"};
     border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 2rem;
-    box-shadow: 0 8px 16px -4px ${props => {
-    const rgb = props.$variant === 'secondary' ? 'var(--secondary-rgb)' : props.$variant === 'accent' ? 'var(--accent-rgb)' : 'var(--primary-rgb)';
-    return `rgba(${rgb}, 0.1)`;
-  }};
-    
-    svg { width: 28px; height: 28px; }
+    box-shadow: 0 8px 16px -4px
+      ${(props) => {
+        const rgb =
+          props.$variant === "secondary"
+            ? "var(--secondary-rgb)"
+            : props.$variant === "accent"
+              ? "var(--accent-rgb)"
+              : "var(--primary-rgb)";
+        return `rgba(${rgb}, 0.1)`;
+      }};
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
   }
 
   h3 {
@@ -395,7 +441,7 @@ const ValueCard = styled.div<ValueIconProps>`
       height: 48px;
       border-radius: 12px;
       margin-bottom: 1.25rem;
-      
+
       svg {
         width: 20px;
         height: 20px;
@@ -429,9 +475,9 @@ const Timeline = styled.div`
   max-width: 800px;
   margin: 0 auto;
   position: relative;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 20px;
     top: 0;
@@ -455,25 +501,25 @@ const Timeline = styled.div`
 `;
 
 interface TimelineItemProps {
-  $side: 'left' | 'right';
+  $side: "left" | "right";
 }
 
 const TimelineItem = styled.div<TimelineItemProps>`
   margin-bottom: 3rem;
   position: relative;
   padding-left: 50px;
-  
+
   @media (min-width: 768px) {
     padding-left: 0;
     width: 50%;
-    margin-left: ${props => props.$side === 'right' ? '50%' : '0'};
-    padding-left: ${props => props.$side === 'right' ? '40px' : '0'};
-    padding-right: ${props => props.$side === 'left' ? '40px' : '0'};
-    text-align: ${props => props.$side === 'left' ? 'right' : 'left'};
+    margin-left: ${(props) => (props.$side === "right" ? "50%" : "0")};
+    padding-left: ${(props) => (props.$side === "right" ? "40px" : "0")};
+    padding-right: ${(props) => (props.$side === "left" ? "40px" : "0")};
+    text-align: ${(props) => (props.$side === "left" ? "right" : "left")};
   }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 21px;
     top: 0;
@@ -489,7 +535,7 @@ const TimelineItem = styled.div<TimelineItemProps>`
 
   @media (min-width: 768px) {
     &::after {
-      left: ${props => props.$side === 'right' ? '0' : '100%'};
+      left: ${(props) => (props.$side === "right" ? "0" : "100%")};
       right: auto;
     }
   }
@@ -572,7 +618,12 @@ const Divider = styled.div`
 const CTACard = styled.div`
   max-width: 1000px;
   margin: 0 auto;
-  background: linear-gradient(135deg, var(--primary) 0%, #8B5CF6 50%, var(--accent) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    #8b5cf6 50%,
+    var(--accent) 100%
+  );
   padding: 5rem 2rem;
   border-radius: 32px;
   box-shadow: 0 25px 50px -12px rgba(79, 70, 229, 0.4);
@@ -581,10 +632,17 @@ const CTACard = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.1);
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+      circle at top right,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
     pointer-events: none;
   }
 
@@ -609,7 +667,7 @@ const CTAButtonGroup = styled.div`
 
 const DarkButton = styled(Link)`
   padding: 1rem 2.5rem;
-  background: #FFFFFF;
+  background: #ffffff;
   color: var(--primary);
   font-weight: 700;
   border-radius: 14px;
@@ -620,7 +678,7 @@ const DarkButton = styled(Link)`
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    background: #F8FAFC;
+    background: #f8fafc;
   }
 
   @media (max-width: 768px) {
@@ -636,7 +694,7 @@ const DarkButton = styled(Link)`
 const OutlineButton = styled(Link)`
   padding: 1rem 2.5rem;
   background: rgba(255, 255, 255, 0.1);
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: 700;
   border-radius: 14px;
   text-decoration: none;
@@ -665,7 +723,11 @@ const PrimaryButton = styled(Link)`
   align-items: center;
   justify-content: center;
   padding: 1.25rem 3rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   font-weight: 700;
   font-size: 1.1rem;
@@ -678,7 +740,7 @@ const PrimaryButton = styled(Link)`
     transform: translateY(-4px) scale(1.02);
     box-shadow: 0 20px 40px -10px rgba(79, 70, 229, 0.5);
   }
-  
+
   &:active {
     transform: translateY(0) scale(1);
   }
@@ -692,8 +754,15 @@ const PrimaryButton = styled(Link)`
 export default function AboutPage() {
   return (
     <Container>
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 2rem 0', width: '100%' }}>
-        <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="About" />
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "2rem 2rem 0",
+          width: "100%",
+        }}
+      >
+        <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="About" />
       </div>
       <HeroSection>
         <Title>
@@ -701,10 +770,11 @@ export default function AboutPage() {
         </Title>
         <JpTitle>アプリについて</JpTitle>
         <HeroSubtitle>
-          Bridging the gap between culture and technology.
-          We're building the future of Japanese language mastery through immersive, beautiful, and data-driven learning experiences.
+          Bridging the gap between culture and technology. We're building the
+          future of Japanese language mastery through immersive, beautiful, and
+          data-driven learning experiences.
         </HeroSubtitle>
-        <PrimaryButton href="/study" style={{ marginBottom: '4rem' }}>
+        <PrimaryButton href="/study" style={{ marginBottom: "4rem" }}>
           Start Your Journey
         </PrimaryButton>
 
@@ -738,14 +808,19 @@ export default function AboutPage() {
           <TextBlock>
             <BlockTitle>Our Story</BlockTitle>
             <BlockParagraph>
-              The Japanese language is incredibly rich and challenging, especially when it comes to mastering its unique writing systems.
-              Japan Learning App was born out of a passion for the language and a desire to build a tool that feels less like a chore and more
+              The Japanese language is incredibly rich and challenging,
+              especially when it comes to mastering its unique writing systems.
+              Japan Learning App was born out of a passion for the language and
+              a desire to build a tool that feels less like a chore and more
               like a natural part of your daily routine.
             </BlockParagraph>
             <BlockParagraph>
-              We noticed that many traditional learning resources were either too rigid or visually unappealing, making the
-              process of memorizing thousands of characters daunting. We wanted to build something different&mdash;a modern, beautiful,
-              and highly interactive platform tailored for learners at all levels, from complete beginners tackling Hiragana to advanced students
+              We noticed that many traditional learning resources were either
+              too rigid or visually unappealing, making the process of
+              memorizing thousands of characters daunting. We wanted to build
+              something different&mdash;a modern, beautiful, and highly
+              interactive platform tailored for learners at all levels, from
+              complete beginners tackling Hiragana to advanced students
               preparing for the JLPT N1.
             </BlockParagraph>
           </TextBlock>
@@ -753,14 +828,19 @@ export default function AboutPage() {
           <TextBlock>
             <BlockTitle>Our Learning Approach</BlockTitle>
             <BlockParagraph>
-              We believe that effective learning comes from consistent, engaging practice. That&#39;s why we&#39;ve built our platform around
-              proven educational methods. Our interactive flashcards employ spaced repetition principles and randomized modes to
-              ensure that characters move into your long-term memory.
+              We believe that effective learning comes from consistent, engaging
+              practice. That&#39;s why we&#39;ve built our platform around
+              proven educational methods. Our interactive flashcards employ
+              spaced repetition principles and randomized modes to ensure that
+              characters move into your long-term memory.
             </BlockParagraph>
             <BlockParagraph>
-              Beyond rote memorization, we emphasize context and culture. With features like stroke-order animations, native audio pronunciation,
-              and our immersive Japanese Culture Blog, we provide a holistic learning experience. We don&#39;t just want you to pass a test;
-              we want you to connect with the language and the culture it represents.
+              Beyond rote memorization, we emphasize context and culture. With
+              features like stroke-order animations, native audio pronunciation,
+              and our immersive Japanese Culture Blog, we provide a holistic
+              learning experience. We don&#39;t just want you to pass a test; we
+              want you to connect with the language and the culture it
+              represents.
             </BlockParagraph>
           </TextBlock>
         </GridContainer>
@@ -768,47 +848,73 @@ export default function AboutPage() {
 
       <ValuesSection>
         <SectionHeader>
-          <SectionTitle>Our Core <span>Values</span></SectionTitle>
-          <SectionSubtitle>Essential principles that guide everything we build for our community of learners.</SectionSubtitle>
+          <SectionTitle>
+            Our Core <span>Values</span>
+          </SectionTitle>
+          <SectionSubtitle>
+            Essential principles that guide everything we build for our
+            community of learners.
+          </SectionSubtitle>
         </SectionHeader>
 
         <ValuesGrid>
           <ValueCard $variant="primary">
             <div className="icon">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                />
               </svg>
             </div>
             <h3>Simplicity First</h3>
             <p>
-              Learning Japanese is complex enough. Our UI is designed to be clean, distraction-free, and effortlessly intuitive.
-              We prioritize common sense design over complexity, ensuring you focus 100% of your energy on the characters, not the navigation.
+              Learning Japanese is complex enough. Our UI is designed to be
+              clean, distraction-free, and effortlessly intuitive. We prioritize
+              common sense design over complexity, ensuring you focus 100% of
+              your energy on the characters, not the navigation.
             </p>
           </ValueCard>
 
           <ValueCard $variant="secondary">
             <div className="icon">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
               </svg>
             </div>
             <h3>Dynamic Learning</h3>
             <p>
-              We move beyond static lists. Our platform uses Spaced Repetition (SRS) to ensure you remember what you've learned
-              at just the right time. Our algorithms adapt to your progress, helping you master Kanji faster than traditional methods.
+              We move beyond static lists. Our platform uses Spaced Repetition
+              (SRS) to ensure you remember what you've learned at just the right
+              time. Our algorithms adapt to your progress, helping you master
+              Kanji faster than traditional methods.
             </p>
           </ValueCard>
 
           <ValueCard $variant="accent">
             <div className="icon">
               <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                />
               </svg>
             </div>
             <h3>Cultural Depth</h3>
             <p>
-              Language is culture. We integrate cultural context, native pronunciations, and stroke-order history into every lesson.
-              Our blog dive deeper into the rich heritage of Japan, making your learning experience holistic and meaningful.
+              Language is culture. We integrate cultural context, native
+              pronunciations, and stroke-order history into every lesson. Our
+              blog dive deeper into the rich heritage of Japan, making your
+              learning experience holistic and meaningful.
             </p>
           </ValueCard>
         </ValuesGrid>
@@ -816,8 +922,13 @@ export default function AboutPage() {
 
       <JourneySection>
         <SectionHeader>
-          <SectionTitle>Our <span>Journey</span></SectionTitle>
-          <SectionSubtitle>From a simple prototype to a comprehensive JLPT preparation platform.</SectionSubtitle>
+          <SectionTitle>
+            Our <span>Journey</span>
+          </SectionTitle>
+          <SectionSubtitle>
+            From a simple prototype to a comprehensive JLPT preparation
+            platform.
+          </SectionSubtitle>
         </SectionHeader>
 
         <Timeline>
@@ -825,7 +936,11 @@ export default function AboutPage() {
             <div className="date">Phase 1</div>
             <div className="content">
               <h4>The Foundation</h4>
-              <p>Establishing the core learning experience with comprehensive Hiragana and Katakana tables, interactive quizzes, and native audio foundations.</p>
+              <p>
+                Establishing the core learning experience with comprehensive
+                Hiragana and Katakana tables, interactive quizzes, and native
+                audio foundations.
+              </p>
             </div>
           </TimelineItem>
 
@@ -833,7 +948,11 @@ export default function AboutPage() {
             <div className="date">Phase 2</div>
             <div className="content">
               <h4>Comprehensive Characters</h4>
-              <p>Integration of the full Joyo Kanji database and expanded vocabulary modules, categorized by JLPT levels for structured progress.</p>
+              <p>
+                Integration of the full Joyo Kanji database and expanded
+                vocabulary modules, categorized by JLPT levels for structured
+                progress.
+              </p>
             </div>
           </TimelineItem>
 
@@ -841,7 +960,11 @@ export default function AboutPage() {
             <div className="date">Phase 3</div>
             <div className="content">
               <h4>Intelligent Mastery</h4>
-              <p>Implementation of our signature SRS (Spaced Repetition System) and advanced study statistics to ensure long-term retention of characters.</p>
+              <p>
+                Implementation of our signature SRS (Spaced Repetition System)
+                and advanced study statistics to ensure long-term retention of
+                characters.
+              </p>
             </div>
           </TimelineItem>
 
@@ -849,7 +972,11 @@ export default function AboutPage() {
             <div className="date">Phase 4</div>
             <div className="content">
               <h4>Interactive Ecosystem</h4>
-              <p>Launch of the Kanji Writer, Particle Master, and Verb Conjugation Drills, turning passive learning into an active handwriting and grammar experience.</p>
+              <p>
+                Launch of the Kanji Writer, Particle Master, and Verb
+                Conjugation Drills, turning passive learning into an active
+                handwriting and grammar experience.
+              </p>
             </div>
           </TimelineItem>
 
@@ -857,7 +984,11 @@ export default function AboutPage() {
             <div className="date">Phase 5</div>
             <div className="content">
               <h4>Personalized Roadmaps</h4>
-              <p>The current era: Tailored learning paths from N5 to N1, guiding every student through a personalized journey to Japanese fluency.</p>
+              <p>
+                The current era: Tailored learning paths from N5 to N1, guiding
+                every student through a personalized journey to Japanese
+                fluency.
+              </p>
             </div>
           </TimelineItem>
         </Timeline>
@@ -865,19 +996,18 @@ export default function AboutPage() {
 
       <CTASection>
         <CTACard>
-          <SectionTitle style={{ color: '#FFFFFF', marginBottom: '1.5rem' }}>
+          <SectionTitle style={{ color: "#FFFFFF", marginBottom: "1.5rem" }}>
             Ready to Master Japanese?
           </SectionTitle>
-          <SectionSubtitle style={{ color: 'rgba(255, 255, 255, 0.9)', maxWidth: '700px' }}>
-            Join thousands of students using our AI-powered SRS Mastery to crush their JLPT goals. Start your journey today!
+          <SectionSubtitle
+            style={{ color: "rgba(255, 255, 255, 0.9)", maxWidth: "700px" }}
+          >
+            Join thousands of students using our AI-powered SRS Mastery to crush
+            their JLPT goals. Start your journey today!
           </SectionSubtitle>
           <CTAButtonGroup>
-            <DarkButton href="/jlpt">
-              Start JLPT Challenge
-            </DarkButton>
-            <OutlineButton href="/study">
-              Start Studying Mode
-            </OutlineButton>
+            <DarkButton href="/jlpt">Start JLPT Challenge</DarkButton>
+            <OutlineButton href="/study">Start Studying Mode</OutlineButton>
           </CTAButtonGroup>
         </CTACard>
       </CTASection>

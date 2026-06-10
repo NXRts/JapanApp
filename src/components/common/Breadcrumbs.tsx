@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
+import React from "react";
+import styled from "styled-components";
+import Link from "next/link";
 
 const Nav = styled.nav`
   display: flex;
@@ -10,10 +10,10 @@ const Nav = styled.nav`
   gap: 6px;
   font-size: 0.78rem;
   color: var(--text-secondary);
-  font-family: 'DM Mono', monospace;
+  font-family: "DM Mono", monospace;
   width: 100%;
   margin-bottom: 1.5rem;
-  
+
   /* Layout alignment - stays left even in centered containers */
   justify-content: flex-start;
 
@@ -27,7 +27,7 @@ const CrumbLink = styled(Link)`
   color: var(--text-secondary);
   text-decoration: none;
   transition: all 0.2s ease;
-  
+
   &:hover {
     color: var(--primary);
   }
@@ -56,9 +56,7 @@ export function Breadcrumbs({ items = [], current }: BreadcrumbsProps) {
     <Nav aria-label="Breadcrumb">
       {items.map((item, index) => (
         <React.Fragment key={item.href}>
-          <CrumbLink href={item.href}>
-            {item.label}
-          </CrumbLink>
+          <CrumbLink href={item.href}>{item.label}</CrumbLink>
           <Separator className="separator">/</Separator>
         </React.Fragment>
       ))}

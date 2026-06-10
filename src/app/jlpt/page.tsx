@@ -1,38 +1,116 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { toKana, isRomaji, toRomaji } from 'wanakana';
-import { searchDictionary, DictionaryResult, allVocabulary, allKanji, allGrammar } from '@/lib/dictionary';
-import Link from 'next/link';
-import KanaKeyboard from '@/components/KanaKeyboard';
-import { HandwritingModal } from '@/components/dictionary/HandwritingModal';
-import { VoiceSearchModal } from '@/components/dictionary/VoiceSearchModal';
-import { ImageSearchModal } from '@/components/dictionary/ImageSearchModal';
-import { playJapaneseAudio } from '@/lib/audio';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { toKana, isRomaji, toRomaji } from "wanakana";
+import {
+  searchDictionary,
+  DictionaryResult,
+  allVocabulary,
+  allKanji,
+  allGrammar,
+} from "@/lib/dictionary";
+import Link from "next/link";
+import KanaKeyboard from "@/components/KanaKeyboard";
+import { HandwritingModal } from "@/components/dictionary/HandwritingModal";
+import { VoiceSearchModal } from "@/components/dictionary/VoiceSearchModal";
+import { ImageSearchModal } from "@/components/dictionary/ImageSearchModal";
+import { playJapaneseAudio } from "@/lib/audio";
 
 const KANA_LIST = [
-  'あ', 'い', 'う', 'え', 'お',
-  'か', 'き', 'く', 'け', 'こ',
-  'さ', 'し', 'す', 'せ', 'そ',
-  'た', 'ち', 'つ', 'て', 'と',
-  'な', 'に', 'ぬ', 'ね', 'の',
-  'は', 'ひ', 'ふ', 'へ', 'ほ',
-  'ま', 'み', 'む', 'め', 'も',
-  'や', 'ゆ', 'よ',
-  'ら', 'り', 'る', 'れ', 'ろ',
-  'わ', 'を', 'ん',
-  'ア', 'イ', 'ウ', 'エ', 'オ',
-  'カ', 'キ', 'ク', 'ケ', 'コ',
-  'サ', 'シ', 'ス', 'セ', 'ソ',
-  'タ', 'チ', 'ツ', 'テ', 'ト',
-  'ナ', 'ニ', 'ヌ', 'ネ', 'ノ',
-  'ハ', 'ヒ', 'フ', 'ヘ', 'ホ',
-  'マ', 'ミ', 'ム', 'メ', 'モ',
-  'ヤ', 'ユ', 'ヨ',
-  'ラ', 'リ', 'ル', 'レ', 'ロ',
-  'ワ', 'ヲ', 'ン'
+  "あ",
+  "い",
+  "う",
+  "え",
+  "お",
+  "か",
+  "き",
+  "く",
+  "け",
+  "こ",
+  "さ",
+  "し",
+  "す",
+  "せ",
+  "そ",
+  "た",
+  "ち",
+  "つ",
+  "て",
+  "と",
+  "な",
+  "に",
+  "ぬ",
+  "ね",
+  "の",
+  "は",
+  "ひ",
+  "ふ",
+  "へ",
+  "ほ",
+  "ま",
+  "み",
+  "む",
+  "め",
+  "も",
+  "や",
+  "ゆ",
+  "よ",
+  "ら",
+  "り",
+  "る",
+  "れ",
+  "ろ",
+  "わ",
+  "を",
+  "ん",
+  "ア",
+  "イ",
+  "ウ",
+  "エ",
+  "オ",
+  "カ",
+  "キ",
+  "ク",
+  "ケ",
+  "コ",
+  "サ",
+  "シ",
+  "ス",
+  "セ",
+  "ソ",
+  "タ",
+  "チ",
+  "ツ",
+  "テ",
+  "ト",
+  "ナ",
+  "ニ",
+  "ヌ",
+  "ネ",
+  "ノ",
+  "ハ",
+  "ヒ",
+  "フ",
+  "ヘ",
+  "ホ",
+  "マ",
+  "ミ",
+  "ム",
+  "メ",
+  "モ",
+  "ヤ",
+  "ユ",
+  "ヨ",
+  "ラ",
+  "リ",
+  "ル",
+  "レ",
+  "ロ",
+  "ワ",
+  "ヲ",
+  "ン",
 ];
 
 const PageContainer = styled.div`
@@ -132,29 +210,35 @@ const FilterChip = styled.button<{ $active: boolean }>`
   gap: 0.25rem;
   padding: 0.4rem 0.5rem;
   border-radius: 99px;
-  border: 1px solid ${({ $active }) => $active ? 'var(--primary-dark)' : 'rgba(var(--primary-rgb), 0.15)'};
-  background: ${({ $active }) => $active 
-    ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)' 
-    : 'rgba(var(--primary-rgb), 0.03)'};
-  color: ${({ $active }) => $active ? '#ffffff' : 'var(--text-secondary)'};
+  border: 1px solid
+    ${({ $active }) =>
+      $active ? "var(--primary-dark)" : "rgba(var(--primary-rgb), 0.15)"};
+  background: ${({ $active }) =>
+    $active
+      ? "linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)"
+      : "rgba(var(--primary-rgb), 0.03)"};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
   font-size: 0.78rem;
-  font-weight: ${({ $active }) => $active ? '700' : '600'};
+  font-weight: ${({ $active }) => ($active ? "700" : "600")};
   white-space: nowrap;
   cursor: pointer;
   flex-shrink: 0;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
-  box-shadow: ${({ $active }) => $active ? '0 3px 8px -1px rgba(var(--primary-rgb), 0.4)' : 'none'};
+  box-shadow: ${({ $active }) =>
+    $active ? "0 3px 8px -1px rgba(var(--primary-rgb), 0.4)" : "none"};
   outline: none;
   width: 100%;
 
   &:hover {
-    border-color: ${({ $active }) => $active ? 'var(--primary-dark)' : 'rgba(var(--primary-rgb), 0.4)'};
-    color: ${({ $active }) => $active ? '#ffffff' : 'var(--primary)'};
-    background: ${({ $active }) => $active 
-      ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)' 
-      : 'rgba(var(--primary-rgb), 0.08)'};
-    filter: ${({ $active }) => $active ? 'brightness(1.08)' : 'none'};
+    border-color: ${({ $active }) =>
+      $active ? "var(--primary-dark)" : "rgba(var(--primary-rgb), 0.4)"};
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--primary)")};
+    background: ${({ $active }) =>
+      $active
+        ? "linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)"
+        : "rgba(var(--primary-rgb), 0.08)"};
+    filter: ${({ $active }) => ($active ? "brightness(1.08)" : "none")};
     transform: translateY(-1px);
   }
 
@@ -234,9 +318,11 @@ const RadioLabel = styled.label<{ $active: boolean }>`
   padding: 0.5rem 0.75rem;
   border-radius: 10px;
   cursor: pointer;
-  background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent'};
-  color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
-  font-weight: ${({ $active }) => $active ? '700' : '500'};
+  background: ${({ $active }) =>
+    $active ? "rgba(var(--primary-rgb), 0.1)" : "transparent"};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
+  font-weight: ${({ $active }) => ($active ? "700" : "500")};
   font-size: 0.9rem;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
@@ -256,12 +342,13 @@ const RadioLabel = styled.label<{ $active: boolean }>`
     width: 16px;
     height: 16px;
     min-width: 16px;
-    border: 2px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
+    border: 2px solid
+      ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
     border-radius: 50%;
     position: relative;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 50%;
       left: 50%;
@@ -270,7 +357,7 @@ const RadioLabel = styled.label<{ $active: boolean }>`
       height: 7px;
       background: var(--primary);
       border-radius: 50%;
-      opacity: ${({ $active }) => $active ? 1 : 0};
+      opacity: ${({ $active }) => ($active ? 1 : 0)};
       transition: opacity 0.2s;
     }
   }
@@ -344,7 +431,7 @@ const ActionButton = styled.button`
       gap: 0.5rem;
       padding: 0.95rem 0.5rem;
       font-size: 0.88rem;
-      
+
       svg {
         width: 22px;
         height: 22px;
@@ -410,13 +497,13 @@ const CheckboxLabel = styled.label`
     position: relative;
     flex-shrink: 0;
     transition: all 0.2s;
-    
+
     &:checked {
       background: var(--primary);
       border-color: var(--primary);
-      
+
       &::after {
-        content: '✓';
+        content: "✓";
         position: absolute;
         top: 50%;
         left: 50%;
@@ -457,7 +544,7 @@ const ToolbarIcons = styled.div`
     cursor: pointer;
     border-radius: 10px;
     transition: all 0.2s;
-    
+
     &:hover {
       background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
       color: var(--primary);
@@ -468,8 +555,9 @@ const ToolbarIcons = styled.div`
       display: flex;
       align-items: center;
       justify-content: center;
-      
-      &:hover, &:active {
+
+      &:hover,
+      &:active {
         background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
         color: var(--primary);
       }
@@ -481,13 +569,16 @@ const ItemCard = styled.div<{ $isPlaying?: boolean }>`
   background: var(--surface);
   border-radius: 16px;
   padding: 1.25rem 1.5rem;
-  border: 1px solid ${({ $isPlaying }) => $isPlaying ? 'var(--primary)' : 'var(--border)'};
+  border: 1px solid
+    ${({ $isPlaying }) => ($isPlaying ? "var(--primary)" : "var(--border)")};
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 1rem;
   align-items: flex-start;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  ${({ $isPlaying }) => $isPlaying && `
+  ${({ $isPlaying }) =>
+    $isPlaying &&
+    `
     box-shadow: 0 0 15px rgba(var(--primary-rgb, 79, 70, 229), 0.3);
     transform: translateY(-2px);
   `}
@@ -533,7 +624,7 @@ const SpeakerButton = styled.button`
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  
+
   &:hover {
     background: var(--primary);
     color: #fff;
@@ -681,16 +772,20 @@ const PageButton = styled.button<{ $active?: boolean }>`
   font-weight: 500;
   cursor: pointer;
   border-radius: 8px;
-  border: 1px solid ${({ $active }) => $active ? 'var(--primary)' : 'var(--border)'};
-  background: ${({ $active }) => $active ? 'var(--primary)' : 'rgba(255, 255, 255, 0.02)'};
-  color: ${({ $active }) => $active ? '#ffffff' : 'var(--foreground)'};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) =>
+    $active ? "var(--primary)" : "rgba(255, 255, 255, 0.02)"};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--foreground)")};
   transition: all 0.15s ease;
   user-select: none;
-  box-shadow: ${({ $active }) => $active ? '0 0 0 3px rgba(var(--primary-rgb), 0.25)' : 'none'};
+  box-shadow: ${({ $active }) =>
+    $active ? "0 0 0 3px rgba(var(--primary-rgb), 0.25)" : "none"};
 
   &:hover:not(:disabled) {
     border-color: var(--primary);
-    background: ${({ $active }) => $active ? 'var(--primary)' : 'rgba(var(--primary-rgb), 0.08)'};
+    background: ${({ $active }) =>
+      $active ? "var(--primary)" : "rgba(var(--primary-rgb), 0.08)"};
     transform: translateY(-1px);
   }
 
@@ -750,7 +845,7 @@ const SearchInputContainer = styled.div`
   transition: all 0.2s;
   min-width: 0;
   overflow: hidden;
-  
+
   &:focus-within {
     border-color: var(--primary);
     box-shadow: 0 4px 25px rgba(var(--primary-rgb, 79, 70, 229), 0.15);
@@ -768,7 +863,7 @@ const SearchInputContainer = styled.div`
     border-radius: 16px;
     padding: 0.5rem 0.75rem 0.35rem 0.75rem;
     gap: 0.35rem 0.5rem;
-    
+
     /* Search Icon */
     > svg:first-of-type {
       grid-column: 1;
@@ -777,7 +872,7 @@ const SearchInputContainer = styled.div`
       width: 18px;
       height: 18px;
     }
-    
+
     /* Search Input Text */
     > input {
       grid-column: 2;
@@ -785,7 +880,7 @@ const SearchInputContainer = styled.div`
       font-size: 0.95rem;
       padding: 0.3rem 0;
     }
-    
+
     /* Clear Search Button (if present) */
     > button {
       grid-column: 2;
@@ -795,14 +890,14 @@ const SearchInputContainer = styled.div`
       align-self: center;
       z-index: 5;
     }
-    
+
     /* Dropdown wrapper for DictSelect */
     > div {
       grid-column: 3;
       grid-row: 1;
       align-self: center;
     }
-    
+
     /* Auxiliary Utilities Toolbar (IconGroup) in row 2 */
     > div:first-of-type {
       grid-column: 1 / span 3;
@@ -827,7 +922,7 @@ const Input = styled.input`
   font-family: inherit;
   outline: none;
   padding: 0.5rem 0.5rem;
-  
+
   &::placeholder {
     color: var(--text-secondary);
   }
@@ -869,8 +964,10 @@ const IconGroup = styled.div`
 `;
 
 const IconButton = styled.button<{ $active?: boolean }>`
-  background: ${({ $active }) => $active ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent'};
-  color: ${({ $active }) => $active ? 'var(--primary)' : 'var(--text-secondary)'};
+  background: ${({ $active }) =>
+    $active ? "rgba(var(--primary-rgb), 0.1)" : "transparent"};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   border: none;
   border-radius: 50%;
   width: 36px;
@@ -880,12 +977,12 @@ const IconButton = styled.button<{ $active?: boolean }>`
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s;
-  
+
   &:hover {
     background: rgba(var(--primary-rgb), 0.08);
     color: var(--primary);
   }
-  
+
   svg {
     width: 18px;
     height: 18px;
@@ -894,7 +991,7 @@ const IconButton = styled.button<{ $active?: boolean }>`
   @media (max-width: 768px) {
     width: 32px;
     height: 32px;
-    
+
     svg {
       width: 16px;
       height: 16px;
@@ -918,7 +1015,7 @@ const DictSelect = styled.button`
   transition: all 0.2s;
   flex-shrink: 0;
   max-width: 220px;
-  
+
   &:hover {
     filter: brightness(1.1);
     transform: translateY(-1px);
@@ -950,7 +1047,7 @@ const DictSelect = styled.button`
     span.dict-full {
       display: none;
     }
-    
+
     span.dict-short {
       display: inline-block;
       font-size: 0.78rem;
@@ -971,7 +1068,7 @@ const ModesRow = styled.div`
   gap: 0.5rem;
   padding: 0.5rem 0;
   width: 100%;
-  
+
   @media (max-width: 1024px) {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -991,28 +1088,34 @@ const ModeBtn = styled.button<{ $active?: boolean }>`
   gap: 0.25rem;
   padding: 0.45rem 1.1rem;
   border-radius: 99px;
-  border: 1px solid ${({ $active }) => $active ? 'var(--primary-dark)' : 'rgba(var(--primary-rgb), 0.15)'};
-  background: ${({ $active }) => $active 
-    ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)' 
-    : 'rgba(var(--primary-rgb), 0.03)'};
-  color: ${({ $active }) => $active ? '#ffffff' : 'var(--text-secondary)'};
+  border: 1px solid
+    ${({ $active }) =>
+      $active ? "var(--primary-dark)" : "rgba(var(--primary-rgb), 0.15)"};
+  background: ${({ $active }) =>
+    $active
+      ? "linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)"
+      : "rgba(var(--primary-rgb), 0.03)"};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
   font-size: 0.82rem;
-  font-weight: ${({ $active }) => $active ? '700' : '600'};
+  font-weight: ${({ $active }) => ($active ? "700" : "600")};
   white-space: nowrap;
   cursor: pointer;
   flex-shrink: 0;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
-  box-shadow: ${({ $active }) => $active ? '0 3px 8px -1px rgba(var(--primary-rgb), 0.4)' : 'none'};
+  box-shadow: ${({ $active }) =>
+    $active ? "0 3px 8px -1px rgba(var(--primary-rgb), 0.4)" : "none"};
   outline: none;
 
   &:hover {
-    border-color: ${({ $active }) => $active ? 'var(--primary-dark)' : 'rgba(var(--primary-rgb), 0.4)'};
-    color: ${({ $active }) => $active ? '#ffffff' : 'var(--primary)'};
-    background: ${({ $active }) => $active 
-      ? 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)' 
-      : 'rgba(var(--primary-rgb), 0.08)'};
-    filter: ${({ $active }) => $active ? 'brightness(1.08)' : 'none'};
+    border-color: ${({ $active }) =>
+      $active ? "var(--primary-dark)" : "rgba(var(--primary-rgb), 0.4)"};
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--primary)")};
+    background: ${({ $active }) =>
+      $active
+        ? "linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)"
+        : "rgba(var(--primary-rgb), 0.08)"};
+    filter: ${({ $active }) => ($active ? "brightness(1.08)" : "none")};
     transform: translateY(-1px);
   }
 
@@ -1034,7 +1137,7 @@ const ModeBtn = styled.button<{ $active?: boolean }>`
   @media (max-width: 640px) {
     padding: 0.35rem 0.15rem;
     font-size: 0.7rem;
-    
+
     svg {
       width: 10px;
       height: 10px;
@@ -1073,7 +1176,7 @@ const AutocompleteItem = styled.div`
   gap: 1rem;
   cursor: pointer;
   transition: background 0.2s;
-  
+
   &:hover {
     background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
   }
@@ -1101,7 +1204,6 @@ const AutocompleteMeaning = styled.span`
   max-width: 100%;
 `;
 
-
 const LoadingSpinner = styled.div`
   width: 40px;
   height: 40px;
@@ -1112,17 +1214,30 @@ const LoadingSpinner = styled.div`
   margin: 4rem auto;
 
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 `;
 
 export default function DictionaryPage() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [showKeyboard, setShowKeyboard] = useState(false);
-  const [activeLevel, setActiveLevel] = useState<'all' | 'N1' | 'N2' | 'N3' | 'N4' | 'N5'>('N5');
-  const [activeCategory, setActiveCategory] = useState<'vocabulary' | 'grammar' | 'kanji' | 'sentences' | 'jpjp' | 'ai' | 'kana'>('vocabulary');
-  const [showConfig, setShowConfig] = useState({ vocabulary: true, ejaan: true, arti: true, rekomendasi: true });
-  const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(null);
+  const [activeLevel, setActiveLevel] = useState<
+    "all" | "N1" | "N2" | "N3" | "N4" | "N5"
+  >("N5");
+  const [activeCategory, setActiveCategory] = useState<
+    "vocabulary" | "grammar" | "kanji" | "sentences" | "jpjp" | "ai" | "kana"
+  >("vocabulary");
+  const [showConfig, setShowConfig] = useState({
+    vocabulary: true,
+    ejaan: true,
+    arti: true,
+    rekomendasi: true,
+  });
+  const [searchResults, setSearchResults] = useState<DictionaryResult[] | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -1130,12 +1245,16 @@ export default function DictionaryPage() {
   const [showDrawModal, setShowDrawModal] = useState(false);
   const [showVoiceModal, setShowVoiceModal] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
-  const [selectedDict, setSelectedDict] = useState<'JA-ID' | 'JA-EN' | 'JA-JA'>('JA-ID');
+  const [selectedDict, setSelectedDict] = useState<"JA-ID" | "JA-EN" | "JA-JA">(
+    "JA-ID",
+  );
   const [showDictDropdown, setShowDictDropdown] = useState(false);
   const [isInputFocused, setIsInputFocused] = useState(false);
   const [isPlayingAll, setIsPlayingAll] = useState(false);
   const [shuffleSeed, setShuffleSeed] = useState(0);
-  const [currentlyPlayingId, setCurrentlyPlayingId] = useState<string | null>(null);
+  const [currentlyPlayingId, setCurrentlyPlayingId] = useState<string | null>(
+    null,
+  );
   const [autoKana, setAutoKana] = useState(false);
 
   const itemsPerPage = 15; // Moved from hardcoded value to a constant
@@ -1146,41 +1265,47 @@ export default function DictionaryPage() {
   const shouldScrollToPagination = React.useRef(false);
 
   const handleKeyboardType = (char: string) => {
-    setQuery(prev => prev + char);
+    setQuery((prev) => prev + char);
     inputRef.current?.focus();
   };
 
   const handleKeyboardBackspace = () => {
-    setQuery(prev => prev.slice(0, -1));
+    setQuery((prev) => prev.slice(0, -1));
     inputRef.current?.focus();
   };
 
   useEffect(() => {
     const handleGlobalKeyDown = (e: KeyboardEvent) => {
       // Ctrl+K or Cmd+K
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
         inputRef.current?.focus();
       }
     };
 
-    window.addEventListener('keydown', handleGlobalKeyDown);
-    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
   }, []);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setShowDictDropdown(false);
       }
-      if (searchWrapperRef.current && !searchWrapperRef.current.contains(event.target as Node)) {
+      if (
+        searchWrapperRef.current &&
+        !searchWrapperRef.current.contains(event.target as Node)
+      ) {
         setIsInputFocused(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      if (typeof window !== 'undefined' && window.speechSynthesis) {
+      document.removeEventListener("mousedown", handleClickOutside);
+      if (typeof window !== "undefined" && window.speechSynthesis) {
         window.speechSynthesis.cancel();
       }
     };
@@ -1189,9 +1314,9 @@ export default function DictionaryPage() {
   const playAudio = (e: React.MouseEvent, text: string, itemId?: string) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (itemId) {
-      setCurrentlyPlayingId(itemId); 
+      setCurrentlyPlayingId(itemId);
       playJapaneseAudio(text).finally(() => setCurrentlyPlayingId(null));
     } else {
       playJapaneseAudio(text);
@@ -1206,7 +1331,10 @@ export default function DictionaryPage() {
     if (shouldScrollToPagination.current) {
       shouldScrollToPagination.current = false;
       const timer = setTimeout(() => {
-        paginationRef.current?.scrollIntoView({ block: 'end', behavior: 'smooth' });
+        paginationRef.current?.scrollIntoView({
+          block: "end",
+          behavior: "smooth",
+        });
       }, 50);
       return () => clearTimeout(timer);
     }
@@ -1216,22 +1344,26 @@ export default function DictionaryPage() {
     if (!filteredData || filteredData.length === 0) return;
 
     // User confirmation
-    const isConfirmed = window.confirm(`Are you sure you want to download these ${filteredData.length} items in CSV format?`);
+    const isConfirmed = window.confirm(
+      `Are you sure you want to download these ${filteredData.length} items in CSV format?`,
+    );
     if (!isConfirmed) return;
 
     let csvContent = "Word,Reading,Meaning,Type,Level\n";
-    filteredData.forEach(item => {
-      const word = item.type === 'kanji' ? item.kanji : (item.word || item.title);
-      const reading = item.type === 'kanji'
-        ? `On: ${item.onyomi?.join(', ')} | Kun: ${item.kunyomi?.join(', ')}`
-        : (item.reading || item.romaji || '');
-      const meaning = item.meaning || '';
-      const escapeCell = (str: string) => `"${(str || '').toString().replace(/"/g, '""')}"`;
+    filteredData.forEach((item) => {
+      const word = item.type === "kanji" ? item.kanji : item.word || item.title;
+      const reading =
+        item.type === "kanji"
+          ? `On: ${item.onyomi?.join(", ")} | Kun: ${item.kunyomi?.join(", ")}`
+          : item.reading || item.romaji || "";
+      const meaning = item.meaning || "";
+      const escapeCell = (str: string) =>
+        `"${(str || "").toString().replace(/"/g, '""')}"`;
 
-      csvContent += `${escapeCell(word ?? '')},${escapeCell(reading)},${escapeCell(meaning)},${escapeCell(item.type)},${escapeCell(item.level || '')}\n`;
+      csvContent += `${escapeCell(word ?? "")},${escapeCell(reading)},${escapeCell(meaning)},${escapeCell(item.type)},${escapeCell(item.level || "")}\n`;
     });
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -1254,7 +1386,9 @@ export default function DictionaryPage() {
     setIsPlayingAll(true);
 
     let utteranceEndCount = 0;
-    const itemsWithContent = displayData.filter(i => (i.type === 'kanji' ? i.kanji : (i.word || i.title)));
+    const itemsWithContent = displayData.filter((i) =>
+      i.type === "kanji" ? i.kanji : i.word || i.title,
+    );
 
     if (itemsWithContent.length === 0) {
       setIsPlayingAll(false);
@@ -1267,12 +1401,12 @@ export default function DictionaryPage() {
     };
 
     itemsWithContent.forEach((item, idx) => {
-      const text = item.type === 'kanji' ? item.kanji : (item.word || item.title);
+      const text = item.type === "kanji" ? item.kanji : item.word || item.title;
       const itemId = `${item.source}-${item.type}-${item.level}-${item.id || idx}`;
 
       if (text) {
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ja-JP';
+        utterance.lang = "ja-JP";
         utterance.rate = 0.8;
 
         utterance.onstart = () => {
@@ -1295,7 +1429,7 @@ export default function DictionaryPage() {
   };
 
   const handleShuffle = () => {
-    setShuffleSeed(prev => prev + 1);
+    setShuffleSeed((prev) => prev + 1);
     setCurrentPage(1);
   };
 
@@ -1304,17 +1438,40 @@ export default function DictionaryPage() {
     setCurrentPage(1);
     const timer = setTimeout(async () => {
       if (query.trim()) {
-        // results are found across all JLPT levels. 
-        const results = await searchDictionary(query, activeCategory as 'vocabulary' | 'grammar' | 'kanji' | 'sentences' | 'jpjp' | 'ai' | 'kana', 'all');
+        // results are found across all JLPT levels.
+        const results = await searchDictionary(
+          query,
+          activeCategory as
+            | "vocabulary"
+            | "grammar"
+            | "kanji"
+            | "sentences"
+            | "jpjp"
+            | "ai"
+            | "kana",
+          "all",
+        );
 
         // Filter out ID/EN based on dict
         let filtered = results;
-        if (selectedDict === 'JA-EN') {
-          filtered = results.filter(r => r.source === 'jisho' || r.source === 'kanji-db');
-        } else if (selectedDict === 'JA-ID') {
-          filtered = results.filter(r => r.source === 'kamus' || r.source === 'local' || r.source === 'angka' || r.source === 'kanji-db' || r.source === 'tatoeba' || r.source === 'wiktionary');
-        } else if (selectedDict === 'JA-JA') {
-          filtered = results.filter(r => r.source === 'wiktionary' || r.source === 'local');
+        if (selectedDict === "JA-EN") {
+          filtered = results.filter(
+            (r) => r.source === "jisho" || r.source === "kanji-db",
+          );
+        } else if (selectedDict === "JA-ID") {
+          filtered = results.filter(
+            (r) =>
+              r.source === "kamus" ||
+              r.source === "local" ||
+              r.source === "angka" ||
+              r.source === "kanji-db" ||
+              r.source === "tatoeba" ||
+              r.source === "wiktionary",
+          );
+        } else if (selectedDict === "JA-JA") {
+          filtered = results.filter(
+            (r) => r.source === "wiktionary" || r.source === "local",
+          );
         }
 
         setSearchResults(filtered);
@@ -1336,44 +1493,46 @@ export default function DictionaryPage() {
   };
 
   const browseData = React.useMemo((): DictionaryResult[] => {
-    if (activeCategory === "kanji") { return allKanji; } else if (activeCategory === "grammar") {
-      return allGrammar.map(g => ({
+    if (activeCategory === "kanji") {
+      return allKanji;
+    } else if (activeCategory === "grammar") {
+      return allGrammar.map((g) => ({
         ...g,
-        type: 'grammar' as const,
-        source: 'local' as const
+        type: "grammar" as const,
+        source: "local" as const,
       }));
-    } else if (activeCategory === 'kana') {
+    } else if (activeCategory === "kana") {
       return KANA_LIST.map((char, index) => ({
         id: `kana-${index}`,
-        type: 'vocabulary' as const,
-        level: 'N5',
+        type: "vocabulary" as const,
+        level: "N5",
         word: char,
         reading: toRomaji(char),
         romaji: toRomaji(char),
-        meaning: `${index < 46 ? 'Hiragana' : 'Katakana'} Letter: ${toRomaji(char).toUpperCase()}`,
-        source: 'local' as const
+        meaning: `${index < 46 ? "Hiragana" : "Katakana"} Letter: ${toRomaji(char).toUpperCase()}`,
+        source: "local" as const,
       }));
-    } else if (activeCategory === 'sentences' || activeCategory === 'jpjp') {
+    } else if (activeCategory === "sentences" || activeCategory === "jpjp") {
       return []; // These are dynamic searches or self-rendering components
     } else {
       return allVocabulary
-        .filter(v => v.id.startsWith('lib-'))
-        .map(v => ({
+        .filter((v) => v.id.startsWith("lib-"))
+        .map((v) => ({
           ...v,
-          type: 'vocabulary' as const,
-          source: 'kamus' as const
+          type: "vocabulary" as const,
+          source: "kamus" as const,
         }));
     }
   }, [activeCategory]);
 
   const filteredData = React.useMemo(() => {
-    const result = (searchResults || browseData).filter(item => {
-      // If we are actively searching (searchResults is not null), we bypass the level filter 
-      // to show all relevant matches across all JLPT levels. 
+    const result = (searchResults || browseData).filter((item) => {
+      // If we are actively searching (searchResults is not null), we bypass the level filter
+      // to show all relevant matches across all JLPT levels.
       // If we are just browsing (searchResults is null), we respect the level filter.
-      if (searchResults) return true; 
+      if (searchResults) return true;
 
-      if (activeLevel !== 'all' && item.level !== activeLevel) return false;
+      if (activeLevel !== "all" && item.level !== activeLevel) return false;
       return true;
     });
 
@@ -1398,22 +1557,27 @@ export default function DictionaryPage() {
 
   return (
     <PageContainer>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="JLPT Mastery" />
+      <Breadcrumbs
+        items={[{ label: "Home", href: "/" }]}
+        current="JLPT Mastery"
+      />
       <MobileFilters>
         <FilterGroup>
           <FilterLabel>Category</FilterLabel>
           <FilterChipRow>
             {[
-              { id: 'kana', label: 'Kana' },
-              { id: 'vocabulary', label: 'Words' },
-              { id: 'kanji', label: 'Kanji' },
-              { id: 'sentences', label: 'Sentences' },
-              { id: 'grammar', label: 'Grammar' },
-            ].map(item => (
+              { id: "kana", label: "Kana" },
+              { id: "vocabulary", label: "Words" },
+              { id: "kanji", label: "Kanji" },
+              { id: "sentences", label: "Sentences" },
+              { id: "grammar", label: "Grammar" },
+            ].map((item) => (
               <FilterChip
                 key={item.id}
                 $active={activeCategory === item.id}
-                onClick={() => setActiveCategory(item.id as typeof activeCategory)}
+                onClick={() =>
+                  setActiveCategory(item.id as typeof activeCategory)
+                }
               >
                 {item.label}
               </FilterChip>
@@ -1423,7 +1587,7 @@ export default function DictionaryPage() {
         <FilterGroup>
           <FilterLabel>Level</FilterLabel>
           <FilterChipRow>
-            {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
+            {["N5", "N4", "N3", "N2", "N1"].map((lvl) => (
               <FilterChip
                 key={lvl}
                 $active={activeLevel === lvl}
@@ -1441,18 +1605,20 @@ export default function DictionaryPage() {
             <SectionTitle>Select Category</SectionTitle>
             <RadioGroup>
               {[
-                { id: 'kana', label: 'Kana' },
-                { id: 'vocabulary', label: 'Vocabulary' },
-                { id: 'kanji', label: 'Kanji' },
-                { id: 'sentences', label: 'Sentences' },
-                { id: 'grammar', label: 'Grammar' },
-                { id: 'jpjp', label: 'Japanese - Japanese' },
-              ].map(item => (
+                { id: "kana", label: "Kana" },
+                { id: "vocabulary", label: "Vocabulary" },
+                { id: "kanji", label: "Kanji" },
+                { id: "sentences", label: "Sentences" },
+                { id: "grammar", label: "Grammar" },
+                { id: "jpjp", label: "Japanese - Japanese" },
+              ].map((item) => (
                 <RadioLabel key={item.id} $active={activeCategory === item.id}>
                   <input
                     type="radio"
                     checked={activeCategory === item.id}
-                    onChange={() => setActiveCategory(item.id as typeof activeCategory)}
+                    onChange={() =>
+                      setActiveCategory(item.id as typeof activeCategory)
+                    }
                   />
                   {item.label}
                 </RadioLabel>
@@ -1463,7 +1629,7 @@ export default function DictionaryPage() {
           <SidebarSection>
             <SectionTitle>Select Level</SectionTitle>
             <RadioGroup>
-              {['N5', 'N4', 'N3', 'N2', 'N1'].map(lvl => (
+              {["N5", "N4", "N3", "N2", "N1"].map((lvl) => (
                 <RadioLabel key={lvl} $active={activeLevel === lvl}>
                   <input
                     type="radio"
@@ -1479,45 +1645,94 @@ export default function DictionaryPage() {
 
         <MainContent>
           <ActionButtonsGrid>
-            <ActionButton as={Link} href={`/jlpt/flashcards?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
-              <svg fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+            <ActionButton
+              as={Link}
+              href={`/jlpt/flashcards?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`}
+              style={{ textDecoration: "none" }}
+            >
+              <svg
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                viewBox="0 0 24 24"
+              >
                 <rect x="4" y="8" width="16" height="12" rx="2" />
                 <path d="M8 8V6a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2" />
               </svg>
               Flashcards
             </ActionButton>
-            <ActionButton as={Link} href={`/jlpt/quiz?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
-              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" /></svg>
+            <ActionButton
+              as={Link}
+              href={`/jlpt/quiz?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`}
+              style={{ textDecoration: "none" }}
+            >
+              <svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z" />
+              </svg>
               Quiz
             </ActionButton>
-            <ActionButton as={Link} href={`/jlpt/practice?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
-              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" /></svg>
+            <ActionButton
+              as={Link}
+              href={`/jlpt/practice?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`}
+              style={{ textDecoration: "none" }}
+            >
+              <svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
+              </svg>
               Practice
             </ActionButton>
-            <ActionButton as={Link} href={`/jlpt/mini-test?level=${activeLevel}`} style={{ textDecoration: 'none' }}>
-              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" /></svg>
+            <ActionButton
+              as={Link}
+              href={`/jlpt/mini-test?level=${activeLevel}`}
+              style={{ textDecoration: "none" }}
+            >
+              <svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" />
+              </svg>
               Mini Test
             </ActionButton>
-            <ActionButton as={Link} href={`/jlpt/kanji-writer?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`} style={{ textDecoration: 'none' }}>
-              <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            <ActionButton
+              as={Link}
+              href={`/jlpt/kanji-writer?q=${encodeURIComponent(query)}&category=${activeCategory}&level=${activeLevel}`}
+              style={{ textDecoration: "none" }}
+            >
+              <svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+              </svg>
               Kanji Writer
             </ActionButton>
           </ActionButtonsGrid>
 
           <SearchBarWrapper ref={searchWrapperRef}>
             <SearchInputContainer>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: '0.4rem' }}>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="var(--text-secondary)"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                style={{ marginLeft: "0.4rem" }}
+              >
                 <circle cx="11" cy="11" r="8" />
                 <path d="m21 21-4.3-4.3" />
               </svg>
               <Input
                 ref={inputRef}
-                placeholder={autoKana ? "nihon, sensei, kuruma" : "Japan, sensei, mountain, 日本"}
+                placeholder={
+                  autoKana
+                    ? "nihon, sensei, kuruma"
+                    : "Japan, sensei, mountain, 日本"
+                }
                 value={query}
                 onChange={handleInputChange}
                 onFocus={() => setIsInputFocused(true)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.key === "Enter") {
                     inputRef.current?.blur();
                     setIsInputFocused(false);
                   }
@@ -1525,50 +1740,274 @@ export default function DictionaryPage() {
               />
               {query.length === 0 && <ShortcutHint>Ctrl K</ShortcutHint>}
               {query.length > 0 && (
-                <IconButton onClick={() => setQuery('')} aria-label="Clear search" style={{ marginRight: '0.5rem', width: '28px', height: '28px', background: 'transparent', border: 'none' }}>
-                  <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <IconButton
+                  onClick={() => setQuery("")}
+                  aria-label="Clear search"
+                  style={{
+                    marginRight: "0.5rem",
+                    width: "28px",
+                    height: "28px",
+                    background: "transparent",
+                    border: "none",
+                  }}
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </IconButton>
               )}
 
               <IconGroup>
                 <IconButton title="Draw" onClick={() => setShowDrawModal(true)}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 19l7-7 3 3-7 7-3-3z" /><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" /><path d="M2 2l7.586 7.586" /><circle cx="11" cy="11" r="2" /></svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M12 19l7-7 3 3-7 7-3-3z" />
+                    <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
+                    <path d="M2 2l7.586 7.586" />
+                    <circle cx="11" cy="11" r="2" />
+                  </svg>
                 </IconButton>
-                <IconButton $active={showKeyboard} onClick={() => setShowKeyboard(!showKeyboard)} title="Kana Keyboard">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <IconButton
+                  $active={showKeyboard}
+                  onClick={() => setShowKeyboard(!showKeyboard)}
+                  title="Kana Keyboard"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <rect x="2" y="4" width="20" height="16" rx="2" ry="2" />
-                    <path d="M6 8h.01" /><path d="M10 8h.01" /><path d="M14 8h.01" /><path d="M18 8h.01" />
-                    <path d="M8 12h.01" /><path d="M12 12h.01" /><path d="M16 12h.01" />
+                    <path d="M6 8h.01" />
+                    <path d="M10 8h.01" />
+                    <path d="M14 8h.01" />
+                    <path d="M18 8h.01" />
+                    <path d="M8 12h.01" />
+                    <path d="M12 12h.01" />
+                    <path d="M16 12h.01" />
                     <path d="M7 16h10" />
                   </svg>
                 </IconButton>
-                <IconButton title="Voice" onClick={() => setShowVoiceModal(true)}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" x2="12" y1="19" y2="22" /></svg>
+                <IconButton
+                  title="Voice"
+                  onClick={() => setShowVoiceModal(true)}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                    <line x1="12" x2="12" y1="19" y2="22" />
+                  </svg>
                 </IconButton>
-                <IconButton title="OCR Image" onClick={() => setShowImageModal(true)}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>
+                <IconButton
+                  title="OCR Image"
+                  onClick={() => setShowImageModal(true)}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                    <circle cx="9" cy="9" r="2" />
+                    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                  </svg>
                 </IconButton>
-                <IconButton $active={autoKana} onClick={() => setAutoKana(!autoKana)} title={autoKana ? "Auto-Kana: On" : "Auto-Kana: Off"}>
-                  <div style={{ display: 'flex', alignItems: 'center', fontSize: '0.85rem', fontWeight: 800, fontFamily: 'monospace', position: 'relative', width: '100%', height: '100%', justifyContent: 'center' }}>
-                    <span style={{ position: 'absolute', left: '4px', top: '6px', color: autoKana ? 'var(--primary)' : 'inherit', opacity: autoKana ? 1 : 0.5 }}>A</span>
-                    <span style={{ position: 'absolute', right: '4px', bottom: '6px', color: autoKana ? 'var(--primary)' : 'inherit' }}>あ</span>
+                <IconButton
+                  $active={autoKana}
+                  onClick={() => setAutoKana(!autoKana)}
+                  title={autoKana ? "Auto-Kana: On" : "Auto-Kana: Off"}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      fontSize: "0.85rem",
+                      fontWeight: 800,
+                      fontFamily: "monospace",
+                      position: "relative",
+                      width: "100%",
+                      height: "100%",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        position: "absolute",
+                        left: "4px",
+                        top: "6px",
+                        color: autoKana ? "var(--primary)" : "inherit",
+                        opacity: autoKana ? 1 : 0.5,
+                      }}
+                    >
+                      A
+                    </span>
+                    <span
+                      style={{
+                        position: "absolute",
+                        right: "4px",
+                        bottom: "6px",
+                        color: autoKana ? "var(--primary)" : "inherit",
+                      }}
+                    >
+                      あ
+                    </span>
                   </div>
                 </IconButton>
               </IconGroup>
 
-              <div style={{ position: 'relative' }} ref={dropdownRef}>
-                <DictSelect onClick={() => setShowDictDropdown(!showDictDropdown)}>
-                  <span className="dict-full">{selectedDict === 'JA-ID' ? 'Japanese - Indonesian' : selectedDict === 'JA-EN' ? 'Japanese - English' : 'Japanese - Japanese'}</span>
+              <div style={{ position: "relative" }} ref={dropdownRef}>
+                <DictSelect
+                  onClick={() => setShowDictDropdown(!showDictDropdown)}
+                >
+                  <span className="dict-full">
+                    {selectedDict === "JA-ID"
+                      ? "Japanese - Indonesian"
+                      : selectedDict === "JA-EN"
+                        ? "Japanese - English"
+                        : "Japanese - Japanese"}
+                  </span>
                   <span className="dict-short">{selectedDict}</span>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
                 </DictSelect>
                 {showDictDropdown && (
-                  <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '0.5rem', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '8px', zIndex: 50, display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', minWidth: '180px' }}>
-                    <button onClick={() => { setSelectedDict('JA-ID'); setShowDictDropdown(false); if (activeCategory === 'jpjp') setActiveCategory('vocabulary'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-ID' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-ID' ? 'bold' : 'normal' }}>Japanese - Indonesian</button>
-                    <button onClick={() => { setSelectedDict('JA-EN'); setShowDictDropdown(false); if (activeCategory === 'jpjp') setActiveCategory('vocabulary'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-EN' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', borderBottom: '1px solid var(--border)', fontWeight: selectedDict === 'JA-EN' ? 'bold' : 'normal' }}>Japanese - English</button>
-                    <button onClick={() => { setSelectedDict('JA-JA'); setShowDictDropdown(false); setActiveCategory('jpjp'); }} style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', whiteSpace: 'nowrap', border: 'none', background: 'transparent', color: selectedDict === 'JA-JA' ? 'var(--primary)' : 'var(--foreground)', cursor: 'pointer', textAlign: 'left', fontWeight: selectedDict === 'JA-JA' ? 'bold' : 'normal' }}>Japanese - Japanese</button>
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "100%",
+                      right: 0,
+                      marginTop: "0.5rem",
+                      background: "var(--surface)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "8px",
+                      zIndex: 50,
+                      display: "flex",
+                      flexDirection: "column",
+                      overflow: "hidden",
+                      boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                      minWidth: "180px",
+                    }}
+                  >
+                    <button
+                      onClick={() => {
+                        setSelectedDict("JA-ID");
+                        setShowDictDropdown(false);
+                        if (activeCategory === "jpjp")
+                          setActiveCategory("vocabulary");
+                      }}
+                      style={{
+                        padding: "0.75rem 1rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        whiteSpace: "nowrap",
+                        border: "none",
+                        background: "transparent",
+                        color:
+                          selectedDict === "JA-ID"
+                            ? "var(--primary)"
+                            : "var(--foreground)",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        borderBottom: "1px solid var(--border)",
+                        fontWeight:
+                          selectedDict === "JA-ID" ? "bold" : "normal",
+                      }}
+                    >
+                      Japanese - Indonesian
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedDict("JA-EN");
+                        setShowDictDropdown(false);
+                        if (activeCategory === "jpjp")
+                          setActiveCategory("vocabulary");
+                      }}
+                      style={{
+                        padding: "0.75rem 1rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        whiteSpace: "nowrap",
+                        border: "none",
+                        background: "transparent",
+                        color:
+                          selectedDict === "JA-EN"
+                            ? "var(--primary)"
+                            : "var(--foreground)",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        borderBottom: "1px solid var(--border)",
+                        fontWeight:
+                          selectedDict === "JA-EN" ? "bold" : "normal",
+                      }}
+                    >
+                      Japanese - English
+                    </button>
+                    <button
+                      onClick={() => {
+                        setSelectedDict("JA-JA");
+                        setShowDictDropdown(false);
+                        setActiveCategory("jpjp");
+                      }}
+                      style={{
+                        padding: "0.75rem 1rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                        whiteSpace: "nowrap",
+                        border: "none",
+                        background: "transparent",
+                        color:
+                          selectedDict === "JA-JA"
+                            ? "var(--primary)"
+                            : "var(--foreground)",
+                        cursor: "pointer",
+                        textAlign: "left",
+                        fontWeight:
+                          selectedDict === "JA-JA" ? "bold" : "normal",
+                      }}
+                    >
+                      Japanese - Japanese
+                    </button>
                   </div>
                 )}
               </div>
@@ -1576,64 +2015,107 @@ export default function DictionaryPage() {
 
             <ModesRow>
               {[
-                { id: 'ai', label: 'AI Mode' },
-                { id: 'kana', label: 'Kana' },
-                { id: 'vocabulary', label: 'Words' },
-                { id: 'kanji', label: 'Kanji' },
-                { id: 'sentences', label: 'Sentences' },
-                { id: 'grammar', label: 'Grammar' },
-              ].map(mode => (
+                { id: "ai", label: "AI Mode" },
+                { id: "kana", label: "Kana" },
+                { id: "vocabulary", label: "Words" },
+                { id: "kanji", label: "Kanji" },
+                { id: "sentences", label: "Sentences" },
+                { id: "grammar", label: "Grammar" },
+              ].map((mode) => (
                 <ModeBtn
                   key={mode.id}
                   $active={activeCategory === mode.id}
-                  onClick={() => setActiveCategory(mode.id as typeof activeCategory)}
+                  onClick={() =>
+                    setActiveCategory(mode.id as typeof activeCategory)
+                  }
                 >
-                  {mode.id === 'ai' ? (
+                  {mode.id === "ai" ? (
                     <>
                       {mode.label}
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginLeft: '2px' }}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" /></svg>
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        style={{ marginLeft: "2px" }}
+                      >
+                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                      </svg>
                     </>
-                  ) : mode.label}
+                  ) : (
+                    mode.label
+                  )}
                 </ModeBtn>
               ))}
             </ModesRow>
 
-            {showConfig.rekomendasi && isInputFocused && query.length > 0 && searchResults && searchResults.length > 0 && (
-              <AutocompleteDropdown>
-                {searchResults.slice(0, 8).map(res => (
-                  <AutocompleteItem
-                    key={`auto-${res.source}-${res.type}-${res.id}`}
-                    onMouseDown={(e) => {
-                      // Prevent blurring the input so that an onClick can correctly fire
-                      e.preventDefault();
-                    }}
-                    onClick={() => {
-                      setQuery(res.word || res.title || res.kanji || '');
-                      setIsInputFocused(false);
-                    }}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                      <circle cx="11" cy="11" r="8"></circle>
-                      <path d="m21 21-4.3-4.3"></path>
-                    </svg>
-                    <AutocompleteText>
-                      <AutocompleteWord>
-                        {res.word || res.title || res.kanji}
-                        {res.reading && (
-                          <span style={{ fontSize: '0.8rem', fontWeight: 400, marginLeft: '0.5rem', opacity: 0.7 }}>
-                            ({res.reading})
-                          </span>
-                        )}
-                      </AutocompleteWord>
-                      <AutocompleteMeaning>{res.meaning}</AutocompleteMeaning>
-                    </AutocompleteText>
-                  </AutocompleteItem>
-                ))}
-              </AutocompleteDropdown>
-            )}
+            {showConfig.rekomendasi &&
+              isInputFocused &&
+              query.length > 0 &&
+              searchResults &&
+              searchResults.length > 0 && (
+                <AutocompleteDropdown>
+                  {searchResults.slice(0, 8).map((res) => (
+                    <AutocompleteItem
+                      key={`auto-${res.source}-${res.type}-${res.id}`}
+                      onMouseDown={(e) => {
+                        // Prevent blurring the input so that an onClick can correctly fire
+                        e.preventDefault();
+                      }}
+                      onClick={() => {
+                        setQuery(res.word || res.title || res.kanji || "");
+                        setIsInputFocused(false);
+                      }}
+                    >
+                      <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="var(--text-secondary)"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{ flexShrink: 0 }}
+                      >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                      </svg>
+                      <AutocompleteText>
+                        <AutocompleteWord>
+                          {res.word || res.title || res.kanji}
+                          {res.reading && (
+                            <span
+                              style={{
+                                fontSize: "0.8rem",
+                                fontWeight: 400,
+                                marginLeft: "0.5rem",
+                                opacity: 0.7,
+                              }}
+                            >
+                              ({res.reading})
+                            </span>
+                          )}
+                        </AutocompleteWord>
+                        <AutocompleteMeaning>{res.meaning}</AutocompleteMeaning>
+                      </AutocompleteText>
+                    </AutocompleteItem>
+                  ))}
+                </AutocompleteDropdown>
+              )}
 
             {showKeyboard && (
-              <div style={{ position: 'absolute', zIndex: 100, top: 'calc(100% + 0.5rem)', left: 0, width: '100%' }}>
+              <div
+                style={{
+                  position: "absolute",
+                  zIndex: 100,
+                  top: "calc(100% + 0.5rem)",
+                  left: 0,
+                  width: "100%",
+                }}
+              >
                 <KanaKeyboard
                   onType={handleKeyboardType}
                   onBackspace={handleKeyboardBackspace}
@@ -1643,35 +2125,79 @@ export default function DictionaryPage() {
             )}
           </SearchBarWrapper>
 
-
           <ListToolbar>
             <CheckboxGroup>
               {[
-                { id: 'vocabulary', label: 'Words' },
-                { id: 'ejaan', label: 'Reading' },
-                { id: 'arti', label: 'Meaning' },
-                { id: 'rekomendasi', label: 'Suggestions' }
-              ].map(item => (
+                { id: "vocabulary", label: "Words" },
+                { id: "ejaan", label: "Reading" },
+                { id: "arti", label: "Meaning" },
+                { id: "rekomendasi", label: "Suggestions" },
+              ].map((item) => (
                 <CheckboxLabel key={item.id}>
                   <input
                     type="checkbox"
                     checked={showConfig[item.id as keyof typeof showConfig]}
-                    onChange={() => setShowConfig(prev => ({ ...prev, [item.id]: !prev[item.id as keyof typeof showConfig] }))}
+                    onChange={() =>
+                      setShowConfig((prev) => ({
+                        ...prev,
+                        [item.id]: !prev[item.id as keyof typeof showConfig],
+                      }))
+                    }
                   />
                   {item.label}
                 </CheckboxLabel>
               ))}
             </CheckboxGroup>
             <ToolbarIcons>
-              <button title="Download CSV" onClick={handleDownloadCSV}><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg></button>
-              <button title={isPlayingAll ? "Stop Playback" : "Play All on Page"} onClick={handlePlayAll} style={{ color: isPlayingAll ? 'var(--primary)' : 'inherit' }}>
+              <button title="Download CSV" onClick={handleDownloadCSV}>
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+              </button>
+              <button
+                title={isPlayingAll ? "Stop Playback" : "Play All on Page"}
+                onClick={handlePlayAll}
+                style={{ color: isPlayingAll ? "var(--primary)" : "inherit" }}
+              >
                 {isPlayingAll ? (
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" /></svg>
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                  </svg>
                 ) : (
-                  <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
                 )}
               </button>
-              <button title="Shuffle List" onClick={handleShuffle}><svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5" /></svg></button>
+              <button title="Shuffle List" onClick={handleShuffle}>
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M4 4l5 5m11 11l-5-5m5-11l-16 16M15 4h5v5m0 6v5h-5" />
+                </svg>
+              </button>
             </ToolbarIcons>
           </ListToolbar>
 
@@ -1683,25 +2209,68 @@ export default function DictionaryPage() {
                 {displayData.map((item, idx) => {
                   const itemId = `${item.source}-${item.type}-${item.level}-${item.id || idx}`;
                   return (
-                    <ItemCard key={itemId} $isPlaying={currentlyPlayingId === itemId}>
-                      <SpeakerButton onClick={(e) => playAudio(e, (item.type === 'kanji' ? item.kanji : (item.word || item.title)) ?? '', itemId)}>
-                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" /></svg>
+                    <ItemCard
+                      key={itemId}
+                      $isPlaying={currentlyPlayingId === itemId}
+                    >
+                      <SpeakerButton
+                        onClick={(e) =>
+                          playAudio(
+                            e,
+                            (item.type === "kanji"
+                              ? item.kanji
+                              : item.word || item.title) ?? "",
+                            itemId,
+                          )
+                        }
+                      >
+                        <svg
+                          width="24"
+                          height="24"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                        </svg>
                       </SpeakerButton>
                       <ItemContent>
                         {showConfig.vocabulary && (
                           <KanjiText>
-                            {item.type === 'kanji' ? item.kanji : (item.word || item.title)}
+                            {item.type === "kanji"
+                              ? item.kanji
+                              : item.word || item.title}
                           </KanjiText>
                         )}
                         {showConfig.ejaan && (
                           <>
-                            {item.type === 'kanji' ? (
-                              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.2rem' }}>
-                                {item.onyomi && item.onyomi.length > 0 && <ReadingText><strong>On:</strong> {item.onyomi.join(', ')}</ReadingText>}
-                                {item.kunyomi && item.kunyomi.length > 0 && <ReadingText><strong>Kun:</strong> {item.kunyomi.join(', ')}</ReadingText>}
+                            {item.type === "kanji" ? (
+                              <div
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  gap: "0.2rem",
+                                  marginTop: "0.2rem",
+                                }}
+                              >
+                                {item.onyomi && item.onyomi.length > 0 && (
+                                  <ReadingText>
+                                    <strong>On:</strong>{" "}
+                                    {item.onyomi.join(", ")}
+                                  </ReadingText>
+                                )}
+                                {item.kunyomi && item.kunyomi.length > 0 && (
+                                  <ReadingText>
+                                    <strong>Kun:</strong>{" "}
+                                    {item.kunyomi.join(", ")}
+                                  </ReadingText>
+                                )}
                               </div>
                             ) : (
-                              (item.reading || item.romaji) && <ReadingText>{item.reading || item.romaji}</ReadingText>
+                              (item.reading || item.romaji) && (
+                                <ReadingText>
+                                  {item.reading || item.romaji}
+                                </ReadingText>
+                              )
                             )}
                           </>
                         )}
@@ -1709,47 +2278,133 @@ export default function DictionaryPage() {
                           <>
                             <MeaningText>{item.meaning}</MeaningText>
 
-                            {item.type === 'kanji' && item.stroke_count && (
-                              <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
+                            {item.type === "kanji" && item.stroke_count && (
+                              <div
+                                style={{
+                                  marginTop: "0.5rem",
+                                  fontSize: "0.9rem",
+                                  color: "var(--text-secondary)",
+                                }}
+                              >
                                 {item.stroke_count} strokes • {item.level}
                               </div>
                             )}
 
-                            {item.type === 'jpjp' && item.partOfSpeech && (
-                              <div style={{ fontSize: '0.9rem', color: 'var(--primary)', fontWeight: 'bold', marginTop: '0.25rem' }}>
+                            {item.type === "jpjp" && item.partOfSpeech && (
+                              <div
+                                style={{
+                                  fontSize: "0.9rem",
+                                  color: "var(--primary)",
+                                  fontWeight: "bold",
+                                  marginTop: "0.25rem",
+                                }}
+                              >
                                 {item.partOfSpeech}
                               </div>
                             )}
 
-                            {item.type === 'grammar' && (
-                              <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.95rem' }}>
+                            {item.type === "grammar" && (
+                              <div
+                                style={{
+                                  marginTop: "0.75rem",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  gap: "0.5rem",
+                                  fontSize: "0.95rem",
+                                }}
+                              >
                                 {item.structure && (
-                                  <div style={{ padding: '0.4rem 0.6rem', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', borderLeft: '3px solid var(--accent-color)' }}>
+                                  <div
+                                    style={{
+                                      padding: "0.4rem 0.6rem",
+                                      backgroundColor: "rgba(255,255,255,0.05)",
+                                      borderRadius: "4px",
+                                      borderLeft:
+                                        "3px solid var(--accent-color)",
+                                    }}
+                                  >
                                     <strong>Structure:</strong> {item.structure}
                                   </div>
                                 )}
                                 {item.explanation && (
-                                  <div style={{ color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+                                  <div
+                                    style={{
+                                      color: "var(--text-secondary)",
+                                      lineHeight: "1.4",
+                                    }}
+                                  >
                                     {item.explanation}
                                   </div>
                                 )}
                               </div>
                             )}
 
-                            {(item.type === 'grammar' || item.type === 'jpjp') && item.examples && item.examples.length > 0 && (
-                              <div style={{ marginTop: '0.75rem' }}>
-                                <strong>Examples:</strong>
-                                <ul style={{ listStyleType: 'none', padding: 0, margin: '0.4rem 0 0 0', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                                  {item.examples.map((ex, i: number) => (
-                                    <li key={i} style={{ borderBottom: i !== (item.examples?.length ?? 0) - 1 ? '1px dashed rgba(255,255,255,0.1)' : 'none', paddingBottom: i !== (item.examples?.length ?? 0) - 1 ? '0.6rem' : '0' }}>
-                                      <div style={{ color: 'var(--text-primary)' }}>{ex.japanese}</div>
-                                      {ex.romaji && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{ex.romaji}</div>}
-                                      {ex.english && <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', fontStyle: 'italic', marginTop: '0.2rem' }}>&quot;{ex.english}&quot;</div>}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
+                            {(item.type === "grammar" ||
+                              item.type === "jpjp") &&
+                              item.examples &&
+                              item.examples.length > 0 && (
+                                <div style={{ marginTop: "0.75rem" }}>
+                                  <strong>Examples:</strong>
+                                  <ul
+                                    style={{
+                                      listStyleType: "none",
+                                      padding: 0,
+                                      margin: "0.4rem 0 0 0",
+                                      display: "flex",
+                                      flexDirection: "column",
+                                      gap: "0.6rem",
+                                    }}
+                                  >
+                                    {item.examples.map((ex, i: number) => (
+                                      <li
+                                        key={i}
+                                        style={{
+                                          borderBottom:
+                                            i !==
+                                            (item.examples?.length ?? 0) - 1
+                                              ? "1px dashed rgba(255,255,255,0.1)"
+                                              : "none",
+                                          paddingBottom:
+                                            i !==
+                                            (item.examples?.length ?? 0) - 1
+                                              ? "0.6rem"
+                                              : "0",
+                                        }}
+                                      >
+                                        <div
+                                          style={{
+                                            color: "var(--text-primary)",
+                                          }}
+                                        >
+                                          {ex.japanese}
+                                        </div>
+                                        {ex.romaji && (
+                                          <div
+                                            style={{
+                                              color: "var(--text-secondary)",
+                                              fontSize: "0.85rem",
+                                            }}
+                                          >
+                                            {ex.romaji}
+                                          </div>
+                                        )}
+                                        {ex.english && (
+                                          <div
+                                            style={{
+                                              color: "var(--text-secondary)",
+                                              fontSize: "0.85rem",
+                                              fontStyle: "italic",
+                                              marginTop: "0.2rem",
+                                            }}
+                                          >
+                                            &quot;{ex.english}&quot;
+                                          </div>
+                                        )}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
                           </>
                         )}
                       </ItemContent>
@@ -1763,10 +2418,10 @@ export default function DictionaryPage() {
                 <Pagination ref={paginationRef}>
                   {/* Buttons row */}
                   <PageButtonsWrap>
-                    <PageButton 
+                    <PageButton
                       onClick={() => {
                         shouldScrollToPagination.current = true;
-                        setCurrentPage(prev => Math.max(1, prev - 1));
+                        setCurrentPage((prev) => Math.max(1, prev - 1));
                       }}
                       disabled={currentPage === 1}
                       title="Previous page"
@@ -1784,31 +2439,35 @@ export default function DictionaryPage() {
                         pages.push(1);
                         let start = Math.max(2, currentPage - 1);
                         let end = Math.min(totalPages - 1, currentPage + 1);
-                        
+
                         if (currentPage <= 2) {
                           end = 4;
                         } else if (currentPage >= totalPages - 1) {
                           start = totalPages - 3;
                         }
-                        
+
                         if (start > 2) {
-                          pages.push('ellipsis-start');
+                          pages.push("ellipsis-start");
                         }
-                        
+
                         for (let i = start; i <= end; i++) {
                           pages.push(i);
                         }
-                        
+
                         if (end < totalPages - 1) {
-                          pages.push('ellipsis-end');
+                          pages.push("ellipsis-end");
                         }
-                        
+
                         pages.push(totalPages);
                       }
-                      
+
                       return pages.map((p, idx) => {
-                        if (p === 'ellipsis-start' || p === 'ellipsis-end') {
-                          return <PageEllipsis key={`ellipsis-${idx}`}>...</PageEllipsis>;
+                        if (p === "ellipsis-start" || p === "ellipsis-end") {
+                          return (
+                            <PageEllipsis key={`ellipsis-${idx}`}>
+                              ...
+                            </PageEllipsis>
+                          );
                         }
                         return (
                           <PageButton
@@ -1825,10 +2484,12 @@ export default function DictionaryPage() {
                       });
                     })()}
 
-                    <PageButton 
+                    <PageButton
                       onClick={() => {
                         shouldScrollToPagination.current = true;
-                        setCurrentPage(prev => Math.min(totalPages, prev + 1));
+                        setCurrentPage((prev) =>
+                          Math.min(totalPages, prev + 1),
+                        );
                       }}
                       disabled={currentPage === totalPages}
                       title="Next page"
@@ -1840,8 +2501,14 @@ export default function DictionaryPage() {
               )}
 
               {displayData.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
-                  <p style={{ fontSize: '1.25rem' }}>No results found.</p>
+                <div
+                  style={{
+                    textAlign: "center",
+                    padding: "4rem",
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  <p style={{ fontSize: "1.25rem" }}>No results found.</p>
                 </div>
               )}
             </>
@@ -1852,21 +2519,32 @@ export default function DictionaryPage() {
       <HandwritingModal
         isOpen={showDrawModal}
         onClose={() => setShowDrawModal(false)}
-        onSelect={(char) => { setQuery(prev => prev + char); setShowDrawModal(false); inputRef.current?.focus(); }}
+        onSelect={(char) => {
+          setQuery((prev) => prev + char);
+          setShowDrawModal(false);
+          inputRef.current?.focus();
+        }}
       />
 
       <VoiceSearchModal
         isOpen={showVoiceModal}
         onClose={() => setShowVoiceModal(false)}
-        onResult={(text) => { setQuery(text); setShowVoiceModal(false); inputRef.current?.focus(); }}
+        onResult={(text) => {
+          setQuery(text);
+          setShowVoiceModal(false);
+          inputRef.current?.focus();
+        }}
       />
 
       <ImageSearchModal
         isOpen={showImageModal}
         onClose={() => setShowImageModal(false)}
-        onResult={(text) => { setQuery(text); setShowImageModal(false); inputRef.current?.focus(); }}
+        onResult={(text) => {
+          setQuery(text);
+          setShowImageModal(false);
+          inputRef.current?.focus();
+        }}
       />
-
     </PageContainer>
   );
 }

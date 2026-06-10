@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, useCallback, useRef, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { conjugationData, ConjugationVerb } from '@/data/conjugation_drills';
-import { useProgress } from '@/context/ProgressContext';
-import { useDeviceMode } from '@/context/DeviceModeContext';
-import Link from 'next/link';
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { useDeviceMode } from "@/context/DeviceModeContext";
+import { useProgress } from "@/context/ProgressContext";
+import { conjugationData, ConjugationVerb } from "@/data/conjugation_drills";
+import Link from "next/link";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import styled, { keyframes } from "styled-components";
 
 // --- Styled Components ---
 
@@ -122,7 +122,7 @@ const Subtitle = styled.p`
 
 // --- Options UI ---
 const OptionsPanel = styled.div`
-  background: rgba(0,0,0,0.02);
+  background: rgba(0, 0, 0, 0.02);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 2rem;
@@ -137,7 +137,7 @@ const OptionsPanel = styled.div`
 
 const OptionGroup = styled.div`
   margin-bottom: 1.5rem;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -159,17 +159,24 @@ const SelectButton = styled.button<{ $active?: boolean; $disabled?: boolean }>`
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
   font-weight: 600;
-  border: 2px solid ${({ $active }) => $active ? '#10b981' : 'var(--border)'};
-  background: ${({ $active }) => $active ? 'rgba(16, 185, 129, 0.1)' : 'var(--background)'};
-  color: ${({ $active, $disabled }) => 
-    $disabled ? 'var(--text-secondary)' :
-    $active ? '#10b981' : 'var(--foreground)'};
-  cursor: ${({ $disabled }) => $disabled ? 'not-allowed' : 'pointer'};
-  opacity: ${({ $disabled }) => $disabled ? 0.6 : 1};
+  border: 2px solid ${({ $active }) => ($active ? "#10b981" : "var(--border)")};
+  background: ${({ $active }) =>
+    $active ? "rgba(16, 185, 129, 0.1)" : "var(--background)"};
+  color: ${({ $active, $disabled }) =>
+    $disabled
+      ? "var(--text-secondary)"
+      : $active
+        ? "#10b981"
+        : "var(--foreground)"};
+  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+  opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
   transition: all 0.2s;
 
   &:hover {
-    ${({ $disabled, $active }) => !$disabled && !$active && `
+    ${({ $disabled, $active }) =>
+      !$disabled &&
+      !$active &&
+      `
       border-color: rgba(16, 185, 129, 0.5);
     `}
   }
@@ -251,28 +258,33 @@ const OptionsGrid = styled.div`
   }
 `;
 
-const OptionButton = styled.button<{ $isCorrect?: boolean; $isWrong?: boolean; $disabled?: boolean }>`
+const OptionButton = styled.button<{
+  $isCorrect?: boolean;
+  $isWrong?: boolean;
+  $disabled?: boolean;
+}>`
   padding: 1.5rem;
   font-size: 1.5rem;
   font-weight: 600;
   border-radius: 16px;
-  border: 2px solid ${({ $isCorrect, $isWrong }) => 
-    $isCorrect ? '#10b981' : 
-    $isWrong ? '#ef4444' : 
-    'var(--border)'};
-  background: ${({ $isCorrect, $isWrong }) => 
-    $isCorrect ? 'rgba(16, 185, 129, 0.1)' : 
-    $isWrong ? 'rgba(239, 68, 68, 0.1)' : 
-    'var(--background)'};
-  color: ${({ $isCorrect, $isWrong }) => 
-    $isCorrect ? '#10b981' : 
-    $isWrong ? '#ef4444' : 
-    'var(--foreground)'};
-  cursor: ${({ $disabled }) => ($disabled ? 'default' : 'pointer')};
+  border: 2px solid
+    ${({ $isCorrect, $isWrong }) =>
+      $isCorrect ? "#10b981" : $isWrong ? "#ef4444" : "var(--border)"};
+  background: ${({ $isCorrect, $isWrong }) =>
+    $isCorrect
+      ? "rgba(16, 185, 129, 0.1)"
+      : $isWrong
+        ? "rgba(239, 68, 68, 0.1)"
+        : "var(--background)"};
+  color: ${({ $isCorrect, $isWrong }) =>
+    $isCorrect ? "#10b981" : $isWrong ? "#ef4444" : "var(--foreground)"};
+  cursor: ${({ $disabled }) => ($disabled ? "default" : "pointer")};
   transition: all 0.2s;
 
   &:hover {
-    ${({ $disabled }) => !$disabled && `
+    ${({ $disabled }) =>
+      !$disabled &&
+      `
       border-color: #10b981;
       transform: translateY(-2px);
     `}
@@ -294,10 +306,9 @@ const TypeInput = styled.input<{ $isCorrect?: boolean; $isWrong?: boolean }>`
   font-size: 1.5rem;
   text-align: center;
   border-radius: 16px;
-  border: 2px solid ${({ $isCorrect, $isWrong }) => 
-    $isCorrect ? '#10b981' : 
-    $isWrong ? '#ef4444' : 
-    'var(--border)'};
+  border: 2px solid
+    ${({ $isCorrect, $isWrong }) =>
+      $isCorrect ? "#10b981" : $isWrong ? "#ef4444" : "var(--border)"};
   background: var(--background);
   color: var(--foreground);
   outline: none;
@@ -310,7 +321,7 @@ const TypeInput = styled.input<{ $isCorrect?: boolean; $isWrong?: boolean }>`
 const FeedbackText = styled.div<{ $isCorrect?: boolean }>`
   font-weight: 600;
   font-size: 1.1rem;
-  color: ${({ $isCorrect }) => $isCorrect ? '#10b981' : '#ef4444'};
+  color: ${({ $isCorrect }) => ($isCorrect ? "#10b981" : "#ef4444")};
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
@@ -364,28 +375,30 @@ const ResultMessage = styled.h2`
 
 // --- Logic Helpers ---
 
-type FormType = 'masu' | 'te' | 'ta' | 'nai' | 'passive' | 'causative';
-type InputType = 'multiple-choice' | 'manual-typing';
-type DifficultyType = 'basic' | 'advanced';
+type FormType = "masu" | "te" | "ta" | "nai" | "passive" | "causative";
+type InputType = "multiple-choice" | "manual-typing";
+type DifficultyType = "basic" | "advanced";
 
 const formLabels: Record<FormType, string> = {
-  masu: 'Bentuk Masu (Sopan)',
-  te: 'Bentuk Te (Menyambung)',
-  ta: 'Bentuk Ta (Lampau)',
-  nai: 'Bentuk Nai (Negatif)',
-  passive: 'Bentuk Pasif (Di...)',
-  causative: 'Bentuk Kausatif (Menyuruh/Membiarkan)'
+  masu: "Bentuk Masu (Sopan)",
+  te: "Bentuk Te (Menyambung)",
+  ta: "Bentuk Ta (Lampau)",
+  nai: "Bentuk Nai (Negatif)",
+  passive: "Bentuk Pasif (Di...)",
+  causative: "Bentuk Kausatif (Menyuruh/Membiarkan)",
 };
 
 export default function ConjugationDrillsPage() {
   const { deviceMode, isMounted } = useDeviceMode();
-  const isMobileView = isMounted && deviceMode === 'mobile';
+  const isMobileView = isMounted && deviceMode === "mobile";
 
-  const [gameState, setGameState] = useState<'start' | 'playing' | 'result'>('start');
-  
+  const [gameState, setGameState] = useState<"start" | "playing" | "result">(
+    "start",
+  );
+
   // Options State
-  const [inputType, setInputType] = useState<InputType>('multiple-choice');
-  const [difficulty, setDifficulty] = useState<DifficultyType>('basic');
+  const [inputType, setInputType] = useState<InputType>("multiple-choice");
+  const [difficulty, setDifficulty] = useState<DifficultyType>("basic");
 
   // Game State
   const [score, setScore] = useState(0);
@@ -398,16 +411,18 @@ export default function ConjugationDrillsPage() {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [lives, setLives] = useState(5);
-  
+
   const [currentVerb, setCurrentVerb] = useState<ConjugationVerb | null>(null);
-  const [targetForm, setTargetForm] = useState<FormType>('masu');
+  const [targetForm, setTargetForm] = useState<FormType>("masu");
   const [options, setOptions] = useState<string[]>([]);
-  
+
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  
+
   // Manual Typing State
-  const [typedAnswer, setTypedAnswer] = useState('');
-  const [typingFeedback, setTypingFeedback] = useState<'correct' | 'wrong' | null>(null);
+  const [typedAnswer, setTypedAnswer] = useState("");
+  const [typingFeedback, setTypingFeedback] = useState<
+    "correct" | "wrong" | null
+  >(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const totalQuestions = isMobileView ? 5 : 10;
@@ -415,25 +430,27 @@ export default function ConjugationDrillsPage() {
   // Generate a question
   const generateQuestion = useCallback(() => {
     // 1. Pick a random verb
-    const randomVerb = conjugationData[Math.floor(Math.random() * conjugationData.length)];
-    
+    const randomVerb =
+      conjugationData[Math.floor(Math.random() * conjugationData.length)];
+
     // 2. Determine available forms based on difficulty
-    const forms: FormType[] = difficulty === 'advanced' 
-      ? ['masu', 'te', 'ta', 'nai', 'passive', 'causative']
-      : ['masu', 'te', 'ta', 'nai'];
-      
+    const forms: FormType[] =
+      difficulty === "advanced"
+        ? ["masu", "te", "ta", "nai", "passive", "causative"]
+        : ["masu", "te", "ta", "nai"];
+
     // 3. Pick a random target form
     const selectedForm = forms[Math.floor(Math.random() * forms.length)];
-    
+
     // 4. The correct answer
     const correctAnswer = randomVerb.forms[selectedForm];
-    
-    if (inputType === 'multiple-choice') {
+
+    if (inputType === "multiple-choice") {
       // 4. Generate distractors (wrong answers)
       const distractors = new Set<string>();
-      
+
       // Add other forms of the SAME verb as distractors
-      forms.forEach(f => {
+      forms.forEach((f) => {
         if (f !== selectedForm) {
           distractors.add(randomVerb.forms[f]);
         }
@@ -441,7 +458,8 @@ export default function ConjugationDrillsPage() {
 
       // If we still need more distractors, pick forms from other random verbs
       while (distractors.size < 3) {
-        const otherVerb = conjugationData[Math.floor(Math.random() * conjugationData.length)];
+        const otherVerb =
+          conjugationData[Math.floor(Math.random() * conjugationData.length)];
         const otherForm = forms[Math.floor(Math.random() * forms.length)];
         if (otherVerb.forms[otherForm] !== correctAnswer) {
           distractors.add(otherVerb.forms[otherForm]);
@@ -449,7 +467,10 @@ export default function ConjugationDrillsPage() {
       }
 
       // 5. Shuffle options
-      const finalOptions = [correctAnswer, ...Array.from(distractors).slice(0, 3)];
+      const finalOptions = [
+        correctAnswer,
+        ...Array.from(distractors).slice(0, 3),
+      ];
       for (let i = finalOptions.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [finalOptions[i], finalOptions[j]] = [finalOptions[j], finalOptions[i]];
@@ -460,11 +481,11 @@ export default function ConjugationDrillsPage() {
     setCurrentVerb(randomVerb);
     setTargetForm(selectedForm);
     setSelectedAnswer(null);
-    setTypedAnswer('');
+    setTypedAnswer("");
     setTypingFeedback(null);
-    
+
     // Auto focus input if manual typing
-    if (inputType === 'manual-typing') {
+    if (inputType === "manual-typing") {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [inputType, difficulty]);
@@ -474,20 +495,20 @@ export default function ConjugationDrillsPage() {
     setLives(5);
     setCurrentQuestionIndex(0);
     generateQuestion();
-    setGameState('playing');
+    setGameState("playing");
   };
 
   const moveToNextQuestion = () => {
     setTimeout(() => {
       if (currentQuestionIndex + 1 >= totalQuestions) {
-        setGameState('result');
+        setGameState("result");
         if (isMobileView) {
           addExp(40); // 40 EXP for mobile completion
         } else {
           addExp(scoreRef.current * 15);
         }
       } else {
-        setCurrentQuestionIndex(i => i + 1);
+        setCurrentQuestionIndex((i) => i + 1);
         generateQuestion();
       }
     }, 1500);
@@ -498,25 +519,25 @@ export default function ConjugationDrillsPage() {
     if (selectedAnswer !== null || !currentVerb) return;
 
     setSelectedAnswer(answer);
-    
+
     const isCorrect = answer === currentVerb.forms[targetForm];
     if (isCorrect) {
-      setScore(s => s + 1);
+      setScore((s) => s + 1);
     } else {
       if (isMobileView) {
-        setLives(prev => {
+        setLives((prev) => {
           const next = prev - 1;
           if (next <= 0) {
             setTimeout(() => {
-              setGameState('result');
+              setGameState("result");
             }, 1500);
           }
           return next;
         });
       }
     }
-    
-    if (!isMobileView || (lives > 1 || isCorrect)) {
+
+    if (!isMobileView || lives > 1 || isCorrect) {
       moveToNextQuestion();
     }
   };
@@ -527,80 +548,98 @@ export default function ConjugationDrillsPage() {
     if (typingFeedback !== null || !currentVerb || !typedAnswer.trim()) return;
 
     const isCorrect = typedAnswer.trim() === currentVerb.forms[targetForm];
-    
+
     if (isCorrect) {
-      setTypingFeedback('correct');
-      setScore(s => s + 1);
+      setTypingFeedback("correct");
+      setScore((s) => s + 1);
     } else {
-      setTypingFeedback('wrong');
+      setTypingFeedback("wrong");
       if (isMobileView) {
-        setLives(prev => {
+        setLives((prev) => {
           const next = prev - 1;
           if (next <= 0) {
             setTimeout(() => {
-              setGameState('result');
+              setGameState("result");
             }, 1500);
           }
           return next;
         });
       }
     }
-    
-    if (!isMobileView || (lives > 1 || isCorrect)) {
+
+    if (!isMobileView || lives > 1 || isCorrect) {
       moveToNextQuestion();
     }
   };
 
   return (
     <Container>
-      {isMobileView && gameState === 'playing' ? (
+      {isMobileView && gameState === "playing" ? (
         <LessonHeader>
-          <CloseLessonBtn href="/game" title="Tutup Sesi">✕</CloseLessonBtn>
+          <CloseLessonBtn href="/game" title="Tutup Sesi">
+            ✕
+          </CloseLessonBtn>
           <LessonProgressBarContainer>
-            <LessonProgressBarFill $percent={((currentQuestionIndex + (selectedAnswer !== null || typingFeedback !== null ? 1 : 0)) / totalQuestions) * 100} />
+            <LessonProgressBarFill
+              $percent={
+                ((currentQuestionIndex +
+                  (selectedAnswer !== null || typingFeedback !== null
+                    ? 1
+                    : 0)) /
+                  totalQuestions) *
+                100
+              }
+            />
           </LessonProgressBarContainer>
-          <LessonHearts>
-            ❤️ {lives}
-          </LessonHearts>
+          <LessonHearts>❤️ {lives}</LessonHearts>
         </LessonHeader>
       ) : (
-        <Breadcrumbs 
+        <Breadcrumbs
           items={[
-            { label: 'Home', href: '/' },
-            { label: 'Games Hub', href: '/game' }
-          ]} 
-          current="Conjugation Drills" 
+            { label: "Home", href: "/" },
+            { label: "Games Hub", href: "/game" },
+          ]}
+          current="Conjugation Drills"
         />
       )}
 
       <GameArea>
-        {gameState === 'start' && (
-          <div style={{ textAlign: 'center' }}>
+        {gameState === "start" && (
+          <div style={{ textAlign: "center" }}>
             <Header>
               <Title>Conjugation Drills</Title>
-              <Subtitle>Uji kecepatanmu mengubah bentuk kata kerja bahasa Jepang!</Subtitle>
+              <Subtitle>
+                Uji kecepatanmu mengubah bentuk kata kerja bahasa Jepang!
+              </Subtitle>
             </Header>
 
             <OptionsPanel>
               <OptionGroup>
                 <OptionLabel>Tipe Input</OptionLabel>
                 <ButtonRow>
-                  <SelectButton 
-                    $active={inputType === 'multiple-choice'} 
-                    onClick={() => setInputType('multiple-choice')}
+                  <SelectButton
+                    $active={inputType === "multiple-choice"}
+                    onClick={() => setInputType("multiple-choice")}
                   >
                     Pilihan Ganda
                   </SelectButton>
-                  <SelectButton 
-                    $active={inputType === 'manual-typing'} 
-                    onClick={() => setInputType('manual-typing')}
+                  <SelectButton
+                    $active={inputType === "manual-typing"}
+                    onClick={() => setInputType("manual-typing")}
                   >
                     Ketik Manual
                   </SelectButton>
                 </ButtonRow>
-                {inputType === 'manual-typing' && (
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>
-                    * Pastikan keyboard Jepang (IME) Anda aktif untuk mengetik kanji.
+                {inputType === "manual-typing" && (
+                  <p
+                    style={{
+                      fontSize: "0.85rem",
+                      color: "var(--text-secondary)",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    * Pastikan keyboard Jepang (IME) Anda aktif untuk mengetik
+                    kanji.
                   </p>
                 )}
               </OptionGroup>
@@ -608,15 +647,15 @@ export default function ConjugationDrillsPage() {
               <OptionGroup>
                 <OptionLabel>Tingkat Kesulitan</OptionLabel>
                 <ButtonRow>
-                  <SelectButton 
-                    $active={difficulty === 'basic'} 
-                    onClick={() => setDifficulty('basic')}
+                  <SelectButton
+                    $active={difficulty === "basic"}
+                    onClick={() => setDifficulty("basic")}
                   >
                     Basic (Dasar)
                   </SelectButton>
-                  <SelectButton 
-                    $active={difficulty === 'advanced'}
-                    onClick={() => setDifficulty('advanced')}
+                  <SelectButton
+                    $active={difficulty === "advanced"}
+                    onClick={() => setDifficulty("advanced")}
                   >
                     Advanced (Pasif/Kausatif)
                   </SelectButton>
@@ -628,30 +667,33 @@ export default function ConjugationDrillsPage() {
           </div>
         )}
 
-        {gameState === 'playing' && currentVerb && (
+        {gameState === "playing" && currentVerb && (
           <>
             {!isMobileView && (
               <TopBar>
                 <Score>Score: {score}</Score>
-                <QuestionCount>Question {currentQuestionIndex + 1} / {totalQuestions}</QuestionCount>
+                <QuestionCount>
+                  Question {currentQuestionIndex + 1} / {totalQuestions}
+                </QuestionCount>
               </TopBar>
             )}
 
             <QuestionContainer>
               <TargetVerb>{currentVerb.dictionary}</TargetVerb>
-              <VerbMeaning>({currentVerb.reading}) - {currentVerb.meaning}</VerbMeaning>
-              
-              <InstructionBox>
-                Ubah ke: {formLabels[targetForm]}
-              </InstructionBox>
+              <VerbMeaning>
+                ({currentVerb.reading}) - {currentVerb.meaning}
+              </VerbMeaning>
+
+              <InstructionBox>Ubah ke: {formLabels[targetForm]}</InstructionBox>
             </QuestionContainer>
 
-            {inputType === 'multiple-choice' ? (
+            {inputType === "multiple-choice" ? (
               <OptionsGrid>
                 {options.map((option, index) => {
-                  const isCorrectAnswer = option === currentVerb.forms[targetForm];
+                  const isCorrectAnswer =
+                    option === currentVerb.forms[targetForm];
                   const isSelected = selectedAnswer === option;
-                  
+
                   let showCorrect = false;
                   let showWrong = false;
 
@@ -675,23 +717,28 @@ export default function ConjugationDrillsPage() {
               </OptionsGrid>
             ) : (
               <TypingContainer onSubmit={handleTypingSubmit}>
-                <TypeInput 
+                <TypeInput
                   ref={inputRef}
                   value={typedAnswer}
                   onChange={(e) => setTypedAnswer(e.target.value)}
                   placeholder="Ketik jawaban (Kanji/Kana)..."
                   disabled={typingFeedback !== null}
-                  $isCorrect={typingFeedback === 'correct'}
-                  $isWrong={typingFeedback === 'wrong'}
+                  $isCorrect={typingFeedback === "correct"}
+                  $isWrong={typingFeedback === "wrong"}
                   autoComplete="off"
                 />
-                <StartButton type="submit" disabled={typingFeedback !== null || !typedAnswer.trim()}>
+                <StartButton
+                  type="submit"
+                  disabled={typingFeedback !== null || !typedAnswer.trim()}
+                >
                   Jawab
                 </StartButton>
 
                 {typingFeedback !== null && (
-                  <FeedbackText $isCorrect={typingFeedback === 'correct'}>
-                    {typingFeedback === 'correct' ? 'Tepat Sekali!' : `Salah. Jawaban yang benar: ${currentVerb.forms[targetForm]}`}
+                  <FeedbackText $isCorrect={typingFeedback === "correct"}>
+                    {typingFeedback === "correct"
+                      ? "Tepat Sekali!"
+                      : `Salah. Jawaban yang benar: ${currentVerb.forms[targetForm]}`}
                   </FeedbackText>
                 )}
               </TypingContainer>
@@ -699,36 +746,49 @@ export default function ConjugationDrillsPage() {
           </>
         )}
 
-        {gameState === 'result' && (
+        {gameState === "result" && (
           <ResultScreen>
             <Header>
-              <Title>{isMobileView && lives === 0 ? 'Game Over! 😢' : 'Selesai!'}</Title>
-              <Subtitle>{isMobileView && lives === 0 ? 'Kamu kehabisan nyawa.' : 'Latihan yang bagus.'}</Subtitle>
+              <Title>
+                {isMobileView && lives === 0 ? "Game Over! 😢" : "Selesai!"}
+              </Title>
+              <Subtitle>
+                {isMobileView && lives === 0
+                  ? "Kamu kehabisan nyawa."
+                  : "Latihan yang bagus."}
+              </Subtitle>
             </Header>
-            <FinalScore>{score} / {totalQuestions}</FinalScore>
+            <FinalScore>
+              {score} / {totalQuestions}
+            </FinalScore>
             {!(isMobileView && lives === 0) && (
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                color: '#10b981',
-                background: 'rgba(16, 185, 129, 0.1)',
-                padding: '0.6rem 1.5rem',
-                borderRadius: '999px',
-                fontWeight: 800,
-                fontSize: '1.25rem',
-                marginBottom: '2rem',
-                border: '1px solid rgba(16, 185, 129, 0.2)',
-                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.1)'
-              }}>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  color: "#10b981",
+                  background: "rgba(16, 185, 129, 0.1)",
+                  padding: "0.6rem 1.5rem",
+                  borderRadius: "999px",
+                  fontWeight: 800,
+                  fontSize: "1.25rem",
+                  marginBottom: "2rem",
+                  border: "1px solid rgba(16, 185, 129, 0.2)",
+                  boxShadow: "0 4px 12px rgba(16, 185, 129, 0.1)",
+                }}
+              >
                 🏆 +{isMobileView ? 40 : score * 15} EXP Gained
               </div>
             )}
             <ResultMessage>
-              {isMobileView && lives === 0 ? 'Jangan menyerah! Teruslah belajar dan coba lagi.' :
-               score === totalQuestions ? 'Sempurna! Kamu master konjugasi.' : 
-               score >= (isMobileView ? 4 : 7) ? 'Kerja bagus! Sedikit lagi menuju sempurna.' : 
-               'Teruslah berlatih! Kamu pasti bisa.'}
+              {isMobileView && lives === 0
+                ? "Jangan menyerah! Teruslah belajar dan coba lagi."
+                : score === totalQuestions
+                  ? "Sempurna! Kamu master konjugasi."
+                  : score >= (isMobileView ? 4 : 7)
+                    ? "Kerja bagus! Sedikit lagi menuju sempurna."
+                    : "Teruslah berlatih! Kamu pasti bisa."}
             </ResultMessage>
             <StartButton onClick={startGame}>Main Lagi</StartButton>
           </ResultScreen>

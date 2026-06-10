@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { toRomaji } from 'wanakana';
+import { useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { toRomaji } from "wanakana";
 
 const Container = styled.div`
   max-width: 800px;
@@ -14,7 +14,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   /* Premium radial background */
-  background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(79, 70, 229, 0.05) 0%,
+    transparent 70%
+  );
 `;
 
 const Header = styled.div`
@@ -34,7 +38,7 @@ const BackButton = styled(Link)`
   transition: all 0.2s;
   padding: 0.5rem 1rem;
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 
   &:hover {
     color: var(--primary);
@@ -92,11 +96,15 @@ const Character = styled.div`
   font-weight: 800;
   margin-bottom: 3.5rem;
   line-height: 1;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--text-secondary) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.1));
-  
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+
   @media (max-width: 600px) {
     font-size: 6rem;
     margin-bottom: 2rem;
@@ -111,43 +119,57 @@ const OptionsGrid = styled.div`
 
   @media (max-width: 600px) {
     /* Keep 2 columns on mobile to save vertical space */
-    grid-template-columns: repeat(2, 1fr); 
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
     margin-bottom: 1.5rem;
   }
 `;
 
-const OptionButton = styled.button<{ $state?: 'correct' | 'incorrect' | 'neutral' }>`
+const OptionButton = styled.button<{
+  $state?: "correct" | "incorrect" | "neutral";
+}>`
   padding: 1.5rem;
   border-radius: 20px;
-  border: 2px solid ${({ $state }) =>
-    $state === 'correct' ? '#10b981' :
-      $state === 'incorrect' ? '#ef4444' :
-        'var(--border)'};
+  border: 2px solid
+    ${({ $state }) =>
+      $state === "correct"
+        ? "#10b981"
+        : $state === "incorrect"
+          ? "#ef4444"
+          : "var(--border)"};
   background: ${({ $state }) =>
-    $state === 'correct' ? 'rgba(16, 185, 129, 0.1)' :
-      $state === 'incorrect' ? 'rgba(239, 68, 68, 0.1)' :
-        'var(--surface)'};
+    $state === "correct"
+      ? "rgba(16, 185, 129, 0.1)"
+      : $state === "incorrect"
+        ? "rgba(239, 68, 68, 0.1)"
+        : "var(--surface)"};
   color: ${({ $state }) =>
-    $state === 'correct' ? '#10b981' :
-      $state === 'incorrect' ? '#ef4444' :
-        'var(--foreground)'};
+    $state === "correct"
+      ? "#10b981"
+      : $state === "incorrect"
+        ? "#ef4444"
+        : "var(--foreground)"};
   font-size: 1.75rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  pointer-events: ${({ $state }) => $state && $state !== 'neutral' ? 'none' : 'auto'};
+  pointer-events: ${({ $state }) =>
+    $state && $state !== "neutral" ? "none" : "auto"};
   box-shadow: ${({ $state }) =>
-    $state === 'neutral' ? '0 4px 6px -1px rgba(0, 0, 0, 0.05)' : 'none'};
+    $state === "neutral" ? "0 4px 6px -1px rgba(0, 0, 0, 0.05)" : "none"};
 
   &:hover {
-    transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-3px)' : 'none'};
-    border-color: ${({ $state }) => $state === 'neutral' ? 'var(--primary)' : ''};
-    box-shadow: ${({ $state }) => $state === 'neutral' ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : ''};
+    transform: ${({ $state }) =>
+      $state === "neutral" ? "translateY(-3px)" : "none"};
+    border-color: ${({ $state }) =>
+      $state === "neutral" ? "var(--primary)" : ""};
+    box-shadow: ${({ $state }) =>
+      $state === "neutral" ? "0 10px 15px -3px rgba(0, 0, 0, 0.1)" : ""};
   }
-  
+
   &:active {
-    transform: ${({ $state }) => $state === 'neutral' ? 'translateY(-1px)' : 'none'};
+    transform: ${({ $state }) =>
+      $state === "neutral" ? "translateY(-1px)" : "none"};
   }
 
   @media (max-width: 600px) {
@@ -199,12 +221,16 @@ const ResultOverlay = styled.div`
     font-weight: 800;
     margin-bottom: 1rem;
     /* Use theme variables for dynamic color */
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--primary-light) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 
     @media (max-width: 600px) {
-        font-size: 2.5rem;
+      font-size: 2.5rem;
     }
   }
 
@@ -214,28 +240,28 @@ const ResultOverlay = styled.div`
     margin-bottom: 3rem;
 
     @media (max-width: 600px) {
-        font-size: 1.25rem;
-        margin-bottom: 2rem;
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
     }
   }
 `;
 
 const ButtonGroup = styled.div`
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
 
-    @media (max-width: 600px) {
-        flex-direction: column;
-        width: 100%;
-    }
+  @media (max-width: 600px) {
+    flex-direction: column;
+    width: 100%;
+  }
 `;
 
 const ActionLink = styled(Link)`
   text-decoration: none;
   display: flex;
-  
+
   @media (max-width: 600px) {
     width: 100%;
   }
@@ -243,7 +269,11 @@ const ActionLink = styled(Link)`
 
 const Button = styled.button`
   padding: 1rem 3rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   border: none;
   border-radius: 999px;
@@ -252,7 +282,7 @@ const Button = styled.button`
   cursor: pointer;
   transition: all 0.3s;
   box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
-  
+
   /* Ensure perfect centering */
   display: inline-flex;
   align-items: center;
@@ -275,9 +305,9 @@ const SecondaryButton = styled(Button)`
   background: transparent;
   color: var(--foreground); /* Use foreground for better contrast */
   box-shadow: inset 0 0 0 2px var(--border); /* Use inset shadow instead of border for sizing match */
-  
+
   &:hover {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     box-shadow: inset 0 0 0 2px var(--text-secondary); /* Update shadow on hover */
   }
 `;
@@ -307,7 +337,7 @@ export default function KanaQuizPage() {
     setSelectedOption(null);
 
     try {
-      const res = await fetch('/api/kana?type=all');
+      const res = await fetch("/api/kana?type=all");
       const data: string[] = await res.json();
 
       // Fisher-Yates shuffle function
@@ -324,7 +354,7 @@ export default function KanaQuizPage() {
       const shuffled = shuffleArray(data);
       const selectedChars = shuffled.slice(0, TOTAL_QUESTIONS);
 
-      const newQuestions = selectedChars.map(char => {
+      const newQuestions = selectedChars.map((char) => {
         const correctRomaji = toRomaji(char);
 
         // Generate distractors
@@ -341,7 +371,7 @@ export default function KanaQuizPage() {
         return {
           char,
           romaji: correctRomaji,
-          options: shuffleArray([...distractors, correctRomaji])
+          options: shuffleArray([...distractors, correctRomaji]),
         };
       });
 
@@ -363,13 +393,13 @@ export default function KanaQuizPage() {
 
     const isCorrect = option === questions[currentIndex].romaji;
     if (isCorrect) {
-      setScore(s => s + 1);
+      setScore((s) => s + 1);
     }
 
     // Auto next after delay
     setTimeout(() => {
       if (currentIndex < TOTAL_QUESTIONS - 1) {
-        setCurrentIndex(i => i + 1);
+        setCurrentIndex((i) => i + 1);
         setSelectedOption(null);
       } else {
         setIsFinished(true);
@@ -380,7 +410,13 @@ export default function KanaQuizPage() {
   if (loading) {
     return (
       <Container>
-        <div style={{ textAlign: 'center', fontSize: '1.25rem', color: 'var(--text-secondary)' }}>
+        <div
+          style={{
+            textAlign: "center",
+            fontSize: "1.25rem",
+            color: "var(--text-secondary)",
+          }}
+        >
           Generating Quiz...
         </div>
       </Container>
@@ -392,7 +428,10 @@ export default function KanaQuizPage() {
       <Container>
         <ResultOverlay>
           <h2>Quiz Complete!</h2>
-          <p>You scored <strong>{score}</strong> out of <strong>{TOTAL_QUESTIONS}</strong></p>
+          <p>
+            You scored <strong>{score}</strong> out of{" "}
+            <strong>{TOTAL_QUESTIONS}</strong>
+          </p>
           <ButtonGroup>
             <Button onClick={generateQuiz}>Try Again</Button>
             <ActionLink href="/quiz">
@@ -408,12 +447,12 @@ export default function KanaQuizPage() {
 
   return (
     <Container>
-      <Breadcrumbs 
+      <Breadcrumbs
         items={[
-          { label: 'Home', href: '/' },
-          { label: 'Quiz', href: '/quiz' }
-        ]} 
-        current="Kana Quiz" 
+          { label: "Home", href: "/" },
+          { label: "Quiz", href: "/quiz" },
+        ]}
+        current="Kana Quiz"
       />
       <Header>
         <ScoreBadge>Score: {score}</ScoreBadge>
@@ -428,10 +467,10 @@ export default function KanaQuizPage() {
 
         <OptionsGrid>
           {currentQuestion.options.map((opt) => {
-            let state: 'neutral' | 'correct' | 'incorrect' = 'neutral';
+            let state: "neutral" | "correct" | "incorrect" = "neutral";
             if (selectedOption) {
-              if (opt === currentQuestion.romaji) state = 'correct';
-              else if (opt === selectedOption) state = 'incorrect';
+              if (opt === currentQuestion.romaji) state = "correct";
+              else if (opt === selectedOption) state = "incorrect";
             }
 
             return (
@@ -447,7 +486,9 @@ export default function KanaQuizPage() {
         </OptionsGrid>
 
         <ProgressBarContainer>
-          <ProgressFill $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100} />
+          <ProgressFill
+            $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
+          />
         </ProgressBarContainer>
       </QuizCard>
     </Container>

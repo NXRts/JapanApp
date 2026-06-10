@@ -1,9 +1,23 @@
-'use client';
+"use client";
 
-import { useState, useEffect, memo } from 'react';
-import { toRomaji } from 'wanakana';
-import { Card, Inner, Face, Back, ReadingGroup, Label, Readings, ReadingItem, AudioButton, LanguageContainer, LanguageButton, Meanings, MeaningText } from './KanjiCard.styled';
-import { playJapaneseAudio } from '@/lib/audio';
+import { useState, useEffect, memo } from "react";
+import { toRomaji } from "wanakana";
+import {
+  Card,
+  Inner,
+  Face,
+  Back,
+  ReadingGroup,
+  Label,
+  Readings,
+  ReadingItem,
+  AudioButton,
+  LanguageContainer,
+  LanguageButton,
+  Meanings,
+  MeaningText,
+} from "./KanjiCard.styled";
+import { playJapaneseAudio } from "@/lib/audio";
 
 interface ReadingDetail {
   onyomi: { kana: string; romaji: string }[];
@@ -15,7 +29,7 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
   const [flipped, setFlipped] = useState(false);
   const [detail, setDetail] = useState<ReadingDetail | null>(null);
   const [loading, setLoading] = useState(false);
-  const [lang, setLang] = useState<'en' | 'id'>('en');
+  const [lang, setLang] = useState<"en" | "id">("en");
 
   useEffect(() => {
     if (!flipped || detail || loading) return;
@@ -43,9 +57,9 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
         setDetail({ onyomi, kunyomi, meanings });
       })
       .catch((error) => {
-        // Use console.warn instead of console.error to prevent Next.js dev overlay 
+        // Use console.warn instead of console.error to prevent Next.js dev overlay
         // interrupting the UI just because of a network error or missing character
-        console.warn('Error fetching kanji details:', error.message || error);
+        console.warn("Error fetching kanji details:", error.message || error);
         setDetail(null);
       })
       .finally(() => setLoading(false));
@@ -71,7 +85,15 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
         <Face>{char}</Face>
 
         <Back>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', position: 'relative' }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              position: "relative",
+            }}
+          >
             <h3>{char}</h3>
             <AudioButton onClick={playAudio} title="Play Pronunciation">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -116,35 +138,46 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
                 </Readings>
               </ReadingGroup>
 
-              <Label style={{ marginTop: '12px' }}>Translate</Label>
+              <Label style={{ marginTop: "12px" }}>Translate</Label>
               <LanguageContainer>
                 <LanguageButton
-                  $active={lang === 'en'}
-                  onClick={(e) => { e.stopPropagation(); setLang('en'); }}
+                  $active={lang === "en"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLang("en");
+                  }}
                 >
                   EN
                 </LanguageButton>
                 <LanguageButton
-                  $active={lang === 'id'}
-                  onClick={(e) => { e.stopPropagation(); setLang('id'); }}
+                  $active={lang === "id"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLang("id");
+                  }}
                 >
                   ID
                 </LanguageButton>
               </LanguageContainer>
 
               <Meanings>
-                {lang === 'en' ? (
-                  detail.meanings.slice(0, 3).map((m, i) => (
-                    <MeaningText key={i}>{m}</MeaningText>
-                  ))
+                {lang === "en" ? (
+                  detail.meanings
+                    .slice(0, 3)
+                    .map((m, i) => <MeaningText key={i}>{m}</MeaningText>)
                 ) : (
                   <>
                     {/* Mock translation data since API is English only */}
-                    <MeaningText className="id-note">Terjemahan Indonesia (Auto):</MeaningText>
+                    <MeaningText className="id-note">
+                      Terjemahan Indonesia (Auto):
+                    </MeaningText>
                     {detail.meanings.slice(0, 3).map((m, i) => (
                       <MeaningText key={i}>{m} (Inggris)</MeaningText>
                     ))}
-                    <MeaningText className="id-note" style={{ fontSize: '0.7em', marginTop: '10px' }}>
+                    <MeaningText
+                      className="id-note"
+                      style={{ fontSize: "0.7em", marginTop: "10px" }}
+                    >
                       *Maaf, API saat ini hanya mendukung Bahasa Inggris.
                     </MeaningText>
                   </>

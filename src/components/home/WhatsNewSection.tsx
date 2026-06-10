@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
+import styled from "styled-components";
+import Link from "next/link";
 
 const Section = styled.section`
   padding: 3rem 2rem;
-  background: linear-gradient(to bottom, transparent, rgba(79, 70, 229, 0.03), transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(79, 70, 229, 0.03),
+    transparent
+  );
   width: 100%;
 `;
 
@@ -15,13 +20,13 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin-bottom: 4rem;
   color: var(--foreground);
-  
+
   span {
     position: relative;
     z-index: 1;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -8px;
       left: 50%;
@@ -32,7 +37,7 @@ const SectionTitle = styled.h2`
       border-radius: 2px;
     }
   }
-  
+
   @media (max-width: 768px) {
     font-size: 1.6rem;
     margin-bottom: 2rem;
@@ -58,22 +63,27 @@ const Card = styled(Link)`
   position: relative;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0; left: 0; right: 0; height: 4px;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s ease;
   }
-  
+
   &:hover {
     transform: translateY(-8px);
     border-color: rgba(var(--primary-rgb), 0.3);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(var(--primary-rgb), 0.1);
-    
+    box-shadow:
+      0 20px 40px -10px rgba(0, 0, 0, 0.3),
+      0 0 15px rgba(var(--primary-rgb), 0.1);
+
     &::before {
       transform: scaleX(1);
     }
@@ -83,7 +93,7 @@ const Card = styled(Link)`
 const Badge = styled.span`
   align-self: flex-start;
   background: rgba(var(--primary-rgb), 0.15);
-  color: var(--primary-light); 
+  color: var(--primary-light);
   border: 1px solid rgba(var(--primary-rgb), 0.2);
   padding: 0.35rem 0.85rem;
   border-radius: 999px;
@@ -118,27 +128,32 @@ const Description = styled.p`
 export function WhatsNewSection() {
   return (
     <Section>
-      <SectionTitle><span>What&apos;s New</span></SectionTitle>
+      <SectionTitle>
+        <span>What&apos;s New</span>
+      </SectionTitle>
       <WhatsNewGrid>
         <Card href="/jlpt/kanji-writer">
           <Badge>New Tool</Badge>
           <Title>Interactive Kanji Writer</Title>
           <Description>
-            Master stroke order by writing naturally on your screen. Get <b>instant feedback</b> and learn Kanji through muscle memory.
+            Master stroke order by writing naturally on your screen. Get{" "}
+            <b>instant feedback</b> and learn Kanji through muscle memory.
           </Description>
         </Card>
         <Card href="/jlpt">
           <Badge>JLPT</Badge>
           <Title>JLPT Mastery</Title>
           <Description>
-            Stop feeling lost! Follow a clear, <b>step-by-step journey</b> from N5 to N1 levels, curated to help you reach fluency faster.
+            Stop feeling lost! Follow a clear, <b>step-by-step journey</b> from
+            N5 to N1 levels, curated to help you reach fluency faster.
           </Description>
         </Card>
         <Card href="/study/grammar-drills">
           <Badge>New Drills</Badge>
           <Title>Verb & Particle Mastery</Title>
           <Description>
-            Master tricky <b>Verb Conjugations</b> and <b>Particles</b> with our new repetitive drill system designed for permanent retention.
+            Master tricky <b>Verb Conjugations</b> and <b>Particles</b> with our
+            new repetitive drill system designed for permanent retention.
           </Description>
         </Card>
       </WhatsNewGrid>

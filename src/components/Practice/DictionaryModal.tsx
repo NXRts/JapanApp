@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useProgress } from '@/context/ProgressContext';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useProgress } from "@/context/ProgressContext";
 
 const Overlay = styled.div`
   position: fixed;
@@ -19,8 +19,12 @@ const Overlay = styled.div`
   animation: fadeIn 0.2s ease-out;
 
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 `;
 
@@ -35,8 +39,14 @@ const Modal = styled.div`
   animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   @keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 `;
 
@@ -93,8 +103,9 @@ const Button = styled.button<{ $primary?: boolean }>`
   cursor: pointer;
   transition: all 0.2s;
   border: none;
-  background: ${props => props.$primary ? 'var(--primary)' : 'var(--border)'};
-  color: ${props => props.$primary ? 'white' : 'var(--foreground)'};
+  background: ${(props) =>
+    props.$primary ? "var(--primary)" : "var(--border)"};
+  color: ${(props) => (props.$primary ? "white" : "var(--foreground)")};
 
   &:hover {
     transform: translateY(-2px);
@@ -107,7 +118,10 @@ interface DictionaryModalProps {
   onClose: () => void;
 }
 
-export const DictionaryModal: React.FC<DictionaryModalProps> = ({ word, onClose }) => {
+export const DictionaryModal: React.FC<DictionaryModalProps> = ({
+  word,
+  onClose,
+}) => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const { updateSRS, addExp } = useProgress();
@@ -117,28 +131,28 @@ export const DictionaryModal: React.FC<DictionaryModalProps> = ({ word, onClose 
     setLoading(true);
     // Using a public dictionary API proxy or search
     fetch(`https://jisho.org/api/v1/search/words?keyword=${word}`)
-      .then(res => res.json())
-      .then(json => {
+      .then((res) => res.json())
+      .then((json) => {
         if (json.data && json.data.length > 0) {
           const item = json.data[0];
           setData({
             japanese: item.japanese[0].word || item.japanese[0].reading,
             reading: item.japanese[0].reading,
-            meaning: item.senses[0].english_definitions.join(', ')
+            meaning: item.senses[0].english_definitions.join(", "),
           });
         } else {
           setData({
             japanese: word,
-            reading: 'Unknown',
-            meaning: 'No definition found.'
+            reading: "Unknown",
+            meaning: "No definition found.",
           });
         }
       })
       .catch(() => {
         setData({
           japanese: word,
-          reading: 'Reading...',
-          meaning: 'Offline or API error.'
+          reading: "Reading...",
+          meaning: "Offline or API error.",
         });
       })
       .finally(() => setLoading(false));
@@ -153,9 +167,11 @@ export const DictionaryModal: React.FC<DictionaryModalProps> = ({ word, onClose 
 
   return (
     <Overlay onClick={onClose}>
-      <Modal onClick={e => e.stopPropagation()}>
+      <Modal onClick={(e) => e.stopPropagation()}>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '2rem' }}>Looking up "{word}"...</div>
+          <div style={{ textAlign: "center", padding: "2rem" }}>
+            Looking up "{word}"...
+          </div>
         ) : (
           <>
             <WordHeader>
@@ -171,7 +187,7 @@ export const DictionaryModal: React.FC<DictionaryModalProps> = ({ word, onClose 
             <ActionButtons>
               <Button onClick={onClose}>Close</Button>
               <Button $primary onClick={handleAddReview} disabled={added}>
-                {added ? 'Added! ✓' : 'Add to SRS'}
+                {added ? "Added! ✓" : "Add to SRS"}
               </Button>
             </ActionButtons>
           </>

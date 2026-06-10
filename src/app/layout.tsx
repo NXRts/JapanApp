@@ -21,13 +21,26 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://japan-app.vercel.app'),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || "https://japan-app.vercel.app",
+  ),
   title: {
     default: "Japan Learning App | Master Kanji & Kana",
-    template: "%s | Japan Learning App"
+    template: "%s | Japan Learning App",
   },
-  description: "The most effective way to learn, practice, and memorize Japanese characters (Hiragana, Katakana, and Kanji). Start your journey to fluency today.",
-  keywords: ["Japanese", "Learn Japanese", "Kanji", "Kana", "Hiragana", "Katakana", "JLPT", "Japanese Practice", "Flashcards"],
+  description:
+    "The most effective way to learn, practice, and memorize Japanese characters (Hiragana, Katakana, and Kanji). Start your journey to fluency today.",
+  keywords: [
+    "Japanese",
+    "Learn Japanese",
+    "Kanji",
+    "Kana",
+    "Hiragana",
+    "Katakana",
+    "JLPT",
+    "Japanese Practice",
+    "Flashcards",
+  ],
   authors: [{ name: "NXRts" }],
   creator: "NXRts",
   openGraph: {
@@ -35,7 +48,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "/",
     title: "Japan Learning App | Master Kanji & Kana",
-    description: "The most effective way to learn, practice, and memorize Japanese characters. Start your journey to fluency today.",
+    description:
+      "The most effective way to learn, practice, and memorize Japanese characters. Start your journey to fluency today.",
     siteName: "Japan Learning App",
     images: [
       {
@@ -49,7 +63,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Japan Learning App | Master Kanji & Kana",
-    description: "The most effective way to learn, practice, and memorize Japanese characters.",
+    description:
+      "The most effective way to learn, practice, and memorize Japanese characters.",
     images: ["/og-image.jpg"],
   },
   manifest: "/manifest.json",
@@ -70,13 +85,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning className={`${inter.className} ${notoSansJP.variable}`}>
+      <body
+        suppressHydrationWarning
+        className={`${inter.className} ${notoSansJP.variable}`}
+      >
         <ThemeProvider>
           <DeviceModeProvider>
             <ProgressProvider>
               <StyledRegistry>
                 <Navbar />
-                <main style={{ flex: 1, position: 'relative' }}>
+                <main style={{ flex: 1, position: "relative" }}>
                   {children}
                 </main>
                 <Footer />

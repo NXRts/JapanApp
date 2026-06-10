@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { DictionaryResult } from '@/lib/dictionary';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { DictionaryResult } from "@/lib/dictionary";
 
 interface FlashcardModalProps {
   data: DictionaryResult[];
@@ -11,7 +11,10 @@ interface FlashcardModalProps {
 
 const Overlay = styled.div`
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   z-index: 9999;
@@ -22,8 +25,12 @@ const Overlay = styled.div`
   animation: fadeIn 0.2s ease-out;
 
   @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 `;
 
@@ -41,7 +48,7 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   color: white;
-  
+
   .counter {
     background: rgba(255, 255, 255, 0.2);
     padding: 0.4rem 1rem;
@@ -58,7 +65,7 @@ const Header = styled.div`
     padding: 0.5rem;
     border-radius: 50%;
     transition: background 0.2s;
-    
+
     &:hover {
       background: rgba(255, 255, 255, 0.1);
     }
@@ -79,7 +86,7 @@ const CardInner = styled.div<{ $flipped: boolean }>`
   text-align: center;
   transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
-  transform: ${({ $flipped }) => ($flipped ? 'rotateY(180deg)' : 'rotateY(0)')};
+  transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg)" : "rotateY(0)")};
 `;
 
 const CardFace = styled.div`
@@ -111,7 +118,11 @@ const BigText = styled.h2`
   font-size: 4rem;
   font-weight: 800;
   margin: 0;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--primary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--primary) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -203,44 +214,47 @@ const EmptyStateContainer = styled(CardFace)`
   text-align: center;
 `;
 
-export default function DictionaryFlashcardModal({ data, onClose }: FlashcardModalProps) {
+export default function DictionaryFlashcardModal({
+  data,
+  onClose,
+}: FlashcardModalProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === ' ') {
-         e.preventDefault();
-         handleNext();
+      if (e.key === "ArrowRight" || e.key === " ") {
+        e.preventDefault();
+        handleNext();
       }
-      if (e.key === 'ArrowLeft') {
-         e.preventDefault();
-         handlePrev();
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        handlePrev();
       }
-      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-         e.preventDefault();
-         setIsFlipped(prev => !prev);
+      if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+        e.preventDefault();
+        setIsFlipped((prev) => !prev);
       }
-      if (e.key === 'Escape') {
-         onClose();
+      if (e.key === "Escape") {
+        onClose();
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [currentIndex, isFlipped, data.length]);
 
   const handleNext = () => {
     if (currentIndex < data.length - 1) {
       setIsFlipped(false);
-      setTimeout(() => setCurrentIndex(prev => prev + 1), 150);
+      setTimeout(() => setCurrentIndex((prev) => prev + 1), 150);
     }
   };
 
   const handlePrev = () => {
     if (currentIndex > 0) {
       setIsFlipped(false);
-      setTimeout(() => setCurrentIndex(prev => prev - 1), 150);
+      setTimeout(() => setCurrentIndex((prev) => prev - 1), 150);
     }
   };
 
@@ -250,11 +264,17 @@ export default function DictionaryFlashcardModal({ data, onClose }: FlashcardMod
         <Container>
           <Header>
             <div className="counter">0 / 0</div>
-            <button className="close-btn" onClick={onClose}>✕</button>
+            <button className="close-btn" onClick={onClose}>
+              ✕
+            </button>
           </Header>
-          <EmptyStateContainer style={{ position: 'relative' }}>
-            <h3 style={{ color: 'var(--text-secondary)' }}>No data available for this flashcard session.</h3>
-            <ActionBtn style={{ marginTop: '2rem' }} onClick={onClose}>Close</ActionBtn>
+          <EmptyStateContainer style={{ position: "relative" }}>
+            <h3 style={{ color: "var(--text-secondary)" }}>
+              No data available for this flashcard session.
+            </h3>
+            <ActionBtn style={{ marginTop: "2rem" }} onClick={onClose}>
+              Close
+            </ActionBtn>
           </EmptyStateContainer>
         </Container>
       </Overlay>
@@ -262,25 +282,40 @@ export default function DictionaryFlashcardModal({ data, onClose }: FlashcardMod
   }
 
   const currentItem = data[currentIndex];
-  
+
   // Resolve texts based on type
-  const targetWord = currentItem.word || currentItem.kanji || currentItem.title || '?';
-  const targetReading = currentItem.reading || currentItem.onyomi?.join(', ') || '';
-  const romaji = currentItem.romaji || currentItem.structure || '';
-  const meaning = currentItem.meaning || 'No definition';
-  
-  const displayReading = [targetReading, romaji].filter(Boolean).join(' • ');
+  const targetWord =
+    currentItem.word || currentItem.kanji || currentItem.title || "?";
+  const targetReading =
+    currentItem.reading || currentItem.onyomi?.join(", ") || "";
+  const romaji = currentItem.romaji || currentItem.structure || "";
+  const meaning = currentItem.meaning || "No definition";
+
+  const displayReading = [targetReading, romaji].filter(Boolean).join(" • ");
 
   return (
-    <Overlay onClick={(e) => {
+    <Overlay
+      onClick={(e) => {
         // close if clicked outside
         if (e.target === e.currentTarget) onClose();
-    }}>
+      }}
+    >
       <Container>
         <Header>
-          <div className="counter">{currentIndex + 1} / {data.length}</div>
+          <div className="counter">
+            {currentIndex + 1} / {data.length}
+          </div>
           <button className="close-btn" onClick={onClose}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
@@ -291,15 +326,24 @@ export default function DictionaryFlashcardModal({ data, onClose }: FlashcardMod
           <CardInner $flipped={isFlipped}>
             <CardFront>
               <Tag>{currentItem.level}</Tag>
-              {currentItem.type === 'grammar' ? (
-                <BigText style={{ fontSize: '2.5rem' }}>{targetWord}</BigText>
+              {currentItem.type === "grammar" ? (
+                <BigText style={{ fontSize: "2.5rem" }}>{targetWord}</BigText>
               ) : (
                 <BigText>{targetWord}</BigText>
               )}
-              {currentItem.type === 'grammar' && currentItem.structure && (
-                 <SubText>{currentItem.structure}</SubText>
+              {currentItem.type === "grammar" && currentItem.structure && (
+                <SubText>{currentItem.structure}</SubText>
               )}
-              <div style={{ position: 'absolute', bottom: '1.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem', opacity: 0.6, fontWeight: 500 }}>
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "1.5rem",
+                  color: "var(--text-secondary)",
+                  fontSize: "0.9rem",
+                  opacity: 0.6,
+                  fontWeight: 500,
+                }}
+              >
                 Tap to flip
               </div>
             </CardFront>
@@ -307,11 +351,9 @@ export default function DictionaryFlashcardModal({ data, onClose }: FlashcardMod
             <CardBack>
               <MeaningText>{meaning}</MeaningText>
               {displayReading && <ReadingText>{displayReading}</ReadingText>}
-              
+
               {currentItem.explanation && (
-                 <ExplanationText>
-                   {currentItem.explanation}
-                 </ExplanationText>
+                <ExplanationText>{currentItem.explanation}</ExplanationText>
               )}
             </CardBack>
           </CardInner>
@@ -321,8 +363,21 @@ export default function DictionaryFlashcardModal({ data, onClose }: FlashcardMod
           <ActionBtn onClick={handlePrev} disabled={currentIndex === 0}>
             ← Previous
           </ActionBtn>
-          <ActionBtn onClick={handleNext} disabled={currentIndex === data.length - 1} style={{ background: currentIndex === data.length - 1 ? 'var(--surface)' : 'var(--primary)', color: currentIndex === data.length - 1 ? 'var(--foreground)' : 'white' }}>
-            {currentIndex === data.length - 1 ? 'Finished' : 'Next →'}
+          <ActionBtn
+            onClick={handleNext}
+            disabled={currentIndex === data.length - 1}
+            style={{
+              background:
+                currentIndex === data.length - 1
+                  ? "var(--surface)"
+                  : "var(--primary)",
+              color:
+                currentIndex === data.length - 1
+                  ? "var(--foreground)"
+                  : "white",
+            }}
+          >
+            {currentIndex === data.length - 1 ? "Finished" : "Next →"}
           </ActionBtn>
         </Controls>
       </Container>

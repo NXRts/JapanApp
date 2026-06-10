@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 /**
  * Universal Audio Utility for Cross-Browser Japanese Speech Synthesis
@@ -12,7 +12,7 @@ interface AudioOptions {
 
 let voices: SpeechSynthesisVoice[] = [];
 
-if (typeof window !== 'undefined' && window.speechSynthesis) {
+if (typeof window !== "undefined" && window.speechSynthesis) {
   // Load voices immediately
   voices = window.speechSynthesis.getVoices();
   window.speechSynthesis.onvoiceschanged = () => {
@@ -20,10 +20,13 @@ if (typeof window !== 'undefined' && window.speechSynthesis) {
   };
 }
 
-export const playJapaneseAudio = (text: string, options: AudioOptions = {}): Promise<void> => {
+export const playJapaneseAudio = (
+  text: string,
+  options: AudioOptions = {},
+): Promise<void> => {
   return new Promise((resolve) => {
-    if (typeof window === 'undefined' || !window.speechSynthesis) {
-      console.warn('Speech synthesis not supported');
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      console.warn("Speech synthesis not supported");
       return resolve();
     }
 
@@ -36,17 +39,17 @@ export const playJapaneseAudio = (text: string, options: AudioOptions = {}): Pro
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ja-JP';
+    utterance.lang = "ja-JP";
     utterance.rate = options.rate || 0.85;
     utterance.pitch = options.pitch || 1.0;
 
     // Try to find a Japanese voice
-    const jaVoice = 
+    const jaVoice =
       options.voice ||
-      voices.find(v => v.lang === 'ja-JP' && v.name.includes('Premium')) ||
-      voices.find(v => v.lang === 'ja-JP' && v.name.includes('Google')) ||
-      voices.find(v => v.lang.startsWith('ja')) ||
-      voices.find(v => v.lang === 'ja-JP');
+      voices.find((v) => v.lang === "ja-JP" && v.name.includes("Premium")) ||
+      voices.find((v) => v.lang === "ja-JP" && v.name.includes("Google")) ||
+      voices.find((v) => v.lang.startsWith("ja")) ||
+      voices.find((v) => v.lang === "ja-JP");
 
     if (jaVoice) {
       utterance.voice = jaVoice;

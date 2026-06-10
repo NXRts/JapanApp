@@ -1,9 +1,17 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import styled from 'styled-components';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { SparklesIcon, GraduationIcon, BookIcon, LightBulbIcon, FireIcon, ChartBarIcon, ArrowRightIcon } from '@/components/icons/AppIcons';
+import { useState } from "react";
+import styled from "styled-components";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import {
+  SparklesIcon,
+  GraduationIcon,
+  BookIcon,
+  LightBulbIcon,
+  FireIcon,
+  ChartBarIcon,
+  ArrowRightIcon,
+} from "@/components/icons/AppIcons";
 
 // Styled Components
 const Container = styled.div`
@@ -26,7 +34,11 @@ const Title = styled.h1`
   font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--text-secondary) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -55,9 +67,12 @@ const TabButton = styled.button<{ $active: boolean }>`
   border-radius: 999px;
   font-weight: 700;
   font-size: 1rem;
-  border: 2px solid ${({ $active }) => ($active ? 'var(--primary)' : 'var(--border)')};
-  background: ${({ $active }) => ($active ? 'rgba(var(--primary-rgb), 0.1)' : 'var(--surface)')};
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  border: 2px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) =>
+    $active ? "rgba(var(--primary-rgb), 0.1)" : "var(--surface)"};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
@@ -104,13 +119,17 @@ const Card = styled.div`
   }
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at top right, rgba(var(--primary-rgb), 0.05), transparent 60%);
+    background: radial-gradient(
+      circle at top right,
+      rgba(var(--primary-rgb), 0.05),
+      transparent 60%
+    );
     pointer-events: none;
   }
 `;
@@ -175,34 +194,38 @@ const beginnerTips: Tip[] = [
     id: 1,
     tag: "Priority #1",
     title: "Master Kana First",
-    description: "Drop Romaji as soon as possible. Spend the first week only on Hiragana and Katakana. It forces your brain to recognize the real structure of Japanese sounds.",
+    description:
+      "Drop Romaji as soon as possible. Spend the first week only on Hiragana and Katakana. It forces your brain to recognize the real structure of Japanese sounds.",
     icon: <BookIcon />,
-    color: "linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%)"
+    color: "linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%)",
   },
   {
     id: 2,
     tag: "Technique",
     title: "Use Mnemonics for Kanji",
-    description: "Don't just write Kanji 100 times. Use associations (Heisig Method). Link each component (radical) to a story. It stays in your memory much longer.",
+    description:
+      "Don't just write Kanji 100 times. Use associations (Heisig Method). Link each component (radical) to a story. It stays in your memory much longer.",
     icon: <SparklesIcon />,
-    color: "linear-gradient(135deg, #10b981 0%, #34d399 100%)"
+    color: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
   },
   {
     id: 3,
     tag: "Grammar",
     title: "Focus on Particles",
-    description: "The biggest hurdle for beginners is 'wa', 'ga', 'ni', and 'de'. Master these early, and complex sentences will start making sense much faster.",
+    description:
+      "The biggest hurdle for beginners is 'wa', 'ga', 'ni', and 'de'. Master these early, and complex sentences will start making sense much faster.",
     icon: <GraduationIcon />,
-    color: "linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)"
+    color: "linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)",
   },
   {
-      id: 4,
-      tag: "Habit",
-      title: "Consistent Daily Quiz",
-      description: "Spend 10 minutes every single day rather than 2 hours once a week. Your brain needs repetitive exposure to move data into long-term memory.",
-      icon: <FireIcon />,
-      color: "linear-gradient(135deg, #ef4444 0%, #f87171 100%)"
-  }
+    id: 4,
+    tag: "Habit",
+    title: "Consistent Daily Quiz",
+    description:
+      "Spend 10 minutes every single day rather than 2 hours once a week. Your brain needs repetitive exposure to move data into long-term memory.",
+    icon: <FireIcon />,
+    color: "linear-gradient(135deg, #ef4444 0%, #f87171 100%)",
+  },
 ];
 
 const advancedTips: Tip[] = [
@@ -210,66 +233,73 @@ const advancedTips: Tip[] = [
     id: 5,
     tag: "Immersion",
     title: "Shadowing Technique",
-    description: "Listen to a native speaker and repeat immediately after them (0.5s delay). This improves your pitch accent, rhythm, and natural speaking speed immensely.",
+    description:
+      "Listen to a native speaker and repeat immediately after them (0.5s delay). This improves your pitch accent, rhythm, and natural speaking speed immensely.",
     icon: <ChartBarIcon />,
-    color: "linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)"
+    color: "linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)",
   },
   {
     id: 6,
     tag: "Resources",
     title: "Monolingual Dictionary",
-    description: "Switch to J-J dictionaries (Goo, Kotobank) for higher level Kanji. Stop translating and start understanding Japanese through Japanese definitions.",
+    description:
+      "Switch to J-J dictionaries (Goo, Kotobank) for higher level Kanji. Stop translating and start understanding Japanese through Japanese definitions.",
     icon: <BookIcon />,
-    color: "linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)"
+    color: "linear-gradient(135deg, #0d9488 0%, #14b8a6 100%)",
   },
   {
     id: 7,
     tag: "Context",
     title: "Sentence Mining",
-    description: "Don't learn individual words. Learn whole sentences from the anime, books, or news you consume. Context is everything for nuance (Nuancing).",
+    description:
+      "Don't learn individual words. Learn whole sentences from the anime, books, or news you consume. Context is everything for nuance (Nuancing).",
     icon: <LightBulbIcon />,
-    color: "linear-gradient(135deg, #6366f1 0%, #818cf8 100%)"
+    color: "linear-gradient(135deg, #6366f1 0%, #818cf8 100%)",
   },
   {
     id: 8,
     tag: "Expertise",
     title: "Yojijukugo (Idioms)",
-    description: "Start learning 4-character idioms. They are widely used in formal settings and literature. It marks the transition from 'Fluent' to 'Highly Literate'.",
+    description:
+      "Start learning 4-character idioms. They are widely used in formal settings and literature. It marks the transition from 'Fluent' to 'Highly Literate'.",
     icon: <GraduationIcon />,
-    color: "linear-gradient(135deg, #db2777 0%, #f472b6 100%)"
-  }
+    color: "linear-gradient(135deg, #db2777 0%, #f472b6 100%)",
+  },
 ];
 
 export default function TipsPage() {
-  const [activeLevel, setActiveLevel] = useState<'beginner' | 'advanced'>('beginner');
-  const tips = activeLevel === 'beginner' ? beginnerTips : advancedTips;
+  const [activeLevel, setActiveLevel] = useState<"beginner" | "advanced">(
+    "beginner",
+  );
+  const tips = activeLevel === "beginner" ? beginnerTips : advancedTips;
 
   return (
     <Container>
-      <Breadcrumbs 
+      <Breadcrumbs
         items={[
-          { label: 'Home', href: '/' },
-          { label: 'Materials', href: '/materi' }
-        ]} 
-        current="Tips & Tricks" 
+          { label: "Home", href: "/" },
+          { label: "Materials", href: "/materi" },
+        ]}
+        current="Tips & Tricks"
       />
       <Header>
         <Title>Language Mastery Hub</Title>
         <Subtitle>
-          Curated professional strategies to accelerate your Japanese learning journey, from your first Hiragana to native-level literacy.
+          Curated professional strategies to accelerate your Japanese learning
+          journey, from your first Hiragana to native-level literacy.
         </Subtitle>
       </Header>
 
       <ToggleContainer>
-        <TabButton 
-          $active={activeLevel === 'beginner'} 
-          onClick={() => setActiveLevel('beginner')}
+        <TabButton
+          $active={activeLevel === "beginner"}
+          onClick={() => setActiveLevel("beginner")}
         >
           Beginner Track
         </TabButton>
-        <TabButton 
-          $active={activeLevel === 'advanced'} 
-          onClick={() => setActiveLevel('advanced')}
+        <TabButton
+          $active={activeLevel === "advanced"}
+          onClick={() => setActiveLevel("advanced")}
         >
           Advanced Track
         </TabButton>
@@ -278,9 +308,7 @@ export default function TipsPage() {
       <Grid>
         {tips.map((tip) => (
           <Card key={tip.id}>
-            <IconBox $color={tip.color}>
-              {tip.icon}
-            </IconBox>
+            <IconBox $color={tip.color}>{tip.icon}</IconBox>
             <Tag>{tip.tag}</Tag>
             <CardTitle>{tip.title}</CardTitle>
             <Description>{tip.description}</Description>

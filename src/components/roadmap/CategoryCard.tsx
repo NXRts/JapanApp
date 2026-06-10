@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Card = styled.div<{ $color: string }>`
   background: ${({ $color }) => $color};
@@ -48,18 +48,21 @@ const IconWrapper = styled.div`
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(4px);
-  
+
   svg {
     width: 40px;
     height: 40px;
     color: white;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   }
 
   @media (max-width: 768px) {
     width: 50px;
     height: 50px;
-    svg { width: 30px; height: 30px; }
+    svg {
+      width: 30px;
+      height: 30px;
+    }
   }
 `;
 
@@ -70,7 +73,7 @@ const Label = styled.h3`
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin: 0;
-  
+
   @media (max-width: 768px) {
     font-size: 1.1rem;
   }

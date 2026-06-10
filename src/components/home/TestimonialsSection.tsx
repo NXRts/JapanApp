@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import styled, { keyframes } from 'styled-components';
-import { StarIcon } from '../icons/AppIcons';
+import styled, { keyframes } from "styled-components";
+import { StarIcon } from "../icons/AppIcons";
 
 const scroll = keyframes`
   0% { transform: translateX(0); }
@@ -13,7 +13,7 @@ const Section = styled.section`
   width: 100%;
   overflow: hidden;
   position: relative;
-  
+
   @media (max-width: 768px) {
     padding: 3rem 0;
   }
@@ -26,13 +26,13 @@ const SectionTitle = styled.h2`
   margin-bottom: 5rem;
   color: var(--foreground);
   padding: 0 2rem;
-  
+
   span {
     position: relative;
     z-index: 1;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -10px;
       left: 50%;
@@ -43,7 +43,7 @@ const SectionTitle = styled.h2`
       border-radius: 2px;
     }
   }
-  
+
   @media (max-width: 768px) {
     font-size: 1.75rem;
     margin-bottom: 3rem;
@@ -69,7 +69,7 @@ const MarqueeTrack = styled.div`
   width: fit-content;
   animation: ${scroll} 40s linear infinite;
   padding: 2rem 0;
-  
+
   &:hover {
     animation-play-state: paused;
   }
@@ -94,16 +94,18 @@ const Card = styled.div`
   min-height: 320px; /* Ensure full content visibility */
   flex-shrink: 0;
   box-shadow: var(--shadow-md);
-  
+
   &:hover {
     transform: translateY(-10px);
     border-color: var(--primary-light);
     filter: brightness(1.05);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2), 0 0 20px rgba(var(--primary-rgb), 0.1);
+    box-shadow:
+      0 25px 50px -12px rgba(0, 0, 0, 0.2),
+      0 0 20px rgba(var(--primary-rgb), 0.1);
   }
-  
+
   &::before {
-    content: '“';
+    content: "“";
     position: absolute;
     top: 1rem;
     right: 2.5rem;
@@ -113,7 +115,7 @@ const Card = styled.div`
     font-family: serif;
     line-height: 1;
   }
-  
+
   @media (max-width: 768px) {
     width: 280px;
     padding: 1.5rem;
@@ -143,7 +145,7 @@ const TestimonialText = styled.p`
   position: relative;
   z-index: 1;
   opacity: 0.9;
-  
+
   @media (max-width: 768px) {
     font-size: 0.85rem;
     line-height: 1.5;
@@ -163,7 +165,7 @@ const Avatar = styled.div<{ $gradient: string }>`
   width: 52px;
   height: 52px;
   border-radius: 18px;
-  background: ${props => props.$gradient};
+  background: ${(props) => props.$gradient};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -194,7 +196,7 @@ const UserMeta = styled.div`
       font-size: 0.95rem;
     }
   }
-  
+
   span {
     font-size: 0.85rem;
     color: var(--text-secondary);
@@ -219,37 +221,37 @@ const VerifiedBadge = styled.span`
 
 const testimonials = [
   {
-    name: 'Sarah J.',
-    role: 'JLPT N2 Candidate',
-    initial: 'SJ',
-    gradient: 'linear-gradient(135deg, #6366f1, #a855f7)',
+    name: "Sarah J.",
+    role: "JLPT N2 Candidate",
+    initial: "SJ",
+    gradient: "linear-gradient(135deg, #6366f1, #a855f7)",
     text: "The AI Dictionary is a game changer. Being able to scan physical manga with the OCR feature saved me so much time. It's the most polished Japanese app I've used.",
-    rating: 5
+    rating: 5,
   },
   {
-    name: 'Kenji W.',
-    role: 'Beginner Learner',
-    initial: 'KW',
-    gradient: 'linear-gradient(135deg, #f43f5e, #fb923c)',
+    name: "Kenji W.",
+    role: "Beginner Learner",
+    initial: "KW",
+    gradient: "linear-gradient(135deg, #f43f5e, #fb923c)",
     text: "I mastered Hiragana and Katakana in less than 10 days! The interactive games made the characters stick in my mind much faster than traditional flashcards.",
-    rating: 5
+    rating: 5,
   },
   {
-    name: 'Elena R.',
-    role: 'Intermediate Student',
-    initial: 'ER',
-    gradient: 'linear-gradient(135deg, #10b981, #3b82f6)',
+    name: "Elena R.",
+    role: "Intermediate Student",
+    initial: "ER",
+    gradient: "linear-gradient(135deg, #10b981, #3b82f6)",
     text: "The SRS algorithm is spot-on. I used to forget Kanji all the time, but the smart review system ensures I'm only practicing when it's most effective for memory.",
-    rating: 5
+    rating: 5,
   },
   {
-    name: 'Liam M.',
-    role: 'JLPT N4 Student',
-    initial: 'LM',
-    gradient: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
+    name: "Liam M.",
+    role: "JLPT N4 Student",
+    initial: "LM",
+    gradient: "linear-gradient(135deg, #8b5cf6, #ec4899)",
     text: "Sentence Builder really helped me understand grammar nuances. It's rare to find an app that covers both vocabulary and sentence structure so well.",
-    rating: 5
-  }
+    rating: 5,
+  },
 ];
 
 export function TestimonialsSection() {
@@ -257,12 +259,21 @@ export function TestimonialsSection() {
 
   return (
     <Section>
-      <SectionTitle><span>Community Stories</span></SectionTitle>
+      <SectionTitle>
+        <span>Community Stories</span>
+      </SectionTitle>
       <MarqueeContainer>
         <MarqueeTrack>
           {repeatedTestimonials.map((t, i) => (
             <Card key={i}>
-              <div style={{ display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "100%",
+                  justifyContent: "space-between",
+                }}
+              >
                 <div>
                   <Rating>
                     {[...Array(t.rating)].map((_, index) => (

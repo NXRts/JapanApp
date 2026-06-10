@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { readingPassages, ReadingPassage, ReadingQuiz } from '@/data/reading';
-import { useProgress } from '@/context/ProgressContext';
-import { ClickableJapaneseText } from '@/components/common/ClickableJapaneseText';
+import styled from "styled-components";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { readingPassages, ReadingPassage, ReadingQuiz } from "@/data/reading";
+import { useProgress } from "@/context/ProgressContext";
+import { ClickableJapaneseText } from "@/components/common/ClickableJapaneseText";
 
 const Container = styled.div`
   max-width: 850px;
@@ -45,7 +45,7 @@ const ToggleLabel = styled.label`
   font-weight: 600;
   cursor: pointer;
   color: var(--text-secondary);
-  
+
   input {
     width: 48px;
     height: 24px;
@@ -56,9 +56,9 @@ const ToggleLabel = styled.label`
     position: relative;
     cursor: pointer;
     transition: all 0.3s;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 2px;
       left: 2px;
@@ -68,11 +68,11 @@ const ToggleLabel = styled.label`
       border-radius: 50%;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
+
     &:checked {
       background: rgba(79, 70, 229, 0.2);
       border-color: var(--primary);
-      
+
       &::after {
         background: var(--primary);
         transform: translateX(24px);
@@ -83,18 +83,18 @@ const ToggleLabel = styled.label`
 
 const ContentContainer = styled.div<{ $showFurigana: boolean }>`
   margin-top: 3rem;
-  
+
   ruby {
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: "Noto Sans JP", sans-serif;
   }
-  
+
   rt {
     font-size: 0.55em;
     color: var(--primary);
     opacity: 0.9;
     font-weight: 700;
     line-height: 1;
-    display: ${props => props.$showFurigana ? 'block' : 'none'};
+    display: ${(props) => (props.$showFurigana ? "block" : "none")};
     transform: translateY(10%);
   }
 `;
@@ -119,7 +119,7 @@ const QuizSection = styled.div`
   background: var(--surface);
   border-radius: 24px;
   border: 1px solid var(--border);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 
   @media (max-width: 600px) {
     padding: 2rem 1.5rem;
@@ -133,9 +133,9 @@ const QuizTitle = styled.h2`
   display: flex;
   align-items: center;
   gap: 1rem;
-  
+
   &::before {
-    content: '📝';
+    content: "📝";
   }
 `;
 
@@ -143,7 +143,7 @@ const QuestionContainer = styled.div`
   margin-bottom: 3rem;
   padding-bottom: 3rem;
   border-bottom: 1px solid var(--border);
-  
+
   &:last-child {
     border-bottom: none;
     margin-bottom: 0;
@@ -164,26 +164,42 @@ const OptionsGrid = styled.div`
   gap: 1rem;
 `;
 
-const OptionBtn = styled.button<{ $state: 'default' | 'selected' | 'correct' | 'wrong' }>`
+const OptionBtn = styled.button<{
+  $state: "default" | "selected" | "correct" | "wrong";
+}>`
   padding: 1rem 1.5rem;
   border-radius: 12px;
-  border: 2px solid ${props => 
-    props.$state === 'correct' ? '#10b981' : 
-    props.$state === 'wrong' ? '#ef4444' : 
-    props.$state === 'selected' ? 'var(--primary)' : 'var(--border)'};
-  background: ${props => 
-    props.$state === 'correct' ? 'rgba(16, 185, 129, 0.1)' : 
-    props.$state === 'wrong' ? 'rgba(239, 68, 68, 0.1)' : 
-    props.$state === 'selected' ? 'rgba(79, 70, 229, 0.05)' : 'transparent'};
+  border: 2px solid
+    ${(props) =>
+      props.$state === "correct"
+        ? "#10b981"
+        : props.$state === "wrong"
+          ? "#ef4444"
+          : props.$state === "selected"
+            ? "var(--primary)"
+            : "var(--border)"};
+  background: ${(props) =>
+    props.$state === "correct"
+      ? "rgba(16, 185, 129, 0.1)"
+      : props.$state === "wrong"
+        ? "rgba(239, 68, 68, 0.1)"
+        : props.$state === "selected"
+          ? "rgba(79, 70, 229, 0.05)"
+          : "transparent"};
   color: var(--foreground);
   font-size: 1.1rem;
   font-weight: 600;
   text-align: left;
-  cursor: ${props => props.$state === 'default' || props.$state === 'selected' ? 'pointer' : 'default'};
+  cursor: ${(props) =>
+    props.$state === "default" || props.$state === "selected"
+      ? "pointer"
+      : "default"};
   transition: all 0.2s;
 
   &:hover {
-    ${props => (props.$state === 'default' || props.$state === 'selected') && `
+    ${(props) =>
+      (props.$state === "default" || props.$state === "selected") &&
+      `
       border-color: var(--primary);
       background: rgba(79, 70, 229, 0.05);
     `}
@@ -201,8 +217,10 @@ const SubmitBtn = styled.button`
   font-size: 1rem;
   cursor: pointer;
   transition: opacity 0.2s;
-  
-  &:hover { opacity: 0.9; }
+
+  &:hover {
+    opacity: 0.9;
+  }
   &:disabled {
     background: var(--border);
     cursor: not-allowed;
@@ -214,20 +232,32 @@ const Explanation = styled.div<{ $isCorrect: boolean }>`
   margin-top: 1.5rem;
   padding: 1.5rem;
   border-radius: 12px;
-  background: ${props => props.$isCorrect ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)'};
-  border-left: 4px solid ${props => props.$isCorrect ? '#10b981' : '#ef4444'};
-  
+  background: ${(props) =>
+    props.$isCorrect ? "rgba(16, 185, 129, 0.1)" : "rgba(239, 68, 68, 0.1)"};
+  border-left: 4px solid
+    ${(props) => (props.$isCorrect ? "#10b981" : "#ef4444")};
+
   strong {
-    color: ${props => props.$isCorrect ? '#10b981' : '#ef4444'};
+    color: ${(props) => (props.$isCorrect ? "#10b981" : "#ef4444")};
     display: block;
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
   }
-  
-  span { color: var(--text-secondary); line-height: 1.5; display: inline-block; }
+
+  span {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    display: inline-block;
+  }
 `;
 
-function QuizBlock({ quiz, onComplete }: { quiz: ReadingQuiz, onComplete?: () => void }) {
+function QuizBlock({
+  quiz,
+  onComplete,
+}: {
+  quiz: ReadingQuiz;
+  onComplete?: () => void;
+}) {
   const [selected, setSelected] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
@@ -243,18 +273,18 @@ function QuizBlock({ quiz, onComplete }: { quiz: ReadingQuiz, onComplete?: () =>
       <QuestionText>{quiz.question}</QuestionText>
       <OptionsGrid>
         {quiz.options.map((opt, idx) => {
-          let state: 'default' | 'selected' | 'correct' | 'wrong' = 'default';
-          
+          let state: "default" | "selected" | "correct" | "wrong" = "default";
+
           if (submitted) {
-            if (idx === quiz.correctAnswerIndex) state = 'correct';
-            else if (idx === selected) state = 'wrong';
+            if (idx === quiz.correctAnswerIndex) state = "correct";
+            else if (idx === selected) state = "wrong";
           } else {
-            if (idx === selected) state = 'selected';
+            if (idx === selected) state = "selected";
           }
-          
+
           return (
-            <OptionBtn 
-              key={idx} 
+            <OptionBtn
+              key={idx}
               $state={state}
               onClick={() => !submitted && setSelected(idx)}
               disabled={submitted}
@@ -264,19 +294,16 @@ function QuizBlock({ quiz, onComplete }: { quiz: ReadingQuiz, onComplete?: () =>
           );
         })}
       </OptionsGrid>
-      
+
       {!submitted && (
-        <SubmitBtn 
-          onClick={handleSubmit} 
-          disabled={selected === null}
-        >
+        <SubmitBtn onClick={handleSubmit} disabled={selected === null}>
           Check Answer
         </SubmitBtn>
       )}
-      
+
       {submitted && (
         <Explanation $isCorrect={isCorrect}>
-          <strong>{isCorrect ? 'Correct!' : 'Incorrect'}</strong>
+          <strong>{isCorrect ? "Correct!" : "Incorrect"}</strong>
           <span>{quiz.explanation}</span>
         </Explanation>
       )}
@@ -288,12 +315,13 @@ const CompleteBtn = styled.button<{ $completed: boolean }>`
   width: 100%;
   padding: 1.25rem;
   border-radius: 16px;
-  background: ${props => props.$completed ? '#10b981' : 'var(--surface)'};
-  color: ${props => props.$completed ? 'white' : 'var(--primary)'};
-  border: 2px solid ${props => props.$completed ? '#10b981' : 'var(--primary)'};
+  background: ${(props) => (props.$completed ? "#10b981" : "var(--surface)")};
+  color: ${(props) => (props.$completed ? "white" : "var(--primary)")};
+  border: 2px solid
+    ${(props) => (props.$completed ? "#10b981" : "var(--primary)")};
   font-size: 1.2rem;
   font-weight: 800;
-  cursor: ${props => props.$completed ? 'default' : 'pointer'};
+  cursor: ${(props) => (props.$completed ? "default" : "pointer")};
   margin-top: 3rem;
   transition: all 0.3s;
   display: flex;
@@ -302,8 +330,9 @@ const CompleteBtn = styled.button<{ $completed: boolean }>`
   gap: 0.5rem;
 
   &:hover {
-    transform: ${props => props.$completed ? 'none' : 'translateY(-2px)'};
-    box-shadow: ${props => props.$completed ? 'none' : '0 10px 25px -5px rgba(79, 70, 229, 0.2)'};
+    transform: ${(props) => (props.$completed ? "none" : "translateY(-2px)")};
+    box-shadow: ${(props) =>
+      props.$completed ? "none" : "0 10px 25px -5px rgba(79, 70, 229, 0.2)"};
   }
 `;
 
@@ -314,8 +343,14 @@ const NextStepsContainer = styled.div`
   animation: fadeIn 0.5s ease-out forwards;
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @media (max-width: 600px) {
@@ -332,13 +367,18 @@ const NavBtn = styled(Link)<{ $primary?: boolean }>`
   font-size: 1.1rem;
   text-decoration: none;
   transition: all 0.3s;
-  background: ${props => props.$primary ? 'var(--primary)' : 'var(--surface)'};
-  color: ${props => props.$primary ? 'white' : 'var(--foreground)'};
-  border: 2px solid ${props => props.$primary ? 'var(--primary)' : 'var(--border)'};
+  background: ${(props) =>
+    props.$primary ? "var(--primary)" : "var(--surface)"};
+  color: ${(props) => (props.$primary ? "white" : "var(--foreground)")};
+  border: 2px solid
+    ${(props) => (props.$primary ? "var(--primary)" : "var(--border)")};
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.$primary ? '0 10px 25px -5px rgba(79, 70, 229, 0.3)' : '0 10px 25px -5px rgba(0,0,0,0.05)'};
+    box-shadow: ${(props) =>
+      props.$primary
+        ? "0 10px 25px -5px rgba(79, 70, 229, 0.3)"
+        : "0 10px 25px -5px rgba(0,0,0,0.05)"};
   }
 `;
 
@@ -348,53 +388,95 @@ export default function ReadingDetailPage() {
   const [showFurigana, setShowFurigana] = useState(true);
   const [showTranslation, setShowTranslation] = useState(false);
   const { progress, markExerciseCompleted } = useProgress();
-  const [completedQuizzes, setCompletedQuizzes] = useState<Record<number, boolean>>({});
+  const [completedQuizzes, setCompletedQuizzes] = useState<
+    Record<number, boolean>
+  >({});
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   if (!mounted) return null;
 
-  const id = typeof params?.id === 'string' ? params.id : Array.isArray(params?.id) ? params.id[0] : null;
-  const passage = readingPassages.find(p => p.id === id);
+  const id =
+    typeof params?.id === "string"
+      ? params.id
+      : Array.isArray(params?.id)
+        ? params.id[0]
+        : null;
+  const passage = readingPassages.find((p) => p.id === id);
 
   if (!passage) {
     return (
       <Container>
-        <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Reading', href: '/study/reading' }]} current="Not Found" />
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Reading", href: "/study/reading" },
+          ]}
+          current="Not Found"
+        />
         <Title>Passage Not Found</Title>
       </Container>
     );
   }
 
-  const currentIndex = readingPassages.findIndex(p => p.id === passage.id);
-  const nextPassage = currentIndex >= 0 && currentIndex < readingPassages.length - 1 
-    ? readingPassages[currentIndex + 1] 
-    : null;
+  const currentIndex = readingPassages.findIndex((p) => p.id === passage.id);
+  const nextPassage =
+    currentIndex >= 0 && currentIndex < readingPassages.length - 1
+      ? readingPassages[currentIndex + 1]
+      : null;
 
   const isCompleted = !!progress.completedExercises?.includes(passage.id);
-  const allQuizzesCompleted = passage.quizzes 
-    ? Object.keys(completedQuizzes).length === passage.quizzes.length 
+  const allQuizzesCompleted = passage.quizzes
+    ? Object.keys(completedQuizzes).length === passage.quizzes.length
     : true;
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Reading', href: '/study/reading' }]} current={passage.title} />
-      
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Reading", href: "/study/reading" },
+        ]}
+        current={passage.title}
+      />
+
       <ControlsContainer>
         <div>
-          <span style={{ background: 'var(--primary)', color: 'white', padding: '0.2rem 0.8rem', borderRadius: '99px', fontSize: '0.85rem', fontWeight: 700, marginRight: '1rem' }}>
+          <span
+            style={{
+              background: "var(--primary)",
+              color: "white",
+              padding: "0.2rem 0.8rem",
+              borderRadius: "99px",
+              fontSize: "0.85rem",
+              fontWeight: 700,
+              marginRight: "1rem",
+            }}
+          >
             {passage.level}
           </span>
-          <Title style={{ display: 'inline-block', fontSize: '2rem' }}>{passage.title}</Title>
+          <Title style={{ display: "inline-block", fontSize: "2rem" }}>
+            {passage.title}
+          </Title>
         </div>
-        
+
         <ToggleGroup>
           <ToggleLabel>
             <span>Furigana</span>
-            <input type="checkbox" checked={showFurigana} onChange={e => setShowFurigana(e.target.checked)} />
+            <input
+              type="checkbox"
+              checked={showFurigana}
+              onChange={(e) => setShowFurigana(e.target.checked)}
+            />
           </ToggleLabel>
           <ToggleLabel>
             <span>Translation</span>
-            <input type="checkbox" checked={showTranslation} onChange={e => setShowTranslation(e.target.checked)} />
+            <input
+              type="checkbox"
+              checked={showTranslation}
+              onChange={(e) => setShowTranslation(e.target.checked)}
+            />
           </ToggleLabel>
         </ToggleGroup>
       </ControlsContainer>
@@ -402,14 +484,16 @@ export default function ReadingDetailPage() {
       <ContentContainer $showFurigana={showFurigana}>
         {passage.paragraphs.map((para, idx) => (
           <ParagraphBlock key={idx}>
-            <ClickableJapaneseText 
-                className="jp-text"
-                html={para.japanese}
-                style={{ fontSize: '1.4rem', lineHeight: '2.4', color: 'var(--foreground)' }}
+            <ClickableJapaneseText
+              className="jp-text"
+              html={para.japanese}
+              style={{
+                fontSize: "1.4rem",
+                lineHeight: "2.4",
+                color: "var(--foreground)",
+              }}
             />
-            {showTranslation && (
-              <EnglishText>{para.english}</EnglishText>
-            )}
+            {showTranslation && <EnglishText>{para.english}</EnglishText>}
           </ParagraphBlock>
         ))}
       </ContentContainer>
@@ -418,34 +502,54 @@ export default function ReadingDetailPage() {
         <QuizSection>
           <QuizTitle>Reading Comprehension Check</QuizTitle>
           {passage.quizzes.map((quiz, idx) => (
-            <QuizBlock 
-              key={idx} 
-              quiz={quiz} 
-              onComplete={() => setCompletedQuizzes(prev => ({...prev, [idx]: true}))}
+            <QuizBlock
+              key={idx}
+              quiz={quiz}
+              onComplete={() =>
+                setCompletedQuizzes((prev) => ({ ...prev, [idx]: true }))
+              }
             />
           ))}
         </QuizSection>
       )}
 
       {!isCompleted && !allQuizzesCompleted && (
-        <div style={{ textAlign: 'center', marginTop: '3rem', color: 'var(--text-secondary)', fontWeight: 600 }}>
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: "3rem",
+            color: "var(--text-secondary)",
+            fontWeight: 600,
+          }}
+        >
           📝 Please answer all questions to mark this reading as completed.
         </div>
       )}
 
-      <CompleteBtn 
+      <CompleteBtn
         $completed={isCompleted}
         onClick={() => markExerciseCompleted(passage.id)}
         disabled={isCompleted || !allQuizzesCompleted}
-        style={{ opacity: (!isCompleted && !allQuizzesCompleted) ? 0.5 : 1 }}
+        style={{ opacity: !isCompleted && !allQuizzesCompleted ? 0.5 : 1 }}
       >
         {isCompleted ? (
           <>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
             Completed
           </>
         ) : (
-          'Mark as Completed'
+          "Mark as Completed"
         )}
       </CompleteBtn>
 
@@ -453,7 +557,9 @@ export default function ReadingDetailPage() {
         <NextStepsContainer>
           <NavBtn href="/study/reading">⬅ Back to List</NavBtn>
           {nextPassage && (
-            <NavBtn href={`/study/reading/${nextPassage.id}`} $primary>Next Reading ➡</NavBtn>
+            <NavBtn href={`/study/reading/${nextPassage.id}`} $primary>
+              Next Reading ➡
+            </NavBtn>
           )}
         </NextStepsContainer>
       )}

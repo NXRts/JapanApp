@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import { TargetIcon, BookIcon, RefreshIcon } from '../icons/AppIcons';
+import styled from "styled-components";
+import { TargetIcon, BookIcon, RefreshIcon } from "../icons/AppIcons";
 
 const Section = styled.section`
   padding: 4rem 2rem;
@@ -9,7 +9,7 @@ const Section = styled.section`
   margin: 0 auto;
   width: 100%;
   overflow: hidden;
-  
+
   @media (max-width: 1024px) {
     padding: 4rem 1rem;
   }
@@ -21,13 +21,13 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin-bottom: 6rem;
   color: var(--foreground);
-  
+
   span {
     position: relative;
     z-index: 1;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -10px;
       left: 50%;
@@ -38,7 +38,7 @@ const SectionTitle = styled.h2`
       border-radius: 2px;
     }
   }
-  
+
   @media (max-width: 768px) {
     font-size: 1.75rem;
     margin-bottom: 3rem;
@@ -52,38 +52,44 @@ const TimelineWrapper = styled.div`
   align-items: flex-start;
   gap: 2rem;
   padding: 2rem 0;
-  
+
   @media (min-width: 1024px) {
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 105px;
       left: 10%;
       right: 10%;
       height: 2px;
-      background: linear-gradient(90deg, 
-        transparent 0%, 
-        var(--border) 20%, 
-        var(--border) 80%, 
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--border) 20%,
+        var(--border) 80%,
         transparent 100%
       );
       z-index: 0;
     }
   }
-  
+
   @media (max-width: 1024px) {
     flex-direction: column;
     align-items: center;
     gap: 4rem;
-    
+
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       bottom: 0;
       left: 50%;
       width: 2px;
-      background: linear-gradient(180deg, transparent, var(--border), transparent);
+      background: linear-gradient(
+        180deg,
+        transparent,
+        var(--border),
+        transparent
+      );
       z-index: 0;
     }
   }
@@ -96,7 +102,7 @@ const StepNode = styled.div`
   align-items: center;
   position: relative;
   z-index: 1;
-  
+
   &:hover {
     .dot {
       background: var(--primary);
@@ -125,8 +131,8 @@ const Dot = styled.div`
   font-size: 1.25rem;
   margin-bottom: 2.5rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
   @media (max-width: 1024px) {
     margin-bottom: 1rem;
     width: 40px;
@@ -144,7 +150,7 @@ const ContentCard = styled.div`
   text-align: center;
   width: 100%;
   transition: all 0.4s ease;
-  
+
   @media (max-width: 1024px) {
     max-width: 400px;
   }
@@ -184,37 +190,48 @@ const StepDescription = styled.p`
 export function StepsSection() {
   return (
     <Section>
-      <SectionTitle><span>How It Works</span></SectionTitle>
+      <SectionTitle>
+        <span>How It Works</span>
+      </SectionTitle>
       <TimelineWrapper>
         <StepNode>
           <Dot className="dot">1</Dot>
           <ContentCard className="content">
-            <IconWrapper><TargetIcon size={32} /></IconWrapper>
+            <IconWrapper>
+              <TargetIcon size={32} />
+            </IconWrapper>
             <StepTitle>Choose Your Roadmap</StepTitle>
             <StepDescription>
-              Start your journey with a structured path from <b>Hiragana basics</b> to advanced <b>JLPT N1</b> mastery.
+              Start your journey with a structured path from{" "}
+              <b>Hiragana basics</b> to advanced <b>JLPT N1</b> mastery.
             </StepDescription>
           </ContentCard>
         </StepNode>
-        
+
         <StepNode>
           <Dot className="dot">2</Dot>
           <ContentCard className="content">
-            <IconWrapper><BookIcon size={32} /></IconWrapper>
+            <IconWrapper>
+              <BookIcon size={32} />
+            </IconWrapper>
             <StepTitle>Interactive Practice</StepTitle>
             <StepDescription>
-              Master Kanji with our <b>Handwriting Tool</b>, drill complex <b>Grammar</b>, and sharpen ears in the <b>Audio Lab</b>.
+              Master Kanji with our <b>Handwriting Tool</b>, drill complex{" "}
+              <b>Grammar</b>, and sharpen ears in the <b>Audio Lab</b>.
             </StepDescription>
           </ContentCard>
         </StepNode>
-        
+
         <StepNode>
           <Dot className="dot">3</Dot>
           <ContentCard className="content">
-            <IconWrapper><RefreshIcon size={32} /></IconWrapper>
+            <IconWrapper>
+              <RefreshIcon size={32} />
+            </IconWrapper>
             <StepTitle>Achieve Mastery</StepTitle>
             <StepDescription>
-              Retain everything with our <b>Intelligent SRS</b> that tracks your memory and schedules perfect reviews.
+              Retain everything with our <b>Intelligent SRS</b> that tracks your
+              memory and schedules perfect reviews.
             </StepDescription>
           </ContentCard>
         </StepNode>

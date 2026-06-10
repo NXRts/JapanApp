@@ -18,10 +18,13 @@ export interface SRSItem {
  * 2 - incorrect response; where the correct one seemed easy to recall
  * 1 - incorrect response; the correct one remembered
  * 0 - complete blackout
- * 
+ *
  * For a simplified UI, we might just map: Correct -> 4 or 5, Incorrect -> 0 or 1.
  */
-export function calculateNextSRS(item: SRSItem | undefined, quality: number): SRSItem {
+export function calculateNextSRS(
+  item: SRSItem | undefined,
+  quality: number,
+): SRSItem {
   // Initial values for a new item
   let easeFactor = item?.easeFactor ?? 2.5;
   let interval = item?.interval ?? 0;
@@ -44,8 +47,9 @@ export function calculateNextSRS(item: SRSItem | undefined, quality: number): SR
   }
 
   // Adjust ease factor based on quality
-  easeFactor = easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
-  
+  easeFactor =
+    easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+
   // EF should not fall below 1.3
   if (easeFactor < 1.3) {
     easeFactor = 1.3;
@@ -54,7 +58,7 @@ export function calculateNextSRS(item: SRSItem | undefined, quality: number): SR
   // Calculate next review date
   const nextReviewDate = new Date();
   nextReviewDate.setDate(nextReviewDate.getDate() + interval);
-  // Optional: Set time to exactly midnight local time to avoid sub-day drift, 
+  // Optional: Set time to exactly midnight local time to avoid sub-day drift,
   // but keeping exact time is also fine for strict intervals.
   // We'll reset it to midnight for easier daily bucket grouping.
   nextReviewDate.setHours(0, 0, 0, 0);

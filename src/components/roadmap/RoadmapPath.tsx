@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from 'styled-components';
-import { ROADMAP_DATA } from '@/data/roadmap';
-import { RoadmapNode } from './RoadmapNode';
+import React from "react";
+import styled from "styled-components";
+import { ROADMAP_DATA } from "@/data/roadmap";
+import { RoadmapNode } from "./RoadmapNode";
 
 const PathContainer = styled.div`
   display: flex;
@@ -30,9 +30,9 @@ const ChapterTitle = styled.h3`
   text-align: center;
   margin-bottom: 2rem;
   position: relative;
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -8px;
     left: 50%;
@@ -51,7 +51,7 @@ const LessonRow = styled.div<{ $offset: number }>`
   position: relative;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -4rem;
     left: 50%;
@@ -94,13 +94,20 @@ export function RoadmapPath({ userProgress }: RoadmapPathProps) {
             globalIndex++;
             // A simple zigzag logic based on order
             const offset = index % 2 === 0 ? -1 : 1;
-            
+
             // Simple logic for status:
             // 1. If globalIndex === 1 or previous is completed -> available/completed
             // For now, let's just use userProgress or assume first is always available
             const isCompleted = userProgress[lesson.id] || false;
-            const isAvailable = index === 0 && chapter.id === 'chapter-1' || isCompleted || true; // TRUE FOR DEMO
-            const status = isCompleted ? 'completed' : (isAvailable ? 'available' : 'locked');
+            const isAvailable =
+              (index === 0 && chapter.id === "chapter-1") ||
+              isCompleted ||
+              true; // TRUE FOR DEMO
+            const status = isCompleted
+              ? "completed"
+              : isAvailable
+                ? "available"
+                : "locked";
 
             return (
               <LessonRow key={lesson.id} $offset={offset}>

@@ -1,8 +1,13 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
-import { BookIcon, SwordsIcon, SparklesIcon, ChartBarIcon } from '../icons/AppIcons';
+import styled from "styled-components";
+import Link from "next/link";
+import {
+  BookIcon,
+  SwordsIcon,
+  SparklesIcon,
+  ChartBarIcon,
+} from "../icons/AppIcons";
 
 const Grid = styled.div`
   display: grid;
@@ -31,7 +36,7 @@ const AccessCard = styled(Link)`
     background: var(--background);
     border-color: var(--primary-light);
     box-shadow: var(--shadow-lg);
-    
+
     .icon-wrapper {
       background: var(--primary);
       color: white;
@@ -66,28 +71,28 @@ const CardDescription = styled.p`
 
 const items = [
   {
-    title: 'Kana Master',
-    description: 'Learn Hiragana and Katakana from scratch with mnemonics.',
+    title: "Kana Master",
+    description: "Learn Hiragana and Katakana from scratch with mnemonics.",
     icon: <SparklesIcon size={28} />,
-    href: '/kana',
+    href: "/kana",
   },
   {
-    title: 'JLPT Prep',
-    description: 'Structured challenges for N5 to N1 proficiency levels.',
+    title: "JLPT Prep",
+    description: "Structured challenges for N5 to N1 proficiency levels.",
     icon: <SwordsIcon size={28} />,
-    href: '/jlpt',
+    href: "/jlpt",
   },
   {
-    title: 'Kanji Library',
-    description: 'Browse 2,000+ Joyo Kanji with stroke orders and meanings.',
+    title: "Kanji Library",
+    description: "Browse 2,000+ Joyo Kanji with stroke orders and meanings.",
     icon: <BookIcon size={28} />,
-    href: '/kanji',
+    href: "/kanji",
   },
   {
-    title: 'Study Stats',
-    description: 'Track your progress and maintain your daily learning streak.',
+    title: "Study Stats",
+    description: "Track your progress and maintain your daily learning streak.",
     icon: <ChartBarIcon size={28} />,
-    href: '/stats',
+    href: "/stats",
   },
 ];
 
@@ -96,9 +101,7 @@ export function QuickAccessGrid() {
     <Grid>
       {items.map((item) => (
         <AccessCard key={item.title} href={item.href}>
-          <IconWrapper className="icon-wrapper">
-            {item.icon}
-          </IconWrapper>
+          <IconWrapper className="icon-wrapper">{item.icon}</IconWrapper>
           <CardTitle>{item.title}</CardTitle>
           <CardDescription>{item.description}</CardDescription>
         </AccessCard>

@@ -1,18 +1,24 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import styled, { css, createGlobalStyle } from 'styled-components';
-import { usePathname } from 'next/navigation';
-import dynamic from 'next/dynamic';
-import { useProgress } from '@/context/ProgressContext';
-import { isItemDue } from '@/lib/srs';
-import { ArrowRightIcon, UserIcon } from './icons/AppIcons';
-import { useDeviceMode } from '@/context/DeviceModeContext';
-import { DeviceModeSwitcher } from '@/components/DeviceModeSwitcher';
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import styled, { css, createGlobalStyle } from "styled-components";
+import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
+import { useProgress } from "@/context/ProgressContext";
+import { isItemDue } from "@/lib/srs";
+import { ArrowRightIcon, UserIcon } from "./icons/AppIcons";
+import { useDeviceMode } from "@/context/DeviceModeContext";
+import { DeviceModeSwitcher } from "@/components/DeviceModeSwitcher";
 
-const SettingsModal = dynamic(() => import('./SettingsModal').then((mod) => mod.SettingsModal), { ssr: false });
-const DictionarySearchOverlay = dynamic(() => import('./dictionary/DictionarySearchOverlay'), { ssr: false });
+const SettingsModal = dynamic(
+  () => import("./SettingsModal").then((mod) => mod.SettingsModal),
+  { ssr: false },
+);
+const DictionarySearchOverlay = dynamic(
+  () => import("./dictionary/DictionarySearchOverlay"),
+  { ssr: false },
+);
 
 const NavRoot = styled.nav<{ $hideOnDesktop?: boolean }>`
   position: sticky;
@@ -24,11 +30,13 @@ const NavRoot = styled.nav<{ $hideOnDesktop?: boolean }>`
   border-bottom: 1px solid var(--navbar-border);
   transition: all 0.3s ease;
 
-  ${({ $hideOnDesktop }) => $hideOnDesktop && css`
-    @media (min-width: 1101px) {
-      display: none;
-    }
-  `}
+  ${({ $hideOnDesktop }) =>
+    $hideOnDesktop &&
+    css`
+      @media (min-width: 1101px) {
+        display: none;
+      }
+    `}
 
   @media (max-width: 768px) {
     background: var(--surface); /* Solid white/surface color on mobile */
@@ -42,7 +50,7 @@ const AuthButtonGroup = styled.div`
   align-items: center;
   gap: 1.25rem;
   margin-left: 0.5rem;
-  
+
   @media (max-width: 1100px) {
     display: none;
   }
@@ -54,7 +62,7 @@ const LoginLink = styled(Link)`
   color: var(--text-secondary);
   text-decoration: none;
   transition: all 0.2s;
-  
+
   &:hover {
     color: var(--primary);
   }
@@ -62,7 +70,11 @@ const LoginLink = styled(Link)`
 
 const RegisterButton = styled(Link)`
   padding: 0.5rem 1.25rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   border-radius: 999px;
   font-size: 0.9rem;
@@ -70,7 +82,7 @@ const RegisterButton = styled(Link)`
   text-decoration: none;
   transition: all 0.3s;
   box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.2);
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(var(--primary-rgb), 0.3);
@@ -104,9 +116,13 @@ const Logo = styled(Link)`
   &:hover {
     opacity: 0.8;
   }
-  
+
   span {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--primary-light) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -124,7 +140,7 @@ const NavList = styled.ul`
   gap: 1.25rem;
   margin: 0;
   padding: 0;
-  
+
   @media (max-width: 1100px) {
     display: none;
   }
@@ -134,14 +150,15 @@ const NavItem = styled.li`
   position: relative;
 `;
 
-const StyledLink = styled(Link) <{ $active?: boolean }>`
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+const StyledLink = styled(Link)<{ $active?: boolean }>`
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   text-decoration: none;
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   transition: color 0.2s ease;
-  
+
   &:hover {
     color: var(--primary);
   }
@@ -168,7 +185,7 @@ const DropdownMenu = styled.div`
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -12px;
     left: 0;
@@ -188,7 +205,8 @@ const DropdownItem = styled(Link)<{ $active?: boolean }>`
   display: block;
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   text-decoration: none;
   font-size: 0.82rem;
   font-weight: 600;
@@ -240,7 +258,8 @@ const SearchBtn = styled(SettingsBtn)<{ $hideOnMobile?: boolean }>`
   }
 
   @media (max-width: 600px) {
-    display: ${({ $hideOnMobile }) => ($hideOnMobile ? 'none' : 'flex')} !important;
+    display: ${({ $hideOnMobile }) =>
+      $hideOnMobile ? "none" : "flex"} !important;
   }
 `;
 
@@ -265,7 +284,8 @@ const UserBtn = styled(Link)<{ $hideOnMobile?: boolean }>`
 
   @media (max-width: 600px) {
     padding: 5px;
-    display: ${({ $hideOnMobile }) => ($hideOnMobile ? 'none' : 'flex')} !important;
+    display: ${({ $hideOnMobile }) =>
+      $hideOnMobile ? "none" : "flex"} !important;
   }
 
   svg {
@@ -274,7 +294,10 @@ const UserBtn = styled(Link)<{ $hideOnMobile?: boolean }>`
   }
 `;
 
-const HamburgerBtn = styled.button<{ $isOpen: boolean; $isMobileMode?: boolean }>`
+const HamburgerBtn = styled.button<{
+  $isOpen: boolean;
+  $isMobileMode?: boolean;
+}>`
   display: none;
   background: transparent;
   border: none;
@@ -282,9 +305,9 @@ const HamburgerBtn = styled.button<{ $isOpen: boolean; $isMobileMode?: boolean }
   color: var(--foreground);
   padding: 0.5rem;
   z-index: 102; /* Above mobile menu */
-  
+
   @media (max-width: 1100px) {
-    display: ${({ $isMobileMode }) => ($isMobileMode ? 'none' : 'flex')};
+    display: ${({ $isMobileMode }) => ($isMobileMode ? "none" : "flex")};
     align-items: center;
     justify-content: center;
     width: 44px;
@@ -297,13 +320,13 @@ const HamburgerBtn = styled.button<{ $isOpen: boolean; $isMobileMode?: boolean }
     height: 44px;
     padding: 0; /* Maintain minimum 44px x 44px touch target on smaller mobile screens */
   }
-  
+
   svg {
     width: 24px;
     height: 24px;
     fill: currentColor;
     transition: transform 0.3s ease;
-    transform: ${({ $isOpen }) => ($isOpen ? 'rotate(90deg)' : 'rotate(0)')};
+    transform: ${({ $isOpen }) => ($isOpen ? "rotate(90deg)" : "rotate(0)")};
   }
 `;
 
@@ -333,7 +356,7 @@ const Badge = styled.span`
 
 const LevelBadge = styled.div`
   font-size: 0.72rem;
-  font-family: 'DM Mono', monospace;
+  font-family: "DM Mono", monospace;
   background: rgba(var(--primary-rgb), 0.1);
   border: 1px solid var(--border);
   padding: 3px 10px;
@@ -345,7 +368,7 @@ const LevelBadge = styled.div`
   align-items: center;
   white-space: nowrap;
   flex-shrink: 0;
-  
+
   &:hover {
     background: rgba(var(--primary-rgb), 0.15);
     border-color: var(--primary);
@@ -354,7 +377,7 @@ const LevelBadge = styled.div`
   @media (max-width: 600px) {
     padding: 2px 6px;
     font-size: 0.65rem;
-    
+
     .level-bar {
       display: none;
     }
@@ -372,9 +395,9 @@ const MobileMenuOverlay = styled.div<{ $isOpen: boolean }>`
   -webkit-backdrop-filter: blur(4px);
   z-index: 100; /* Behind MobileMenu (101) but above page content */
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
-  pointer-events: ${({ $isOpen }) => ($isOpen ? 'all' : 'none')};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? "all" : "none")};
   transition: opacity 0.3s ease;
-  
+
   @media (min-width: 1101px) {
     display: none;
   }
@@ -393,20 +416,25 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   flex-direction: column;
   gap: 0.75rem;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  transform: ${({ $isOpen }) => ($isOpen ? 'translateY(0)' : 'translateY(-100%)')};
-  opacity: ${({ $isOpen }) => ($isOpen ? '1' : '0')};
-  pointer-events: ${({ $isOpen }) => ($isOpen ? 'all' : 'none')};
+  transform: ${({ $isOpen }) =>
+    $isOpen ? "translateY(0)" : "translateY(-100%)"};
+  opacity: ${({ $isOpen }) => ($isOpen ? "1" : "0")};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? "all" : "none")};
   overflow-y: auto;
-  
+
   @media (min-width: 1101px) {
     display: none;
   }
 `;
 
-const MobileLink = styled(Link) <{ $active?: boolean; $isOpen: boolean; $delay: number }>`
+const MobileLink = styled(Link)<{
+  $active?: boolean;
+  $isOpen: boolean;
+  $delay: number;
+}>`
   font-size: 1.4rem;
-  font-weight: ${({ $active }) => ($active ? '700' : '600')};
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--foreground)')};
+  font-weight: ${({ $active }) => ($active ? "700" : "600")};
+  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--foreground)")};
   text-decoration: none;
   padding: 1rem 0.5rem; /* Increased vertical padding for better tap targets and layout */
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -414,17 +442,19 @@ const MobileLink = styled(Link) <{ $active?: boolean; $isOpen: boolean; $delay: 
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--navbar-border);
-  
+
   /* Staggered animation */
   opacity: 0;
   transform: translateY(20px);
-  ${({ $isOpen }) => $isOpen && `
+  ${({ $isOpen }) =>
+    $isOpen &&
+    `
     opacity: 1;
     transform: translateY(0);
   `}
   transition-property: opacity, transform, color, padding, border;
   transition-delay: ${({ $delay }) => $delay}s;
-  
+
   &:hover {
     color: var(--primary);
     padding-left: 1rem;
@@ -446,7 +476,11 @@ const MobileDictBtn = styled.div<{ $isOpen: boolean; $delay: number }>`
   margin-top: 1.5rem;
   padding: 1.25rem;
   border-radius: 20px;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(79, 70, 229, 0.1) 0%,
+    rgba(59, 130, 246, 0.05) 100%
+  );
   border: 1px solid rgba(79, 70, 229, 0.2);
   color: var(--primary);
   font-weight: 700;
@@ -455,11 +489,13 @@ const MobileDictBtn = styled.div<{ $isOpen: boolean; $delay: number }>`
   justify-content: center;
   gap: 0.75rem;
   cursor: pointer;
-  
+
   /* Staggered animation */
   opacity: 0;
   transform: translateY(20px);
-  ${({ $isOpen }) => $isOpen && `
+  ${({ $isOpen }) =>
+    $isOpen &&
+    `
     opacity: 1;
     transform: translateY(0);
   `}
@@ -479,9 +515,9 @@ const MobileDictBtn = styled.div<{ $isOpen: boolean; $delay: number }>`
 
 const BottomBar = styled.div<{ $isMounted: boolean }>`
   display: none;
-  
+
   @media (max-width: 1100px) {
-    display: ${({ $isMounted }) => ($isMounted ? 'flex' : 'none')};
+    display: ${({ $isMounted }) => ($isMounted ? "flex" : "none")};
     position: fixed;
     bottom: 0;
     left: 0;
@@ -497,13 +533,14 @@ const BottomBar = styled.div<{ $isMounted: boolean }>`
   }
 `;
 
-const BottomTab = styled(Link) <{ $active?: boolean }>`
+const BottomTab = styled(Link)<{ $active?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 3px;
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   text-decoration: none;
   font-size: 0.72rem;
   font-weight: 700;
@@ -529,7 +566,14 @@ const BottomTab = styled(Link) <{ $active?: boolean }>`
 
 function HomeIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
       <polyline points="9 22 9 12 15 12 15 22" />
     </svg>
@@ -538,7 +582,14 @@ function HomeIcon() {
 
 function GameIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <rect x="2" y="6" width="20" height="12" rx="3" />
       <line x1="6" y1="12" x2="10" y2="12" />
       <line x1="8" y1="10" x2="8" y2="14" />
@@ -550,7 +601,14 @@ function GameIcon() {
 
 function JlptIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
       <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
     </svg>
@@ -577,7 +635,14 @@ function CharactersIcon() {
 
 function PracticeIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M6 12h12" />
       <path d="M6 8v8M4 7v10M2 9v6" />
       <path d="M18 8v8M20 7v10M22 9v6" />
@@ -585,10 +650,16 @@ function PracticeIcon() {
   );
 }
 
-
 function ProfileIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
     </svg>
@@ -597,7 +668,14 @@ function ProfileIcon() {
 
 function StatsIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M12 2v20M17 5v17M7 9v13" />
     </svg>
   );
@@ -605,7 +683,14 @@ function StatsIcon() {
 
 function AboutIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <circle cx="12" cy="12" r="10" />
       <line x1="12" y1="16" x2="12" y2="12" />
       <line x1="12" y1="8" x2="12.01" y2="8" />
@@ -640,7 +725,7 @@ const SidebarRoot = styled.aside`
     border-right: 2px solid var(--border);
     padding: 1.5rem 1.25rem;
     z-index: 999;
-    font-family: 'Nunito', 'Outfit', sans-serif;
+    font-family: "Nunito", "Outfit", sans-serif;
   }
 `;
 
@@ -654,9 +739,13 @@ const SidebarLogo = styled(Link)`
   gap: 10px;
   margin-bottom: 2rem;
   padding: 0.5rem;
-  
+
   span {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--primary) 0%,
+      var(--primary-light) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -675,13 +764,14 @@ const SidebarNavItem = styled(Link)<{ $active?: boolean }>`
   gap: 12px;
   padding: 0.75rem 1rem;
   border-radius: 16px;
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   text-decoration: none;
   font-weight: 700;
   font-size: 0.9rem;
   transition: all 0.2s ease;
   border: 2px solid transparent;
-  
+
   svg {
     width: 20px;
     height: 20px;
@@ -698,15 +788,17 @@ const SidebarNavItem = styled(Link)<{ $active?: boolean }>`
     transform: scale(0.97) translateX(4px);
   }
 
-  ${({ $active }) => $active && css`
-    background: rgba(var(--primary-rgb), 0.12);
-    border: 2px solid var(--primary);
-    color: var(--primary);
-    
-    svg {
-      transform: scale(1.1);
-    }
-  `}
+  ${({ $active }) =>
+    $active &&
+    css`
+      background: rgba(var(--primary-rgb), 0.12);
+      border: 2px solid var(--primary);
+      color: var(--primary);
+
+      svg {
+        transform: scale(1.1);
+      }
+    `}
 `;
 
 const SidebarFooter = styled.div`
@@ -756,7 +848,11 @@ const SidebarProgressBar = styled.div`
 const SidebarProgressFill = styled.div<{ $width: number }>`
   height: 100%;
   width: ${({ $width }) => $width}%;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--primary) 0%,
+    var(--primary-light) 100%
+  );
   border-radius: 99px;
 `;
 
@@ -802,7 +898,8 @@ const SidebarNavButton = styled.button<{ $active?: boolean }>`
   gap: 12px;
   padding: 0.75rem 1rem;
   border-radius: 16px;
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   background: transparent;
   border: 2px solid transparent;
   width: 100%;
@@ -812,7 +909,7 @@ const SidebarNavButton = styled.button<{ $active?: boolean }>`
   cursor: pointer;
   transition: all 0.2s ease;
   font-family: inherit;
-  
+
   svg {
     width: 20px;
     height: 20px;
@@ -829,11 +926,13 @@ const SidebarNavButton = styled.button<{ $active?: boolean }>`
     transform: scale(0.97) translateX(4px);
   }
 
-  ${({ $active }) => $active && css`
-    background: rgba(var(--primary-rgb), 0.12);
-    border: 2px solid var(--primary);
-    color: var(--primary);
-  `}
+  ${({ $active }) =>
+    $active &&
+    css`
+      background: rgba(var(--primary-rgb), 0.12);
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    `}
 `;
 
 function MoreIcon() {
@@ -861,8 +960,9 @@ const PopoverMenu = styled.div<{ $isOpen: boolean }>`
   flex-direction: column;
   gap: 0.25rem;
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
-  transform: ${({ $isOpen }) => ($isOpen ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(10px)')};
-  pointer-events: ${({ $isOpen }) => ($isOpen ? 'all' : 'none')};
+  transform: ${({ $isOpen }) =>
+    $isOpen ? "scale(1) translateY(0)" : "scale(0.95) translateY(10px)"};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? "all" : "none")};
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 `;
 
@@ -894,17 +994,39 @@ const PopoverDivider = styled.div`
 
 function CertificateIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '18px', height: '18px', flexShrink: 0 }}>
-      <path d="M12 2L15 5L19 4L18 8L21 11L17 12L16 16L12 15L8 16L7 12L3 11L6 8L5 4L9 5L12 2Z" fill="#22c55e" />
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+    >
+      <path
+        d="M12 2L15 5L19 4L18 8L21 11L17 12L16 16L12 15L8 16L7 12L3 11L6 8L5 4L9 5L12 2Z"
+        fill="#22c55e"
+      />
       <circle cx="12" cy="9.5" r="3.5" fill="white" />
-      <path d="M10 14L12 17L14 14" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M10 14L12 17L14 14"
+        stroke="#22c55e"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function GlobeIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '18px', height: '18px', color: '#3b82f6', flexShrink: 0 }}>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ width: "18px", height: "18px", color: "#3b82f6", flexShrink: 0 }}
+    >
       <circle cx="12" cy="12" r="10" />
       <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
       <path d="M2 12h20" />
@@ -914,16 +1036,43 @@ function GlobeIcon() {
 
 function QuizIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '18px', height: '18px', flexShrink: 0 }}>
-      <circle cx="12" cy="12" r="10" fill="#22c55e" fillOpacity="0.15" stroke="#22c55e" strokeWidth="2.5" />
-      <path d="M9 12L11 14L15 10" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        fill="#22c55e"
+        fillOpacity="0.15"
+        stroke="#22c55e"
+        strokeWidth="2.5"
+      />
+      <path
+        d="M9 12L11 14L15 10"
+        stroke="#22c55e"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 function BookIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '18px', height: '18px', flexShrink: 0 }}>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#3b82f6"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+    >
       <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
       <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
     </svg>
@@ -940,13 +1089,16 @@ export function Navbar() {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (lainnyaRef.current && !lainnyaRef.current.contains(event.target as Node)) {
+      if (
+        lainnyaRef.current &&
+        !lainnyaRef.current.contains(event.target as Node)
+      ) {
         setIsLainnyaOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
   const { progress } = useProgress();
@@ -965,117 +1117,148 @@ export function Navbar() {
   // Prevent background scrolling when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     };
   }, [isMobileMenuOpen]);
 
   // Close menu when route changes (optional, but good for UX if Link doesn't fully reload)
   // We handle it via onClick on Links usually
-  if (pathname === '/login' || pathname === '/register') return null;
+  if (pathname === "/login" || pathname === "/register") return null;
 
-  const isWidescreenMobileSim = isMounted && deviceMode === 'mobile';
+  const isWidescreenMobileSim = isMounted && deviceMode === "mobile";
 
   return (
     <>
       {isWidescreenMobileSim && <GlobalSidebarPadding />}
-      
+
       {/* Permanent Left Sidebar for Desktop view */}
       {isWidescreenMobileSim && (
         <SidebarRoot>
           <SidebarLogo href="/">
             🇯🇵 <span>JapanApp</span>
           </SidebarLogo>
-          
+
           <SidebarNavList>
-            <SidebarNavItem href="/" $active={pathname === '/'}>
+            <SidebarNavItem href="/" $active={pathname === "/"}>
               <HomeIcon />
               Learn
             </SidebarNavItem>
-            
-            <SidebarNavItem href="/characters" $active={pathname.startsWith('/characters')}>
+
+            <SidebarNavItem
+              href="/characters"
+              $active={pathname.startsWith("/characters")}
+            >
               <CharactersIcon />
               Characters
             </SidebarNavItem>
-            
-            <SidebarNavItem href="/practice" $active={pathname === '/practice'}>
+
+            <SidebarNavItem href="/practice" $active={pathname === "/practice"}>
               <PracticeIcon />
               Practice
             </SidebarNavItem>
-            
-            <SidebarNavItem href="/jlpt" $active={pathname.startsWith('/jlpt')}>
+
+            <SidebarNavItem href="/jlpt" $active={pathname.startsWith("/jlpt")}>
               <JlptIcon />
               JLPT
             </SidebarNavItem>
-            
-            <SidebarNavItem href="/game" $active={pathname.startsWith('/game')}>
+
+            <SidebarNavItem href="/game" $active={pathname.startsWith("/game")}>
               <GameIcon />
               Game
             </SidebarNavItem>
-            
-            <SidebarNavItem href="/stats" $active={pathname === '/stats'}>
+
+            <SidebarNavItem href="/stats" $active={pathname === "/stats"}>
               <StatsIcon />
               Stats
             </SidebarNavItem>
-            
-            <SidebarNavItem href="/about" $active={pathname === '/about'}>
+
+            <SidebarNavItem href="/about" $active={pathname === "/about"}>
               <AboutIcon />
               About
             </SidebarNavItem>
 
-            <SidebarNavItem href="/profile" $active={pathname === '/profile'}>
+            <SidebarNavItem href="/profile" $active={pathname === "/profile"}>
               <ProfileIcon />
               Profile
             </SidebarNavItem>
 
             {/* LAINNYA / MORE DROPDOWN TOGGLE */}
-            <div style={{ position: 'relative' }} ref={lainnyaRef}>
-              <SidebarNavButton onClick={() => setIsLainnyaOpen(!isLainnyaOpen)} $active={isLainnyaOpen}>
+            <div style={{ position: "relative" }} ref={lainnyaRef}>
+              <SidebarNavButton
+                onClick={() => setIsLainnyaOpen(!isLainnyaOpen)}
+                $active={isLainnyaOpen}
+              >
                 <MoreIcon />
                 Lainnya
               </SidebarNavButton>
 
               <PopoverMenu $isOpen={isLainnyaOpen}>
-                <Link href="/quiz" style={{ textDecoration: 'none', color: 'inherit' }} onClick={() => setIsLainnyaOpen(false)}>
+                <Link
+                  href="/quiz"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
                   <PopoverItem>
                     <QuizIcon />
                     Quiz
                   </PopoverItem>
                 </Link>
-                <Link href="/materi" style={{ textDecoration: 'none', color: 'inherit' }} onClick={() => setIsLainnyaOpen(false)}>
+                <Link
+                  href="/materi"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
                   <PopoverItem>
                     <BookIcon />
                     Learning Materials
                   </PopoverItem>
                 </Link>
-                
+
                 <PopoverDivider />
-                
-                <PopoverItem onClick={() => { setIsSettingsOpen(true); setIsLainnyaOpen(false); }}>
+
+                <PopoverItem
+                  onClick={() => {
+                    setIsSettingsOpen(true);
+                    setIsLainnyaOpen(false);
+                  }}
+                >
                   Pengaturan
                 </PopoverItem>
-                <Link href="/about" style={{ textDecoration: 'none', color: 'inherit' }} onClick={() => setIsLainnyaOpen(false)}>
-                  <PopoverItem>
-                    Bantuan
-                  </PopoverItem>
+                <Link
+                  href="/about"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem>Bantuan</PopoverItem>
                 </Link>
-                <PopoverItem onClick={() => { window.location.href = '/login'; }}>
+                <PopoverItem
+                  onClick={() => {
+                    window.location.href = "/login";
+                  }}
+                >
                   Keluar
                 </PopoverItem>
               </PopoverMenu>
             </div>
           </SidebarNavList>
-          
+
           <SidebarFooter>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.25rem' }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginBottom: "0.25rem",
+              }}
+            >
               <DeviceModeSwitcher />
             </div>
-            
+
             <SidebarLevelCard href="/stats" title={`${progress.exp} Total EXP`}>
               <SidebarLevelHeader>
                 <span>LEVEL {level}</span>
@@ -1085,17 +1268,30 @@ export function Navbar() {
                 <SidebarProgressFill $width={percent} />
               </SidebarProgressBar>
             </SidebarLevelCard>
-            
+
             <SidebarActionButtons>
-              <SidebarActionButton onClick={() => setIsDictionaryOpen(true)} title="Dictionary (Jisho)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <SidebarActionButton
+                onClick={() => setIsDictionaryOpen(true)}
+                title="Dictionary (Jisho)"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <circle cx="11" cy="11" r="8" />
                   <path d="m21 21-4.3-4.3" />
                 </svg>
                 Dictionary
               </SidebarActionButton>
-              
-              <SidebarActionButton onClick={() => setIsSettingsOpen(true)} title="Settings">
+
+              <SidebarActionButton
+                onClick={() => setIsSettingsOpen(true)}
+                title="Settings"
+              >
                 <svg viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
                 </svg>
@@ -1108,24 +1304,52 @@ export function Navbar() {
 
       <NavRoot $hideOnDesktop={isWidescreenMobileSim}>
         <NavContainer>
-          {isMounted && deviceMode === 'mobile' ? (
+          {isMounted && deviceMode === "mobile" ? (
             <>
               <Logo href="/" onClick={() => setIsMobileMenuOpen(false)}>
                 🇯🇵 <span>JapanApp</span>
               </Logo>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'center', flex: 1, margin: '0 0.25rem' }}>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.4rem",
+                  justifyContent: "center",
+                  flex: 1,
+                  margin: "0 0.25rem",
+                }}
+              >
                 <DeviceModeSwitcher />
-                <Link href="/stats" style={{ textDecoration: 'none' }}>
-                  <LevelBadge style={{ borderRadius: '999px', fontSize: '0.68rem', padding: '4px 8px' }} title={`${progress.exp} Total EXP`}>
+                <Link href="/stats" style={{ textDecoration: "none" }}>
+                  <LevelBadge
+                    style={{
+                      borderRadius: "999px",
+                      fontSize: "0.68rem",
+                      padding: "4px 8px",
+                    }}
+                    title={`${progress.exp} Total EXP`}
+                  >
                     LVL {level}
                   </LevelBadge>
                 </Link>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-                <SearchBtn onClick={() => setIsDictionaryOpen(true)} title="Dictionary (Jisho)">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.2rem" }}
+              >
+                <SearchBtn
+                  onClick={() => setIsDictionaryOpen(true)}
+                  title="Dictionary (Jisho)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <circle cx="11" cy="11" r="8" />
                     <path d="m21 21-4.3-4.3" />
                   </svg>
@@ -1133,7 +1357,10 @@ export function Navbar() {
                 <UserBtn href="/profile" title="Profile">
                   <UserIcon size={20} />
                 </UserBtn>
-                <SettingsBtn onClick={() => setIsSettingsOpen(true)} title="Settings">
+                <SettingsBtn
+                  onClick={() => setIsSettingsOpen(true)}
+                  title="Settings"
+                >
                   <svg viewBox="0 0 24 24">
                     <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
                   </svg>
@@ -1148,95 +1375,190 @@ export function Navbar() {
 
               <NavList>
                 <NavItem>
-                  <StyledLink href="/" $active={pathname === '/'}>Home</StyledLink>
+                  <StyledLink href="/" $active={pathname === "/"}>
+                    Home
+                  </StyledLink>
                 </NavItem>
 
                 <NavItem>
-                  <StyledLink href="/study" $active={pathname.startsWith('/study')}>Study</StyledLink>
+                  <StyledLink
+                    href="/study"
+                    $active={pathname.startsWith("/study")}
+                  >
+                    Study
+                  </StyledLink>
                 </NavItem>
                 <NavItem>
-                  <StyledLink href="/characters" $active={pathname.startsWith('/characters')}>Characters</StyledLink>
+                  <StyledLink
+                    href="/characters"
+                    $active={pathname.startsWith("/characters")}
+                  >
+                    Characters
+                  </StyledLink>
                 </NavItem>
 
                 <NavItem>
-                  <StyledLink href="/practice" $active={pathname === '/practice'}>Practice</StyledLink>
+                  <StyledLink
+                    href="/practice"
+                    $active={pathname === "/practice"}
+                  >
+                    Practice
+                  </StyledLink>
                 </NavItem>
 
                 <NavItem>
-                  <StyledLink href="/quiz" $active={pathname.startsWith('/quiz')}>Quiz</StyledLink>
+                  <StyledLink
+                    href="/quiz"
+                    $active={pathname.startsWith("/quiz")}
+                  >
+                    Quiz
+                  </StyledLink>
                 </NavItem>
                 <NavItem>
-                  <StyledLink href="/jlpt" $active={pathname.startsWith('/jlpt')}>JLPT</StyledLink>
+                  <StyledLink
+                    href="/jlpt"
+                    $active={pathname.startsWith("/jlpt")}
+                  >
+                    JLPT
+                  </StyledLink>
                 </NavItem>
                 <NavItem>
-                  <StyledLink href="/game" $active={pathname.startsWith('/game')}>Game</StyledLink>
+                  <StyledLink
+                    href="/game"
+                    $active={pathname.startsWith("/game")}
+                  >
+                    Game
+                  </StyledLink>
                 </NavItem>
                 <NavItem>
-                  <StyledLink href="/blog" $active={pathname.startsWith('/blog')}>Blog</StyledLink>
+                  <StyledLink
+                    href="/blog"
+                    $active={pathname.startsWith("/blog")}
+                  >
+                    Blog
+                  </StyledLink>
                 </NavItem>
                 {/* <NavItem>
                   <StyledLink href="/careers" $active={pathname === '/careers'}>Careers</StyledLink>
                 </NavItem> */}
                 <NavItem>
-                  <StyledLink href="/stats" $active={pathname === '/stats'}>Stats</StyledLink>
+                  <StyledLink href="/stats" $active={pathname === "/stats"}>
+                    Stats
+                  </StyledLink>
                 </NavItem>
                 <NavItem>
-                  <StyledLink href="/profile" $active={pathname === '/profile'}>Profile</StyledLink>
+                  <StyledLink href="/profile" $active={pathname === "/profile"}>
+                    Profile
+                  </StyledLink>
                 </NavItem>
                 <NavItem>
-                  <StyledLink href="#" onClick={(e) => e.preventDefault()} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <StyledLink
+                    href="#"
+                    onClick={(e) => e.preventDefault()}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
                     More
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ width: '12px', height: '12px' }}>
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{ width: "12px", height: "12px" }}
+                    >
                       <polyline points="6 9 12 15 18 9" />
                     </svg>
                   </StyledLink>
                   <DropdownMenu>
-                    <DropdownItem href="/materi" $active={pathname.startsWith('/materi')}>Materials</DropdownItem>
-                    <DropdownItem href="/practice-sheets" $active={pathname === '/practice-sheets'}>Sheets</DropdownItem>
-                    <DropdownItem href="/about" $active={pathname === '/about'}>About</DropdownItem>
-                    <DropdownItem href="/contact" $active={pathname === '/contact'}>Contact</DropdownItem>
+                    <DropdownItem
+                      href="/materi"
+                      $active={pathname.startsWith("/materi")}
+                    >
+                      Materials
+                    </DropdownItem>
+                    <DropdownItem
+                      href="/practice-sheets"
+                      $active={pathname === "/practice-sheets"}
+                    >
+                      Sheets
+                    </DropdownItem>
+                    <DropdownItem href="/about" $active={pathname === "/about"}>
+                      About
+                    </DropdownItem>
+                    <DropdownItem
+                      href="/contact"
+                      $active={pathname === "/contact"}
+                    >
+                      Contact
+                    </DropdownItem>
                   </DropdownMenu>
                 </NavItem>
               </NavList>
 
               <RightNavContainer>
                 <DeviceModeSwitcher />
-                
-                <Link href="/stats" style={{ textDecoration: 'none' }}>
+
+                <Link href="/stats" style={{ textDecoration: "none" }}>
                   <LevelBadge title={`${progress.exp} Total EXP`}>
-                    LVL {level} <span className="level-bar">{'▰'.repeat(Math.round(percent / 20)) + '▱'.repeat(5 - Math.round(percent / 20))}</span>
+                    LVL {level}{" "}
+                    <span className="level-bar">
+                      {"▰".repeat(Math.round(percent / 20)) +
+                        "▱".repeat(5 - Math.round(percent / 20))}
+                    </span>
                   </LevelBadge>
                 </Link>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-                  <SearchBtn 
-                    $isOpen={isMobileMenuOpen} 
-                    onClick={() => setIsDictionaryOpen(true)} 
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.2rem",
+                  }}
+                >
+                  <SearchBtn
+                    $isOpen={isMobileMenuOpen}
+                    onClick={() => setIsDictionaryOpen(true)}
                     title="Dictionary (Jisho)"
-                    $hideOnMobile={deviceMode === 'pc'}
+                    $hideOnMobile={deviceMode === "pc"}
                   >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <circle cx="11" cy="11" r="8" />
                       <path d="m21 21-4.3-4.3" />
                     </svg>
                   </SearchBtn>
 
-                  <UserBtn 
-                    href="/profile" 
+                  <UserBtn
+                    href="/profile"
                     title="Profile"
-                    $hideOnMobile={deviceMode === 'pc'}
+                    $hideOnMobile={deviceMode === "pc"}
                   >
                     <UserIcon size={22} />
                   </UserBtn>
 
-                  <SettingsBtn $isOpen={isMobileMenuOpen} onClick={() => setIsSettingsOpen(true)} title="Settings">
+                  <SettingsBtn
+                    $isOpen={isMobileMenuOpen}
+                    onClick={() => setIsSettingsOpen(true)}
+                    title="Settings"
+                  >
                     <svg viewBox="0 0 24 24">
                       <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
                     </svg>
                   </SettingsBtn>
                 </div>
 
-                {isMounted && deviceMode !== 'mobile' && (
+                {isMounted && deviceMode !== "mobile" && (
                   <HamburgerBtn
                     $isOpen={isMobileMenuOpen}
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -1244,9 +1566,13 @@ export function Navbar() {
                     $isMobileMode={false}
                   >
                     {isMobileMenuOpen ? (
-                      <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
+                      <svg viewBox="0 0 24 24">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                      </svg>
                     ) : (
-                      <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" /></svg>
+                      <svg viewBox="0 0 24 24">
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                      </svg>
                     )}
                   </HamburgerBtn>
                 )}
@@ -1255,64 +1581,179 @@ export function Navbar() {
           )}
         </NavContainer>
 
-        <MobileMenuOverlay $isOpen={isMobileMenuOpen} onClick={() => setIsMobileMenuOpen(false)} />
+        <MobileMenuOverlay
+          $isOpen={isMobileMenuOpen}
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
         <MobileMenu $isOpen={isMobileMenuOpen}>
-          <MobileLink href="/" $active={pathname === '/'} $isOpen={isMobileMenuOpen} $delay={0.1} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/"
+            $active={pathname === "/"}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.1}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Home
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
 
-          <MobileLink href="/study" $active={pathname.startsWith('/study')} $isOpen={isMobileMenuOpen} $delay={0.17} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/study"
+            $active={pathname.startsWith("/study")}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.17}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Study
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/characters" $active={pathname.startsWith('/characters')} $isOpen={isMobileMenuOpen} $delay={0.18} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/characters"
+            $active={pathname.startsWith("/characters")}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.18}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Characters
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/practice" $active={pathname === '/practice'} $isOpen={isMobileMenuOpen} $delay={0.19} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/practice"
+            $active={pathname === "/practice"}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.19}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Practice
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/quiz" $active={pathname.startsWith('/quiz')} $isOpen={isMobileMenuOpen} $delay={0.2} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/quiz"
+            $active={pathname.startsWith("/quiz")}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.2}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Quiz
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/materi" $active={pathname.startsWith('/materi')} $isOpen={isMobileMenuOpen} $delay={0.25} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/materi"
+            $active={pathname.startsWith("/materi")}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.25}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Materials
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/practice-sheets" $active={pathname === '/practice-sheets'} $isOpen={isMobileMenuOpen} $delay={0.28} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/practice-sheets"
+            $active={pathname === "/practice-sheets"}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.28}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Practice Sheets
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/jlpt" $active={pathname.startsWith('/jlpt')} $isOpen={isMobileMenuOpen} $delay={0.31} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/jlpt"
+            $active={pathname.startsWith("/jlpt")}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.31}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             JLPT
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/game" $active={pathname.startsWith('/game')} $isOpen={isMobileMenuOpen} $delay={0.35} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/game"
+            $active={pathname.startsWith("/game")}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.35}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Game
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/blog" $active={pathname.startsWith('/blog')} $isOpen={isMobileMenuOpen} $delay={0.4} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/blog"
+            $active={pathname.startsWith("/blog")}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.4}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Blog
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/stats" $active={pathname === '/stats'} $isOpen={isMobileMenuOpen} $delay={0.45} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/stats"
+            $active={pathname === "/stats"}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.45}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Stats
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/about" $active={pathname === '/about'} $isOpen={isMobileMenuOpen} $delay={0.5} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/about"
+            $active={pathname === "/about"}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.5}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             About
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/profile" $active={pathname === '/profile'} $isOpen={isMobileMenuOpen} $delay={0.55} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/profile"
+            $active={pathname === "/profile"}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.55}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Profile
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
-          <MobileLink href="/contact" $active={pathname === '/contact'} $isOpen={isMobileMenuOpen} $delay={0.55} onClick={() => setIsMobileMenuOpen(false)}>
+          <MobileLink
+            href="/contact"
+            $active={pathname === "/contact"}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.55}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
             Contact
-            <span><ArrowRightIcon size={18} /></span>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
           </MobileLink>
           {/* 
           <MobileLink href="/login" $isOpen={isMobileMenuOpen} $delay={0.6} onClick={() => setIsMobileMenuOpen(false)} style={{ color: 'var(--primary)', fontWeight: 800 }}>
@@ -1327,9 +1768,21 @@ export function Navbar() {
           <MobileDictBtn
             $isOpen={isMobileMenuOpen}
             $delay={0.8}
-            onClick={() => { setIsDictionaryOpen(true); setIsMobileMenuOpen(false); }}
+            onClick={() => {
+              setIsDictionaryOpen(true);
+              setIsMobileMenuOpen(false);
+            }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <circle cx="11" cy="11" r="8" />
               <path d="m21 21-4.3-4.3" />
             </svg>
@@ -1338,35 +1791,61 @@ export function Navbar() {
         </MobileMenu>
       </NavRoot>
 
-      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
-      {isDictionaryOpen && <DictionarySearchOverlay onClose={() => setIsDictionaryOpen(false)} />}
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
+      {isDictionaryOpen && (
+        <DictionarySearchOverlay onClose={() => setIsDictionaryOpen(false)} />
+      )}
 
-      {isMounted && deviceMode === 'mobile' && (
+      {isMounted && deviceMode === "mobile" && (
         <BottomBar $isMounted={isMounted}>
-          <BottomTab href="/" $active={pathname === '/'}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+          <BottomTab href="/" $active={pathname === "/"}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
             Learn
           </BottomTab>
-          <BottomTab href="/characters" $active={pathname.startsWith('/characters')}>
+          <BottomTab
+            href="/characters"
+            $active={pathname.startsWith("/characters")}
+          >
             <CharactersIcon />
             Characters
           </BottomTab>
-          <BottomTab href="/practice" $active={pathname === '/practice'}>
+          <BottomTab href="/practice" $active={pathname === "/practice"}>
             <PracticeIcon />
             Practice
           </BottomTab>
-          <BottomTab href="/jlpt" $active={pathname.startsWith('/jlpt')}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+          <BottomTab href="/jlpt" $active={pathname.startsWith("/jlpt")}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
               <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
             </svg>
             JLPT
           </BottomTab>
-          <BottomTab href="/game" $active={pathname.startsWith('/game')}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+          <BottomTab href="/game" $active={pathname.startsWith("/game")}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <rect x="2" y="6" width="20" height="12" rx="3" />
               <line x1="6" y1="12" x2="10" y2="12" />
               <line x1="8" y1="10" x2="8" y2="14" />
@@ -1375,8 +1854,14 @@ export function Navbar() {
             </svg>
             Game
           </BottomTab>
-          <BottomTab href="/profile" $active={pathname === '/profile'}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+          <BottomTab href="/profile" $active={pathname === "/profile"}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>

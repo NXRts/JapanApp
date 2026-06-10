@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { speakingExercises } from '@/data/speaking';
-import { useProgress } from '@/context/ProgressContext';
+import styled from "styled-components";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { speakingExercises } from "@/data/speaking";
+import { useProgress } from "@/context/ProgressContext";
 
 const Container = styled.div`
   max-width: 1200px;
@@ -39,7 +39,7 @@ const CategoryCard = styled(Link)`
   transition: all 0.3s;
   display: flex;
   flex-direction: column;
-  
+
   &:hover {
     transform: translateY(-5px);
     border-color: var(--primary);
@@ -48,7 +48,12 @@ const CategoryCard = styled(Link)`
 `;
 
 const LevelBadge = styled.span<{ $level: string }>`
-  background: ${props => props.$level === 'N5' ? 'var(--primary)' : props.$level === 'N4' ? '#10b981' : '#f59e0b'};
+  background: ${(props) =>
+    props.$level === "N5"
+      ? "var(--primary)"
+      : props.$level === "N4"
+        ? "#10b981"
+        : "#f59e0b"};
   color: white;
   padding: 0.3rem 1rem;
   border-radius: 999px;
@@ -85,34 +90,95 @@ export default function SpeakingHub() {
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Study', href: '/study' }]} current="Speaking Roleplay" />
-      
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Study", href: "/study" },
+        ]}
+        current="Speaking Roleplay"
+      />
+
       <Header>
         <Title>Speaking Roleplay 🗣️</Title>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-          Practice Japanese conversation by shadowing real-life scenarios. Use your microphone to speak and respond to the AI.
+        <p
+          style={{
+            color: "var(--text-secondary)",
+            fontSize: "1.2rem",
+            maxWidth: "600px",
+            margin: "0 auto",
+          }}
+        >
+          Practice Japanese conversation by shadowing real-life scenarios. Use
+          your microphone to speak and respond to the AI.
         </p>
       </Header>
 
       <Grid>
-        {speakingExercises.map(exercise => (
-          <CategoryCard key={exercise.id} href={`/study/speaking/${exercise.id}`}>
+        {speakingExercises.map((exercise) => (
+          <CategoryCard
+            key={exercise.id}
+            href={`/study/speaking/${exercise.id}`}
+          >
             <CardHeader>
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                <LevelBadge $level={exercise.level}>{exercise.level}</LevelBadge>
+              <div
+                style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
+              >
+                <LevelBadge $level={exercise.level}>
+                  {exercise.level}
+                </LevelBadge>
                 {progress.completedExercises?.includes(exercise.id) && (
-                  <span style={{ background: '#10b981', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span
+                    style={{
+                      background: "#10b981",
+                      color: "white",
+                      padding: "0.2rem 0.6rem",
+                      borderRadius: "99px",
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.2rem",
+                    }}
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
                     Completed
                   </span>
                 )}
               </div>
-              <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontWeight: 600 }}>⏱ {exercise.estimatedTime}</span>
+              <span
+                style={{
+                  color: "var(--text-secondary)",
+                  fontSize: "0.95rem",
+                  fontWeight: 600,
+                }}
+              >
+                ⏱ {exercise.estimatedTime}
+              </span>
             </CardHeader>
             <CardTitle>{exercise.title}</CardTitle>
             <ScenarioText>{exercise.scenario}</ScenarioText>
-            
-            <div style={{ color: 'var(--primary)', fontWeight: 600, fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+
+            <div
+              style={{
+                color: "var(--primary)",
+                fontWeight: 600,
+                fontSize: "0.95rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+              }}
+            >
               <span>Start Roleplay &rarr;</span>
             </div>
           </CategoryCard>

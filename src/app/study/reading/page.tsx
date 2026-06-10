@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
-import { useState } from 'react';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { readingPassages } from '@/data/reading';
-import { useProgress } from '@/context/ProgressContext';
+import styled from "styled-components";
+import Link from "next/link";
+import { useState } from "react";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { readingPassages } from "@/data/reading";
+import { useProgress } from "@/context/ProgressContext";
 
 const Container = styled.div`
   max-width: 1200px;
@@ -40,7 +40,7 @@ const ArticleCard = styled(Link)`
   transition: all 0.3s;
   display: flex;
   flex-direction: column;
-  
+
   &:hover {
     transform: translateY(-5px);
     border-color: var(--primary);
@@ -49,7 +49,14 @@ const ArticleCard = styled(Link)`
 `;
 
 const LevelBadge = styled.span<{ $level: string }>`
-  background: ${props => props.$level === 'N5' ? 'var(--primary)' : props.$level === 'N4' ? '#10b981' : props.$level === 'N3' ? '#f59e0b' : '#3b82f6'};
+  background: ${(props) =>
+    props.$level === "N5"
+      ? "var(--primary)"
+      : props.$level === "N4"
+        ? "#10b981"
+        : props.$level === "N3"
+          ? "#f59e0b"
+          : "#3b82f6"};
   color: white;
   padding: 0.3rem 1rem;
   border-radius: 999px;
@@ -91,41 +98,68 @@ const Tag = styled.span`
 const FilterBtn = styled.button<{ $active: boolean }>`
   padding: 0.6rem 1.75rem;
   border-radius: 99px;
-  border: ${props => props.$active ? 'none' : '1px solid var(--border)'};
-  background: ${props => props.$active ? 'var(--primary)' : 'var(--surface)'};
-  color: ${props => props.$active ? 'white' : 'var(--foreground)'};
+  border: ${(props) => (props.$active ? "none" : "1px solid var(--border)")};
+  background: ${(props) =>
+    props.$active ? "var(--primary)" : "var(--surface)"};
+  color: ${(props) => (props.$active ? "white" : "var(--foreground)")};
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.$active ? '0 5px 15px rgba(79, 70, 229, 0.3)' : '0 5px 15px rgba(0,0,0,0.05)'};
+    box-shadow: ${(props) =>
+      props.$active
+        ? "0 5px 15px rgba(79, 70, 229, 0.3)"
+        : "0 5px 15px rgba(0,0,0,0.05)"};
   }
 `;
 
 export default function ReadingHub() {
-  const [filter, setFilter] = useState<string>('All');
+  const [filter, setFilter] = useState<string>("All");
   const { progress } = useProgress();
 
-  const filteredPassages = filter === 'All' 
-    ? readingPassages 
-    : readingPassages.filter(p => p.level === filter);
+  const filteredPassages =
+    filter === "All"
+      ? readingPassages
+      : readingPassages.filter((p) => p.level === filter);
 
-  const levels = ['All', 'N5', 'N4', 'N3', 'N2', 'N1'];
+  const levels = ["All", "N5", "N4", "N3", "N2", "N1"];
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Study', href: '/study' }]} current="Reading" />
-      
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Study", href: "/study" },
+        ]}
+        current="Reading"
+      />
+
       <Header>
         <Title>Reading Comprehension</Title>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>
-          Improve your Japanese reading speed and comprehension with JLPT-graded stories.
+        <p
+          style={{
+            color: "var(--text-secondary)",
+            fontSize: "1.2rem",
+            maxWidth: "600px",
+            margin: "0 auto",
+          }}
+        >
+          Improve your Japanese reading speed and comprehension with JLPT-graded
+          stories.
         </p>
-        
-        <div style={{ marginTop: '3rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          {levels.map(level => (
+
+        <div
+          style={{
+            marginTop: "3rem",
+            display: "flex",
+            gap: "1rem",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          {levels.map((level) => (
             <FilterBtn
               key={level}
               $active={filter === level}
@@ -138,23 +172,56 @@ export default function ReadingHub() {
       </Header>
 
       <Grid>
-        {filteredPassages.map(passage => (
+        {filteredPassages.map((passage) => (
           <ArticleCard key={passage.id} href={`/study/reading/${passage.id}`}>
             <ArticleHeader>
-              <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <div
+                style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
+              >
                 <LevelBadge $level={passage.level}>{passage.level}</LevelBadge>
                 {progress.completedExercises?.includes(passage.id) && (
-                  <span style={{ background: '#10b981', color: 'white', padding: '0.2rem 0.6rem', borderRadius: '99px', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.2rem' }}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <span
+                    style={{
+                      background: "#10b981",
+                      color: "white",
+                      padding: "0.2rem 0.6rem",
+                      borderRadius: "99px",
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.2rem",
+                    }}
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
                     Completed
                   </span>
                 )}
               </div>
-              <span style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontWeight: 600 }}>⏱ {passage.estimatedTime}</span>
+              <span
+                style={{
+                  color: "var(--text-secondary)",
+                  fontSize: "0.95rem",
+                  fontWeight: 600,
+                }}
+              >
+                ⏱ {passage.estimatedTime}
+              </span>
             </ArticleHeader>
             <ArticleTitle>{passage.title}</ArticleTitle>
             <Tags>
-              {passage.tags.map(tag => (
+              {passage.tags.map((tag) => (
                 <Tag key={tag}>#{tag}</Tag>
               ))}
             </Tags>

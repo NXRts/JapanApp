@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import { useTheme, themes } from '@/context/ThemeContext';
-import { useEffect, useState } from 'react';
-import { useProgress } from '@/context/ProgressContext';
+import styled from "styled-components";
+import { useTheme, themes } from "@/context/ThemeContext";
+import { useEffect, useState } from "react";
+import { useProgress } from "@/context/ProgressContext";
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -15,7 +15,7 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
   backdrop-filter: blur(4px);
   z-index: 1000;
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
-  pointer-events: ${({ $isOpen }) => ($isOpen ? 'auto' : 'none')};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};
   transition: opacity 0.3s ease;
   display: flex;
   align-items: center;
@@ -28,8 +28,10 @@ const Modal = styled.div<{ $isOpen: boolean }>`
   border-radius: 20px;
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  transform: ${({ $isOpen }) => ($isOpen ? 'scale(1)' : 'scale(0.95)')};
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
+  transform: ${({ $isOpen }) => ($isOpen ? "scale(1)" : "scale(0.95)")};
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border);
 `;
@@ -62,7 +64,8 @@ const ColorBtn = styled.button<{ $color: string; $isSelected: boolean }>`
   height: 40px;
   border-radius: 50%;
   background: ${({ $color }) => $color};
-  border: 3px solid ${({ $isSelected }) => ($isSelected ? 'var(--foreground)' : 'transparent')};
+  border: 3px solid
+    ${({ $isSelected }) => ($isSelected ? "var(--foreground)" : "transparent")};
   cursor: pointer;
   transition: transform 0.2s;
 
@@ -99,7 +102,7 @@ const CloseButton = styled.button`
   font-size: 1.5rem;
   cursor: pointer;
   color: var(--text-secondary);
-  
+
   &:hover {
     color: var(--foreground);
   }
@@ -109,9 +112,13 @@ const DangerButton = styled.button<{ $isConfirming?: boolean }>`
   width: 100%;
   padding: 1rem;
   border-radius: 12px;
-  border: 1px solid ${({ $isConfirming }) => ($isConfirming ? 'var(--accent)' : 'var(--border)')};
-  background: ${({ $isConfirming }) => ($isConfirming ? 'rgba(var(--accent-rgb), 0.1)' : 'var(--background)')};
-  color: ${({ $isConfirming }) => ($isConfirming ? 'var(--accent)' : 'var(--text-secondary)')};
+  border: 1px solid
+    ${({ $isConfirming }) =>
+      $isConfirming ? "var(--accent)" : "var(--border)"};
+  background: ${({ $isConfirming }) =>
+    $isConfirming ? "rgba(var(--accent-rgb), 0.1)" : "var(--background)"};
+  color: ${({ $isConfirming }) =>
+    $isConfirming ? "var(--accent)" : "var(--text-secondary)"};
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -154,21 +161,21 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   // Prevent scroll when modal is open & handle Escape key closure
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset'; // Clean up scroll prevention
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset"; // Clean up scroll prevention
     };
   }, [isOpen, onClose]);
 
@@ -195,15 +202,17 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
         <Section>
           <Label>Mode</Label>
-          <ModeToggle onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}>
-            <span>{mode === 'light' ? 'Light Mode' : 'Dark Mode'}</span>
-            <span>{mode === 'light' ? '☀️' : '🌙'}</span>
+          <ModeToggle
+            onClick={() => setMode(mode === "light" ? "dark" : "light")}
+          >
+            <span>{mode === "light" ? "Light Mode" : "Dark Mode"}</span>
+            <span>{mode === "light" ? "☀️" : "🌙"}</span>
           </ModeToggle>
         </Section>
 
         <Section>
           <Label>Learning Data</Label>
-          <DangerButton 
+          <DangerButton
             $isConfirming={confirmReset}
             onClick={() => {
               if (confirmReset) {
@@ -217,7 +226,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               }
             }}
           >
-            {confirmReset ? '⚠ Confirm Reset?' : '🗑 Reset Progress'}
+            {confirmReset ? "⚠ Confirm Reset?" : "🗑 Reset Progress"}
           </DangerButton>
           {resetSuccess && <ResetMsg>✅ Progress has been reset!</ResetMsg>}
         </Section>

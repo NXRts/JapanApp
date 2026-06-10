@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import styled from 'styled-components';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { toRomaji } from 'wanakana';
-import { useProgress } from '@/context/ProgressContext';
-import { useDeviceMode } from '@/context/DeviceModeContext';
-import Link from 'next/link';
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { useDeviceMode } from "@/context/DeviceModeContext";
+import { useProgress } from "@/context/ProgressContext";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import { toRomaji } from "wanakana";
 
 // Styled Components
 const Container = styled.div`
@@ -17,7 +17,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: radial-gradient(circle at center, rgba(79, 70, 229, 0.05) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(79, 70, 229, 0.05) 0%,
+    transparent 70%
+  );
 
   @media (max-width: 600px) {
     padding: 1.5rem 1rem;
@@ -134,7 +138,7 @@ const KanaDisplay = styled.div`
   font-weight: 800;
   margin: 2rem 0;
   color: var(--foreground);
-  text-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 600px) {
     font-size: 4rem;
@@ -152,7 +156,7 @@ const Input = styled.input`
   background: var(--background);
   color: var(--foreground);
   transition: all 0.3s;
-  
+
   &:focus {
     outline: none;
     border-color: #4f46e5;
@@ -177,7 +181,7 @@ const Button = styled.button`
   transition: all 0.3s;
   box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
   margin-top: 2rem;
-  
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.4);
@@ -185,197 +189,238 @@ const Button = styled.button`
 `;
 
 export default function GamePage() {
-    const { deviceMode, isMounted } = useDeviceMode();
-    const isMobileView = isMounted && deviceMode === 'mobile';
+  const { deviceMode, isMounted } = useDeviceMode();
+  const isMobileView = isMounted && deviceMode === "mobile";
 
-    const [kanaList, setKanaList] = useState<string[]>([]);
-    const [currentKana, setCurrentKana] = useState<string>('');
-    const [inputVal, setInputVal] = useState('');
-    const [score, setScore] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(60);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [isGameOver, setIsGameOver] = useState(false);
+  const [kanaList, setKanaList] = useState<string[]>([]);
+  const [currentKana, setCurrentKana] = useState<string>("");
+  const [inputVal, setInputVal] = useState("");
+  const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(60);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
-    const inputRef = useRef<HTMLInputElement>(null);
-    const scoreRef = useRef(score);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const scoreRef = useRef(score);
 
-    useEffect(() => {
-        scoreRef.current = score;
-    }, [score]);
+  useEffect(() => {
+    scoreRef.current = score;
+  }, [score]);
 
-    // Fetch Kana list on mount
-    useEffect(() => {
-        fetch('/api/kana?type=all')
-            .then(res => res.json())
-            .then(data => {
-                setKanaList(data);
-            })
-            .catch(err => console.error("Error fetching kana:", err));
-    }, []);
+  // Fetch Kana list on mount
+  useEffect(() => {
+    fetch("/api/kana?type=all")
+      .then((res) => res.json())
+      .then((data) => {
+        setKanaList(data);
+      })
+      .catch((err) => console.error("Error fetching kana:", err));
+  }, []);
 
-    const getRandomKana = useCallback(() => {
-        if (kanaList.length === 0) return '';
-        const randomIndex = Math.floor(Math.random() * kanaList.length);
-        return kanaList[randomIndex];
-    }, [kanaList]);
+  const getRandomKana = useCallback(() => {
+    if (kanaList.length === 0) return "";
+    const randomIndex = Math.floor(Math.random() * kanaList.length);
+    return kanaList[randomIndex];
+  }, [kanaList]);
 
-    const { addExp } = useProgress();
+  const { addExp } = useProgress();
 
-    // Timer logic
-    useEffect(() => {
-        if (!isPlaying || isMobileView) return;
+  // Timer logic
+  useEffect(() => {
+    if (!isPlaying || isMobileView) return;
 
-        const timer = setInterval(() => {
-            setTimeLeft(prev => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    setTimeout(() => {
-                        setIsPlaying(false);
-                        setIsGameOver(true);
-                        addExp(scoreRef.current * 4);
-                    }, 0);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [isPlaying, addExp]);
-
-    const startGame = () => {
-        if (kanaList.length === 0) return;
-        setScore(0);
-        setTimeLeft(isMobileView ? 0 : 60);
-        setIsGameOver(false);
-        setIsPlaying(true);
-        setCurrentKana(getRandomKana());
-        setInputVal('');
-        setTimeout(() => {
-            inputRef.current?.focus();
-        }, 100);
-    };
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const val = e.target.value;
-        setInputVal(val);
-
-        // Check if the input matches the romaji of the current kana
-        const targetRomaji = toRomaji(currentKana);
-
-        if (val.toLowerCase().trim() === targetRomaji) {
-            const nextScore = score + 1;
-            setScore(nextScore);
-            
-            if (isMobileView && nextScore >= 10) {
-                setTimeout(() => {
-                    setIsPlaying(false);
-                    setIsGameOver(true);
-                    addExp(40); // 40 EXP for 10 Kana Mobile Challenge
-                }, 0);
-            } else {
-                setCurrentKana(getRandomKana());
-                setInputVal('');
-            }
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setTimeout(() => {
+            setIsPlaying(false);
+            setIsGameOver(true);
+            addExp(scoreRef.current * 4);
+          }, 0);
+          return 0;
         }
-    };
+        return prev - 1;
+      });
+    }, 1000);
 
-    return (
-        <Container>
-            {isMobileView ? (
-                <LessonHeader>
-                    <CloseLessonBtn href="/game" title="Tutup Sesi">✕</CloseLessonBtn>
-                    <LessonProgressBarContainer>
-                        <LessonProgressBarFill $percent={score > 0 ? (score / 10) * 100 : 0} />
-                    </LessonProgressBarContainer>
-                    <div style={{ width: '38px' }} />
-                </LessonHeader>
-            ) : (
-                <>
-                    <Breadcrumbs 
-                        items={[
-                            { label: 'Home', href: '/' },
-                            { label: 'Games Hub', href: '/game' }
-                        ]} 
-                        current="Kana Speed Typing" 
-                    />
+    return () => clearInterval(timer);
+  }, [isPlaying, addExp]);
 
-                    <Header>
-                        <TitleBadge>Kana Speed Typing</TitleBadge>
-                    </Header>
-                </>
+  const startGame = () => {
+    if (kanaList.length === 0) return;
+    setScore(0);
+    setTimeLeft(isMobileView ? 0 : 60);
+    setIsGameOver(false);
+    setIsPlaying(true);
+    setCurrentKana(getRandomKana());
+    setInputVal("");
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 100);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setInputVal(val);
+
+    // Check if the input matches the romaji of the current kana
+    const targetRomaji = toRomaji(currentKana);
+
+    if (val.toLowerCase().trim() === targetRomaji) {
+      const nextScore = score + 1;
+      setScore(nextScore);
+
+      if (isMobileView && nextScore >= 10) {
+        setTimeout(() => {
+          setIsPlaying(false);
+          setIsGameOver(true);
+          addExp(40); // 40 EXP for 10 Kana Mobile Challenge
+        }, 0);
+      } else {
+        setCurrentKana(getRandomKana());
+        setInputVal("");
+      }
+    }
+  };
+
+  return (
+    <Container>
+      {isMobileView ? (
+        <LessonHeader>
+          <CloseLessonBtn href="/game" title="Tutup Sesi">
+            ✕
+          </CloseLessonBtn>
+          <LessonProgressBarContainer>
+            <LessonProgressBarFill
+              $percent={score > 0 ? (score / 10) * 100 : 0}
+            />
+          </LessonProgressBarContainer>
+          <div style={{ width: "38px" }} />
+        </LessonHeader>
+      ) : (
+        <>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Games Hub", href: "/game" },
+            ]}
+            current="Kana Speed Typing"
+          />
+
+          <Header>
+            <TitleBadge>Kana Speed Typing</TitleBadge>
+          </Header>
+        </>
+      )}
+
+      <GameCard>
+        {!isPlaying && !isGameOver && (
+          <div>
+            <h2 style={{ marginBottom: "1rem" }}>Kana Speed Typing</h2>
+            <p style={{ color: "var(--text-secondary)", marginBottom: "2rem" }}>
+              {isMobileView
+                ? "Type the Romaji mapping for the Kana character shown. Type 10 characters correctly to complete the challenge!"
+                : "Type the Romaji mapping for the Kana character shown. You have 60 seconds to get as many right as possible!"}
+            </p>
+            <Button onClick={startGame} disabled={kanaList.length === 0}>
+              {kanaList.length === 0 ? "Loading..." : "Start Game"}
+            </Button>
+          </div>
+        )}
+
+        {isPlaying && (
+          <div>
+            {!isMobileView && (
+              <div
+                style={{
+                  fontSize: "1.25rem",
+                  color: "var(--text-secondary)",
+                  marginBottom: "1rem",
+                }}
+              >
+                Time Left:{" "}
+                <span
+                  style={{
+                    color: timeLeft <= 10 ? "#ef4444" : "var(--foreground)",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {timeLeft}s
+                </span>
+              </div>
             )}
+            <div
+              style={{
+                fontSize: "1.1rem",
+                color: "var(--text-secondary)",
+                marginBottom: "1.5rem",
+              }}
+            >
+              Score:{" "}
+              <span style={{ color: "var(--primary)", fontWeight: "bold" }}>
+                {score}
+              </span>{" "}
+              {isMobileView && "/ 10"}
+            </div>
+            <KanaDisplay>{currentKana}</KanaDisplay>
 
-            <GameCard>
-                {!isPlaying && !isGameOver && (
-                    <div>
-                        <h2 style={{ marginBottom: '1rem' }}>Kana Speed Typing</h2>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                            {isMobileView 
-                                ? 'Type the Romaji mapping for the Kana character shown. Type 10 characters correctly to complete the challenge!'
-                                : 'Type the Romaji mapping for the Kana character shown. You have 60 seconds to get as many right as possible!'
-                            }
-                        </p>
-                        <Button onClick={startGame} disabled={kanaList.length === 0}>
-                            {kanaList.length === 0 ? 'Loading...' : 'Start Game'}
-                        </Button>
-                    </div>
-                )}
+            <Input
+              ref={inputRef}
+              type="text"
+              inputMode="text"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              value={inputVal}
+              onChange={handleInputChange}
+              placeholder="Type romaji here..."
+              autoFocus
+              autoComplete="off"
+            />
+          </div>
+        )}
 
-                {isPlaying && (
-                    <div>
-                        {!isMobileView && <div style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                            Time Left: <span style={{ color: timeLeft <= 10 ? '#ef4444' : 'var(--foreground)', fontWeight: 'bold' }}>{timeLeft}s</span>
-                        </div>}
-                        <div style={{ fontSize: '1.1rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
-                            Score: <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{score}</span> {isMobileView && '/ 10'}
-                        </div>
-                        <KanaDisplay>{currentKana}</KanaDisplay>
-
-                        <Input
-                            ref={inputRef}
-                            type="text"
-                            inputMode="text"
-                            autoCapitalize="none"
-                            autoCorrect="off"
-                            spellCheck={false}
-                            value={inputVal}
-                            onChange={handleInputChange}
-                            placeholder="Type romaji here..."
-                            autoFocus
-                            autoComplete="off"
-                        />
-                    </div>
-                )}
-
-                {isGameOver && (
-                    <div>
-                        <h2>{isMobileView ? "Challenge Completed! 🎉" : "Time's Up!"}</h2>
-                        <KanaDisplay style={{ fontSize: '4rem', margin: '1rem 0' }}>{score}</KanaDisplay>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '1.25rem', marginBottom: '1.5rem' }}>
-                            {isMobileView ? 'You successfully matched 10 Kana characters.' : 'characters typed correctly.'}
-                        </p>
-                        <div style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.5rem',
-                          color: '#3b82f6',
-                          background: 'rgba(59, 130, 246, 0.1)',
-                          padding: '0.6rem 1.5rem',
-                          borderRadius: '999px',
-                          fontWeight: 800,
-                          fontSize: '1.25rem',
-                          marginBottom: '2rem',
-                          border: '1px solid rgba(59, 130, 246, 0.2)',
-                          boxShadow: '0 4px 12px rgba(59, 130, 246, 0.1)'
-                        }}>
-                          ⚡ +{isMobileView ? 40 : score * 4} EXP Gained
-                        </div>
-                        <br />
-                        <Button onClick={startGame}>Play Again</Button>
-                    </div>
-                )}
-            </GameCard>
-        </Container>
-    );
+        {isGameOver && (
+          <div>
+            <h2>{isMobileView ? "Challenge Completed! 🎉" : "Time's Up!"}</h2>
+            <KanaDisplay style={{ fontSize: "4rem", margin: "1rem 0" }}>
+              {score}
+            </KanaDisplay>
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                fontSize: "1.25rem",
+                marginBottom: "1.5rem",
+              }}
+            >
+              {isMobileView
+                ? "You successfully matched 10 Kana characters."
+                : "characters typed correctly."}
+            </p>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                color: "#3b82f6",
+                background: "rgba(59, 130, 246, 0.1)",
+                padding: "0.6rem 1.5rem",
+                borderRadius: "999px",
+                fontWeight: 800,
+                fontSize: "1.25rem",
+                marginBottom: "2rem",
+                border: "1px solid rgba(59, 130, 246, 0.2)",
+                boxShadow: "0 4px 12px rgba(59, 130, 246, 0.1)",
+              }}
+            >
+              ⚡ +{isMobileView ? 40 : score * 4} EXP Gained
+            </div>
+            <br />
+            <Button onClick={startGame}>Play Again</Button>
+          </div>
+        )}
+      </GameCard>
+    </Container>
+  );
 }

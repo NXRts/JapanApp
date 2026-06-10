@@ -1,9 +1,18 @@
-'use client';
+"use client";
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import styled from 'styled-components';
-import { calculateNextSRS, SRSItem } from '@/lib/srs';
-import { GamificationAlert, GamificationAlertData } from '@/components/gamification/GamificationAlert';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
+import styled from "styled-components";
+import { calculateNextSRS, SRSItem } from "@/lib/srs";
+import {
+  GamificationAlert,
+  GamificationAlertData,
+} from "@/components/gamification/GamificationAlert";
 
 /* Toast container — pojok kanan atas, di bawah navbar (56px), semua ukuran layar */
 const ToastStack = styled.div`
@@ -58,7 +67,9 @@ interface ProgressContextType {
   getDueItems: () => (SRSItem & { id: string })[];
 }
 
-const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
+const ProgressContext = createContext<ProgressContextType | undefined>(
+  undefined,
+);
 
 const INITIAL_DATA: ProgressData = {
   mastery: {},
@@ -76,19 +87,22 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [alerts, setAlerts] = useState<GamificationAlertData[]>([]);
 
-  const triggerAlert = useCallback((type: 'level' | 'achievement', title: string, description: string) => {
-    const id = Math.random().toString(36).substring(7);
-    setAlerts(prev => [...prev, { id, type, title, description }]);
-  }, []);
+  const triggerAlert = useCallback(
+    (type: "level" | "achievement", title: string, description: string) => {
+      const id = Math.random().toString(36).substring(7);
+      setAlerts((prev) => [...prev, { id, type, title, description }]);
+    },
+    [],
+  );
 
   const closeAlert = useCallback((id: string) => {
-    setAlerts(prev => prev.filter(a => a.id !== id));
+    setAlerts((prev) => prev.filter((a) => a.id !== id));
   }, []);
 
   // Load from localStorage
   useEffect(() => {
     const timer = setTimeout(() => {
-      const saved = localStorage.getItem('user-progress');
+      const saved = localStorage.getItem("user-progress");
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
@@ -104,7 +118,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
             completedExercises: parsed.completedExercises || [],
           });
         } catch (e) {
-          console.error('Failed to parse progress data', e);
+          console.error("Failed to parse progress data", e);
         }
       }
       setIsLoaded(true);
@@ -115,21 +129,21 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   // Save to localStorage
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('user-progress', JSON.stringify(progress));
+      localStorage.setItem("user-progress", JSON.stringify(progress));
     }
   }, [progress, isLoaded]);
 
   // Handle streak and last active date
   const checkStreak = useCallback(() => {
-    const today = new Date().toISOString().split('T')[0];
-    
+    const today = new Date().toISOString().split("T")[0];
+
     if (progress.lastActiveDate === today) return;
 
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toISOString().split('T')[0];
+    const yesterdayStr = yesterday.toISOString().split("T")[0];
 
-    setProgress(prev => {
+    setProgress((prev) => {
       let newStreak = prev.streak;
       if (prev.lastActiveDate === yesterdayStr) {
         newStreak += 1;
@@ -146,114 +160,148 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   }, [progress.lastActiveDate]);
 
   // Handle EXP and Activity
-  const addExp = useCallback((amount: number) => {
-    const today = new Date().toISOString().split('T')[0];
-    setProgress(prev => {
-      const oldLevel = Math.floor(Math.sqrt(prev.exp / 100)) + 1;
-      const newExp = prev.exp + amount;
-      const newLevel = Math.floor(Math.sqrt(newExp / 100)) + 1;
-      
-      if (newLevel > oldLevel) {
-        triggerAlert('level', `Level Up!`, `You've reached level ${newLevel}! Keep it up!`);
-      }
+  const addExp = useCallback(
+    (amount: number) => {
+      const today = new Date().toISOString().split("T")[0];
+      setProgress((prev) => {
+        const oldLevel = Math.floor(Math.sqrt(prev.exp / 100)) + 1;
+        const newExp = prev.exp + amount;
+        const newLevel = Math.floor(Math.sqrt(newExp / 100)) + 1;
 
-      const newActivityLog = { ...prev.activityLog };
-      newActivityLog[today] = (newActivityLog[today] || 0) + amount;
-      
-      return {
-        ...prev,
-        exp: newExp,
-        activityLog: newActivityLog
-      };
-    });
-    checkStreak();
-  }, [triggerAlert, checkStreak]);
-
-  const updateMastery = useCallback((char: string, isCorrect: boolean) => {
-    setProgress(prev => {
-      const current = prev.mastery[char] || { correct: 0, incorrect: 0, lastAttempt: '' };
-      const newMastery = {
-        ...prev.mastery,
-        [char]: {
-          correct: current.correct + (isCorrect ? 1 : 0),
-          incorrect: isCorrect ? Math.max(0, current.incorrect - 1) : current.incorrect + 1,
-          lastAttempt: new Date().toISOString(),
+        if (newLevel > oldLevel) {
+          triggerAlert(
+            "level",
+            `Level Up!`,
+            `You've reached level ${newLevel}! Keep it up!`,
+          );
         }
-      };
 
-      // Check for achievements
-      const totalMastered = Object.keys(newMastery).length;
-      const oldTotal = Object.keys(prev.mastery).length;
-      
-      if (totalMastered === 10 && oldTotal < 10) {
-        triggerAlert('achievement', 'Kanji Apprentice', 'You have learned your first 10 items!');
-      } else if (totalMastered === 1 && oldTotal === 0) {
-        triggerAlert('achievement', 'First Steps', 'Welcome to your learning journey!');
-      }
+        const newActivityLog = { ...prev.activityLog };
+        newActivityLog[today] = (newActivityLog[today] || 0) + amount;
 
-      return {
-        ...prev,
-        mastery: newMastery
-      };
-    });
-  }, [triggerAlert]);
+        return {
+          ...prev,
+          exp: newExp,
+          activityLog: newActivityLog,
+        };
+      });
+      checkStreak();
+    },
+    [triggerAlert, checkStreak],
+  );
+
+  const updateMastery = useCallback(
+    (char: string, isCorrect: boolean) => {
+      setProgress((prev) => {
+        const current = prev.mastery[char] || {
+          correct: 0,
+          incorrect: 0,
+          lastAttempt: "",
+        };
+        const newMastery = {
+          ...prev.mastery,
+          [char]: {
+            correct: current.correct + (isCorrect ? 1 : 0),
+            incorrect: isCorrect
+              ? Math.max(0, current.incorrect - 1)
+              : current.incorrect + 1,
+            lastAttempt: new Date().toISOString(),
+          },
+        };
+
+        // Check for achievements
+        const totalMastered = Object.keys(newMastery).length;
+        const oldTotal = Object.keys(prev.mastery).length;
+
+        if (totalMastered === 10 && oldTotal < 10) {
+          triggerAlert(
+            "achievement",
+            "Kanji Apprentice",
+            "You have learned your first 10 items!",
+          );
+        } else if (totalMastered === 1 && oldTotal === 0) {
+          triggerAlert(
+            "achievement",
+            "First Steps",
+            "Welcome to your learning journey!",
+          );
+        }
+
+        return {
+          ...prev,
+          mastery: newMastery,
+        };
+      });
+    },
+    [triggerAlert],
+  );
 
   const updateSRS = useCallback((char: string, quality: number) => {
-    setProgress(prev => {
+    setProgress((prev) => {
       const currentItem = prev.srs[char];
       const nextItem = calculateNextSRS(currentItem, quality);
       return {
         ...prev,
         srs: {
           ...prev.srs,
-          [char]: nextItem
-        }
+          [char]: nextItem,
+        },
       };
     });
   }, []);
 
-  const recordQuizResult = useCallback((score: number, total: number, type: string) => {
-    checkStreak(); // Record activity on quiz completion
-    addExp(score * 10); // Reward 10 EXP per correct answer
-    setProgress(prev => ({
-      ...prev,
-      quizHistory: [
-        {
-          date: new Date().toISOString(),
-          score,
-          total,
-          type,
-        },
-        ...prev.quizHistory.slice(0, 49), // Keep last 50
-      ]
-    }));
-  }, [checkStreak, addExp]);
-
-  const markExerciseCompleted = useCallback((id: string) => {
-    setProgress(prev => {
-      if (prev.completedExercises?.includes(id)) return prev;
-      
-      const today = new Date().toISOString().split('T')[0];
-      const oldLevel = Math.floor(Math.sqrt(prev.exp / 100)) + 1;
-      const newExp = prev.exp + 50;
-      const newLevel = Math.floor(Math.sqrt(newExp / 100)) + 1;
-      
-      if (newLevel > oldLevel) {
-        triggerAlert('level', `Level Up!`, `You've reached level ${newLevel}! Keep it up!`);
-      }
-
-      const newActivityLog = { ...prev.activityLog };
-      newActivityLog[today] = (newActivityLog[today] || 0) + 50;
-
-      return {
+  const recordQuizResult = useCallback(
+    (score: number, total: number, type: string) => {
+      checkStreak(); // Record activity on quiz completion
+      addExp(score * 10); // Reward 10 EXP per correct answer
+      setProgress((prev) => ({
         ...prev,
-        exp: newExp,
-        activityLog: newActivityLog,
-        completedExercises: [...(prev.completedExercises || []), id]
-      };
-    });
-    checkStreak();
-  }, [triggerAlert, checkStreak]);
+        quizHistory: [
+          {
+            date: new Date().toISOString(),
+            score,
+            total,
+            type,
+          },
+          ...prev.quizHistory.slice(0, 49), // Keep last 50
+        ],
+      }));
+    },
+    [checkStreak, addExp],
+  );
+
+  const markExerciseCompleted = useCallback(
+    (id: string) => {
+      setProgress((prev) => {
+        if (prev.completedExercises?.includes(id)) return prev;
+
+        const today = new Date().toISOString().split("T")[0];
+        const oldLevel = Math.floor(Math.sqrt(prev.exp / 100)) + 1;
+        const newExp = prev.exp + 50;
+        const newLevel = Math.floor(Math.sqrt(newExp / 100)) + 1;
+
+        if (newLevel > oldLevel) {
+          triggerAlert(
+            "level",
+            `Level Up!`,
+            `You've reached level ${newLevel}! Keep it up!`,
+          );
+        }
+
+        const newActivityLog = { ...prev.activityLog };
+        newActivityLog[today] = (newActivityLog[today] || 0) + 50;
+
+        return {
+          ...prev,
+          exp: newExp,
+          activityLog: newActivityLog,
+          completedExercises: [...(prev.completedExercises || []), id],
+        };
+      });
+      checkStreak();
+    },
+    [triggerAlert, checkStreak],
+  );
 
   const getDueItems = useCallback(() => {
     const now = new Date();
@@ -263,58 +311,62 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   }, [progress.srs]);
 
   const resetProgress = useCallback(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // 1. Atomic wipe of all storage (Learning + Theme settings)
       localStorage.clear();
       sessionStorage.clear();
 
       // 2. Comprehensive cookie sweep for both basic path and current domain
-      const cookies = document.cookie.split(';');
+      const cookies = document.cookie.split(";");
       for (let i = 0; i < cookies.length; i++) {
         const cookie = cookies[i];
-        const eqPos = cookie.indexOf('=');
-        const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
-        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
-        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=' + window.location.hostname;
+        const eqPos = cookie.indexOf("=");
+        const name =
+          eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+        document.cookie =
+          name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+        document.cookie =
+          name +
+          "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=" +
+          window.location.hostname;
       }
 
       // 3. Instant hard-navigation to ensure a clean slate and prevent React from re-saving state
-      window.location.replace('/');
+      window.location.replace("/");
     }
   }, []);
 
-  const contextValue = React.useMemo(() => ({
-    progress,
-    updateMastery,
-    recordQuizResult,
-    checkStreak,
-    updateSRS,
-    addExp,
-    markExerciseCompleted,
-    getDueItems,
-    resetProgress
-  }), [
-    progress,
-    updateMastery,
-    recordQuizResult,
-    checkStreak,
-    updateSRS,
-    addExp,
-    markExerciseCompleted,
-    getDueItems,
-    resetProgress
-  ]);
+  const contextValue = React.useMemo(
+    () => ({
+      progress,
+      updateMastery,
+      recordQuizResult,
+      checkStreak,
+      updateSRS,
+      addExp,
+      markExerciseCompleted,
+      getDueItems,
+      resetProgress,
+    }),
+    [
+      progress,
+      updateMastery,
+      recordQuizResult,
+      checkStreak,
+      updateSRS,
+      addExp,
+      markExerciseCompleted,
+      getDueItems,
+      resetProgress,
+    ],
+  );
 
   return (
     <ProgressContext.Provider value={contextValue}>
       {children}
       <ToastStack>
-        {alerts.map(alert => (
-          <GamificationAlert
-            key={alert.id}
-            data={alert}
-            onClose={closeAlert}
-          />
+        {alerts.map((alert) => (
+          <GamificationAlert key={alert.id} data={alert} onClose={closeAlert} />
         ))}
       </ToastStack>
     </ProgressContext.Provider>
@@ -324,7 +376,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 export function useProgress() {
   const context = useContext(ProgressContext);
   if (context === undefined) {
-    throw new Error('useProgress must be used within a ProgressProvider');
+    throw new Error("useProgress must be used within a ProgressProvider");
   }
   return context;
 }

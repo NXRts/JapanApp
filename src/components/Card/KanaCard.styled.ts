@@ -1,18 +1,24 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Card = styled.div`
   width: 100%;
   aspect-ratio: 3/4;
   perspective: 1000px;
   cursor: pointer;
-  
+
   /* Floating animation */
   animation: float 6s ease-in-out infinite;
-  
+
   @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-6px); }
-    100% { transform: translateY(0px); }
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
   }
 `;
 
@@ -21,12 +27,14 @@ export const Inner = styled.div<{ $flipped: boolean }>`
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1), box-shadow 0.3s ease;
+  transition:
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s ease;
   transform-style: preserve-3d;
   box-shadow: var(--shadow-md);
   border-radius: 20px;
-  
-  transform: ${({ $flipped }) => ($flipped ? 'rotateY(180deg)' : 'rotateY(0)')};
+
+  transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg)" : "rotateY(0)")};
 
   ${Card}:hover & {
     box-shadow: var(--shadow-lg);
@@ -48,17 +56,21 @@ export const Face = styled.div`
   color: white;
   font-size: 5rem;
   font-weight: 700;
-  text-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -50%;
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 60%
+    );
     pointer-events: none;
   }
 `;
@@ -74,7 +86,7 @@ export const ReadingItem = styled.div`
   margin-top: 10px;
   color: var(--foreground);
   border: 1px solid var(--border);
-  
+
   span.romaji {
     display: block;
     font-size: 1rem;
@@ -98,7 +110,9 @@ export const Back = styled(Face)`
 
   scrollbar-width: none;
   -ms-overflow-style: none;
-  &::-webkit-scrollbar { display: none; }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   h3 {
     margin: 0 0 16px;
@@ -107,13 +121,13 @@ export const Back = styled(Face)`
     width: 100%;
     padding-bottom: 8px;
     flex-shrink: 0;
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: "Noto Sans JP", sans-serif;
   }
 
   p {
-      font-size: 1.5rem;
-      color: var(--text-secondary);
-      font-weight: 500;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    font-weight: 500;
   }
 `;
 

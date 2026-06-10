@@ -1,17 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { useProgress } from '@/context/ProgressContext';
-import { useDeviceMode } from '@/context/DeviceModeContext';
+import { useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { useProgress } from "@/context/ProgressContext";
+import { useDeviceMode } from "@/context/DeviceModeContext";
 
 const PageWrapper = styled.div`
   min-height: 90vh;
   width: 100%;
   /* Premium radial background */
-  background: radial-gradient(circle at top right, rgba(79, 70, 229, 0.05) 0%, transparent 60%);
+  background: radial-gradient(
+    circle at top right,
+    rgba(79, 70, 229, 0.05) 0%,
+    transparent 60%
+  );
   overflow-x: hidden;
 `;
 
@@ -103,7 +107,7 @@ const BackButton = styled(Link)`
   transition: all 0.2s;
   padding: 0.5rem 1rem;
   border-radius: 999px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 
   &:hover {
     color: var(--primary);
@@ -136,9 +140,12 @@ const Controls = styled.div`
 const ToggleBtn = styled.button<{ $active: boolean }>`
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  border: 1px solid ${({ $active }) => ($active ? 'var(--primary)' : 'var(--border)')};
-  background: ${({ $active }) => ($active ? 'rgba(79, 70, 229, 0.1)' : 'var(--surface)')};
-  color: ${({ $active }) => ($active ? 'var(--primary)' : 'var(--text-secondary)')};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) =>
+    $active ? "rgba(79, 70, 229, 0.1)" : "var(--surface)"};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -184,7 +191,7 @@ const DropdownTrigger = styled.button<{ $isOpen: boolean }>`
 
   svg {
     transition: transform 0.2s;
-    transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0)')};
+    transform: ${({ $isOpen }) => ($isOpen ? "rotate(180deg)" : "rotate(0)")};
     color: var(--text-secondary);
   }
 `;
@@ -203,8 +210,14 @@ const DropdownMenu = styled.div`
   animation: fadeIn 0.2s ease-out;
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 
@@ -212,8 +225,10 @@ const DropdownItem = styled.div<{ $isActive: boolean }>`
   padding: 0.75rem 1rem;
   cursor: pointer;
   font-weight: 500;
-  color: ${({ $isActive }) => ($isActive ? 'var(--primary)' : 'var(--foreground)')};
-  background: ${({ $isActive }) => ($isActive ? 'rgba(79, 70, 229, 0.05)' : 'transparent')};
+  color: ${({ $isActive }) =>
+    $isActive ? "var(--primary)" : "var(--foreground)"};
+  background: ${({ $isActive }) =>
+    $isActive ? "rgba(79, 70, 229, 0.05)" : "transparent"};
   transition: background 0.2s;
 
   &:hover {
@@ -230,25 +245,39 @@ const FlashcardContainer = styled.div`
   max-width: 800px;
 `;
 
-const AnimContainer = styled.div<{ $dir: 'next' | 'prev' | null }>`
+const AnimContainer = styled.div<{ $dir: "next" | "prev" | null }>`
   width: 100%;
   display: flex;
   justify-content: center;
-  
+
   animation: ${({ $dir }) => {
-    if ($dir === 'next') return 'slideInNext 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-    if ($dir === 'prev') return 'slideInPrev 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-    return 'none';
+    if ($dir === "next")
+      return "slideInNext 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+    if ($dir === "prev")
+      return "slideInPrev 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+    return "none";
   }};
 
   @keyframes slideInNext {
-    0% { opacity: 0; transform: translateX(80px) scale(0.95); }
-    100% { opacity: 1; transform: translateX(0) scale(1); }
+    0% {
+      opacity: 0;
+      transform: translateX(80px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
   }
-  
+
   @keyframes slideInPrev {
-    0% { opacity: 0; transform: translateX(-80px) scale(0.95); }
-    100% { opacity: 1; transform: translateX(0) scale(1); }
+    0% {
+      opacity: 0;
+      transform: translateX(-80px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
   }
 `;
 
@@ -285,7 +314,7 @@ const CardInner = styled.div<{ $flipped: boolean }>`
   position: absolute;
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-style: preserve-3d;
-  transform: ${({ $flipped }) => ($flipped ? 'rotateX(180deg)' : 'rotateX(0)')};
+  transform: ${({ $flipped }) => ($flipped ? "rotateX(180deg)" : "rotateX(0)")};
 `;
 
 const CardFace = styled.div`
@@ -309,7 +338,11 @@ const CardFace = styled.div`
 
 const CardBack = styled(CardFace)`
   transform: rotateX(180deg);
-  background: linear-gradient(135deg, var(--surface) 0%, rgba(79, 70, 229, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--surface) 0%,
+    rgba(79, 70, 229, 0.05) 100%
+  );
 `;
 
 const InstructionText = styled.div`
@@ -334,10 +367,14 @@ const BigCharacter = styled.div`
 `;
 
 const HighlightRomaji = styled.h2`
-  font-size: 4rem; 
+  font-size: 4rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -382,7 +419,7 @@ const IconBtn = styled.button`
     border-color: var(--primary);
     color: var(--primary);
   }
-  
+
   &:active {
     transform: scale(0.95);
   }
@@ -403,14 +440,18 @@ const ActionBtn = styled.button`
   transition: all 0.3s;
   font-size: 1.1rem;
   box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
 
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
   }
-  
+
   &:active {
     transform: translateY(-1px);
   }
@@ -423,9 +464,9 @@ type KanaItem = {
 
 export default function KanaFlashcards() {
   const { deviceMode, isMounted } = useDeviceMode();
-  const isMobileView = isMounted && deviceMode === 'mobile';
+  const isMobileView = isMounted && deviceMode === "mobile";
 
-  const [level, setLevel] = useState('hiragana');
+  const [level, setLevel] = useState("hiragana");
   const [originalList, setOriginalList] = useState<KanaItem[]>([]);
   const [kanaList, setKanaList] = useState<KanaItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -433,7 +474,7 @@ export default function KanaFlashcards() {
   const [loading, setLoading] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isRandom, setIsRandom] = useState(false); // Default sequentially
-  const [slideDir, setSlideDir] = useState<'next' | 'prev' | null>(null);
+  const [slideDir, setSlideDir] = useState<"next" | "prev" | null>(null);
 
   const [reviewedCount, setReviewedCount] = useState(0);
   const [sessionComplete, setSessionComplete] = useState(false);
@@ -451,7 +492,7 @@ export default function KanaFlashcards() {
     }, 0);
 
     fetch(`/api/kana/${level}`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((data: KanaItem[]) => {
         if (Array.isArray(data)) {
           setOriginalList(data);
@@ -468,7 +509,9 @@ export default function KanaFlashcards() {
   // Update list order based on mode
   useEffect(() => {
     if (originalList.length > 0) {
-      const list = isRandom ? [...originalList].sort(() => 0.5 - Math.random()) : [...originalList];
+      const list = isRandom
+        ? [...originalList].sort(() => 0.5 - Math.random())
+        : [...originalList];
       const timer = setTimeout(() => {
         setKanaList(list);
         setCurrentIndex(0);
@@ -493,7 +536,7 @@ export default function KanaFlashcards() {
         setTimeout(() => {
           setSessionComplete(true);
           addExp(20); // 20 EXP reward
-          markExerciseCompleted('kana-intro');
+          markExerciseCompleted("kana-intro");
         }, 300);
         return;
       }
@@ -502,12 +545,12 @@ export default function KanaFlashcards() {
     if (flipped) {
       setFlipped(false);
       setTimeout(() => {
-        setSlideDir('next');
-        setCurrentIndex(prev => (prev + 1) % kanaList.length);
+        setSlideDir("next");
+        setCurrentIndex((prev) => (prev + 1) % kanaList.length);
       }, 300); // Wait for flip back
     } else {
-      setSlideDir('next');
-      setCurrentIndex(prev => (prev + 1) % kanaList.length);
+      setSlideDir("next");
+      setCurrentIndex((prev) => (prev + 1) % kanaList.length);
     }
   };
 
@@ -515,12 +558,14 @@ export default function KanaFlashcards() {
     if (flipped) {
       setFlipped(false);
       setTimeout(() => {
-        setSlideDir('prev');
-        setCurrentIndex(prev => (prev === 0 ? kanaList.length - 1 : prev - 1));
+        setSlideDir("prev");
+        setCurrentIndex((prev) =>
+          prev === 0 ? kanaList.length - 1 : prev - 1,
+        );
       }, 300);
     } else {
-      setSlideDir('prev');
-      setCurrentIndex(prev => (prev === 0 ? kanaList.length - 1 : prev - 1));
+      setSlideDir("prev");
+      setCurrentIndex((prev) => (prev === 0 ? kanaList.length - 1 : prev - 1));
     }
   };
 
@@ -548,15 +593,29 @@ export default function KanaFlashcards() {
     }
   };
 
-  if (loading) return (
-    <PageWrapper>
-      <Container>
-        <div style={{ color: 'var(--text-secondary)', fontSize: '1.2rem', marginTop: '4rem' }}>Loading Characters...</div>
-      </Container>
-    </PageWrapper>
-  );
+  if (loading)
+    return (
+      <PageWrapper>
+        <Container>
+          <div
+            style={{
+              color: "var(--text-secondary)",
+              fontSize: "1.2rem",
+              marginTop: "4rem",
+            }}
+          >
+            Loading Characters...
+          </div>
+        </Container>
+      </PageWrapper>
+    );
 
-  if (!currentKana) return <PageWrapper><Container>No Kana found for this level.</Container></PageWrapper>;
+  if (!currentKana)
+    return (
+      <PageWrapper>
+        <Container>No Kana found for this level.</Container>
+      </PageWrapper>
+    );
 
   return (
     <PageWrapper>
@@ -564,31 +623,56 @@ export default function KanaFlashcards() {
         {isMobileView ? (
           sessionComplete ? (
             <GameOverScreen>
-              <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: '#10b981' }}>
+              <h2
+                style={{
+                  fontSize: "2.5rem",
+                  marginBottom: "1rem",
+                  color: "#10b981",
+                }}
+              >
                 Lesson Complete! 🎉
               </h2>
-              <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+              <p
+                style={{
+                  fontSize: "1.25rem",
+                  color: "var(--text-secondary)",
+                  marginBottom: "2rem",
+                }}
+              >
                 Hebat! Kamu telah mempelajari 5 karakter dasar Kana.
               </p>
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                color: '#10b981',
-                background: 'rgba(16, 185, 129, 0.1)',
-                padding: '0.6rem 1.5rem',
-                borderRadius: '999px',
-                fontWeight: 800,
-                fontSize: '1.25rem',
-                marginBottom: '2rem',
-                border: '1px solid rgba(16, 185, 129, 0.2)',
-                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.1)'
-              }}>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  color: "#10b981",
+                  background: "rgba(16, 185, 129, 0.1)",
+                  padding: "0.6rem 1.5rem",
+                  borderRadius: "999px",
+                  fontWeight: 800,
+                  fontSize: "1.25rem",
+                  marginBottom: "2rem",
+                  border: "1px solid rgba(16, 185, 129, 0.2)",
+                  boxShadow: "0 4px 12px rgba(16, 185, 129, 0.1)",
+                }}
+              >
                 ⭐ +20 EXP Gained
               </div>
               <br />
-              <Link href="/" style={{ textDecoration: 'none', display: 'inline-block', width: '100%', maxWidth: '300px' }}>
-                <ActionBtn as="span" style={{ display: 'inline-block', width: '100%' }}>
+              <Link
+                href="/"
+                style={{
+                  textDecoration: "none",
+                  display: "inline-block",
+                  width: "100%",
+                  maxWidth: "300px",
+                }}
+              >
+                <ActionBtn
+                  as="span"
+                  style={{ display: "inline-block", width: "100%" }}
+                >
                   Lanjut
                 </ActionBtn>
               </Link>
@@ -596,11 +680,13 @@ export default function KanaFlashcards() {
           ) : (
             <>
               <LessonHeader>
-                <CloseLessonBtn href="/" title="Tutup Sesi">✕</CloseLessonBtn>
+                <CloseLessonBtn href="/" title="Tutup Sesi">
+                  ✕
+                </CloseLessonBtn>
                 <LessonProgressBarContainer>
                   <LessonProgressBarFill $percent={(reviewedCount / 5) * 100} />
                 </LessonProgressBarContainer>
-                <div style={{ width: '38px' }} />
+                <div style={{ width: "38px" }} />
               </LessonHeader>
 
               <FlashcardContainer>
@@ -644,21 +730,30 @@ export default function KanaFlashcards() {
           )
         ) : (
           <>
-            <Breadcrumbs 
+            <Breadcrumbs
               items={[
-                { label: 'Home', href: '/' },
-                { label: 'Study', href: '/study' }
-              ]} 
-              current="Kana Flashcards" 
+                { label: "Home", href: "/" },
+                { label: "Study", href: "/study" },
+              ]}
+              current="Kana Flashcards"
             />
             <Header>
               <Controls>
                 <ToggleBtn
                   $active={isRandom}
                   onClick={() => setIsRandom(!isRandom)}
-                  title={isRandom ? 'Sequential Mode' : 'Shuffle Mode'}
+                  title={isRandom ? "Sequential Mode" : "Shuffle Mode"}
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     {!isRandom ? (
                       <>
                         <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -678,7 +773,7 @@ export default function KanaFlashcards() {
                       </>
                     )}
                   </svg>
-                  <span>{isRandom ? 'Random' : 'Sequential'}</span>
+                  <span>{isRandom ? "Random" : "Sequential"}</span>
                 </ToggleBtn>
 
                 <DropdownContainer>
@@ -687,14 +782,29 @@ export default function KanaFlashcards() {
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
                     {level.charAt(0).toUpperCase() + level.slice(1)}
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                   </DropdownTrigger>
 
                   {isDropdownOpen && (
                     <DropdownMenu>
-                      {['hiragana', 'katakana', 'dakuten', 'handakuten', 'yoon'].map(l => (
+                      {[
+                        "hiragana",
+                        "katakana",
+                        "dakuten",
+                        "handakuten",
+                        "yoon",
+                      ].map((l) => (
                         <DropdownItem
                           key={l}
                           $isActive={level === l}
@@ -739,7 +849,16 @@ export default function KanaFlashcards() {
 
               <ActionButtons>
                 <IconBtn onClick={prevCard} aria-label="Previous Character">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <polyline points="15 18 9 12 15 6"></polyline>
                   </svg>
                 </IconBtn>

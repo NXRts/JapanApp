@@ -1,10 +1,18 @@
-'use client';
+"use client";
 
-import React, { useMemo, useRef, useState } from 'react';
-import styled from 'styled-components';
-import { useProgress } from '@/context/ProgressContext';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { UserIcon, TrophyIcon, TargetIcon, AwardIcon, FireIcon, SparklesIcon, BookIcon } from '@/components/icons/AppIcons';
+import React, { useMemo, useRef, useState } from "react";
+import styled from "styled-components";
+import { useProgress } from "@/context/ProgressContext";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import {
+  UserIcon,
+  TrophyIcon,
+  TargetIcon,
+  AwardIcon,
+  FireIcon,
+  SparklesIcon,
+  BookIcon,
+} from "@/components/icons/AppIcons";
 
 const Container = styled.div`
   max-width: 800px;
@@ -44,7 +52,11 @@ const AvatarCircle = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-light) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +164,7 @@ const SectionTitle = styled.h2`
   gap: 0.75rem;
 
   &::before {
-    content: '';
+    content: "";
     width: 4px;
     height: 1.25rem;
     background: var(--primary);
@@ -200,14 +212,14 @@ const ActionButton = styled.button<{ $danger?: boolean }>`
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s;
-  border: 1px solid ${({ $danger }) => $danger ? '#ef4444' : 'var(--border)'};
+  border: 1px solid ${({ $danger }) => ($danger ? "#ef4444" : "var(--border)")};
   background: transparent;
-  color: ${({ $danger }) => $danger ? '#ef4444' : 'var(--foreground)'};
+  color: ${({ $danger }) => ($danger ? "#ef4444" : "var(--foreground)")};
 
   &:hover {
-    background: ${({ $danger }) => $danger ? '#ef4444' : 'var(--primary)'};
+    background: ${({ $danger }) => ($danger ? "#ef4444" : "var(--primary)")};
     color: white;
-    border-color: ${({ $danger }) => $danger ? '#ef4444' : 'var(--primary)'};
+    border-color: ${({ $danger }) => ($danger ? "#ef4444" : "var(--primary)")};
   }
 
   @media (max-width: 500px) {
@@ -226,19 +238,19 @@ const AchievementGrid = styled.div<{ $isDragging?: boolean }>`
   margin-left: -1.5rem;
   margin-right: -1.5rem;
   -webkit-overflow-scrolling: touch;
-  cursor: ${({ $isDragging }) => $isDragging ? 'grabbing' : 'grab'};
+  cursor: ${({ $isDragging }) => ($isDragging ? "grabbing" : "grab")};
   user-select: none;
-  scroll-behavior: ${({ $isDragging }) => $isDragging ? 'auto' : 'smooth'};
+  scroll-behavior: ${({ $isDragging }) => ($isDragging ? "auto" : "smooth")};
 
   /* Force the container to allow its children to overflow */
   min-width: 100%;
-  
+
   scrollbar-width: thin;
   scrollbar-color: var(--primary) transparent;
-  
+
   &::-webkit-scrollbar {
     height: 4px;
-    display: block; 
+    display: block;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -254,8 +266,10 @@ const AchievementGrid = styled.div<{ $isDragging?: boolean }>`
 `;
 
 const AchievementCard = styled.div<{ $unlocked: boolean }>`
-  background: ${({ $unlocked }) => $unlocked ? 'var(--surface)' : 'rgba(var(--primary-rgb), 0.02)'};
-  border: 1px solid ${({ $unlocked }) => $unlocked ? 'var(--border)' : 'dashed var(--border)'};
+  background: ${({ $unlocked }) =>
+    $unlocked ? "var(--surface)" : "rgba(var(--primary-rgb), 0.02)"};
+  border: 1px solid
+    ${({ $unlocked }) => ($unlocked ? "var(--border)" : "dashed var(--border)")};
   padding: 1.25rem;
   border-radius: 20px;
   display: flex;
@@ -263,14 +277,16 @@ const AchievementCard = styled.div<{ $unlocked: boolean }>`
   align-items: center;
   text-align: center;
   gap: 0.75rem;
-  filter: ${({ $unlocked }) => $unlocked ? 'none' : 'grayscale(1) opacity(0.5)'};
+  filter: ${({ $unlocked }) =>
+    $unlocked ? "none" : "grayscale(1) opacity(0.5)"};
   transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   width: 160px;
   min-width: 160px;
   flex-shrink: 0;
 
   &:hover {
-    transform: ${({ $unlocked }) => $unlocked ? 'translateY(-5px) scale(1.02)' : 'none'};
+    transform: ${({ $unlocked }) =>
+      $unlocked ? "translateY(-5px) scale(1.02)" : "none"};
     border-color: var(--primary);
   }
 
@@ -311,16 +327,23 @@ const GoalCard = styled.div`
   z-index: 1;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.08) 0%, transparent 100%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(var(--primary-rgb), 0.08) 0%,
+      transparent 100%
+    );
     pointer-events: none;
     z-index: -1;
   }
 
   &::after {
-    content: '🎯';
+    content: "🎯";
     position: absolute;
     right: -5px;
     bottom: -15px;
@@ -340,9 +363,17 @@ const GoalHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.25rem;
-  
-  h3 { margin: 0; font-size: 1.1rem; font-weight: 800; }
-  span { font-size: 0.85rem; color: var(--primary); font-weight: 700; }
+
+  h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
+  span {
+    font-size: 0.85rem;
+    color: var(--primary);
+    font-weight: 700;
+  }
 `;
 
 const GoalProgress = styled.div`
@@ -356,7 +387,11 @@ const GoalProgress = styled.div`
 const GoalBar = styled.div<{ $width: number }>`
   height: 100%;
   width: ${({ $width }) => $width}%;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+  background: linear-gradient(
+    90deg,
+    var(--primary) 0%,
+    var(--primary-light) 100%
+  );
   border-radius: 6px;
   transition: width 1s ease;
 `;
@@ -392,26 +427,68 @@ export default function ProfilePage() {
     }
   };
 
-  const level = useMemo(() => Math.floor(Math.sqrt(progress.exp / 100)) + 1, [progress.exp]);
+  const level = useMemo(
+    () => Math.floor(Math.sqrt(progress.exp / 100)) + 1,
+    [progress.exp],
+  );
 
-  const totalCharacters = useMemo(() => Object.keys(progress.mastery).length, [progress.mastery]);
+  const totalCharacters = useMemo(
+    () => Object.keys(progress.mastery).length,
+    [progress.mastery],
+  );
   const accuracy = useMemo(() => {
     let correct = 0;
     let total = 0;
     Object.values(progress.mastery).forEach((m: any) => {
       correct += m.correct;
-      total += (m.correct + m.incorrect);
+      total += m.correct + m.incorrect;
     });
     return total === 0 ? 0 : Math.round((correct / total) * 100);
   }, [progress.mastery]);
 
   const achievements = [
-    { id: 'first_step', title: 'First Steps', desc: 'Reach Level 2', icon: <SparklesIcon />, unlocked: level >= 2 },
-    { id: 'streak_3', title: 'Fire Starter', desc: '3 Day Streak', icon: <FireIcon />, unlocked: progress.streak >= 3 },
-    { id: 'mastery_10', title: 'Kanji Apprentice', desc: 'Learn 10 Kanji', icon: <BookIcon />, unlocked: totalCharacters >= 10 },
-    { id: 'accuracy_90', title: 'Perfectionist', desc: '90% Accuracy', icon: <TargetIcon />, unlocked: accuracy >= 90 && totalCharacters >= 5 },
-    { id: 'elite', title: 'JapanApp Elite', desc: 'Reach Level 10', icon: <TrophyIcon />, unlocked: level >= 10 },
-    { id: 'streak_10', title: 'Unstoppable', desc: '10 Day Streak', icon: <AwardIcon />, unlocked: progress.streak >= 10 },
+    {
+      id: "first_step",
+      title: "First Steps",
+      desc: "Reach Level 2",
+      icon: <SparklesIcon />,
+      unlocked: level >= 2,
+    },
+    {
+      id: "streak_3",
+      title: "Fire Starter",
+      desc: "3 Day Streak",
+      icon: <FireIcon />,
+      unlocked: progress.streak >= 3,
+    },
+    {
+      id: "mastery_10",
+      title: "Kanji Apprentice",
+      desc: "Learn 10 Kanji",
+      icon: <BookIcon />,
+      unlocked: totalCharacters >= 10,
+    },
+    {
+      id: "accuracy_90",
+      title: "Perfectionist",
+      desc: "90% Accuracy",
+      icon: <TargetIcon />,
+      unlocked: accuracy >= 90 && totalCharacters >= 5,
+    },
+    {
+      id: "elite",
+      title: "JapanApp Elite",
+      desc: "Reach Level 10",
+      icon: <TrophyIcon />,
+      unlocked: level >= 10,
+    },
+    {
+      id: "streak_10",
+      title: "Unstoppable",
+      desc: "10 Day Streak",
+      icon: <AwardIcon />,
+      unlocked: progress.streak >= 10,
+    },
   ];
 
   const dailyGoal = { current: Math.min(progress.exp % 100, 100), target: 100 };
@@ -419,8 +496,8 @@ export default function ProfilePage() {
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Profile" />
-      
+      <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Profile" />
+
       <ProfileHeader>
         <AvatarCircle>
           <UserIcon size={64} />
@@ -439,13 +516,23 @@ export default function ProfilePage() {
       <GoalCard>
         <GoalHeader>
           <h3>Daily Study Goal</h3>
-          <span>{dailyGoal.current} / {dailyGoal.target} EXP</span>
+          <span>
+            {dailyGoal.current} / {dailyGoal.target} EXP
+          </span>
         </GoalHeader>
         <GoalProgress>
           <GoalBar $width={goalPercent} />
         </GoalProgress>
-        <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-          {goalPercent >= 100 ? "🎉 Daily goal achieved! You're amazing." : `Only ${dailyGoal.target - dailyGoal.current} EXP left to hit your daily target!`}
+        <p
+          style={{
+            margin: 0,
+            fontSize: "0.8rem",
+            color: "var(--text-secondary)",
+          }}
+        >
+          {goalPercent >= 100
+            ? "🎉 Daily goal achieved! You're amazing."
+            : `Only ${dailyGoal.target - dailyGoal.current} EXP left to hit your daily target!`}
         </p>
       </GoalCard>
 
@@ -458,8 +545,12 @@ export default function ProfilePage() {
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
       >
-        {achievements.map(a => (
-          <AchievementCard key={a.id} $unlocked={a.unlocked} title={a.unlocked ? 'Unlocked!' : 'Keep studying to unlock'}>
+        {achievements.map((a) => (
+          <AchievementCard
+            key={a.id}
+            $unlocked={a.unlocked}
+            title={a.unlocked ? "Unlocked!" : "Keep studying to unlock"}
+          >
             <div className="icon-wrap">{a.icon}</div>
             <h3>{a.title}</h3>
             <p>{a.desc}</p>
@@ -501,12 +592,21 @@ export default function ProfilePage() {
             <span>App Data</span>
             <span>Reset your progress and settings</span>
           </SettingLabel>
-          <ActionButton $danger onClick={() => {
-            if(confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-              localStorage.clear();
-              window.location.reload();
-            }
-          }}>Reset Data</ActionButton>
+          <ActionButton
+            $danger
+            onClick={() => {
+              if (
+                confirm(
+                  "Are you sure you want to reset all progress? This cannot be undone.",
+                )
+              ) {
+                localStorage.clear();
+                window.location.reload();
+              }
+            }}
+          >
+            Reset Data
+          </ActionButton>
         </SettingItem>
       </SettingsSection>
     </Container>

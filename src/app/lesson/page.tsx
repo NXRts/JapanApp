@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef, Suspense } from 'react';
-import styled, { keyframes, css } from 'styled-components';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useProgress } from '@/context/ProgressContext';
-import { lessonsData, Lesson, Question } from '@/data/lessonsData';
-import { generatorBank } from '@/data/generatorBank';
-import Link from 'next/link';
+import React, { useState, useEffect, useRef, Suspense } from "react";
+import styled, { keyframes, css } from "styled-components";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useProgress } from "@/context/ProgressContext";
+import { lessonsData, Lesson, Question } from "@/data/lessonsData";
+import { generatorBank } from "@/data/generatorBank";
+import Link from "next/link";
 
 // ==========================================
 // ANIMATIONS
@@ -49,7 +49,12 @@ const FullscreenContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 1.5rem 1rem env(safe-area-inset-bottom);
-  font-family: 'Nunito', 'Outfit', system-ui, -apple-system, sans-serif;
+  font-family:
+    "Nunito",
+    "Outfit",
+    system-ui,
+    -apple-system,
+    sans-serif;
   overflow-y: auto;
 `;
 
@@ -133,9 +138,11 @@ const QuestionBox = styled.div<{ $shake?: boolean }>`
   width: 100%;
   margin-top: 1.5rem;
   animation: ${popIn} 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  ${({ $shake }) => $shake && css`
-    animation: ${shake} 0.4s ease-in-out;
-  `}
+  ${({ $shake }) =>
+    $shake &&
+    css`
+      animation: ${shake} 0.4s ease-in-out;
+    `}
 `;
 
 const QuestionCategory = styled.span`
@@ -164,8 +171,10 @@ const OptionGrid = styled.div`
 const OptionCard = styled.button<{ $selected: boolean }>`
   width: 100%;
   padding: 1.25rem;
-  background: ${({ $selected }) => ($selected ? 'rgba(59, 130, 246, 0.08)' : 'var(--surface)')};
-  border: 2px solid ${({ $selected }) => ($selected ? 'var(--primary)' : 'var(--border)')};
+  background: ${({ $selected }) =>
+    $selected ? "rgba(59, 130, 246, 0.08)" : "var(--surface)"};
+  border: 2px solid
+    ${({ $selected }) => ($selected ? "var(--primary)" : "var(--border)")};
   border-bottom-width: 5px;
   border-radius: 20px;
   color: var(--foreground);
@@ -197,9 +206,11 @@ const OptionIndex = styled.span<{ $selected: boolean }>`
   width: 30px;
   height: 30px;
   border-radius: 10px;
-  border: 2px solid ${({ $selected }) => ($selected ? 'var(--primary)' : 'var(--border)')};
+  border: 2px solid
+    ${({ $selected }) => ($selected ? "var(--primary)" : "var(--border)")};
   font-size: 0.9rem;
-  color: ${({ $selected }) => ($selected ? 'var(--primary)' : 'var(--text-secondary)')};
+  color: ${({ $selected }) =>
+    $selected ? "var(--primary)" : "var(--text-secondary)"};
   font-weight: 800;
 `;
 
@@ -217,7 +228,7 @@ const SentenceArea = styled.div`
   position: relative;
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -2px;
     left: 0;
@@ -246,13 +257,15 @@ const WordCard = styled.button<{ $used?: boolean }>`
   color: var(--foreground);
   cursor: pointer;
   transition: all 0.1s ease;
-  
-  ${({ $used }) => $used && css`
-    opacity: 0.25;
-    cursor: default;
-    transform: scale(0.95);
-    border-bottom-width: 2px;
-  `}
+
+  ${({ $used }) =>
+    $used &&
+    css`
+      opacity: 0.25;
+      cursor: default;
+      transform: scale(0.95);
+      border-bottom-width: 2px;
+    `}
 
   &:active:not(:disabled) {
     transform: translateY(2px);
@@ -328,19 +341,26 @@ const AudioHint = styled.span`
 `;
 
 // bottom bar for answer feedback
-const FeedbackPanel = styled.div<{ $state: 'correct' | 'incorrect' | 'hidden' }>`
+const FeedbackPanel = styled.div<{
+  $state: "correct" | "incorrect" | "hidden";
+}>`
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: ${({ $state }) => 
-    $state === 'correct' ? '#d1fae5' : 
-    $state === 'incorrect' ? '#fee2e2' : 
-    'var(--surface)'};
-  border-top: 2px solid ${({ $state }) => 
-    $state === 'correct' ? '#10b981' : 
-    $state === 'incorrect' ? '#ef4444' : 
-    'var(--border)'};
+  background: ${({ $state }) =>
+    $state === "correct"
+      ? "#d1fae5"
+      : $state === "incorrect"
+        ? "#fee2e2"
+        : "var(--surface)"};
+  border-top: 2px solid
+    ${({ $state }) =>
+      $state === "correct"
+        ? "#10b981"
+        : $state === "incorrect"
+          ? "#ef4444"
+          : "var(--border)"};
   padding: 1.5rem 1.5rem calc(1.5rem + env(safe-area-inset-bottom));
   display: flex;
   justify-content: center;
@@ -348,10 +368,12 @@ const FeedbackPanel = styled.div<{ $state: 'correct' | 'incorrect' | 'hidden' }>
   animation: ${slideUp} 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
   @media (prefers-color-scheme: dark) {
-    background: ${({ $state }) => 
-      $state === 'correct' ? '#064e3b' : 
-      $state === 'incorrect' ? '#7f1d1d' : 
-      'var(--surface)'};
+    background: ${({ $state }) =>
+      $state === "correct"
+        ? "#064e3b"
+        : $state === "incorrect"
+          ? "#7f1d1d"
+          : "var(--surface)"};
   }
 `;
 
@@ -369,11 +391,11 @@ const FeedbackTextContainer = styled.div`
   gap: 1rem;
 `;
 
-const FeedbackIcon = styled.div<{ $state: 'correct' | 'incorrect' }>`
+const FeedbackIcon = styled.div<{ $state: "correct" | "incorrect" }>`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: ${({ $state }) => ($state === 'correct' ? '#10b981' : '#ef4444')};
+  background: ${({ $state }) => ($state === "correct" ? "#10b981" : "#ef4444")};
   color: white;
   display: flex;
   align-items: center;
@@ -383,14 +405,14 @@ const FeedbackIcon = styled.div<{ $state: 'correct' | 'incorrect' }>`
   flex-shrink: 0;
 `;
 
-const FeedbackTitle = styled.h4<{ $state: 'correct' | 'incorrect' }>`
+const FeedbackTitle = styled.h4<{ $state: "correct" | "incorrect" }>`
   font-size: 1.25rem;
   font-weight: 900;
-  color: ${({ $state }) => ($state === 'correct' ? '#047857' : '#b91c1c')};
+  color: ${({ $state }) => ($state === "correct" ? "#047857" : "#b91c1c")};
   margin: 0;
 
   @media (prefers-color-scheme: dark) {
-    color: ${({ $state }) => ($state === 'correct' ? '#34d399' : '#fca5a5')};
+    color: ${({ $state }) => ($state === "correct" ? "#34d399" : "#fca5a5")};
   }
 `;
 
@@ -405,28 +427,31 @@ const FeedbackDetail = styled.p`
   }
 `;
 
-const CheckButton = styled.button<{ $active: boolean; $state: 'correct' | 'incorrect' | 'hidden' }>`
+const CheckButton = styled.button<{
+  $active: boolean;
+  $state: "correct" | "incorrect" | "hidden";
+}>`
   width: 100%;
   padding: 1rem;
   border-radius: 16px;
   font-size: 1.1rem;
   font-weight: 800;
   border: none;
-  cursor: ${({ $active }) => ($active ? 'pointer' : 'not-allowed')};
+  cursor: ${({ $active }) => ($active ? "pointer" : "not-allowed")};
   transition: all 0.1s ease;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 
   ${({ $active, $state }) => {
-    if ($state === 'correct') {
+    if ($state === "correct") {
       return css`
         background: #10b981;
         color: white;
         border-bottom: 4px solid #047857;
       `;
     }
-    if ($state === 'incorrect') {
+    if ($state === "incorrect") {
       return css`
         background: #ef4444;
         color: white;
@@ -448,10 +473,12 @@ const CheckButton = styled.button<{ $active: boolean; $state: 'correct' | 'incor
   }}
 
   &:active {
-    ${({ $active }) => $active && css`
-      transform: translateY(2px);
-      border-bottom-width: 2px;
-    `}
+    ${({ $active }) =>
+      $active &&
+      css`
+        transform: translateY(2px);
+        border-bottom-width: 2px;
+      `}
   }
 `;
 
@@ -579,7 +606,7 @@ const ExitModalOverlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   @media (max-width: 768px) {
     align-items: flex-end; /* anchor to bottom on mobile */
     padding: 0;
@@ -612,12 +639,12 @@ const ExitModalContainer = styled.div`
     border-radius: 28px;
     padding: 3rem 2.5rem;
     border: 2px solid #2e3856;
-    box-shadow: 0 24px 38px 3px rgba(0, 0, 0, 0.5), 0 9px 46px 8px rgba(0, 0, 0, 0.4);
+    box-shadow:
+      0 24px 38px 3px rgba(0, 0, 0, 0.5),
+      0 9px 46px 8px rgba(0, 0, 0, 0.4);
     animation: ${popIn} 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 `;
-
-
 
 const ExitModalText = styled.p`
   color: #ffffff; /* bright white for warning message */
@@ -626,7 +653,11 @@ const ExitModalText = styled.p`
   line-height: 1.4;
   margin-bottom: 2.25rem;
   text-align: center;
-  font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    "Noto Sans JP",
+    -apple-system,
+    sans-serif;
   max-width: 320px;
 `;
 
@@ -651,7 +682,11 @@ const ExitKeepLearningBtn = styled.button`
   background: #1cb0f6; /* Duolingo blue */
   border-bottom: 4px solid #1890d8; /* Duolingo 3D bottom border */
   color: #ffffff;
-  font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    "Noto Sans JP",
+    -apple-system,
+    sans-serif;
 
   &:hover {
     filter: brightness(1.05);
@@ -674,7 +709,11 @@ const ExitEndSessionBtn = styled.button`
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
+  font-family:
+    "Inter",
+    "Noto Sans JP",
+    -apple-system,
+    sans-serif;
   transition: opacity 0.1s;
 
   &:hover {
@@ -687,67 +726,73 @@ const ExitEndSessionBtn = styled.button`
   }
 `;
 
-
-
 // ==========================================
 // UTILITIES
 // ==========================================
 const speakText = (text: string) => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   try {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ja-JP';
+    utterance.lang = "ja-JP";
     utterance.rate = 0.8; // Learner pace
     window.speechSynthesis.speak(utterance);
   } catch (e) {
-    console.error('Audio synthesis failed', e);
+    console.error("Audio synthesis failed", e);
   }
 };
 
 const playCorrectSound = () => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   try {
-    const ctx = new (window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)();
+    const ctx = new (
+      window.AudioContext ||
+      (window as Window & { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext
+    )();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
     gain.connect(ctx.destination);
-    
-    osc.type = 'sine';
+
+    osc.type = "sine";
     osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-    osc.frequency.setValueAtTime(880, ctx.currentTime + 0.12);  // A5
-    
+    osc.frequency.setValueAtTime(880, ctx.currentTime + 0.12); // A5
+
     gain.gain.setValueAtTime(0.08, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-    
+
     osc.start(ctx.currentTime);
     osc.stop(ctx.currentTime + 0.35);
   } catch (e) {
-    console.warn('Correct Audio blocked', e);
+    console.warn("Correct Audio blocked", e);
   }
 };
 
 const playIncorrectSound = () => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   try {
-    const ctx = new (window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)();
+    const ctx = new (
+      window.AudioContext ||
+      (window as Window & { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext
+    )();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
     gain.connect(ctx.destination);
-    
-    osc.type = 'triangle';
+
+    osc.type = "triangle";
     osc.frequency.setValueAtTime(261.63, ctx.currentTime); // C4
-    osc.frequency.setValueAtTime(196, ctx.currentTime + 0.12);  // G3
-    
+    osc.frequency.setValueAtTime(196, ctx.currentTime + 0.12); // G3
+
     gain.gain.setValueAtTime(0.12, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-    
+
     osc.start(ctx.currentTime);
     osc.stop(ctx.currentTime + 0.4);
   } catch (e) {
-    console.warn('Incorrect Audio blocked', e);
+    console.warn("Incorrect Audio blocked", e);
   }
 };
 
@@ -755,22 +800,30 @@ const playIncorrectSound = () => {
 // PROCEDURAL DYNAMIC QUESTION GENERATOR ENGINE
 // ==========================================
 const tokenizeSentence = (sentence: string): string[] => {
-  const clean = sentence.replace(/[。！、]/g, '');
-  if (clean === 'わたしはたなかです') return ['わたし', 'は', 'たなか', 'es', 'です']; // Add standard distractors/morphemes
-  if (clean === 'みずをのみます') return ['みず', 'を', 'のみます'];
-  if (clean === 'がっこうにいきます') return ['がっこう', 'に', 'いきます'];
-  if (clean === 'すしがたべたいes') return ['すし', 'が', 'たべたい', 'です'];
-  if (clean === 'すしがたべたいです') return ['すし', 'が', 'たべたい', 'es', 'です'];
-  if (clean === 'きのうテレビをみた') return ['きのう', 'テレビ', 'を', 'みた'];
-  if (clean === 'ちょっとまってください') return ['ちょっと', 'まって', 'ください'];
-  if (clean === '雨が降りそうです') return ['雨', 'が', '降りそう', 'es', 'です'];
-  if (clean === '田中と申します') return ['田中', 'と', '申します'];
-  if (clean === '先生が召し上がります') return ['先生', 'が', '召し上がります'];
-  if (clean === 'この問題について考えます') return ['この', '問題', 'について', '考えます'];
-  if (clean === '東京において会議が行われた') return ['東京', 'において', '会議', 'が', '行われた'];
-  if (clean === '本日をもって閉店いたします') return ['本日', 'をもって', '閉店', 'いたします'];
-  if (clean === '行くくなり行かないくなり、返事をして') return ['行くく', 'なり', '行かないく', 'なり', '返事', 'を', 'して'];
-  
+  const clean = sentence.replace(/[。！、]/g, "");
+  if (clean === "わたしはたなかです")
+    return ["わたし", "は", "たなか", "es", "です"]; // Add standard distractors/morphemes
+  if (clean === "みずをのみます") return ["みず", "を", "のみます"];
+  if (clean === "がっこうにいきます") return ["がっこう", "に", "いきます"];
+  if (clean === "すしがたべたいes") return ["すし", "が", "たべたい", "です"];
+  if (clean === "すしがたべたいです")
+    return ["すし", "が", "たべたい", "es", "です"];
+  if (clean === "きのうテレビをみた") return ["きのう", "テレビ", "を", "みた"];
+  if (clean === "ちょっとまってください")
+    return ["ちょっと", "まって", "ください"];
+  if (clean === "雨が降りそうです")
+    return ["雨", "が", "降りそう", "es", "です"];
+  if (clean === "田中と申します") return ["田中", "と", "申します"];
+  if (clean === "先生が召し上がります") return ["先生", "が", "召し上がります"];
+  if (clean === "この問題について考えます")
+    return ["この", "問題", "について", "考えます"];
+  if (clean === "東京において会議が行われた")
+    return ["東京", "において", "会議", "が", "行われた"];
+  if (clean === "本日をもって閉店いたします")
+    return ["本日", "をもって", "閉店", "いたします"];
+  if (clean === "行くくなり行かないくなり、返事をして")
+    return ["行くく", "なり", "行かないく", "なり", "返事", "を", "して"];
+
   return clean.split(/(?!$)/u);
 };
 
@@ -786,11 +839,11 @@ const shuffle = <T,>(arr: T[]): T[] => {
 function generateDynamicQuestions(lesson: Lesson): Question[] {
   // Prioritize pre-curated questions in lessonsData if they are present!
   if (lesson.questions && lesson.questions.length > 0) {
-    return lesson.questions.map(q => {
+    return lesson.questions.map((q) => {
       if (q.options && q.options.length > 0) {
         return {
           ...q,
-          options: shuffle(q.options)
+          options: shuffle(q.options),
         };
       }
       return q;
@@ -811,20 +864,45 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
   const descLower = lesson.description.toLowerCase();
 
   // Smart vocabulary filtering
-  if (titleLower.includes('vokal') || descLower.includes('vokal')) {
-    vocabPool = bank.vocabulary.filter(v => v.category === 'vowels');
-  } else if (titleLower.includes('sapaan') || descLower.includes('sapaan') || titleLower.includes('aisatsu')) {
-    vocabPool = bank.vocabulary.filter(v => v.category === 'greetings');
-  } else if (titleLower.includes('makanan') || descLower.includes('makanan') || titleLower.includes('kuliner')) {
-    vocabPool = bank.vocabulary.filter(v => v.category === 'food');
-  } else if (titleLower.includes('arah') || titleLower.includes('lokasi') || titleLower.includes('stasiun')) {
-    vocabPool = bank.vocabulary.filter(v => v.category === 'travel' || v.category === 'places' || v.category === 'directions');
-  } else if (titleLower.includes('kerja') || titleLower.includes('aktivitas')) {
-    vocabPool = bank.vocabulary.filter(v => v.category === 'verbs');
-  } else if (titleLower.includes('sopan') || titleLower.includes('keigo') || titleLower.includes('hormat')) {
-    vocabPool = bank.vocabulary.filter(v => v.category === 'verbs' || v.category === 'traits');
-  } else if (titleLower.includes('katakana')) {
-    vocabPool = bank.vocabulary.filter(v => /[\u30a0-\u30ff]/.test(v.japanese));
+  if (titleLower.includes("vokal") || descLower.includes("vokal")) {
+    vocabPool = bank.vocabulary.filter((v) => v.category === "vowels");
+  } else if (
+    titleLower.includes("sapaan") ||
+    descLower.includes("sapaan") ||
+    titleLower.includes("aisatsu")
+  ) {
+    vocabPool = bank.vocabulary.filter((v) => v.category === "greetings");
+  } else if (
+    titleLower.includes("makanan") ||
+    descLower.includes("makanan") ||
+    titleLower.includes("kuliner")
+  ) {
+    vocabPool = bank.vocabulary.filter((v) => v.category === "food");
+  } else if (
+    titleLower.includes("arah") ||
+    titleLower.includes("lokasi") ||
+    titleLower.includes("stasiun")
+  ) {
+    vocabPool = bank.vocabulary.filter(
+      (v) =>
+        v.category === "travel" ||
+        v.category === "places" ||
+        v.category === "directions",
+    );
+  } else if (titleLower.includes("kerja") || titleLower.includes("aktivitas")) {
+    vocabPool = bank.vocabulary.filter((v) => v.category === "verbs");
+  } else if (
+    titleLower.includes("sopan") ||
+    titleLower.includes("keigo") ||
+    titleLower.includes("hormat")
+  ) {
+    vocabPool = bank.vocabulary.filter(
+      (v) => v.category === "verbs" || v.category === "traits",
+    );
+  } else if (titleLower.includes("katakana")) {
+    vocabPool = bank.vocabulary.filter((v) =>
+      /[\u30a0-\u30ff]/.test(v.japanese),
+    );
   }
 
   if (!vocabPool || vocabPool.length === 0) {
@@ -832,18 +910,53 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
   }
 
   // Smart grammar filtering
-  if (titleLower.includes('keinginan') || descLower.includes('keinginan') || titleLower.includes('~tai')) {
-    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('tai'));
-  } else if (titleLower.includes('lampau') || titleLower.includes('~ta') || titleLower.includes('lalu')) {
-    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('ta'));
-  } else if (titleLower.includes('kelihatannya') || titleLower.includes('~sou') || titleLower.includes('dugaan')) {
-    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('sou'));
-  } else if (titleLower.includes('sopan') || titleLower.includes('keigo') || titleLower.includes('hormat')) {
-    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('kenjougo') || g.pattern.toLowerCase().includes('sonkeigo'));
-  } else if (titleLower.includes('mengenai') || titleLower.includes('tentang')) {
-    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('about') || g.pattern.toLowerCase().includes('tsuite'));
-  } else if (titleLower.includes('batas') || titleLower.includes('motte')) {
-    grammarPool = bank.grammar.filter(g => g.pattern.toLowerCase().includes('motte'));
+  if (
+    titleLower.includes("keinginan") ||
+    descLower.includes("keinginan") ||
+    titleLower.includes("~tai")
+  ) {
+    grammarPool = bank.grammar.filter((g) =>
+      g.pattern.toLowerCase().includes("tai"),
+    );
+  } else if (
+    titleLower.includes("lampau") ||
+    titleLower.includes("~ta") ||
+    titleLower.includes("lalu")
+  ) {
+    grammarPool = bank.grammar.filter((g) =>
+      g.pattern.toLowerCase().includes("ta"),
+    );
+  } else if (
+    titleLower.includes("kelihatannya") ||
+    titleLower.includes("~sou") ||
+    titleLower.includes("dugaan")
+  ) {
+    grammarPool = bank.grammar.filter((g) =>
+      g.pattern.toLowerCase().includes("sou"),
+    );
+  } else if (
+    titleLower.includes("sopan") ||
+    titleLower.includes("keigo") ||
+    titleLower.includes("hormat")
+  ) {
+    grammarPool = bank.grammar.filter(
+      (g) =>
+        g.pattern.toLowerCase().includes("kenjougo") ||
+        g.pattern.toLowerCase().includes("sonkeigo"),
+    );
+  } else if (
+    titleLower.includes("mengenai") ||
+    titleLower.includes("tentang")
+  ) {
+    grammarPool = bank.grammar.filter(
+      (g) =>
+        g.pattern.toLowerCase().includes("about") ||
+        g.pattern.toLowerCase().includes("tsuite"),
+    );
+  } else if (titleLower.includes("batas") || titleLower.includes("motte")) {
+    grammarPool = bank.grammar.filter((g) =>
+      g.pattern.toLowerCase().includes("motte"),
+    );
   }
 
   if (!grammarPool || grammarPool.length === 0) {
@@ -859,76 +972,84 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
     if (typeIndex === 0) {
       // 1. Multiple choice
       const item = vocabPool[i % vocabPool.length];
-      const categoryItems = vocabPool.filter(v => v.category === item.category && v.japanese !== item.japanese);
-      const remainingPool = vocabPool.filter(v => v.japanese !== item.japanese);
+      const categoryItems = vocabPool.filter(
+        (v) => v.category === item.category && v.japanese !== item.japanese,
+      );
+      const remainingPool = vocabPool.filter(
+        (v) => v.japanese !== item.japanese,
+      );
       const pool = categoryItems.length >= 3 ? categoryItems : remainingPool;
-      const distractors = shuffle(pool).slice(0, 3).map(p => p.english);
+      const distractors = shuffle(pool)
+        .slice(0, 3)
+        .map((p) => p.english);
       const options = shuffle([...distractors, item.english]);
 
       generated.push({
         id,
-        type: 'multiple-choice',
+        type: "multiple-choice",
         questionText: `What is the correct meaning for the following Japanese vocabulary: 「${item.japanese}」?`,
         options,
         answer: item.english,
-        hint: `Pronounced as "${item.romaji || ''}"`
+        hint: `Pronounced as "${item.romaji || ""}"`,
       });
-    } 
-    else if (typeIndex === 1) {
+    } else if (typeIndex === 1) {
       // 2. Listening
       const item = vocabPool[(i + 2) % vocabPool.length];
-      const distractors = shuffle(vocabPool.filter(v => v.japanese !== item.japanese)).slice(0, 3).map(p => p.english);
+      const distractors = shuffle(
+        vocabPool.filter((v) => v.japanese !== item.japanese),
+      )
+        .slice(0, 3)
+        .map((p) => p.english);
       const options = shuffle([...distractors, item.english]);
 
       generated.push({
         id,
-        type: 'listening',
+        type: "listening",
         audioText: item.japanese,
         questionText: `Listen to the audio and select the correct translation!`,
         options,
         answer: item.english,
-        hint: `Focus on the pronunciation of: "${item.japanese}"`
+        hint: `Focus on the pronunciation of: "${item.japanese}"`,
       });
-    } 
-    else if (typeIndex === 2 && grammarPool.length > 0) {
+    } else if (typeIndex === 2 && grammarPool.length > 0) {
       // 3. Sentence builder
       const item = grammarPool[i % grammarPool.length];
       const sentenceWords = tokenizeSentence(item.exampleSentence);
-      const distractors = ['ね', 'よ', 'が', 'を'].filter(d => !sentenceWords.includes(d));
+      const distractors = ["ね", "よ", "が", "を"].filter(
+        (d) => !sentenceWords.includes(d),
+      );
       const options = shuffle([...sentenceWords, ...distractors.slice(0, 2)]);
 
       generated.push({
         id,
-        type: 'sentence-builder',
+        type: "sentence-builder",
         questionText: `Arrange the word cards below into the correct sentence: "${item.englishTranslation}"`,
         options,
-        answer: sentenceWords.join(' '),
-        hint: `Use the appropriate particles for Japanese grammar.`
+        answer: sentenceWords.join(" "),
+        hint: `Use the appropriate particles for Japanese grammar.`,
       });
-    } 
-    else if (typeIndex === 3 && grammarPool.length > 0) {
+    } else if (typeIndex === 3 && grammarPool.length > 0) {
       // 4. Fill in the blank
       const item = grammarPool[(i + 1) % grammarPool.length];
       generated.push({
         id,
-        type: 'fill-in-the-blank',
-        questionText: `Choose the correct answer to fill in the blank:\n「${item.exampleSentence.replace(item.answer, ' ___ ')}」\n(${item.englishTranslation})`,
+        type: "fill-in-the-blank",
+        questionText: `Choose the correct answer to fill in the blank:\n「${item.exampleSentence.replace(item.answer, " ___ ")}」\n(${item.englishTranslation})`,
         options: item.options,
         answer: item.answer,
-        hint: item.explanation
+        hint: item.explanation,
       });
-    } 
-    else {
+    } else {
       // 5. Typing
       const item = vocabPool[(i + 4) % vocabPool.length];
-      const isVowel = item.category === 'vowels';
-      const answerText = isVowel 
-        ? (item.romaji || '').trim().toLowerCase()
-        : item.english.split(' / ')[0].trim().toLowerCase();
+      const isVowel = item.category === "vowels";
+      const answerText = isVowel
+        ? (item.romaji || "").trim().toLowerCase()
+        : item.english.split(" / ")[0].trim().toLowerCase();
 
       generated.push({
         id,
-        type: 'typing',
+        type: "typing",
         questionText: isVowel
           ? `Type the Romaji equivalent for the following Hiragana: 「${item.japanese}」`
           : `Type the translation for the following vocabulary: 「${item.japanese}」`,
@@ -936,7 +1057,7 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
         answer: answerText,
         hint: isVowel
           ? `Pronounced like the vowel sound "${answerText.toUpperCase()}".`
-          : `The pronunciation is "${item.romaji || ''}".`
+          : `The pronunciation is "${item.romaji || ""}".`,
       });
     }
   }
@@ -946,11 +1067,11 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
     const fallbackItem = vocabPool[generated.length % vocabPool.length];
     generated.push({
       id: `${lessonId}-q-dyn-fallback-${generated.length + 1}`,
-      type: 'multiple-choice',
+      type: "multiple-choice",
       questionText: `What is the meaning of: 「${fallbackItem.japanese}」?`,
-      options: shuffle([fallbackItem.english, 'Wrong 1', 'Wrong 2', 'Wrong 3']),
+      options: shuffle([fallbackItem.english, "Wrong 1", "Wrong 2", "Wrong 3"]),
       answer: fallbackItem.english,
-      hint: `Romaji: ${fallbackItem.romaji || ''}`
+      hint: `Romaji: ${fallbackItem.romaji || ""}`,
     });
   }
 
@@ -966,8 +1087,8 @@ function LessonPlayerContent() {
   const { markExerciseCompleted, addExp } = useProgress();
   const startTime = useRef<number | null>(null);
 
-  const lessonId = searchParams.get('id') || 'n5-u1-l1';
-  const returnUrl = searchParams.get('from') === 'practice' ? '/practice' : '/';
+  const lessonId = searchParams.get("id") || "n5-u1-l1";
+  const returnUrl = searchParams.get("from") === "practice" ? "/practice" : "/";
   const lesson = lessonsData.find((l) => l.id === lessonId) || lessonsData[0];
   const [questions, setQuestions] = useState<Question[]>([]);
 
@@ -977,7 +1098,7 @@ function LessonPlayerContent() {
   const [hearts, setHearts] = useState(5);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
-  const [typedAnswer, setTypedAnswer] = useState('');
+  const [typedAnswer, setTypedAnswer] = useState("");
   const [isAnswered, setIsAnswered] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
@@ -999,9 +1120,9 @@ function LessonPlayerContent() {
 
   // Auto voice trigger for listening type
   useEffect(() => {
-    if (activeQuestion?.type === 'listening' && !hasVoiceTriggered) {
+    if (activeQuestion?.type === "listening" && !hasVoiceTriggered) {
       const timer = setTimeout(() => {
-        speakText(activeQuestion.audioText || '');
+        speakText(activeQuestion.audioText || "");
         setHasVoiceTriggered(true);
       }, 500);
       return () => clearTimeout(timer);
@@ -1029,13 +1150,19 @@ function LessonPlayerContent() {
   const isCheckActive = () => {
     if (!activeQuestion) return false;
     if (isAnswered) return true;
-    if (activeQuestion.type === 'multiple-choice' || activeQuestion.type === 'listening') {
+    if (
+      activeQuestion.type === "multiple-choice" ||
+      activeQuestion.type === "listening"
+    ) {
       return selectedOption !== null;
     }
-    if (activeQuestion.type === 'sentence-builder') {
+    if (activeQuestion.type === "sentence-builder") {
       return selectedCards.length > 0;
     }
-    if (activeQuestion.type === 'typing' || activeQuestion.type === 'fill-in-the-blank') {
+    if (
+      activeQuestion.type === "typing" ||
+      activeQuestion.type === "fill-in-the-blank"
+    ) {
       return typedAnswer.trim().length > 0;
     }
     return false;
@@ -1049,12 +1176,14 @@ function LessonPlayerContent() {
         setCurrentIdx((idx) => idx + 1);
         setSelectedOption(null);
         setSelectedCards([]);
-        setTypedAnswer('');
+        setTypedAnswer("");
         setIsAnswered(false);
         setHasVoiceTriggered(false);
       } else {
         // Finish Lesson!
-        const totalTime = Math.round((Date.now() - (startTime.current || Date.now())) / 1000);
+        const totalTime = Math.round(
+          (Date.now() - (startTime.current || Date.now())) / 1000,
+        );
         setElapsedTime(totalTime);
         addExp(lesson.expReward);
         markExerciseCompleted(lesson.id);
@@ -1067,14 +1196,17 @@ function LessonPlayerContent() {
     let correct = false;
     const cleanAnswer = activeQuestion.answer.trim().toLowerCase();
 
-    if (activeQuestion.type === 'multiple-choice' || activeQuestion.type === 'listening') {
+    if (
+      activeQuestion.type === "multiple-choice" ||
+      activeQuestion.type === "listening"
+    ) {
       correct = selectedOption?.trim().toLowerCase() === cleanAnswer;
-    } else if (activeQuestion.type === 'sentence-builder') {
-      const userSentence = selectedCards.join(' ').trim().toLowerCase();
+    } else if (activeQuestion.type === "sentence-builder") {
+      const userSentence = selectedCards.join(" ").trim().toLowerCase();
       correct = userSentence === cleanAnswer;
-    } else if (activeQuestion.type === 'typing') {
+    } else if (activeQuestion.type === "typing") {
       correct = typedAnswer.trim().toLowerCase() === cleanAnswer;
-    } else if (activeQuestion.type === 'fill-in-the-blank') {
+    } else if (activeQuestion.type === "fill-in-the-blank") {
       correct = typedAnswer.trim().toLowerCase() === cleanAnswer;
     }
 
@@ -1090,7 +1222,9 @@ function LessonPlayerContent() {
       setHearts((h) => {
         const nextH = h - 1;
         if (nextH <= 0) {
-          const totalTime = Math.round((Date.now() - (startTime.current || Date.now())) / 1000);
+          const totalTime = Math.round(
+            (Date.now() - (startTime.current || Date.now())) / 1000,
+          );
           setElapsedTime(totalTime);
           setTimeout(() => setIsGameOver(true), 600);
         }
@@ -1105,7 +1239,7 @@ function LessonPlayerContent() {
     setHearts(5);
     setSelectedOption(null);
     setSelectedCards([]);
-    setTypedAnswer('');
+    setTypedAnswer("");
     setIsAnswered(false);
     setIsCorrect(false);
     setIsFinished(false);
@@ -1115,15 +1249,26 @@ function LessonPlayerContent() {
     startTime.current = Date.now();
   };
 
-
-
   if (questions.length === 0) {
     return (
       <FullscreenContainer>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', minHeight: '60vh' }}>
-          <TrophyGraphic style={{ animation: 'float 2s ease-in-out infinite' }}>🎌</TrophyGraphic>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100%",
+            minHeight: "60vh",
+          }}
+        >
+          <TrophyGraphic style={{ animation: "float 2s ease-in-out infinite" }}>
+            🎌
+          </TrophyGraphic>
           <VictoryTitle>Loading Lesson...</VictoryTitle>
-          <VictorySubtitle>The system is preparing dynamic questions for you.</VictorySubtitle>
+          <VictorySubtitle>
+            The system is preparing dynamic questions for you.
+          </VictorySubtitle>
         </div>
       </FullscreenContainer>
     );
@@ -1138,7 +1283,9 @@ function LessonPlayerContent() {
         <VictoryOverlay>
           <TrophyGraphic>🏆</TrophyGraphic>
           <VictoryTitle>Lesson Completed!</VictoryTitle>
-          <VictorySubtitle>Great job! This session trained your comprehension comprehensively.</VictorySubtitle>
+          <VictorySubtitle>
+            Great job! This session trained your comprehension comprehensively.
+          </VictorySubtitle>
 
           <StatsGrid>
             <StatCard $color="#fbbf24">
@@ -1148,7 +1295,8 @@ function LessonPlayerContent() {
             <StatCard $color="#3b82f6">
               <span className="label">Time</span>
               <span className="value">
-                {elapsedMinutes > 0 ? `${elapsedMinutes}m ` : ''}{elapsedSeconds}s
+                {elapsedMinutes > 0 ? `${elapsedMinutes}m ` : ""}
+                {elapsedSeconds}s
               </span>
             </StatCard>
           </StatsGrid>
@@ -1166,14 +1314,18 @@ function LessonPlayerContent() {
       <FullscreenContainer>
         <GameOverOverlay>
           <div className="hearts-broken">💔</div>
-          <VictoryTitle style={{ color: '#ef4444' }}>Out of Hearts!</VictoryTitle>
-          <VictorySubtitle>Don't give up! Practice makes perfect. Let's try again!</VictorySubtitle>
+          <VictoryTitle style={{ color: "#ef4444" }}>
+            Out of Hearts!
+          </VictoryTitle>
+          <VictorySubtitle>
+            Don't give up! Practice makes perfect. Let's try again!
+          </VictorySubtitle>
 
-          <RetryBtn onClick={handleRetry}>
-            Try Again
-          </RetryBtn>
+          <RetryBtn onClick={handleRetry}>Try Again</RetryBtn>
           <ExitBtn href={returnUrl}>
-            {returnUrl === '/practice' ? 'Back to Practice Hub' : 'Back to Roadmap'}
+            {returnUrl === "/practice"
+              ? "Back to Practice Hub"
+              : "Back to Roadmap"}
           </ExitBtn>
         </GameOverOverlay>
       </FullscreenContainer>
@@ -1187,7 +1339,6 @@ function LessonPlayerContent() {
       {showExitModal && (
         <ExitModalOverlay>
           <ExitModalContainer>
-
             <ExitModalText>
               Don't go yet! Your progress will be lost if you stop now
             </ExitModalText>
@@ -1204,29 +1355,36 @@ function LessonPlayerContent() {
       )}
 
       <LessonHeader>
-        <CloseButton aria-label="Exit Lesson" onClick={() => setShowExitModal(true)}>✕</CloseButton>
+        <CloseButton
+          aria-label="Exit Lesson"
+          onClick={() => setShowExitModal(true)}
+        >
+          ✕
+        </CloseButton>
         <ProgressBar>
           <ProgressFill $percent={progressPercent} />
         </ProgressBar>
-        <LivesIndicator title="Hearts Remaining">
-          ❤️ {hearts}
-        </LivesIndicator>
+        <LivesIndicator title="Hearts Remaining">❤️ {hearts}</LivesIndicator>
       </LessonHeader>
 
       <ContentWrapper>
         <QuestionBox $shake={shakeBox}>
           <QuestionCategory>
-            {activeQuestion.type === 'listening' ? 'Listening' : 
-             activeQuestion.type === 'sentence-builder' ? 'Sentence Builder' : 
-             activeQuestion.type === 'typing' ? 'Type Answer' : 
-             activeQuestion.type === 'fill-in-the-blank' ? 'Fill in the Blank' : 
-             'Multiple Choice'}
+            {activeQuestion.type === "listening"
+              ? "Listening"
+              : activeQuestion.type === "sentence-builder"
+                ? "Sentence Builder"
+                : activeQuestion.type === "typing"
+                  ? "Type Answer"
+                  : activeQuestion.type === "fill-in-the-blank"
+                    ? "Fill in the Blank"
+                    : "Multiple Choice"}
           </QuestionCategory>
 
           <QuestionText>{activeQuestion.questionText}</QuestionText>
 
           {/* QUESTION TYPE RENDER */}
-          {activeQuestion.type === 'multiple-choice' && (
+          {activeQuestion.type === "multiple-choice" && (
             <OptionGrid>
               {activeQuestion.options.map((option, idx) => (
                 <OptionCard
@@ -1235,17 +1393,22 @@ function LessonPlayerContent() {
                   onClick={() => handleSelectOption(option)}
                   disabled={isAnswered}
                 >
-                  <OptionIndex $selected={selectedOption === option}>{idx + 1}</OptionIndex>
+                  <OptionIndex $selected={selectedOption === option}>
+                    {idx + 1}
+                  </OptionIndex>
                   {option}
                 </OptionCard>
               ))}
             </OptionGrid>
           )}
 
-          {activeQuestion.type === 'listening' && (
+          {activeQuestion.type === "listening" && (
             <>
               <AudioContainer>
-                <SpeakerButton onClick={() => speakText(activeQuestion.audioText || '')} type="button">
+                <SpeakerButton
+                  onClick={() => speakText(activeQuestion.audioText || "")}
+                  type="button"
+                >
                   <svg viewBox="0 0 24 24">
                     <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
                   </svg>
@@ -1261,7 +1424,9 @@ function LessonPlayerContent() {
                     onClick={() => handleSelectOption(option)}
                     disabled={isAnswered}
                   >
-                    <OptionIndex $selected={selectedOption === option}>{idx + 1}</OptionIndex>
+                    <OptionIndex $selected={selectedOption === option}>
+                      {idx + 1}
+                    </OptionIndex>
                     {option}
                   </OptionCard>
                 ))}
@@ -1269,7 +1434,7 @@ function LessonPlayerContent() {
             </>
           )}
 
-          {activeQuestion.type === 'sentence-builder' && (
+          {activeQuestion.type === "sentence-builder" && (
             <>
               <SentenceArea>
                 {selectedCards.map((card, idx) => (
@@ -1281,8 +1446,11 @@ function LessonPlayerContent() {
 
               <ScrambledArea>
                 {activeQuestion.options.map((word, idx) => {
-                  const usedCount = selectedCards.filter((c) => c === word).length;
-                  const isUsed = usedCount > 0 && selectedCards.indexOf(word) !== -1; // Basic visual placeholder
+                  const usedCount = selectedCards.filter(
+                    (c) => c === word,
+                  ).length;
+                  const isUsed =
+                    usedCount > 0 && selectedCards.indexOf(word) !== -1; // Basic visual placeholder
                   return (
                     <WordCard
                       key={idx}
@@ -1298,7 +1466,7 @@ function LessonPlayerContent() {
             </>
           )}
 
-          {activeQuestion.type === 'typing' && (
+          {activeQuestion.type === "typing" && (
             <TypingInput
               type="text"
               placeholder="Type the translation..."
@@ -1309,7 +1477,7 @@ function LessonPlayerContent() {
             />
           )}
 
-          {activeQuestion.type === 'fill-in-the-blank' && (
+          {activeQuestion.type === "fill-in-the-blank" && (
             <>
               <TypingInput
                 type="text"
@@ -1319,7 +1487,7 @@ function LessonPlayerContent() {
                 disabled={isAnswered}
                 autoFocus
               />
-              <ScrambledArea style={{ marginTop: '1.5rem' }}>
+              <ScrambledArea style={{ marginTop: "1.5rem" }}>
                 {activeQuestion.options.map((opt) => (
                   <WordCard
                     key={opt}
@@ -1336,32 +1504,36 @@ function LessonPlayerContent() {
       </ContentWrapper>
 
       {/* FEEDBACK BOTTOM PANEL */}
-      <FeedbackPanel $state={isAnswered ? (isCorrect ? 'correct' : 'incorrect') : 'hidden'}>
+      <FeedbackPanel
+        $state={isAnswered ? (isCorrect ? "correct" : "incorrect") : "hidden"}
+      >
         <FeedbackContent>
           {isAnswered && (
             <FeedbackTextContainer>
-              <FeedbackIcon $state={isCorrect ? 'correct' : 'incorrect'}>
-                {isCorrect ? '✓' : '✕'}
+              <FeedbackIcon $state={isCorrect ? "correct" : "incorrect"}>
+                {isCorrect ? "✓" : "✕"}
               </FeedbackIcon>
               <div>
-                <FeedbackTitle $state={isCorrect ? 'correct' : 'incorrect'}>
-                  {isCorrect ? 'Awesome!' : 'Incorrect Answer'}
+                <FeedbackTitle $state={isCorrect ? "correct" : "incorrect"}>
+                  {isCorrect ? "Awesome!" : "Incorrect Answer"}
                 </FeedbackTitle>
                 <FeedbackDetail>
-                  {isCorrect ? 
-                    'Your answer is correct.' : 
-                    `Correct answer: ${activeQuestion.answer}`}
+                  {isCorrect
+                    ? "Your answer is correct."
+                    : `Correct answer: ${activeQuestion.answer}`}
                 </FeedbackDetail>
               </div>
             </FeedbackTextContainer>
           )}
-          
+
           <CheckButton
             $active={isCheckActive()}
-            $state={isAnswered ? (isCorrect ? 'correct' : 'incorrect') : 'hidden'}
+            $state={
+              isAnswered ? (isCorrect ? "correct" : "incorrect") : "hidden"
+            }
             onClick={() => isCheckActive() && handleCheckAnswer()}
           >
-            {isAnswered ? 'Continue' : 'Check'}
+            {isAnswered ? "Continue" : "Check"}
           </CheckButton>
         </FeedbackContent>
       </FeedbackPanel>
@@ -1372,13 +1544,15 @@ function LessonPlayerContent() {
 // Next.js Suspense wrapper for search params compatibility
 export default function LessonPlayerPage() {
   return (
-    <Suspense fallback={
-      <FullscreenContainer style={{ justifyContent: 'center' }}>
-        <div style={{ fontSize: '1.25rem', color: 'var(--text-secondary)' }}>
-          Loading Lesson...
-        </div>
-      </FullscreenContainer>
-    }>
+    <Suspense
+      fallback={
+        <FullscreenContainer style={{ justifyContent: "center" }}>
+          <div style={{ fontSize: "1.25rem", color: "var(--text-secondary)" }}>
+            Loading Lesson...
+          </div>
+        </FullscreenContainer>
+      }
+    >
       <LessonPlayerContent />
     </Suspense>
   );

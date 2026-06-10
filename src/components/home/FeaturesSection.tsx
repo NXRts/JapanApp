@@ -1,14 +1,20 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import { CameraIcon, GamepadIcon, RefreshIcon, TargetIcon, BookIcon } from '../icons/AppIcons';
+import styled from "styled-components";
+import {
+  CameraIcon,
+  GamepadIcon,
+  RefreshIcon,
+  TargetIcon,
+  BookIcon,
+} from "../icons/AppIcons";
 
 const Section = styled.section`
   padding: 4rem 2rem;
   max-width: 1240px;
   margin: 0 auto;
   width: 100%;
-  
+
   @media (max-width: 768px) {
     padding: 3rem 1rem;
   }
@@ -20,13 +26,13 @@ const SectionTitle = styled.h2`
   text-align: center;
   margin-bottom: 5rem;
   color: var(--foreground);
-  
+
   span {
     position: relative;
     z-index: 1;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -10px;
       left: 50%;
@@ -37,7 +43,7 @@ const SectionTitle = styled.h2`
       border-radius: 2px;
     }
   }
-  
+
   @media (max-width: 768px) {
     font-size: 1.75rem;
     margin-bottom: 2.5rem;
@@ -48,7 +54,7 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  
+
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -69,13 +75,15 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  
+
   &:hover {
     transform: translateY(-8px);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(var(--primary-rgb), 0.1);
+    box-shadow:
+      0 20px 40px -10px rgba(0, 0, 0, 0.3),
+      0 0 15px rgba(var(--primary-rgb), 0.1);
     border-color: var(--primary-light);
   }
-  
+
   @media (max-width: 768px) {
     padding: 1.75rem;
     border-radius: 24px;
@@ -85,7 +93,11 @@ const Card = styled.div`
 const CardIcon = styled.div`
   width: 56px;
   height: 56px;
-  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15), rgba(var(--primary-rgb), 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(var(--primary-rgb), 0.15),
+    rgba(var(--primary-rgb), 0.05)
+  );
   border: 1px solid rgba(var(--primary-rgb), 0.1);
   border-radius: 16px;
   display: flex;
@@ -127,54 +139,72 @@ const CardDescription = styled.p`
 export function FeaturesSection() {
   return (
     <Section>
-      <SectionTitle><span>Key Features</span></SectionTitle>
+      <SectionTitle>
+        <span>Key Features</span>
+      </SectionTitle>
       <Grid>
         <Card>
           <CardIcon>字</CardIcon>
           <CardTitle>Interactive Kanji Writer</CardTitle>
           <CardDescription>
-            Master stroke order by writing naturally on your screen. Includes <b>Real-time Feedback</b>, 
-            <b>Stroke Recognition</b>, and 2136+ Joyo Kanji library.
+            Master stroke order by writing naturally on your screen. Includes{" "}
+            <b>Real-time Feedback</b>,<b>Stroke Recognition</b>, and 2136+ Joyo
+            Kanji library.
           </CardDescription>
         </Card>
         <Card>
-          <CardIcon><TargetIcon size={28} /></CardIcon>
+          <CardIcon>
+            <TargetIcon size={28} />
+          </CardIcon>
           <CardTitle>Personalized Roadmap</CardTitle>
           <CardDescription>
-            Follow a clear, <b>Step-by-Step path</b> from N5 to N1. Curated curriculum 
-            covering vocabulary, kanji, and grammar patterns for official JLPT exams.
+            Follow a clear, <b>Step-by-Step path</b> from N5 to N1. Curated
+            curriculum covering vocabulary, kanji, and grammar patterns for
+            official JLPT exams.
           </CardDescription>
         </Card>
         <Card>
-          <CardIcon><CameraIcon size={28} /></CardIcon>
+          <CardIcon>
+            <CameraIcon size={28} />
+          </CardIcon>
           <CardTitle>AI Dictionary & OCR</CardTitle>
           <CardDescription>
-            Search for meanings instantly using <b>OCR Camera</b>, 
-            <b>Handwriting input</b>, or highly accurate <b>Voice Search</b> features.
+            Search for meanings instantly using <b>OCR Camera</b>,
+            <b>Handwriting input</b>, or highly accurate <b>Voice Search</b>{" "}
+            features.
           </CardDescription>
         </Card>
         <Card>
-          <CardIcon><BookIcon size={28} /></CardIcon>
+          <CardIcon>
+            <BookIcon size={28} />
+          </CardIcon>
           <CardTitle>Grammar & Particle Drills</CardTitle>
           <CardDescription>
-            Master tricky <b>Particles</b> and <b>Verb Conjugations</b> through repetitive, 
-            interactive drills designed to build permanent muscle memory.
+            Master tricky <b>Particles</b> and <b>Verb Conjugations</b> through
+            repetitive, interactive drills designed to build permanent muscle
+            memory.
           </CardDescription>
         </Card>
         <Card>
-          <CardIcon><GamepadIcon size={28} /></CardIcon>
+          <CardIcon>
+            <GamepadIcon size={28} />
+          </CardIcon>
           <CardTitle>Interactive Learning Hub</CardTitle>
           <CardDescription>
-            Mastery made fun. Learn through <b>Match Pairs</b>, <b>Audio Challenges</b>, 
-            and various <b>Mini-games</b> in our vibrant interactive hub.
+            Mastery made fun. Learn through <b>Match Pairs</b>,{" "}
+            <b>Audio Challenges</b>, and various <b>Mini-games</b> in our
+            vibrant interactive hub.
           </CardDescription>
         </Card>
         <Card>
-          <CardIcon><RefreshIcon size={28} /></CardIcon>
+          <CardIcon>
+            <RefreshIcon size={28} />
+          </CardIcon>
           <CardTitle>Smart SRS Mastery</CardTitle>
           <CardDescription>
-            Our <b>Spaced Repetition System</b> predicts the optimal time for you 
-            to review, ensuring maximum long-term memory retention with minimum effort.
+            Our <b>Spaced Repetition System</b> predicts the optimal time for
+            you to review, ensuring maximum long-term memory retention with
+            minimum effort.
           </CardDescription>
         </Card>
       </Grid>

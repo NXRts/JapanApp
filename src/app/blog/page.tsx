@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import styled from 'styled-components';
-import Link from 'next/link';
-import { useState } from 'react';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
+import styled from "styled-components";
+import Link from "next/link";
+import { useState } from "react";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
-import { mockPosts } from '@/data/blog';
+import { mockPosts } from "@/data/blog";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -31,10 +31,14 @@ const Title = styled.h1`
   font-size: 4rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--text-secondary) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  
+
   @media (max-width: 768px) {
     font-size: 2.2rem;
     margin-bottom: 0.75rem;
@@ -59,7 +63,7 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 3rem;
-  
+
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
@@ -76,7 +80,7 @@ const BlogCard = styled(Link)`
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
   height: 100%;
-  
+
   &:hover {
     transform: translateY(-5px);
     border-color: var(--primary-light);
@@ -90,13 +94,18 @@ const BlogCard = styled(Link)`
 
 const CardImage = styled.div<{ $category: string }>`
   height: 200px;
-  background: ${props => {
+  background: ${(props) => {
     switch (props.$category) {
-      case 'kanji': return 'linear-gradient(135deg, #FF6B6B 0%, #EE5253 100%)';
-      case 'grammar': return 'linear-gradient(135deg, #4834d4 0%, #686de0 100%)';
-      case 'culture': return 'linear-gradient(135deg, #f0932b 0%, #ffbe76 100%)';
-      case 'learning-tips': return 'linear-gradient(135deg, #6ab04c 0%, #badc58 100%)';
-      default: return 'var(--surface-light)';
+      case "kanji":
+        return "linear-gradient(135deg, #FF6B6B 0%, #EE5253 100%)";
+      case "grammar":
+        return "linear-gradient(135deg, #4834d4 0%, #686de0 100%)";
+      case "culture":
+        return "linear-gradient(135deg, #f0932b 0%, #ffbe76 100%)";
+      case "learning-tips":
+        return "linear-gradient(135deg, #6ab04c 0%, #badc58 100%)";
+      default:
+        return "var(--surface-light)";
     }
   }};
   display: flex;
@@ -106,15 +115,19 @@ const CardImage = styled.div<{ $category: string }>`
   font-size: 5rem;
   opacity: 0.9;
   position: relative;
-  
+
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.1) 100%);
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      rgba(0, 0, 0, 0.1) 100%
+    );
   }
 
   @media (max-width: 768px) {
@@ -154,22 +167,32 @@ const Category = styled.span<{ $category: string }>`
   letter-spacing: 0.05em;
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
-  background: ${props => {
+  background: ${(props) => {
     switch (props.$category) {
-      case 'kanji': return 'rgba(255, 107, 107, 0.1)';
-      case 'grammar': return 'rgba(72, 52, 212, 0.1)';
-      case 'culture': return 'rgba(240, 147, 43, 0.1)';
-      case 'learning-tips': return 'rgba(106, 176, 76, 0.1)';
-      default: return 'var(--surface-light)';
+      case "kanji":
+        return "rgba(255, 107, 107, 0.1)";
+      case "grammar":
+        return "rgba(72, 52, 212, 0.1)";
+      case "culture":
+        return "rgba(240, 147, 43, 0.1)";
+      case "learning-tips":
+        return "rgba(106, 176, 76, 0.1)";
+      default:
+        return "var(--surface-light)";
     }
   }};
-  color: ${props => {
+  color: ${(props) => {
     switch (props.$category) {
-      case 'kanji': return '#FF6B6B';
-      case 'grammar': return '#686de0';
-      case 'culture': return '#f0932b';
-      case 'learning-tips': return '#6ab04c';
-      default: return 'var(--text-secondary)';
+      case "kanji":
+        return "#FF6B6B";
+      case "grammar":
+        return "#686de0";
+      case "culture":
+        return "#f0932b";
+      case "learning-tips":
+        return "#6ab04c";
+      default:
+        return "var(--text-secondary)";
     }
   }};
 
@@ -293,13 +316,13 @@ const SearchInput = styled.input`
   color: var(--foreground);
   font-size: 1.1rem;
   transition: all 0.3s ease;
-  
+
   &:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
   }
-  
+
   &::placeholder {
     color: var(--text-secondary);
     font-size: 0.95rem;
@@ -322,24 +345,25 @@ const EmptyState = styled.div`
 `;
 
 export default function BlogPage() {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredPosts = mockPosts.filter((post) => {
     const query = searchQuery.toLowerCase();
     return (
       post.title.toLowerCase().includes(query) ||
       post.excerpt.toLowerCase().includes(query) ||
-      post.category.toLowerCase().replace('-', ' ').includes(query)
+      post.category.toLowerCase().replace("-", " ").includes(query)
     );
   });
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: 'Home', href: '/' }]} current="Blog" />
+      <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Blog" />
       <Header>
         <Title>Latest Insights</Title>
         <Subtitle>
-          Tips, guides, and stories to help you on your journey to mastering Japanese.
+          Tips, guides, and stories to help you on your journey to mastering
+          Japanese.
         </Subtitle>
       </Header>
 
@@ -358,14 +382,16 @@ export default function BlogPage() {
             <BlogCard href={`/blog/${post.id}`} key={post.id}>
               <CardImage $category={post.category}>
                 {/* Simple placeholder icon based on category */}
-                {post.category === 'kanji' && '字'}
-                {post.category === 'grammar' && '文'}
-                {post.category === 'culture' && '和'}
-                {post.category === 'learning-tips' && '学'}
+                {post.category === "kanji" && "字"}
+                {post.category === "grammar" && "文"}
+                {post.category === "culture" && "和"}
+                {post.category === "learning-tips" && "学"}
               </CardImage>
               <CardContent>
                 <Meta>
-                  <Category $category={post.category}>{post.category.replace('-', ' ')}</Category>
+                  <Category $category={post.category}>
+                    {post.category.replace("-", " ")}
+                  </Category>
                   <Date>{post.date}</Date>
                 </Meta>
                 <PostTitle>{post.title}</PostTitle>
@@ -383,7 +409,8 @@ export default function BlogPage() {
         </Grid>
       ) : (
         <EmptyState>
-          No articles found matching "{searchQuery}". Try a different search term.
+          No articles found matching "{searchQuery}". Try a different search
+          term.
         </EmptyState>
       )}
     </Container>

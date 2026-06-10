@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React, { useRef, useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
+import React, { useRef, useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
 
 const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
@@ -13,7 +13,7 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
   backdrop-filter: blur(4px);
   z-index: 1000;
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
-  pointer-events: ${({ $isOpen }) => ($isOpen ? 'auto' : 'none')};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};
   transition: opacity 0.3s ease;
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@ const Modal = styled.div<{ $isOpen: boolean }>`
   width: 90%;
   max-width: 400px;
   box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-  transform: ${({ $isOpen }) => ($isOpen ? 'scale(1)' : 'scale(0.95)')};
+  transform: ${({ $isOpen }) => ($isOpen ? "scale(1)" : "scale(0.95)")};
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border);
   display: flex;
@@ -56,7 +56,9 @@ const CloseBtn = styled.button`
   cursor: pointer;
   padding: 0;
   display: flex;
-  &:hover { color: var(--foreground); }
+  &:hover {
+    color: var(--foreground);
+  }
 `;
 
 const CanvasContainer = styled.div`
@@ -92,22 +94,34 @@ const CandidateBtn = styled.button`
 `;
 
 const clearBtnStyle = {
-  background: 'transparent',
-  border: '1px solid var(--border)',
-  color: 'var(--text-secondary)',
-  padding: '0.5rem 1rem',
-  borderRadius: '8px',
-  cursor: 'pointer',
-  fontWeight: '600' as const,
+  background: "transparent",
+  border: "1px solid var(--border)",
+  color: "var(--text-secondary)",
+  padding: "0.5rem 1rem",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontWeight: "600" as const,
 };
 
-type Stroke = { x: number[], y: number[], time: number[] };
+type Stroke = { x: number[]; y: number[]; time: number[] };
 
-export function HandwritingModal({ isOpen, onClose, onSelect }: { isOpen: boolean, onClose: () => void, onSelect: (text: string) => void }) {
+export function HandwritingModal({
+  isOpen,
+  onClose,
+  onSelect,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  onSelect: (text: string) => void;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [strokes, setStrokes] = useState<Stroke[]>([]);
-  const [currentStroke, setCurrentStroke] = useState<Stroke>({ x: [], y: [], time: [] });
+  const [currentStroke, setCurrentStroke] = useState<Stroke>({
+    x: [],
+    y: [],
+    time: [],
+  });
   const [candidates, setCandidates] = useState<string[]>([]);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
   const width = 350; // max width
@@ -123,26 +137,27 @@ export function HandwritingModal({ isOpen, onClose, onSelect }: { isOpen: boolea
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
       // Init canvas
       const canvas = canvasRef.current;
       if (canvas) {
         canvas.width = canvas.parentElement?.clientWidth || width;
         canvas.height = height;
-        const context = canvas.getContext('2d');
+        const context = canvas.getContext("2d");
         if (context) {
-          context.lineCap = 'round';
-          context.lineJoin = 'round';
+          context.lineCap = "round";
+          context.lineJoin = "round";
           context.lineWidth = 4;
-          context.strokeStyle = 'var(--foreground)'; // Need to resolve CSS variable to actual color if it doesn't work directly, but usually it does if not using complex transforms
+          context.strokeStyle = "var(--foreground)"; // Need to resolve CSS variable to actual color if it doesn't work directly, but usually it does if not using complex transforms
           // Actually context needs a raw color
           const rootStyles = getComputedStyle(document.body);
-          context.strokeStyle = rootStyles.getPropertyValue('--foreground').trim() || '#333';
+          context.strokeStyle =
+            rootStyles.getPropertyValue("--foreground").trim() || "#333";
           setCtx(context);
         }
       }
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
       clearCanvas();
     }
   }, [isOpen, clearCanvas]);
@@ -150,15 +165,15 @@ export function HandwritingModal({ isOpen, onClose, onSelect }: { isOpen: boolea
   const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
     if (!canvasRef.current) return { x: 0, y: 0 };
     const rect = canvasRef.current.getBoundingClientRect();
-    if ('touches' in e) {
+    if ("touches" in e) {
       return {
         x: e.touches[0].clientX - rect.left,
-        y: e.touches[0].clientY - rect.top
+        y: e.touches[0].clientY - rect.top,
       };
     }
     return {
       x: (e as React.MouseEvent).clientX - rect.left,
-      y: (e as React.MouseEvent).clientY - rect.top
+      y: (e as React.MouseEvent).clientY - rect.top,
     };
   };
 
@@ -176,10 +191,10 @@ export function HandwritingModal({ isOpen, onClose, onSelect }: { isOpen: boolea
     const { x, y } = getCoordinates(e);
     ctx.lineTo(x, y);
     ctx.stroke();
-    setCurrentStroke(prev => ({
+    setCurrentStroke((prev) => ({
       x: [...prev.x, x],
       y: [...prev.y, y],
-      time: [...prev.time, Date.now()]
+      time: [...prev.time, Date.now()],
     }));
   };
 
@@ -197,29 +212,37 @@ export function HandwritingModal({ isOpen, onClose, onSelect }: { isOpen: boolea
 
   const fetchCandidates = async (inkData: Stroke[]) => {
     // Format for Google Input Tools API
-    const formattedInk = inkData.map(stroke => [stroke.x, stroke.y, []]); // empty time array is fine
-    
-    // Using a public API for demonstration. Standard CORS limits might apply if called directly from browser, 
+    const formattedInk = inkData.map((stroke) => [stroke.x, stroke.y, []]); // empty time array is fine
+
+    // Using a public API for demonstration. Standard CORS limits might apply if called directly from browser,
     // but the inputtools endpoint usually allows it.
     try {
-      const response = await fetch('https://inputtools.google.com/request?ime=handwriting&app=mobilesearch&cs=1&oe=UTF-8', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          app_version: 0.4,
-          api_level: "537.36",
-          device: "5.0",
-          input_type: 0,
-          options: "enable_pre_space",
-          requests: [{
-            writing_guide: { writing_area_width: canvasRef.current?.width || width, writing_area_height: height },
-            ink: formattedInk,
-            language: "ja"
-          }]
-        })
-      });
+      const response = await fetch(
+        "https://inputtools.google.com/request?ime=handwriting&app=mobilesearch&cs=1&oe=UTF-8",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            app_version: 0.4,
+            api_level: "537.36",
+            device: "5.0",
+            input_type: 0,
+            options: "enable_pre_space",
+            requests: [
+              {
+                writing_guide: {
+                  writing_area_width: canvasRef.current?.width || width,
+                  writing_area_height: height,
+                },
+                ink: formattedInk,
+                language: "ja",
+              },
+            ],
+          }),
+        },
+      );
       const data = await response.json();
-      if (data[0] === 'SUCCESS' && data[1] && data[1][0] && data[1][0][1]) {
+      if (data[0] === "SUCCESS" && data[1] && data[1][0] && data[1][0][1]) {
         setCandidates(data[1][0][1].slice(0, 10)); // Top 10 candidates
       }
     } catch (e) {
@@ -229,12 +252,12 @@ export function HandwritingModal({ isOpen, onClose, onSelect }: { isOpen: boolea
 
   return (
     <Overlay $isOpen={isOpen} onClick={onClose}>
-      <Modal $isOpen={isOpen} onClick={e => e.stopPropagation()}>
+      <Modal $isOpen={isOpen} onClick={(e) => e.stopPropagation()}>
         <Header>
           <Title>Draw Kanji</Title>
           <CloseBtn onClick={onClose}>&times;</CloseBtn>
         </Header>
-        
+
         <CanvasContainer>
           <canvas
             ref={canvasRef}
@@ -245,20 +268,32 @@ export function HandwritingModal({ isOpen, onClose, onSelect }: { isOpen: boolea
             onTouchStart={startDrawing}
             onTouchMove={draw}
             onTouchEnd={endDrawing}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: "100%", height: "100%" }}
           />
         </CanvasContainer>
 
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
-          <button style={clearBtnStyle} onClick={clearCanvas}>Clear</button>
+        <div
+          style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}
+        >
+          <button style={clearBtnStyle} onClick={clearCanvas}>
+            Clear
+          </button>
         </div>
 
         <CandidatesArea>
-          {candidates.length > 0 ? candidates.map((char, i) => (
-            <CandidateBtn key={i} onClick={() => onSelect(char)}>
-              {char}
-            </CandidateBtn>
-          )) : <span style={{ color: 'var(--text-secondary)', alignSelf: 'center' }}>Draw on the canvas to see candidates</span>}
+          {candidates.length > 0 ? (
+            candidates.map((char, i) => (
+              <CandidateBtn key={i} onClick={() => onSelect(char)}>
+                {char}
+              </CandidateBtn>
+            ))
+          ) : (
+            <span
+              style={{ color: "var(--text-secondary)", alignSelf: "center" }}
+            >
+              Draw on the canvas to see candidates
+            </span>
+          )}
         </CandidatesArea>
       </Modal>
     </Overlay>

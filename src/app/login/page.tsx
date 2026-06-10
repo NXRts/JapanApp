@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { AuthLayout } from '@/components/auth/AuthLayout';
+import React from "react";
+import styled from "styled-components";
+import Link from "next/link";
+import { AuthLayout } from "@/components/auth/AuthLayout";
 
 const Form = styled.form`
   display: flex;
@@ -33,14 +33,14 @@ const Input = styled.input`
   color: var(--foreground);
   font-size: 1rem;
   transition: all 0.2s ease;
-  
+
   &:focus {
     outline: none;
     border-color: var(--primary);
     background: var(--surface);
     box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
   }
-  
+
   &::placeholder {
     color: var(--text-secondary);
     opacity: 0.6;
@@ -53,7 +53,7 @@ const ForgotPassword = styled(Link)`
   text-decoration: none;
   font-weight: 600;
   align-self: flex-end;
-  
+
   &:hover {
     text-decoration: underline;
   }
@@ -62,7 +62,11 @@ const ForgotPassword = styled(Link)`
 const SubmitButton = styled.button`
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   border: none;
   border-radius: 999px;
@@ -88,12 +92,12 @@ const FooterText = styled.p`
   margin-top: 2rem;
   font-size: 0.9rem;
   color: var(--text-secondary);
-  
+
   a {
     color: var(--primary);
     text-decoration: none;
     font-weight: 700;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -104,41 +108,47 @@ export default function LoginPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Dummy login logic
-    alert('This is a dummy login. Feel free to explore the UI!');
+    alert("This is a dummy login. Feel free to explore the UI!");
   };
 
   return (
-    <AuthLayout 
-      title="Welcome Back" 
+    <AuthLayout
+      title="Welcome Back"
       subtitle="Log in to your account to continue your journey"
     >
       <Form onSubmit={handleSubmit}>
         <FormGroup>
           <Label htmlFor="email">Email Address</Label>
-          <Input 
-            type="email" 
-            id="email" 
-            placeholder="name@example.com" 
-            required 
+          <Input
+            type="email"
+            id="email"
+            placeholder="name@example.com"
+            required
           />
         </FormGroup>
-        
+
         <FormGroup>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <Label htmlFor="password">Password</Label>
             <ForgotPassword href="/login">Forgot Password?</ForgotPassword>
           </div>
-          <Input 
-            type="password" 
-            id="password" 
-            placeholder="••••••••" 
-            required 
+          <Input
+            type="password"
+            id="password"
+            placeholder="••••••••"
+            required
           />
         </FormGroup>
 
         <SubmitButton type="submit">Log In</SubmitButton>
       </Form>
-      
+
       <FooterText>
         Don't have an account? <Link href="/register">Sign Up</Link>
       </FooterText>

@@ -33,12 +33,14 @@ A premium, interactive Japanese learning companion application built with Next.j
 ## 🚀 Getting Started
 
 1.  **Clone the repository**:
+
     ```bash
     git clone https://github.com/NXRts/JapanApp.git
     cd JapanApp
     ```
 
 2.  **Install dependencies**:
+
     ```bash
     npm install
     ```

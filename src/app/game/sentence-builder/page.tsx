@@ -1,20 +1,31 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import styled from 'styled-components';
-import { Breadcrumbs } from '@/components/common/Breadcrumbs';
-import { DndContext, DragOverlay, closestCenter, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors, DragStartEvent, DragEndEvent } from '@dnd-kit/core';
-import { useProgress } from '@/context/ProgressContext';
-import { useDeviceMode } from '@/context/DeviceModeContext';
-import Link from 'next/link';
+import { useState, useEffect, useCallback } from "react";
+import styled from "styled-components";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import {
+  DndContext,
+  DragOverlay,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  DragStartEvent,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import { useProgress } from "@/context/ProgressContext";
+import { useDeviceMode } from "@/context/DeviceModeContext";
+import Link from "next/link";
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   horizontalListSortingStrategy,
-  useSortable
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 // --- DATA ---
 interface WordItem {
@@ -40,8 +51,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w1-2", kana: "は", romaji: "wa" },
       { id: "w1-3", kana: "りんご", romaji: "ringo" },
       { id: "w1-4", kana: "を", romaji: "o" },
-      { id: "w1-5", kana: "食べます", romaji: "tabemasu" }
-    ]
+      { id: "w1-5", kana: "食べます", romaji: "tabemasu" },
+    ],
   },
   {
     id: 2,
@@ -52,8 +63,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w2-2", kana: "は", romaji: "wa" },
       { id: "w2-3", kana: "学校", romaji: "gakkō" },
       { id: "w2-4", kana: "に", romaji: "ni" },
-      { id: "w2-5", kana: "行きます", romaji: "ikimasu" }
-    ]
+      { id: "w2-5", kana: "行きます", romaji: "ikimasu" },
+    ],
   },
   {
     id: 3,
@@ -65,8 +76,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w3-3", kana: "は", romaji: "wa" },
       { id: "w3-4", kana: "本", romaji: "hon" },
       { id: "w3-5", kana: "を", romaji: "o" },
-      { id: "w3-6", kana: "読みました", romaji: "yomimashita" }
-    ]
+      { id: "w3-6", kana: "読みました", romaji: "yomimashita" },
+    ],
   },
   {
     id: 4,
@@ -79,8 +90,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w4-4", kana: "の", romaji: "no" },
       { id: "w4-5", kana: "下", romaji: "shita" },
       { id: "w4-6", kana: "に", romaji: "ni" },
-      { id: "w4-7", kana: "います", romaji: "imasu" }
-    ]
+      { id: "w4-7", kana: "います", romaji: "imasu" },
+    ],
   },
   {
     id: 5,
@@ -91,8 +102,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w5-2", kana: "が", romaji: "ga" },
       { id: "w5-3", kana: "好き", romaji: "suki" },
       { id: "w5-4", kana: "です", romaji: "desu" },
-      { id: "w5-5", kana: "か", romaji: "ka" }
-    ]
+      { id: "w5-5", kana: "か", romaji: "ka" },
+    ],
   },
   {
     id: 6,
@@ -103,8 +114,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w6-2", kana: "は", romaji: "wa" },
       { id: "w6-3", kana: "水", romaji: "mizu" },
       { id: "w6-4", kana: "を", romaji: "o" },
-      { id: "w6-5", kana: "飲みます", romaji: "nomimasu" }
-    ]
+      { id: "w6-5", kana: "飲みます", romaji: "nomimasu" },
+    ],
   },
   {
     id: 7,
@@ -115,8 +126,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w7-2", kana: "本", romaji: "hon" },
       { id: "w7-3", kana: "は", romaji: "wa" },
       { id: "w7-4", kana: "高い", romaji: "takai" },
-      { id: "w7-5", kana: "です", romaji: "desu" }
-    ]
+      { id: "w7-5", kana: "です", romaji: "desu" },
+    ],
   },
   {
     id: 8,
@@ -128,8 +139,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w8-3", kana: "天気", romaji: "tenki" },
       { id: "w8-4", kana: "が", romaji: "ga" },
       { id: "w8-5", kana: "いい", romaji: "ii" },
-      { id: "w8-6", kana: "です", romaji: "desu" }
-    ]
+      { id: "w8-6", kana: "です", romaji: "desu" },
+    ],
   },
   {
     id: 9,
@@ -140,8 +151,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w9-2", kana: "は", romaji: "wa" },
       { id: "w9-3", kana: "大学", romaji: "daigaku" },
       { id: "w9-4", kana: "に", romaji: "ni" },
-      { id: "w9-5", kana: "行きません", romaji: "ikimasen" }
-    ]
+      { id: "w9-5", kana: "行きません", romaji: "ikimasen" },
+    ],
   },
   {
     id: 10,
@@ -151,8 +162,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w10-1", kana: "もう", romaji: "mō" },
       { id: "w10-2", kana: "一度", romaji: "ichido" },
       { id: "w10-3", kana: "言って", romaji: "itte" },
-      { id: "w10-4", kana: "ください", romaji: "kudasai" }
-    ]
+      { id: "w10-4", kana: "ください", romaji: "kudasai" },
+    ],
   },
   {
     id: 11,
@@ -164,8 +175,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w11-3", kana: "は", romaji: "wa" },
       { id: "w11-4", kana: "とても", romaji: "totemo" },
       { id: "w11-5", kana: "熱い", romaji: "atsui" },
-      { id: "w11-6", kana: "です", romaji: "desu" }
-    ]
+      { id: "w11-6", kana: "です", romaji: "desu" },
+    ],
   },
   {
     id: 12,
@@ -177,8 +188,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w12-3", kana: "魚", romaji: "sakana" },
       { id: "w12-4", kana: "を", romaji: "o" },
       { id: "w12-5", kana: "食べて", romaji: "tabete" },
-      { id: "w12-6", kana: "います", romaji: "imasu" }
-    ]
+      { id: "w12-6", kana: "います", romaji: "imasu" },
+    ],
   },
   {
     id: 13,
@@ -190,8 +201,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w13-3", kana: "は", romaji: "wa" },
       { id: "w13-4", kana: "美味しくて", romaji: "oishikute" },
       { id: "w13-5", kana: "安い", romaji: "yasui" },
-      { id: "w13-6", kana: "です", romaji: "desu" }
-    ]
+      { id: "w13-6", kana: "です", romaji: "desu" },
+    ],
   },
   {
     id: 14,
@@ -201,8 +212,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w14-1", kana: "今", romaji: "ima" },
       { id: "w14-2", kana: "何時", romaji: "nanji" },
       { id: "w14-3", kana: "です", romaji: "desu" },
-      { id: "w14-4", kana: "か", romaji: "ka" }
-    ]
+      { id: "w14-4", kana: "か", romaji: "ka" },
+    ],
   },
   {
     id: 15,
@@ -212,8 +223,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w15-1", kana: "毎日", romaji: "mainichi" },
       { id: "w15-2", kana: "７時", romaji: "shichi-ji" },
       { id: "w15-3", kana: "に", romaji: "ni" },
-      { id: "w15-4", kana: "起きます", romaji: "okimasu" }
-    ]
+      { id: "w15-4", kana: "起きます", romaji: "okimasu" },
+    ],
   },
   {
     id: 16,
@@ -226,8 +237,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w16-4", kana: "も", romaji: "mo" },
       { id: "w16-5", kana: "いい", romaji: "ii" },
       { id: "w16-6", kana: "です", romaji: "desu" },
-      { id: "w16-7", kana: "か", romaji: "ka" }
-    ]
+      { id: "w16-7", kana: "か", romaji: "ka" },
+    ],
   },
   {
     id: 17,
@@ -237,8 +248,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w17-1", kana: "夏休み", romaji: "natsuyasumi" },
       { id: "w17-2", kana: "が", romaji: "ga" },
       { id: "w17-3", kana: "欲しい", romaji: "hoshii" },
-      { id: "w17-4", kana: "です", romaji: "desu" }
-    ]
+      { id: "w17-4", kana: "です", romaji: "desu" },
+    ],
   },
   {
     id: 18,
@@ -252,8 +263,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w18-5", kana: "狭い", romaji: "semai" },
       { id: "w18-6", kana: "ですが", romaji: "desu ga" },
       { id: "w18-7", kana: "きれい", romaji: "kirei" },
-      { id: "w18-8", kana: "です", romaji: "desu" }
-    ]
+      { id: "w18-8", kana: "です", romaji: "desu" },
+    ],
   },
   {
     id: 19,
@@ -266,8 +277,8 @@ const ALL_SENTENCES: SentenceLevel[] = [
       { id: "w19-4", kana: "あまり", romaji: "amari" },
       { id: "w19-5", kana: "面白く", romaji: "omoshiroku" },
       { id: "w19-6", kana: "ない", romaji: "nai" },
-      { id: "w19-7", kana: "です", romaji: "desu" }
-    ]
+      { id: "w19-7", kana: "です", romaji: "desu" },
+    ],
   },
   {
     id: 20,
@@ -276,9 +287,9 @@ const ALL_SENTENCES: SentenceLevel[] = [
     items: [
       { id: "w20-1", kana: "ちょっと", romaji: "chotto" },
       { id: "w20-2", kana: "待って", romaji: "matte" },
-      { id: "w20-3", kana: "ください", romaji: "kudasai" }
-    ]
-  }
+      { id: "w20-3", kana: "ください", romaji: "kudasai" },
+    ],
+  },
 ];
 
 // Helper to shuffle array
@@ -381,7 +392,7 @@ const Button = styled.button`
   transition: all 0.3s;
   box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);
   margin-top: 2rem;
-  
+
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.4);
@@ -519,7 +530,7 @@ const ShowRomajiToggle = styled.div`
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
   border: 1px solid var(--border);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const ToggleSwitch = styled.label`
@@ -542,7 +553,7 @@ const ToggleSwitch = styled.label`
     right: 0;
     bottom: 0;
     background-color: var(--border);
-    transition: .3s;
+    transition: 0.3s;
     border-radius: 20px;
   }
 
@@ -554,7 +565,7 @@ const ToggleSwitch = styled.label`
     left: 3px;
     bottom: 3px;
     background-color: white;
-    transition: .3s;
+    transition: 0.3s;
     border-radius: 50%;
   }
 
@@ -587,17 +598,25 @@ const RomajiHint = styled.p`
   }
 `;
 
-const DropZoneWrapper = styled.div<{ $isError?: boolean; $isSuccess?: boolean }>`
+const DropZoneWrapper = styled.div<{
+  $isError?: boolean;
+  $isSuccess?: boolean;
+}>`
   width: 100%;
   min-height: 120px;
   background: ${({ $isError, $isSuccess }) =>
-    $isSuccess ? 'rgba(16, 185, 129, 0.05)' :
-      $isError ? 'rgba(239, 68, 68, 0.05)' :
-        'rgba(255, 255, 255, 0.02)'};
-  border: 2px solid ${({ $isError, $isSuccess }) =>
-    $isSuccess ? 'rgba(16, 185, 129, 0.3)' :
-      $isError ? 'rgba(239, 68, 68, 0.3)' :
-        'var(--border)'};
+    $isSuccess
+      ? "rgba(16, 185, 129, 0.05)"
+      : $isError
+        ? "rgba(239, 68, 68, 0.05)"
+        : "rgba(255, 255, 255, 0.02)"};
+  border: 2px solid
+    ${({ $isError, $isSuccess }) =>
+      $isSuccess
+        ? "rgba(16, 185, 129, 0.3)"
+        : $isError
+          ? "rgba(239, 68, 68, 0.3)"
+          : "var(--border)"};
   border-radius: 20px;
   padding: 1.5rem;
   display: flex;
@@ -617,13 +636,23 @@ const DropZoneWrapper = styled.div<{ $isError?: boolean; $isSuccess?: boolean }>
 
 const WordChipWrapper = styled.div<{ $isDragging?: boolean }>`
   padding: 0.75rem 1.25rem;
-  background: ${({ $isDragging }) => $isDragging ? '#8b5cf6' : 'var(--background)'};
-  color: ${({ $isDragging }) => $isDragging ? '#ffffff' : 'var(--foreground)'};
-  border: 2px solid ${({ $isDragging }) => $isDragging ? '#8b5cf6' : 'var(--border)'};
+  background: ${({ $isDragging }) =>
+    $isDragging ? "#8b5cf6" : "var(--background)"};
+  color: ${({ $isDragging }) =>
+    $isDragging ? "#ffffff" : "var(--foreground)"};
+  border: 2px solid
+    ${({ $isDragging }) => ($isDragging ? "#8b5cf6" : "var(--border)")};
   border-radius: 12px;
   cursor: grab;
-  box-shadow: ${({ $isDragging }) => $isDragging ? '0 10px 25px -5px rgba(139, 92, 246, 0.5)' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)'};
-  transition: box-shadow 0.2s, background-color 0.2s, color 0.2s, border-color 0.2s;
+  box-shadow: ${({ $isDragging }) =>
+    $isDragging
+      ? "0 10px 25px -5px rgba(139, 92, 246, 0.5)"
+      : "0 4px 6px -1px rgba(0, 0, 0, 0.1)"};
+  transition:
+    box-shadow 0.2s,
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
   user-select: none;
   touch-action: none; // crucial for dnd-kit on mobile
   display: flex;
@@ -653,7 +682,8 @@ const ChipKana = styled.div`
 const ChipRomaji = styled.div<{ $isDragging?: boolean }>`
   font-size: 0.8rem;
   margin-top: 0.25rem;
-  color: ${({ $isDragging }) => $isDragging ? 'rgba(255,255,255,0.8)' : 'var(--text-secondary)'};
+  color: ${({ $isDragging }) =>
+    $isDragging ? "rgba(255,255,255,0.8)" : "var(--text-secondary)"};
 
   @media (max-width: 600px) {
     font-size: 0.7rem;
@@ -661,9 +691,12 @@ const ChipRomaji = styled.div<{ $isDragging?: boolean }>`
   }
 `;
 
-const ActionButton = styled.button<{ $variant?: 'primary' | 'success' }>`
+const ActionButton = styled.button<{ $variant?: "primary" | "success" }>`
   padding: 1rem 3rem;
-  background: ${({ $variant }) => $variant === 'success' ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)'};
+  background: ${({ $variant }) =>
+    $variant === "success"
+      ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+      : "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)"};
   color: white;
   border: none;
   border-radius: 999px;
@@ -671,11 +704,19 @@ const ActionButton = styled.button<{ $variant?: 'primary' | 'success' }>`
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 10px 15px -3px ${({ $variant }) => $variant === 'success' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(139, 92, 246, 0.3)'};
-  
+  box-shadow: 0 10px 15px -3px
+    ${({ $variant }) =>
+      $variant === "success"
+        ? "rgba(16, 185, 129, 0.3)"
+        : "rgba(139, 92, 246, 0.3)"};
+
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 20px 25px -5px ${({ $variant }) => $variant === 'success' ? 'rgba(16, 185, 129, 0.4)' : 'rgba(139, 92, 246, 0.4)'};
+    box-shadow: 0 20px 25px -5px
+      ${({ $variant }) =>
+        $variant === "success"
+          ? "rgba(16, 185, 129, 0.4)"
+          : "rgba(139, 92, 246, 0.4)"};
   }
 
   &:disabled {
@@ -689,19 +730,35 @@ const FeedbackMessage = styled.div<{ $success?: boolean }>`
   font-weight: 700;
   font-size: 1.1rem;
   margin-top: 1rem;
-  color: ${({ $success }) => $success ? '#10b981' : '#ef4444'};
+  color: ${({ $success }) => ($success ? "#10b981" : "#ef4444")};
   animation: fadeIn 0.3s ease-out;
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 
 // --- COMPONENTS ---
 
 // Sortable Item Component wrapper
-const SortableWordChip = ({ id, word, romaji, showRomaji }: { id: string, word: string, romaji: string, showRomaji: boolean }) => {
+const SortableWordChip = ({
+  id,
+  word,
+  romaji,
+  showRomaji,
+}: {
+  id: string;
+  word: string;
+  romaji: string;
+  showRomaji: boolean;
+}) => {
   const {
     attributes,
     listeners,
@@ -729,41 +786,50 @@ const SortableWordChip = ({ id, word, romaji, showRomaji }: { id: string, word: 
   );
 };
 
-
 export default function SentenceBuilderPage() {
   const { deviceMode, isMounted } = useDeviceMode();
-  const isMobileView = isMounted && deviceMode === 'mobile';
+  const isMobileView = isMounted && deviceMode === "mobile";
 
   const [levelIndex, setLevelIndex] = useState(0);
   const [gameSentences, setGameSentences] = useState<SentenceLevel[]>([]);
   const [words, setWords] = useState<WordItem[]>([]);
-  const [status, setStatus] = useState<'playing' | 'error' | 'success'>('playing');
+  const [status, setStatus] = useState<"playing" | "error" | "success">(
+    "playing",
+  );
   const [showRomaji, setShowRomaji] = useState(false);
   const [lives, setLives] = useState(5);
-  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
+  const [gameStatus, setGameStatus] = useState<"playing" | "won" | "lost">(
+    "playing",
+  );
 
-  const loadLevelWithData = useCallback((idx: number, sentences: SentenceLevel[]) => {
-    const levelData = sentences[idx];
-    if (!levelData) return;
+  const loadLevelWithData = useCallback(
+    (idx: number, sentences: SentenceLevel[]) => {
+      const levelData = sentences[idx];
+      if (!levelData) return;
 
-    setWords(shuffleArray(levelData.items));
-    setStatus('playing');
-    setLevelIndex(idx);
-  }, []);
+      setWords(shuffleArray(levelData.items));
+      setStatus("playing");
+      setLevelIndex(idx);
+    },
+    [],
+  );
 
-  const initGame = useCallback((mobile: boolean) => {
-    const count = mobile ? 5 : 10;
-    const shuffledSubset = shuffleArray(ALL_SENTENCES).slice(0, count);
-    setGameSentences(shuffledSubset);
-    setLives(5);
-    setGameStatus('playing');
-    loadLevelWithData(0, shuffledSubset);
-  }, [loadLevelWithData]);
+  const initGame = useCallback(
+    (mobile: boolean) => {
+      const count = mobile ? 5 : 10;
+      const shuffledSubset = shuffleArray(ALL_SENTENCES).slice(0, count);
+      setGameSentences(shuffledSubset);
+      setLives(5);
+      setGameStatus("playing");
+      loadLevelWithData(0, shuffledSubset);
+    },
+    [loadLevelWithData],
+  );
 
   useEffect(() => {
     if (isMounted) {
       const timer = setTimeout(() => {
-        initGame(deviceMode === 'mobile');
+        initGame(deviceMode === "mobile");
       }, 0);
       return () => clearTimeout(timer);
     }
@@ -774,14 +840,16 @@ export default function SentenceBuilderPage() {
   };
 
   const swapCurrentQuestion = () => {
-    const inUseIds = new Set(gameSentences.map(s => s.id));
-    const available = ALL_SENTENCES.filter(s => !inUseIds.has(s.id));
+    const inUseIds = new Set(gameSentences.map((s) => s.id));
+    const available = ALL_SENTENCES.filter((s) => !inUseIds.has(s.id));
 
     let newSentence: SentenceLevel;
     if (available.length > 0) {
       newSentence = available[Math.floor(Math.random() * available.length)];
     } else {
-      const others = ALL_SENTENCES.filter(s => s.id !== gameSentences[levelIndex].id);
+      const others = ALL_SENTENCES.filter(
+        (s) => s.id !== gameSentences[levelIndex].id,
+      );
       newSentence = others[Math.floor(Math.random() * others.length)];
     }
 
@@ -800,13 +868,13 @@ export default function SentenceBuilderPage() {
     }),
     useSensor(TouchSensor, {
       activationConstraint: {
-        delay: 150,      // tahan 150ms agar scroll normal tidak tertangkap
-        tolerance: 8,    // toleransi gerakan 8px selama delay
+        delay: 150, // tahan 150ms agar scroll normal tidak tertangkap
+        tolerance: 8, // toleransi gerakan 8px selama delay
       },
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -814,12 +882,12 @@ export default function SentenceBuilderPage() {
 
     if (active.id !== over?.id) {
       setWords((items) => {
-        const oldIndex = items.findIndex(item => item.id === active.id);
-        const newIndex = items.findIndex(item => item.id === over?.id);
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over?.id);
         return arrayMove(items, oldIndex, newIndex);
       });
       // reset status on any drag
-      setStatus('playing');
+      setStatus("playing");
     }
   };
 
@@ -829,20 +897,22 @@ export default function SentenceBuilderPage() {
     const correctSequence = gameSentences[levelIndex].items;
 
     // Check if the arrays match exactly based on their IDs
-    const isMatched = words.every((word, idx) => word.id === correctSequence[idx].id);
+    const isMatched = words.every(
+      (word, idx) => word.id === correctSequence[idx].id,
+    );
 
     if (isMatched) {
-      setStatus('success');
+      setStatus("success");
       if (!isMobileView) {
         addExp(15); // 15 EXP per correct sentence on PC
       }
     } else {
-      setStatus('error');
+      setStatus("error");
       if (isMobileView) {
-        setLives(prev => {
+        setLives((prev) => {
           const next = prev - 1;
           if (next <= 0) {
-            setGameStatus('lost');
+            setGameStatus("lost");
           }
           return next;
         });
@@ -855,7 +925,7 @@ export default function SentenceBuilderPage() {
       loadLevel(levelIndex + 1);
     } else {
       if (isMobileView) {
-        setGameStatus('won');
+        setGameStatus("won");
         addExp(40); // 40 EXP for mobile completion
       } else {
         // Completed all levels! Reset and generate a new batch of 10
@@ -872,29 +942,47 @@ export default function SentenceBuilderPage() {
     <Container>
       {isMobileView ? (
         <LessonHeader>
-          <CloseLessonBtn href="/game" title="Tutup Sesi">✕</CloseLessonBtn>
+          <CloseLessonBtn href="/game" title="Tutup Sesi">
+            ✕
+          </CloseLessonBtn>
           <LessonProgressBarContainer>
-            <LessonProgressBarFill $percent={((levelIndex + (status === 'success' ? 1 : 0)) / gameSentences.length) * 100} />
+            <LessonProgressBarFill
+              $percent={
+                ((levelIndex + (status === "success" ? 1 : 0)) /
+                  gameSentences.length) *
+                100
+              }
+            />
           </LessonProgressBarContainer>
-          <LessonHearts>
-            ❤️ {lives}
-          </LessonHearts>
+          <LessonHearts>❤️ {lives}</LessonHearts>
         </LessonHeader>
       ) : (
         <>
-          <Breadcrumbs 
+          <Breadcrumbs
             items={[
-              { label: 'Home', href: '/' },
-              { label: 'Games Hub', href: '/game' }
-            ]} 
-            current="Sentence Builder" 
+              { label: "Home", href: "/" },
+              { label: "Games Hub", href: "/game" },
+            ]}
+            current="Sentence Builder"
           />
 
           <Header>
             <HeaderActions>
               <TitleBadge>Sentence Builder</TitleBadge>
-              <RefreshButton onClick={swapCurrentQuestion} aria-label="Reroll Question">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <RefreshButton
+                onClick={swapCurrentQuestion}
+                aria-label="Reroll Question"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                   <path d="M3 3v5h5" />
                 </svg>
@@ -905,31 +993,45 @@ export default function SentenceBuilderPage() {
       )}
 
       <GameArea>
-        {gameStatus !== 'playing' ? (
+        {gameStatus !== "playing" ? (
           <GameOverScreen>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: gameStatus === 'won' ? '#8b5cf6' : '#ef4444' }}>
-              {gameStatus === 'won' ? 'You Won! 🎉' : 'Game Over! 😢'}
+            <h2
+              style={{
+                fontSize: "2.5rem",
+                marginBottom: "1rem",
+                color: gameStatus === "won" ? "#8b5cf6" : "#ef4444",
+              }}
+            >
+              {gameStatus === "won" ? "You Won! 🎉" : "Game Over! 😢"}
             </h2>
-            <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-              {gameStatus === 'won'
+            <p
+              style={{
+                fontSize: "1.25rem",
+                color: "var(--text-secondary)",
+                marginBottom: "2rem",
+              }}
+            >
+              {gameStatus === "won"
                 ? `You successfully built all ${gameSentences.length} sentences.`
                 : `You lost all your lives. Keep learning and try again!`}
             </p>
-            {gameStatus === 'won' && (
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                color: '#8b5cf6',
-                background: 'rgba(139, 92, 246, 0.1)',
-                padding: '0.6rem 1.5rem',
-                borderRadius: '999px',
-                fontWeight: 800,
-                fontSize: '1.25rem',
-                marginBottom: '2rem',
-                border: '1px solid rgba(139, 92, 246, 0.2)',
-                boxShadow: '0 4px 12px rgba(139, 92, 246, 0.1)'
-              }}>
+            {gameStatus === "won" && (
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  color: "#8b5cf6",
+                  background: "rgba(139, 92, 246, 0.1)",
+                  padding: "0.6rem 1.5rem",
+                  borderRadius: "999px",
+                  fontWeight: 800,
+                  fontSize: "1.25rem",
+                  marginBottom: "2rem",
+                  border: "1px solid rgba(139, 92, 246, 0.2)",
+                  boxShadow: "0 4px 12px rgba(139, 92, 246, 0.1)",
+                }}
+              >
                 ⭐ +40 EXP Gained
               </div>
             )}
@@ -956,7 +1058,9 @@ export default function SentenceBuilderPage() {
             </TopRow>
 
             <TargetSentenceBox>
-              <TranslationText>&ldquo;{currentLevel.translation}&rdquo;</TranslationText>
+              <TranslationText>
+                &ldquo;{currentLevel.translation}&rdquo;
+              </TranslationText>
               <RomajiHint>Hints: {currentLevel.romajiHint}</RomajiHint>
             </TargetSentenceBox>
 
@@ -965,36 +1069,52 @@ export default function SentenceBuilderPage() {
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
             >
-              <DropZoneWrapper $isError={status === 'error'} $isSuccess={status === 'success'}>
-                <SortableContext items={words.map(w => w.id)} strategy={horizontalListSortingStrategy}>
+              <DropZoneWrapper
+                $isError={status === "error"}
+                $isSuccess={status === "success"}
+              >
+                <SortableContext
+                  items={words.map((w) => w.id)}
+                  strategy={horizontalListSortingStrategy}
+                >
                   {words.map((word) => (
-                    <SortableWordChip key={word.id} id={word.id} word={word.kana} romaji={word.romaji} showRomaji={showRomaji} />
+                    <SortableWordChip
+                      key={word.id}
+                      id={word.id}
+                      word={word.kana}
+                      romaji={word.romaji}
+                      showRomaji={showRomaji}
+                    />
                   ))}
                 </SortableContext>
               </DropZoneWrapper>
             </DndContext>
 
-            {status === 'success' ? (
+            {status === "success" ? (
               <>
                 <ActionButton $variant="success" onClick={nextLevel}>
-                  {levelIndex < gameSentences.length - 1 ? 'Next Sentence →' : 'Finish Lesson 🎉'}
+                  {levelIndex < gameSentences.length - 1
+                    ? "Next Sentence →"
+                    : "Finish Lesson 🎉"}
                 </ActionButton>
                 <FeedbackMessage $success={true}>
-                  🎉 Seikai! (Correct!){' '}
+                  🎉 Seikai! (Correct!){" "}
                   {!isMobileView && (
-                    <span style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.25rem',
-                      color: '#10b981',
-                      background: 'rgba(16, 185, 129, 0.1)',
-                      padding: '0.25rem 0.75rem',
-                      borderRadius: '999px',
-                      fontWeight: 800,
-                      fontSize: '0.9rem',
-                      marginLeft: '0.5rem',
-                      border: '1px solid rgba(16, 185, 129, 0.2)'
-                    }}>
+                    <span
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                        color: "#10b981",
+                        background: "rgba(16, 185, 129, 0.1)",
+                        padding: "0.25rem 0.75rem",
+                        borderRadius: "999px",
+                        fontWeight: 800,
+                        fontSize: "0.9rem",
+                        marginLeft: "0.5rem",
+                        border: "1px solid rgba(16, 185, 129, 0.2)",
+                      }}
+                    >
                       🏆 +15 EXP
                     </span>
                   )}
@@ -1005,8 +1125,10 @@ export default function SentenceBuilderPage() {
                 <ActionButton onClick={checkSentence}>
                   Check Answer
                 </ActionButton>
-                {status === 'error' && (
-                  <FeedbackMessage $success={false}>Incorrect order. Try again!</FeedbackMessage>
+                {status === "error" && (
+                  <FeedbackMessage $success={false}>
+                    Incorrect order. Try again!
+                  </FeedbackMessage>
                 )}
               </>
             )}
