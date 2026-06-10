@@ -802,12 +802,14 @@ export default function KanjiWriterPage() {
     streak: 0,
   });
   const [isLoaded, setIsLoaded] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [brushType, setBrushType] = useState<"aesthetic" | "uniform">(
     "aesthetic",
   );
 
   // Load progress from localStorage on mount
   useEffect(() => {
+    setMounted(true);
     try {
       const savedLevel = localStorage.getItem("jlpt_kw_level");
       const savedKanji = localStorage.getItem("jlpt_kw_kanji");
@@ -1607,7 +1609,10 @@ export default function KanjiWriterPage() {
                       $variant="ghost"
                       onClick={runWritingDemo}
                       disabled={
-                        isAnimating || isChecking || svgPaths.length === 0
+                        !mounted ||
+                        isAnimating ||
+                        isChecking ||
+                        svgPaths.length === 0
                       }
                       style={{
                         background: "rgba(var(--primary-rgb), 0.05)",

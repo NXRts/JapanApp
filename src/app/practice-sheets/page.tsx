@@ -885,7 +885,8 @@ function KanjiStrokeSvg({ char }: { char: string }) {
       })
       .then((text) => {
         const svgStartIndex = text.indexOf("<svg");
-        const svgOnly = svgStartIndex !== -1 ? text.substring(svgStartIndex) : text;
+        const svgOnly =
+          svgStartIndex !== -1 ? text.substring(svgStartIndex) : text;
         const cleanedText = svgOnly
           .replace(/style="[^"]*"/g, "")
           .replace(/width="[^"]*"/g, 'width="100%"')
@@ -924,11 +925,7 @@ function KanjiStrokeSvg({ char }: { char: string }) {
     );
   }
 
-  return (
-    <StrokeSvgWrapper
-      dangerouslySetInnerHTML={{ __html: svgContent }}
-    />
-  );
+  return <StrokeSvgWrapper dangerouslySetInnerHTML={{ __html: svgContent }} />;
 }
 
 const FlashcardGrid = styled.div`
@@ -2546,8 +2543,7 @@ export default function PracticeSheetsPage() {
                                               </CardBackExampleWord>
                                               <CardBackExampleReading>
                                                 {ex.reading} (
-                                                {wanakana.toRomaji(ex.reading)}
-                                                )
+                                                {wanakana.toRomaji(ex.reading)})
                                               </CardBackExampleReading>
                                               <CardBackExampleMeaning>
                                                 {ex.meaning}
