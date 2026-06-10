@@ -1,12 +1,11 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
-import Link from "next/link";
-import * as wanakana from "wanakana";
-import { KANJI_DATA } from "@/data/kanji";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { KANJI_DATA } from "@/data/kanji";
 import { allKanji, allVocabulary } from "@/lib/dictionary";
+import { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
+import * as wanakana from "wanakana";
 
 // Define static Kana arrays
 const HIRAGANA_ROWS = [
@@ -1110,12 +1109,12 @@ const DownloadBtn = styled(PrintButton)`
   color: var(--primary-light);
   border: 2px solid var(--primary-light);
   box-shadow: none;
-  
+
   &:hover {
     background: rgba(var(--primary-rgb), 0.08);
     box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.15);
   }
-  
+
   &:disabled {
     border-color: var(--border);
     color: var(--text-secondary);
@@ -1149,8 +1148,11 @@ const ModalContainer = styled.div<{ $isOpen: boolean }>`
   border-radius: 24px;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3), 0 10px 10px -5px rgba(0,0,0,0.2);
-  transform: ${({ $isOpen }) => ($isOpen ? "scale(1) translateY(0)" : "scale(0.95) translateY(10px)")};
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  transform: ${({ $isOpen }) =>
+    $isOpen ? "scale(1) translateY(0)" : "scale(0.95) translateY(10px)"};
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid var(--border);
   position: relative;
@@ -1181,7 +1183,11 @@ const ModalTitle = styled.h3`
   font-size: 1.5rem;
   font-weight: 800;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--text-secondary) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 `;
@@ -1251,7 +1257,7 @@ const ModalCancelBtn = styled.button`
   cursor: pointer;
   transition: all 0.2s;
   &:hover {
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     color: var(--foreground);
   }
 `;
@@ -1259,7 +1265,11 @@ const ModalCancelBtn = styled.button`
 const ModalConfirmBtn = styled.button`
   flex: 1.5;
   padding: 0.85rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   border: none;
   border-radius: 12px;
@@ -1642,17 +1652,40 @@ export default function PracticeSheetsPage() {
     if (wanakana.isKana(char)) {
       return wanakana.toRomaji(char);
     }
+
+    const toRomajiList = (kanaStr: string) => {
+      return kanaStr
+        .split("・")
+        .map((k) => wanakana.toRomaji(k.trim()))
+        .filter(Boolean)
+        .join(" atau ");
+    };
+
+    const arrayToRomajiList = (arr: string[]) => {
+      return arr
+        .map((k) => wanakana.toRomaji(k.trim()))
+        .filter(Boolean)
+        .join(" atau ");
+    };
+
     // Search in KANJI_DATA (curated list)
     for (const lvl of ["N5", "N4", "N3", "N2", "N1"] as const) {
       const hFound = KANJI_DATA[lvl]?.find((k) => k.char === char);
       if (hFound) {
-        return `${hFound.meaning} (${hFound.strokes || 0} strokes)`;
+        const reading = hFound.on
+          ? toRomajiList(hFound.on)
+          : toRomajiList(hFound.kun);
+        return `${reading} (${hFound.meaning}) — ${hFound.strokes || 0} strokes`;
       }
     }
     // Search in allKanji database
     const found = allKanji.find((k) => k.kanji === char);
     if (found) {
-      return `${found.meaning} (${found.stroke_count || 0} strokes)`;
+      const reading =
+        found.onyomi && found.onyomi.length > 0
+          ? arrayToRomajiList(found.onyomi)
+          : arrayToRomajiList(found.kunyomi || []);
+      return `${reading} (${found.meaning}) — ${found.stroke_count || 0} strokes`;
     }
     return "";
   };
@@ -2121,7 +2154,14 @@ export default function PracticeSheetsPage() {
             </div>
           )}
 
-          <div style={{ marginTop: "0.5rem", display: "flex", flexDirection: "column", gap: "10px" }}>
+          <div
+            style={{
+              marginTop: "0.5rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+            }}
+          >
             {mounted && (
               <>
                 <PrintButton
@@ -2144,7 +2184,7 @@ export default function PracticeSheetsPage() {
                   </svg>
                   Print Practice Sheet
                 </PrintButton>
-                
+
                 <DownloadBtn
                   onClick={() => setShowDownloadModal(true)}
                   disabled={charactersToRender.length === 0}
@@ -2613,41 +2653,79 @@ export default function PracticeSheetsPage() {
       `}</style>
 
       {/* PDF Download Helper Modal */}
-      <ModalOverlay $isOpen={showDownloadModal} onClick={() => setShowDownloadModal(false)}>
-        <ModalContainer $isOpen={showDownloadModal} onClick={(e) => e.stopPropagation()}>
-          <ModalCloseButton onClick={() => setShowDownloadModal(false)} aria-label="Tutup modal">
-            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+      <ModalOverlay
+        $isOpen={showDownloadModal}
+        onClick={() => setShowDownloadModal(false)}
+      >
+        <ModalContainer
+          $isOpen={showDownloadModal}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <ModalCloseButton
+            onClick={() => setShowDownloadModal(false)}
+            aria-label="Tutup modal"
+          >
+            <svg
+              width="20"
+              height="20"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </ModalCloseButton>
-          
+
           <ModalTitle>Unduh sebagai PDF</ModalTitle>
           <ModalDescription>
-            Untuk mendapatkan hasil latihan dengan kualitas cetak vector terbaik, silakan ikuti petunjuk berikut di jendela cetak browser Anda:
+            Untuk mendapatkan hasil latihan dengan kualitas cetak vector
+            terbaik, silakan ikuti petunjuk berikut di jendela cetak browser
+            Anda:
           </ModalDescription>
-          
+
           <StepList>
             <StepItem>
               <StepNumber>1</StepNumber>
-              <StepText>Pada jendela yang terbuka, ubah <strong>Tujuan (Destination)</strong> menjadi <strong>Simpan sebagai PDF (Save as PDF)</strong>.</StepText>
+              <StepText>
+                Pada jendela yang terbuka, ubah{" "}
+                <strong>Tujuan (Destination)</strong> menjadi{" "}
+                <strong>Simpan sebagai PDF (Save as PDF)</strong>.
+              </StepText>
             </StepItem>
             <StepItem>
               <StepNumber>2</StepNumber>
-              <StepText>Buka opsi <strong>Setelan lainnya (More settings)</strong>.</StepText>
+              <StepText>
+                Buka opsi <strong>Setelan lainnya (More settings)</strong>.
+              </StepText>
             </StepItem>
             <StepItem>
               <StepNumber>3</StepNumber>
-              <StepText>Hilangkan centang pada <strong>Header dan Footer</strong>, dan centang pada <strong>Grafik latar belakang (Background graphics)</strong> agar garis bantu dan kisi-kisi tercetak dengan sempurna.</StepText>
+              <StepText>
+                Hilangkan centang pada <strong>Header dan Footer</strong>, dan
+                centang pada{" "}
+                <strong>Grafik latar belakang (Background graphics)</strong>{" "}
+                agar garis bantu dan kisi-kisi tercetak dengan sempurna.
+              </StepText>
             </StepItem>
             <StepItem>
               <StepNumber>4</StepNumber>
-              <StepText>Klik tombol <strong>Simpan (Save)</strong> untuk mengunduh berkas PDF latihan Anda.</StepText>
+              <StepText>
+                Klik tombol <strong>Simpan (Save)</strong> untuk mengunduh
+                berkas PDF latihan Anda.
+              </StepText>
             </StepItem>
           </StepList>
-          
+
           <ModalActions>
-            <ModalCancelBtn onClick={() => setShowDownloadModal(false)}>Batal</ModalCancelBtn>
-            <ModalConfirmBtn 
+            <ModalCancelBtn onClick={() => setShowDownloadModal(false)}>
+              Batal
+            </ModalCancelBtn>
+            <ModalConfirmBtn
               onClick={() => {
                 setShowDownloadModal(false);
                 setTimeout(() => {
@@ -2655,8 +2733,19 @@ export default function PracticeSheetsPage() {
                 }, 100);
               }}
             >
-              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              <svg
+                width="20"
+                height="20"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                />
               </svg>
               Buka Jendela Cetak
             </ModalConfirmBtn>
