@@ -1220,6 +1220,30 @@ const LoadingSpinner = styled.div`
   }
 `;
 
+const getKanjiDetailsForWord = (word: string) => {
+  if (!word) return [];
+  const kanjiChars = Array.from(word).filter((char) => {
+    return /[\u4e00-\u9faf\u3400-\u4dbf]/.test(char);
+  });
+  const uniqueKanji = Array.from(new Set(kanjiChars));
+  return uniqueKanji
+    .map((char) => {
+      const found = allKanji.find((k) => k.kanji === char);
+      return found
+        ? {
+            kanji: char,
+            onyomi: found.onyomi || [],
+            kunyomi: found.kunyomi || [],
+          }
+        : null;
+    })
+    .filter(Boolean) as {
+    kanji: string;
+    onyomi: string[];
+    kunyomi: string[];
+  }[];
+};
+
 export default function DictionaryPage() {
   const [query, setQuery] = useState("");
   const [showKeyboard, setShowKeyboard] = useState(false);
@@ -2274,11 +2298,76 @@ export default function DictionaryPage() {
                                 )}
                               </div>
                             ) : (
-                              (item.reading || item.romaji) && (
-                                <ReadingText>
-                                  {item.reading || item.romaji}
-                                </ReadingText>
-                              )
+                              <>
+                                {(item.reading || item.romaji) && (
+                                  <ReadingText>
+                                    {item.reading
+                                      ? `${item.reading} (${toRomaji(item.reading)})`
+                                      : item.romaji}
+                                  </ReadingText>
+                                )}
+                                {(() => {
+                                  const kanjiDetails = getKanjiDetailsForWord(
+                                    item.word || item.title || ""
+                                  );
+                                  if (kanjiDetails.length === 0) return null;
+                                  return (
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        gap: "0.2rem",
+                                        marginTop: "0.4rem",
+                                        paddingTop: "0.4rem",
+                                        borderTop: "1px dashed var(--border)",
+                                        fontSize: "0.82rem",
+                                      }}
+                                    >
+                                      {kanjiDetails.map((kd) => (
+                                        <div
+                                          key={kd.kanji}
+                                          style={{
+                                            color: "var(--text-secondary)",
+                                            lineHeight: "1.3",
+                                          }}
+                                        >
+                                          <strong
+                                            style={{
+                                              color: "var(--foreground)",
+                                            }}
+                                          >
+                                            {kd.kanji}
+                                          </strong>
+                                          :{" "}
+                                          {kd.onyomi.length > 0 && (
+                                            <span>
+                                              <strong>On:</strong>{" "}
+                                              {kd.onyomi.join(", ")} (
+                                              {kd.onyomi
+                                                .map((r) => toRomaji(r))
+                                                .join(", ")}
+                                              )
+                                            </span>
+                                          )}
+                                          {kd.onyomi.length > 0 &&
+                                            kd.kunyomi.length > 0 &&
+                                            " | "}
+                                          {kd.kunyomi.length > 0 && (
+                                            <span>
+                                              <strong>Kun:</strong>{" "}
+                                              {kd.kunyomi.join(", ")} (
+                                              {kd.kunyomi
+                                                .map((r) => toRomaji(r))
+                                                .join(", ")}
+                                              )
+                                            </span>
+                                          )}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  );
+                                })()}
+                              </>
                             )}
                           </>
                         )}
