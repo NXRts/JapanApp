@@ -42,7 +42,7 @@ const PageContainer = styled.div`
   padding: 2.5rem 2rem;
   min-height: 90vh;
 
-  @media (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     padding: 1.5rem 1rem;
   }
 
@@ -73,7 +73,7 @@ const Title = styled.h1`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  @media (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     font-size: 2.25rem;
   }
 `;
@@ -89,7 +89,7 @@ const MainGrid = styled.div`
   gap: 2.5rem;
   align-items: start;
 
-  @media (max-width: 1024px) {
+  @media screen and (max-width: 1024px) {
     grid-template-columns: 1fr;
   }
 
@@ -108,7 +108,7 @@ const Sidebar = styled.div`
   gap: 1.5rem;
   box-shadow: var(--shadow-md);
 
-  @media (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     width: 100%;
     &.inactive-mobile-pane {
       display: none !important;
@@ -478,7 +478,7 @@ const PrintButton = styled.button`
 const MobileNavigationTabs = styled.div`
   display: none;
 
-  @media (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     display: flex;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -519,7 +519,7 @@ const MobileNavButton = styled.button<{ $active: boolean }>`
 const MobileOnlyPreviewBtn = styled.button`
   display: none;
 
-  @media (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -550,13 +550,14 @@ const MobileOnlyPreviewBtn = styled.button`
 const MobileOnlyPrintWrapper = styled.div`
   display: none;
 
-  @media (max-width: 768px) {
-    display: block;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    gap: 10px;
     width: 100%;
     max-width: 794px;
     margin-bottom: 1.25rem;
 
-    button {
+    button.primary-print {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
       box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25) !important;
     }
@@ -573,7 +574,7 @@ const PreviewPane = styled.div`
   flex-direction: column;
   align-items: center;
 
-  @media (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 100%;
     overflow-x: auto;
@@ -653,17 +654,17 @@ const A4Sheet = styled.div<{ $landscape?: boolean }>`
     page-break-after: always;
   }
 
-  @media (max-width: 1024px) {
+  @media screen and (max-width: 1024px) {
     /* Scale sheet previews on smaller viewports */
     transform: scale(0.9);
     transform-origin: top center;
     margin-bottom: -60px;
   }
-  @media (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     transform: scale(0.65);
     margin-bottom: -320px;
   }
-  @media (max-width: 480px) {
+  @media screen and (max-width: 480px) {
     transform: scale(0.45);
     margin-bottom: -520px;
   }
@@ -1104,6 +1105,179 @@ const CardBackExampleMeaning = styled.span`
   min-width: 0;
 `;
 
+const DownloadBtn = styled(PrintButton)`
+  background: transparent;
+  color: var(--primary-light);
+  border: 2px solid var(--primary-light);
+  box-shadow: none;
+  
+  &:hover {
+    background: rgba(var(--primary-rgb), 0.08);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.15);
+  }
+  
+  &:disabled {
+    border-color: var(--border);
+    color: var(--text-secondary);
+    background: transparent;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+`;
+
+const ModalOverlay = styled.div<{ $isOpen: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ModalContainer = styled.div<{ $isOpen: boolean }>`
+  background: var(--surface);
+  padding: 2.5rem 2rem;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3), 0 10px 10px -5px rgba(0,0,0,0.2);
+  transform: ${({ $isOpen }) => ($isOpen ? "scale(1) translateY(0)" : "scale(0.95) translateY(10px)")};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--border);
+  position: relative;
+  color: var(--foreground);
+`;
+
+const ModalCloseButton = styled.button`
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--foreground);
+  }
+`;
+
+const ModalTitle = styled.h3`
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, var(--foreground) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`;
+
+const ModalDescription = styled.p`
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+`;
+
+const StepList = styled.ol`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  list-style: none;
+`;
+
+const StepItem = styled.li`
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+`;
+
+const StepNumber = styled.span`
+  background: rgba(var(--primary-rgb), 0.15);
+  color: var(--primary-light);
+  font-weight: 700;
+  font-size: 0.85rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+`;
+
+const StepText = styled.span`
+  font-size: 0.95rem;
+  color: var(--foreground);
+  line-height: 1.4;
+  strong {
+    color: var(--primary-light);
+    font-weight: 600;
+  }
+`;
+
+const ModalActions = styled.div`
+  display: flex;
+  gap: 12px;
+  width: 100%;
+`;
+
+const ModalCancelBtn = styled.button`
+  flex: 1;
+  padding: 0.85rem;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--foreground);
+  }
+`;
+
+const ModalConfirmBtn = styled.button`
+  flex: 1.5;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
+  transition: all 0.2s;
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(var(--primary-rgb), 0.35);
+  }
+`;
+
 export default function PracticeSheetsPage() {
   const [mounted, setMounted] = useState(false);
   const [mobileActiveTab, setMobileActiveTab] = useState<
@@ -1142,6 +1316,7 @@ export default function PracticeSheetsPage() {
   const [showMetadata, setShowMetadata] = useState(true);
   const [showHeaders, setShowHeaders] = useState(true);
   const [landscape, setLandscape] = useState(false);
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
 
   // Print references
   const printAreaRef = useRef<HTMLDivElement>(null);
@@ -1187,6 +1362,21 @@ export default function PracticeSheetsPage() {
       console.error("Failed to load local storage configurations:", e);
     }
   }, []);
+
+  // Handle Escape key closure for download modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setShowDownloadModal(false);
+      }
+    };
+    if (showDownloadModal) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showDownloadModal]);
 
   // Save configurations on changes
   useEffect(() => {
@@ -1931,28 +2121,51 @@ export default function PracticeSheetsPage() {
             </div>
           )}
 
-          <div style={{ marginTop: "0.5rem" }}>
+          <div style={{ marginTop: "0.5rem", display: "flex", flexDirection: "column", gap: "10px" }}>
             {mounted && (
-              <PrintButton
-                onClick={handlePrint}
-                disabled={charactersToRender.length === 0}
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
+              <>
+                <PrintButton
+                  onClick={handlePrint}
+                  disabled={charactersToRender.length === 0}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6.72 19.164h10.56M16.5 15.75v3.437m-9 0V15.75M9 10.5h6M5.22 10.5h13.56c.928 0 1.62.83 1.48 1.744l-1.05 6.75a1.5 1.5 0 01-1.48 1.256H6.07a1.5 1.5 0 01-1.48-1.256l-1.05-6.75a1.5 1.5 0 011.48-1.744zM16.5 7.5v-3a1.5 1.5 0 00-1.5-1.5h-6A1.5 1.5 0 007.5 4.5v3M19.5 10.5h.008v.008h-.008V10.5z"
-                  />
-                </svg>
-                Print Practice Sheet
-              </PrintButton>
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6.72 19.164h10.56M16.5 15.75v3.437m-9 0V15.75M9 10.5h6M5.22 10.5h13.56c.928 0 1.62.83 1.48 1.744l-1.05 6.75a1.5 1.5 0 01-1.48 1.256H6.07a1.5 1.5 0 01-1.48-1.256l-1.05-6.75a1.5 1.5 0 011.48-1.744zM16.5 7.5v-3a1.5 1.5 0 00-1.5-1.5h-6A1.5 1.5 0 007.5 4.5v3M19.5 10.5h.008v.008h-.008V10.5z"
+                    />
+                  </svg>
+                  Print Practice Sheet
+                </PrintButton>
+                
+                <DownloadBtn
+                  onClick={() => setShowDownloadModal(true)}
+                  disabled={charactersToRender.length === 0}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                    />
+                  </svg>
+                  Download PDF
+                </DownloadBtn>
+              </>
             )}
 
             {/* Mobile-Only Action to switch to Preview tab */}
@@ -2017,10 +2230,10 @@ export default function PracticeSheetsPage() {
             </div>
           </QuickTips>
 
-          {/* Mobile-Only Print Button in Preview Pane */}
+          {/* Mobile-Only Print/Download Buttons in Preview Pane */}
           {mounted && charactersToRender.length > 0 && (
             <MobileOnlyPrintWrapper>
-              <PrintButton onClick={handlePrint}>
+              <PrintButton className="primary-print" onClick={handlePrint}>
                 <svg
                   width="20"
                   height="20"
@@ -2035,8 +2248,25 @@ export default function PracticeSheetsPage() {
                     d="M6.72 19.164h10.56M16.5 15.75v3.437m-9 0V15.75M9 10.5h6M5.22 10.5h13.56c.928 0 1.62.83 1.48 1.744l-1.05 6.75a1.5 1.5 0 01-1.48 1.256H6.07a1.5 1.5 0 01-1.48-1.256l-1.05-6.75a1.5 1.5 0 011.48-1.744zM16.5 7.5v-3a1.5 1.5 0 00-1.5-1.5h-6A1.5 1.5 0 007.5 4.5v3M19.5 10.5h.008v.008h-.008V10.5z"
                   />
                 </svg>
-                Print Practice Sheet
+                Print
               </PrintButton>
+              <DownloadBtn onClick={() => setShowDownloadModal(true)}>
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  />
+                </svg>
+                PDF
+              </DownloadBtn>
             </MobileOnlyPrintWrapper>
           )}
 
@@ -2381,6 +2611,58 @@ export default function PracticeSheetsPage() {
           }
         }
       `}</style>
+
+      {/* PDF Download Helper Modal */}
+      <ModalOverlay $isOpen={showDownloadModal} onClick={() => setShowDownloadModal(false)}>
+        <ModalContainer $isOpen={showDownloadModal} onClick={(e) => e.stopPropagation()}>
+          <ModalCloseButton onClick={() => setShowDownloadModal(false)} aria-label="Tutup modal">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </ModalCloseButton>
+          
+          <ModalTitle>Unduh sebagai PDF</ModalTitle>
+          <ModalDescription>
+            Untuk mendapatkan hasil latihan dengan kualitas cetak vector terbaik, silakan ikuti petunjuk berikut di jendela cetak browser Anda:
+          </ModalDescription>
+          
+          <StepList>
+            <StepItem>
+              <StepNumber>1</StepNumber>
+              <StepText>Pada jendela yang terbuka, ubah <strong>Tujuan (Destination)</strong> menjadi <strong>Simpan sebagai PDF (Save as PDF)</strong>.</StepText>
+            </StepItem>
+            <StepItem>
+              <StepNumber>2</StepNumber>
+              <StepText>Buka opsi <strong>Setelan lainnya (More settings)</strong>.</StepText>
+            </StepItem>
+            <StepItem>
+              <StepNumber>3</StepNumber>
+              <StepText>Hilangkan centang pada <strong>Header dan Footer</strong>, dan centang pada <strong>Grafik latar belakang (Background graphics)</strong> agar garis bantu dan kisi-kisi tercetak dengan sempurna.</StepText>
+            </StepItem>
+            <StepItem>
+              <StepNumber>4</StepNumber>
+              <StepText>Klik tombol <strong>Simpan (Save)</strong> untuk mengunduh berkas PDF latihan Anda.</StepText>
+            </StepItem>
+          </StepList>
+          
+          <ModalActions>
+            <ModalCancelBtn onClick={() => setShowDownloadModal(false)}>Batal</ModalCancelBtn>
+            <ModalConfirmBtn 
+              onClick={() => {
+                setShowDownloadModal(false);
+                setTimeout(() => {
+                  window.print();
+                }, 100);
+              }}
+            >
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              Buka Jendela Cetak
+            </ModalConfirmBtn>
+          </ModalActions>
+        </ModalContainer>
+      </ModalOverlay>
     </PageContainer>
   );
 }
