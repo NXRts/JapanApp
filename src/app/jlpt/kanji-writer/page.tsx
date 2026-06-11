@@ -17,6 +17,31 @@ import styled from "styled-components";
 import { useProgress } from "@/context/ProgressContext";
 import { useTheme } from "@/context/ThemeContext";
 
+const splitMeaning = (meaning: string): string[] => {
+  const parts: string[] = [];
+  let current = "";
+  let parenDepth = 0;
+  for (let i = 0; i < meaning.length; i++) {
+    const char = meaning[i];
+    if (char === "(" || char === "[" || char === "{") {
+      parenDepth++;
+      current += char;
+    } else if (char === ")" || char === "]" || char === "}") {
+      parenDepth = Math.max(0, parenDepth - 1);
+      current += char;
+    } else if ((char === "," || char === ";") && parenDepth === 0) {
+      parts.push(current);
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  if (current) {
+    parts.push(current);
+  }
+  return parts.map((p) => p.trim()).filter(Boolean);
+};
+
 const getKanjiListForLevel = (level: string) => {
   const dbKanji = allKanji.filter((k) => k.level === level);
   return dbKanji.map((k) => {
@@ -40,9 +65,13 @@ const getKanjiListForLevel = (level: string) => {
         meaning: v.meaning || "",
       }));
 
+    const rawMeaning = k.meaning || "";
+    const parts = splitMeaning(rawMeaning);
+    const shortMeaning = parts.slice(0, 2).join(", ");
+
     return {
       char: k.kanji || "",
-      meaning: k.meaning || "",
+      meaning: shortMeaning,
       on: k.onyomi && k.onyomi.length > 0 ? k.onyomi.join("・") : "",
       kun: k.kunyomi && k.kunyomi.length > 0 ? k.kunyomi.join("・") : "",
       strokes: k.stroke_count || 0,
