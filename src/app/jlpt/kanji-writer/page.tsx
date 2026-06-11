@@ -1,20 +1,55 @@
 "use client";
 
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
-import styled from "styled-components";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { KANJI_DATA } from "@/data/kanji";
-import { getStroke } from "perfect-freehand";
+import { allKanji, allVocabulary } from "@/lib/dictionary";
 import confetti from "canvas-confetti";
+import { getStroke } from "perfect-freehand";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import styled from "styled-components";
 
 import { useProgress } from "@/context/ProgressContext";
 import { useTheme } from "@/context/ThemeContext";
+
+const getKanjiListForLevel = (level: string) => {
+  const dbKanji = allKanji.filter((k) => k.level === level);
+  return dbKanji.map((k) => {
+    const hFound = KANJI_DATA[level]?.find((x) => x.char === k.kanji);
+    if (hFound) return hFound;
+
+    const examples = allVocabulary
+      .filter(
+        (v) =>
+          v.word &&
+          k.kanji &&
+          v.word.includes(k.kanji) &&
+          v.meaning &&
+          v.meaning !== "No definition" &&
+          v.meaning !== "Tidak ada arti",
+      )
+      .slice(0, 4)
+      .map((v) => ({
+        word: v.word || "",
+        reading: v.reading || "",
+        meaning: v.meaning || "",
+      }));
+
+    return {
+      char: k.kanji || "",
+      meaning: k.meaning || "",
+      on: k.onyomi && k.onyomi.length > 0 ? k.onyomi.join("・") : "",
+      kun: k.kunyomi && k.kunyomi.length > 0 ? k.kunyomi.join("・") : "",
+      strokes: k.stroke_count || 0,
+      examples,
+    };
+  });
+};
 
 // Utility for perfect-freehand
 function getSvgPathFromStroke(stroke: number[][]) {
@@ -762,7 +797,9 @@ export default function KanjiWriterPage() {
   const [currentLevel, setCurrentLevel] = useState<
     "N5" | "N4" | "N3" | "N2" | "N1"
   >("N5");
-  const [currentKanji, setCurrentKanji] = useState<any>(KANJI_DATA["N5"][0]);
+  const [currentKanji, setCurrentKanji] = useState<any>(
+    () => getKanjiListForLevel("N5")[0],
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const { addExp, updateMastery } = useProgress();
 
@@ -842,21 +879,25 @@ export default function KanjiWriterPage() {
       console.error("Failed to save kanji progress", e);
     }
   }, [currentLevel, currentKanji, history, session, isLoaded, brushType]);
+  const levelKanjiList = useMemo(() => {
+    return getKanjiListForLevel(currentLevel);
+  }, [currentLevel]);
+
   const filteredKanji = useMemo(() => {
-    const data = KANJI_DATA[currentLevel] || [];
-    if (!searchQuery) return data;
-    return data.filter(
+    if (!searchQuery) return levelKanjiList;
+    return levelKanjiList.filter(
       (k) =>
         k.char.includes(searchQuery) ||
         k.meaning.toLowerCase().includes(searchQuery.toLowerCase()),
     );
-  }, [currentLevel, searchQuery]);
+  }, [levelKanjiList, searchQuery]);
 
   // Handle Level Change
   const handleLevelChange = (level: any) => {
     setCurrentLevel(level);
-    if (KANJI_DATA[level] && KANJI_DATA[level].length > 0) {
-      handleSelectKanji(KANJI_DATA[level][0]);
+    const list = getKanjiListForLevel(level);
+    if (list.length > 0) {
+      handleSelectKanji(list[0]);
     }
   };
 
@@ -1135,7 +1176,7 @@ export default function KanjiWriterPage() {
   }, []);
 
   const getNextSmartKanji = () => {
-    const currentList = KANJI_DATA[currentLevel];
+    const currentList = levelKanjiList;
     if (!currentList || currentList.length === 0) return null;
 
     // 1. Find unmastered kanji (not in practicedChars)
@@ -1327,9 +1368,9 @@ export default function KanjiWriterPage() {
   };
 
   // Stats calc
-  const totalInLevel = KANJI_DATA[currentLevel]?.length || 20;
+  const totalInLevel = levelKanjiList.length || 20;
   const practicedInLevel = session.practicedChars.filter((char) =>
-    KANJI_DATA[currentLevel]?.some((k) => k.char === char),
+    levelKanjiList.some((k) => k.char === char),
   ).length;
   const progressPct = Math.round((practicedInLevel / totalInLevel) * 100) || 0;
   const avgScore =
@@ -1568,112 +1609,119 @@ export default function KanjiWriterPage() {
                 </CanvasBox>
 
                 <CanvasControls>
-                  <ControlGroup>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "12px",
-                      }}
-                    >
-                      <HintToggle>
-                        <ToggleSwitch
-                          $on={hintEnabled}
-                          onClick={() => setHintEnabled(!hintEnabled)}
-                        />
-                        <span>Ghost Guide</span>
-                      </HintToggle>
-                      <HintToggle>
-                        <ToggleSwitch
-                          $on={brushType === "aesthetic"}
-                          onClick={() =>
-                            setBrushType((prev) =>
-                              prev === "aesthetic" ? "uniform" : "aesthetic",
-                            )
+                  {mounted && (
+                    <>
+                      <ControlGroup>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "12px",
+                          }}
+                        >
+                          <HintToggle>
+                            <ToggleSwitch
+                              $on={hintEnabled}
+                              onClick={() => setHintEnabled(!hintEnabled)}
+                            />
+                            <span>Ghost Guide</span>
+                          </HintToggle>
+                          <HintToggle>
+                            <ToggleSwitch
+                              $on={brushType === "aesthetic"}
+                              onClick={() =>
+                                setBrushType((prev) =>
+                                  prev === "aesthetic"
+                                    ? "uniform"
+                                    : "aesthetic",
+                                )
+                              }
+                            />
+                            <span>Aesthetic</span>
+                          </HintToggle>
+                          <div
+                            style={{
+                              fontSize: "0.72rem",
+                              color: "var(--text-secondary)",
+                              fontFamily: "'DM Mono', monospace",
+                            }}
+                          >
+                            Stroke {strokeCount} / {currentKanji.strokes}
+                          </div>
+                        </div>
+
+                        <Btn
+                          $variant="ghost"
+                          onClick={runWritingDemo}
+                          disabled={
+                            isAnimating || isChecking || svgPaths.length === 0
                           }
-                        />
-                        <span>Aesthetic</span>
-                      </HintToggle>
-                      <div
-                        style={{
-                          fontSize: "0.72rem",
-                          color: "var(--text-secondary)",
-                          fontFamily: "'DM Mono', monospace",
-                        }}
-                      >
-                        Stroke {strokeCount} / {currentKanji.strokes}
-                      </div>
-                    </div>
+                          style={{
+                            background: "rgba(var(--primary-rgb), 0.05)",
+                            color: "var(--primary)",
+                            borderColor: "rgba(var(--primary-rgb), 0.1)",
+                            padding: "5px 12px",
+                            fontSize: "0.7rem",
+                          }}
+                        >
+                          Play Demo 🎬
+                        </Btn>
+                      </ControlGroup>
 
-                    <Btn
-                      $variant="ghost"
-                      onClick={runWritingDemo}
-                      disabled={
-                        !mounted ||
-                        isAnimating ||
-                        isChecking ||
-                        svgPaths.length === 0
-                      }
-                      style={{
-                        background: "rgba(var(--primary-rgb), 0.05)",
-                        color: "var(--primary)",
-                        borderColor: "rgba(var(--primary-rgb), 0.1)",
-                        padding: "5px 12px",
-                        fontSize: "0.7rem",
-                      }}
-                    >
-                      Play Demo 🎬
-                    </Btn>
-                  </ControlGroup>
-
-                  <ActionGroup>
-                    <div style={{ display: "flex", gap: "6px", flex: 1 }}>
-                      <Btn
-                        $variant="danger"
-                        onClick={handleUndo}
-                        disabled={
-                          userStrokes.length === 0 || isChecking || isAnimating
-                        }
-                        style={{ flex: 1, padding: "8px" }}
-                      >
-                        Undo
-                      </Btn>
-                      <Btn
-                        $variant="danger"
-                        onClick={clearCanvas}
-                        disabled={isChecking || isAnimating}
-                        style={{ flex: 1, padding: "8px" }}
-                      >
-                        Clear
-                      </Btn>
-                    </div>
-                    <Btn
-                      $variant="primary"
-                      onClick={handleCheck}
-                      disabled={isChecking || isAnimating || strokeCount === 0}
-                      style={{
-                        flex: 1.5,
-                        padding: "10px",
-                        fontSize: "0.85rem",
-                      }}
-                    >
-                      Check ✓
-                    </Btn>
-                    {result && result.score >= 80 && (
-                      <Btn
-                        $variant="primary"
-                        onClick={handleNextKanji}
-                        style={{
-                          background: "#10b981",
-                          borderColor: "#10b981",
-                          flex: 1,
-                          padding: "10px",
-                        }}
-                      >
-                        Next ➔
-                      </Btn>
-                    )}
-                  </ActionGroup>
+                      <ActionGroup>
+                        <div style={{ display: "flex", gap: "6px", flex: 1 }}>
+                          <Btn
+                            $variant="danger"
+                            onClick={handleUndo}
+                            disabled={
+                              userStrokes.length === 0 ||
+                              isChecking ||
+                              isAnimating
+                            }
+                            style={{ flex: 1, padding: "8px" }}
+                          >
+                            Undo
+                          </Btn>
+                          <Btn
+                            $variant="danger"
+                            onClick={clearCanvas}
+                            disabled={isChecking || isAnimating}
+                            style={{ flex: 1, padding: "8px" }}
+                          >
+                            Clear
+                          </Btn>
+                        </div>
+                        <Btn
+                          $variant="primary"
+                          onClick={handleCheck}
+                          disabled={
+                            isChecking || isAnimating || strokeCount === 0
+                          }
+                          style={{
+                            flex: 1.5,
+                            padding: "10px",
+                            fontSize: "0.85rem",
+                          }}
+                        >
+                          Check ✓
+                        </Btn>
+                        {result && result.score >= 80 && (
+                          <Btn
+                            $variant="primary"
+                            onClick={handleNextKanji}
+                            style={{
+                              background: "#10b981",
+                              borderColor: "#10b981",
+                              flex: 1,
+                              padding: "10px",
+                            }}
+                          >
+                            Next ➔
+                          </Btn>
+                        )}
+                      </ActionGroup>
+                    </>
+                  )}
                 </CanvasControls>
               </CanvasWrap>
 
@@ -1991,15 +2039,11 @@ export default function KanjiWriterPage() {
                   key={i}
                   onClick={() => {
                     // Find correct level and select
-                    for (const level of ["N5", "N4", "N3", "N2", "N1"]) {
-                      if (
-                        KANJI_DATA[level as "N5"]?.find(
-                          (k: any) => k.char === h.kanji.char,
-                        )
-                      ) {
-                        setCurrentLevel(level as "N5");
-                        break;
-                      }
+                    const found = allKanji.find(
+                      (k) => k.kanji === h.kanji.char,
+                    );
+                    if (found && found.level) {
+                      setCurrentLevel(found.level as any);
                     }
                     handleSelectKanji(h.kanji);
                   }}
