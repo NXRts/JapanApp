@@ -1988,26 +1988,14 @@ export default function KanjiWriterPage() {
                         )}
                       </svg>
                     ) : (
-                      <>
-                        <span
-                          style={{
-                            position: "absolute",
-                            opacity: 0.15,
-                            zIndex: 0,
-                          }}
-                        >
-                          {currentKanji.char}
-                        </span>
-                        <span
-                          style={{
-                            position: "relative",
-                            zIndex: 1,
-                            clipPath: `circle(${((i + 1) / currentKanji.strokes) * 1.5 * 100}% at 0 0)`,
-                          }}
-                        >
-                          {currentKanji.char}
-                        </span>
-                      </>
+                      <div
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          background: "rgba(var(--primary-rgb), 0.03)",
+                          borderRadius: "4px",
+                        }}
+                      />
                     )}
                     <span className="step-num">{i + 1}</span>
                   </StrokeStep>
