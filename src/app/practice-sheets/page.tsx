@@ -3,6 +3,7 @@
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { KANJI_DATA } from "@/data/kanji";
 import { allKanji, allVocabulary } from "@/lib/dictionary";
+import numbersData from "../../../public/JLPT_Vocabulary/data/Angka.json";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import * as wanakana from "wanakana";
@@ -30,6 +31,23 @@ const splitMeaning = (meaning: string): string[] => {
     parts.push(current);
   }
   return parts.map((p) => p.trim()).filter(Boolean);
+};
+
+const findNumberData = (char: string) => {
+  for (const cat of Object.keys(numbersData)) {
+    const items = (numbersData as any)[cat];
+    for (const [num, data] of Object.entries(items)) {
+      if ((data as any).kanji === char) {
+        return {
+          number: num,
+          kanji: (data as any).kanji,
+          hiragana: (data as any).hiragana,
+          romaji: (data as any).romaji,
+        };
+      }
+    }
+  }
+  return null;
 };
 
 // Define static Kana arrays
@@ -242,7 +260,9 @@ const GridSelector = styled.div`
 `;
 
 const CharBox = styled.button<{ $selected: boolean }>`
-  width: 38px;
+  min-width: 38px;
+  width: auto;
+  padding: 0 6px;
   height: 38px;
   font-size: 1.1rem;
   font-weight: 600;
@@ -783,6 +803,7 @@ const WritingCell = styled.div<{
   $size: number;
   $isTrace?: boolean;
   $traceOpacity: number;
+  $charLength?: number;
 }>`
   width: ${(props) => props.$size}px;
   height: ${(props) => props.$size}px;
@@ -794,9 +815,17 @@ const WritingCell = styled.div<{
   background: white;
   color: ${(props) =>
     props.$isTrace ? `rgba(0, 0, 0, ${props.$traceOpacity})` : "#000000"};
-  font-size: ${(props) => props.$size * 0.65}px;
+  font-size: ${(props) => {
+    const len = props.$charLength || 1;
+    if (len === 1) return props.$size * 0.65;
+    if (len === 2) return props.$size * 0.45;
+    if (len === 3) return props.$size * 0.35;
+    return props.$size * 0.22;
+  }}px;
   font-family: "Noto Sans JP", sans-serif;
   user-select: none;
+  line-height: 1;
+  overflow: hidden;
 `;
 
 const GenkouyoushiLines = styled.div`
@@ -1346,7 +1375,7 @@ export default function PracticeSheetsPage() {
     "settings" | "preview"
   >("settings");
   // Navigation & Data tabs
-  const [activeTab, setActiveTab] = useState<"kana" | "kanji" | "custom">(
+  const [activeTab, setActiveTab] = useState<"kana" | "kanji" | "angka" | "custom">(
     "kana",
   );
   const [kanaTab, setKanaTab] = useState<"hiragana" | "katakana">("hiragana");
@@ -1354,6 +1383,16 @@ export default function PracticeSheetsPage() {
     "N5" | "N4" | "N3" | "N2" | "N1"
   >("N5");
   const [kanjiSearch, setKanjiSearch] = useState("");
+  const [angkaCategory, setAngkaCategory] = useState<
+    | "angka_dasar"
+    | "angka_belasan"
+    | "puluhan"
+    | "ratusan"
+    | "ribuan"
+    | "angka_besar"
+    | "contoh_kombinasi"
+  >("angka_dasar");
+  const [angkaSearch, setAngkaSearch] = useState("");
   const [sheetType, setSheetType] = useState<"worksheet" | "flashcards">(
     "worksheet",
   );
@@ -1475,7 +1514,24 @@ export default function PracticeSheetsPage() {
     kun: string;
     strokes: number;
     examples: { word: string; reading: string; meaning: string }[];
+    isNumber?: boolean;
+    romaji?: string;
   } => {
+    // 0. Check if character exists in Angka.json
+    const numData = findNumberData(char);
+    if (numData) {
+      return {
+        char,
+        meaning: `Number: ${numData.number}`,
+        on: numData.hiragana,
+        kun: "",
+        strokes: 0,
+        examples: [],
+        isNumber: true,
+        romaji: numData.romaji,
+      };
+    }
+
     // 1. Check if character exists in KANJI_DATA (curated list)
     let curated: any = null;
     for (const lvl of ["N5", "N4", "N3", "N2", "N1"] as const) {
@@ -1626,6 +1682,37 @@ export default function PracticeSheetsPage() {
     });
   };
 
+  // Select all Angka in current filtered list
+  const selectAllAngka = () => {
+    const list = getFilteredAngka();
+    const chars = list.map((k) => k.char);
+    setSelectedChars((prev) => {
+      const filtered = prev.filter((c) => !chars.includes(c));
+      return [...filtered, ...chars];
+    });
+  };
+
+  // Get filtered Angka list
+  const getFilteredAngka = () => {
+    const items = (numbersData as any)[angkaCategory] || {};
+    const list = Object.entries(items).map(([num, data]: any) => ({
+      char: data.kanji,
+      meaning: `Number: ${num}`,
+      romaji: data.romaji,
+      hiragana: data.hiragana,
+    }));
+
+    if (!angkaSearch) return list;
+    const searchLower = angkaSearch.toLowerCase();
+    return list.filter(
+      (n) =>
+        n.char.includes(angkaSearch) ||
+        n.meaning.toLowerCase().includes(searchLower) ||
+        n.romaji.toLowerCase().includes(searchLower) ||
+        n.hiragana.includes(angkaSearch),
+    );
+  };
+
   // Clear selections
   const clearSelections = () => {
     setSelectedChars([]);
@@ -1709,6 +1796,11 @@ export default function PracticeSheetsPage() {
 
   // Helper: Get Romaji label for Kana or English meaning for Kanji
   const getCharacterHeaderLabel = (char: string) => {
+    const numData = findNumberData(char);
+    if (numData) {
+      return `${numData.hiragana} (${numData.romaji}) — Number: ${numData.number}`;
+    }
+
     if (wanakana.isKana(char)) {
       return wanakana.toRomaji(char);
     }
@@ -1899,6 +1991,15 @@ export default function PracticeSheetsPage() {
                 Kanji
               </TabButton>
               <TabButton
+                $active={activeTab === "angka"}
+                onClick={() => {
+                  setActiveTab("angka");
+                  localStorage.setItem("sheet-generator-tab", "angka");
+                }}
+              >
+                Angka
+              </TabButton>
+              <TabButton
                 $active={activeTab === "custom"}
                 onClick={() => {
                   setActiveTab("custom");
@@ -2036,6 +2137,77 @@ export default function PracticeSheetsPage() {
                         }}
                       >
                         No matching Kanji found
+                      </div>
+                    )}
+                  </GridSelector>
+                </SelectorPanel>
+              </>
+            )}
+
+            {/* ANGKA SUB PANEL */}
+            {activeTab === "angka" && (
+              <>
+                <KanjiSearchInput
+                  type="text"
+                  placeholder="Search Angka or romaji..."
+                  value={angkaSearch}
+                  onChange={(e) => setAngkaSearch(e.target.value)}
+                />
+
+                <LevelFilters style={{ flexWrap: "wrap", gap: "6px" }}>
+                  {[
+                    { key: "angka_dasar", label: "Dasar" },
+                    { key: "angka_belasan", label: "Belasan" },
+                    { key: "puluhan", label: "Puluhan" },
+                    { key: "ratusan", label: "Ratusan" },
+                    { key: "ribuan", label: "Ribuan" },
+                    { key: "angka_besar", label: "Besar" },
+                    { key: "contoh_kombinasi", label: "Kombinasi" },
+                  ].map((cat) => (
+                    <LevelBadge
+                      key={cat.key}
+                      $active={angkaCategory === cat.key}
+                      onClick={() => {
+                        setAngkaCategory(cat.key as any);
+                        setAngkaSearch("");
+                      }}
+                      style={{ flex: "none", padding: "4px 8px" }}
+                    >
+                      {cat.label}
+                    </LevelBadge>
+                  ))}
+                </LevelFilters>
+
+                <SelectionActions>
+                  <ActionBtn onClick={selectAllAngka}>
+                    Select All
+                  </ActionBtn>
+                  <ActionBtn onClick={clearSelections}>Clear All</ActionBtn>
+                </SelectionActions>
+
+                <SelectorPanel>
+                  <GridSelector>
+                    {getFilteredAngka().map((numItem) => (
+                      <CharBox
+                        key={numItem.char}
+                        $selected={selectedChars.includes(numItem.char)}
+                        onClick={() => toggleChar(numItem.char)}
+                        title={`${numItem.meaning} (${numItem.romaji})`}
+                      >
+                        {numItem.char}
+                      </CharBox>
+                    ))}
+                    {getFilteredAngka().length === 0 && (
+                      <div
+                        style={{
+                          fontSize: "0.8rem",
+                          color: "var(--text-secondary)",
+                          textAlign: "center",
+                          width: "100%",
+                          padding: "1rem 0",
+                        }}
+                      >
+                        No matching Angka found
                       </div>
                     )}
                   </GridSelector>
@@ -2398,6 +2570,8 @@ export default function PracticeSheetsPage() {
                                   `Kana Script Exercise — Sheet ${pageIdx + 1} of ${paginatedPages.length}`}
                                 {activeTab === "kanji" &&
                                   `Kanji Writing Exercise — Sheet ${pageIdx + 1} of ${paginatedPages.length}`}
+                                {activeTab === "angka" &&
+                                  `Number Writing Exercise — Sheet ${pageIdx + 1} of ${paginatedPages.length}`}
                                 {activeTab === "custom" &&
                                   `Custom Handwriting Workbook — Sheet ${pageIdx + 1} of ${paginatedPages.length}`}
                               </p>
@@ -2429,6 +2603,7 @@ export default function PracticeSheetsPage() {
                                 <WritingCell
                                   $size={cellSizePx}
                                   $traceOpacity={traceOpacity}
+                                  $charLength={char.length}
                                 >
                                   {char}
                                   {gridStyle === "genkouyoushi" && (
@@ -2450,6 +2625,7 @@ export default function PracticeSheetsPage() {
                                         $size={cellSizePx}
                                         $isTrace={isTrace}
                                         $traceOpacity={traceOpacity}
+                                        $charLength={char.length}
                                       >
                                         {isTrace ? char : ""}
                                         {gridStyle === "genkouyoushi" && (
@@ -2529,13 +2705,15 @@ export default function PracticeSheetsPage() {
                                           {details.on && (
                                             <>
                                               <CardBackReadingsLabel>
-                                                Onyomi
+                                                {details.isNumber ? "Reading" : "Onyomi"}
                                               </CardBackReadingsLabel>
                                               <CardBackReadingsValue>
                                                 {details.on} (
-                                                {convertToRomajiList(
-                                                  details.on,
-                                                )}
+                                                {details.isNumber
+                                                  ? details.romaji
+                                                  : convertToRomajiList(
+                                                      details.on,
+                                                    )}
                                                 )
                                               </CardBackReadingsValue>
                                             </>
@@ -2559,7 +2737,21 @@ export default function PracticeSheetsPage() {
                                           </CardBackMeaning>
                                         </CardBackTopLeft>
                                         <CardBackTopRight>
-                                          <KanjiStrokeSvg char={details.char} />
+                                          {details.char.length === 1 ? (
+                                            <KanjiStrokeSvg char={details.char} />
+                                          ) : (
+                                            <div
+                                              style={{
+                                                fontSize: "0.2in",
+                                                fontWeight: 800,
+                                                color: "#000",
+                                                textAlign: "center",
+                                                fontFamily: "'Noto Sans JP', sans-serif",
+                                              }}
+                                            >
+                                              {details.char}
+                                            </div>
+                                          )}
                                         </CardBackTopRight>
                                       </CardBackTop>
 
