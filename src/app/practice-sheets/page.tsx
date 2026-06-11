@@ -7,6 +7,31 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import * as wanakana from "wanakana";
 
+const splitMeaning = (meaning: string): string[] => {
+  const parts: string[] = [];
+  let current = "";
+  let parenDepth = 0;
+  for (let i = 0; i < meaning.length; i++) {
+    const char = meaning[i];
+    if (char === "(" || char === "[" || char === "{") {
+      parenDepth++;
+      current += char;
+    } else if (char === ")" || char === "]" || char === "}") {
+      parenDepth = Math.max(0, parenDepth - 1);
+      current += char;
+    } else if ((char === "," || char === ";") && parenDepth === 0) {
+      parts.push(current);
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  if (current) {
+    parts.push(current);
+  }
+  return parts.map((p) => p.trim()).filter(Boolean);
+};
+
 // Define static Kana arrays
 const HIRAGANA_ROWS = [
   { label: "A-Row", chars: ["あ", "い", "う", "え", "お"] },
@@ -1040,12 +1065,11 @@ const CardBackReadingsLabel = styled.span`
 
 const CardBackReadingsValue = styled.span`
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 0.15in;
+  font-size: 0.13in;
   color: #000;
   font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: block;
+  line-height: 1.25;
 `;
 
 const CardBackMeaning = styled.div`
@@ -1487,15 +1511,22 @@ export default function PracticeSheetsPage() {
             v.meaning !== "Tidak ada arti",
         )
         .slice(0, 4)
-        .map((v) => ({
-          word: v.word || "",
-          reading: v.reading || "",
-          meaning: v.meaning || "",
-        }));
+        .map((v) => {
+          const vocabParts = splitMeaning(v.meaning || "");
+          const shortVocabMeaning = vocabParts.slice(0, 2).join(", ");
+          return {
+            word: v.word || "",
+            reading: v.reading || "",
+            meaning: shortVocabMeaning,
+          };
+        });
+
+      const kanjiParts = splitMeaning(found.meaning || "");
+      const shortKanjiMeaning = kanjiParts.slice(0, 2).join(", ");
 
       return {
         char,
-        meaning: found.meaning || "",
+        meaning: shortKanjiMeaning,
         on:
           found.onyomi && found.onyomi.length > 0
             ? found.onyomi.join("・")
@@ -1617,7 +1648,8 @@ export default function PracticeSheetsPage() {
       .filter((k) => k.level === kanjiLevel)
       .map((k) => {
         // Check if there is curated high-quality data to override
-        let meaning = k.meaning || "";
+        const parts = splitMeaning(k.meaning || "");
+        let meaning = parts.slice(0, 2).join(", ");
         let on = k.onyomi ? k.onyomi.join("・") : "";
         let kun = k.kunyomi ? k.kunyomi.join("・") : "";
         let strokes = k.stroke_count || 0;
@@ -1713,7 +1745,9 @@ export default function PracticeSheetsPage() {
         found.onyomi && found.onyomi.length > 0
           ? arrayToRomajiList(found.onyomi)
           : arrayToRomajiList(found.kunyomi || []);
-      return `${reading} (${found.meaning}) — ${found.stroke_count || 0} strokes`;
+      const parts = splitMeaning(found.meaning || "");
+      const shortMeaning = parts.slice(0, 2).join(", ");
+      return `${reading} (${shortMeaning}) — ${found.stroke_count || 0} strokes`;
     }
     return "";
   };
