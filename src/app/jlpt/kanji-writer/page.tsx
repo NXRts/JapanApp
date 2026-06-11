@@ -40,9 +40,16 @@ const getKanjiListForLevel = (level: string) => {
         meaning: v.meaning || "",
       }));
 
+    const rawMeaning = k.meaning || "";
+    const parts = rawMeaning
+      .split(/[,;]/)
+      .map((p: string) => p.trim())
+      .filter(Boolean);
+    const shortMeaning = parts.slice(0, 2).join(", ");
+
     return {
       char: k.kanji || "",
-      meaning: k.meaning || "",
+      meaning: shortMeaning,
       on: k.onyomi && k.onyomi.length > 0 ? k.onyomi.join("・") : "",
       kun: k.kunyomi && k.kunyomi.length > 0 ? k.kunyomi.join("・") : "",
       strokes: k.stroke_count || 0,
