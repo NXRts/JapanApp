@@ -53,6 +53,18 @@
   --hm-h2: #818cf8;
   --hm-h3: #4f46e5;
   --hm-h4: #312e81;
+
+  /* Zen Japanese Mobile Identity */
+  --torii-red: #C41E3A;
+  --torii-red-rgb: 196, 30, 58;
+  --zen-gold: #B8860B;
+  --zen-gold-rgb: 184, 134, 11;
+  --ink-stroke: #1e293b;
+  --washi-bg: rgba(255, 255, 255, 0.03);
+  --dock-bg: rgba(255, 255, 255, 0.92);
+  --dock-border: rgba(226, 232, 240, 0.5);
+  --dock-blur: 20px;
+  --dock-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -72,6 +84,13 @@
     --hm-h2: #4338ca;
     --hm-h3: #4f46e5;
     --hm-h4: #818cf8;
+
+    /* Zen Japanese Mobile Identity - Dark */
+    --ink-stroke: #f8fafc;
+    --washi-bg: rgba(255, 255, 255, 0.02);
+    --dock-bg: rgba(15, 23, 42, 0.88);
+    --dock-border: rgba(51, 65, 85, 0.5);
+    --dock-shadow: 0 -8px 32px rgba(0, 0, 0, 0.25);
   }
 }
 
@@ -158,7 +177,7 @@ a,
 
 /* Device Mode: Mobile View Utilities */
 html.device-mobile main {
-  padding-bottom: 60px;
+  padding-bottom: 88px; /* FloatingDock: 64px height + 12px margin + breathing room */
 }
 
 @media (max-width: 1100px) {
