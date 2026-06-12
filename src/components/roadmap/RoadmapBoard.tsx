@@ -4,7 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import { CategoryCard } from "./CategoryCard";
 import { GridNode } from "./GridNode";
-import { ROADMAP_DATA } from "@/data/roadmap";
+import { ROADMAP_DATA } from "@/data/lessonsData";
 
 const BoardContainer = styled.div`
   width: 100%;

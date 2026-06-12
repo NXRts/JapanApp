@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { RoadmapBoard } from "@/components/roadmap/RoadmapBoard";
 import { useProgress } from "@/context/ProgressContext";
-import { ROADMAP_DATA } from "@/data/roadmap";
+import { ROADMAP_DATA } from "@/data/lessonsData";
 
 const Container = styled.div`
   max-width: 1400px;

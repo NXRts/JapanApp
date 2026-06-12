@@ -2,7 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
-import { ROADMAP_DATA } from "@/data/roadmap";
+import { ROADMAP_DATA } from "@/data/lessonsData";
 import { RoadmapNode } from "./RoadmapNode";
 
 const PathContainer = styled.div`
