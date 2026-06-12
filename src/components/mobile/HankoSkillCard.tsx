@@ -21,7 +21,8 @@ const CardContainer = styled.button<{
   height: 145px;
   padding: 1rem;
   border-radius: 20px;
-  background: var(--surface);
+  background-color: var(--surface) !important;
+  color: var(--foreground);
   border: 2px solid var(--border);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -32,27 +33,24 @@ const CardContainer = styled.button<{
   outline: none;
   flex-shrink: 0;
 
-  html.dark & {
-    background: var(--surface);
-    border-color: rgba(255, 255, 255, 0.08);
-  }
-
   ${({ $state, $color }) =>
     $state === "locked" &&
     css`
-      opacity: 0.6;
       cursor: not-allowed;
-      background: rgba(0, 0, 0, 0.02);
+      background-color: var(--background) !important;
       border-style: dashed;
-      html.dark & {
-        background: rgba(255, 255, 255, 0.01);
+      border-color: var(--border) !important;
+
+      /* Fade inner elements for locked state instead of fadding the container */
+      & > span, & > div, & > svg {
+        opacity: 0.5;
       }
     `}
 
   ${({ $state, $color }) =>
     $state === "available" &&
     css`
-      border-color: ${$color};
+      border-color: ${$color} !important;
       &:hover {
         transform: translateY(-4px);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
@@ -62,7 +60,7 @@ const CardContainer = styled.button<{
   ${({ $state, $color }) =>
     $state === "active" &&
     css`
-      border-color: var(--torii-red);
+      border-color: var(--torii-red) !important;
       box-shadow: 0 0 0 2px rgba(196, 30, 58, 0.15), 0 8px 20px rgba(196, 30, 58, 0.1);
       animation: pulseActive 2s infinite ease-in-out;
       
@@ -79,8 +77,8 @@ const CardContainer = styled.button<{
   ${({ $state, $color }) =>
     $state === "mastered" &&
     css`
-      border-color: ${$color};
-      background: var(--washi-bg);
+      border-color: ${$color} !important;
+      background-color: var(--surface) !important;
       &:hover {
         transform: translateY(-4px);
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
@@ -119,7 +117,7 @@ const CardTitle = styled.h4`
   font-size: 0.88rem;
   font-weight: 800;
   line-height: 1.25;
-  color: var(--text-primary);
+  color: var(--foreground);
   margin: 0.5rem 0 0.25rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;

@@ -15,9 +15,9 @@ const HeaderContainer = styled.div<{ $color: string }>`
   align-items: center;
   text-align: center;
   padding: 1.5rem 1.25rem 1rem;
-  background: var(--washi-bg);
+  background-color: var(--surface) !important;
   border-radius: 24px;
-  border: 1px solid var(--dock-border);
+  border: 1px solid var(--border) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
   margin-bottom: 1.25rem;
   overflow: hidden;
@@ -60,7 +60,7 @@ const UnitLabel = styled.span`
 const UnitTitle = styled.h3`
   font-size: 1.15rem;
   font-weight: 800;
-  color: var(--text-primary);
+  color: var(--foreground);
   margin: 0;
   line-height: 1.3;
   font-family: "Outfit", "Nunito", sans-serif;
