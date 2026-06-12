@@ -3,10 +3,10 @@
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { KANJI_DATA } from "@/data/kanji";
 import { allKanji, allVocabulary } from "@/lib/dictionary";
-import numbersData from "../../../public/JLPT_Vocabulary/data/Angka.json";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import * as wanakana from "wanakana";
+import numbersData from "../../../public/JLPT_Vocabulary/data/Angka.json";
 
 const splitMeaning = (meaning: string): string[] => {
   const parts: string[] = [];
@@ -1065,14 +1065,15 @@ const CardBack = styled.div`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  padding: 0.2in 0.25in;
+  padding: 0.12in 0.2in;
 `;
 
 const CardBackTop = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 1.1in;
+  flex-shrink: 0;
+  min-height: 1.05in;
 `;
 
 const CardBackTopLeft = styled.div`
@@ -1084,7 +1085,7 @@ const CardBackTopLeft = styled.div`
 `;
 
 const CardBackReadingsLabel = styled.span`
-  font-size: 0.09in;
+  font-size: 0.08in;
   font-weight: 700;
   color: #666;
   text-transform: uppercase;
@@ -1094,7 +1095,7 @@ const CardBackReadingsLabel = styled.span`
 
 const CardBackReadingsValue = styled.span`
   font-family: "Noto Sans JP", sans-serif;
-  font-size: 0.13in;
+  font-size: 0.11in;
   color: #000;
   font-weight: 600;
   display: block;
@@ -1103,10 +1104,10 @@ const CardBackReadingsValue = styled.span`
 
 const CardBackMeaning = styled.div`
   font-family: "Inter", sans-serif;
-  font-size: 0.14in;
+  font-size: 0.13in;
   font-weight: 700;
   color: #111;
-  margin-top: 4px;
+  margin-top: 3px;
   line-height: 1.2;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -1125,13 +1126,14 @@ const CardBackTopRight = styled.div`
   background: #fafafa;
   flex-shrink: 0;
   margin-left: 8px;
+  align-self: center;
 `;
 
 const CardBackDivider = styled.div`
   width: 100%;
   height: 1px;
   background: #eee;
-  margin: 5px 0;
+  margin: 4px 0;
 `;
 
 const CardBackBottom = styled.div`
@@ -1147,8 +1149,8 @@ const CardBackExampleRow = styled.div`
   display: flex;
   align-items: baseline;
   gap: 8px;
-  font-size: 0.12in;
-  line-height: 1.3;
+  font-size: 0.11in;
+  line-height: 1.2;
   width: 100%;
 `;
 
@@ -1157,21 +1159,24 @@ const CardBackExampleWord = styled.span`
   font-weight: 700;
   color: #000;
   white-space: nowrap;
+  width: 0.45in;
+  flex-shrink: 0;
 `;
 
 const CardBackExampleReading = styled.span`
   font-family: "Noto Sans JP", sans-serif;
   color: #666;
-  font-size: 0.1in;
+  font-size: 0.095in;
   white-space: nowrap;
+  width: 1.15in;
+  flex-shrink: 0;
 `;
 
 const CardBackExampleMeaning = styled.span`
   font-family: "Inter", sans-serif;
   color: #444;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
   flex: 1;
   min-width: 0;
 `;
@@ -1375,9 +1380,9 @@ export default function PracticeSheetsPage() {
     "settings" | "preview"
   >("settings");
   // Navigation & Data tabs
-  const [activeTab, setActiveTab] = useState<"kana" | "kanji" | "angka" | "custom">(
-    "kana",
-  );
+  const [activeTab, setActiveTab] = useState<
+    "kana" | "kanji" | "angka" | "custom"
+  >("kana");
   const [kanaTab, setKanaTab] = useState<"hiragana" | "katakana">("hiragana");
   const [kanjiLevel, setKanjiLevel] = useState<
     "N5" | "N4" | "N3" | "N2" | "N1"
@@ -2006,7 +2011,7 @@ export default function PracticeSheetsPage() {
                   localStorage.setItem("sheet-generator-tab", "custom");
                 }}
               >
-                Custom Text
+                Custom
               </TabButton>
             </TabGroup>
 
@@ -2179,9 +2184,7 @@ export default function PracticeSheetsPage() {
                 </LevelFilters>
 
                 <SelectionActions>
-                  <ActionBtn onClick={selectAllAngka}>
-                    Select All
-                  </ActionBtn>
+                  <ActionBtn onClick={selectAllAngka}>Select All</ActionBtn>
                   <ActionBtn onClick={clearSelections}>Clear All</ActionBtn>
                 </SelectionActions>
 
@@ -2705,7 +2708,9 @@ export default function PracticeSheetsPage() {
                                           {details.on && (
                                             <>
                                               <CardBackReadingsLabel>
-                                                {details.isNumber ? "Reading" : "Onyomi"}
+                                                {details.isNumber
+                                                  ? "Reading"
+                                                  : "Onyomi"}
                                               </CardBackReadingsLabel>
                                               <CardBackReadingsValue>
                                                 {details.on} (
@@ -2738,7 +2743,9 @@ export default function PracticeSheetsPage() {
                                         </CardBackTopLeft>
                                         <CardBackTopRight>
                                           {details.char.length === 1 ? (
-                                            <KanjiStrokeSvg char={details.char} />
+                                            <KanjiStrokeSvg
+                                              char={details.char}
+                                            />
                                           ) : (
                                             <div
                                               style={{
@@ -2746,7 +2753,8 @@ export default function PracticeSheetsPage() {
                                                 fontWeight: 800,
                                                 color: "#000",
                                                 textAlign: "center",
-                                                fontFamily: "'Noto Sans JP', sans-serif",
+                                                fontFamily:
+                                                  "'Noto Sans JP', sans-serif",
                                               }}
                                             >
                                               {details.char}
