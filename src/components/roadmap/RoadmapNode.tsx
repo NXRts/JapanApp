@@ -3,7 +3,7 @@
 import React from "react";
 import styled, { keyframes, css } from "styled-components";
 import Link from "next/link";
-import { RoadmapLesson } from "@/data/roadmap";
+import { RoadmapLesson } from "@/data/lessonsData";
 
 const pulse = keyframes`
   0% { box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4); }
