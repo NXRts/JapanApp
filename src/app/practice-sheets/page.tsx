@@ -1159,6 +1159,8 @@ const CardBackExampleWord = styled.span`
   font-weight: 700;
   color: #000;
   white-space: nowrap;
+  width: 0.45in;
+  flex-shrink: 0;
 `;
 
 const CardBackExampleReading = styled.span`
@@ -1166,6 +1168,8 @@ const CardBackExampleReading = styled.span`
   color: #666;
   font-size: 0.095in;
   white-space: nowrap;
+  width: 1.15in;
+  flex-shrink: 0;
 `;
 
 const CardBackExampleMeaning = styled.span`
