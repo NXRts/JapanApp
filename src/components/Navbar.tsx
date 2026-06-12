@@ -10,6 +10,7 @@ import { isItemDue } from "@/lib/srs";
 import { ArrowRightIcon, UserIcon } from "./icons/AppIcons";
 import { useDeviceMode } from "@/context/DeviceModeContext";
 import { DeviceModeSwitcher } from "@/components/DeviceModeSwitcher";
+import { FloatingDock } from "@/components/mobile/FloatingDock";
 
 const SettingsModal = dynamic(
   () => import("./SettingsModal").then((mod) => mod.SettingsModal),
@@ -1799,76 +1800,7 @@ export function Navbar() {
         <DictionarySearchOverlay onClose={() => setIsDictionaryOpen(false)} />
       )}
 
-      {isMounted && deviceMode === "mobile" && (
-        <BottomBar $isMounted={isMounted}>
-          <BottomTab href="/" $active={pathname === "/"}>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
-            Learn
-          </BottomTab>
-          <BottomTab
-            href="/characters"
-            $active={pathname.startsWith("/characters")}
-          >
-            <CharactersIcon />
-            Characters
-          </BottomTab>
-          <BottomTab href="/practice" $active={pathname === "/practice"}>
-            <PracticeIcon />
-            Practice
-          </BottomTab>
-          <BottomTab href="/jlpt" $active={pathname.startsWith("/jlpt")}>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-            </svg>
-            JLPT
-          </BottomTab>
-          <BottomTab href="/game" $active={pathname.startsWith("/game")}>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="2" y="6" width="20" height="12" rx="3" />
-              <line x1="6" y1="12" x2="10" y2="12" />
-              <line x1="8" y1="10" x2="8" y2="14" />
-              <line x1="15" y1="13" x2="15.01" y2="13" />
-              <line x1="18" y1="11" x2="18.01" y2="11" />
-            </svg>
-            Game
-          </BottomTab>
-          <BottomTab href="/profile" $active={pathname === "/profile"}>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-            Profile
-          </BottomTab>
-        </BottomBar>
-      )}
+      {isMounted && deviceMode === "mobile" && <FloatingDock />}
     </>
   );
 }
