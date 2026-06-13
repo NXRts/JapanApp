@@ -198,8 +198,8 @@ export function HankoSkillCard({
     <CardContainer
       $state={state}
       $color={solidColor}
-      onClick={onClick}
-      disabled={state === "locked"}
+      onClick={state === "locked" ? (e) => e.preventDefault() : onClick}
+      aria-disabled={state === "locked"}
     >
       <CardBadge $state={state} $color={solidColor}>
         {badge}
