@@ -41,7 +41,8 @@ const PageWrapper = styled.div`
   overflow-x: hidden;
 
   @media (max-width: 768px) {
-    padding: 1.5rem 1rem 5rem; /* bottom padding for mobile navigation bar */
+    padding: 1.5rem 1rem 1.5rem;
+    min-height: auto;
   }
 `;
 

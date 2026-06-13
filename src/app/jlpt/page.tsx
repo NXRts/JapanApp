@@ -136,6 +136,9 @@ const PageContainer = styled.div`
     padding: 0.75rem 0.5rem;
     gap: 0.5rem;
   }
+  @media (max-width: 768px) {
+    min-height: auto;
+  }
 `;
 
 const Sidebar = styled.aside`

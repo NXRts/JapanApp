@@ -11,7 +11,8 @@ const Container = styled.div`
   min-height: 90vh;
 
   @media (max-width: 768px) {
-    padding: 1.5rem 1rem 3rem;
+    padding: 1.5rem 1rem 1.5rem;
+    min-height: auto;
   }
 `;
 
