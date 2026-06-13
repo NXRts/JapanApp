@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import styled, { keyframes, css } from "styled-components";
 import dynamic from "next/dynamic";
 import { useProgress } from "@/context/ProgressContext";
@@ -24,7 +24,90 @@ const HorizontalScrollList = styled.div`
   }
   -webkit-overflow-scrolling: touch;
   width: 100%;
+
+  /* Show styled scrollbar on desktop/non-touch devices */
+  @media (pointer: fine) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+
+    &::-webkit-scrollbar {
+      display: block;
+      height: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 99px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-light);
+    }
+  }
 `;
+
+interface DraggableScrollListProps {
+  children: React.ReactNode;
+}
+
+function DraggableScrollList({ children }: DraggableScrollListProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  const [hasMoved, setHasMoved] = useState(false);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button !== 0) return; // Only drag with left click
+    setIsDragging(true);
+    setHasMoved(false);
+    setStartX(e.pageX - (scrollRef.current?.offsetLeft || 0));
+    setScrollLeft(scrollRef.current?.scrollLeft || 0);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - (scrollRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 1.5;
+    if (Math.abs(x - startX) > 5) {
+      setHasMoved(true);
+    }
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = scrollLeft - walk;
+    }
+  };
+
+  const handleClickCapture = (e: React.MouseEvent) => {
+    if (hasMoved) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  };
+
+  return (
+    <HorizontalScrollList
+      ref={scrollRef}
+      onMouseDown={handleMouseDown}
+      onMouseLeave={handleMouseLeave}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
+      onClickCapture={handleClickCapture}
+      style={{ cursor: isDragging ? "grabbing" : "grab" }}
+    >
+      {children}
+    </HorizontalScrollList>
+  );
+}
 
 
 // Immediate imports for above-the-fold content
@@ -934,7 +1017,7 @@ export default function Home() {
                   }
                 />
 
-                <HorizontalScrollList>
+                <DraggableScrollList>
                   {unit.lessons.map((lesson) => {
                     const isUnlocked = isLessonUnlocked(lesson.id);
                     const isCompleted =
@@ -962,7 +1045,7 @@ export default function Home() {
                       />
                     );
                   })}
-                </HorizontalScrollList>
+                </DraggableScrollList>
               </div>
             );
           })}
