@@ -316,6 +316,9 @@ const PageContainer = styled.div`
   @media (max-width: 640px) {
     padding: 0.75rem 0.5rem;
   }
+  @media (max-width: 768px) {
+    min-height: auto;
+  }
 `;
 
 const HeaderSection = styled.div`

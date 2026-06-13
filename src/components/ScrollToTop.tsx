@@ -23,7 +23,7 @@ const ScrollButton = styled.button<{ $visible: boolean }>`
   transform: ${({ $visible }) =>
     $visible ? "translateY(0)" : "translateY(20px)"};
   pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
-  z-index: 90;
+  z-index: 1010;
 
   &:hover {
     background: var(--primary-dark);
@@ -31,7 +31,7 @@ const ScrollButton = styled.button<{ $visible: boolean }>`
   }
 
   @media (max-width: 1100px) {
-    bottom: calc(75px + env(safe-area-inset-bottom));
+    bottom: calc(100px + env(safe-area-inset-bottom));
     right: 20px;
     width: 46px;
     height: 46px;

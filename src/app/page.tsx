@@ -85,11 +85,11 @@ const MobileContainer = styled.div`
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem 1rem 7rem;
+  padding: 1.5rem 1rem 1.5rem;
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 100vh;
+  min-height: auto;
   font-family: "Nunito", "Outfit", sans-serif;
 `;
 
