@@ -42,7 +42,9 @@ const CardContainer = styled.button<{
       border-color: var(--border) !important;
 
       /* Fade inner elements for locked state instead of fadding the container */
-      & > span, & > div, & > svg {
+      & > span,
+      & > div,
+      & > svg {
         opacity: 0.5;
       }
     `}
@@ -61,16 +63,23 @@ const CardContainer = styled.button<{
     $state === "active" &&
     css`
       border-color: var(--torii-red) !important;
-      box-shadow: 0 0 0 2px rgba(196, 30, 58, 0.15), 0 8px 20px rgba(196, 30, 58, 0.1);
+      box-shadow:
+        0 0 0 2px rgba(196, 30, 58, 0.15),
+        0 8px 20px rgba(196, 30, 58, 0.1);
       animation: pulseActive 2s infinite ease-in-out;
-      
+
       &:hover {
         transform: translateY(-4px);
       }
 
       @keyframes pulseActive {
-        0%, 100% { border-color: var(--torii-red); }
-        50% { border-color: var(--zen-gold); }
+        0%,
+        100% {
+          border-color: var(--torii-red);
+        }
+        50% {
+          border-color: var(--zen-gold);
+        }
       }
     `}
 
@@ -97,19 +106,22 @@ const CardBadge = styled.span<{ $state: string; $color: string }>`
     $state === "locked"
       ? "rgba(0,0,0,0.08)"
       : $state === "active"
-      ? "rgba(196, 30, 58, 0.1)"
-      : "rgba(0,0,0,0.04)"};
+        ? "rgba(196, 30, 58, 0.1)"
+        : "rgba(0,0,0,0.04)"};
   color: ${({ $state, $color }) =>
     $state === "locked"
       ? "var(--text-secondary)"
       : $state === "active"
-      ? "var(--torii-red)"
-      : $color};
-  
+        ? "var(--torii-red)"
+        : $color};
+
   html.dark & {
     background: ${({ $state }) =>
-      $state === "locked" ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.08)"};
-    color: ${({ $state, $color }) => ($state === "locked" ? "var(--text-secondary)" : "#ffffff")};
+      $state === "locked"
+        ? "rgba(255,255,255,0.05)"
+        : "rgba(255,255,255,0.08)"};
+    color: ${({ $state, $color }) =>
+      $state === "locked" ? "var(--text-secondary)" : "#ffffff"};
   }
 `;
 
@@ -155,7 +167,8 @@ const HankoStamp = styled.div`
   font-family: "Noto Sans JP", sans-serif;
   opacity: 0.95;
   user-select: none;
-  animation: ${stampAppear} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  animation: ${stampAppear} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    forwards;
 
   &::before {
     content: "済"; /* Traditional Hanko "Done" character */
@@ -204,10 +217,19 @@ export function HankoSkillCard({
       <CardBadge $state={state} $color={solidColor}>
         {badge}
       </CardBadge>
-      
+
       {state === "locked" && (
         <LockIcon>
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
@@ -223,7 +245,11 @@ export function HankoSkillCard({
 
       <CardFooter>
         <span>⭐ {expReward} EXP</span>
-        {state === "active" && <span style={{ color: "var(--torii-red)", fontWeight: 800 }}>Mulai</span>}
+        {state === "active" && (
+          <span style={{ color: "var(--torii-red)", fontWeight: 800 }}>
+            Mulai
+          </span>
+        )}
       </CardFooter>
     </CardContainer>
   );

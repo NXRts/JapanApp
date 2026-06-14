@@ -109,7 +109,6 @@ function DraggableScrollList({ children }: DraggableScrollListProps) {
   );
 }
 
-
 // Immediate imports for above-the-fold content
 import { HeroSection } from "@/components/home/HeroSection";
 import { GamesSection } from "@/components/home/GamesSection";
@@ -994,7 +993,7 @@ export default function Home() {
             const sectHeader = getSectionTitle(unit.id, unit.title);
             const numLessons = unit.lessons.length;
             const completedInUnit = unit.lessons.filter((l) =>
-              progress.completedExercises?.includes(l.id)
+              progress.completedExercises?.includes(l.id),
             ).length;
 
             return (
@@ -1027,10 +1026,10 @@ export default function Home() {
                     const cardState = isCompleted
                       ? "mastered"
                       : isActive
-                      ? "active"
-                      : isUnlocked
-                      ? "available"
-                      : "locked";
+                        ? "active"
+                        : isUnlocked
+                          ? "available"
+                          : "locked";
 
                     return (
                       <HankoSkillCard

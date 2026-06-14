@@ -1119,6 +1119,80 @@ function BookIcon() {
   );
 }
 
+function StudyIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#10b981"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+    >
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+      <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
+    </svg>
+  );
+}
+
+function SheetsIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#f59e0b"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+    >
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+      <line x1="9" y1="3" x2="9" y2="21" />
+      <line x1="15" y1="3" x2="15" y2="21" />
+      <line x1="3" y1="9" x2="21" y2="9" />
+      <line x1="3" y1="15" x2="21" y2="15" />
+    </svg>
+  );
+}
+
+function BlogIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#a855f7"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+    >
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+      <polyline points="10 9 9 9 8 9" />
+    </svg>
+  );
+}
+
+function ContactIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#ec4899"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+    >
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+      <polyline points="22,6 12,13 2,6" />
+    </svg>
+  );
+}
+
 export function Navbar() {
   const pathname = usePathname();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -1240,6 +1314,16 @@ export function Navbar() {
 
               <PopoverMenu $isOpen={isLainnyaOpen}>
                 <Link
+                  href="/study"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem>
+                    <StudyIcon />
+                    Study
+                  </PopoverItem>
+                </Link>
+                <Link
                   href="/quiz"
                   style={{ textDecoration: "none", color: "inherit" }}
                   onClick={() => setIsLainnyaOpen(false)}
@@ -1257,6 +1341,36 @@ export function Navbar() {
                   <PopoverItem>
                     <BookIcon />
                     Learning Materials
+                  </PopoverItem>
+                </Link>
+                <Link
+                  href="/practice-sheets"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem>
+                    <SheetsIcon />
+                    Practice Sheets
+                  </PopoverItem>
+                </Link>
+                <Link
+                  href="/blog"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem>
+                    <BlogIcon />
+                    Blog
+                  </PopoverItem>
+                </Link>
+                <Link
+                  href="/contact"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem>
+                    <ContactIcon />
+                    Contact
                   </PopoverItem>
                 </Link>
 
@@ -1635,7 +1749,9 @@ export function Navbar() {
             $delay={0.05}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>家</KanjiBadge>
               Home
             </div>
@@ -1651,7 +1767,9 @@ export function Navbar() {
             $delay={0.08}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>学</KanjiBadge>
               Study
             </div>
@@ -1667,7 +1785,9 @@ export function Navbar() {
             $delay={0.11}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>字</KanjiBadge>
               Characters
             </div>
@@ -1683,7 +1803,9 @@ export function Navbar() {
             $delay={0.14}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>習</KanjiBadge>
               Practice
             </div>
@@ -1699,7 +1821,9 @@ export function Navbar() {
             $delay={0.17}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>問</KanjiBadge>
               Quiz
             </div>
@@ -1715,7 +1839,9 @@ export function Navbar() {
             $delay={0.2}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>資</KanjiBadge>
               Materials
             </div>
@@ -1731,7 +1857,9 @@ export function Navbar() {
             $delay={0.23}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>書</KanjiBadge>
               Practice Sheets
             </div>
@@ -1747,7 +1875,9 @@ export function Navbar() {
             $delay={0.26}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>試</KanjiBadge>
               JLPT
             </div>
@@ -1763,7 +1893,9 @@ export function Navbar() {
             $delay={0.29}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>遊</KanjiBadge>
               Game
             </div>
@@ -1779,7 +1911,9 @@ export function Navbar() {
             $delay={0.32}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>誌</KanjiBadge>
               Blog
             </div>
@@ -1795,7 +1929,9 @@ export function Navbar() {
             $delay={0.35}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>計</KanjiBadge>
               Stats
             </div>
@@ -1811,7 +1947,9 @@ export function Navbar() {
             $delay={0.38}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>伝</KanjiBadge>
               About
             </div>
@@ -1827,7 +1965,9 @@ export function Navbar() {
             $delay={0.41}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>己</KanjiBadge>
               Profile
             </div>
@@ -1843,7 +1983,9 @@ export function Navbar() {
             $delay={0.44}
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
               <KanjiBadge>信</KanjiBadge>
               Contact
             </div>

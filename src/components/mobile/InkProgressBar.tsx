@@ -84,8 +84,13 @@ interface InkProgressBarProps {
   color: string;
 }
 
-export function InkProgressBar({ completed, total, color }: InkProgressBarProps) {
-  const percent = total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
+export function InkProgressBar({
+  completed,
+  total,
+  color,
+}: InkProgressBarProps) {
+  const percent =
+    total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
   const isMastered = percent === 100;
 
   return (
