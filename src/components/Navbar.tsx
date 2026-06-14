@@ -988,7 +988,7 @@ function MoreIcon() {
 const PopoverMenu = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   left: 215px;
-  top: -12px;
+  top: -180px;
   width: 240px;
   background: var(--surface);
   border: 2px solid var(--border);
