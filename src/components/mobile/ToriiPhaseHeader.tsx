@@ -41,7 +41,8 @@ const ToriiWrapper = styled.div`
   color: var(--torii-red);
   filter: drop-shadow(0 2px 4px rgba(196, 30, 58, 0.15));
 
-  svg path, svg rect {
+  svg path,
+  svg rect {
     stroke-dasharray: 200;
     stroke-dashoffset: 200;
     animation: ${strokeReveal} 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -91,26 +92,66 @@ export function ToriiPhaseHeader({
     <HeaderContainer $color={color}>
       <ToriiWrapper>
         {/* Customized SVG Torii Gate */}
-        <svg viewBox="0 0 100 60" width="72" height="44" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          viewBox="0 0 100 60"
+          width="72"
+          height="44"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           {/* Kasagi - Upper curved beam */}
           <path d="M 8,14 C 28,10 72,10 92,14" />
           <path d="M 8,19 C 28,15 72,15 92,19" />
           <path d="M 8,14 L 8,19" />
           <path d="M 92,14 L 92,19" />
-          
+
           {/* Shimoki - Lower straight horizontal beam */}
-          <rect x="16" y="27" width="68" height="3" rx="0.5" fill="currentColor" stroke="none" />
-          
+          <rect
+            x="16"
+            y="27"
+            width="68"
+            height="3"
+            rx="0.5"
+            fill="currentColor"
+            stroke="none"
+          />
+
           {/* Columns */}
           <path d="M 26,29 L 29,54" />
           <path d="M 74,29 L 71,54" />
-          
+
           {/* Gakuzuka - Small center support block */}
-          <rect x="48" y="19" width="4" height="8" fill="currentColor" stroke="none" />
-          
+          <rect
+            x="48"
+            y="19"
+            width="4"
+            height="8"
+            fill="currentColor"
+            stroke="none"
+          />
+
           {/* Pedestals */}
-          <rect x="26" y="52" width="6" height="3" rx="1" fill="currentColor" stroke="none" />
-          <rect x="68" y="52" width="6" height="3" rx="1" fill="currentColor" stroke="none" />
+          <rect
+            x="26"
+            y="52"
+            width="6"
+            height="3"
+            rx="1"
+            fill="currentColor"
+            stroke="none"
+          />
+          <rect
+            x="68"
+            y="52"
+            width="6"
+            height="3"
+            rx="1"
+            fill="currentColor"
+            stroke="none"
+          />
         </svg>
       </ToriiWrapper>
       <UnitLabel>{unitLabel}</UnitLabel>

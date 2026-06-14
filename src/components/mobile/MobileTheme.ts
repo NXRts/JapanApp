@@ -4,13 +4,13 @@ import { keyframes, css } from "styled-components";
 // TRADITIONAL JAPANESE COLOR PALETTES (Zen Japanese Theme)
 // ========================================================
 export const JapaneseColors = {
-  toriiRed: "#C41E3A",     // Traditional Shinto gate red
-  zenGold: "#B8860B",      // Dark golden rod accent
-  sumiInk: "#1e293b",      // Slate black for calligraphic strokes
-  sakuraPink: "#FFB7C5",   // Cherry blossom soft pink
-  bambooGreen: "#4A7c59",  // Deep organic bamboo green
-  washiOffWhite: "#FAF8F5",// Traditional handmade paper background
-  washiDarkSlate: "#131b2e"// Dark textured surface background
+  toriiRed: "#C41E3A", // Traditional Shinto gate red
+  zenGold: "#B8860B", // Dark golden rod accent
+  sumiInk: "#1e293b", // Slate black for calligraphic strokes
+  sakuraPink: "#FFB7C5", // Cherry blossom soft pink
+  bambooGreen: "#4A7c59", // Deep organic bamboo green
+  washiOffWhite: "#FAF8F5", // Traditional handmade paper background
+  washiDarkSlate: "#131b2e", // Dark textured surface background
 };
 
 // ========================================================
@@ -47,7 +47,7 @@ export const MobileTheme = {
     inkDrop,
     stampAppear,
     pulseActive,
-    brushReveal
+    brushReveal,
   },
   typography: {
     japaneseFont: "'Noto Sans JP', 'Nunito', 'Outfit', sans-serif",
@@ -57,16 +57,19 @@ export const MobileTheme = {
       sm: "0.75rem",
       base: "0.88rem",
       lg: "1.15rem",
-      xl: "1.5rem"
-    }
+      xl: "1.5rem",
+    },
   },
   effects: {
     washiPaper: css`
       position: relative;
-      background-image: radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 0),
-                        radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 0);
+      background-image:
+        radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 0),
+        radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 0);
       background-size: 8px 8px;
-      background-position: 0 0, 4px 4px;
+      background-position:
+        0 0,
+        4px 4px;
     `,
     glass: css`
       background: var(--dock-bg);
@@ -74,6 +77,6 @@ export const MobileTheme = {
       -webkit-backdrop-filter: blur(var(--dock-blur));
       border: 1px solid var(--dock-border);
       box-shadow: var(--dock-shadow);
-    `
-  }
+    `,
+  },
 };

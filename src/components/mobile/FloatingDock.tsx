@@ -291,9 +291,7 @@ export function FloatingDock() {
             <DockIcon $active={active}>
               <IconComponent />
             </DockIcon>
-            <DockLabel $active={active}>
-              {tab.label}
-            </DockLabel>
+            <DockLabel $active={active}>{tab.label}</DockLabel>
             <InkDot $visible={active} />
           </DockItem>
         );
