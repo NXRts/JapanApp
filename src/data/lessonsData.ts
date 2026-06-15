@@ -4726,7 +4726,7 @@ const vocabBank: Record<string, Word[]> = {
     { japanese: "をもって", romaji: "wo motte", english: "with this / as of" },
     { japanese: "なり", romaji: "nari", english: "whether... or..." },
     { japanese: "謙遜", romaji: "kenson", english: "humble" },
-  ]
+  ],
 };
 
 const defaultVocab: Word[] = [
@@ -4738,7 +4738,11 @@ const defaultVocab: Word[] = [
   { japanese: "さくら", romaji: "sakura", english: "cherry blossom" },
 ];
 
-function getDeterministicRandom(seed: string, min: number, max: number): number {
+function getDeterministicRandom(
+  seed: string,
+  min: number,
+  max: number,
+): number {
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
     hash = seed.charCodeAt(i) + ((hash << 5) - hash);
@@ -4747,22 +4751,33 @@ function getDeterministicRandom(seed: string, min: number, max: number): number 
   return Math.floor(rng * (max - min + 1)) + min;
 }
 
-function generateQuestion(qId: string, level: string, unitTitle: string, badge: string): Question {
+function generateQuestion(
+  qId: string,
+  level: string,
+  unitTitle: string,
+  badge: string,
+): Question {
   const unitNumMatch = qId.match(/u(\d+)/);
   const unitNum = unitNumMatch ? unitNumMatch[1] : "1";
   const key = `${level}-${unitNum}`;
   const bank = vocabBank[key] || defaultVocab;
-  
+
   let hash = 0;
   for (let i = 0; i < qId.length; i++) {
     hash = qId.charCodeAt(i) + ((hash << 5) - hash);
   }
   const rng = (offset: number) => Math.abs(Math.sin(hash + offset));
-  
+
   const wordIdx = Math.floor(rng(1) * bank.length);
   const word = bank[wordIdx];
-  
-  const questionTypes: Question["type"][] = ["multiple-choice", "typing", "fill-in-the-blank", "listening", "sentence-builder"];
+
+  const questionTypes: Question["type"][] = [
+    "multiple-choice",
+    "typing",
+    "fill-in-the-blank",
+    "listening",
+    "sentence-builder",
+  ];
   const type = questionTypes[Math.floor(rng(2) * questionTypes.length)];
 
   let questionText = "";
@@ -4772,7 +4787,9 @@ function generateQuestion(qId: string, level: string, unitTitle: string, badge: 
   let audioText: string | undefined = undefined;
 
   const getDistractors = (correct: string, count: number): string[] => {
-    const pool = bank.filter(w => w.english !== correct && w.japanese !== correct);
+    const pool = bank.filter(
+      (w) => w.english !== correct && w.japanese !== correct,
+    );
     const result: string[] = [];
     let idx = 0;
     while (result.length < count && pool.length > 0) {
@@ -4783,9 +4800,18 @@ function generateQuestion(qId: string, level: string, unitTitle: string, badge: 
       idx++;
       if (idx > 20) break;
     }
-    const defaultPool = ["water", "bread", "school", "friend", "book", "sushi", "ramen"];
+    const defaultPool = [
+      "water",
+      "bread",
+      "school",
+      "friend",
+      "book",
+      "sushi",
+      "ramen",
+    ];
     while (result.length < count) {
-      const fallback = defaultPool[Math.floor(rng(result.length + 50) * defaultPool.length)];
+      const fallback =
+        defaultPool[Math.floor(rng(result.length + 50) * defaultPool.length)];
       if (!result.includes(fallback) && fallback !== correct) {
         result.push(fallback);
       }
@@ -4794,7 +4820,7 @@ function generateQuestion(qId: string, level: string, unitTitle: string, badge: 
   };
 
   const getJapaneseDistractors = (correct: string, count: number): string[] => {
-    const pool = bank.filter(w => w.japanese !== correct);
+    const pool = bank.filter((w) => w.japanese !== correct);
     const result: string[] = [];
     let idx = 0;
     while (result.length < count && pool.length > 0) {
@@ -4807,7 +4833,8 @@ function generateQuestion(qId: string, level: string, unitTitle: string, badge: 
     }
     const defaultPool = ["みず", "おちゃ", "ごはん", "えき", "ほん"];
     while (result.length < count) {
-      const fallback = defaultPool[Math.floor(rng(result.length + 60) * defaultPool.length)];
+      const fallback =
+        defaultPool[Math.floor(rng(result.length + 60) * defaultPool.length)];
       if (!result.includes(fallback) && fallback !== correct) {
         result.push(fallback);
       }
@@ -4867,7 +4894,7 @@ function generateQuestion(qId: string, level: string, unitTitle: string, badge: 
 
 function expandLessonsData(base: Lesson[]): Lesson[] {
   const unitsMap = new Map<string, Lesson[]>();
-  base.forEach(lesson => {
+  base.forEach((lesson) => {
     if (!unitsMap.has(lesson.unitId)) {
       unitsMap.set(lesson.unitId, []);
     }
@@ -4885,8 +4912,8 @@ function expandLessonsData(base: Lesson[]): Lesson[] {
       continue;
     }
 
-    const synthesisLesson = lessons.find(l => l.badge === "Synthesis");
-    const normalLessons = lessons.filter(l => l.badge !== "Synthesis");
+    const synthesisLesson = lessons.find((l) => l.badge === "Synthesis");
+    const normalLessons = lessons.filter((l) => l.badge !== "Synthesis");
 
     expanded.push(...normalLessons);
 
@@ -4896,10 +4923,16 @@ function expandLessonsData(base: Lesson[]): Lesson[] {
     for (let i = 0; i < needed; i++) {
       const lessonIndex = existingCount + i + 1;
       const lessonId = `${unitId}-l${lessonIndex}`;
-      
-      const badgeTypes = ["Vocabulary", "Grammar", "Reading", "Listening", "Conversation"];
+
+      const badgeTypes = [
+        "Vocabulary",
+        "Grammar",
+        "Reading",
+        "Listening",
+        "Conversation",
+      ];
       const badge = badgeTypes[i % badgeTypes.length];
-      
+
       let icon = "📝";
       if (badge === "Vocabulary") icon = "📚";
       else if (badge === "Reading") icon = "📖";
@@ -4907,12 +4940,24 @@ function expandLessonsData(base: Lesson[]): Lesson[] {
       else if (badge === "Conversation") icon = "🗣️";
 
       const title = `Extra Practice: ${badge} Mastery`;
-      const description = `Strengthen your understanding of ${firstLesson.unitTitle.split(":")[1]?.trim().replace(/🎌|🏪|🗺️|☀️|⏰|❄️|🚇|👨‍👩‍👧‍👦|🎒|🗼/g, "") || "this unit's"} topics.`;
+      const description = `Strengthen your understanding of ${
+        firstLesson.unitTitle
+          .split(":")[1]
+          ?.trim()
+          .replace(/🎌|🏪|🗺️|☀️|⏰|❄️|🚇|👨‍👩‍👧‍👦|🎒|🗼/g, "") || "this unit's"
+      } topics.`;
 
       const questions: Question[] = [];
       for (let qIdx = 1; qIdx <= 5; qIdx++) {
         const qId = `${lessonId}-q${qIdx}`;
-        questions.push(generateQuestion(qId, firstLesson.level, firstLesson.unitTitle, badge));
+        questions.push(
+          generateQuestion(
+            qId,
+            firstLesson.level,
+            firstLesson.unitTitle,
+            badge,
+          ),
+        );
       }
 
       expanded.push({
@@ -4940,4 +4985,3 @@ function expandLessonsData(base: Lesson[]): Lesson[] {
 }
 
 export const lessonsData: Lesson[] = expandLessonsData(baseLessonsData);
-

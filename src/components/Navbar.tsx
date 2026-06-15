@@ -1385,7 +1385,7 @@ export function Navbar() {
                   Pengaturan
                 </PopoverItem>
                 <Link
-                  href="/about"
+                  href="/help"
                   style={{ textDecoration: "none", color: "inherit" }}
                   onClick={() => setIsLainnyaOpen(false)}
                 >
@@ -1959,10 +1959,28 @@ export function Navbar() {
           </MobileLink>
 
           <MobileLink
+            href="/help"
+            $active={pathname === "/help"}
+            $isOpen={isMobileMenuOpen}
+            $delay={0.41}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            >
+              <KanjiBadge>助</KanjiBadge>
+              Bantuan
+            </div>
+            <span>
+              <ArrowRightIcon size={18} />
+            </span>
+          </MobileLink>
+
+          <MobileLink
             href="/profile"
             $active={pathname === "/profile"}
             $isOpen={isMobileMenuOpen}
-            $delay={0.41}
+            $delay={0.44}
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <div
@@ -1980,7 +1998,7 @@ export function Navbar() {
             href="/contact"
             $active={pathname === "/contact"}
             $isOpen={isMobileMenuOpen}
-            $delay={0.44}
+            $delay={0.47}
             onClick={() => setIsMobileMenuOpen(false)}
           >
             <div
@@ -1996,7 +2014,7 @@ export function Navbar() {
 
           <MobileDictBtn
             $isOpen={isMobileMenuOpen}
-            $delay={0.5}
+            $delay={0.53}
             onClick={() => {
               setIsDictionaryOpen(true);
               setIsMobileMenuOpen(false);
