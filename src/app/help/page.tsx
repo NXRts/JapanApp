@@ -39,7 +39,7 @@ const HeroSection = styled.div`
     135deg,
     rgba(var(--primary-rgb), 0.08) 0%,
     rgba(var(--secondary-rgb), 0.04) 100%
-  );
+  ), var(--surface);
   border-radius: 24px;
   border: 1px solid var(--border);
   margin-top: 1.5rem;
@@ -415,7 +415,7 @@ const ContactSection = styled.section`
     135deg,
     var(--surface) 0%,
     rgba(var(--primary-rgb), 0.02) 100%
-  );
+  ), var(--surface);
   border: 1px solid var(--border);
   border-radius: 24px;
   padding: 3rem 2.5rem;
