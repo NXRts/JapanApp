@@ -476,7 +476,7 @@ const ContactForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  background: var(--surface);
+  background: var(--background);
   padding: 2rem;
   border-radius: 20px;
   border: 1px solid var(--border);
@@ -503,7 +503,7 @@ const FormInput = styled.input`
   padding: 0.75rem 1rem;
   border-radius: 10px;
   border: 1px solid var(--border);
-  background: var(--background);
+  background: var(--surface);
   color: var(--foreground);
   font-family: inherit;
   font-size: 0.95rem;
@@ -520,7 +520,7 @@ const FormSelect = styled.select`
   padding: 0.75rem 1rem;
   border-radius: 10px;
   border: 1px solid var(--border);
-  background: var(--background);
+  background: var(--surface);
   color: var(--foreground);
   font-family: inherit;
   font-size: 0.95rem;
@@ -538,7 +538,7 @@ const FormTextarea = styled.textarea`
   padding: 0.75rem 1rem;
   border-radius: 10px;
   border: 1px solid var(--border);
-  background: var(--background);
+  background: var(--surface);
   color: var(--foreground);
   font-family: inherit;
   font-size: 0.95rem;
