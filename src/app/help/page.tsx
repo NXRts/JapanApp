@@ -14,7 +14,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 90vh;
-  background: var(--background);
+  background: transparent;
   color: var(--foreground);
   font-family: "Inter", "Noto Sans JP", sans-serif;
   overflow-x: hidden;
