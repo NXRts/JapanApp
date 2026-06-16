@@ -35,11 +35,13 @@ const ContentWrapper = styled.div`
 const HeroSection = styled.div`
   text-align: center;
   padding: 4rem 2rem;
-  background: linear-gradient(
-    135deg,
-    rgba(var(--primary-rgb), 0.08) 0%,
-    rgba(var(--secondary-rgb), 0.04) 100%
-  ), var(--surface);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(var(--primary-rgb), 0.08) 0%,
+      rgba(var(--secondary-rgb), 0.04) 100%
+    ),
+    var(--surface);
   border-radius: 24px;
   border: 1px solid var(--border);
   margin-top: 1.5rem;
@@ -124,7 +126,9 @@ const SearchInput = styled.input`
   &:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.15), var(--shadow-md);
+    box-shadow:
+      0 0 0 4px rgba(var(--primary-rgb), 0.15),
+      var(--shadow-md);
   }
 
   &::placeholder {
@@ -212,13 +216,17 @@ interface CategoryCardProps {
 
 const CategoryCard = styled.button<CategoryCardProps>`
   background: var(--surface);
-  border: 2px solid ${props => props.$active ? props.$accentColor : "var(--border)"};
+  border: 2px solid
+    ${(props) => (props.$active ? props.$accentColor : "var(--border)")};
   border-radius: 20px;
   padding: 1.75rem 1.25rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: ${props => props.$active ? `0 8px 24px -6px rgba(var(--primary-rgb), 0.15)` : "var(--shadow-sm)"};
+  box-shadow: ${(props) =>
+    props.$active
+      ? `0 8px 24px -6px rgba(var(--primary-rgb), 0.15)`
+      : "var(--shadow-sm)"};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -227,16 +235,19 @@ const CategoryCard = styled.button<CategoryCardProps>`
 
   &:hover {
     transform: translateY(-5px);
-    border-color: ${props => props.$accentColor};
-    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.1), var(--shadow-md);
+    border-color: ${(props) => props.$accentColor};
+    box-shadow:
+      0 12px 20px -8px rgba(0, 0, 0, 0.1),
+      var(--shadow-md);
   }
 
   .icon-container {
     width: 54px;
     height: 54px;
     border-radius: 16px;
-    background: ${props => `rgba(${props.$accentColor === "var(--primary)" ? "var(--primary-rgb)" : props.$accentColor === "var(--secondary)" ? "var(--secondary-rgb)" : "var(--accent-rgb)"}, 0.1)`};
-    color: ${props => props.$accentColor};
+    background: ${(props) =>
+      `rgba(${props.$accentColor === "var(--primary)" ? "var(--primary-rgb)" : props.$accentColor === "var(--secondary)" ? "var(--secondary-rgb)" : "var(--accent-rgb)"}, 0.1)`};
+    color: ${(props) => props.$accentColor};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -322,7 +333,7 @@ const AccordionHeader = styled.button<AccordionHeaderProps>`
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 600;
-  color: ${props => props.$isOpen ? "var(--primary)" : "var(--foreground)"};
+  color: ${(props) => (props.$isOpen ? "var(--primary)" : "var(--foreground)")};
   transition: color 0.3s ease;
 
   span {
@@ -342,7 +353,7 @@ const AccordionHeader = styled.button<AccordionHeaderProps>`
 
   .arrow-icon {
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: ${props => props.$isOpen ? "rotate(180deg)" : "rotate(0)"};
+    transform: ${(props) => (props.$isOpen ? "rotate(180deg)" : "rotate(0)")};
     color: var(--text-secondary);
   }
 
@@ -366,7 +377,7 @@ const AccordionBody = styled.div`
   p {
     margin-bottom: 0.75rem;
   }
-  
+
   p:last-child {
     margin-bottom: 0;
   }
@@ -411,11 +422,13 @@ const EmptyState = styled.div`
 `;
 
 const ContactSection = styled.section`
-  background: linear-gradient(
-    135deg,
-    var(--surface) 0%,
-    rgba(var(--primary-rgb), 0.02) 100%
-  ), var(--surface);
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface) 0%,
+      rgba(var(--primary-rgb), 0.02) 100%
+    ),
+    var(--surface);
   border: 1px solid var(--border);
   border-radius: 24px;
   padding: 3rem 2.5rem;
@@ -649,218 +662,323 @@ export default function HelpPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Mock FAQs
-  const faqs: FaqItem[] = useMemo(() => [
-    {
-      id: "faq-1",
-      category: "akun",
-      categoryLabel: "Akun & Keamanan",
-      question: "Bagaimana cara mendaftar akun di Japan Learning App?",
-      answer: (
-        <div>
-          <p>
-            Anda dapat membuat akun secara gratis dengan mengklik tombol <strong>Register</strong> di pojok kanan atas layar Anda (atau melalui menu navigasi pada mode seluler).
-          </p>
-          <p>
-            Dengan memiliki akun terdaftar, semua data kemajuan belajar Anda seperti <strong>EXP</strong> harian, <strong>Streak belajar</strong>, lencana pencapaian, dan riwayat materi kosakata serta Kanji akan disimpan secara aman di cloud dan dapat disinkronkan di berbagai perangkat.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: "faq-2",
-      category: "akun",
-      categoryLabel: "Akun & Keamanan",
-      question: "Bagaimana cara mereset atau mengganti kata sandi saya?",
-      answer: (
-        <div>
-          <p>
-            Jika Anda lupa kata sandi Anda saat ingin masuk, Anda dapat mengklik tautan <strong>Lupa Sandi</strong> di halaman login untuk menerima surel instruksi pengaturan ulang kata sandi.
-          </p>
-          <p>
-            Jika Anda sudah masuk dan ingin mengubah kata sandi, Anda dapat membuka modal <strong>Pengaturan</strong> melalui menu drop-down "Lainnya" di sidebar kiri, lalu pilih tab keamanan untuk memperbarui kata sandi Anda.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: "faq-3",
-      category: "akun",
-      categoryLabel: "Akun & Keamanan",
-      question: "Apakah data progres belajar saya akan hilang jika saya logout?",
-      answer: (
-        <div>
-          <p>
-            <strong>Tidak</strong>. Selama Anda terdaftar menggunakan akun (email & password), seluruh data progres belajar Anda disimpan secara aman di server kami. Anda dapat logout dan login kembali kapan pun tanpa khawatir kehilangan kemajuan belajar Anda.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: "faq-4",
-      category: "belajar",
-      categoryLabel: "Metode Belajar",
-      question: "Bagaimana sistem Spaced Repetition (SRS) bekerja di halaman Belajar?",
-      answer: (
-        <div>
-          <p>
-            <strong>Spaced Repetition System (SRS)</strong> adalah algoritma pembelajaran yang dirancang untuk membantu Anda mengingat karakter Kanji dan kosakata bahasa Jepang dengan menjadwalkan peninjauan ulang sesaat sebelum Anda melupakannya.
-          </p>
-          <p>Sistem ini bekerja dengan cara berikut:</p>
-          <ul>
-            <li>Setiap kartu karakter memiliki tingkat kekuatan memori Anda.</li>
-            <li>Jika Anda menjawab dengan benar selama sesi latihan, interval waktu untuk pengulangan berikutnya akan diperpanjang (misal: muncul kembali setelah 3 hari, 7 hari, dst).</li>
-            <li>Jika Anda menjawab salah, interval akan disetel ulang dan karakter tersebut akan lebih sering ditanyakan hingga Anda benar-benar menghafalnya.</li>
-          </ul>
-        </div>
-      ),
-    },
-    {
-      id: "faq-5",
-      category: "belajar",
-      categoryLabel: "Metode Belajar",
-      question: "Bagaimana cara mempertahankan Streak harian saya?",
-      answer: (
-        <div>
-          <p>
-            <strong>Streak</strong> harian melambangkan konsistensi belajar Anda. Untuk menambah atau mempertahankan jumlah streak Anda, Anda harus menyelesaikan setidaknya <strong>satu materi pelajaran</strong>, menjawab kuis harian, atau menyelesaikan satu latihan menulis karakter setiap hari sebelum tengah malam (pukul 23:59 waktu setempat).
-          </p>
-          <p>
-            Jika Anda melewatkan satu hari penuh tanpa melakukan aktivitas belajar di aplikasi, streak Anda akan tereset menjadi 0 kembali. Anda juga dapat menggunakan item pelindung streak yang bisa diperoleh melalui akumulasi EXP kuis harian tertentu.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: "faq-6",
-      category: "belajar",
-      categoryLabel: "Metode Belajar",
-      question: "Bagaimana sistem EXP (Experience Points) dan level profil dihitung?",
-      answer: (
-        <div>
-          <p>
-            Setiap kali Anda menyelesaikan kuis, latihan menulis, permainan pencocokan kartu, atau membaca artikel blog baru, Anda akan mendapatkan <strong>EXP</strong>.
-          </p>
-          <p>Distribusi EXP rata-rata adalah:</p>
-          <ul>
-            <li>Menyelesaikan Kuis Harian: <strong>+15 EXP</strong></li>
-            <li>Mempelajari Materi Baru: <strong>+10 EXP</strong></li>
-            <li>Menyelesaikan Level Game: <strong>+20 EXP</strong></li>
-          </ul>
-          <p>
-            Setiap kali total EXP Anda mencapai batas ambang level baru, profil Anda secara otomatis naik level. Anda dapat memantau grafik perkembangan EXP mingguan Anda di tab <strong>Stats</strong> di sidebar.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: "faq-7",
-      category: "jlpt",
-      categoryLabel: "Materi & JLPT",
-      question: "Bagaimana cara mengakses dan mengunduh Practice Sheets?",
-      answer: (
-        <div>
-          <p>
-            Japan Learning App menyediakan lembar latihan menulis (<strong>Practice Sheets</strong>) berformat PDF gratis yang dirancang khusus untuk membantu Anda melatih memori otot saat menulis Hiragana, Katakana, dan Kanji.
-          </p>
-          <p>
-            Untuk mengaksesnya, arahkan kursor ke tab navigasi kiri lalu pilih <strong>Practice Sheets</strong>. Dari sana, Anda dapat menyaring lembar latihan berdasarkan level JLPT (N5 - N1) atau jenis karakter, lalu klik tombol download untuk menyimpan dan mencetaknya secara mandiri.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: "faq-8",
-      category: "jlpt",
-      categoryLabel: "Materi & JLPT",
-      question: "Apakah materi kuis JLPT di sini sesuai dengan standar ujian resmi?",
-      answer: (
-        <div>
-          <p>
-            <strong>Ya, materi kami disusun sedemikian rupa agar relevan dengan kurikulum JLPT resmi</strong>.
-          </p>
-          <p>
-            Bank soal dan pembagian materi kosakata, tata bahasa (grammar), dan Kanji kami disesuaikan dengan standar silabus JLPT dari level dasar (N5) hingga tingkat mahir (N1). Latihan soal kami mencakup pilihan ganda, arti kosakata, pelafalan audio, hingga susunan tata bahasa yang sering diujikan.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: "faq-9",
-      category: "jlpt",
-      categoryLabel: "Materi & JLPT",
-      question: "Bagaimana cara menggunakan fitur audio pelafalan karakter?",
-      answer: (
-        <div>
-          <p>
-            Di setiap kartu kosakata atau karakter di halaman <strong>Materials</strong> dan <strong>Characters</strong>, Anda akan menemukan tombol ikon speaker (suara).
-          </p>
-          <p>
-            Cukup klik atau ketuk ikon tersebut untuk memutar audio pengucapan kata tersebut. Audio kami diproduksi menggunakan format ucapan berkualitas tinggi yang disimulasikan sesuai aksen penutur asli Jepang (Tokyo dialect).
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: "faq-10",
-      category: "teknis",
-      categoryLabel: "Masalah Teknis",
-      question: "Audio pelafalan tidak berbunyi di peramban saya, bagaimana memperbaikinya?",
-      answer: (
-        <div>
-          <p>
-            Jika Anda mengalami masalah di mana audio pelafalan tidak keluar sama sekali, silakan coba beberapa langkah pemecahan masalah berikut:
-          </p>
-          <ul>
-            <li>Pastikan perangkat Anda tidak dalam mode senyap (silent mode) dan volume media dalam keadaan aktif.</li>
-            <li>Di beberapa peramban seluler (seperti Safari di iOS atau Chrome di Android), suara mungkin diblokir secara otomatis karena pengaturan pemutaran otomatis (autoplay restriction). Coba ketuk tombol speaker berulang kali untuk memicu izin audio peramban Anda.</li>
-            <li>Aplikasi kami menggunakan pustaka Web Speech API bawaan peramban Anda. Pastikan sistem operasi perangkat Anda terinstal modul teks-ke-suara (TTS) bahasa Jepang yang aktif.</li>
-          </ul>
-        </div>
-      ),
-    },
-    {
-      id: "faq-11",
-      category: "teknis",
-      categoryLabel: "Masalah Teknis",
-      question: "Mengapa streak saya tereset padahal saya merasa sudah belajar hari ini?",
-      answer: (
-        <div>
-          <p>
-            Teresetnya streak biasanya disebabkan oleh ketidaksesuaian zona waktu perangkat atau kegagalan sinkronisasi data akibat koneksi internet yang terputus saat Anda menyelesaikan kuis.
-          </p>
-          <p>
-            Pastikan jam dan tanggal pada perangkat Anda diatur secara otomatis ke jaringan internet Anda. Selain itu, pastikan status bar menunjukkan profil Anda telah tersinkronisasi sebelum Anda menutup aplikasi.
-          </p>
-        </div>
-      ),
-    },
-    {
-      id: "faq-12",
-      category: "teknis",
-      categoryLabel: "Masalah Teknis",
-      question: "Saya menemukan bug atau kesalahan materi belajar, bagaimana cara melaporkannya?",
-      answer: (
-        <div>
-          <p>
-            Kami sangat berkomitmen menjaga akurasi materi pembelajaran bahasa Jepang di aplikasi ini. Jika Anda menemukan terjemahan yang keliru, penulisan romaji yang kurang tepat, atau bug pada visual kuis:
-          </p>
-          <p>
-            Silakan kirimkan laporan Anda secara detail melalui formulir <strong>Hubungi Dukungan</strong> yang berada di bagian bawah halaman ini. Cantumkan nama materi atau level JLPT, screenshot jika memungkinkan, dan deskripsi singkat masalahnya. Tim kami akan segera meninjau dan melakukan pembaruan materi.
-          </p>
-        </div>
-      ),
-    },
-  ], []);
+  const faqs: FaqItem[] = useMemo(
+    () => [
+      {
+        id: "faq-1",
+        category: "akun",
+        categoryLabel: "Akun & Keamanan",
+        question: "Bagaimana cara mendaftar akun di Japan Learning App?",
+        answer: (
+          <div>
+            <p>
+              Anda dapat membuat akun secara gratis dengan mengklik tombol{" "}
+              <strong>Register</strong> di pojok kanan atas layar Anda (atau
+              melalui menu navigasi pada mode seluler).
+            </p>
+            <p>
+              Dengan memiliki akun terdaftar, semua data kemajuan belajar Anda
+              seperti <strong>EXP</strong> harian,{" "}
+              <strong>Streak belajar</strong>, lencana pencapaian, dan riwayat
+              materi kosakata serta Kanji akan disimpan secara aman di cloud dan
+              dapat disinkronkan di berbagai perangkat.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "faq-2",
+        category: "akun",
+        categoryLabel: "Akun & Keamanan",
+        question: "Bagaimana cara mereset atau mengganti kata sandi saya?",
+        answer: (
+          <div>
+            <p>
+              Jika Anda lupa kata sandi Anda saat ingin masuk, Anda dapat
+              mengklik tautan <strong>Lupa Sandi</strong> di halaman login untuk
+              menerima surel instruksi pengaturan ulang kata sandi.
+            </p>
+            <p>
+              Jika Anda sudah masuk dan ingin mengubah kata sandi, Anda dapat
+              membuka modal <strong>Pengaturan</strong> melalui menu drop-down
+              "Lainnya" di sidebar kiri, lalu pilih tab keamanan untuk
+              memperbarui kata sandi Anda.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "faq-3",
+        category: "akun",
+        categoryLabel: "Akun & Keamanan",
+        question:
+          "Apakah data progres belajar saya akan hilang jika saya logout?",
+        answer: (
+          <div>
+            <p>
+              <strong>Tidak</strong>. Selama Anda terdaftar menggunakan akun
+              (email & password), seluruh data progres belajar Anda disimpan
+              secara aman di server kami. Anda dapat logout dan login kembali
+              kapan pun tanpa khawatir kehilangan kemajuan belajar Anda.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "faq-4",
+        category: "belajar",
+        categoryLabel: "Metode Belajar",
+        question:
+          "Bagaimana sistem Spaced Repetition (SRS) bekerja di halaman Belajar?",
+        answer: (
+          <div>
+            <p>
+              <strong>Spaced Repetition System (SRS)</strong> adalah algoritma
+              pembelajaran yang dirancang untuk membantu Anda mengingat karakter
+              Kanji dan kosakata bahasa Jepang dengan menjadwalkan peninjauan
+              ulang sesaat sebelum Anda melupakannya.
+            </p>
+            <p>Sistem ini bekerja dengan cara berikut:</p>
+            <ul>
+              <li>
+                Setiap kartu karakter memiliki tingkat kekuatan memori Anda.
+              </li>
+              <li>
+                Jika Anda menjawab dengan benar selama sesi latihan, interval
+                waktu untuk pengulangan berikutnya akan diperpanjang (misal:
+                muncul kembali setelah 3 hari, 7 hari, dst).
+              </li>
+              <li>
+                Jika Anda menjawab salah, interval akan disetel ulang dan
+                karakter tersebut akan lebih sering ditanyakan hingga Anda
+                benar-benar menghafalnya.
+              </li>
+            </ul>
+          </div>
+        ),
+      },
+      {
+        id: "faq-5",
+        category: "belajar",
+        categoryLabel: "Metode Belajar",
+        question: "Bagaimana cara mempertahankan Streak harian saya?",
+        answer: (
+          <div>
+            <p>
+              <strong>Streak</strong> harian melambangkan konsistensi belajar
+              Anda. Untuk menambah atau mempertahankan jumlah streak Anda, Anda
+              harus menyelesaikan setidaknya{" "}
+              <strong>satu materi pelajaran</strong>, menjawab kuis harian, atau
+              menyelesaikan satu latihan menulis karakter setiap hari sebelum
+              tengah malam (pukul 23:59 waktu setempat).
+            </p>
+            <p>
+              Jika Anda melewatkan satu hari penuh tanpa melakukan aktivitas
+              belajar di aplikasi, streak Anda akan tereset menjadi 0 kembali.
+              Anda juga dapat menggunakan item pelindung streak yang bisa
+              diperoleh melalui akumulasi EXP kuis harian tertentu.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "faq-6",
+        category: "belajar",
+        categoryLabel: "Metode Belajar",
+        question:
+          "Bagaimana sistem EXP (Experience Points) dan level profil dihitung?",
+        answer: (
+          <div>
+            <p>
+              Setiap kali Anda menyelesaikan kuis, latihan menulis, permainan
+              pencocokan kartu, atau membaca artikel blog baru, Anda akan
+              mendapatkan <strong>EXP</strong>.
+            </p>
+            <p>Distribusi EXP rata-rata adalah:</p>
+            <ul>
+              <li>
+                Menyelesaikan Kuis Harian: <strong>+15 EXP</strong>
+              </li>
+              <li>
+                Mempelajari Materi Baru: <strong>+10 EXP</strong>
+              </li>
+              <li>
+                Menyelesaikan Level Game: <strong>+20 EXP</strong>
+              </li>
+            </ul>
+            <p>
+              Setiap kali total EXP Anda mencapai batas ambang level baru,
+              profil Anda secara otomatis naik level. Anda dapat memantau grafik
+              perkembangan EXP mingguan Anda di tab <strong>Stats</strong> di
+              sidebar.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "faq-7",
+        category: "jlpt",
+        categoryLabel: "Materi & JLPT",
+        question: "Bagaimana cara mengakses dan mengunduh Practice Sheets?",
+        answer: (
+          <div>
+            <p>
+              Japan Learning App menyediakan lembar latihan menulis (
+              <strong>Practice Sheets</strong>) berformat PDF gratis yang
+              dirancang khusus untuk membantu Anda melatih memori otot saat
+              menulis Hiragana, Katakana, dan Kanji.
+            </p>
+            <p>
+              Untuk mengaksesnya, arahkan kursor ke tab navigasi kiri lalu pilih{" "}
+              <strong>Practice Sheets</strong>. Dari sana, Anda dapat menyaring
+              lembar latihan berdasarkan level JLPT (N5 - N1) atau jenis
+              karakter, lalu klik tombol download untuk menyimpan dan
+              mencetaknya secara mandiri.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "faq-8",
+        category: "jlpt",
+        categoryLabel: "Materi & JLPT",
+        question:
+          "Apakah materi kuis JLPT di sini sesuai dengan standar ujian resmi?",
+        answer: (
+          <div>
+            <p>
+              <strong>
+                Ya, materi kami disusun sedemikian rupa agar relevan dengan
+                kurikulum JLPT resmi
+              </strong>
+              .
+            </p>
+            <p>
+              Bank soal dan pembagian materi kosakata, tata bahasa (grammar),
+              dan Kanji kami disesuaikan dengan standar silabus JLPT dari level
+              dasar (N5) hingga tingkat mahir (N1). Latihan soal kami mencakup
+              pilihan ganda, arti kosakata, pelafalan audio, hingga susunan tata
+              bahasa yang sering diujikan.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "faq-9",
+        category: "jlpt",
+        categoryLabel: "Materi & JLPT",
+        question: "Bagaimana cara menggunakan fitur audio pelafalan karakter?",
+        answer: (
+          <div>
+            <p>
+              Di setiap kartu kosakata atau karakter di halaman{" "}
+              <strong>Materials</strong> dan <strong>Characters</strong>, Anda
+              akan menemukan tombol ikon speaker (suara).
+            </p>
+            <p>
+              Cukup klik atau ketuk ikon tersebut untuk memutar audio pengucapan
+              kata tersebut. Audio kami diproduksi menggunakan format ucapan
+              berkualitas tinggi yang disimulasikan sesuai aksen penutur asli
+              Jepang (Tokyo dialect).
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "faq-10",
+        category: "teknis",
+        categoryLabel: "Masalah Teknis",
+        question:
+          "Audio pelafalan tidak berbunyi di peramban saya, bagaimana memperbaikinya?",
+        answer: (
+          <div>
+            <p>
+              Jika Anda mengalami masalah di mana audio pelafalan tidak keluar
+              sama sekali, silakan coba beberapa langkah pemecahan masalah
+              berikut:
+            </p>
+            <ul>
+              <li>
+                Pastikan perangkat Anda tidak dalam mode senyap (silent mode)
+                dan volume media dalam keadaan aktif.
+              </li>
+              <li>
+                Di beberapa peramban seluler (seperti Safari di iOS atau Chrome
+                di Android), suara mungkin diblokir secara otomatis karena
+                pengaturan pemutaran otomatis (autoplay restriction). Coba ketuk
+                tombol speaker berulang kali untuk memicu izin audio peramban
+                Anda.
+              </li>
+              <li>
+                Aplikasi kami menggunakan pustaka Web Speech API bawaan peramban
+                Anda. Pastikan sistem operasi perangkat Anda terinstal modul
+                teks-ke-suara (TTS) bahasa Jepang yang aktif.
+              </li>
+            </ul>
+          </div>
+        ),
+      },
+      {
+        id: "faq-11",
+        category: "teknis",
+        categoryLabel: "Masalah Teknis",
+        question:
+          "Mengapa streak saya tereset padahal saya merasa sudah belajar hari ini?",
+        answer: (
+          <div>
+            <p>
+              Teresetnya streak biasanya disebabkan oleh ketidaksesuaian zona
+              waktu perangkat atau kegagalan sinkronisasi data akibat koneksi
+              internet yang terputus saat Anda menyelesaikan kuis.
+            </p>
+            <p>
+              Pastikan jam dan tanggal pada perangkat Anda diatur secara
+              otomatis ke jaringan internet Anda. Selain itu, pastikan status
+              bar menunjukkan profil Anda telah tersinkronisasi sebelum Anda
+              menutup aplikasi.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "faq-12",
+        category: "teknis",
+        categoryLabel: "Masalah Teknis",
+        question:
+          "Saya menemukan bug atau kesalahan materi belajar, bagaimana cara melaporkannya?",
+        answer: (
+          <div>
+            <p>
+              Kami sangat berkomitmen menjaga akurasi materi pembelajaran bahasa
+              Jepang di aplikasi ini. Jika Anda menemukan terjemahan yang
+              keliru, penulisan romaji yang kurang tepat, atau bug pada visual
+              kuis:
+            </p>
+            <p>
+              Silakan kirimkan laporan Anda secara detail melalui formulir{" "}
+              <strong>Hubungi Dukungan</strong> yang berada di bagian bawah
+              halaman ini. Cantumkan nama materi atau level JLPT, screenshot
+              jika memungkinkan, dan deskripsi singkat masalahnya. Tim kami akan
+              segera meninjau dan melakukan pembaruan materi.
+            </p>
+          </div>
+        ),
+      },
+    ],
+    [],
+  );
 
   // Filter FAQs based on query & category
   const filteredFaqs = useMemo(() => {
-    return faqs.filter(faq => {
+    return faqs.filter((faq) => {
       const matchesSearch =
         faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
         faq.id.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesCategory = selectedCategory ? faq.category === selectedCategory : true;
-      
+
+      const matchesCategory = selectedCategory
+        ? faq.category === selectedCategory
+        : true;
+
       return matchesSearch && matchesCategory;
     });
   }, [faqs, searchQuery, selectedCategory]);
@@ -958,7 +1076,16 @@ export default function HelpPage() {
             $accentColor="var(--primary)"
           >
             <div className="icon-container">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                 <circle cx="12" cy="7" r="4" />
               </svg>
@@ -973,7 +1100,16 @@ export default function HelpPage() {
             $accentColor="var(--secondary)"
           >
             <div className="icon-container">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
                 <path d="M6 12v5c3 3 9 3 12 0v-5" />
               </svg>
@@ -988,7 +1124,16 @@ export default function HelpPage() {
             $accentColor="var(--zen-gold, #b8860b)"
           >
             <div className="icon-container">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
                 <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
               </svg>
@@ -1003,7 +1148,16 @@ export default function HelpPage() {
             $accentColor="var(--accent)"
           >
             <div className="icon-container">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
                 <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
                 <line x1="6" y1="6" x2="6.01" y2="6" />
@@ -1023,10 +1177,10 @@ export default function HelpPage() {
                   selectedCategory === "akun"
                     ? "Akun & Keamanan"
                     : selectedCategory === "belajar"
-                    ? "Metode Belajar"
-                    : selectedCategory === "jlpt"
-                    ? "Materi & JLPT"
-                    : "Masalah Teknis"
+                      ? "Metode Belajar"
+                      : selectedCategory === "jlpt"
+                        ? "Materi & JLPT"
+                        : "Masalah Teknis"
                 }`
               : "Pertanyaan yang Sering Diajukan (FAQ)"}
           </GridTitle>
@@ -1039,7 +1193,14 @@ export default function HelpPage() {
                 setOpenFaqId(null);
               }}
             >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
@@ -1064,7 +1225,9 @@ export default function HelpPage() {
                       $isOpen={isOpen}
                     >
                       <span>
-                        <span className="category-tag">{faq.categoryLabel}</span>
+                        <span className="category-tag">
+                          {faq.categoryLabel}
+                        </span>
                         {faq.question}
                       </span>
                       <svg
@@ -1091,9 +1254,7 @@ export default function HelpPage() {
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.25, ease: "easeInOut" }}
                         >
-                          <AccordionBody>
-                            {faq.answer}
-                          </AccordionBody>
+                          <AccordionBody>{faq.answer}</AccordionBody>
                         </AccordionContent>
                       )}
                     </AnimatePresence>
@@ -1117,7 +1278,10 @@ export default function HelpPage() {
                   <line x1="12" y1="16" x2="12.01" y2="16" />
                 </svg>
                 <h3>Tidak ada pertanyaan ditemukan</h3>
-                <p>Coba gunakan kata kunci lain atau pilih kategori bantuan di atas.</p>
+                <p>
+                  Coba gunakan kata kunci lain atau pilih kategori bantuan di
+                  atas.
+                </p>
               </EmptyState>
             )}
           </AnimatePresence>
@@ -1130,23 +1294,52 @@ export default function HelpPage() {
               Masih butuh <span>bantuan?</span>
             </h2>
             <p>
-              Jika Anda tidak menemukan jawaban atas pertanyaan Anda, silakan hubungi tim dukungan kami dengan mengirimkan tiket bantuan. Kami akan menanggapi dalam waktu 1-2 hari kerja.
+              Jika Anda tidak menemukan jawaban atas pertanyaan Anda, silakan
+              hubungi tim dukungan kami dengan mengirimkan tiket bantuan. Kami
+              akan menanggapi dalam waktu 1-2 hari kerja.
             </p>
             <div className="badge-list">
               <div className="badge-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
                 Dukungan Bahasa Indonesia & English
               </div>
               <div className="badge-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
                 Waktu Respons Cepat & Ramah
               </div>
               <div className="badge-item">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
                 100% Gratis Tanpa Biaya Tambahan
@@ -1229,7 +1422,16 @@ export default function HelpPage() {
                       </>
                     ) : (
                       <>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <line x1="22" y1="2" x2="11" y2="13" />
                           <polygon points="22 2 15 22 11 13 2 9 22 2" />
                         </svg>
@@ -1246,13 +1448,24 @@ export default function HelpPage() {
                   exit={{ opacity: 0 }}
                 >
                   <div className="check-circle">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="32"
+                      height="32"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                   </div>
                   <h3>Tiket Bantuan Terkirim!</h3>
                   <p>
-                    Terima kasih telah menghubungi kami. Tim dukungan kami akan meninjau pesan Anda dan membalas melalui alamat email yang Anda cantumkan secepatnya.
+                    Terima kasih telah menghubungi kami. Tim dukungan kami akan
+                    meninjau pesan Anda dan membalas melalui alamat email yang
+                    Anda cantumkan secepatnya.
                   </p>
                   <ResetFilterButton
                     onClick={() => setIsSubmitted(false)}
@@ -1266,12 +1479,16 @@ export default function HelpPage() {
           </div>
         </ContactSection>
       </ContentWrapper>
-      
+
       {/* Global CSS spinner keyframe animation */}
       <style jsx global>{`
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
     </Container>

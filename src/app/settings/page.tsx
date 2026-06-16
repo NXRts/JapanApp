@@ -27,17 +27,21 @@ const Container = styled.div`
 const PageHeader = styled.div`
   border-bottom: 1px solid var(--border);
   padding-bottom: 1.5rem;
-  
+
   h1 {
     font-size: 2.25rem;
     font-weight: 900;
     margin: 0 0 0.25rem 0;
     letter-spacing: -0.02em;
-    background: linear-gradient(135deg, var(--foreground) 30%, var(--primary) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--foreground) 30%,
+      var(--primary) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  
+
   p {
     margin: 0;
     color: var(--text-secondary);
@@ -74,7 +78,7 @@ const Sidebar = styled.div`
     border-radius: 16px;
     gap: 0.25rem;
     -webkit-overflow-scrolling: touch;
-    
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -87,8 +91,8 @@ const TabButton = styled.button<{ $active: boolean }>`
   padding: 0.85rem 1.25rem;
   border-radius: 14px;
   border: none;
-  background: ${props => props.$active ? "var(--primary)" : "transparent"};
-  color: ${props => props.$active ? "white" : "var(--text-secondary)"};
+  background: ${(props) => (props.$active ? "var(--primary)" : "transparent")};
+  color: ${(props) => (props.$active ? "white" : "var(--text-secondary)")};
   font-weight: 700;
   font-size: 0.95rem;
   cursor: pointer;
@@ -98,8 +102,9 @@ const TabButton = styled.button<{ $active: boolean }>`
   gap: 0.75rem;
 
   &:hover {
-    color: ${props => props.$active ? "white" : "var(--foreground)"};
-    background: ${props => props.$active ? "var(--primary)" : "rgba(var(--primary-rgb), 0.06)"};
+    color: ${(props) => (props.$active ? "white" : "var(--foreground)")};
+    background: ${(props) =>
+      props.$active ? "var(--primary)" : "rgba(var(--primary-rgb), 0.06)"};
   }
 
   svg {
@@ -161,7 +166,7 @@ const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  
+
   label {
     font-size: 0.88rem;
     font-weight: 750;
@@ -227,7 +232,8 @@ const SwitchButton = styled.button<{ $checked: boolean }>`
   width: 52px;
   height: 28px;
   border-radius: 14px;
-  background: ${props => props.$checked ? "var(--primary)" : "var(--border)"};
+  background: ${(props) =>
+    props.$checked ? "var(--primary)" : "var(--border)"};
   border: none;
   cursor: pointer;
   position: relative;
@@ -243,8 +249,8 @@ const SwitchButton = styled.button<{ $checked: boolean }>`
     border-radius: 50%;
     background: white;
     top: 4px;
-    left: ${props => props.$checked ? "28px" : "4px"};
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    left: ${(props) => (props.$checked ? "28px" : "4px")};
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: left 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 `;
@@ -261,7 +267,8 @@ const ColorBtn = styled.button<{ $color: string; $isSelected: boolean }>`
   height: 44px;
   border-radius: 50%;
   background: ${({ $color }) => $color};
-  border: 4px solid ${({ $isSelected }) => ($isSelected ? "var(--foreground)" : "transparent")};
+  border: 4px solid
+    ${({ $isSelected }) => ($isSelected ? "var(--foreground)" : "transparent")};
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -270,7 +277,7 @@ const ColorBtn = styled.button<{ $color: string; $isSelected: boolean }>`
     transform: scale(1.1);
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
   }
-  
+
   &:active {
     transform: scale(0.95);
   }
@@ -280,8 +287,10 @@ const ModeBox = styled.button<{ $active: boolean }>`
   flex: 1;
   padding: 1.5rem;
   border-radius: 20px;
-  border: 2px solid ${props => props.$active ? "var(--primary)" : "var(--border)"};
-  background: ${props => props.$active ? "rgba(var(--primary-rgb), 0.04)" : "var(--background)"};
+  border: 2px solid
+    ${(props) => (props.$active ? "var(--primary)" : "var(--border)")};
+  background: ${(props) =>
+    props.$active ? "rgba(var(--primary-rgb), 0.04)" : "var(--background)"};
   color: var(--foreground);
   cursor: pointer;
   display: flex;
@@ -344,8 +353,9 @@ const DangerButton = styled.button<{ $confirming?: boolean }>`
   cursor: pointer;
   transition: all 0.2s;
   border: 1px solid var(--accent);
-  background: ${props => props.$confirming ? "var(--accent)" : "transparent"};
-  color: ${props => props.$confirming ? "white" : "var(--accent)"};
+  background: ${(props) =>
+    props.$confirming ? "var(--accent)" : "transparent"};
+  color: ${(props) => (props.$confirming ? "white" : "var(--accent)")};
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -410,7 +420,11 @@ const SaveButton = styled.button`
   cursor: pointer;
   transition: all 0.2s;
   border: 1px solid var(--primary);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
   display: inline-flex;
@@ -452,7 +466,9 @@ export default function SettingsPage() {
   const { resetProgress } = useProgress();
 
   // Tab State
-  const [activeTab, setActiveTab] = useState<"account" | "appearance" | "preferences" | "learning">("account");
+  const [activeTab, setActiveTab] = useState<
+    "account" | "appearance" | "preferences" | "learning"
+  >("account");
 
   // Form States (Simulasi)
   const [username, setUsername] = useState("japan_learner");
@@ -462,7 +478,7 @@ export default function SettingsPage() {
   const [motivationalMsgs, setMotivationalMsgs] = useState(true);
   const [speakingExercises, setSpeakingExercises] = useState(true);
   const [listeningExercises, setListeningExercises] = useState(true);
-  
+
   // Privacy States (Simulasi)
   const [publicProfile, setPublicProfile] = useState(true);
   const [friendRequests, setFriendRequests] = useState(true);
@@ -483,39 +499,77 @@ export default function SettingsPage() {
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Pengaturan" />
+      <Breadcrumbs
+        items={[{ label: "Home", href: "/" }]}
+        current="Pengaturan"
+      />
 
       <PageHeader>
         <h1>Pengaturan Dashboard</h1>
-        <p>Kelola detail akun, preferensi suara, tema tampilan, dan data belajar bahasa Jepang Anda.</p>
+        <p>
+          Kelola detail akun, preferensi suara, tema tampilan, dan data belajar
+          bahasa Jepang Anda.
+        </p>
       </PageHeader>
 
       <MainLayout>
         {/* SIDEBAR TABS */}
         <Sidebar>
-          <TabButton $active={activeTab === "account"} onClick={() => setActiveTab("account")}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <TabButton
+            $active={activeTab === "account"}
+            onClick={() => setActiveTab("account")}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
             Akun & Fitur
           </TabButton>
-          <TabButton $active={activeTab === "appearance"} onClick={() => setActiveTab("appearance")}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <TabButton
+            $active={activeTab === "appearance"}
+            onClick={() => setActiveTab("appearance")}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
               <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
               <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
             </svg>
             Tampilan / Tema
           </TabButton>
-          <TabButton $active={activeTab === "preferences"} onClick={() => setActiveTab("preferences")}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <TabButton
+            $active={activeTab === "preferences"}
+            onClick={() => setActiveTab("preferences")}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
             Privasi & Keamanan
           </TabButton>
-          <TabButton $active={activeTab === "learning"} onClick={() => setActiveTab("learning")}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <TabButton
+            $active={activeTab === "learning"}
+            onClick={() => setActiveTab("learning")}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
             Data Belajar
@@ -528,7 +582,10 @@ export default function SettingsPage() {
             <>
               <TabHeader>
                 <h2>Pengaturan Akun & Fitur</h2>
-                <p>Kelola kredensial akun dan pilihan metode interaksi kuis belajar Anda.</p>
+                <p>
+                  Kelola kredensial akun dan pilihan metode interaksi kuis
+                  belajar Anda.
+                </p>
               </TabHeader>
               <FormGrid>
                 <FormGroup>
@@ -536,6 +593,7 @@ export default function SettingsPage() {
                   <FormInput
                     id="username"
                     type="text"
+                    placeholder="japan_learner"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
@@ -545,54 +603,109 @@ export default function SettingsPage() {
                   <FormInput
                     id="email"
                     type="email"
+                    placeholder="learner@japanapp.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 </FormGroup>
 
                 <div style={{ marginTop: "0.5rem" }}>
-                  <label style={{ fontSize: "0.88rem", fontWeight: 750, color: "var(--foreground)", marginBottom: "1rem", display: "block" }}>
+                  <label
+                    style={{
+                      fontSize: "0.88rem",
+                      fontWeight: 750,
+                      color: "var(--foreground)",
+                      marginBottom: "1rem",
+                      display: "block",
+                    }}
+                  >
                     Metode & Pengalaman Belajar
                   </label>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "1rem",
+                    }}
+                  >
                     <ToggleRow>
                       <ToggleInfo>
-                        <span className="title">Efek Suara (Sound Effects)</span>
-                        <span className="desc">Mainkan efek audio yang memuaskan ketika menjawab benar atau salah.</span>
+                        <span className="title">
+                          Efek Suara (Sound Effects)
+                        </span>
+                        <span className="desc">
+                          Mainkan efek audio yang memuaskan ketika menjawab
+                          benar atau salah.
+                        </span>
                       </ToggleInfo>
-                      <SwitchButton $checked={soundEffects} onClick={() => setSoundEffects(!soundEffects)} />
+                      <SwitchButton
+                        $checked={soundEffects}
+                        onClick={() => setSoundEffects(!soundEffects)}
+                      />
                     </ToggleRow>
 
                     <ToggleRow>
                       <ToggleInfo>
-                        <span className="title">Animasi Mikro (Animations)</span>
-                        <span className="desc">Gunakan efek transisi halus pada kartu dan lencana heksagonal.</span>
+                        <span className="title">
+                          Animasi Mikro (Animations)
+                        </span>
+                        <span className="desc">
+                          Gunakan efek transisi halus pada kartu dan lencana
+                          heksagonal.
+                        </span>
                       </ToggleInfo>
-                      <SwitchButton $checked={animations} onClick={() => setAnimations(!animations)} />
+                      <SwitchButton
+                        $checked={animations}
+                        onClick={() => setAnimations(!animations)}
+                      />
                     </ToggleRow>
 
                     <ToggleRow>
                       <ToggleInfo>
                         <span className="title">Pesan Motivasi</span>
-                        <span className="desc">Tampilkan pesan penyemangat dari maskot setelah menyelesaikan latihan kuis.</span>
+                        <span className="desc">
+                          Tampilkan pesan penyemangat dari maskot setelah
+                          menyelesaikan latihan kuis.
+                        </span>
                       </ToggleInfo>
-                      <SwitchButton $checked={motivationalMsgs} onClick={() => setMotivationalMsgs(!motivationalMsgs)} />
+                      <SwitchButton
+                        $checked={motivationalMsgs}
+                        onClick={() => setMotivationalMsgs(!motivationalMsgs)}
+                      />
                     </ToggleRow>
 
                     <ToggleRow>
                       <ToggleInfo>
-                        <span className="title">Latihan Berbicara (Speaking)</span>
-                        <span className="desc">Aktifkan latihan pengucapan interaktif menggunakan mikrofon peramban.</span>
+                        <span className="title">
+                          Latihan Berbicara (Speaking)
+                        </span>
+                        <span className="desc">
+                          Aktifkan latihan pengucapan interaktif menggunakan
+                          mikrofon peramban.
+                        </span>
                       </ToggleInfo>
-                      <SwitchButton $checked={speakingExercises} onClick={() => setSpeakingExercises(!speakingExercises)} />
+                      <SwitchButton
+                        $checked={speakingExercises}
+                        onClick={() => setSpeakingExercises(!speakingExercises)}
+                      />
                     </ToggleRow>
 
                     <ToggleRow>
                       <ToggleInfo>
-                        <span className="title">Latihan Mendengarkan (Listening)</span>
-                        <span className="desc">Sertakan soal latihan pendengaran audio penutur asli Jepang (Native Speaker).</span>
+                        <span className="title">
+                          Latihan Mendengarkan (Listening)
+                        </span>
+                        <span className="desc">
+                          Sertakan soal latihan pendengaran audio penutur asli
+                          Jepang (Native Speaker).
+                        </span>
                       </ToggleInfo>
-                      <SwitchButton $checked={listeningExercises} onClick={() => setListeningExercises(!listeningExercises)} />
+                      <SwitchButton
+                        $checked={listeningExercises}
+                        onClick={() =>
+                          setListeningExercises(!listeningExercises)
+                        }
+                      />
                     </ToggleRow>
                   </div>
                 </div>
@@ -604,13 +717,22 @@ export default function SettingsPage() {
             <>
               <TabHeader>
                 <h2>Tema & Gaya Tampilan</h2>
-                <p>Kustomisasi skema warna aksen dan mode visual aplikasi JapanApp sesuai selera Anda.</p>
+                <p>
+                  Kustomisasi skema warna aksen dan mode visual aplikasi
+                  JapanApp sesuai selera Anda.
+                </p>
               </TabHeader>
               <FormGrid>
                 <FormGroup>
                   <label>Warna Aksen Aplikasi (Theme Accent Color)</label>
-                  <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}>
-                    Klik lingkaran warna di bawah ini untuk mengubah seluruh aksen visual web secara real-time.
+                  <span
+                    style={{
+                      fontSize: "0.82rem",
+                      color: "var(--text-secondary)",
+                    }}
+                  >
+                    Klik lingkaran warna di bawah ini untuk mengubah seluruh
+                    aksen visual web secara real-time.
                   </span>
                   <ColorGrid>
                     {Object.entries(themes).map(([key, value]) => (
@@ -632,17 +754,23 @@ export default function SettingsPage() {
                 <FormGroup style={{ marginTop: "1rem" }}>
                   <label>Mode Tampilan (Appearance Mode)</label>
                   <ModeRow>
-                    <ModeBox $active={mode === "light"} onClick={() => {
-                      setMode("light");
-                      triggerToast("Mode terang diaktifkan! ☀️");
-                    }}>
+                    <ModeBox
+                      $active={mode === "light"}
+                      onClick={() => {
+                        setMode("light");
+                        triggerToast("Mode terang diaktifkan! ☀️");
+                      }}
+                    >
                       <span className="icon">☀️</span>
                       <span>Mode Terang</span>
                     </ModeBox>
-                    <ModeBox $active={mode === "dark"} onClick={() => {
-                      setMode("dark");
-                      triggerToast("Mode gelap diaktifkan! 🌙");
-                    }}>
+                    <ModeBox
+                      $active={mode === "dark"}
+                      onClick={() => {
+                        setMode("dark");
+                        triggerToast("Mode gelap diaktifkan! 🌙");
+                      }}
+                    >
                       <span className="icon">🌙</span>
                       <span>Mode Gelap</span>
                     </ModeBox>
@@ -656,32 +784,63 @@ export default function SettingsPage() {
             <>
               <TabHeader>
                 <h2>Privasi & Keamanan Sosial</h2>
-                <p>Atur visibilitas progres belajar Anda dan batasi interaksi pertemanan sosial.</p>
+                <p>
+                  Atur visibilitas progres belajar Anda dan batasi interaksi
+                  pertemanan sosial.
+                </p>
               </TabHeader>
               <FormGrid>
-                <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "1rem",
+                  }}
+                >
                   <ToggleRow>
                     <ToggleInfo>
-                      <span className="title">Profil Publik (Public Profile)</span>
-                      <span className="desc">Izinkan pengguna lain mencari profil Anda dan melihat lencana heksagonal Anda.</span>
+                      <span className="title">
+                        Profil Publik (Public Profile)
+                      </span>
+                      <span className="desc">
+                        Izinkan pengguna lain mencari profil Anda dan melihat
+                        lencana heksagonal Anda.
+                      </span>
                     </ToggleInfo>
-                    <SwitchButton $checked={publicProfile} onClick={() => setPublicProfile(!publicProfile)} />
+                    <SwitchButton
+                      $checked={publicProfile}
+                      onClick={() => setPublicProfile(!publicProfile)}
+                    />
                   </ToggleRow>
 
                   <ToggleRow>
                     <ToggleInfo>
-                      <span className="title">Terima Permintaan Pertemanan</span>
-                      <span className="desc">Izinkan pengguna lain mengikuti progres belajar Anda atau mengundang ke grup belajar.</span>
+                      <span className="title">
+                        Terima Permintaan Pertemanan
+                      </span>
+                      <span className="desc">
+                        Izinkan pengguna lain mengikuti progres belajar Anda
+                        atau mengundang ke grup belajar.
+                      </span>
                     </ToggleInfo>
-                    <SwitchButton $checked={friendRequests} onClick={() => setFriendRequests(!friendRequests)} />
+                    <SwitchButton
+                      $checked={friendRequests}
+                      onClick={() => setFriendRequests(!friendRequests)}
+                    />
                   </ToggleRow>
 
                   <ToggleRow>
                     <ToggleInfo>
                       <span className="title">Bagikan Progres Mingguan</span>
-                      <span className="desc">Tampilkan streak belajar harian dan pencapaian Kanji Anda di papan peringkat global.</span>
+                      <span className="desc">
+                        Tampilkan streak belajar harian dan pencapaian Kanji
+                        Anda di papan peringkat global.
+                      </span>
                     </ToggleInfo>
-                    <SwitchButton $checked={shareProgress} onClick={() => setShareProgress(!shareProgress)} />
+                    <SwitchButton
+                      $checked={shareProgress}
+                      onClick={() => setShareProgress(!shareProgress)}
+                    />
                   </ToggleRow>
                 </div>
               </FormGrid>
@@ -692,22 +851,37 @@ export default function SettingsPage() {
             <>
               <TabHeader>
                 <h2>Manajemen Data Belajar</h2>
-                <p>Tinjau dan reset histori kuis, statistik streak harian, serta level EXP Anda.</p>
+                <p>
+                  Tinjau dan reset histori kuis, statistik streak harian, serta
+                  level EXP Anda.
+                </p>
               </TabHeader>
               <FormGrid>
                 <DangerCard>
                   <DangerTitle>Zona Bahaya (Danger Zone)</DangerTitle>
-                  <p style={{ margin: 0, fontSize: "0.88rem", color: "var(--text-secondary)", lineHeight: 1.5 }}>
-                    Menyetel ulang data belajar akan menghapus semua level EXP, streak harian, lencana heksagonal, dan histori penguasaan huruf Kanji & Kosakata Anda secara permanen. Tindakan ini tidak dapat dibatalkan.
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: "0.88rem",
+                      color: "var(--text-secondary)",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    Menyetel ulang data belajar akan menghapus semua level EXP,
+                    streak harian, lencana heksagonal, dan histori penguasaan
+                    huruf Kanji & Kosakata Anda secara permanen. Tindakan ini
+                    tidak dapat dibatalkan.
                   </p>
-                  
+
                   <DangerButton
                     type="button"
                     $confirming={confirmReset}
                     onClick={() => {
                       if (confirmReset) {
                         resetProgress();
-                        triggerToast("Seluruh progres belajar telah di-reset! 🗑️");
+                        triggerToast(
+                          "Seluruh progres belajar telah di-reset! 🗑️",
+                        );
                         setConfirmReset(false);
                       } else {
                         setConfirmReset(true);
@@ -715,7 +889,9 @@ export default function SettingsPage() {
                       }
                     }}
                   >
-                    {confirmReset ? "⚠️ Klik Sekali Lagi untuk Reset!" : "🗑️ Reset Seluruh Progres"}
+                    {confirmReset
+                      ? "⚠️ Klik Sekali Lagi untuk Reset!"
+                      : "🗑️ Reset Seluruh Progres"}
                   </DangerButton>
                 </DangerCard>
               </FormGrid>
@@ -726,7 +902,16 @@ export default function SettingsPage() {
           <ActionButtonGroup>
             <CancelButton href="/profile">Batal</CancelButton>
             <SaveButton type="button" onClick={handleSave}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
                 <polyline points="17 21 17 13 7 13 7 21" />
                 <polyline points="7 3 7 8 15 8" />
