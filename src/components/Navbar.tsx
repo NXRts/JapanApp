@@ -12,10 +12,7 @@ import { useDeviceMode } from "@/context/DeviceModeContext";
 import { DeviceModeSwitcher } from "@/components/DeviceModeSwitcher";
 import { FloatingDock } from "@/components/mobile/FloatingDock";
 
-const SettingsModal = dynamic(
-  () => import("./SettingsModal").then((mod) => mod.SettingsModal),
-  { ssr: false },
-);
+
 const DictionarySearchOverlay = dynamic(
   () => import("./dictionary/DictionarySearchOverlay"),
   { ssr: false },
@@ -1195,7 +1192,7 @@ function ContactIcon() {
 
 export function Navbar() {
   const pathname = usePathname();
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
   const [isDictionaryOpen, setIsDictionaryOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLainnyaOpen, setIsLainnyaOpen] = useState(false);
@@ -1376,14 +1373,13 @@ export function Navbar() {
 
                 <PopoverDivider />
 
-                <PopoverItem
-                  onClick={() => {
-                    setIsSettingsOpen(true);
-                    setIsLainnyaOpen(false);
-                  }}
+                <Link
+                  href="/settings"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
                 >
-                  Pengaturan
-                </PopoverItem>
+                  <PopoverItem>Pengaturan</PopoverItem>
+                </Link>
                 <Link
                   href="/help"
                   style={{ textDecoration: "none", color: "inherit" }}
@@ -1443,7 +1439,8 @@ export function Navbar() {
               </SidebarActionButton>
 
               <SidebarActionButton
-                onClick={() => setIsSettingsOpen(true)}
+                as={Link}
+                href="/settings"
                 title="Settings"
               >
                 <svg viewBox="0 0 24 24" fill="currentColor">
@@ -1512,7 +1509,8 @@ export function Navbar() {
                   <UserIcon size={20} />
                 </UserBtn>
                 <SettingsBtn
-                  onClick={() => setIsSettingsOpen(true)}
+                  as={Link}
+                  href="/settings"
                   title="Settings"
                 >
                   <svg viewBox="0 0 24 24">
@@ -1703,7 +1701,8 @@ export function Navbar() {
 
                   <SettingsBtn
                     $isOpen={isMobileMenuOpen}
-                    onClick={() => setIsSettingsOpen(true)}
+                    as={Link}
+                    href="/settings"
                     title="Settings"
                   >
                     <svg viewBox="0 0 24 24">
@@ -2038,10 +2037,7 @@ export function Navbar() {
         </MobileMenu>
       </NavRoot>
 
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-      />
+
       {isDictionaryOpen && (
         <DictionarySearchOverlay onClose={() => setIsDictionaryOpen(false)} />
       )}
