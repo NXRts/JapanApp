@@ -43,7 +43,11 @@ const TitleGroup = styled.div`
     font-weight: 900;
     margin: 0 0 0.25rem 0;
     letter-spacing: -0.02em;
-    background: linear-gradient(135deg, var(--foreground) 30%, var(--primary) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--foreground) 30%,
+      var(--primary) 100%
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -128,7 +132,11 @@ const AvatarPreview = styled.div`
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-light) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -199,8 +207,10 @@ const PresetGrid = styled.div`
 const PresetItem = styled.button<{ $active: boolean }>`
   aspect-ratio: 1;
   border-radius: 16px;
-  background: ${props => props.$active ? "rgba(var(--primary-rgb), 0.1)" : "var(--background)"};
-  border: 2px solid ${props => props.$active ? "var(--primary)" : "var(--border)"};
+  background: ${(props) =>
+    props.$active ? "rgba(var(--primary-rgb), 0.1)" : "var(--background)"};
+  border: 2px solid
+    ${(props) => (props.$active ? "var(--primary)" : "var(--border)")};
   font-size: 1.8rem;
   display: flex;
   align-items: center;
@@ -232,7 +242,7 @@ const FormGrid = styled.div`
 `;
 
 const FormGroup = styled.div<{ $fullWidth?: boolean }>`
-  grid-column: ${props => props.$fullWidth ? "span 2" : "auto"};
+  grid-column: ${(props) => (props.$fullWidth ? "span 2" : "auto")};
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -394,7 +404,11 @@ const SaveButton = styled.button`
   cursor: pointer;
   transition: all 0.2s;
   border: 1px solid var(--primary);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
   display: inline-flex;
@@ -457,16 +471,18 @@ const presetAvatars = [
 
 export default function EditProfilePage() {
   const router = useRouter();
-  
+
   // Form States (Simulasi)
   const [displayName, setDisplayName] = useState("JapanApp Learner");
   const [username, setUsername] = useState("japan_learner");
   const [email, setEmail] = useState("learner@japanapp.com");
-  const [bio, setBio] = useState("Belajar bahasa Jepang untuk menguasai Kanji dan percakapan harian. Target lulus JLPT N5 tahun ini! 🎯");
+  const [bio, setBio] = useState(
+    "Belajar bahasa Jepang untuk menguasai Kanji dan percakapan harian. Target lulus JLPT N5 tahun ini! 🎯",
+  );
   const [difficulty, setDifficulty] = useState("pemula");
   const [dailyGoal, setDailyGoal] = useState("50");
   const [selectedAvatar, setSelectedAvatar] = useState("🦊");
-  
+
   const [customFile, setCustomFile] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -485,12 +501,12 @@ export default function EditProfilePage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    
+
     // Simulate save processing
     setTimeout(() => {
       setIsSaving(false);
       setShowToast(true);
-      
+
       // Redirect back after 2 seconds
       setTimeout(() => {
         router.push("/profile");
@@ -500,21 +516,33 @@ export default function EditProfilePage() {
 
   return (
     <Container>
-      <Breadcrumbs 
+      <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Profile", href: "/profile" }
-        ]} 
-        current="Edit Profil" 
+          { label: "Profile", href: "/profile" },
+        ]}
+        current="Edit Profil"
       />
 
       <HeaderArea>
         <TitleGroup>
           <h1>Edit Profil Anda</h1>
-          <p>Ubah identitas visual, informasi pribadi, dan target belajar harian Anda.</p>
+          <p>
+            Ubah identitas visual, informasi pribadi, dan target belajar harian
+            Anda.
+          </p>
         </TitleGroup>
         <BackLink href="/profile">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <line x1="19" y1="12" x2="5" y2="12" />
             <polyline points="12 19 5 12 12 5" />
           </svg>
@@ -528,12 +556,17 @@ export default function EditProfilePage() {
           <AvatarSection>
             <AvatarTitle>Foto Profil / Avatar Kultural</AvatarTitle>
             <AvatarPreviewArea>
-              <AvatarPreview>
-                {selectedAvatar}
-              </AvatarPreview>
-              
+              <AvatarPreview>{selectedAvatar}</AvatarPreview>
+
               <UploadZone onClick={handleCustomUploadSimulate}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                   <polyline points="17 8 12 3 7 8" />
                   <line x1="12" y1="3" x2="12" y2="15" />
@@ -545,7 +578,16 @@ export default function EditProfilePage() {
 
             {customFile && (
               <CustomUploadNotify>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
                 File "{customFile}" terdeteksi & siap diunggah!
@@ -553,7 +595,13 @@ export default function EditProfilePage() {
             )}
 
             <div style={{ marginTop: "1rem" }}>
-              <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--text-secondary)" }}>
+              <span
+                style={{
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "var(--text-secondary)",
+                }}
+              >
                 Atau pilih avatar tema Jepang yang ikonik:
               </span>
               <PresetGrid>
@@ -576,7 +624,9 @@ export default function EditProfilePage() {
 
           {/* SECTION 2: DETAIL PROFIL */}
           <div>
-            <AvatarTitle style={{ marginBottom: "1.25rem" }}>Informasi Pribadi</AvatarTitle>
+            <AvatarTitle style={{ marginBottom: "1.25rem" }}>
+              Informasi Pribadi
+            </AvatarTitle>
             <FormGrid>
               <FormGroup>
                 <label htmlFor="display-name">Nama Tampilan</label>
@@ -634,7 +684,9 @@ export default function EditProfilePage() {
 
           {/* SECTION 3: PREFERENSI BELAJAR */}
           <div>
-            <AvatarTitle style={{ marginBottom: "1.25rem" }}>Target & Preferensi Belajar</AvatarTitle>
+            <AvatarTitle style={{ marginBottom: "1.25rem" }}>
+              Target & Preferensi Belajar
+            </AvatarTitle>
             <FormGrid>
               <FormGroup>
                 <label htmlFor="difficulty">Tingkat Kemampuan Saat Ini</label>
@@ -643,9 +695,15 @@ export default function EditProfilePage() {
                   value={difficulty}
                   onChange={(e) => setDifficulty(e.target.value)}
                 >
-                  <option value="pemula">Pemula (Belum tahu Kana/Hiragana)</option>
-                  <option value="dasar">Dasar (Menguasai Kana, belajar JLPT N5)</option>
-                  <option value="menengah">Menengah (Belajar JLPT N4/N3)</option>
+                  <option value="pemula">
+                    Pemula (Belum tahu Kana/Hiragana)
+                  </option>
+                  <option value="dasar">
+                    Dasar (Menguasai Kana, belajar JLPT N5)
+                  </option>
+                  <option value="menengah">
+                    Menengah (Belajar JLPT N4/N3)
+                  </option>
                   <option value="mahir">Mahir (Persiapan N2/N1)</option>
                 </FormSelect>
               </FormGroup>
@@ -672,14 +730,31 @@ export default function EditProfilePage() {
             <SaveButton type="submit" disabled={isSaving}>
               {isSaving ? (
                 <>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" style={{ animation: "spin 1s linear infinite" }}>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    style={{ animation: "spin 1s linear infinite" }}
+                  >
                     <path d="M21 12a9 9 0 0 1-9 9m-9-9a9 9 0 0 1 9-9" />
                   </svg>
                   Menyimpan...
                 </>
               ) : (
                 <>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
                     <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
                     <polyline points="17 21 17 13 7 13 7 21" />
                     <polyline points="7 3 7 8 15 8" />
@@ -695,8 +770,12 @@ export default function EditProfilePage() {
       {/* Global CSS spinner keyframe animation */}
       <style jsx global>{`
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
 

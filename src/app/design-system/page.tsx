@@ -51,7 +51,11 @@ const PageHeader = styled.div`
     color: var(--foreground);
 
     span {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      background: linear-gradient(
+        135deg,
+        var(--primary) 0%,
+        var(--primary-light) 100%
+      );
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -139,7 +143,7 @@ const ColorCard = styled.div<{ $color: string }>`
 
   .preview {
     height: 90px;
-    background-color: ${props => props.$color};
+    background-color: ${(props) => props.$color};
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
@@ -251,7 +255,7 @@ const CardFace = styled.div<{ $back?: boolean }>`
   align-items: center;
   padding: 1.5rem;
   box-sizing: border-box;
-  transform: ${props => props.$back ? "rotateY(180deg)" : "rotateY(0)"};
+  transform: ${(props) => (props.$back ? "rotateY(180deg)" : "rotateY(0)")};
   transition: border-color 0.25s ease;
 
   &:hover {
@@ -446,7 +450,7 @@ const ProgressBarBase = styled.div`
   border-radius: 99px;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 
   @media (max-width: 768px) {
     height: 8px;
@@ -455,8 +459,12 @@ const ProgressBarBase = styled.div`
 
 const ProgressBarFill = styled.div<{ $width: number }>`
   height: 100%;
-  width: ${props => props.$width}%;
-  background: linear-gradient(90deg, var(--secondary) 0%, var(--primary-light) 100%);
+  width: ${(props) => props.$width}%;
+  background: linear-gradient(
+    90deg,
+    var(--secondary) 0%,
+    var(--primary-light) 100%
+  );
   border-radius: 99px;
   transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 `;
@@ -471,7 +479,8 @@ const BadgeGrid = styled.div`
 const HexBadgeContainer = styled.div<{ $gold?: boolean }>`
   width: 90px;
   height: 100px;
-  background: ${props => props.$gold ? "var(--zen-gold, #b8860b)" : "var(--primary)"};
+  background: ${(props) =>
+    props.$gold ? "var(--zen-gold, #b8860b)" : "var(--primary)"};
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   display: flex;
   flex-direction: column;
@@ -514,7 +523,11 @@ const ButtonPrimary = styled.button`
   font-size: 1rem;
   cursor: pointer;
   border: none;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
   transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -599,9 +612,13 @@ const StateSelect = styled.div`
 const StateButton = styled.button<{ $active: boolean; $color: string }>`
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  border: 1px solid ${props => props.$active ? props.$color : "var(--border)"};
-  background: ${props => props.$active ? `rgba(${props.$color === "var(--primary)" ? "var(--primary-rgb)" : props.$color === "var(--secondary)" ? "var(--secondary-rgb)" : "var(--accent-rgb)"}, 0.08)` : "var(--surface)"};
-  color: ${props => props.$active ? props.$color : "var(--text-secondary)"};
+  border: 1px solid
+    ${(props) => (props.$active ? props.$color : "var(--border)")};
+  background: ${(props) =>
+    props.$active
+      ? `rgba(${props.$color === "var(--primary)" ? "var(--primary-rgb)" : props.$color === "var(--secondary)" ? "var(--secondary-rgb)" : "var(--accent-rgb)"}, 0.08)`
+      : "var(--surface)"};
+  color: ${(props) => (props.$active ? props.$color : "var(--text-secondary)")};
   font-weight: 600;
   cursor: pointer;
   font-size: 0.85rem;
@@ -622,27 +639,35 @@ const InputBox = styled.input<InputBoxProps>`
   transition: all 0.25s ease;
   outline: none;
 
-  ${props => props.$state === "normal" && `
+  ${(props) =>
+    props.$state === "normal" &&
+    `
     background: var(--background);
     border: 2px solid var(--border);
     color: var(--foreground);
   `}
 
-  ${props => props.$state === "focus" && `
+  ${(props) =>
+    props.$state === "focus" &&
+    `
     background: var(--surface);
     border: 2px solid var(--primary);
     color: var(--foreground);
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
   `}
 
-  ${props => props.$state === "correct" && `
+  ${(props) =>
+    props.$state === "correct" &&
+    `
     background: rgba(16, 185, 129, 0.04);
     border: 2px solid var(--secondary);
     color: var(--foreground);
     box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
   `}
 
-  ${props => props.$state === "incorrect" && `
+  ${(props) =>
+    props.$state === "incorrect" &&
+    `
     background: rgba(244, 63, 94, 0.04);
     border: 2px solid var(--accent);
     color: var(--foreground);
@@ -662,7 +687,7 @@ const VisualSandbox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
 
   .explanation-text {
     font-size: 0.9rem;
@@ -751,7 +776,8 @@ const HankoMenuButton = styled.button<{ $isOpen: boolean }>`
   justify-content: center;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-  transform: ${props => props.$isOpen ? "rotate(45deg) scale(1.05)" : "rotate(0) scale(1)"};
+  transform: ${(props) =>
+    props.$isOpen ? "rotate(45deg) scale(1.05)" : "rotate(0) scale(1)"};
 `;
 
 const RadialItem = styled(motion.div)`
@@ -792,13 +818,13 @@ const Toast = styled(motion.div)`
   font-weight: 600;
   z-index: 1000;
   box-shadow: var(--shadow-lg);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 `;
 
 export default function DesignSystemPage() {
   // Color Card Copy-to-clipboard handler
   const [toastMessage, setToastMessage] = useState("");
-  
+
   const handleCopyColor = (hex: string, name: string) => {
     navigator.clipboard.writeText(hex);
     setToastMessage(`Warna ${name} (${hex}) disalin ke clipboard!`);
@@ -814,37 +840,85 @@ export default function DesignSystemPage() {
   const [progressVal, setProgressVal] = useState(65);
 
   // Input states simulator
-  const [inputState, setInputState] = useState<"normal" | "focus" | "correct" | "incorrect">("normal");
+  const [inputState, setInputState] = useState<
+    "normal" | "focus" | "correct" | "incorrect"
+  >("normal");
   const [inputValue, setInputValue] = useState("");
 
   // Mobile menu radial popup
   const [isRadialOpen, setIsRadialOpen] = useState(false);
 
   const colorsList = [
-    { name: "Primary (Indigo)", hex: "#4F46E5", role: "Tombol utama, brand identitas, border aktif" },
-    { name: "Primary Light", hex: "#818CF8", role: "Gradien tombol, hover state, kategori tag" },
-    { name: "Primary Dark", hex: "#3730A3", role: "Sisi gelap gradien tombol utama" },
-    { name: "Secondary (Emerald)", hex: "#10B981", role: "Jawaban benar kuis, lencana streak harian" },
-    { name: "Accent (Rose)", hex: "#F43F5E", role: "Jawaban salah kuis, status kesalahan" },
-    { name: "Zen Gold (Emas)", hex: "#B8860B", role: "Lencana prestasi, bintang pencapaian" },
-    { name: "Torii Red (Merah)", hex: "#C41E3A", role: "Stempel Hanko, aksen kultural ikon" },
-    { name: "Dark Background", hex: "#0F172A", role: "Latar dasar halaman mode gelap" },
-    { name: "Dark Surface", hex: "#1E293B", role: "Latar kartu, popover, form kuis" },
-    { name: "Dark Border", hex: "#334155", role: "Garis batas border mode gelap" },
+    {
+      name: "Primary (Indigo)",
+      hex: "#4F46E5",
+      role: "Tombol utama, brand identitas, border aktif",
+    },
+    {
+      name: "Primary Light",
+      hex: "#818CF8",
+      role: "Gradien tombol, hover state, kategori tag",
+    },
+    {
+      name: "Primary Dark",
+      hex: "#3730A3",
+      role: "Sisi gelap gradien tombol utama",
+    },
+    {
+      name: "Secondary (Emerald)",
+      hex: "#10B981",
+      role: "Jawaban benar kuis, lencana streak harian",
+    },
+    {
+      name: "Accent (Rose)",
+      hex: "#F43F5E",
+      role: "Jawaban salah kuis, status kesalahan",
+    },
+    {
+      name: "Zen Gold (Emas)",
+      hex: "#B8860B",
+      role: "Lencana prestasi, bintang pencapaian",
+    },
+    {
+      name: "Torii Red (Merah)",
+      hex: "#C41E3A",
+      role: "Stempel Hanko, aksen kultural ikon",
+    },
+    {
+      name: "Dark Background",
+      hex: "#0F172A",
+      role: "Latar dasar halaman mode gelap",
+    },
+    {
+      name: "Dark Surface",
+      hex: "#1E293B",
+      role: "Latar kartu, popover, form kuis",
+    },
+    {
+      name: "Dark Border",
+      hex: "#334155",
+      role: "Garis batas border mode gelap",
+    },
   ];
 
   return (
     <PageWrapper>
       <ContentWrapper>
         <div style={{ marginBottom: "2rem" }}>
-          <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Design System" />
+          <Breadcrumbs
+            items={[{ label: "Home", href: "/" }]}
+            current="Design System"
+          />
         </div>
 
         <Container>
           <PageHeader>
-            <h1>Design System & <span>UI Component Specs</span></h1>
+            <h1>
+              Design System & <span>UI Component Specs</span>
+            </h1>
             <p>
-              Auditor UI/UX & Blueprint spesifikasi elemen visual untuk proyek web belajar bahasa Jepang "JapanApp".
+              Auditor UI/UX & Blueprint spesifikasi elemen visual untuk proyek
+              web belajar bahasa Jepang "JapanApp".
             </p>
           </PageHeader>
 
@@ -853,14 +927,16 @@ export default function DesignSystemPage() {
             <SectionHeader>
               <h2>1. Brand Identity & Visual Core</h2>
             </SectionHeader>
-            
-            <SubsectionTitle>Palet Warna (Klik warna untuk menyalin HEX)</SubsectionTitle>
+
+            <SubsectionTitle>
+              Palet Warna (Klik warna untuk menyalin HEX)
+            </SubsectionTitle>
             <ColorGrid>
               {colorsList.map((col) => (
                 <ColorCard key={col.hex} $color={col.hex}>
                   <div className="preview">
-                    <button 
-                      className="copy-btn" 
+                    <button
+                      className="copy-btn"
                       onClick={() => handleCopyColor(col.hex, col.name)}
                     >
                       Salin HEX
@@ -875,39 +951,82 @@ export default function DesignSystemPage() {
               ))}
             </ColorGrid>
 
-            <SubsectionTitle>Skala Tipografi & Font Alternatif Canva</SubsectionTitle>
+            <SubsectionTitle>
+              Skala Tipografi & Font Alternatif Canva
+            </SubsectionTitle>
             <TypographyBox>
               <TypoSample>
-                <span className="label">Hero Title (H1) • 4.5rem (Bold 900) • Canva: Inter Extra Bold</span>
-                <h1 style={{ fontSize: "clamp(2rem, 4vw, 4.5rem)", fontWeight: 900, margin: 0, lineHeight: 1.1, letterSpacing: "-0.02em" }}>
+                <span className="label">
+                  Hero Title (H1) • 4.5rem (Bold 900) • Canva: Inter Extra Bold
+                </span>
+                <h1
+                  style={{
+                    fontSize: "clamp(2rem, 4vw, 4.5rem)",
+                    fontWeight: 900,
+                    margin: 0,
+                    lineHeight: 1.1,
+                    letterSpacing: "-0.02em",
+                  }}
+                >
                   Say Konnichiwa!
                 </h1>
               </TypoSample>
 
               <TypoSample>
-                <span className="label">Section Header (H2) • 2.5rem (Bold 700) • Canva: Inter Bold</span>
-                <h2 style={{ fontSize: "2.5rem", fontWeight: 700, margin: 0, lineHeight: 1.2 }}>
+                <span className="label">
+                  Section Header (H2) • 2.5rem (Bold 700) • Canva: Inter Bold
+                </span>
+                <h2
+                  style={{
+                    fontSize: "2.5rem",
+                    fontWeight: 700,
+                    margin: 0,
+                    lineHeight: 1.2,
+                  }}
+                >
                   Materi Kanji Hiragana
                 </h2>
               </TypoSample>
 
               <TypoSample>
-                <span className="label">Card Header (H3) • 1.5rem (Bold 700) • Canva: Inter Bold</span>
-                <h3 style={{ fontSize: "1.5rem", fontWeight: 700, margin: 0, lineHeight: 1.3 }}>
+                <span className="label">
+                  Card Header (H3) • 1.5rem (Bold 700) • Canva: Inter Bold
+                </span>
+                <h3
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                    margin: 0,
+                    lineHeight: 1.3,
+                  }}
+                >
                   Kuis Harian Hari Ini
                 </h3>
               </TypoSample>
 
               <TypoSample>
-                <span className="label">Body Text • 1.15rem (Regular 400) • Canva: Noto Sans Japanese</span>
+                <span className="label">
+                  Body Text • 1.15rem (Regular 400) • Canva: Noto Sans Japanese
+                </span>
                 <p style={{ fontSize: "1.15rem", margin: 0, lineHeight: 1.7 }}>
-                  JapanApp adalah platform belajar bahasa Jepang interaktif. 日本語のテキストが読みやすいようにNoto Sans JPを使用します。
+                  JapanApp adalah platform belajar bahasa Jepang interaktif.
+                  日本語のテキストが読みやすいようにNoto Sans JPを使用します。
                 </p>
               </TypoSample>
 
               <TypoSample>
-                <span className="label">Micro-copy (Monospace) • 0.72rem (Medium 500) • Canva: Roboto Mono</span>
-                <span style={{ fontSize: "0.72rem", fontWeight: 500, fontFamily: "monospace", letterSpacing: "0.05em" }}>
+                <span className="label">
+                  Micro-copy (Monospace) • 0.72rem (Medium 500) • Canva: Roboto
+                  Mono
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.72rem",
+                    fontWeight: 500,
+                    fontFamily: "monospace",
+                    letterSpacing: "0.05em",
+                  }}
+                >
                   LAST REVIEW: 2026-06-16T12:00:00Z • EXP: +15
                 </span>
               </TypoSample>
@@ -921,11 +1040,18 @@ export default function DesignSystemPage() {
             </SectionHeader>
 
             <SubsectionTitle>
-              A. Flashcard & Card Materi Learning 
+              A. Flashcard & Card Materi Learning
               <SpecBadge>Radius: 20px / 16px</SpecBadge>
             </SubsectionTitle>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "1.5rem" }}>
-              Klik flashcard untuk membalik (flip) kartu, dan klik kartu taktil untuk menguji animasi ketukan membal seluler.
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                fontSize: "0.95rem",
+                marginBottom: "1.5rem",
+              }}
+            >
+              Klik flashcard untuk membalik (flip) kartu, dan klik kartu taktil
+              untuk menguji animasi ketukan membal seluler.
             </p>
             <CardShowcaseGrid>
               {/* 3D Flip Flashcard */}
@@ -955,9 +1081,16 @@ export default function DesignSystemPage() {
                 <span className="tag">Tata Bahasa</span>
                 <h4>Partikel は (Wa)</h4>
                 <p>
-                  Digunakan untuk menandai topik utama pembicaraan dalam suatu kalimat bahasa Jepang.
+                  Digunakan untuk menandai topik utama pembicaraan dalam suatu
+                  kalimat bahasa Jepang.
                 </p>
-                <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", marginTop: "auto" }}>
+                <span
+                  style={{
+                    fontSize: "0.75rem",
+                    color: "var(--text-secondary)",
+                    marginTop: "auto",
+                  }}
+                >
                   (Ketuk kartu ini untuk efek taktil)
                 </span>
               </TaktilCard>
@@ -967,8 +1100,16 @@ export default function DesignSystemPage() {
               B. Tabel Data & Sistem Grid (Kanji Table)
               <SpecBadge>Breakpoint: 768px</SpecBadge>
             </SubsectionTitle>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "1rem" }}>
-              Ubah ukuran peramban Anda menjadi lebih sempit (&lt; 768px) untuk melihat tabel ini runtuh secara responsif menjadi barisan kartu seluler yang terstruktur.
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                fontSize: "0.95rem",
+                marginBottom: "1rem",
+              }}
+            >
+              Ubah ukuran peramban Anda menjadi lebih sempit (&lt; 768px) untuk
+              melihat tabel ini runtuh secara responsif menjadi barisan kartu
+              seluler yang terstruktur.
             </p>
             <TableWrapper>
               <Table>
@@ -984,7 +1125,9 @@ export default function DesignSystemPage() {
                     <Td data-label="Kanji">
                       <span className="kanji-char">日</span>
                     </Td>
-                    <Td data-label="Cara Baca">ニチ, ジツ (nichi) • ひ, -び (hi)</Td>
+                    <Td data-label="Cara Baca">
+                      ニチ, ジツ (nichi) • ひ, -び (hi)
+                    </Td>
                     <Td data-label="Arti">Matahari, Hari</Td>
                   </Tr>
                   <Tr>
@@ -1010,12 +1153,14 @@ export default function DesignSystemPage() {
               <SpecBadge>Hexagon Badges</SpecBadge>
             </SubsectionTitle>
             <SliderWrapper>
-              <label htmlFor="p-slider">Sesuaikan Progress ({progressVal}%):</label>
-              <input 
+              <label htmlFor="p-slider">
+                Sesuaikan Progress ({progressVal}%):
+              </label>
+              <input
                 id="p-slider"
-                type="range" 
-                min="0" 
-                max="100" 
+                type="range"
+                min="0"
+                max="100"
                 value={progressVal}
                 onChange={(e) => setProgressVal(Number(e.target.value))}
               />
@@ -1025,7 +1170,13 @@ export default function DesignSystemPage() {
               <ProgressBarFill $width={progressVal} />
             </ProgressBarBase>
 
-            <div style={{ fontWeight: 700, fontSize: "1rem", color: "var(--foreground)" }}>
+            <div
+              style={{
+                fontWeight: 700,
+                fontSize: "1rem",
+                color: "var(--foreground)",
+              }}
+            >
               Showcase Lencana Heksagonal (Anti-Duolingo Clip-Path):
             </div>
             <BadgeGrid>
@@ -1051,11 +1202,24 @@ export default function DesignSystemPage() {
               <ButtonPrimary>Lanjut Belajar (Primary)</ButtonPrimary>
               <ButtonSecondary>Lulus Kuis (Secondary)</ButtonSecondary>
               <ButtonOutline>Lihat Detail (Outline)</ButtonOutline>
-              
+
               {/* Hanko stamp button */}
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.25rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "0.25rem",
+                }}
+              >
                 <ButtonHanko>習</ButtonHanko>
-                <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "var(--torii-red, #c41e3a)" }}>
+                <span
+                  style={{
+                    fontSize: "0.65rem",
+                    fontWeight: 700,
+                    color: "var(--torii-red, #c41e3a)",
+                  }}
+                >
                   HANKO STAMP (HP)
                 </span>
               </div>
@@ -1065,12 +1229,19 @@ export default function DesignSystemPage() {
               E. Kolom Input & Form Kuis
               <SpecBadge>Interactive States</SpecBadge>
             </SubsectionTitle>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "1rem" }}>
-              Klik tombol state di bawah ini untuk mensimulasikan perubahan status input jawaban kuis secara langsung:
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                fontSize: "0.95rem",
+                marginBottom: "1rem",
+              }}
+            >
+              Klik tombol state di bawah ini untuk mensimulasikan perubahan
+              status input jawaban kuis secara langsung:
             </p>
             <StateSelect>
-              <StateButton 
-                $active={inputState === "normal"} 
+              <StateButton
+                $active={inputState === "normal"}
                 $color="var(--text-secondary)"
                 onClick={() => {
                   setInputState("normal");
@@ -1079,8 +1250,8 @@ export default function DesignSystemPage() {
               >
                 Normal
               </StateButton>
-              <StateButton 
-                $active={inputState === "focus"} 
+              <StateButton
+                $active={inputState === "focus"}
                 $color="var(--primary)"
                 onClick={() => {
                   setInputState("focus");
@@ -1089,8 +1260,8 @@ export default function DesignSystemPage() {
               >
                 Focus (Aktif)
               </StateButton>
-              <StateButton 
-                $active={inputState === "correct"} 
+              <StateButton
+                $active={inputState === "correct"}
                 $color="var(--secondary)"
                 onClick={() => {
                   setInputState("correct");
@@ -1099,8 +1270,8 @@ export default function DesignSystemPage() {
               >
                 Correct (Benar)
               </StateButton>
-              <StateButton 
-                $active={inputState === "incorrect"} 
+              <StateButton
+                $active={inputState === "incorrect"}
                 $color="var(--accent)"
                 onClick={() => {
                   setInputState("incorrect");
@@ -1125,13 +1296,22 @@ export default function DesignSystemPage() {
             <SectionHeader>
               <h2>3. Mobile-Exclusive Identity Sandbox</h2>
             </SectionHeader>
-            <p style={{ color: "var(--text-secondary)", fontSize: "0.95rem", marginBottom: "1.5rem" }}>
-              Simulasi navigasi seluler dengan tirai gantung <strong>Noren</strong> dan menu kipas <strong>Hanko</strong> (klik Hanko merah bulat untuk menembakkan sub-menu).
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                fontSize: "0.95rem",
+                marginBottom: "1.5rem",
+              }}
+            >
+              Simulasi navigasi seluler dengan tirai gantung{" "}
+              <strong>Noren</strong> dan menu kipas <strong>Hanko</strong> (klik
+              Hanko merah bulat untuk menembakkan sub-menu).
             </p>
 
             <VisualSandbox>
               <div className="explanation-text">
-                <strong>Simulasi Layar Ponsel JapanApp</strong><br />
+                <strong>Simulasi Layar Ponsel JapanApp</strong>
+                <br />
                 (Melayang bebas, estetik, kental bernuansa kertas & kayu Zen)
               </div>
 
@@ -1166,7 +1346,12 @@ export default function DesignSystemPage() {
                         initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
                         animate={{ x: -80, y: 0, opacity: 1, scale: 1 }}
                         exit={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
-                        transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 20 }}
+                        transition={{
+                          duration: 0.3,
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 20,
+                        }}
                         title="Pengaturan"
                       >
                         設
@@ -1177,7 +1362,12 @@ export default function DesignSystemPage() {
                         initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
                         animate={{ x: -58, y: -58, opacity: 1, scale: 1 }}
                         exit={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
-                        transition={{ duration: 0.35, type: "spring", stiffness: 300, damping: 20 }}
+                        transition={{
+                          duration: 0.35,
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 20,
+                        }}
                         title="Kamus Jisho"
                       >
                         辞
@@ -1188,7 +1378,12 @@ export default function DesignSystemPage() {
                         initial={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
                         animate={{ x: 0, y: -80, opacity: 1, scale: 1 }}
                         exit={{ x: 0, y: 0, opacity: 0, scale: 0.5 }}
-                        transition={{ duration: 0.4, type: "spring", stiffness: 300, damping: 20 }}
+                        transition={{
+                          duration: 0.4,
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 20,
+                        }}
                         title="Cari Jisho"
                       >
                         検
