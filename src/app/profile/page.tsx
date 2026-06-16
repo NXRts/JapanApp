@@ -2,6 +2,7 @@
 
 import React, { useMemo, useRef, useState } from "react";
 import styled from "styled-components";
+import Link from "next/link";
 import { useProgress } from "@/context/ProgressContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import {
@@ -586,7 +587,9 @@ export default function ProfilePage() {
             <span>Display Name</span>
             <span>How you appear to others</span>
           </SettingLabel>
-          <ActionButton>Edit</ActionButton>
+          <ActionButton as={Link} href="/profile/edit">
+            Edit
+          </ActionButton>
         </SettingItem>
         <SettingItem>
           <SettingLabel>
