@@ -20,7 +20,8 @@ const Container = styled.div`
   position: relative;
 
   @media (max-width: 768px) {
-    padding: 1.5rem 1rem;
+    padding: 1rem 0.75rem;
+    gap: 1.25rem;
   }
 `;
 
@@ -46,6 +47,16 @@ const PageHeader = styled.div`
     margin: 0;
     color: var(--text-secondary);
     font-size: 0.95rem;
+  }
+
+  @media (max-width: 768px) {
+    padding-bottom: 1rem;
+    h1 {
+      font-size: 1.75rem;
+    }
+    p {
+      font-size: 0.85rem;
+    }
   }
 `;
 
@@ -74,10 +85,11 @@ const Sidebar = styled.div`
   @media (max-width: 768px) {
     flex-direction: row;
     overflow-x: auto;
-    padding: 0.5rem;
+    padding: 0.4rem;
     border-radius: 16px;
-    gap: 0.25rem;
+    gap: 0.35rem;
     -webkit-overflow-scrolling: touch;
+    justify-content: space-between;
 
     &::-webkit-scrollbar {
       display: none;
@@ -110,13 +122,37 @@ const TabButton = styled.button<{ $active: boolean }>`
   svg {
     width: 18px;
     height: 18px;
+    flex-shrink: 0;
+  }
+
+  .text-desktop {
+    display: inline;
+  }
+
+  .text-mobile {
+    display: none;
   }
 
   @media (max-width: 768px) {
-    width: auto;
+    flex: 1;
+    justify-content: center;
     white-space: nowrap;
-    padding: 0.65rem 1rem;
-    font-size: 0.88rem;
+    padding: 0.6rem 0.4rem;
+    font-size: 0.8rem;
+    gap: 0.25rem;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .text-desktop {
+      display: none;
+    }
+
+    .text-mobile {
+      display: inline;
+    }
   }
 `;
 
@@ -131,8 +167,10 @@ const SettingsCard = styled.div`
   flex-direction: column;
   gap: 2rem;
 
-  @media (max-width: 600px) {
-    padding: 1.5rem;
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+    border-radius: 20px;
+    gap: 1.5rem;
     min-height: auto;
   }
 `;
@@ -153,6 +191,16 @@ const TabHeader = styled.div`
     margin: 0;
     color: var(--text-secondary);
     font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    padding-bottom: 1rem;
+    h2 {
+      font-size: 1.25rem;
+    }
+    p {
+      font-size: 0.8rem;
+    }
   }
 `;
 
@@ -193,6 +241,12 @@ const FormInput = styled.input`
     background: var(--surface);
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
   }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 12px;
+  }
 `;
 
 const ToggleRow = styled.div`
@@ -208,6 +262,12 @@ const ToggleRow = styled.div`
 
   &:hover {
     border-color: var(--primary-light);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.85rem 1rem;
+    gap: 0.75rem;
+    border-radius: 14px;
   }
 `;
 
@@ -225,6 +285,16 @@ const ToggleInfo = styled.div`
   span.desc {
     font-size: 0.82rem;
     color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    span.title {
+      font-size: 0.88rem;
+    }
+    span.desc {
+      font-size: 0.75rem;
+    }
   }
 `;
 
@@ -253,6 +323,19 @@ const SwitchButton = styled.button<{ $checked: boolean }>`
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: left 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
+
+  @media (max-width: 768px) {
+    width: 46px;
+    height: 24px;
+    border-radius: 12px;
+
+    &::after {
+      width: 16px;
+      height: 16px;
+      top: 4px;
+      left: ${(props) => (props.$checked ? "26px" : "4px")};
+    }
+  }
 `;
 
 const ColorGrid = styled.div`
@@ -260,6 +343,10 @@ const ColorGrid = styled.div`
   gap: 0.75rem;
   flex-wrap: wrap;
   margin-top: 0.5rem;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+  }
 `;
 
 const ColorBtn = styled.button<{ $color: string; $isSelected: boolean }>`
@@ -280,6 +367,12 @@ const ColorBtn = styled.button<{ $color: string; $isSelected: boolean }>`
 
   &:active {
     transform: scale(0.95);
+  }
+
+  @media (max-width: 768px) {
+    width: 36px;
+    height: 36px;
+    border-width: 3px;
   }
 `;
 
@@ -309,6 +402,17 @@ const ModeBox = styled.button<{ $active: boolean }>`
   span.icon {
     font-size: 2rem;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    border-radius: 14px;
+
+    span.icon {
+      font-size: 1.25rem;
+    }
+  }
 `;
 
 const ModeRow = styled.div`
@@ -316,8 +420,8 @@ const ModeRow = styled.div`
   gap: 1.25rem;
   margin-top: 0.5rem;
 
-  @media (max-width: 500px) {
-    flex-direction: column;
+  @media (max-width: 768px) {
+    gap: 0.75rem;
   }
 `;
 
@@ -329,6 +433,12 @@ const DangerCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+
+  @media (max-width: 768px) {
+    padding: 1.25rem;
+    border-radius: 16px;
+    gap: 1rem;
+  }
 `;
 
 const DangerTitle = styled.h4`
@@ -342,6 +452,10 @@ const DangerTitle = styled.h4`
 
   &::before {
     content: "⚠️";
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
   }
 `;
 
@@ -368,9 +482,12 @@ const DangerButton = styled.button<{ $confirming?: boolean }>`
     box-shadow: 0 4px 14px rgba(244, 63, 94, 0.2);
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 768px) {
     width: 100%;
     align-self: stretch;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 12px;
   }
 `;
 
@@ -382,8 +499,10 @@ const ActionButtonGroup = styled.div`
   padding-top: 1.75rem;
   margin-top: auto;
 
-  @media (max-width: 500px) {
+  @media (max-width: 768px) {
     flex-direction: column-reverse;
+    gap: 0.75rem;
+    padding-top: 1.25rem;
   }
 `;
 
@@ -407,8 +526,11 @@ const CancelButton = styled(Link)`
     border-color: var(--text-secondary);
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 768px) {
     width: 100%;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 12px;
   }
 `;
 
@@ -439,6 +561,56 @@ const SaveButton = styled.button`
 
   &:active {
     transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+    border-radius: 12px;
+  }
+`;
+
+const SectionTitle = styled.label`
+  font-size: 0.88rem;
+  font-weight: 750;
+  color: var(--foreground);
+  margin-bottom: 1rem;
+  display: block;
+
+  @media (max-width: 768px) {
+    font-size: 0.82rem;
+    margin-bottom: 0.75rem;
+  }
+`;
+
+const ToggleList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    gap: 0.75rem;
+  }
+`;
+
+const SubDescription = styled.span`
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
+`;
+
+const DangerDesc = styled.p`
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
   }
 `;
 
@@ -528,7 +700,8 @@ export default function SettingsPage() {
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
-            Akun & Fitur
+            <span className="text-desktop">Akun & Fitur</span>
+            <span className="text-mobile">Akun</span>
           </TabButton>
           <TabButton
             $active={activeTab === "appearance"}
@@ -543,7 +716,8 @@ export default function SettingsPage() {
               <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
               <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
             </svg>
-            Tampilan / Tema
+            <span className="text-desktop">Tampilan / Tema</span>
+            <span className="text-mobile">Tema</span>
           </TabButton>
           <TabButton
             $active={activeTab === "preferences"}
@@ -558,7 +732,8 @@ export default function SettingsPage() {
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            Privasi & Keamanan
+            <span className="text-desktop">Privasi & Keamanan</span>
+            <span className="text-mobile">Privasi</span>
           </TabButton>
           <TabButton
             $active={activeTab === "learning"}
@@ -572,7 +747,8 @@ export default function SettingsPage() {
             >
               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
             </svg>
-            Data Belajar
+            <span className="text-desktop">Data Belajar</span>
+            <span className="text-mobile">Data</span>
           </TabButton>
         </Sidebar>
 
@@ -610,24 +786,8 @@ export default function SettingsPage() {
                 </FormGroup>
 
                 <div style={{ marginTop: "0.5rem" }}>
-                  <label
-                    style={{
-                      fontSize: "0.88rem",
-                      fontWeight: 750,
-                      color: "var(--foreground)",
-                      marginBottom: "1rem",
-                      display: "block",
-                    }}
-                  >
-                    Metode & Pengalaman Belajar
-                  </label>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "1rem",
-                    }}
-                  >
+                  <SectionTitle>Metode & Pengalaman Belajar</SectionTitle>
+                  <ToggleList>
                     <ToggleRow>
                       <ToggleInfo>
                         <span className="title">
@@ -707,7 +867,7 @@ export default function SettingsPage() {
                         }
                       />
                     </ToggleRow>
-                  </div>
+                  </ToggleList>
                 </div>
               </FormGrid>
             </>
@@ -725,15 +885,10 @@ export default function SettingsPage() {
               <FormGrid>
                 <FormGroup>
                   <label>Warna Aksen Aplikasi (Theme Accent Color)</label>
-                  <span
-                    style={{
-                      fontSize: "0.82rem",
-                      color: "var(--text-secondary)",
-                    }}
-                  >
+                  <SubDescription>
                     Klik lingkaran warna di bawah ini untuk mengubah seluruh
                     aksen visual web secara real-time.
-                  </span>
+                  </SubDescription>
                   <ColorGrid>
                     {Object.entries(themes).map(([key, value]) => (
                       <ColorBtn
@@ -790,13 +945,7 @@ export default function SettingsPage() {
                 </p>
               </TabHeader>
               <FormGrid>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "1rem",
-                  }}
-                >
+                <ToggleList>
                   <ToggleRow>
                     <ToggleInfo>
                       <span className="title">
@@ -842,7 +991,7 @@ export default function SettingsPage() {
                       onClick={() => setShareProgress(!shareProgress)}
                     />
                   </ToggleRow>
-                </div>
+                </ToggleList>
               </FormGrid>
             </>
           )}
@@ -859,19 +1008,12 @@ export default function SettingsPage() {
               <FormGrid>
                 <DangerCard>
                   <DangerTitle>Zona Bahaya (Danger Zone)</DangerTitle>
-                  <p
-                    style={{
-                      margin: 0,
-                      fontSize: "0.88rem",
-                      color: "var(--text-secondary)",
-                      lineHeight: 1.5,
-                    }}
-                  >
+                  <DangerDesc>
                     Menyetel ulang data belajar akan menghapus semua level EXP,
                     streak harian, lencana heksagonal, dan histori penguasaan
                     huruf Kanji & Kosakata Anda secara permanen. Tindakan ini
                     tidak dapat dibatalkan.
-                  </p>
+                  </DangerDesc>
 
                   <DangerButton
                     type="button"
