@@ -575,6 +575,15 @@ const GameOverOverlay = styled(VictoryOverlay)`
   }
 `;
 
+// Locked Overlay Card
+const LockedOverlay = styled(VictoryOverlay)`
+  .lock-icon {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    animation: ${float} 2s ease-in-out infinite;
+  }
+`;
+
 const RetryBtn = styled(ContinueBtn)`
   background: #ef4444;
   border-color: #b91c1c;
@@ -1083,13 +1092,39 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
 function LessonPlayerContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { markExerciseCompleted, addExp } = useProgress();
+  const { progress, markExerciseCompleted, addExp } = useProgress();
   const startTime = useRef<number | null>(null);
 
   const lessonId = searchParams.get("id") || "n5-u1-l1";
   const returnUrl = searchParams.get("from") === "practice" ? "/practice" : "/";
   const lesson = lessonsData.find((l) => l.id === lessonId) || lessonsData[0];
   const [questions, setQuestions] = useState<Question[]>([]);
+
+  // O(1) lesson relationship index lookup map to optimize lesson unlock status checks
+  const lessonRelations = React.useMemo(() => {
+    const map = new Map<string, string>();
+    for (let i = 1; i < lessonsData.length; i++) {
+      map.set(lessonsData[i].id, lessonsData[i - 1].id);
+    }
+    return map;
+  }, []);
+
+  const [isUnlocked, setIsUnlocked] = useState<boolean | null>(null);
+
+  // Lock status guard check
+  useEffect(() => {
+    if (lessonId === "n5-u1-l1") {
+      setIsUnlocked(true);
+      return;
+    }
+    const prevId = lessonRelations.get(lessonId);
+    if (!prevId) {
+      setIsUnlocked(true);
+      return;
+    }
+    const unlocked = progress.completedExercises?.includes(prevId);
+    setIsUnlocked(unlocked || false);
+  }, [lessonId, progress.completedExercises, lessonRelations]);
 
   // State Management
   const [showExitModal, setShowExitModal] = useState(false);
@@ -1247,6 +1282,51 @@ function LessonPlayerContent() {
     setHasVoiceTriggered(false);
     startTime.current = Date.now();
   };
+
+  if (isUnlocked === null) {
+    return (
+      <FullscreenContainer style={{ justifyContent: "center" }}>
+        <div style={{ fontSize: "1.25rem", color: "var(--text-secondary)" }}>
+          Loading Lesson...
+        </div>
+      </FullscreenContainer>
+    );
+  }
+
+  if (isUnlocked === false) {
+    return (
+      <FullscreenContainer style={{ justifyContent: "center" }}>
+        <LockedOverlay>
+          <div className="lock-icon">🔒</div>
+          <VictoryTitle style={{ color: "#ef4444" }}>
+            Lesson Locked!
+          </VictoryTitle>
+          <VictorySubtitle style={{ maxWidth: "360px", marginBottom: "2rem" }}>
+            ロックされたレッスン
+            <br />
+            <span
+              style={{
+                fontSize: "0.95rem",
+                color: "var(--text-secondary)",
+                display: "block",
+                marginTop: "0.5rem",
+              }}
+            >
+              You haven't unlocked this lesson yet. Please complete the
+              preceding lessons in the roadmap to continue your journey.
+            </span>
+          </VictorySubtitle>
+
+          <ContinueBtn
+            onClick={() => router.push(returnUrl)}
+            style={{ maxWidth: "280px" }}
+          >
+            Back to Roadmap
+          </ContinueBtn>
+        </LockedOverlay>
+      </FullscreenContainer>
+    );
+  }
 
   if (questions.length === 0) {
     return (

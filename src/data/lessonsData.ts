@@ -3936,10 +3936,12 @@ const baseLessonsData: Lesson[] = [
     level: "N5",
     unitId: "n5-u11",
     unitTitle: "Unit 11: Weather & Seasons (Tenki to Kisetsu) ☀️",
-    unitDescription: "Kuasai kosakata tentang cuaca, musim, pola kalimat menyatakan cuaca, dan kanji musim.",
+    unitDescription:
+      "Kuasai kosakata tentang cuaca, musim, pola kalimat menyatakan cuaca, dan kanji musim.",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     title: "Weather Vocabulary",
-    description: "Kuasai kata benda cuaca: ame (hujan), hare (cerah), yuki (salju), kumori (berawan), dan tenki.",
+    description:
+      "Kuasai kata benda cuaca: ame (hujan), hare (cerah), yuki (salju), kumori (berawan), dan tenki.",
     expReward: 20,
     icon: "☀️",
     badge: "Vocabulary",
@@ -3963,7 +3965,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u11-l1-q3",
         type: "listening",
-        questionText: "Listen to the audio and choose the correct meaning of 雪 (yuki)!",
+        questionText:
+          "Listen to the audio and choose the correct meaning of 雪 (yuki)!",
         audioText: "ゆき",
         options: ["Snow", "Rain", "Cloud", "Sunny"],
         answer: "Snow",
@@ -3972,8 +3975,14 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u11-l1-q4",
         type: "fill-in-the-blank",
-        questionText: 'Complete the blank for "cloudy weather": 「きょうは ___ です。」',
-        options: ["くもり (kumori)", "はれ (hare)", "あめ (ame)", "ゆき (yuki)"],
+        questionText:
+          'Complete the blank for "cloudy weather": 「きょうは ___ です。」',
+        options: [
+          "くもり (kumori)",
+          "はれ (hare)",
+          "あめ (ame)",
+          "ゆき (yuki)",
+        ],
         answer: "くもり (kumori)",
         hint: "Kumori desu.",
       },
@@ -3992,10 +4001,12 @@ const baseLessonsData: Lesson[] = [
     level: "N5",
     unitId: "n5-u11",
     unitTitle: "Unit 11: Weather & Seasons (Tenki to Kisetsu) ☀️",
-    unitDescription: "Kuasai kosakata tentang cuaca, musim, pola kalimat menyatakan cuaca, dan kanji musim.",
+    unitDescription:
+      "Kuasai kosakata tentang cuaca, musim, pola kalimat menyatakan cuaca, dan kanji musim.",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     title: "Kanji Seasons",
-    description: "Kuasai Kanji 春 (musim semi), 夏 (musim panas), 秋 (musim gugur), 冬 (musim dingin).",
+    description:
+      "Kuasai Kanji 春 (musim semi), 夏 (musim panas), 秋 (musim gugur), 冬 (musim dingin).",
     expReward: 20,
     icon: "🌸",
     badge: "Kanji",
@@ -4019,7 +4030,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u11-l2-q3",
         type: "listening",
-        questionText: "Listen to the audio and select the meaning of the Kanji 秋 (aki)!",
+        questionText:
+          "Listen to the audio and select the meaning of the Kanji 秋 (aki)!",
         audioText: "あき",
         options: ["Autumn / Fall", "Spring", "Summer", "Winter"],
         answer: "Autumn / Fall",
@@ -4048,10 +4060,12 @@ const baseLessonsData: Lesson[] = [
     level: "N5",
     unitId: "n5-u11",
     unitTitle: "Unit 11: Weather & Seasons (Tenki to Kisetsu) ☀️",
-    unitDescription: "Kuasai kosakata tentang cuaca, musim, pola kalimat menyatakan cuaca, dan kanji musim.",
+    unitDescription:
+      "Kuasai kosakata tentang cuaca, musim, pola kalimat menyatakan cuaca, dan kanji musim.",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     title: "Weather Grammar & Verb Conjugation",
-    description: "Learn the grammar pattern of stating weather and using verbs like ga furimasu (rain/snow falls).",
+    description:
+      "Learn the grammar pattern of stating weather and using verbs like ga furimasu (rain/snow falls).",
     expReward: 20,
     icon: "📝",
     badge: "Grammar",
@@ -4059,7 +4073,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u11-l3-q1",
         type: "multiple-choice",
-        questionText: "Which particle is used before 'furimasu' (to fall/rain/snow)?",
+        questionText:
+          "Which particle is used before 'furimasu' (to fall/rain/snow)?",
         options: ["が (ga)", "を (wo)", "に (ni)", "で (de)"],
         answer: "が (ga)",
         hint: "Subjek alamiah menggunakan partikel ga.",
@@ -4067,7 +4082,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u11-l3-q2",
         type: "fill-in-the-blank",
-        questionText: 'Complete the sentence "Tomorrow it will rain": 「あしたはあめ ___ ふります。」',
+        questionText:
+          'Complete the sentence "Tomorrow it will rain": 「あしたはあめ ___ ふります。」',
         options: ["が", "を", "は", "に"],
         answer: "が",
         hint: "Ame ga furimasu.",
@@ -4077,7 +4093,12 @@ const baseLessonsData: Lesson[] = [
         type: "listening",
         questionText: "Listen and choose the correct translation:",
         audioText: "あめがふっています",
-        options: ["It is raining", "It is snowing", "It is sunny", "It is cloudy"],
+        options: [
+          "It is raining",
+          "It is snowing",
+          "It is sunny",
+          "It is cloudy",
+        ],
         answer: "It is raining",
         hint: "Ame ga futte imasu (sedang turun hujan).",
       },
@@ -4092,7 +4113,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u11-l3-q5",
         type: "typing",
-        questionText: "Type the invitation to do cherry blossom viewing in Hiragana: 「はなみをしましょう」",
+        questionText:
+          "Type the invitation to do cherry blossom viewing in Hiragana: 「はなみをしましょう」",
         options: [],
         answer: "はなみをしましょう",
         hint: "Hanami wo shimashou.",
@@ -4104,7 +4126,8 @@ const baseLessonsData: Lesson[] = [
     level: "N5",
     unitId: "n5-u11",
     unitTitle: "Unit 11: Weather & Seasons (Tenki to Kisetsu) ☀️",
-    unitDescription: "Kuasai kosakata tentang cuaca, musim, pola kalimat menyatakan cuaca, dan kanji musim.",
+    unitDescription:
+      "Kuasai kosakata tentang cuaca, musim, pola kalimat menyatakan cuaca, dan kanji musim.",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     title: "Weather & Season Conversations",
     description: "Practice asking and discussing the weather with friends.",
@@ -4115,15 +4138,22 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u11-l4-q1",
         type: "multiple-choice",
-        questionText: "Your friend asks 'きょうのてんきはどうですか' (How is today's weather?). It's cloudy, how do you reply?",
-        options: ["くもりです (kumori desu)", "はれです (hare desu)", "あめです (ame desu)", "さむいです (samui desu)"],
+        questionText:
+          "Your friend asks 'きょうのてんきはどうですか' (How is today's weather?). It's cloudy, how do you reply?",
+        options: [
+          "くもりです (kumori desu)",
+          "はれです (hare desu)",
+          "あめです (ame desu)",
+          "さむいです (samui desu)",
+        ],
         answer: "くもりです (kumori desu)",
         hint: "Cloudy in polite form.",
       },
       {
         id: "n5-u11-l4-q2",
         type: "fill-in-the-blank",
-        questionText: "Complete the question: 'What is your favorite season?' 「すきなきせつは ___ ですか。」",
+        questionText:
+          "Complete the question: 'What is your favorite season?' 「すきなきせつは ___ ですか。」",
         options: ["なん", "だれ", "どこ", "いつ"],
         answer: "なん",
         hint: "Nan desu ka (apa).",
@@ -4131,7 +4161,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u11-l4-q3",
         type: "listening",
-        questionText: "Listen to the dialogue and determine the speaker's favorite season!",
+        questionText:
+          "Listen to the dialogue and determine the speaker's favorite season!",
         audioText: "すきなきせつははるです",
         options: ["Spring", "Summer", "Autumn", "Winter"],
         answer: "Spring",
@@ -4148,7 +4179,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u11-l4-q5",
         type: "typing",
-        questionText: "Type the translation of 'It is raining' in Hiragana: 「あめがふっています」",
+        questionText:
+          "Type the translation of 'It is raining' in Hiragana: 「あめがふっています」",
         options: [],
         answer: "あめがふっています",
         hint: "Ame ga futte imasu.",
@@ -4160,10 +4192,12 @@ const baseLessonsData: Lesson[] = [
     level: "N5",
     unitId: "n5-u11",
     unitTitle: "Unit 11: Weather & Seasons (Tenki to Kisetsu) ☀️",
-    unitDescription: "Kuasai kosakata tentang cuaca, musim, pola kalimat menyatakan cuaca, dan kanji musim.",
+    unitDescription:
+      "Kuasai kosakata tentang cuaca, musim, pola kalimat menyatakan cuaca, dan kanji musim.",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     title: "Unit 11 Final Challenge",
-    description: "Test your competence in discussing weather, seasons, and related activities.",
+    description:
+      "Test your competence in discussing weather, seasons, and related activities.",
     expReward: 30,
     icon: "🏆",
     badge: "Synthesis",
@@ -4180,14 +4214,19 @@ const baseLessonsData: Lesson[] = [
         id: "n5-u11-l5-q2",
         type: "multiple-choice",
         questionText: "What is the season between spring and autumn?",
-        options: ["なつ (Summer)", "ふゆ (Winter)", "はる (Spring)", "あき (Autumn)"],
+        options: [
+          "なつ (Summer)",
+          "ふゆ (Winter)",
+          "はる (Spring)",
+          "あき (Autumn)",
+        ],
         answer: "なつ (Summer)",
         hint: "Natsu.",
       },
       {
         id: "n5-u11-l5-q3",
         type: "fill-in-the-blank",
-        questionText: 'Complete: 「あめが ___ 。 (It rains.)」',
+        questionText: "Complete: 「あめが ___ 。 (It rains.)」",
         options: ["ふります", "いきます", "たべます", "きます"],
         answer: "ふります",
         hint: "Furimasu.",
@@ -4221,7 +4260,12 @@ const baseLessonsData: Lesson[] = [
         type: "listening",
         questionText: "Listen to the statement and choose its translation!",
         audioText: "きょうはとてもさむいです",
-        options: ["Today is very cold", "Today is very hot", "Tomorrow is cold", "Yesterday was cold"],
+        options: [
+          "Today is very cold",
+          "Today is very hot",
+          "Tomorrow is cold",
+          "Yesterday was cold",
+        ],
         answer: "Today is very cold",
         hint: "Kyou wa totemo samui desu.",
       },
@@ -4256,10 +4300,12 @@ const baseLessonsData: Lesson[] = [
     level: "N5",
     unitId: "n5-u12",
     unitTitle: "Unit 12: Hobbies & Leisure (Shumi to Hima na Toki) 🎮",
-    unitDescription: "Kuasai kosakata tentang hobi, menyatakan kesukaan, kanji aktivitas, dan melakukan percakapan hobi.",
+    unitDescription:
+      "Kuasai kosakata tentang hobi, menyatakan kesukaan, kanji aktivitas, dan melakukan percakapan hobi.",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     title: "Hobbies Vocabulary",
-    description: "Kuasai kosakata hobi dasar: dokusho (membaca), ongaku (musik), eiga (film), supootsu (olahraga), dan shumi (hobi).",
+    description:
+      "Kuasai kosakata hobi dasar: dokusho (membaca), ongaku (musik), eiga (film), supootsu (olahraga), dan shumi (hobi).",
     expReward: 20,
     icon: "🎮",
     badge: "Vocabulary",
@@ -4268,7 +4314,12 @@ const baseLessonsData: Lesson[] = [
         id: "n5-u12-l1-q1",
         type: "multiple-choice",
         questionText: 'What does "どくしょ" (dokusho) mean?',
-        options: ["Reading books", "Listening to music", "Watching movies", "Playing sports"],
+        options: [
+          "Reading books",
+          "Listening to music",
+          "Watching movies",
+          "Playing sports",
+        ],
         answer: "Reading books",
         hint: "Membaca buku.",
       },
@@ -4283,7 +4334,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u12-l1-q3",
         type: "listening",
-        questionText: "Listen to the word and choose the meaning of 'えいが' (eiga)!",
+        questionText:
+          "Listen to the word and choose the meaning of 'えいが' (eiga)!",
         audioText: "えいが",
         options: ["Movie", "Book", "Music", "Sport"],
         answer: "Movie",
@@ -4292,8 +4344,14 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u12-l1-q4",
         type: "fill-in-the-blank",
-        questionText: 'Complete the blank for "hobby": 「わたしの ___ はえいがです。」',
-        options: ["しゅみ (shumi)", "tomodachi (friend)", "namae (name)", "kuni (country)"],
+        questionText:
+          'Complete the blank for "hobby": 「わたしの ___ はえいがです。」',
+        options: [
+          "しゅみ (shumi)",
+          "tomodachi (friend)",
+          "namae (name)",
+          "kuni (country)",
+        ],
         answer: "しゅみ (shumi)",
         hint: "Shumi wa eiga desu.",
       },
@@ -4312,10 +4370,12 @@ const baseLessonsData: Lesson[] = [
     level: "N5",
     unitId: "n5-u12",
     unitTitle: "Unit 12: Hobbies & Leisure (Shumi to Hima na Toki) 🎮",
-    unitDescription: "Kuasai kosakata tentang hobi, menyatakan kesukaan, kanji aktivitas, dan melakukan percakapan hobi.",
+    unitDescription:
+      "Kuasai kosakata tentang hobi, menyatakan kesukaan, kanji aktivitas, dan melakukan percakapan hobi.",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     title: "Grammar Suki & Kirai",
-    description: "Master patterns for expressing likes (~ga suki desu) and dislikes (~ga kirai desu).",
+    description:
+      "Master patterns for expressing likes (~ga suki desu) and dislikes (~ga kirai desu).",
     expReward: 20,
     icon: "❤️",
     badge: "Grammar",
@@ -4323,7 +4383,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u12-l2-q1",
         type: "multiple-choice",
-        questionText: "Which particle is used before 'suki' (like) or 'kirai' (dislike)?",
+        questionText:
+          "Which particle is used before 'suki' (like) or 'kirai' (dislike)?",
         options: ["が (ga)", "を (wo)", "は (wa)", "に (ni)"],
         answer: "が (ga)",
         hint: "Partikel untuk menyatakan preferensi kesukaan.",
@@ -4331,7 +4392,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u12-l2-q2",
         type: "fill-in-the-blank",
-        questionText: 'Complete the sentence "I like music": 「わたしはおんがく ___ すきです。」',
+        questionText:
+          'Complete the sentence "I like music": 「わたしはおんがく ___ すきです。」',
         options: ["が", "を", "は", "に"],
         answer: "が",
         hint: "Ongaku ga suki desu.",
@@ -4356,7 +4418,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u12-l2-q5",
         type: "typing",
-        questionText: "Type 'I like movies' in Hiragana (without watashi wa): 「えいががすきです」",
+        questionText:
+          "Type 'I like movies' in Hiragana (without watashi wa): 「えいががすきです」",
         options: [],
         answer: "えいががすきです",
         hint: "Eiga ga suki desu.",
@@ -4368,10 +4431,12 @@ const baseLessonsData: Lesson[] = [
     level: "N5",
     unitId: "n5-u12",
     unitTitle: "Unit 12: Hobbies & Leisure (Shumi to Hima na Toki) 🎮",
-    unitDescription: "Kuasai kosakata tentang hobi, menyatakan kesukaan, kanji aktivitas, dan melakukan percakapan hobi.",
+    unitDescription:
+      "Kuasai kosakata tentang hobi, menyatakan kesukaan, kanji aktivitas, dan melakukan percakapan hobi.",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     title: "Kanji for Activities",
-    description: "Master Kanji 読 (membaca), 聞 (mendengar/bertanya), 見 (menonton/melihat).",
+    description:
+      "Master Kanji 読 (membaca), 聞 (mendengar/bertanya), 見 (menonton/melihat).",
     expReward: 20,
     icon: "👁️",
     badge: "Kanji",
@@ -4387,7 +4452,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u12-l3-q2",
         type: "multiple-choice",
-        questionText: "What is the reading for the Kanji 聞 in '音楽を聞きます'?",
+        questionText:
+          "What is the reading for the Kanji 聞 in '音楽を聞きます'?",
         options: ["き (ki)", "よ (yo)", "み (mi)", "か (ka)"],
         answer: "き (ki)",
         hint: "Kikimasu.",
@@ -4395,7 +4461,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u12-l3-q3",
         type: "listening",
-        questionText: "Listen to the pronunciation and choose the meaning of the Kanji 見 in '映画を見ます'!",
+        questionText:
+          "Listen to the pronunciation and choose the meaning of the Kanji 見 in '映画を見ます'!",
         audioText: "みます",
         options: ["To watch / see", "To read", "To listen", "To play"],
         answer: "To watch / see",
@@ -4424,10 +4491,12 @@ const baseLessonsData: Lesson[] = [
     level: "N5",
     unitId: "n5-u12",
     unitTitle: "Unit 12: Hobbies & Leisure (Shumi to Hima na Toki) 🎮",
-    unitDescription: "Kuasai kosakata tentang hobi, menyatakan kesukaan, kanji aktivitas, dan melakukan percakapan hobi.",
+    unitDescription:
+      "Kuasai kosakata tentang hobi, menyatakan kesukaan, kanji aktivitas, dan melakukan percakapan hobi.",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     title: "Hobby & Leisure Conversations",
-    description: "Practice talking about hobbies and free-time activities with peers.",
+    description:
+      "Practice talking about hobbies and free-time activities with peers.",
     expReward: 20,
     icon: "🗣️",
     badge: "Conversation",
@@ -4435,15 +4504,22 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u12-l4-q1",
         type: "multiple-choice",
-        questionText: "Your colleague asks 'しゅみはなんですか' (What is your hobby?). You love reading books, how do you reply?",
-        options: ["どくしょです (dokusho desu)", "おんがくです (ongaku desu)", "えいがです (eiga desu)", "スポーツです (supootsu desu)"],
+        questionText:
+          "Your colleague asks 'しゅみはなんですか' (What is your hobby?). You love reading books, how do you reply?",
+        options: [
+          "どくしょです (dokusho desu)",
+          "おんがくです (ongaku desu)",
+          "えいがです (eiga desu)",
+          "スポーツです (supootsu desu)",
+        ],
         answer: "どくしょです (dokusho desu)",
         hint: "Dokusho desu.",
       },
       {
         id: "n5-u12-l4-q2",
         type: "fill-in-the-blank",
-        questionText: "Complete the dialogue: 「A: いっしょに映画を見ませんか。」 「B: ええ、___。」",
+        questionText:
+          "Complete the dialogue: 「A: いっしょに映画を見ませんか。」 「B: ええ、___。」",
         options: ["みましょう", "みます", "みません", "みたいです"],
         answer: "みましょう",
         hint: "Mimashou.",
@@ -4451,9 +4527,15 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u12-l4-q3",
         type: "listening",
-        questionText: "Listen to the speaker and choose what the question asks!",
+        questionText:
+          "Listen to the speaker and choose what the question asks!",
         audioText: "ひまなとき、なにをしますか",
-        options: ["What do you do in your free time?", "What is your hobby?", "Do you like movies?", "Where are you going?"],
+        options: [
+          "What do you do in your free time?",
+          "What is your hobby?",
+          "Do you like movies?",
+          "Where are you going?",
+        ],
         answer: "What do you do in your free time?",
         hint: "Hima na toki (saat waktu senggang) nani o shimasu ka.",
       },
@@ -4468,7 +4550,8 @@ const baseLessonsData: Lesson[] = [
       {
         id: "n5-u12-l4-q5",
         type: "typing",
-        questionText: "Type the translation of 'I like sports' in Hiragana: 「スポーツがすきです」",
+        questionText:
+          "Type the translation of 'I like sports' in Hiragana: 「スポーツがすきです」",
         options: [],
         answer: "すぽーつがすきです",
         hint: "Supootsu ga suki desu.",
@@ -4480,10 +4563,12 @@ const baseLessonsData: Lesson[] = [
     level: "N5",
     unitId: "n5-u12",
     unitTitle: "Unit 12: Hobbies & Leisure (Shumi to Hima na Toki) 🎮",
-    unitDescription: "Kuasai kosakata tentang hobi, menyatakan kesukaan, kanji aktivitas, dan melakukan percakapan hobi.",
+    unitDescription:
+      "Kuasai kosakata tentang hobi, menyatakan kesukaan, kanji aktivitas, dan melakukan percakapan hobi.",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     title: "Unit 12 Final Challenge",
-    description: "Synthesize everything you learned about hobbies, likes, dislikes, and free time.",
+    description:
+      "Synthesize everything you learned about hobbies, likes, dislikes, and free time.",
     expReward: 30,
     icon: "🏆",
     badge: "Synthesis",
@@ -4541,14 +4626,20 @@ const baseLessonsData: Lesson[] = [
         type: "listening",
         questionText: "Listen and translate:",
         audioText: "ひまなときおんがくをききます",
-        options: ["I listen to music in my free time", "I read books in my free time", "I watch movies in my free time", "I play games in my free time"],
+        options: [
+          "I listen to music in my free time",
+          "I read books in my free time",
+          "I watch movies in my free time",
+          "I play games in my free time",
+        ],
         answer: "I listen to music in my free time",
         hint: "Hima na toki (saat senggang) ongaku (musik) o kikimasu (mendengar).",
       },
       {
         id: "n5-u12-l5-q8",
         type: "fill-in-the-blank",
-        questionText: "Complete: 「いっしょにえいがを ___ か。」 (Won't you watch a movie together?)",
+        questionText:
+          "Complete: 「いっしょにえいがを ___ か。」 (Won't you watch a movie together?)",
         options: ["みませんか", "みます", "みましょう", "みたい"],
         answer: "みませんか",
         hint: "Mimasen ka.",
