@@ -481,15 +481,29 @@ export default function PracticeHubPage() {
   }, [progress.completedExercises]);
 
   const listeningLessonId = useMemo(() => {
-    const audioLessons = lessonsData.filter((l) =>
-      l.questions.some((q) => q.type === "listening"),
-    );
+    const relations = new Map<string, string>();
+    for (let i = 1; i < lessonsData.length; i++) {
+      relations.set(lessonsData[i].id, lessonsData[i - 1].id);
+    }
+
+    const audioLessons = lessonsData.filter((l) => {
+      // 1. Has listening questions?
+      const hasListening = l.questions.some((q) => q.type === "listening");
+      if (!hasListening) return false;
+
+      // 2. Is unlocked?
+      if (l.id === "n5-u1-l1") return true;
+      const prevId = relations.get(l.id);
+      if (!prevId) return true;
+      return progress.completedExercises?.includes(prevId);
+    });
+
     if (audioLessons.length > 0) {
       const idx = Math.floor(Math.random() * audioLessons.length);
       return audioLessons[idx].id;
     }
     return "n5-u1-l1";
-  }, []);
+  }, [progress.completedExercises]);
 
   // Mistakes logic
   const mistakesCount = useMemo(() => {
