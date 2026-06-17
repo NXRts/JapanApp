@@ -910,15 +910,20 @@ export default function Home() {
     let sectionNum = 1;
     let sectionName = "Basic Interaction & Survival";
 
-    if (unitNum > 10) {
+    if (selectedLevel === "N5") {
+      if (unitNum > 8) {
+        sectionNum = 3;
+        sectionName = "Intermediate Communication & Culture";
+      } else if (unitNum > 4) {
+        sectionNum = 2;
+        sectionName = "Daily Life in Japan";
+      } else {
+        sectionNum = 1;
+        sectionName = "Basic Interaction & Survival";
+      }
+    } else {
       sectionNum = 4;
       sectionName = "Professional & Academic Life";
-    } else if (unitNum > 6) {
-      sectionNum = 3;
-      sectionName = "Intermediate Communication & Culture";
-    } else if (unitNum > 3) {
-      sectionNum = 2;
-      sectionName = "Daily Life in Japan";
     }
 
     return {
