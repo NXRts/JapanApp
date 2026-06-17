@@ -130,7 +130,6 @@ const LivesIndicator = styled.div`
   font-weight: 800;
   font-size: 1.25rem;
   color: #ef4444;
-  animation: ${float} 2s ease-in-out infinite;
 `;
 
 // Question Card & Elements
