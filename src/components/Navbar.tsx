@@ -914,11 +914,13 @@ const SidebarActionButton = styled.button`
   transition: all 0.2s ease;
   min-width: 0;
   white-space: nowrap;
+  text-decoration: none;
 
   &:hover {
     color: var(--primary);
     border-color: var(--primary);
     background: rgba(var(--primary-rgb), 0.06);
+    text-decoration: none;
   }
 
   svg {
