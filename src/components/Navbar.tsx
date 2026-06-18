@@ -1561,11 +1561,21 @@ export function Navbar() {
                 <UserBtn href="/profile" title="Profile">
                   <UserIcon size={20} />
                 </UserBtn>
-                <SettingsBtn as={Link} href="/settings" title="Settings">
-                  <svg viewBox="0 0 24 24">
-                    <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" />
-                  </svg>
-                </SettingsBtn>
+                <HamburgerBtn
+                  $isOpen={isMobileMenuOpen}
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  aria-label="Toggle menu"
+                >
+                  {isMobileMenuOpen ? (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                    </svg>
+                  )}
+                </HamburgerBtn>
               </div>
             </>
           ) : (
@@ -1790,53 +1800,17 @@ export function Navbar() {
         <MobileMenu $isOpen={isMobileMenuOpen}>
           <NorenRod />
 
-          {/* SECTION 1: PEMBELAJARAN UTAMA */}
+          {/* SECTION 1: FITUR PEMBELAJARAN */}
           <MobileMenuSection>
             <MobileMenuSectionTitle $isOpen={isMobileMenuOpen} $delay={0.02}>
-              <MobileSectionIndicator /> Pembelajaran Utama
+              <MobileSectionIndicator /> Fitur Pembelajaran
             </MobileMenuSectionTitle>
-
-            <MobileLink
-              href="/"
-              $active={pathname === "/"}
-              $isOpen={isMobileMenuOpen}
-              $delay={0.05}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-              >
-                <KanjiBadge>家</KanjiBadge>
-                Home
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
-            </MobileLink>
-
-            <MobileLink
-              href="/characters"
-              $active={pathname.startsWith("/characters")}
-              $isOpen={isMobileMenuOpen}
-              $delay={0.08}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-              >
-                <KanjiBadge>字</KanjiBadge>
-                Characters
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
-            </MobileLink>
 
             <MobileLink
               href="/study"
               $active={pathname.startsWith("/study")}
               $isOpen={isMobileMenuOpen}
-              $delay={0.11}
+              $delay={0.05}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
@@ -1851,53 +1825,10 @@ export function Navbar() {
             </MobileLink>
 
             <MobileLink
-              href="/jlpt"
-              $active={pathname.startsWith("/jlpt")}
-              $isOpen={isMobileMenuOpen}
-              $delay={0.14}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-              >
-                <KanjiBadge>試</KanjiBadge>
-                JLPT
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
-            </MobileLink>
-          </MobileMenuSection>
-
-          {/* SECTION 2: LATIHAN & ALAT */}
-          <MobileMenuSection>
-            <MobileMenuSectionTitle $isOpen={isMobileMenuOpen} $delay={0.17}>
-              <MobileSectionIndicator /> Latihan & Alat
-            </MobileMenuSectionTitle>
-
-            <MobileLink
-              href="/practice"
-              $active={pathname === "/practice" || pathname === "/game"}
-              $isOpen={isMobileMenuOpen}
-              $delay={0.2}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-              >
-                <KanjiBadge>習</KanjiBadge>
-                Practice
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
-            </MobileLink>
-
-            <MobileLink
               href="/quiz"
               $active={pathname.startsWith("/quiz")}
               $isOpen={isMobileMenuOpen}
-              $delay={0.23}
+              $delay={0.08}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
@@ -1915,7 +1846,7 @@ export function Navbar() {
               href="/materi"
               $active={pathname.startsWith("/materi")}
               $isOpen={isMobileMenuOpen}
-              $delay={0.26}
+              $delay={0.11}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
@@ -1930,28 +1861,10 @@ export function Navbar() {
             </MobileLink>
 
             <MobileLink
-              href="/practice-sheets"
-              $active={pathname === "/practice-sheets"}
-              $isOpen={isMobileMenuOpen}
-              $delay={0.29}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-              >
-                <KanjiBadge>書</KanjiBadge>
-                Practice Sheets
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
-            </MobileLink>
-
-            <MobileLink
               href="/game"
               $active={pathname.startsWith("/game")}
               $isOpen={isMobileMenuOpen}
-              $delay={0.32}
+              $delay={0.14}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
@@ -1964,19 +1877,37 @@ export function Navbar() {
                 <ArrowRightIcon size={18} />
               </span>
             </MobileLink>
+
+            <MobileLink
+              href="/practice-sheets"
+              $active={pathname === "/practice-sheets"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.17}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>書</KanjiBadge>
+                Practice Sheets
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
           </MobileMenuSection>
 
-          {/* SECTION 3: AKUN & INFORMASI */}
+          {/* SECTION 2: PENGATURAN & APLIKASI */}
           <MobileMenuSection>
-            <MobileMenuSectionTitle $isOpen={isMobileMenuOpen} $delay={0.35}>
-              <MobileSectionIndicator /> Akun & Informasi
+            <MobileMenuSectionTitle $isOpen={isMobileMenuOpen} $delay={0.22}>
+              <MobileSectionIndicator /> Pengaturan & Aplikasi
             </MobileMenuSectionTitle>
 
             <MobileLink
               href="/stats"
               $active={pathname === "/stats"}
               $isOpen={isMobileMenuOpen}
-              $delay={0.38}
+              $delay={0.25}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
@@ -1991,28 +1922,10 @@ export function Navbar() {
             </MobileLink>
 
             <MobileLink
-              href="/profile"
-              $active={pathname === "/profile"}
-              $isOpen={isMobileMenuOpen}
-              $delay={0.41}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-              >
-                <KanjiBadge>己</KanjiBadge>
-                Profile
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
-            </MobileLink>
-
-            <MobileLink
               href="/blog"
               $active={pathname.startsWith("/blog")}
               $isOpen={isMobileMenuOpen}
-              $delay={0.44}
+              $delay={0.28}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
@@ -2027,10 +1940,28 @@ export function Navbar() {
             </MobileLink>
 
             <MobileLink
+              href="/settings"
+              $active={pathname === "/settings"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.31}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>設</KanjiBadge>
+                Settings
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
+
+            <MobileLink
               href="/about"
               $active={pathname === "/about"}
               $isOpen={isMobileMenuOpen}
-              $delay={0.47}
+              $delay={0.34}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
@@ -2048,7 +1979,7 @@ export function Navbar() {
               href="/help"
               $active={pathname === "/help"}
               $isOpen={isMobileMenuOpen}
-              $delay={0.5}
+              $delay={0.37}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
@@ -2066,7 +1997,7 @@ export function Navbar() {
               href="/contact"
               $active={pathname === "/contact"}
               $isOpen={isMobileMenuOpen}
-              $delay={0.53}
+              $delay={0.4}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
@@ -2079,11 +2010,33 @@ export function Navbar() {
                 <ArrowRightIcon size={18} />
               </span>
             </MobileLink>
+
+            <MobileLink
+              href="#"
+              $active={false}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.43}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsMobileMenuOpen(false);
+                window.location.href = "/login";
+              }}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>退</KanjiBadge>
+                Keluar
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
           </MobileMenuSection>
 
           <MobileDictBtn
             $isOpen={isMobileMenuOpen}
-            $delay={0.58}
+            $delay={0.48}
             onClick={() => {
               setIsDictionaryOpen(true);
               setIsMobileMenuOpen(false);
