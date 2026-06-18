@@ -1122,26 +1122,25 @@ function GlobeIcon() {
   );
 }
 
-function QuizIcon() {
+function QuizIcon({ fill, stroke, ...props }: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+      {...props}
     >
       <circle
         cx="12"
         cy="12"
         r="10"
-        fill="#22c55e"
-        fillOpacity="0.15"
-        stroke="#22c55e"
+        fill={fill || "none"}
+        stroke={stroke || "currentColor"}
         strokeWidth="2.5"
       />
       <path
         d="M9 12L11 14L15 10"
-        stroke="#22c55e"
+        stroke={stroke || "currentColor"}
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -1150,16 +1149,16 @@ function QuizIcon() {
   );
 }
 
-function BookIcon() {
+function BookIcon({ stroke, ...props }: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#3b82f6"
+      stroke={stroke || "currentColor"}
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+      {...props}
     >
       <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
       <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
@@ -1167,16 +1166,16 @@ function BookIcon() {
   );
 }
 
-function StudyIcon() {
+function StudyIcon({ stroke, ...props }: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#10b981"
+      stroke={stroke || "currentColor"}
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+      {...props}
     >
       <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
       <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
@@ -1184,16 +1183,16 @@ function StudyIcon() {
   );
 }
 
-function SheetsIcon() {
+function SheetsIcon({ stroke, ...props }: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#f59e0b"
+      stroke={stroke || "currentColor"}
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+      {...props}
     >
       <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
       <line x1="9" y1="3" x2="9" y2="21" />
@@ -1204,16 +1203,16 @@ function SheetsIcon() {
   );
 }
 
-function BlogIcon() {
+function BlogIcon({ stroke, ...props }: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#a855f7"
+      stroke={stroke || "currentColor"}
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+      {...props}
     >
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
       <polyline points="14 2 14 8 20 8" />
@@ -1224,16 +1223,16 @@ function BlogIcon() {
   );
 }
 
-function ContactIcon() {
+function ContactIcon({ stroke, ...props }: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#ec4899"
+      stroke={stroke || "currentColor"}
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
-      style={{ width: "18px", height: "18px", flexShrink: 0 }}
+      {...props}
     >
       <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
       <polyline points="22,6 12,13 2,6" />
@@ -1320,14 +1319,46 @@ export function Navbar() {
               Characters
             </SidebarNavItem>
 
-            <SidebarNavItem href="/practice" $active={pathname === "/practice" || pathname.startsWith("/game")}>
+            <SidebarNavItem href="/jlpt" $active={pathname.startsWith("/jlpt")}>
+              <JlptIcon />
+              JLPT
+            </SidebarNavItem>
+
+            <SidebarNavItem href="/practice" $active={pathname === "/practice"}>
               <PracticeIcon />
               Practice
             </SidebarNavItem>
 
-            <SidebarNavItem href="/jlpt" $active={pathname.startsWith("/jlpt")}>
-              <JlptIcon />
-              JLPT
+            <SidebarNavItem
+              href="/study"
+              $active={pathname.startsWith("/study")}
+            >
+              <StudyIcon />
+              Study
+            </SidebarNavItem>
+
+            <SidebarNavItem
+              href="/quiz"
+              $active={pathname.startsWith("/quiz")}
+            >
+              <QuizIcon />
+              Quiz
+            </SidebarNavItem>
+
+            <SidebarNavItem
+              href="/materi"
+              $active={pathname.startsWith("/materi")}
+            >
+              <BookIcon />
+              Learning Materials
+            </SidebarNavItem>
+
+            <SidebarNavItem
+              href="/game"
+              $active={pathname.startsWith("/game")}
+            >
+              <GameIcon />
+              Game
             </SidebarNavItem>
 
             <SidebarNavItem href="/profile" $active={pathname === "/profile"}>
@@ -1347,53 +1378,13 @@ export function Navbar() {
 
               <PopoverMenu $isOpen={isLainnyaOpen}>
                 <Link
-                  href="/study"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                  onClick={() => setIsLainnyaOpen(false)}
-                >
-                  <PopoverItem>
-                    <StudyIcon />
-                    Study
-                  </PopoverItem>
-                </Link>
-                <Link
-                  href="/quiz"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                  onClick={() => setIsLainnyaOpen(false)}
-                >
-                  <PopoverItem>
-                    <QuizIcon />
-                    Quiz
-                  </PopoverItem>
-                </Link>
-                <Link
-                  href="/materi"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                  onClick={() => setIsLainnyaOpen(false)}
-                >
-                  <PopoverItem>
-                    <BookIcon />
-                    Learning Materials
-                  </PopoverItem>
-                </Link>
-                <Link
                   href="/practice-sheets"
                   style={{ textDecoration: "none", color: "inherit" }}
                   onClick={() => setIsLainnyaOpen(false)}
                 >
                   <PopoverItem>
-                    <SheetsIcon />
+                    <SheetsIcon stroke="#f59e0b" />
                     Practice Sheets
-                  </PopoverItem>
-                </Link>
-                 <Link
-                  href="/game"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                  onClick={() => setIsLainnyaOpen(false)}
-                >
-                  <PopoverItem>
-                    <GameIcon stroke="#10b981" />
-                    Game
                   </PopoverItem>
                 </Link>
                 <Link
@@ -1402,7 +1393,7 @@ export function Navbar() {
                   onClick={() => setIsLainnyaOpen(false)}
                 >
                   <PopoverItem>
-                    <BlogIcon />
+                    <BlogIcon stroke="#a855f7" />
                     Blog
                   </PopoverItem>
                 </Link>
@@ -1432,7 +1423,7 @@ export function Navbar() {
                   onClick={() => setIsLainnyaOpen(false)}
                 >
                   <PopoverItem>
-                    <ContactIcon />
+                    <ContactIcon stroke="#ec4899" />
                     Contact
                   </PopoverItem>
                 </Link>
