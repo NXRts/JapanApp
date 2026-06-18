@@ -419,6 +419,60 @@ const HeadphonesSvg = () => (
   </FloatingHeadphonesSvg>
 );
 
+const GamepadSvg = () => (
+  <svg
+    viewBox="0 0 140 140"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{ width: "100%", height: "100%" }}
+  >
+    {/* Outer decorative ring */}
+    <circle
+      cx="70"
+      cy="70"
+      r="45"
+      stroke="#10b981"
+      strokeWidth="2"
+      strokeDasharray="6 6"
+      strokeOpacity="0.4"
+    />
+    <FloatingGroup>
+      {/* Gamepad Body with Neon Accent */}
+      <path
+        d="M35 72c0-12 10-22 22-22h26c12 0 22 10 22 22v2c0 10-6 18-15 20l-6 1c-4 1-8 1-12 0l-6-1c-9-2-15-10-15-20v-2z"
+        fill="#10B981"
+        fillOpacity="0.1"
+        stroke="#10B981"
+        strokeWidth="4.5"
+        strokeLinejoin="round"
+      />
+      {/* Left/Right Handles */}
+      <path
+        d="M35 70c-6-1-11 4-11 10v6c0 10 8 18 18 18h6"
+        stroke="#10B981"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <path
+        d="M105 70c6-1 11 4 11 10v6c0 10-8 18-18 18h-6"
+        stroke="#10B981"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      {/* D-Pad */}
+      <path
+        d="M48 76h12M54 70v12"
+        stroke="#818CF8"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+      />
+      {/* Buttons */}
+      <circle cx="86" cy="73" r="4" fill="#F43F5E" />
+      <circle cx="94" cy="81" r="4" fill="#F59E0B" />
+    </FloatingGroup>
+  </svg>
+);
+
 const SyncArrowsSvg = () => (
   <SpinningArrowsSvg
     viewBox="0 0 140 140"
@@ -575,6 +629,25 @@ export default function PracticeHubPage() {
           </CardContent>
           <CardGraphic className="card-graphic-container">
             <HeadphonesSvg />
+          </CardGraphic>
+        </PracticeCard>
+
+        <PracticeCard $gradient="radial-gradient(circle, #10b981 0%, transparent 60%)">
+          <CardContent>
+            <CardTitle>Learning Games</CardTitle>
+            <CardDescription>
+              Play interactive games like Speed Typing and Memory Match to make character and vocabulary practice fun.
+            </CardDescription>
+            <ActionButton
+              $color="#10b981"
+              $shadowColor="#059669"
+              onClick={() => router.push("/game")}
+            >
+              Play Games (+15 EXP)
+            </ActionButton>
+          </CardContent>
+          <CardGraphic className="card-graphic-container">
+            <GamepadSvg />
           </CardGraphic>
         </PracticeCard>
 
