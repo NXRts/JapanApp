@@ -235,19 +235,13 @@ const DOCK_TABS: DockTab[] = [
     href: "/practice",
     label: "Practice",
     icon: PracticeIcon,
-    matchPaths: ["/practice"],
+    matchPaths: ["/practice", "/game"],
   },
   {
     href: "/jlpt",
     label: "JLPT",
     icon: JlptIcon,
     matchPaths: ["/jlpt", "/quiz", "/daily-quiz"],
-  },
-  {
-    href: "/game",
-    label: "Game",
-    icon: GameIcon,
-    matchPaths: ["/game"],
   },
   {
     href: "/profile",

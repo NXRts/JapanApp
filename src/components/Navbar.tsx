@@ -508,6 +508,47 @@ const MobileLink = styled(Link)<{
   }
 `;
 
+const MobileMenuSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-bottom: 0.75rem;
+`;
+
+const MobileSectionIndicator = styled.span`
+  width: 3px;
+  height: 12px;
+  background-color: var(--primary);
+  border-radius: 2px;
+  display: inline-block;
+`;
+
+const MobileMenuSectionTitle = styled.div<{ $isOpen: boolean; $delay: number }>`
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  padding: 0.8rem 0.5rem 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1.5px dashed var(--border);
+  margin-bottom: 0.25rem;
+
+  /* Staggered animation */
+  opacity: 0;
+  transform: translateY(15px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: ${({ $delay }) => $delay}s;
+  ${({ $isOpen }) =>
+    $isOpen &&
+    `
+    opacity: 0.85;
+    transform: translateY(0);
+  `}
+`;
+
 const MobileDictBtn = styled.div<{ $isOpen: boolean; $delay: number }>`
   margin-top: 1rem;
   padding: 1rem;
@@ -616,7 +657,7 @@ function HomeIcon() {
   );
 }
 
-function GameIcon() {
+function GameIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -625,6 +666,7 @@ function GameIcon() {
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
+      {...props}
     >
       <rect x="2" y="6" width="20" height="12" rx="3" />
       <line x1="6" y1="12" x2="10" y2="12" />
@@ -702,7 +744,7 @@ function ProfileIcon() {
   );
 }
 
-function StatsIcon() {
+function StatsIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -711,13 +753,14 @@ function StatsIcon() {
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
+      {...props}
     >
       <path d="M12 2v20M17 5v17M7 9v13" />
     </svg>
   );
 }
 
-function AboutIcon() {
+function AboutIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -726,6 +769,7 @@ function AboutIcon() {
       strokeWidth="2.5"
       strokeLinecap="round"
       strokeLinejoin="round"
+      {...props}
     >
       <circle cx="12" cy="12" r="10" />
       <line x1="12" y1="16" x2="12" y2="12" />
@@ -1022,6 +1066,12 @@ const PopoverItem = styled.div`
     background: rgba(var(--primary-rgb), 0.08);
     color: var(--primary);
   }
+
+  svg {
+    width: 18px !important;
+    height: 18px !important;
+    flex-shrink: 0;
+  }
 `;
 
 const PopoverDivider = styled.div`
@@ -1270,7 +1320,7 @@ export function Navbar() {
               Characters
             </SidebarNavItem>
 
-            <SidebarNavItem href="/practice" $active={pathname === "/practice"}>
+            <SidebarNavItem href="/practice" $active={pathname === "/practice" || pathname.startsWith("/game")}>
               <PracticeIcon />
               Practice
             </SidebarNavItem>
@@ -1278,21 +1328,6 @@ export function Navbar() {
             <SidebarNavItem href="/jlpt" $active={pathname.startsWith("/jlpt")}>
               <JlptIcon />
               JLPT
-            </SidebarNavItem>
-
-            <SidebarNavItem href="/game" $active={pathname.startsWith("/game")}>
-              <GameIcon />
-              Game
-            </SidebarNavItem>
-
-            <SidebarNavItem href="/stats" $active={pathname === "/stats"}>
-              <StatsIcon />
-              Stats
-            </SidebarNavItem>
-
-            <SidebarNavItem href="/about" $active={pathname === "/about"}>
-              <AboutIcon />
-              About
             </SidebarNavItem>
 
             <SidebarNavItem href="/profile" $active={pathname === "/profile"}>
@@ -1351,6 +1386,16 @@ export function Navbar() {
                     Practice Sheets
                   </PopoverItem>
                 </Link>
+                 <Link
+                  href="/game"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem>
+                    <GameIcon stroke="#10b981" />
+                    Game
+                  </PopoverItem>
+                </Link>
                 <Link
                   href="/blog"
                   style={{ textDecoration: "none", color: "inherit" }}
@@ -1359,6 +1404,26 @@ export function Navbar() {
                   <PopoverItem>
                     <BlogIcon />
                     Blog
+                  </PopoverItem>
+                </Link>
+                <Link
+                  href="/stats"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem>
+                    <StatsIcon stroke="#06b6d4" />
+                    Stats
+                  </PopoverItem>
+                </Link>
+                <Link
+                  href="/about"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem>
+                    <AboutIcon stroke="#6366f1" />
+                    About
                   </PopoverItem>
                 </Link>
                 <Link
@@ -1734,279 +1799,300 @@ export function Navbar() {
         <MobileMenu $isOpen={isMobileMenuOpen}>
           <NorenRod />
 
-          <MobileLink
-            href="/"
-            $active={pathname === "/"}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.05}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-            >
-              <KanjiBadge>家</KanjiBadge>
-              Home
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+          {/* SECTION 1: PEMBELAJARAN UTAMA */}
+          <MobileMenuSection>
+            <MobileMenuSectionTitle $isOpen={isMobileMenuOpen} $delay={0.02}>
+              <MobileSectionIndicator /> Pembelajaran Utama
+            </MobileMenuSectionTitle>
 
-          <MobileLink
-            href="/study"
-            $active={pathname.startsWith("/study")}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.08}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/"
+              $active={pathname === "/"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.05}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>学</KanjiBadge>
-              Study
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>家</KanjiBadge>
+                Home
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
 
-          <MobileLink
-            href="/characters"
-            $active={pathname.startsWith("/characters")}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.11}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/characters"
+              $active={pathname.startsWith("/characters")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.08}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>字</KanjiBadge>
-              Characters
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>字</KanjiBadge>
+                Characters
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
 
-          <MobileLink
-            href="/practice"
-            $active={pathname === "/practice"}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.14}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/study"
+              $active={pathname.startsWith("/study")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.11}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>習</KanjiBadge>
-              Practice
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>学</KanjiBadge>
+                Study
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
 
-          <MobileLink
-            href="/quiz"
-            $active={pathname.startsWith("/quiz")}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.17}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/jlpt"
+              $active={pathname.startsWith("/jlpt")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.14}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>問</KanjiBadge>
-              Quiz
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>試</KanjiBadge>
+                JLPT
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
+          </MobileMenuSection>
 
-          <MobileLink
-            href="/materi"
-            $active={pathname.startsWith("/materi")}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.2}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-            >
-              <KanjiBadge>資</KanjiBadge>
-              Materials
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+          {/* SECTION 2: LATIHAN & ALAT */}
+          <MobileMenuSection>
+            <MobileMenuSectionTitle $isOpen={isMobileMenuOpen} $delay={0.17}>
+              <MobileSectionIndicator /> Latihan & Alat
+            </MobileMenuSectionTitle>
 
-          <MobileLink
-            href="/practice-sheets"
-            $active={pathname === "/practice-sheets"}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.23}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/practice"
+              $active={pathname === "/practice" || pathname === "/game"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.2}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>書</KanjiBadge>
-              Practice Sheets
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>習</KanjiBadge>
+                Practice
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
 
-          <MobileLink
-            href="/jlpt"
-            $active={pathname.startsWith("/jlpt")}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.26}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/quiz"
+              $active={pathname.startsWith("/quiz")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.23}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>試</KanjiBadge>
-              JLPT
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>問</KanjiBadge>
+                Quiz
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
 
-          <MobileLink
-            href="/game"
-            $active={pathname.startsWith("/game")}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.29}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/materi"
+              $active={pathname.startsWith("/materi")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.26}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>遊</KanjiBadge>
-              Game
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>資</KanjiBadge>
+                Materials
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
 
-          <MobileLink
-            href="/blog"
-            $active={pathname.startsWith("/blog")}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.32}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/practice-sheets"
+              $active={pathname === "/practice-sheets"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.29}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>誌</KanjiBadge>
-              Blog
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>書</KanjiBadge>
+                Practice Sheets
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
 
-          <MobileLink
-            href="/stats"
-            $active={pathname === "/stats"}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.35}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/game"
+              $active={pathname.startsWith("/game")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.32}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>計</KanjiBadge>
-              Stats
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>遊</KanjiBadge>
+                Game
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
+          </MobileMenuSection>
 
-          <MobileLink
-            href="/about"
-            $active={pathname === "/about"}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.38}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
-            >
-              <KanjiBadge>伝</KanjiBadge>
-              About
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+          {/* SECTION 3: AKUN & INFORMASI */}
+          <MobileMenuSection>
+            <MobileMenuSectionTitle $isOpen={isMobileMenuOpen} $delay={0.35}>
+              <MobileSectionIndicator /> Akun & Informasi
+            </MobileMenuSectionTitle>
 
-          <MobileLink
-            href="/help"
-            $active={pathname === "/help"}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.41}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/stats"
+              $active={pathname === "/stats"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.38}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>助</KanjiBadge>
-              Bantuan
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>計</KanjiBadge>
+                Stats
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
 
-          <MobileLink
-            href="/profile"
-            $active={pathname === "/profile"}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.44}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/profile"
+              $active={pathname === "/profile"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.41}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>己</KanjiBadge>
-              Profile
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>己</KanjiBadge>
+                Profile
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
 
-          <MobileLink
-            href="/contact"
-            $active={pathname === "/contact"}
-            $isOpen={isMobileMenuOpen}
-            $delay={0.47}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+            <MobileLink
+              href="/blog"
+              $active={pathname.startsWith("/blog")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.44}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>信</KanjiBadge>
-              Contact
-            </div>
-            <span>
-              <ArrowRightIcon size={18} />
-            </span>
-          </MobileLink>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>誌</KanjiBadge>
+                Blog
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
+
+            <MobileLink
+              href="/about"
+              $active={pathname === "/about"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.47}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>伝</KanjiBadge>
+                About
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
+
+            <MobileLink
+              href="/help"
+              $active={pathname === "/help"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.5}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>助</KanjiBadge>
+                Bantuan
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
+
+            <MobileLink
+              href="/contact"
+              $active={pathname === "/contact"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.53}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+              >
+                <KanjiBadge>信</KanjiBadge>
+                Contact
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
+          </MobileMenuSection>
 
           <MobileDictBtn
             $isOpen={isMobileMenuOpen}
-            $delay={0.53}
+            $delay={0.58}
             onClick={() => {
               setIsDictionaryOpen(true);
               setIsMobileMenuOpen(false);
