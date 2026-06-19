@@ -439,7 +439,7 @@ const GamepadSvg = () => (
     <FloatingGroup>
       {/* Gamepad Body with Neon Accent */}
       <path
-        d="M35 72c0-12 10-22 22-22h26c12 0 22 10 22 22v2c0 10-6 18-15 20l-6 1c-4 1-8 1-12 0l-6-1c-9-2-15-10-15-20v-2z"
+        d="M35 72c0-12 10-22 22-22h26c12 0 22 10 22 22v2c0 10-5 18-14 20l-6 1c-10 2-20 2-30 0l-6-1c-9-2-14-10-14-20v-2z"
         fill="#10B981"
         fillOpacity="0.1"
         stroke="#10B981"
