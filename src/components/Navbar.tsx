@@ -17,10 +17,10 @@ const DictionarySearchOverlay = dynamic(
   { ssr: false },
 );
 
-const NavRoot = styled.nav<{ $hideOnDesktop?: boolean }>`
+const NavRoot = styled.nav<{ $hideOnDesktop?: boolean; $isMenuOpen?: boolean }>`
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: ${({ $isMenuOpen }) => ($isMenuOpen ? 1005 : 100)};
   background: var(--navbar-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -1506,7 +1506,7 @@ export function Navbar() {
         </SidebarRoot>
       )}
 
-      <NavRoot $hideOnDesktop={isWidescreenMobileSim}>
+      <NavRoot $hideOnDesktop={isWidescreenMobileSim} $isMenuOpen={isMobileMenuOpen}>
         <NavContainer>
           {isMounted && deviceMode === "mobile" ? (
             <>
