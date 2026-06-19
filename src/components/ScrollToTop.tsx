@@ -25,6 +25,11 @@ const ScrollButton = styled.button<{ $visible: boolean }>`
   pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
   z-index: 1010;
 
+  html.mobile-menu-open & {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
   &:hover {
     background: var(--primary-dark);
     transform: translateY(-4px);

@@ -1275,18 +1275,35 @@ export function Navbar() {
   const expNeededForNext = nextLevelExp - currentLevelExp;
   const percent = (expInCurrentLevel / expNeededForNext) * 100;
 
-  // Prevent background scrolling when mobile menu is open
+  // Prevent background scrolling when mobile menu is open and toggle helper class
   useEffect(() => {
+    const html = document.documentElement;
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
+      html.classList.add("mobile-menu-open");
     } else {
       document.body.style.overflow = "unset";
+      html.classList.remove("mobile-menu-open");
     }
 
     return () => {
       document.body.style.overflow = "unset";
+      html.classList.remove("mobile-menu-open");
     };
   }, [isMobileMenuOpen]);
+
+  // Close mobile menu on Escape key press
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setIsMobileMenuOpen(false);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   // Close menu when route changes (optional, but good for UX if Link doesn't fully reload)
   // We handle it via onClick on Links usually
