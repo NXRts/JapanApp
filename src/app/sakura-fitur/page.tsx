@@ -244,6 +244,20 @@ export default function SakuraFitur() {
             <ActionButton href="/jlpt-exam">Mulai Simulasi JLPT</ActionButton>
           </FeatureInfo>
         </FeatureCard>
+
+        {/* Fitur 4: Sakura Grammar */}
+        <FeatureCard>
+          <FeatureIcon>📚</FeatureIcon>
+          <FeatureInfo>
+            <FeatureTitle>Struktur Belajar & Kuis Tata Bahasa (Sakura Grammar)</FeatureTitle>
+            <FeatureDesc>
+              Belajar tata bahasa Jepang N5 secara terstruktur dan berurutan! Modul baru ini 
+              menyediakan materi dengan furigana, ulasan ringkasan, dan kuis interaktif yang 
+              terbagi menjadi 3 jenis soal (pilihan ganda, mengisi partikel, dan penyusun kalimat).
+            </FeatureDesc>
+            <ActionButton href="/grammar/lessons">Mulai Belajar Grammar</ActionButton>
+          </FeatureInfo>
+        </FeatureCard>
       </FeatureGrid>
     </Container>
   );
