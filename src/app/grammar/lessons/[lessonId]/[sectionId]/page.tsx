@@ -51,18 +51,35 @@ const TopRow = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.5rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    width: 100%;
+  }
 `;
 
 const BackBtn = styled(Link)`
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 8px;
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 600;
-  font-size: 0.88rem;
-  transition: color 0.2s;
-  &:hover { color: var(--primary); }
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--foreground);
+    border-color: var(--primary-light, var(--primary));
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.04);
+    transform: translateX(-2px);
+  }
 `;
 
 const SectionCounter = styled.div`
@@ -221,7 +238,7 @@ const TipBox = styled.div`
 /* Key Vocabulary */
 const VocabGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 0.75rem;
 `;
 
@@ -357,7 +374,22 @@ export default function SectionPage({
   if (!lesson || !section) {
     return (
       <Container>
-        <BackBtn href="/grammar/lessons">← Back</BackBtn>
+        <BackBtn href="/grammar/lessons">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+          Back
+        </BackBtn>
         <h1>Section not found</h1>
       </Container>
     );
@@ -394,7 +426,20 @@ export default function SectionPage({
       {/* Top nav */}
       <TopRow>
         <BackBtn href={`/grammar/lessons/${lessonId}`}>
-          ← Back to Lesson {lesson.lessonNumber}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+          Back to Lesson {lesson.lessonNumber}
         </BackBtn>
         <SectionCounter>
           SECTION {sectionIdx + 1} OF {totalSectionsInLesson}

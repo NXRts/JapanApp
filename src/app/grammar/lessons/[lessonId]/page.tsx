@@ -53,14 +53,24 @@ const Container = styled.div`
 const BackLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 8px;
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
   margin-bottom: 1.5rem;
-  transition: color 0.2s;
-  &:hover { color: var(--primary); }
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--foreground);
+    border-color: var(--primary-light, var(--primary));
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.04);
+    transform: translateX(-2px);
+  }
 `;
 
 /* Progress bar across top */
@@ -104,6 +114,13 @@ const LessonHeader = styled.div`
   display: flex;
   gap: 1.25rem;
   align-items: flex-start;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    gap: 1rem;
+  }
 `;
 
 const LessonIcon = styled.div`
@@ -222,6 +239,12 @@ const SectionCard = styled.div<{ $locked: boolean; $done: boolean; $active: bool
       box-shadow: 0 8px 24px -6px rgba(79,70,229,0.15);
     }
   `}
+
+  @media (max-width: 600px) {
+    padding: 1rem 1.15rem;
+    gap: 0.85rem;
+    border-radius: 16px;
+  }
 `;
 
 const SectionNum = styled.div<{ $done: boolean; $active: boolean }>`
@@ -243,6 +266,13 @@ const SectionNum = styled.div<{ $done: boolean; $active: boolean }>`
   color: ${({ $done, $active }) =>
     $done ? "#22c55e" : $active ? "#fff" : "var(--text-secondary)"};
   border: ${({ $done }) => ($done ? "1.5px solid #22c55e" : "none")};
+
+  @media (max-width: 600px) {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
 `;
 
 const SectionInfo = styled.div`
@@ -287,6 +317,14 @@ const ExerciseBanner = styled.div<{ $locked: boolean }>`
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    padding: 1.25rem;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 1.25rem;
+  }
 `;
 
 const ExTitle = styled.div`
@@ -313,6 +351,11 @@ const ExBtn = styled(Link)<{ $locked: boolean }>`
   transition: all 0.2s;
   white-space: nowrap;
   &:hover { opacity: 0.88; }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    text-align: center;
+  }
 `;
 
 /* Icons */
@@ -355,7 +398,22 @@ export default function LessonDetailPage({
   if (!lesson) {
     return (
       <Container>
-        <BackLink href="/grammar/lessons">← Back to Lessons</BackLink>
+        <BackLink href="/grammar/lessons">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+          Back to Lessons
+        </BackLink>
         <h1>Lesson not found</h1>
       </Container>
     );
@@ -380,7 +438,22 @@ export default function LessonDetailPage({
 
   return (
     <Container>
-      <BackLink href="/grammar/lessons">← Back to lessons</BackLink>
+      <BackLink href="/grammar/lessons">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <line x1="19" y1="12" x2="5" y2="12" />
+          <polyline points="12 19 5 12 12 5" />
+        </svg>
+        Back to Lessons
+      </BackLink>
 
       {/* Top progress */}
       <TopProgressWrap>
