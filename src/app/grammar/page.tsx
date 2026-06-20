@@ -163,6 +163,89 @@ const CardMeaning = styled.p`
   margin: 0;
 `;
 
+const LessonsBanner = styled.div`
+  background: linear-gradient(135deg, var(--primary) 0%, #a855f7 100%);
+  border-radius: 24px;
+  padding: 2.25rem;
+  color: #ffffff;
+  margin-bottom: 3.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  box-shadow: 0 12px 36px -10px rgba(79, 70, 229, 0.35);
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.75rem;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+`;
+
+const BannerContent = styled.div`
+  flex: 1;
+`;
+
+const BannerBadge = styled.span`
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+`;
+
+const BannerTitle = styled.h2`
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+  }
+`;
+
+const BannerDesc = styled.p`
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  line-height: 1.55;
+  max-width: 580px;
+`;
+
+const BannerBtn = styled(Link)`
+  background: #ffffff;
+  color: var(--primary);
+  padding: 0.9rem 1.8rem;
+  border-radius: 16px;
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.05);
+  }
+`;
+
 export default function GrammarPage() {
   const [activeLevel, setActiveLevel] = useState<
     "N5" | "N4" | "N3" | "N2" | "N1"
@@ -192,6 +275,21 @@ export default function GrammarPage() {
           JLPT level to begin.
         </Subtitle>
       </Header>
+
+      <LessonsBanner>
+        <BannerContent>
+          <BannerBadge>Baru 🌸</BannerBadge>
+          <BannerTitle>📚 Pelajaran Tata Bahasa Terstruktur</BannerTitle>
+          <BannerDesc>
+            Belajar tata bahasa Jepang secara urut mulai dari dasar (N5) dengan penjelasan 
+            interaktif, contoh kalimat bersuara (furigana), dan kuis latihan interaktif.
+          </BannerDesc>
+        </BannerContent>
+        <BannerBtn href="/grammar/lessons">
+          Mulai Belajar Pelajaran
+          <span>→</span>
+        </BannerBtn>
+      </LessonsBanner>
 
       <LevelSelector>
         <LevelButton
