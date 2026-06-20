@@ -636,7 +636,8 @@ export default function PracticeHubPage() {
           <CardContent>
             <CardTitle>Learning Games</CardTitle>
             <CardDescription>
-              Play interactive games like Speed Typing and Memory Match to make character and vocabulary practice fun.
+              Play interactive games like Speed Typing and Memory Match to make
+              character and vocabulary practice fun.
             </CardDescription>
             <ActionButton
               $color="#10b981"
