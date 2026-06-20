@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { useProgress } from "@/context/ProgressContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import Link from "next/link";
+import { allVocabulary, allNumbers } from "@/lib/dictionary";
 
 const PageWrapper = styled.div`
   min-height: 90vh;
@@ -257,11 +258,51 @@ export default function ReviewPage() {
         .catch(() => setDetails({ type: "unknown" }));
     } else {
       // Likely Vocabulary
-      setDetails({
-        type: "vocabulary",
-        meaning: "Vocabulary Item",
-        reading: "...",
-      });
+      // First look in allVocabulary and allNumbers
+      const vocabDetails = allVocabulary.find(
+        (v) => v.word === currentItem.id || v.id === currentItem.id
+      ) || allNumbers.find(
+        (n) => n.word === currentItem.id || n.id === currentItem.id
+      );
+
+      if (vocabDetails) {
+        setDetails({
+          type: "vocabulary",
+          meaning: vocabDetails.meaning,
+          reading: vocabDetails.reading,
+          romaji: vocabDetails.romaji,
+        });
+      } else {
+        // Fallback to proxy search if not found locally
+        fetch(`/api/proxy/jisho?keyword=${encodeURIComponent(currentItem.id)}`)
+          .then((res) => res.json())
+          .then((data) => {
+            const firstResult = data.data?.[0];
+            if (firstResult) {
+              setDetails({
+                type: "vocabulary",
+                meaning: firstResult.senses?.[0]?.english_definitions?.join(", ") || "No definition",
+                reading: firstResult.japanese?.[0]?.reading || "...",
+                romaji: "",
+              });
+            } else {
+              setDetails({
+                type: "vocabulary",
+                meaning: "Vocabulary Item",
+                reading: "...",
+                romaji: "",
+              });
+            }
+          })
+          .catch(() => {
+            setDetails({
+              type: "vocabulary",
+              meaning: "Vocabulary Item",
+              reading: "...",
+              romaji: "",
+            });
+          });
+      }
     }
   }, [currentItem]);
 
@@ -423,14 +464,54 @@ export default function ReviewPage() {
                     </>
                   )}
                   {details?.type === "vocabulary" && (
-                    <div
-                      style={{
-                        textAlign: "center",
-                        color: "var(--text-secondary)",
-                      }}
-                    >
-                      Details for vocabulary items will be integrated soon.
-                    </div>
+                    <>
+                      <InfoRow>
+                        <label>Reading (Furigana)</label>
+                        <span style={{ color: "#16a34a", fontSize: "1.5rem" }}>
+                          {details.reading || "..."}
+                        </span>
+                      </InfoRow>
+                      {details.romaji && (
+                        <InfoRow>
+                          <label>Romaji</label>
+                          <span style={{ fontSize: "1.2rem", color: "#10b981" }}>
+                            {details.romaji}
+                          </span>
+                        </InfoRow>
+                      )}
+                      <InfoRow>
+                        <label>Meaning</label>
+                        <span style={{ color: "#3b82f6", fontSize: "1.2rem" }}>
+                          {details.meaning}
+                        </span>
+                      </InfoRow>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Avoid flipping card
+                          if (typeof window !== "undefined") {
+                            const synth = window.speechSynthesis;
+                            const utterance = new SpeechSynthesisUtterance(currentItem.id);
+                            utterance.lang = "ja-JP";
+                            synth.speak(utterance);
+                          }
+                        }}
+                        style={{
+                          background: "var(--primary)",
+                          color: "white",
+                          border: "none",
+                          borderRadius: "12px",
+                          padding: "0.5rem 1rem",
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                          marginTop: "0.5rem",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                        }}
+                      >
+                        🔊 Suara
+                      </button>
+                    </>
                   )}
                 </InfoGrid>
               </CardBack>

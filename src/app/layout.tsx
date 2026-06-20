@@ -77,6 +77,7 @@ export const metadata: Metadata = {
 
 import { ProgressProvider } from "@/context/ProgressContext";
 import { DeviceModeProvider } from "@/context/DeviceModeContext";
+import { SakuraBackground } from "@/components/common/SakuraBackground";
 
 export default function RootLayout({
   children,
@@ -93,6 +94,7 @@ export default function RootLayout({
           <DeviceModeProvider>
             <ProgressProvider>
               <StyledRegistry>
+                <SakuraBackground />
                 <Navbar />
                 <main style={{ flex: 1, position: "relative" }}>
                   {children}

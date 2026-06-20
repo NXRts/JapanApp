@@ -1354,10 +1354,7 @@ export function Navbar() {
               Study
             </SidebarNavItem>
 
-            <SidebarNavItem
-              href="/quiz"
-              $active={pathname.startsWith("/quiz")}
-            >
+            <SidebarNavItem href="/quiz" $active={pathname.startsWith("/quiz")}>
               <QuizIcon />
               Quiz
             </SidebarNavItem>
@@ -1370,10 +1367,7 @@ export function Navbar() {
               Learning Materials
             </SidebarNavItem>
 
-            <SidebarNavItem
-              href="/game"
-              $active={pathname.startsWith("/game")}
-            >
+            <SidebarNavItem href="/game" $active={pathname.startsWith("/game")}>
               <GameIcon />
               Game
             </SidebarNavItem>
@@ -1394,6 +1388,15 @@ export function Navbar() {
               </SidebarNavButton>
 
               <PopoverMenu $isOpen={isLainnyaOpen}>
+                <Link
+                  href="/sakura-fitur"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem style={{ color: "#ffb7c5" }}>
+                    <span>🌸</span> SakuraFitur
+                  </PopoverItem>
+                </Link>
                 <Link
                   href="/practice-sheets"
                   style={{ textDecoration: "none", color: "inherit" }}
@@ -1523,7 +1526,10 @@ export function Navbar() {
         </SidebarRoot>
       )}
 
-      <NavRoot $hideOnDesktop={isWidescreenMobileSim} $isMenuOpen={isMobileMenuOpen}>
+      <NavRoot
+        $hideOnDesktop={isWidescreenMobileSim}
+        $isMenuOpen={isMobileMenuOpen}
+      >
         <NavContainer>
           {isMounted && deviceMode === "mobile" ? (
             <>
@@ -1704,6 +1710,13 @@ export function Navbar() {
                   </StyledLink>
                   <DropdownMenu>
                     <DropdownItem
+                      href="/sakura-fitur"
+                      $active={pathname === "/sakura-fitur"}
+                      style={{ color: "#ffb7c5" }}
+                    >
+                      🌸 SakuraFitur
+                    </DropdownItem>
+                    <DropdownItem
                       href="/materi"
                       $active={pathname.startsWith("/materi")}
                     >
@@ -1831,7 +1844,11 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>学</KanjiBadge>
                 Study
@@ -1849,7 +1866,11 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>問</KanjiBadge>
                 Quiz
@@ -1867,7 +1888,11 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>資</KanjiBadge>
                 Materials
@@ -1885,7 +1910,11 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>遊</KanjiBadge>
                 Game
@@ -1903,7 +1932,11 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>書</KanjiBadge>
                 Practice Sheets
@@ -1928,7 +1961,11 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>計</KanjiBadge>
                 Stats
@@ -1946,7 +1983,11 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>誌</KanjiBadge>
                 Blog
@@ -1964,7 +2005,11 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>設</KanjiBadge>
                 Settings
@@ -1982,7 +2027,11 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>伝</KanjiBadge>
                 About
@@ -2000,10 +2049,37 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>助</KanjiBadge>
                 Bantuan
+              </div>
+              <span>
+                <ArrowRightIcon size={18} />
+              </span>
+            </MobileLink>
+
+            <MobileLink
+              href="/sakura-fitur"
+              $active={pathname === "/sakura-fitur"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.38}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  color: "#ffb7c5",
+                }}
+              >
+                <KanjiBadge style={{ background: "rgba(255, 183, 197, 0.15)", color: "#ffb7c5" }}>桜</KanjiBadge>
+                SakuraFitur
               </div>
               <span>
                 <ArrowRightIcon size={18} />
@@ -2018,7 +2094,11 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>信</KanjiBadge>
                 Contact
@@ -2040,7 +2120,11 @@ export function Navbar() {
               }}
             >
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                }}
               >
                 <KanjiBadge>退</KanjiBadge>
                 Keluar
