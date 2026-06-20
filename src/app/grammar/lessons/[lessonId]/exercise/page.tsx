@@ -66,6 +66,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   animation: ${fadeUp} 0.4s ease both;
+
+  @media (max-width: 600px) {
+    padding: 1.25rem 1rem;
+  }
 `;
 
 const Header = styled.div`
@@ -212,6 +216,12 @@ const ChoiceCard = styled.button<{ $selected: boolean; $disabled: boolean }>`
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
   `}
+
+  @media (max-width: 600px) {
+    padding: 0.85rem 1.15rem;
+    font-size: 0.95rem;
+    border-radius: 14px;
+  }
 `;
 
 /* Question Type: Word Bank */
@@ -279,6 +289,12 @@ const Tile = styled.button<{ $selected?: boolean; $disabled?: boolean }>`
       transform: translateY(0);
     }
   `}
+
+  @media (max-width: 600px) {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
 `;
 
 /* Bottom Action Bar */
@@ -304,6 +320,10 @@ const CheckBar = styled.div<{ $answered: boolean; $isCorrect: boolean | null }>`
   z-index: 999;
   backdrop-filter: blur(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (max-width: 600px) {
+    padding: 1rem 1.25rem;
+  }
 `;
 
 const BarInner = styled.div`

@@ -59,14 +59,24 @@ const Header = styled.div`
 const BackLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 8px;
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
   margin-bottom: 1.5rem;
-  transition: color 0.2s;
-  &:hover { color: var(--primary); }
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--foreground);
+    border-color: var(--primary-light, var(--primary));
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.04);
+    transform: translateX(-2px);
+  }
 `;
 
 const PageTitle = styled.h1`
@@ -165,6 +175,12 @@ const LessonCard = styled.div<{ $locked: boolean; $active: boolean }>`
       box-shadow: 0 12px 30px -8px rgba(79,70,229,0.18);
     }
   `}
+
+  @media (max-width: 600px) {
+    padding: 1rem 1.15rem;
+    gap: 0.85rem;
+    border-radius: 16px;
+  }
 `;
 
 const LessonNumBadge = styled.div<{ $done: boolean; $active: boolean }>`
@@ -186,6 +202,13 @@ const LessonNumBadge = styled.div<{ $done: boolean; $active: boolean }>`
   color: ${({ $done, $active }) =>
     $done ? "#22c55e" : $active ? "#fff" : "var(--text-secondary)"};
   border: ${({ $done }) => ($done ? "2px solid #22c55e" : "none")};
+
+  @media (max-width: 600px) {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
 `;
 
 const LessonInfo = styled.div`
@@ -197,6 +220,10 @@ const LessonTitle = styled.div`
   font-weight: 700;
   font-size: 1.1rem;
   margin-bottom: 0.2rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.95rem;
+  }
 `;
 
 const LessonSubtitle = styled.div`
@@ -333,7 +360,22 @@ export default function GrammarLessonsPage() {
   return (
     <Container>
       <Header>
-        <BackLink href="/grammar">← Back to Grammar</BackLink>
+        <BackLink href="/grammar">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <line x1="19" y1="12" x2="5" y2="12" />
+            <polyline points="12 19 5 12 12 5" />
+          </svg>
+          Back to Grammar
+        </BackLink>
         <PageTitle>Grammar Lessons</PageTitle>
         <PageSub>
           All {grammarLessons.length} lessons for N5 grammar

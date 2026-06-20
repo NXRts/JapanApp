@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import Link from "next/link";
-import styled, { css, createGlobalStyle } from "styled-components";
-import { usePathname } from "next/navigation";
-import dynamic from "next/dynamic";
-import { useProgress } from "@/context/ProgressContext";
-import { isItemDue } from "@/lib/srs";
-import { ArrowRightIcon, UserIcon } from "./icons/AppIcons";
-import { useDeviceMode } from "@/context/DeviceModeContext";
 import { DeviceModeSwitcher } from "@/components/DeviceModeSwitcher";
 import { FloatingDock } from "@/components/mobile/FloatingDock";
+import { useDeviceMode } from "@/context/DeviceModeContext";
+import { useProgress } from "@/context/ProgressContext";
+import { isItemDue } from "@/lib/srs";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import styled, { createGlobalStyle, css } from "styled-components";
+import { ArrowRightIcon, UserIcon } from "./icons/AppIcons";
 
 const DictionarySearchOverlay = dynamic(
   () => import("./dictionary/DictionarySearchOverlay"),
@@ -1359,17 +1359,17 @@ export function Navbar() {
               Quiz
             </SidebarNavItem>
 
+            <SidebarNavItem href="/game" $active={pathname.startsWith("/game")}>
+              <GameIcon />
+              Game
+            </SidebarNavItem>
+
             <SidebarNavItem
               href="/materi"
               $active={pathname.startsWith("/materi")}
             >
               <BookIcon />
               Learning Materials
-            </SidebarNavItem>
-
-            <SidebarNavItem href="/game" $active={pathname.startsWith("/game")}>
-              <GameIcon />
-              Game
             </SidebarNavItem>
 
             <SidebarNavItem href="/profile" $active={pathname === "/profile"}>
@@ -2078,7 +2078,14 @@ export function Navbar() {
                   color: "#ffb7c5",
                 }}
               >
-                <KanjiBadge style={{ background: "rgba(255, 183, 197, 0.15)", color: "#ffb7c5" }}>桜</KanjiBadge>
+                <KanjiBadge
+                  style={{
+                    background: "rgba(255, 183, 197, 0.15)",
+                    color: "#ffb7c5",
+                  }}
+                >
+                  桜
+                </KanjiBadge>
                 SakuraFitur
               </div>
               <span>
