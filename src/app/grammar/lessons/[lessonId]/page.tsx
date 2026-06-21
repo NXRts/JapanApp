@@ -3,28 +3,9 @@
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { grammarLessons } from "@/data/grammarLessons";
-import { use, useEffect, useState } from "react";
+import { use } from "react";
 import { useRouter } from "next/navigation";
-
-/* ─── Progress helpers ─────────────────────────────────────────────────── */
-function getCompletedSections(): string[] {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(
-      localStorage.getItem("grammar_completed_sections") ?? "[]",
-    );
-  } catch {
-    return [];
-  }
-}
-function markSectionDone(lessonId: string, sectionId: string) {
-  const done = getCompletedSections();
-  const key = `${lessonId}/${sectionId}`;
-  if (!done.includes(key)) {
-    done.push(key);
-    localStorage.setItem("grammar_completed_sections", JSON.stringify(done));
-  }
-}
+import { useProgress } from "@/context/ProgressContext";
 
 /* ─── Animations ───────────────────────────────────────────────────────── */
 const fadeUp = keyframes`
@@ -407,19 +388,9 @@ export default function LessonDetailPage({
 }) {
   const { lessonId } = use(params);
   const router = useRouter();
-  const [completedSections, setCompletedSections] = useState<string[]>([]);
-  const [completedExercises, setCompletedExercises] = useState<string[]>([]);
-
-  useEffect(() => {
-    setCompletedSections(getCompletedSections());
-    try {
-      setCompletedExercises(
-        JSON.parse(localStorage.getItem("grammar_completed_exercises") ?? "[]"),
-      );
-    } catch {
-      setCompletedExercises([]);
-    }
-  }, []);
+  const { progress } = useProgress();
+  const completedSections = progress.completedGrammarSections;
+  const completedExercises = progress.completedExercises;
 
   const lesson = grammarLessons.find((l) => l.id === lessonId);
 

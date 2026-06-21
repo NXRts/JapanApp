@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useProgress } from "@/context/ProgressContext";
 import { Heatmap } from "@/components/gamification/Heatmap";
+import { grammarLessons, totalSections } from "@/data/grammarLessons";
 
 const Container = styled.div`
   max-width: 1100px;
@@ -424,6 +425,33 @@ export default function StatsPage() {
     return total === 0 ? 0 : Math.round((correct / total) * 100);
   }, [progress.mastery]);
 
+  // 5. Grammar Progress Logic
+  const completedGrammarSectionsCount = useMemo(() => {
+    const completedSections = progress.completedGrammarSections || [];
+    return grammarLessons.reduce((sum, lesson) => {
+      return (
+        sum +
+        lesson.sections.filter((s) =>
+          completedSections.includes(`${lesson.id}/${s.id}`),
+        ).length
+      );
+    }, 0);
+  }, [progress.completedGrammarSections]);
+
+  const completedGrammarLessonsCount = useMemo(() => {
+    const completedSections = progress.completedGrammarSections || [];
+    const completedExercises = progress.completedExercises || [];
+    return grammarLessons.filter((lesson) => {
+      const sectionsDone = lesson.sections.filter((s) =>
+        completedSections.includes(`${lesson.id}/${s.id}`),
+      ).length;
+      const exerciseDone = completedExercises.includes(lesson.id);
+      return sectionsDone >= lesson.sections.length && exerciseDone;
+    }).length;
+  }, [progress.completedGrammarSections, progress.completedExercises]);
+
+  const grammarProgressPct = Math.round((completedGrammarSectionsCount / totalSections) * 100) || 0;
+
   return (
     <Container>
       <Breadcrumbs
@@ -493,6 +521,29 @@ export default function StatsPage() {
           >
             Based on {Object.values(progress.mastery).length} total characters.
           </div>
+        </MainStatCard>
+
+        <MainStatCard>
+          <StatLabel>Grammar Progress</StatLabel>
+          <StatValue>
+            {completedGrammarLessonsCount} <span>/ {grammarLessons.length} lessons</span>
+          </StatValue>
+          <ProgressInfo>
+            <LevelProgressBar>
+              <ProgressBarFill $width={grammarProgressPct} />
+            </LevelProgressBar>
+            <div
+              style={{
+                fontSize: "0.8rem",
+                color: "var(--text-secondary)",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <span>{completedGrammarSectionsCount} / {totalSections} sections</span>
+              <span>{grammarProgressPct}% completed</span>
+            </div>
+          </ProgressInfo>
         </MainStatCard>
 
         <ChartCard>

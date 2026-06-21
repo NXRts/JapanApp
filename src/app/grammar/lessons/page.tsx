@@ -3,30 +3,7 @@
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { grammarLessons, totalSections } from "@/data/grammarLessons";
-import { useEffect, useState } from "react";
-
-/* ─── Progress helpers ─────────────────────────────────────────────────── */
-function getCompletedSections(): string[] {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(
-      localStorage.getItem("grammar_completed_sections") ?? "[]",
-    );
-  } catch {
-    return [];
-  }
-}
-
-function getCompletedExercises(): string[] {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(
-      localStorage.getItem("grammar_completed_exercises") ?? "[]",
-    );
-  } catch {
-    return [];
-  }
-}
+import { useProgress } from "@/context/ProgressContext";
 
 /* ─── Animations ───────────────────────────────────────────────────────── */
 const fadeUp = keyframes`
@@ -56,6 +33,42 @@ const Header = styled.div`
   margin-bottom: 2.5rem;
 `;
 
+const HeaderTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+`;
+
+const FuriganaToggleBtn = styled.button<{ $active: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) => ($active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)" : "var(--surface)")};
+  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--foreground);
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.04);
+  }
+`;
+
 const BackLink = styled(Link)`
   display: inline-flex;
   align-items: center;
@@ -82,7 +95,7 @@ const BackLink = styled(Link)`
 const PageTitle = styled.h1`
   font-size: 2.75rem;
   font-weight: 800;
-  margin: 0 0 0.4rem;
+  margin: 0;
 
   @media (max-width: 768px) {
     font-size: 2rem;
@@ -311,13 +324,9 @@ const CheckIcon = () => (
 
 /* ─── Component ────────────────────────────────────────────────────────── */
 export default function GrammarLessonsPage() {
-  const [completedSections, setCompletedSections] = useState<string[]>([]);
-  const [completedExercises, setCompletedExercises] = useState<string[]>([]);
-
-  useEffect(() => {
-    setCompletedSections(getCompletedSections());
-    setCompletedExercises(getCompletedExercises());
-  }, []);
+  const { progress, setShowFurigana } = useProgress();
+  const completedSections = progress.completedGrammarSections;
+  const completedExercises = progress.completedExercises;
 
   /* Figure out per-lesson completion */
   const statusFixed = grammarLessons.map((lesson, idx) => {
@@ -373,7 +382,15 @@ export default function GrammarLessonsPage() {
           </svg>
           Back to Grammar
         </BackLink>
-        <PageTitle>Grammar Lessons</PageTitle>
+        <HeaderTop>
+          <PageTitle>Grammar Lessons</PageTitle>
+          <FuriganaToggleBtn
+            $active={progress.showFurigana}
+            onClick={() => setShowFurigana(!progress.showFurigana)}
+          >
+            <span>{progress.showFurigana ? "🌸 Furigana: Show" : "💤 Furigana: Hide"}</span>
+          </FuriganaToggleBtn>
+        </HeaderTop>
         <PageSub>All {grammarLessons.length} lessons for N5 grammar</PageSub>
       </Header>
 

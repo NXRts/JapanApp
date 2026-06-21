@@ -5,25 +5,15 @@ import Link from "next/link";
 import { grammarLessons } from "@/data/grammarLessons";
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useProgress } from "@/context/ProgressContext";
 
-/* ─── localStorage helpers ─────────────────────────────────────────────── */
-function getCompletedSections(): string[] {
-  if (typeof window === "undefined") return [];
-  try {
-    return JSON.parse(
-      localStorage.getItem("grammar_completed_sections") ?? "[]",
-    );
-  } catch {
-    return [];
-  }
-}
-function markSectionDone(lessonId: string, sectionId: string) {
-  const done = getCompletedSections();
-  const key = `${lessonId}/${sectionId}`;
-  if (!done.includes(key)) {
-    done.push(key);
-    localStorage.setItem("grammar_completed_sections", JSON.stringify(done));
-  }
+function speak(text: string) {
+  if (typeof window === "undefined" || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "ja-JP";
+  utterance.rate = 0.85;
+  window.speechSynthesis.speak(utterance);
 }
 
 /* ─── Animations ───────────────────────────────────────────────────────── */
@@ -90,6 +80,27 @@ const SectionCounter = styled.div`
   font-size: 0.88rem;
   font-weight: 700;
   color: var(--text-secondary);
+`;
+
+const FuriganaToggleBtn = styled.button<{ $active: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.4rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) => ($active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)" : "var(--surface)")};
+  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--foreground);
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.04);
+  }
 `;
 
 /* Thin progress bar */
@@ -208,6 +219,26 @@ const ExampleCard = styled.div`
   border-radius: 14px;
   padding: 1rem 1.25rem;
   margin: 0.75rem 0;
+`;
+
+const SpeakerBtn = styled.button`
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.2rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s;
+  align-self: flex-start;
+
+  &:hover {
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.08);
+    transform: scale(1.15);
+  }
 `;
 
 const JapaneseRow = styled.div`
@@ -379,6 +410,7 @@ export default function SectionPage({
 }) {
   const { lessonId, sectionId } = use(params);
   const router = useRouter();
+  const { progress, markGrammarSectionCompleted, setShowFurigana } = useProgress();
   const [openBlocks, setOpenBlocks] = useState<Set<number>>(new Set([0]));
   const [marked, setMarked] = useState(false);
 
@@ -387,13 +419,13 @@ export default function SectionPage({
   const sectionIdx = lesson?.sections.findIndex((s) => s.id === sectionId) ?? 0;
 
   useEffect(() => {
-    const done = getCompletedSections();
+    const done = progress.completedGrammarSections;
     if (done.includes(`${lessonId}/${sectionId}`)) setMarked(true);
     // Auto-open all
     if (section) {
       setOpenBlocks(new Set(section.subsections.map((_, i) => i)));
     }
-  }, [lessonId, sectionId]);
+  }, [lessonId, sectionId, progress.completedGrammarSections, section]);
 
   if (!lesson || !section) {
     return (
@@ -435,7 +467,7 @@ export default function SectionPage({
   }
 
   function handleMarkDone() {
-    markSectionDone(lessonId, sectionId);
+    markGrammarSectionCompleted(`${lessonId}/${sectionId}`);
     setMarked(true);
     // Navigate to next section or back to lesson
     if (nextSection) {
@@ -465,9 +497,17 @@ export default function SectionPage({
           </svg>
           Back to Lesson {lesson.lessonNumber}
         </BackBtn>
-        <SectionCounter>
-          SECTION {sectionIdx + 1} OF {totalSectionsInLesson}
-        </SectionCounter>
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+          <FuriganaToggleBtn
+            $active={progress.showFurigana}
+            onClick={() => setShowFurigana(!progress.showFurigana)}
+          >
+            <span>{progress.showFurigana ? "🌸 Furigana: On" : "💤 Furigana: Off"}</span>
+          </FuriganaToggleBtn>
+          <SectionCounter>
+            SECTION {sectionIdx + 1} OF {totalSectionsInLesson}
+          </SectionCounter>
+        </div>
       </TopRow>
 
       {/* Progress bar */}
@@ -516,9 +556,16 @@ export default function SectionPage({
 
               {sub.examples?.map((ex, ei) => (
                 <ExampleCard key={ei}>
-                  <JapaneseRow>{ex.japanese}</JapaneseRow>
-                  {ex.furigana && <FuriganaRow>{ex.furigana}</FuriganaRow>}
-                  <EnglishRow>{ex.english}</EnglishRow>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem" }}>
+                    <div style={{ flex: 1 }}>
+                      <JapaneseRow>{ex.japanese}</JapaneseRow>
+                      {ex.furigana && progress.showFurigana && <FuriganaRow>{ex.furigana}</FuriganaRow>}
+                      <EnglishRow>{ex.english}</EnglishRow>
+                    </div>
+                    <SpeakerBtn onClick={() => speak(ex.japanese)} title="Listen to Japanese pronunciation">
+                      🔊
+                    </SpeakerBtn>
+                  </div>
                 </ExampleCard>
               ))}
 
@@ -551,7 +598,9 @@ export default function SectionPage({
               <VocabGrid>
                 {section.keyVocabulary.map((v, vi) => (
                   <VocabCard key={vi}>
-                    <VocabFuri>{v.furigana}</VocabFuri>
+                    <VocabFuri style={{ opacity: progress.showFurigana ? 1 : 0, transition: "opacity 0.25s ease" }}>
+                      {v.furigana || "\u00A0"}
+                    </VocabFuri>
                     <VocabKanji>{v.kanji}</VocabKanji>
                     <VocabMeaning>{v.meaning}</VocabMeaning>
                   </VocabCard>
