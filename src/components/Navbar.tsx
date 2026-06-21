@@ -26,6 +26,10 @@ const NavRoot = styled.nav<{ $hideOnDesktop?: boolean; $isMenuOpen?: boolean }>`
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--navbar-border);
   transition: all 0.3s ease;
+  /* Prevent navbar itself from being wider than the viewport */
+  width: 100%;
+  max-width: 100vw;
+  overflow: hidden;
 
   ${({ $hideOnDesktop }) =>
     $hideOnDesktop &&
@@ -88,14 +92,17 @@ const RegisterButton = styled(Link)`
 
 const NavContainer = styled.div`
   width: 100%;
+  max-width: 100%;
   padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 56px;
+  /* Prevent internal items from pushing container wider than 100% */
+  overflow: hidden;
 
   @media (max-width: 600px) {
-    padding: 0 1rem;
+    padding: 0 0.75rem;
   }
 `;
 
@@ -109,6 +116,7 @@ const Logo = styled(Link)`
   gap: 8px;
   transition: opacity 0.2s;
   z-index: 102;
+  flex-shrink: 0; /* Never compress the logo on tight mobile screens */
 
   &:hover {
     opacity: 0.8;
@@ -1559,12 +1567,14 @@ export function Navbar() {
                   alignItems: "center",
                   gap: "0.4rem",
                   justifyContent: "center",
-                  flex: 1,
+                  flex: "1 1 0",
+                  minWidth: 0,        /* allows flex child to shrink below content size */
+                  overflow: "hidden",
                   margin: "0 0.25rem",
                 }}
               >
                 <DeviceModeSwitcher />
-                <Link href="/stats" style={{ textDecoration: "none" }}>
+                <Link href="/stats" style={{ textDecoration: "none", flexShrink: 0 }}>
                   <LevelBadge
                     style={{
                       borderRadius: "999px",
@@ -1579,7 +1589,7 @@ export function Navbar() {
               </div>
 
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.2rem" }}
+                style={{ display: "flex", alignItems: "center", gap: "0.2rem", flexShrink: 0 }}
               >
                 <SearchBtn
                   onClick={() => setIsDictionaryOpen(true)}
