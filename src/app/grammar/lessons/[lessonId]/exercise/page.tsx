@@ -12,7 +12,7 @@ function markExerciseDoneInLocalStorage(lessonId: string) {
   if (typeof window === "undefined") return;
   try {
     const done: string[] = JSON.parse(
-      localStorage.getItem("grammar_completed_exercises") ?? "[]"
+      localStorage.getItem("grammar_completed_exercises") ?? "[]",
     );
     if (!done.includes(lessonId)) {
       done.push(lessonId);
@@ -146,7 +146,7 @@ const SentencePrompt = styled.div`
   margin-bottom: 2.5rem;
   line-height: 1.6;
   color: var(--foreground);
-  
+
   @media (max-width: 600px) {
     font-size: 1.5rem;
   }
@@ -198,7 +198,9 @@ const ChoiceCard = styled.button<{ $selected: boolean; $disabled: boolean }>`
   border: 2px solid
     ${({ $selected }) => ($selected ? "var(--primary)" : "var(--border)")};
   background: ${({ $selected }) =>
-    $selected ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)" : "var(--surface)"};
+    $selected
+      ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)"
+      : "var(--surface)"};
   color: var(--foreground);
   font-size: 1.05rem;
   font-weight: 600;
@@ -361,7 +363,10 @@ const FeedbackText = styled.div<{ $isCorrect: boolean }>`
   }
 `;
 
-const ActionButton = styled.button<{ $primary?: boolean; $isCorrect?: boolean | null }>`
+const ActionButton = styled.button<{
+  $primary?: boolean;
+  $isCorrect?: boolean | null;
+}>`
   padding: 0.9rem 2.25rem;
   border-radius: 16px;
   font-weight: 800;
@@ -373,18 +378,19 @@ const ActionButton = styled.button<{ $primary?: boolean; $isCorrect?: boolean | 
       ? $isCorrect === true
         ? "#22c55e"
         : $isCorrect === false
-        ? "#ef4444"
-        : "var(--primary)"
+          ? "#ef4444"
+          : "var(--primary)"
       : "var(--border)"};
   color: ${({ $primary }) => ($primary ? "#fff" : "var(--text-secondary)")};
   transition: all 0.2s;
-  box-shadow: ${({ $primary }) => ($primary ? "0 4px 14px rgba(0, 0, 0, 0.15)" : "none")};
+  box-shadow: ${({ $primary }) =>
+    $primary ? "0 4px 14px rgba(0, 0, 0, 0.15)" : "none"};
 
   &:hover {
     transform: translateY(-2px);
     opacity: 0.95;
   }
-  
+
   &:disabled {
     opacity: 0.45;
     cursor: not-allowed;
@@ -462,7 +468,11 @@ const StatCard = styled.div`
 
 const RewardCard = styled.div`
   grid-column: span 2;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(168, 85, 247, 0.06) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(79, 70, 229, 0.08) 0%,
+    rgba(168, 85, 247, 0.06) 100%
+  );
   border: 1.5px solid var(--primary);
   border-radius: 20px;
   padding: 1.25rem;
@@ -557,7 +567,9 @@ export default function GrammarExercisePage({
     return (
       <Screen>
         <Container>
-          <QuestionTitle style={{ marginTop: "4rem" }}>Latihan Tidak Ditemukan</QuestionTitle>
+          <QuestionTitle style={{ marginTop: "4rem" }}>
+            Latihan Tidak Ditemukan
+          </QuestionTitle>
           <HomeButton href="/grammar/lessons" style={{ alignSelf: "center" }}>
             Kembali ke Pelajaran
           </HomeButton>
@@ -633,12 +645,17 @@ export default function GrammarExercisePage({
             <TitleComplete>Pelajaran Selesai!</TitleComplete>
             <SubComplete>
               Hebat! Anda telah berhasil menyelesaikan latihan untuk{" "}
-              <strong>Lesson {lesson.lessonNumber}: {lesson.title}</strong>.
+              <strong>
+                Lesson {lesson.lessonNumber}: {lesson.title}
+              </strong>
+              .
             </SubComplete>
 
             <StatsGrid>
               <StatCard>
-                <div className="val">{score} / {exercises.length}</div>
+                <div className="val">
+                  {score} / {exercises.length}
+                </div>
                 <div className="lbl">Skor Benar</div>
               </StatCard>
               <StatCard>
@@ -781,7 +798,8 @@ export default function GrammarExercisePage({
                 )}
                 {!isCorrect && exercise.answer && (
                   <div className="explanation">
-                    Jawaban yang benar: <strong>{exercise.answer.join(" ")}</strong>
+                    Jawaban yang benar:{" "}
+                    <strong>{exercise.answer.join(" ")}</strong>
                   </div>
                 )}
                 {exercise.hint && (
@@ -795,12 +813,16 @@ export default function GrammarExercisePage({
                 $isCorrect={isCorrect}
                 onClick={handleContinue}
               >
-                {currentIdx + 1 === exercises.length ? "Selesaikan" : "Lanjutkan →"}
+                {currentIdx + 1 === exercises.length
+                  ? "Selesaikan"
+                  : "Lanjutkan →"}
               </ActionButton>
             </>
           ) : (
             <>
-              <div style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+              <div
+                style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}
+              >
                 Pastikan jawaban Anda terisi sebelum memeriksa.
               </div>
               <ActionButton

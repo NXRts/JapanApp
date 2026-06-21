@@ -281,8 +281,9 @@ export default function GrammarPage() {
           <BannerBadge>Baru 🌸</BannerBadge>
           <BannerTitle>📚 Pelajaran Tata Bahasa Terstruktur</BannerTitle>
           <BannerDesc>
-            Belajar tata bahasa Jepang secara urut mulai dari dasar (N5) dengan penjelasan 
-            interaktif, contoh kalimat bersuara (furigana), dan kuis latihan interaktif.
+            Belajar tata bahasa Jepang secara urut mulai dari dasar (N5) dengan
+            penjelasan interaktif, contoh kalimat bersuara (furigana), dan kuis
+            latihan interaktif.
           </BannerDesc>
         </BannerContent>
         <BannerBtn href="/grammar/lessons">

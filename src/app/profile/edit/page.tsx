@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useProgress } from "@/context/ProgressContext";
 
 const Container = styled.div`
   max-width: 800px;
@@ -472,20 +473,40 @@ const presetAvatars = [
 export default function EditProfilePage() {
   const router = useRouter();
 
-  // Form States (Simulasi)
-  const [displayName, setDisplayName] = useState("JapanApp Learner");
-  const [username, setUsername] = useState("japan_learner");
-  const [email, setEmail] = useState("learner@japanapp.com");
-  const [bio, setBio] = useState(
-    "Belajar bahasa Jepang untuk menguasai Kanji dan percakapan harian. Target lulus JLPT N5 tahun ini! 🎯",
+  const { progress, updateProfile } = useProgress();
+  const profile = progress.profile;
+
+  // Form States
+  const [displayName, setDisplayName] = useState(
+    profile?.displayName || "JapanApp Learner",
   );
-  const [difficulty, setDifficulty] = useState("pemula");
-  const [dailyGoal, setDailyGoal] = useState("50");
-  const [selectedAvatar, setSelectedAvatar] = useState("🦊");
+  const [username, setUsername] = useState(
+    profile?.username || "japan_learner",
+  );
+  const [email, setEmail] = useState(profile?.email || "learner@japanapp.com");
+  const [bio, setBio] = useState(
+    profile?.bio ||
+      "Belajar bahasa Jepang untuk menguasai Kanji dan percakapan harian. Target lulus JLPT N5 tahun ini! 🎯",
+  );
+  const [difficulty, setDifficulty] = useState(profile?.difficulty || "pemula");
+  const [dailyGoal, setDailyGoal] = useState(profile?.dailyGoal || "50");
+  const [selectedAvatar, setSelectedAvatar] = useState(profile?.avatar || "🦊");
 
   const [customFile, setCustomFile] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (profile) {
+      setDisplayName(profile.displayName);
+      setUsername(profile.username);
+      setEmail(profile.email || "learner@japanapp.com");
+      setBio(profile.bio);
+      setDifficulty(profile.difficulty);
+      setDailyGoal(profile.dailyGoal);
+      setSelectedAvatar(profile.avatar);
+    }
+  }, [profile]);
 
   const handlePresetClick = (emoji: string) => {
     setSelectedAvatar(emoji);
@@ -502,16 +523,26 @@ export default function EditProfilePage() {
     e.preventDefault();
     setIsSaving(true);
 
+    updateProfile({
+      displayName,
+      username,
+      email,
+      bio,
+      difficulty,
+      dailyGoal,
+      avatar: selectedAvatar,
+    });
+
     // Simulate save processing
     setTimeout(() => {
       setIsSaving(false);
       setShowToast(true);
 
-      // Redirect back after 2 seconds
+      // Redirect back after 1.5 seconds
       setTimeout(() => {
         router.push("/profile");
-      }, 2000);
-    }, 1200);
+      }, 1500);
+    }, 800);
   };
 
   return (

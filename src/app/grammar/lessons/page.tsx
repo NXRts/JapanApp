@@ -10,7 +10,7 @@ function getCompletedSections(): string[] {
   if (typeof window === "undefined") return [];
   try {
     return JSON.parse(
-      localStorage.getItem("grammar_completed_sections") ?? "[]"
+      localStorage.getItem("grammar_completed_sections") ?? "[]",
     );
   } catch {
     return [];
@@ -21,7 +21,7 @@ function getCompletedExercises(): string[] {
   if (typeof window === "undefined") return [];
   try {
     return JSON.parse(
-      localStorage.getItem("grammar_completed_exercises") ?? "[]"
+      localStorage.getItem("grammar_completed_exercises") ?? "[]",
     );
   } catch {
     return [];
@@ -197,8 +197,8 @@ const LessonNumBadge = styled.div<{ $done: boolean; $active: boolean }>`
     $done
       ? "rgba(34,197,94,0.15)"
       : $active
-      ? "var(--primary)"
-      : "var(--border)"};
+        ? "var(--primary)"
+        : "var(--border)"};
   color: ${({ $done, $active }) =>
     $done ? "#22c55e" : $active ? "#fff" : "var(--text-secondary)"};
   border: ${({ $done }) => ($done ? "2px solid #22c55e" : "none")};
@@ -275,10 +275,7 @@ const LockIcon = () => (
       strokeWidth="2"
       strokeLinecap="round"
     />
-    <path
-      d="M12 16a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
-      fill="currentColor"
-    />
+    <path d="M12 16a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" fill="currentColor" />
     <path
       d="M8 11V7a4 4 0 0 1 8 0v4"
       stroke="currentColor"
@@ -325,7 +322,7 @@ export default function GrammarLessonsPage() {
   /* Figure out per-lesson completion */
   const statusFixed = grammarLessons.map((lesson, idx) => {
     const sectionsDone = lesson.sections.filter((s) =>
-      completedSections.includes(`${lesson.id}/${s.id}`)
+      completedSections.includes(`${lesson.id}/${s.id}`),
     ).length;
     const exerciseDone = completedExercises.includes(lesson.id);
     const totalInLesson = lesson.sections.length;
@@ -335,7 +332,7 @@ export default function GrammarLessonsPage() {
     if (idx > 0) {
       const prev = grammarLessons[idx - 1];
       const prevSectionsDone = prev.sections.filter((s) =>
-        completedSections.includes(`${prev.id}/${s.id}`)
+        completedSections.includes(`${prev.id}/${s.id}`),
       ).length;
       const prevExDone = completedExercises.includes(prev.id);
       locked = !(prevSectionsDone >= prev.sections.length && prevExDone);
@@ -347,7 +344,7 @@ export default function GrammarLessonsPage() {
     return (
       sum +
       lesson.sections.filter((s) =>
-        completedSections.includes(`${lesson.id}/${s.id}`)
+        completedSections.includes(`${lesson.id}/${s.id}`),
       ).length
     );
   }, 0);
@@ -377,9 +374,7 @@ export default function GrammarLessonsPage() {
           Back to Grammar
         </BackLink>
         <PageTitle>Grammar Lessons</PageTitle>
-        <PageSub>
-          All {grammarLessons.length} lessons for N5 grammar
-        </PageSub>
+        <PageSub>All {grammarLessons.length} lessons for N5 grammar</PageSub>
       </Header>
 
       {/* Overall Progress */}

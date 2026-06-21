@@ -10,8 +10,12 @@ import { useRouter } from "next/navigation";
 function getCompletedSections(): string[] {
   if (typeof window === "undefined") return [];
   try {
-    return JSON.parse(localStorage.getItem("grammar_completed_sections") ?? "[]");
-  } catch { return []; }
+    return JSON.parse(
+      localStorage.getItem("grammar_completed_sections") ?? "[]",
+    );
+  } catch {
+    return [];
+  }
 }
 function markSectionDone(lessonId: string, sectionId: string) {
   const done = getCompletedSections();
@@ -149,7 +153,9 @@ const AccordionBlock = styled.div<{ $open: boolean }>`
   overflow: hidden;
   transition: border-color 0.2s;
 
-  &:hover { border-color: rgba(79,70,229,0.3); }
+  &:hover {
+    border-color: rgba(79, 70, 229, 0.3);
+  }
 `;
 
 const AccordionHeader = styled.button`
@@ -223,8 +229,8 @@ const EnglishRow = styled.div`
 `;
 
 const TipBox = styled.div`
-  background: rgba(234,179,8,0.08);
-  border: 1px solid rgba(234,179,8,0.25);
+  background: rgba(234, 179, 8, 0.08);
+  border: 1px solid rgba(234, 179, 8, 0.25);
   border-radius: 12px;
   padding: 0.85rem 1.1rem;
   font-size: 0.9rem;
@@ -248,7 +254,9 @@ const VocabCard = styled.div`
   border-radius: 14px;
   padding: 0.9rem 1.1rem;
   transition: border-color 0.2s;
-  &:hover { border-color: var(--primary); }
+  &:hover {
+    border-color: var(--primary);
+  }
 `;
 
 const VocabKanji = styled.div`
@@ -269,8 +277,12 @@ const VocabMeaning = styled.div`
 
 /* Summary */
 const SummaryBox = styled.div`
-  background: linear-gradient(135deg, rgba(79,70,229,0.12), rgba(168,85,247,0.1));
-  border: 1px solid rgba(79,70,229,0.25);
+  background: linear-gradient(
+    135deg,
+    rgba(79, 70, 229, 0.12),
+    rgba(168, 85, 247, 0.1)
+  );
+  border: 1px solid rgba(79, 70, 229, 0.25);
   border-radius: 20px;
   padding: 1.5rem 1.75rem;
   margin-bottom: 2rem;
@@ -314,11 +326,14 @@ const NavBtn = styled(Link)<{ $primary?: boolean }>`
   font-size: 0.95rem;
   text-decoration: none;
   text-align: center;
-  border: 1px solid ${({ $primary }) => ($primary ? "var(--primary)" : "var(--border)")};
-  background: ${({ $primary }) => ($primary ? "var(--primary)" : "var(--surface)")};
+  border: 1px solid
+    ${({ $primary }) => ($primary ? "var(--primary)" : "var(--border)")};
+  background: ${({ $primary }) =>
+    $primary ? "var(--primary)" : "var(--surface)"};
   color: ${({ $primary }) => ($primary ? "#fff" : "var(--foreground)")};
   transition: all 0.2s;
-  animation: ${({ $primary }) => ($primary ? glowPulse : "none")} 2.5s ease infinite;
+  animation: ${({ $primary }) => ($primary ? glowPulse : "none")} 2.5s ease
+    infinite;
   &:hover {
     transform: translateY(-2px);
     opacity: 0.9;
@@ -337,13 +352,22 @@ const MarkDoneBtn = styled.button`
   color: #fff;
   cursor: pointer;
   transition: all 0.2s;
-  &:hover { transform: translateY(-2px); opacity: 0.9; }
+  &:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
 `;
 
 /* Chevron down SVG */
 const Chevron = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-    <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M6 9l6 6 6-6"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
@@ -557,7 +581,9 @@ export default function SectionPage({
             ← Previous
           </NavBtn>
         ) : (
-          <NavBtn href={`/grammar/lessons/${lessonId}`}>← Back to Lesson</NavBtn>
+          <NavBtn href={`/grammar/lessons/${lessonId}`}>
+            ← Back to Lesson
+          </NavBtn>
         )}
 
         {marked ? (

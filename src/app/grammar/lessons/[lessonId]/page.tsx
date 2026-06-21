@@ -11,7 +11,7 @@ function getCompletedSections(): string[] {
   if (typeof window === "undefined") return [];
   try {
     return JSON.parse(
-      localStorage.getItem("grammar_completed_sections") ?? "[]"
+      localStorage.getItem("grammar_completed_sections") ?? "[]",
     );
   } catch {
     return [];
@@ -172,7 +172,10 @@ const MetaRow = styled.div`
 `;
 
 const MetaDot = styled.span`
-  &::before { content: "·"; margin-right: 0.5rem; }
+  &::before {
+    content: "·";
+    margin-right: 0.5rem;
+  }
 `;
 
 /* Progress section */
@@ -215,7 +218,11 @@ const SectionList = styled.div`
   gap: 0.875rem;
 `;
 
-const SectionCard = styled.div<{ $locked: boolean; $done: boolean; $active: boolean }>`
+const SectionCard = styled.div<{
+  $locked: boolean;
+  $done: boolean;
+  $active: boolean;
+}>`
   background: var(--surface);
   border: 1px solid
     ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
@@ -261,8 +268,8 @@ const SectionNum = styled.div<{ $done: boolean; $active: boolean }>`
     $done
       ? "rgba(34,197,94,0.12)"
       : $active
-      ? "var(--primary)"
-      : "var(--border)"};
+        ? "var(--primary)"
+        : "var(--border)"};
   color: ${({ $done, $active }) =>
     $done ? "#22c55e" : $active ? "#fff" : "var(--text-secondary)"};
   border: ${({ $done }) => ($done ? "1.5px solid #22c55e" : "none")};
@@ -350,7 +357,9 @@ const ExBtn = styled(Link)<{ $locked: boolean }>`
   pointer-events: ${({ $locked }) => ($locked ? "none" : "auto")};
   transition: all 0.2s;
   white-space: nowrap;
-  &:hover { opacity: 0.88; }
+  &:hover {
+    opacity: 0.88;
+  }
 
   @media (max-width: 600px) {
     width: 100%;
@@ -361,13 +370,32 @@ const ExBtn = styled(Link)<{ $locked: boolean }>`
 /* Icons */
 const CheckSvg = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <path d="M20 6L9 17l-5-5" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M20 6L9 17l-5-5"
+      stroke="#22c55e"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 const LockSvg = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" strokeWidth="2" />
-    <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <rect
+      x="3"
+      y="11"
+      width="18"
+      height="11"
+      rx="2"
+      stroke="currentColor"
+      strokeWidth="2"
+    />
+    <path
+      d="M7 11V7a5 5 0 0 1 10 0v4"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    />
   </svg>
 );
 
@@ -386,7 +414,7 @@ export default function LessonDetailPage({
     setCompletedSections(getCompletedSections());
     try {
       setCompletedExercises(
-        JSON.parse(localStorage.getItem("grammar_completed_exercises") ?? "[]")
+        JSON.parse(localStorage.getItem("grammar_completed_exercises") ?? "[]"),
       );
     } catch {
       setCompletedExercises([]);
@@ -425,7 +453,10 @@ export default function LessonDetailPage({
     const done = completedSections.includes(key);
     // First section always open; rest need previous done
     const locked =
-      idx > 0 && !completedSections.includes(`${lesson.id}/${lesson.sections[idx - 1].id}`);
+      idx > 0 &&
+      !completedSections.includes(
+        `${lesson.id}/${lesson.sections[idx - 1].id}`,
+      );
     const active = !done && !locked;
     return { done, locked, active };
   });
@@ -542,15 +573,15 @@ export default function LessonDetailPage({
             {exerciseDone
               ? "✓ Exercise Completed"
               : exerciseLocked
-              ? "🔒 Complete all sections to unlock"
-              : "🎯 Ready for the exercise?"}
+                ? "🔒 Complete all sections to unlock"
+                : "🎯 Ready for the exercise?"}
           </ExTitle>
           <ExSub>
             {exerciseDone
               ? `You completed all ${lesson.exercises.length} questions!`
               : exerciseLocked
-              ? `Complete all ${lesson.sections.length} sections first`
-              : `${lesson.exercises.length} questions · Sentence Building & Quiz`}
+                ? `Complete all ${lesson.sections.length} sections first`
+                : `${lesson.exercises.length} questions · Sentence Building & Quiz`}
           </ExSub>
         </div>
         <ExBtn

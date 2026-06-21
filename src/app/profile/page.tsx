@@ -493,7 +493,13 @@ export default function ProfilePage() {
     },
   ];
 
-  const dailyGoal = { current: Math.min(progress.exp % 100, 100), target: 100 };
+  const targetGoal = parseInt(progress.profile?.dailyGoal || "50", 10);
+  const todayStr = new Date().toISOString().split("T")[0];
+  const todayExp = progress.activityLog?.[todayStr] || 0;
+  const dailyGoal = {
+    current: Math.min(todayExp, targetGoal),
+    target: targetGoal,
+  };
   const goalPercent = (dailyGoal.current / dailyGoal.target) * 100;
 
   return (
@@ -502,13 +508,32 @@ export default function ProfilePage() {
 
       <ProfileHeader>
         <AvatarCircle>
-          <UserIcon size={64} />
+          {progress.profile?.avatar ? (
+            <span style={{ fontSize: "3.5rem", lineHeight: 1 }}>
+              {progress.profile.avatar}
+            </span>
+          ) : (
+            <UserIcon size={64} />
+          )}
         </AvatarCircle>
         <ProfileInfo>
-          <Name>JapanApp Learner</Name>
+          <Name>{progress.profile?.displayName || "JapanApp Learner"}</Name>
           <JoinedDate>
             Mastering {totalCharacters} items across Kanji & Vocabulary
           </JoinedDate>
+          {progress.profile?.bio && (
+            <p
+              style={{
+                margin: "0 0 1.25rem 0",
+                fontStyle: "italic",
+                color: "var(--text-secondary)",
+                fontSize: "0.95rem",
+                lineHeight: 1.5,
+              }}
+            >
+              {progress.profile.bio}
+            </p>
+          )}
           <LevelBadge>
             <span>🏆</span> Level {level}
           </LevelBadge>

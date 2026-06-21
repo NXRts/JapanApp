@@ -39,6 +39,16 @@ interface MasteryRecord {
   lastAttempt: string;
 }
 
+export interface UserProfile {
+  displayName: string;
+  username: string;
+  email: string;
+  bio: string;
+  avatar: string;
+  difficulty: string;
+  dailyGoal: string;
+}
+
 interface ProgressData {
   mastery: Record<string, MasteryRecord>;
   streak: number;
@@ -53,6 +63,7 @@ interface ProgressData {
   exp: number;
   activityLog: Record<string, number>; // Date string -> EXP gained
   completedExercises: string[];
+  profile?: UserProfile;
 }
 
 interface ProgressContextType {
@@ -65,11 +76,22 @@ interface ProgressContextType {
   resetProgress: () => void;
   markExerciseCompleted: (id: string) => void;
   getDueItems: () => (SRSItem & { id: string })[];
+  updateProfile: (profileData: Partial<UserProfile>) => void;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(
   undefined,
 );
+
+export const DEFAULT_PROFILE: UserProfile = {
+  displayName: "JapanApp Learner",
+  username: "japan_learner",
+  email: "learner@japanapp.com",
+  bio: "Belajar bahasa Jepang untuk menguasai Kanji dan percakapan harian. Target lulus JLPT N5 tahun ini! 🎯",
+  avatar: "🦊",
+  difficulty: "pemula",
+  dailyGoal: "50",
+};
 
 const INITIAL_DATA: ProgressData = {
   mastery: {},
@@ -80,6 +102,7 @@ const INITIAL_DATA: ProgressData = {
   exp: 0,
   activityLog: {},
   completedExercises: [],
+  profile: DEFAULT_PROFILE,
 };
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
@@ -116,6 +139,10 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
             exp: parsed.exp || 0,
             activityLog: parsed.activityLog || {},
             completedExercises: parsed.completedExercises || [],
+            profile: {
+              ...DEFAULT_PROFILE,
+              ...(parsed.profile || {}),
+            },
           });
         } catch (e) {
           console.error("Failed to parse progress data", e);
@@ -310,6 +337,17 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       .map(([id, item]) => ({ id, ...item }));
   }, [progress.srs]);
 
+  const updateProfile = useCallback((profileData: Partial<UserProfile>) => {
+    setProgress((prev) => ({
+      ...prev,
+      profile: {
+        ...DEFAULT_PROFILE,
+        ...(prev.profile || {}),
+        ...profileData,
+      },
+    }));
+  }, []);
+
   const resetProgress = useCallback(() => {
     if (typeof window !== "undefined") {
       // 1. Atomic wipe of all storage (Learning + Theme settings)
@@ -347,6 +385,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       markExerciseCompleted,
       getDueItems,
       resetProgress,
+      updateProfile,
     }),
     [
       progress,
@@ -358,6 +397,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       markExerciseCompleted,
       getDueItems,
       resetProgress,
+      updateProfile,
     ],
   );
 
