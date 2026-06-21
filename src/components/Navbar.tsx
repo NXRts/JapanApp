@@ -1373,7 +1373,22 @@ export function Navbar() {
             </SidebarNavItem>
 
             <SidebarNavItem href="/profile" $active={pathname === "/profile"}>
-              <ProfileIcon />
+              {progress.profile?.avatar ? (
+                <span
+                  style={{
+                    fontSize: "1.25rem",
+                    width: "20px",
+                    height: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {progress.profile.avatar}
+                </span>
+              ) : (
+                <ProfileIcon />
+              )}
               Profile
             </SidebarNavItem>
 
@@ -1582,7 +1597,13 @@ export function Navbar() {
                   </svg>
                 </SearchBtn>
                 <UserBtn href="/profile" title="Profile">
-                  <UserIcon size={20} />
+                  {progress.profile?.avatar ? (
+                    <span style={{ fontSize: "1.2rem", lineHeight: 1 }}>
+                      {progress.profile.avatar}
+                    </span>
+                  ) : (
+                    <UserIcon size={20} />
+                  )}
                 </UserBtn>
                 <HamburgerBtn
                   $isOpen={isMobileMenuOpen}
@@ -1785,7 +1806,13 @@ export function Navbar() {
                     title="Profile"
                     $hideOnMobile={deviceMode === "pc"}
                   >
-                    <UserIcon size={22} />
+                    {progress.profile?.avatar ? (
+                      <span style={{ fontSize: "1.3rem", lineHeight: 1 }}>
+                        {progress.profile.avatar}
+                      </span>
+                    ) : (
+                      <UserIcon size={22} />
+                    )}
                   </UserBtn>
 
                   <SettingsBtn

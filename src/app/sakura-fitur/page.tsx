@@ -30,11 +30,7 @@ const Title = styled.h1`
   font-size: 2.8rem;
   font-weight: 850;
   margin-bottom: 1rem;
-  background: linear-gradient(
-    135deg,
-    #ffb7c5 0%,
-    var(--primary) 100%
-  );
+  background: linear-gradient(135deg, #ffb7c5 0%, var(--primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -163,7 +159,7 @@ const ControlButton = styled.button`
     transform: translateY(-1.5px);
     filter: brightness(1.05);
   }
-  
+
   &:active {
     transform: translateY(0);
   }
@@ -183,7 +179,7 @@ export default function SakuraFitur() {
     const nextState = !sakuraEnabled;
     setSakuraEnabled(nextState);
     localStorage.setItem("sakura-particles-enabled", String(nextState));
-    
+
     // Dispatch global event for the layout
     const event = new Event("sakura-theme-changed");
     window.dispatchEvent(event);
@@ -191,13 +187,17 @@ export default function SakuraFitur() {
 
   return (
     <Container>
-      <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="SakuraFitur" />
+      <Breadcrumbs
+        items={[{ label: "Home", href: "/" }]}
+        current="SakuraFitur"
+      />
 
       <Header>
         <Title>SakuraFitur Hub 🌸</Title>
         <Subtitle>
-          Daftar peningkatan dan fitur premium baru yang diadaptasi dari SakuraFlow 
-          namun dibalut dalam estetika Zen Jepang khas Japan App Anda.
+          Daftar peningkatan dan fitur premium baru yang diadaptasi dari
+          SakuraFlow namun dibalut dalam estetika Zen Jepang khas Japan App
+          Anda.
         </Subtitle>
       </Header>
 
@@ -206,11 +206,14 @@ export default function SakuraFitur() {
         <FeatureCard>
           <FeatureIcon>📚</FeatureIcon>
           <FeatureInfo>
-            <FeatureTitle>Penyelesaian Detail Kosakata SRS (Milestone 1)</FeatureTitle>
+            <FeatureTitle>
+              Penyelesaian Detail Kosakata SRS (Milestone 1)
+            </FeatureTitle>
             <FeatureDesc>
-              Placeholder ulasan kosakata kini telah diintegrasikan dengan database kosakata lokal! 
-              Halaman ulasan kini menampilkan cara baca Kana (Furigana), Romaji, arti lengkap, 
-              serta Text-to-Speech (TTS) suara pelafalan bahasa Jepang asli yang dinamis.
+              Placeholder ulasan kosakata kini telah diintegrasikan dengan
+              database kosakata lokal! Halaman ulasan kini menampilkan cara baca
+              Kana (Furigana), Romaji, arti lengkap, serta Text-to-Speech (TTS)
+              suara pelafalan bahasa Jepang asli yang dinamis.
             </FeatureDesc>
             <ActionButton href="/review">Coba SRS Review</ActionButton>
           </FeatureInfo>
@@ -220,14 +223,19 @@ export default function SakuraFitur() {
         <FeatureCard>
           <FeatureIcon>🌸</FeatureIcon>
           <FeatureInfo>
-            <FeatureTitle>Tema Kelopak Sakura Berguguran (Milestone 2)</FeatureTitle>
+            <FeatureTitle>
+              Tema Kelopak Sakura Berguguran (Milestone 2)
+            </FeatureTitle>
             <FeatureDesc>
-              Menambahkan keindahan visual kelopak bunga sakura yang jatuh meliuk di latar belakang 
-              layar secara halus untuk menghadirkan atmosfer belajar Jepang yang premium. 
-              Anda bisa menonaktifkan atau mengaktifkannya secara langsung melalui tombol di bawah ini.
+              Menambahkan keindahan visual kelopak bunga sakura yang jatuh
+              meliuk di latar belakang layar secara halus untuk menghadirkan
+              atmosfer belajar Jepang yang premium. Anda bisa menonaktifkan atau
+              mengaktifkannya secara langsung melalui tombol di bawah ini.
             </FeatureDesc>
             <ControlButton onClick={toggleSakura}>
-              {sakuraEnabled ? "Nonaktifkan Efek Sakura" : "Aktifkan Efek Sakura"}
+              {sakuraEnabled
+                ? "Nonaktifkan Efek Sakura"
+                : "Aktifkan Efek Sakura"}
             </ControlButton>
           </FeatureInfo>
         </FeatureCard>
@@ -236,10 +244,13 @@ export default function SakuraFitur() {
         <FeatureCard>
           <FeatureIcon>⏱️</FeatureIcon>
           <FeatureInfo>
-            <FeatureTitle>Simulasi Ujian JLPT Berdurasi (Milestone 3)</FeatureTitle>
+            <FeatureTitle>
+              Simulasi Ujian JLPT Berdurasi (Milestone 3)
+            </FeatureTitle>
             <FeatureDesc>
-              Uji kesiapan ujian resmi Anda dengan simulasi tes JLPT berdurasi mundur! 
-              Menyediakan soal latihan kosakata & tata bahasa terstruktur sesuai standar kelulusan (passing mark) JLPT asli.
+              Uji kesiapan ujian resmi Anda dengan simulasi tes JLPT berdurasi
+              mundur! Menyediakan soal latihan kosakata & tata bahasa
+              terstruktur sesuai standar kelulusan (passing mark) JLPT asli.
             </FeatureDesc>
             <ActionButton href="/jlpt-exam">Mulai Simulasi JLPT</ActionButton>
           </FeatureInfo>
@@ -249,13 +260,18 @@ export default function SakuraFitur() {
         <FeatureCard>
           <FeatureIcon>📚</FeatureIcon>
           <FeatureInfo>
-            <FeatureTitle>Struktur Belajar & Kuis Tata Bahasa (Sakura Grammar)</FeatureTitle>
+            <FeatureTitle>
+              Struktur Belajar & Kuis Tata Bahasa (Sakura Grammar)
+            </FeatureTitle>
             <FeatureDesc>
-              Belajar tata bahasa Jepang N5 secara terstruktur dan berurutan! Modul baru ini 
-              menyediakan materi dengan furigana, ulasan ringkasan, dan kuis interaktif yang 
-              terbagi menjadi 3 jenis soal (pilihan ganda, mengisi partikel, dan penyusun kalimat).
+              Belajar tata bahasa Jepang N5 secara terstruktur dan berurutan!
+              Modul baru ini menyediakan materi dengan furigana, ulasan
+              ringkasan, dan kuis interaktif yang terbagi menjadi 3 jenis soal
+              (pilihan ganda, mengisi partikel, dan penyusun kalimat).
             </FeatureDesc>
-            <ActionButton href="/grammar/lessons">Mulai Belajar Grammar</ActionButton>
+            <ActionButton href="/grammar/lessons">
+              Mulai Belajar Grammar
+            </ActionButton>
           </FeatureInfo>
         </FeatureCard>
       </FeatureGrid>

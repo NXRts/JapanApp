@@ -3,8 +3,8 @@
 
 export interface GrammarSection {
   id: string;
-  title: string;      // Japanese pattern e.g. "X は Y です"
-  subtitle: string;   // English description e.g. "Marking topics and polite sentences"
+  title: string; // Japanese pattern e.g. "X は Y です"
+  subtitle: string; // English description e.g. "Marking topics and polite sentences"
   introduction: string;
   subsections: {
     heading: string;
@@ -27,21 +27,21 @@ export interface GrammarSection {
 export interface GrammarExercise {
   type: "fill-particle" | "word-bank" | "translate-choice";
   question: string;
-  sentence?: string;    // Sentence with blank for fill-particle
-  target?: string;      // The correct answer (particle to fill)
-  hint?: string;        // Explanation after answer
-  words?: string[];     // For word-bank: the word tiles
-  answer?: string[];    // For word-bank: correct order
-  choices?: string[];   // For translate-choice: options
-  correct?: string;     // For translate-choice: correct option
+  sentence?: string; // Sentence with blank for fill-particle
+  target?: string; // The correct answer (particle to fill)
+  hint?: string; // Explanation after answer
+  words?: string[]; // For word-bank: the word tiles
+  answer?: string[]; // For word-bank: correct order
+  choices?: string[]; // For translate-choice: options
+  correct?: string; // For translate-choice: correct option
 }
 
 export interface GrammarLesson {
   id: string;
   lessonNumber: number;
   title: string;
-  subtitle: string;     // Grammar points covered (e.g. "は・です・か・なん・の")
-  description: string;  // What you'll learn
+  subtitle: string; // Grammar points covered (e.g. "は・です・か・なん・の")
+  description: string; // What you'll learn
   estimatedMinutes: number;
   sections: GrammarSection[];
   exercises: GrammarExercise[];
@@ -810,5 +810,5 @@ export const grammarLessons: GrammarLesson[] = [
 
 export const totalSections = grammarLessons.reduce(
   (sum, lesson) => sum + lesson.sections.length,
-  0
+  0,
 );

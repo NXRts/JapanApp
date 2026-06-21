@@ -56,7 +56,7 @@ const Petal = styled.div<PetalProps>`
   background: linear-gradient(135deg, #ffd1dc 0%, #ffb7c5 100%);
   border-radius: 15px 1px 15px 15px; /* Curved sakura petal shape */
   opacity: 0;
-  animation: 
+  animation:
     ${fall} ${({ $duration }) => $duration}s linear infinite,
     ${sway} 4s ease-in-out infinite alternate;
   animation-delay: ${({ $delay }) => $delay}s;
@@ -88,14 +88,15 @@ export function SakuraBackground() {
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 12 - 12, // Start some immediately
-      duration: Math.random() * 8 + 8,  // 8s to 16s fall speed
-      size: Math.random() * 10 + 10,    // 10px to 20px size
+      duration: Math.random() * 8 + 8, // 8s to 16s fall speed
+      size: Math.random() * 10 + 10, // 10px to 20px size
     }));
     setPetals(newPetals);
 
     // Listen to localStorage changes or custom events to toggle dynamic styling
     const handleToggle = () => {
-      const active = localStorage.getItem("sakura-particles-enabled") !== "false";
+      const active =
+        localStorage.getItem("sakura-particles-enabled") !== "false";
       setEnabled(active);
     };
 

@@ -259,11 +259,13 @@ export default function ReviewPage() {
     } else {
       // Likely Vocabulary
       // First look in allVocabulary and allNumbers
-      const vocabDetails = allVocabulary.find(
-        (v) => v.word === currentItem.id || v.id === currentItem.id
-      ) || allNumbers.find(
-        (n) => n.word === currentItem.id || n.id === currentItem.id
-      );
+      const vocabDetails =
+        allVocabulary.find(
+          (v) => v.word === currentItem.id || v.id === currentItem.id,
+        ) ||
+        allNumbers.find(
+          (n) => n.word === currentItem.id || n.id === currentItem.id,
+        );
 
       if (vocabDetails) {
         setDetails({
@@ -281,7 +283,9 @@ export default function ReviewPage() {
             if (firstResult) {
               setDetails({
                 type: "vocabulary",
-                meaning: firstResult.senses?.[0]?.english_definitions?.join(", ") || "No definition",
+                meaning:
+                  firstResult.senses?.[0]?.english_definitions?.join(", ") ||
+                  "No definition",
                 reading: firstResult.japanese?.[0]?.reading || "...",
                 romaji: "",
               });
@@ -474,7 +478,9 @@ export default function ReviewPage() {
                       {details.romaji && (
                         <InfoRow>
                           <label>Romaji</label>
-                          <span style={{ fontSize: "1.2rem", color: "#10b981" }}>
+                          <span
+                            style={{ fontSize: "1.2rem", color: "#10b981" }}
+                          >
                             {details.romaji}
                           </span>
                         </InfoRow>
@@ -490,7 +496,9 @@ export default function ReviewPage() {
                           e.stopPropagation(); // Avoid flipping card
                           if (typeof window !== "undefined") {
                             const synth = window.speechSynthesis;
-                            const utterance = new SpeechSynthesisUtterance(currentItem.id);
+                            const utterance = new SpeechSynthesisUtterance(
+                              currentItem.id,
+                            );
                             utterance.lang = "ja-JP";
                             synth.speak(utterance);
                           }
