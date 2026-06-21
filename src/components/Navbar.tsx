@@ -272,6 +272,7 @@ const UserBtn = styled(Link)<{ $hideOnMobile?: boolean }>`
   align-items: center;
   justify-content: center;
   opacity: 0.8;
+  text-decoration: none;
 
   &:hover {
     color: var(--primary);

@@ -217,6 +217,7 @@ const ActionButton = styled.button<{ $danger?: boolean }>`
   border: 1px solid ${({ $danger }) => ($danger ? "#ef4444" : "var(--border)")};
   background: transparent;
   color: ${({ $danger }) => ($danger ? "#ef4444" : "var(--foreground)")};
+  text-decoration: none;
 
   &:hover {
     background: ${({ $danger }) => ($danger ? "#ef4444" : "var(--primary)")};
