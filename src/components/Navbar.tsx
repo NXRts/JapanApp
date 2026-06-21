@@ -98,11 +98,10 @@ const NavContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 56px;
-  /* Prevent internal items from pushing container wider than 100% */
-  overflow: hidden;
 
   @media (max-width: 600px) {
     padding: 0 0.75rem;
+    gap: 0; /* Children manage their own spacing */
   }
 `;
 
@@ -1561,16 +1560,16 @@ export function Navbar() {
                 🇯🇵 <span>JapanApp</span>
               </Logo>
 
+              {/* ── Middle: DeviceModeSwitcher + LVL Badge ─────────────────── */}
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.4rem",
+                  gap: "6px",
                   justifyContent: "center",
-                  flex: "1 1 0",
-                  minWidth: 0,        /* allows flex child to shrink below content size */
-                  overflow: "hidden",
-                  margin: "0 0.25rem",
+                  flex: "1 1 auto",
+                  /* No overflow:hidden here — it clips the switcher slider animation */
+                  margin: "0 4px",
                 }}
               >
                 <DeviceModeSwitcher />
@@ -1579,7 +1578,7 @@ export function Navbar() {
                     style={{
                       borderRadius: "999px",
                       fontSize: "0.68rem",
-                      padding: "4px 8px",
+                      padding: "3px 8px",
                     }}
                     title={`${progress.exp} Total EXP`}
                   >
@@ -1588,8 +1587,9 @@ export function Navbar() {
                 </Link>
               </div>
 
+              {/* ── Right: Search + Avatar + Hamburger ─────────────────────── */}
               <div
-                style={{ display: "flex", alignItems: "center", gap: "0.2rem", flexShrink: 0 }}
+                style={{ display: "flex", alignItems: "center", gap: "2px", flexShrink: 0 }}
               >
                 <SearchBtn
                   onClick={() => setIsDictionaryOpen(true)}
