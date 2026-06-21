@@ -7,21 +7,7 @@ import { useRouter } from "next/navigation";
 import { grammarLessons } from "@/data/grammarLessons";
 import { useProgress } from "@/context/ProgressContext";
 
-/* ─── Progress helpers ─────────────────────────────────────────────────── */
-function markExerciseDoneInLocalStorage(lessonId: string) {
-  if (typeof window === "undefined") return;
-  try {
-    const done: string[] = JSON.parse(
-      localStorage.getItem("grammar_completed_exercises") ?? "[]",
-    );
-    if (!done.includes(lessonId)) {
-      done.push(lessonId);
-      localStorage.setItem("grammar_completed_exercises", JSON.stringify(done));
-    }
-  } catch (e) {
-    console.error("Failed to write completed exercises", e);
-  }
-}
+
 
 /* ─── Animations ───────────────────────────────────────────────────────── */
 const fadeUp = keyframes`
@@ -558,7 +544,6 @@ export default function GrammarExercisePage({
   // Handle marking complete on component mounts of completion view
   useEffect(() => {
     if (completed && lesson) {
-      markExerciseDoneInLocalStorage(lesson.id);
       markExerciseCompleted(lesson.id);
     }
   }, [completed, lesson, markExerciseCompleted]);

@@ -63,6 +63,8 @@ interface ProgressData {
   exp: number;
   activityLog: Record<string, number>; // Date string -> EXP gained
   completedExercises: string[];
+  completedGrammarSections: string[];
+  showFurigana: boolean;
   profile?: UserProfile;
 }
 
@@ -77,6 +79,8 @@ interface ProgressContextType {
   markExerciseCompleted: (id: string) => void;
   getDueItems: () => (SRSItem & { id: string })[];
   updateProfile: (profileData: Partial<UserProfile>) => void;
+  markGrammarSectionCompleted: (key: string) => void;
+  setShowFurigana: (show: boolean) => void;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(
@@ -102,6 +106,8 @@ const INITIAL_DATA: ProgressData = {
   exp: 0,
   activityLog: {},
   completedExercises: [],
+  completedGrammarSections: [],
+  showFurigana: true,
   profile: DEFAULT_PROFILE,
 };
 
@@ -126,9 +132,39 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       const saved = localStorage.getItem("user-progress");
+      
+      let legacyCompletedSections: string[] = [];
+      let legacyCompletedExercises: string[] = [];
+      try {
+        const savedSections = localStorage.getItem("grammar_completed_sections");
+        if (savedSections) {
+          legacyCompletedSections = JSON.parse(savedSections);
+        }
+      } catch (e) {
+        console.error("Failed to parse legacy grammar completed sections", e);
+      }
+      try {
+        const savedExercises = localStorage.getItem("grammar_completed_exercises");
+        if (savedExercises) {
+          legacyCompletedExercises = JSON.parse(savedExercises);
+        }
+      } catch (e) {
+        console.error("Failed to parse legacy grammar completed exercises", e);
+      }
+
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
+          
+          const mergedCompletedSections = Array.from(new Set([
+            ...(parsed.completedGrammarSections || []),
+            ...legacyCompletedSections
+          ]));
+          const mergedCompletedExercises = Array.from(new Set([
+            ...(parsed.completedExercises || []),
+            ...legacyCompletedExercises
+          ]));
+
           setProgress({
             ...INITIAL_DATA,
             ...parsed,
@@ -138,7 +174,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
             streak: parsed.streak || 0,
             exp: parsed.exp || 0,
             activityLog: parsed.activityLog || {},
-            completedExercises: parsed.completedExercises || [],
+            completedExercises: mergedCompletedExercises,
+            completedGrammarSections: mergedCompletedSections,
+            showFurigana: typeof parsed.showFurigana === "boolean" ? parsed.showFurigana : true,
             profile: {
               ...DEFAULT_PROFILE,
               ...(parsed.profile || {}),
@@ -146,6 +184,14 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
           });
         } catch (e) {
           console.error("Failed to parse progress data", e);
+        }
+      } else {
+        if (legacyCompletedSections.length > 0 || legacyCompletedExercises.length > 0) {
+          setProgress(prev => ({
+            ...prev,
+            completedGrammarSections: legacyCompletedSections,
+            completedExercises: legacyCompletedExercises,
+          }));
         }
       }
       setIsLoaded(true);
@@ -348,6 +394,29 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
+  const markGrammarSectionCompleted = useCallback(
+    (key: string) => {
+      setProgress((prev) => {
+        if (prev.completedGrammarSections?.includes(key)) return prev;
+        return {
+          ...prev,
+          completedGrammarSections: [
+            ...(prev.completedGrammarSections || []),
+            key,
+          ],
+        };
+      });
+    },
+    [],
+  );
+
+  const setShowFurigana = useCallback((show: boolean) => {
+    setProgress((prev) => ({
+      ...prev,
+      showFurigana: show,
+    }));
+  }, []);
+
   const resetProgress = useCallback(() => {
     if (typeof window !== "undefined") {
       // 1. Atomic wipe of all storage (Learning + Theme settings)
@@ -386,6 +455,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       getDueItems,
       resetProgress,
       updateProfile,
+      markGrammarSectionCompleted,
+      setShowFurigana,
     }),
     [
       progress,
@@ -398,6 +469,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       getDueItems,
       resetProgress,
       updateProfile,
+      markGrammarSectionCompleted,
+      setShowFurigana,
     ],
   );
 
