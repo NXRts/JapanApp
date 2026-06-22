@@ -450,7 +450,8 @@ export default function StatsPage() {
     }).length;
   }, [progress.completedGrammarSections, progress.completedExercises]);
 
-  const grammarProgressPct = Math.round((completedGrammarSectionsCount / totalSections) * 100) || 0;
+  const grammarProgressPct =
+    Math.round((completedGrammarSectionsCount / totalSections) * 100) || 0;
 
   return (
     <Container>
@@ -526,7 +527,8 @@ export default function StatsPage() {
         <MainStatCard>
           <StatLabel>Grammar Progress</StatLabel>
           <StatValue>
-            {completedGrammarLessonsCount} <span>/ {grammarLessons.length} lessons</span>
+            {completedGrammarLessonsCount}{" "}
+            <span>/ {grammarLessons.length} lessons</span>
           </StatValue>
           <ProgressInfo>
             <LevelProgressBar>
@@ -540,7 +542,9 @@ export default function StatsPage() {
                 justifyContent: "space-between",
               }}
             >
-              <span>{completedGrammarSectionsCount} / {totalSections} sections</span>
+              <span>
+                {completedGrammarSectionsCount} / {totalSections} sections
+              </span>
               <span>{grammarProgressPct}% completed</span>
             </div>
           </ProgressInfo>

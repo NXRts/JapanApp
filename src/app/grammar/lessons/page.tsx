@@ -56,9 +56,12 @@ const FuriganaToggleBtn = styled.button<{ $active: boolean }>`
   font-weight: 700;
   padding: 0.5rem 1rem;
   border-radius: 12px;
-  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
-  background: ${({ $active }) => ($active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)" : "var(--surface)")};
-  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) =>
+    $active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)" : "var(--surface)"};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -388,7 +391,11 @@ export default function GrammarLessonsPage() {
             $active={progress.showFurigana}
             onClick={() => setShowFurigana(!progress.showFurigana)}
           >
-            <span>{progress.showFurigana ? "🌸 Furigana: Show" : "💤 Furigana: Hide"}</span>
+            <span>
+              {progress.showFurigana
+                ? "🌸 Furigana: Show"
+                : "💤 Furigana: Hide"}
+            </span>
           </FuriganaToggleBtn>
         </HeaderTop>
         <PageSub>All {grammarLessons.length} lessons for N5 grammar</PageSub>

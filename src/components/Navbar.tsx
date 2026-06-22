@@ -1573,7 +1573,10 @@ export function Navbar() {
                 }}
               >
                 <DeviceModeSwitcher />
-                <Link href="/stats" style={{ textDecoration: "none", flexShrink: 0 }}>
+                <Link
+                  href="/stats"
+                  style={{ textDecoration: "none", flexShrink: 0 }}
+                >
                   <LevelBadge
                     style={{
                       borderRadius: "999px",
@@ -1589,7 +1592,12 @@ export function Navbar() {
 
               {/* ── Right: Search + Avatar + Hamburger ─────────────────────── */}
               <div
-                style={{ display: "flex", alignItems: "center", gap: "2px", flexShrink: 0 }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "2px",
+                  flexShrink: 0,
+                }}
               >
                 <SearchBtn
                   onClick={() => setIsDictionaryOpen(true)}
