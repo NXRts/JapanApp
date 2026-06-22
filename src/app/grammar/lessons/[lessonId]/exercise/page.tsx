@@ -7,8 +7,6 @@ import { useRouter } from "next/navigation";
 import { grammarLessons } from "@/data/grammarLessons";
 import { useProgress } from "@/context/ProgressContext";
 
-
-
 /* ─── Animations ───────────────────────────────────────────────────────── */
 const fadeUp = keyframes`
   from { opacity: 0; transform: translateY(16px); }

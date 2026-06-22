@@ -90,9 +90,12 @@ const FuriganaToggleBtn = styled.button<{ $active: boolean }>`
   font-weight: 700;
   padding: 0.4rem 0.8rem;
   border-radius: 10px;
-  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
-  background: ${({ $active }) => ($active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)" : "var(--surface)")};
-  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) =>
+    $active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)" : "var(--surface)"};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -410,7 +413,8 @@ export default function SectionPage({
 }) {
   const { lessonId, sectionId } = use(params);
   const router = useRouter();
-  const { progress, markGrammarSectionCompleted, setShowFurigana } = useProgress();
+  const { progress, markGrammarSectionCompleted, setShowFurigana } =
+    useProgress();
   const [openBlocks, setOpenBlocks] = useState<Set<number>>(new Set([0]));
   const [marked, setMarked] = useState(false);
 
@@ -502,7 +506,9 @@ export default function SectionPage({
             $active={progress.showFurigana}
             onClick={() => setShowFurigana(!progress.showFurigana)}
           >
-            <span>{progress.showFurigana ? "🌸 Furigana: On" : "💤 Furigana: Off"}</span>
+            <span>
+              {progress.showFurigana ? "🌸 Furigana: On" : "💤 Furigana: Off"}
+            </span>
           </FuriganaToggleBtn>
           <SectionCounter>
             SECTION {sectionIdx + 1} OF {totalSectionsInLesson}
@@ -556,13 +562,25 @@ export default function SectionPage({
 
               {sub.examples?.map((ex, ei) => (
                 <ExampleCard key={ei}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      gap: "1rem",
+                    }}
+                  >
                     <div style={{ flex: 1 }}>
                       <JapaneseRow>{ex.japanese}</JapaneseRow>
-                      {ex.furigana && progress.showFurigana && <FuriganaRow>{ex.furigana}</FuriganaRow>}
+                      {ex.furigana && progress.showFurigana && (
+                        <FuriganaRow>{ex.furigana}</FuriganaRow>
+                      )}
                       <EnglishRow>{ex.english}</EnglishRow>
                     </div>
-                    <SpeakerBtn onClick={() => speak(ex.japanese)} title="Listen to Japanese pronunciation">
+                    <SpeakerBtn
+                      onClick={() => speak(ex.japanese)}
+                      title="Listen to Japanese pronunciation"
+                    >
                       🔊
                     </SpeakerBtn>
                   </div>
@@ -598,7 +616,12 @@ export default function SectionPage({
               <VocabGrid>
                 {section.keyVocabulary.map((v, vi) => (
                   <VocabCard key={vi}>
-                    <VocabFuri style={{ opacity: progress.showFurigana ? 1 : 0, transition: "opacity 0.25s ease" }}>
+                    <VocabFuri
+                      style={{
+                        opacity: progress.showFurigana ? 1 : 0,
+                        transition: "opacity 0.25s ease",
+                      }}
+                    >
                       {v.furigana || "\u00A0"}
                     </VocabFuri>
                     <VocabKanji>{v.kanji}</VocabKanji>

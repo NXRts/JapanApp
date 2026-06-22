@@ -132,11 +132,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       const saved = localStorage.getItem("user-progress");
-      
+
       let legacyCompletedSections: string[] = [];
       let legacyCompletedExercises: string[] = [];
       try {
-        const savedSections = localStorage.getItem("grammar_completed_sections");
+        const savedSections = localStorage.getItem(
+          "grammar_completed_sections",
+        );
         if (savedSections) {
           legacyCompletedSections = JSON.parse(savedSections);
         }
@@ -144,7 +146,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         console.error("Failed to parse legacy grammar completed sections", e);
       }
       try {
-        const savedExercises = localStorage.getItem("grammar_completed_exercises");
+        const savedExercises = localStorage.getItem(
+          "grammar_completed_exercises",
+        );
         if (savedExercises) {
           legacyCompletedExercises = JSON.parse(savedExercises);
         }
@@ -155,15 +159,19 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
-          
-          const mergedCompletedSections = Array.from(new Set([
-            ...(parsed.completedGrammarSections || []),
-            ...legacyCompletedSections
-          ]));
-          const mergedCompletedExercises = Array.from(new Set([
-            ...(parsed.completedExercises || []),
-            ...legacyCompletedExercises
-          ]));
+
+          const mergedCompletedSections = Array.from(
+            new Set([
+              ...(parsed.completedGrammarSections || []),
+              ...legacyCompletedSections,
+            ]),
+          );
+          const mergedCompletedExercises = Array.from(
+            new Set([
+              ...(parsed.completedExercises || []),
+              ...legacyCompletedExercises,
+            ]),
+          );
 
           setProgress({
             ...INITIAL_DATA,
@@ -176,7 +184,10 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
             activityLog: parsed.activityLog || {},
             completedExercises: mergedCompletedExercises,
             completedGrammarSections: mergedCompletedSections,
-            showFurigana: typeof parsed.showFurigana === "boolean" ? parsed.showFurigana : true,
+            showFurigana:
+              typeof parsed.showFurigana === "boolean"
+                ? parsed.showFurigana
+                : true,
             profile: {
               ...DEFAULT_PROFILE,
               ...(parsed.profile || {}),
@@ -186,8 +197,11 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
           console.error("Failed to parse progress data", e);
         }
       } else {
-        if (legacyCompletedSections.length > 0 || legacyCompletedExercises.length > 0) {
-          setProgress(prev => ({
+        if (
+          legacyCompletedSections.length > 0 ||
+          legacyCompletedExercises.length > 0
+        ) {
+          setProgress((prev) => ({
             ...prev,
             completedGrammarSections: legacyCompletedSections,
             completedExercises: legacyCompletedExercises,
@@ -394,21 +408,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
-  const markGrammarSectionCompleted = useCallback(
-    (key: string) => {
-      setProgress((prev) => {
-        if (prev.completedGrammarSections?.includes(key)) return prev;
-        return {
-          ...prev,
-          completedGrammarSections: [
-            ...(prev.completedGrammarSections || []),
-            key,
-          ],
-        };
-      });
-    },
-    [],
-  );
+  const markGrammarSectionCompleted = useCallback((key: string) => {
+    setProgress((prev) => {
+      if (prev.completedGrammarSections?.includes(key)) return prev;
+      return {
+        ...prev,
+        completedGrammarSections: [
+          ...(prev.completedGrammarSections || []),
+          key,
+        ],
+      };
+    });
+  }, []);
 
   const setShowFurigana = useCallback((show: boolean) => {
     setProgress((prev) => ({

@@ -135,6 +135,11 @@ const SearchInput = styled.input`
     color: var(--text-secondary);
     opacity: 0.7;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.85rem 1.25rem 0.85rem 2.75rem;
+    font-size: 0.95rem;
+  }
 `;
 
 const SearchIconWrapper = styled.div`
@@ -150,6 +155,10 @@ const SearchIconWrapper = styled.div`
 
   ${SearchInput}:focus + & {
     color: var(--primary);
+  }
+
+  @media (max-width: 768px) {
+    left: 1rem;
   }
 `;
 
@@ -172,6 +181,10 @@ const ClearButton = styled.button`
     background: var(--border);
     color: var(--foreground);
   }
+
+  @media (max-width: 768px) {
+    right: 1rem;
+  }
 `;
 
 const GridTitle = styled.h2`
@@ -191,6 +204,16 @@ const GridTitle = styled.h2`
     background: var(--primary);
     border-radius: 3px;
   }
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+
+    &::before {
+      height: 1.2rem;
+      width: 5px;
+    }
+  }
 `;
 
 const CategoryGrid = styled.div`
@@ -203,7 +226,7 @@ const CategoryGrid = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr); /* 2 kolom agar card lebih kecil */
     gap: 0.75rem;
   }
@@ -269,7 +292,7 @@ const CategoryCard = styled.button<CategoryCardProps>`
   }
 
   /* ── Compact mobile style ── */
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     padding: 1rem 0.75rem;
     border-radius: 14px;
     gap: 0.6rem;
@@ -304,6 +327,12 @@ const SectionHeader = styled.div`
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
 `;
 
 const ResetFilterButton = styled.button`
@@ -368,6 +397,12 @@ const AccordionHeader = styled.button<AccordionHeaderProps>`
     display: flex;
     align-items: center;
     gap: 0.75rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.35rem;
+    }
   }
 
   .category-tag {
@@ -471,6 +506,12 @@ const ContactSection = styled.section`
     gap: 2rem;
     padding: 2rem 1.5rem;
   }
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+    gap: 1.5rem;
+  }
 `;
 
 const ContactInfo = styled.div`
@@ -511,6 +552,26 @@ const ContactInfo = styled.div`
       color: var(--secondary);
     }
   }
+
+  @media (max-width: 768px) {
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .badge-list {
+      gap: 0.75rem;
+    }
+
+    .badge-item {
+      font-size: 0.85rem;
+    }
+  }
 `;
 
 const ContactForm = styled.form`
@@ -523,7 +584,7 @@ const ContactForm = styled.form`
   border: 1px solid var(--border);
   box-shadow: var(--shadow-md);
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     padding: 1.25rem;
   }
 `;
@@ -627,6 +688,11 @@ const FormButton = styled.button`
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
   }
 `;
 
