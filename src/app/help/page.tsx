@@ -204,8 +204,8 @@ const CategoryGrid = styled.div`
   }
 
   @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr); /* 2 kolom agar card lebih kecil */
+    gap: 0.75rem;
   }
 `;
 
@@ -266,6 +266,34 @@ const CategoryCard = styled.button<CategoryCardProps>`
     color: var(--text-secondary);
     margin: 0;
     line-height: 1.4;
+  }
+
+  /* ── Compact mobile style ── */
+  @media (max-width: 480px) {
+    padding: 1rem 0.75rem;
+    border-radius: 14px;
+    gap: 0.6rem;
+
+    .icon-container {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    h3 {
+      font-size: 0.82rem;
+      line-height: 1.3;
+    }
+
+    p {
+      font-size: 0.72rem;
+      line-height: 1.35;
+    }
   }
 `;
 
