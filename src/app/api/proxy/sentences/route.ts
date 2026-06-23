@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { validateKeyword } from "@/lib/validation";
+import { addCorsHeaders, handleCorsRequest } from "@/lib/cors";
 
 const TATOEBA_TIMEOUT_MS = 8000; // 8 second timeout per attempt
 const MAX_RETRIES = 3;
@@ -95,16 +97,18 @@ function processResults(data: any) {
 }
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const keyword = searchParams.get("keyword");
-
-  if (!keyword) {
-    return NextResponse.json({ error: "Keyword is required" }, { status: 400 });
-  }
-
-  const url = `https://tatoeba.org/en/api_v0/search?from=jpn&to=eng&query=${encodeURIComponent(keyword)}`;
+  const corsResponse = handleCorsRequest(request);
+  if (corsResponse) return corsResponse;
 
   try {
+    const { searchParams } = new URL(request.url);
+    const keyword = searchParams.get("keyword");
+    const origin = request.headers.get("origin");
+
+    const validatedKeyword = validateKeyword(keyword);
+
+    const url = `https://tatoeba.org/en/api_v0/search?from=jpn&to=eng&query=${encodeURIComponent(validatedKeyword)}`;
+
     const res = await fetchWithRetry(
       url,
       {
@@ -116,15 +120,19 @@ export async function GET(request: Request) {
     const data = await res.json();
     const sentences = processResults(data);
 
-    return NextResponse.json({ data: sentences });
+    const response = NextResponse.json({ data: sentences });
+    return addCorsHeaders(response, origin);
   } catch (error) {
     console.warn(
       "Tatoeba Proxy: all attempts failed for keyword:",
-      keyword,
       error,
     );
     // Graceful degradation — return empty data instead of 500
     // so the UI can still render (just without example sentences)
-    return NextResponse.json({ data: [] });
+    const response = NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to fetch sentences", data: [] },
+      { status: error instanceof Error && error.message.includes("required") ? 400 : 500 }
+    );
+    return addCorsHeaders(response, request.headers.get("origin"));
   }
 }
