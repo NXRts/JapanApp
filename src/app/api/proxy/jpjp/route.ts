@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { validateKeyword } from "@/lib/validation";
+import { addCorsHeaders, handleCorsRequest } from "@/lib/cors";
 
 const WIKTIONARY_TIMEOUT_MS = 8000;
 const MAX_RETRIES = 2;
@@ -199,42 +201,51 @@ function parseDefinitions(html: string, keyword: string) {
 }
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const keyword = searchParams.get("keyword");
-
-  if (!keyword) {
-    return NextResponse.json({ error: "Keyword is required" }, { status: 400 });
-  }
+  const corsResponse = handleCorsRequest(request);
+  if (corsResponse) return corsResponse;
 
   try {
+    const { searchParams } = new URL(request.url);
+    const keyword = searchParams.get("keyword");
+    const origin = request.headers.get("origin");
+
+    const validatedKeyword = validateKeyword(keyword);
+
     // Primary: MediaWiki Action API (produces cleaner HTML without data-mw attributes)
-    const actionUrl = `https://ja.wiktionary.org/w/api.php?action=parse&page=${encodeURIComponent(keyword)}&prop=text&format=json&formatversion=2`;
+    const actionUrl = `https://ja.wiktionary.org/w/api.php?action=parse&page=${encodeURIComponent(validatedKeyword)}&prop=text&format=json&formatversion=2`;
     const actionRes = await fetchWithRetry(actionUrl, MAX_RETRIES);
 
     if (actionRes) {
       const actionData = await actionRes.json();
       const html = actionData?.parse?.text || "";
       if (html) {
-        const definitions = parseDefinitions(html, keyword);
+        const definitions = parseDefinitions(html, validatedKeyword);
         if (definitions.length > 0) {
-          return NextResponse.json({ data: definitions });
+          const response = NextResponse.json({ data: definitions });
+          return addCorsHeaders(response, origin);
         }
       }
     }
 
     // Fallback: REST API
-    const restUrl = `https://ja.wiktionary.org/api/rest_v1/page/html/${encodeURIComponent(keyword)}`;
+    const restUrl = `https://ja.wiktionary.org/api/rest_v1/page/html/${encodeURIComponent(validatedKeyword)}`;
     const restRes = await fetchWithRetry(restUrl, MAX_RETRIES);
 
     if (!restRes) {
-      return NextResponse.json({ data: [] });
+      const response = NextResponse.json({ data: [] });
+      return addCorsHeaders(response, origin);
     }
 
     const html = await restRes.text();
-    const definitions = parseDefinitions(html, keyword);
-    return NextResponse.json({ data: definitions });
+    const definitions = parseDefinitions(html, validatedKeyword);
+    const response = NextResponse.json({ data: definitions });
+    return addCorsHeaders(response, origin);
   } catch (error) {
-    console.warn("JP-JP Proxy: failed for keyword:", keyword, error);
-    return NextResponse.json({ data: [] });
+    console.warn("JP-JP Proxy: failed for keyword:", error);
+    const response = NextResponse.json(
+      { error: error instanceof Error ? error.message : "Failed to fetch dictionary data", data: [] },
+      { status: error instanceof Error && error.message.includes("required") ? 400 : 500 }
+    );
+    return addCorsHeaders(response, request.headers.get("origin"));
   }
 }

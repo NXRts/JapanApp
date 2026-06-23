@@ -1,4 +1,6 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { validateKanaType } from "@/lib/validation";
+import { addCorsHeaders, handleCorsRequest } from "@/lib/cors";
 
 const HIRAGANA = [
   "あ",
@@ -99,17 +101,35 @@ const KATAKANA = [
 ];
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const type = searchParams.get("type");
+  const corsResponse = handleCorsRequest(request);
+  if (corsResponse) return corsResponse;
 
-  if (type === "hiragana") {
-    return Response.json(HIRAGANA);
-  } else if (type === "katakana") {
-    return Response.json(KATAKANA);
-  } else if (type === "all") {
-    return Response.json([...HIRAGANA, ...KATAKANA]);
+  try {
+    const { searchParams } = new URL(request.url);
+    const type = searchParams.get("type");
+    const origin = request.headers.get("origin");
+
+    const validatedType = validateKanaType(type);
+
+    let data;
+    if (validatedType === "hiragana") {
+      data = HIRAGANA;
+    } else if (validatedType === "katakana") {
+      data = KATAKANA;
+    } else if (validatedType === "all") {
+      data = [...HIRAGANA, ...KATAKANA];
+    } else {
+      data = { hiragana: HIRAGANA, katakana: KATAKANA };
+    }
+
+    const response = NextResponse.json(data);
+    return addCorsHeaders(response, origin);
+  } catch (error) {
+    console.error("Kana API Error:", error);
+    const response = NextResponse.json(
+      { error: error instanceof Error ? error.message : "Invalid request" },
+      { status: 400 }
+    );
+    return addCorsHeaders(response, request.headers.get("origin"));
   }
-
-  // Default to returning an object with both
-  return Response.json({ hiragana: HIRAGANA, katakana: KATAKANA });
 }
