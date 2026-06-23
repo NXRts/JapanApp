@@ -6,10 +6,64 @@
   "display": "standalone",
   "background_color": "#F8FAFC",
   "theme_color": "#4F46E5",
+  "orientation": "portrait",
+  "categories": ["education", "books", "utilities"],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-mobile.png",
+      "sizes": "800x600",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Roadmap Lesson Screen on Mobile"
+    },
+    {
+      "src": "/images/screenshot-desktop.png",
+      "sizes": "800x600",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Roadmap Lesson Screen on Desktop"
+    }
+  ],
   "icons": [
+    {
+      "src": "/icons/icon-48.png",
+      "sizes": "48x48",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384.png",
+      "sizes": "384x384",
       "type": "image/png",
       "purpose": "any maskable"
     },

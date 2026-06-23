@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { calculateNextSRS, SRSItem } from "@/lib/srs";
+import { encryptData, decryptData } from "@/lib/encryption";
 import {
   GamificationAlert,
   GamificationAlertData,
@@ -158,41 +159,51 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
       if (saved) {
         try {
-          const parsed = JSON.parse(saved);
+          let parsed = null;
+          
+          if (saved.startsWith("U2FsdGVkX1") || !saved.trim().startsWith("{")) {
+            parsed = decryptData(saved);
+          }
+          
+          if (!parsed && saved.trim().startsWith("{")) {
+            parsed = JSON.parse(saved);
+          }
 
-          const mergedCompletedSections = Array.from(
-            new Set([
-              ...(parsed.completedGrammarSections || []),
-              ...legacyCompletedSections,
-            ]),
-          );
-          const mergedCompletedExercises = Array.from(
-            new Set([
-              ...(parsed.completedExercises || []),
-              ...legacyCompletedExercises,
-            ]),
-          );
+          if (parsed) {
+            const mergedCompletedSections = Array.from(
+              new Set([
+                ...(parsed.completedGrammarSections || []),
+                ...legacyCompletedSections,
+              ]),
+            );
+            const mergedCompletedExercises = Array.from(
+              new Set([
+                ...(parsed.completedExercises || []),
+                ...legacyCompletedExercises,
+              ]),
+            );
 
-          setProgress({
-            ...INITIAL_DATA,
-            ...parsed,
-            srs: parsed.srs || {},
-            mastery: parsed.mastery || {},
-            quizHistory: parsed.quizHistory || [],
-            streak: parsed.streak || 0,
-            exp: parsed.exp || 0,
-            activityLog: parsed.activityLog || {},
-            completedExercises: mergedCompletedExercises,
-            completedGrammarSections: mergedCompletedSections,
-            showFurigana:
-              typeof parsed.showFurigana === "boolean"
-                ? parsed.showFurigana
-                : true,
-            profile: {
-              ...DEFAULT_PROFILE,
-              ...(parsed.profile || {}),
-            },
-          });
+            setProgress({
+              ...INITIAL_DATA,
+              ...parsed,
+              srs: parsed.srs || {},
+              mastery: parsed.mastery || {},
+              quizHistory: parsed.quizHistory || [],
+              streak: parsed.streak || 0,
+              exp: parsed.exp || 0,
+              activityLog: parsed.activityLog || {},
+              completedExercises: mergedCompletedExercises,
+              completedGrammarSections: mergedCompletedSections,
+              showFurigana:
+                typeof parsed.showFurigana === "boolean"
+                  ? parsed.showFurigana
+                  : true,
+              profile: {
+                ...DEFAULT_PROFILE,
+                ...(parsed.profile || {}),
+              },
+            });
+          }
         } catch (e) {
           console.error("Failed to parse progress data", e);
         }
@@ -216,7 +227,10 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   // Save to localStorage
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem("user-progress", JSON.stringify(progress));
+      const encrypted = encryptData(progress);
+      if (encrypted) {
+        localStorage.setItem("user-progress", encrypted);
+      }
     }
   }, [progress, isLoaded]);
 
