@@ -123,15 +123,21 @@ export async function GET(request: Request) {
     const response = NextResponse.json({ data: sentences });
     return addCorsHeaders(response, origin);
   } catch (error) {
-    console.warn(
-      "Tatoeba Proxy: all attempts failed for keyword:",
-      error,
-    );
+    console.warn("Tatoeba Proxy: all attempts failed for keyword:", error);
     // Graceful degradation — return empty data instead of 500
     // so the UI can still render (just without example sentences)
     const response = NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to fetch sentences", data: [] },
-      { status: error instanceof Error && error.message.includes("required") ? 400 : 500 }
+      {
+        error:
+          error instanceof Error ? error.message : "Failed to fetch sentences",
+        data: [],
+      },
+      {
+        status:
+          error instanceof Error && error.message.includes("required")
+            ? 400
+            : 500,
+      },
     );
     return addCorsHeaders(response, request.headers.get("origin"));
   }

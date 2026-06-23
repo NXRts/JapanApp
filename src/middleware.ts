@@ -42,39 +42,40 @@ setInterval(() => {
 }, 60 * 1000); // Clean up every minute
 
 export function middleware(request: NextRequest) {
-  const ip = request.headers.get('x-forwarded-for') ?? 
-             request.headers.get('x-real-ip') ?? 
-             '127.0.0.1';
+  const ip =
+    request.headers.get("x-forwarded-for") ??
+    request.headers.get("x-real-ip") ??
+    "127.0.0.1";
   const path = request.nextUrl.pathname;
 
   // Skip rate limiting for static assets and Next.js internals
   if (
-    path.startsWith('/_next') ||
-    path.startsWith('/static') ||
-    path.startsWith('/images') ||
-    path.startsWith('/icons') ||
-    path.includes('.') // Skip files with extensions
+    path.startsWith("/_next") ||
+    path.startsWith("/static") ||
+    path.startsWith("/images") ||
+    path.startsWith("/icons") ||
+    path.includes(".") // Skip files with extensions
   ) {
     return NextResponse.next();
   }
 
   // Apply stricter rate limiting to API routes
-  if (path.startsWith('/api')) {
+  if (path.startsWith("/api")) {
     const identifier = `${ip}:${path}`;
     const allowed = checkRateLimit(identifier);
 
     if (!allowed) {
       return new NextResponse(
-        JSON.stringify({ error: 'Too many requests. Please try again later.' }),
+        JSON.stringify({ error: "Too many requests. Please try again later." }),
         {
           status: 429,
           headers: {
-            'Content-Type': 'application/json',
-            'Retry-After': '60',
-            'X-RateLimit-Limit': RATE_LIMIT.maxRequests.toString(),
-            'X-RateLimit-Remaining': '0',
+            "Content-Type": "application/json",
+            "Retry-After": "60",
+            "X-RateLimit-Limit": RATE_LIMIT.maxRequests.toString(),
+            "X-RateLimit-Remaining": "0",
           },
-        }
+        },
       );
     }
   }
@@ -83,21 +84,21 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Prevent clickjacking
-  response.headers.set('X-Frame-Options', 'DENY');
-  
+  response.headers.set("X-Frame-Options", "DENY");
+
   // Prevent MIME type sniffing
-  response.headers.set('X-Content-Type-Options', 'nosniff');
-  
+  response.headers.set("X-Content-Type-Options", "nosniff");
+
   // Enable XSS protection
-  response.headers.set('X-XSS-Protection', '1; mode=block');
-  
+  response.headers.set("X-XSS-Protection", "1; mode=block");
+
   // Referrer policy
-  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+
   // Permissions policy
   response.headers.set(
-    'Permissions-Policy',
-    'camera=(), microphone=(), geolocation=(), interest-cohort=()'
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), interest-cohort=()",
   );
 
   return response;
@@ -112,6 +113,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public folder
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };

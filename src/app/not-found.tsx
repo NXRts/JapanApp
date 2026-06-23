@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styled, { keyframes } from "styled-components";
 
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 
 const NotFoundContainer = styled.div`
   min-height: 100vh;
@@ -55,7 +55,11 @@ const ButtonGroup = styled.div`
 
 const PrimaryButton = styled(Link)`
   padding: 0.75rem 2rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   border-radius: 12px;
   font-weight: 700;
@@ -124,11 +128,15 @@ export default function NotFound() {
     <NotFoundContainer>
       <NotFoundIcon>⛩️</NotFoundIcon>
       <NotFoundTitle>404</NotFoundTitle>
-      <NotFoundSubtitle>Lost in Translation / ページが見つかりません</NotFoundSubtitle>
+      <NotFoundSubtitle>
+        Lost in Translation / ページが見つかりません
+      </NotFoundSubtitle>
       <NotFoundMessage>
-        We couldn't find the page you were looking for. It might have been moved, deleted, or perhaps the spelling is incorrect. Let's get you back on track!
+        We couldn't find the page you were looking for. It might have been
+        moved, deleted, or perhaps the spelling is incorrect. Let's get you back
+        on track!
       </NotFoundMessage>
-      
+
       <ButtonGroup>
         <PrimaryButton href="/">Go Home</PrimaryButton>
         <SecondaryButton href="/practice">Try Practice</SecondaryButton>
@@ -136,9 +144,13 @@ export default function NotFound() {
 
       <SuggestionList>
         <SuggestionTitle>Popular Destinations</SuggestionTitle>
-        <SuggestionLink href="/kana">🇯🇵 Learn Hiragana & Katakana (Kana)</SuggestionLink>
+        <SuggestionLink href="/kana">
+          🇯🇵 Learn Hiragana & Katakana (Kana)
+        </SuggestionLink>
         <SuggestionLink href="/kanji">🏮 Learn Kanji Characters</SuggestionLink>
-        <SuggestionLink href="/grammar/lessons">📖 Japanese Grammar Lessons</SuggestionLink>
+        <SuggestionLink href="/grammar/lessons">
+          📖 Japanese Grammar Lessons
+        </SuggestionLink>
         <SuggestionLink href="/review">📚 Vocab Review (SRS)</SuggestionLink>
       </SuggestionList>
     </NotFoundContainer>

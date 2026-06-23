@@ -23,8 +23,16 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("Jisho Proxy Error:", error);
     const response = NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to fetch from Jisho" },
-      { status: error instanceof Error && error.message.includes("required") ? 400 : 500 },
+      {
+        error:
+          error instanceof Error ? error.message : "Failed to fetch from Jisho",
+      },
+      {
+        status:
+          error instanceof Error && error.message.includes("required")
+            ? 400
+            : 500,
+      },
     );
     return addCorsHeaders(response, request.headers.get("origin"));
   }

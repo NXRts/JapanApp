@@ -63,7 +63,11 @@ const ButtonGroup = styled.div`
 
 const PrimaryButton = styled(Link)`
   padding: 0.75rem 2rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   border-radius: 12px;
   font-weight: 700;
@@ -127,7 +131,11 @@ export default function Error({
       {process.env.NODE_ENV === "development" && (
         <ErrorDetails>
           <strong>Error:</strong> {error.message}
-          {error.digest && <div><strong>Digest:</strong> {error.digest}</div>}
+          {error.digest && (
+            <div>
+              <strong>Digest:</strong> {error.digest}
+            </div>
+          )}
           <div style={{ marginTop: "0.5rem", fontSize: "0.75rem" }}>
             {error.stack}
           </div>

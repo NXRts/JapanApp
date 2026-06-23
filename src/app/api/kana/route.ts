@@ -128,7 +128,7 @@ export async function GET(request: NextRequest) {
     console.error("Kana API Error:", error);
     const response = NextResponse.json(
       { error: error instanceof Error ? error.message : "Invalid request" },
-      { status: 400 }
+      { status: 400 },
     );
     return addCorsHeaders(response, request.headers.get("origin"));
   }
