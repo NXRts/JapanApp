@@ -47,7 +47,11 @@ const ErrorDetails = styled.div`
 
 const Button = styled.button`
   padding: 0.75rem 2rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   border-radius: 12px;
   font-weight: 700;
@@ -80,13 +84,18 @@ export default function GlobalError({
           <ErrorIcon>🚨</ErrorIcon>
           <ErrorTitle>Application Error</ErrorTitle>
           <ErrorMessage>
-            A critical error occurred. This has been logged and our team has been notified.
+            A critical error occurred. This has been logged and our team has
+            been notified.
           </ErrorMessage>
 
           {process.env.NODE_ENV === "development" && (
             <ErrorDetails>
               <strong>Error:</strong> {error.message}
-              {error.digest && <div><strong>Digest:</strong> {error.digest}</div>}
+              {error.digest && (
+                <div>
+                  <strong>Digest:</strong> {error.digest}
+                </div>
+              )}
             </ErrorDetails>
           )}
 

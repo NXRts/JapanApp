@@ -243,8 +243,19 @@ export async function GET(request: Request) {
   } catch (error) {
     console.warn("JP-JP Proxy: failed for keyword:", error);
     const response = NextResponse.json(
-      { error: error instanceof Error ? error.message : "Failed to fetch dictionary data", data: [] },
-      { status: error instanceof Error && error.message.includes("required") ? 400 : 500 }
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to fetch dictionary data",
+        data: [],
+      },
+      {
+        status:
+          error instanceof Error && error.message.includes("required")
+            ? 400
+            : 500,
+      },
     );
     return addCorsHeaders(response, request.headers.get("origin"));
   }

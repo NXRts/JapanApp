@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -31,7 +31,11 @@ const Message = styled.p`
 
 const Button = styled(Link)`
   padding: 0.75rem 2rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   border-radius: 12px;
   font-weight: 700;
@@ -55,7 +59,8 @@ export default function NotFound() {
     <Container>
       <Title>Page Not Found</Title>
       <Message>
-        The page you're looking for doesn't exist. Please check the URL or return to the main page.
+        The page you're looking for doesn't exist. Please check the URL or
+        return to the main page.
       </Message>
       <Button href="/">Go Home</Button>
     </Container>

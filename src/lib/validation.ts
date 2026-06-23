@@ -7,7 +7,7 @@ export const keywordSchema = z
   .max(100, "Keyword must be less than 100 characters")
   .regex(
     /^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\u0041-\u005A\u0061-\u007A\u0030-\u0039\s\-_]+$/,
-    "Keyword contains invalid characters"
+    "Keyword contains invalid characters",
   );
 
 export const kanaTypeSchema = z.enum(["hiragana", "katakana", "all"], {
@@ -21,7 +21,7 @@ export const levelSchema = z.enum(["N5", "N4", "N3", "N2", "N1"], {
 // API route validation helpers
 export function validateSearchParams<T extends z.ZodType>(
   schema: T,
-  searchParams: URLSearchParams
+  searchParams: URLSearchParams,
 ): z.infer<T> {
   const params: Record<string, string> = {};
   searchParams.forEach((value, key) => {
