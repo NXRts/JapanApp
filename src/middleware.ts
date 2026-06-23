@@ -10,8 +10,22 @@ const RATE_LIMIT = {
   maxRequests: 100, // 100 requests per minute
 };
 
+let lastCleanup = Date.now();
+const CLEANUP_INTERVAL = 5 * 60 * 1000; // Clean up every 5 minutes
+
 function checkRateLimit(identifier: string): boolean {
   const now = Date.now();
+
+  // Lazy cleanup of all expired entries
+  if (now - lastCleanup > CLEANUP_INTERVAL) {
+    for (const [key, value] of rateLimitMap.entries()) {
+      if (now > value.resetTime) {
+        rateLimitMap.delete(key);
+      }
+    }
+    lastCleanup = now;
+  }
+
   const record = rateLimitMap.get(identifier);
 
   if (!record || now > record.resetTime) {
@@ -30,16 +44,6 @@ function checkRateLimit(identifier: string): boolean {
   record.count++;
   return true;
 }
-
-// Clean up expired entries periodically
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, value] of rateLimitMap.entries()) {
-    if (now > value.resetTime) {
-      rateLimitMap.delete(key);
-    }
-  }
-}, 60 * 1000); // Clean up every minute
 
 export function middleware(request: NextRequest) {
   const ip =
