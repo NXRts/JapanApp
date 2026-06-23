@@ -160,11 +160,11 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       if (saved) {
         try {
           let parsed = null;
-          
+
           if (saved.startsWith("U2FsdGVkX1") || !saved.trim().startsWith("{")) {
             parsed = decryptData(saved);
           }
-          
+
           if (!parsed && saved.trim().startsWith("{")) {
             parsed = JSON.parse(saved);
           }
