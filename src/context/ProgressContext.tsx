@@ -131,7 +131,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   // Load from localStorage
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       const saved = localStorage.getItem("user-progress");
 
       let legacyCompletedSections: string[] = [];
@@ -162,7 +162,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
           let parsed = null;
 
           if (saved.startsWith("U2FsdGVkX1") || !saved.trim().startsWith("{")) {
-            parsed = decryptData(saved);
+            parsed = await decryptData(saved);
           }
 
           if (!parsed && saved.trim().startsWith("{")) {
@@ -226,12 +226,19 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
   // Save to localStorage
   useEffect(() => {
-    if (isLoaded) {
-      const encrypted = encryptData(progress);
-      if (encrypted) {
-        localStorage.setItem("user-progress", encrypted);
+    const saveProgress = async () => {
+      if (isLoaded) {
+        try {
+          const encrypted = await encryptData(progress);
+          if (encrypted) {
+            localStorage.setItem("user-progress", encrypted);
+          }
+        } catch (e) {
+          console.error("Failed to save progress:", e);
+        }
       }
-    }
+    };
+    saveProgress();
   }, [progress, isLoaded]);
 
   // Handle streak and last active date

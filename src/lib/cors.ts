@@ -21,12 +21,9 @@ export function addCorsHeaders(
 ): NextResponse {
   const allowedOrigins = getAllowedOrigins();
 
-  // Check if the origin is allowed
+  // Check if the origin is allowed and set header accordingly
   if (origin && allowedOrigins.includes(origin)) {
     response.headers.set("Access-Control-Allow-Origin", origin);
-  } else if (!origin) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    response.headers.set("Access-Control-Allow-Origin", "*");
   }
 
   // CORS headers
