@@ -111,7 +111,7 @@ async function checkRedisRateLimit(identifier: string): Promise<{
   } catch (error) {
     clearTimeout(timeoutId);
     console.error("Redis rate limit error, falling back to in-memory:", error);
-    
+
     // Fallback to in-memory on error
     const allowed = checkRateLimit(identifier);
     const limit = RATE_LIMIT.maxRequests;
