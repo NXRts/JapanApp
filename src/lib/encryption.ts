@@ -21,24 +21,26 @@ async function getEncryptionKey(): Promise<CryptoKey> {
   const cryptoInstance = getCrypto();
   const encoder = new TextEncoder();
   const keyData = encoder.encode(SECRET_KEY);
-  
+
   // Hash the SECRET_KEY to get exactly 256 bits (32 bytes)
   const hash = await cryptoInstance.subtle.digest("SHA-256", keyData);
-  
+
   cachedKey = await cryptoInstance.subtle.importKey(
     "raw",
     hash,
     { name: "AES-GCM" },
     false,
-    ["encrypt", "decrypt"]
+    ["encrypt", "decrypt"],
   );
-  
+
   return cachedKey;
 }
 
 // Convert Uint8Array to base64 string safely
 function bufferToBase64(buffer: Uint8Array): string {
-  const binString = Array.from(buffer, (byte) => String.fromCharCode(byte)).join("");
+  const binString = Array.from(buffer, (byte) =>
+    String.fromCharCode(byte),
+  ).join("");
   return btoa(binString);
 }
 
@@ -112,23 +114,23 @@ export async function encryptData(data: any): Promise<string> {
     const stringified = JSON.stringify(data);
     const cryptoInstance = getCrypto();
     const key = await getEncryptionKey();
-    
+
     // Generate a random 12-byte initialization vector (IV)
     const iv = cryptoInstance.getRandomValues(new Uint8Array(12));
     const encoder = new TextEncoder();
     const encodedData = encoder.encode(stringified);
-    
+
     const ciphertext = await cryptoInstance.subtle.encrypt(
       { name: "AES-GCM", iv },
       key,
-      encodedData
+      encodedData,
     );
-    
+
     // Combine IV and ciphertext: [IV (12 bytes)][Ciphertext (rest)]
     const combined = new Uint8Array(iv.length + ciphertext.byteLength);
     combined.set(iv, 0);
     combined.set(new Uint8Array(ciphertext), iv.length);
-    
+
     return bufferToBase64(combined);
   } catch (error) {
     console.error("Encryption failed:", error);
@@ -146,28 +148,30 @@ export async function encryptData(data: any): Promise<string> {
 export async function decryptData(encrypted: string): Promise<any> {
   try {
     if (!encrypted) return null;
-    
+
     const cryptoInstance = getCrypto();
     const key = await getEncryptionKey();
     const combined = base64ToBuffer(encrypted);
-    
+
     if (combined.length < 12) {
-      throw new Error("Invalid encrypted data length for AES-GCM, trying legacy fallback");
+      throw new Error(
+        "Invalid encrypted data length for AES-GCM, trying legacy fallback",
+      );
     }
-    
+
     // Extract IV (first 12 bytes) and ciphertext
     const iv = combined.slice(0, 12);
     const ciphertext = combined.slice(12);
-    
+
     const decryptedBuffer = await cryptoInstance.subtle.decrypt(
       { name: "AES-GCM", iv },
       key,
-      ciphertext
+      ciphertext,
     );
-    
+
     const decoder = new TextDecoder();
     const decryptedString = decoder.decode(decryptedBuffer);
-    
+
     return JSON.parse(decryptedString);
   } catch (error) {
     // If decryption fails, attempt legacy RC4 decryption
@@ -175,7 +179,10 @@ export async function decryptData(encrypted: string): Promise<any> {
     if (legacyData) {
       return legacyData;
     }
-    console.error("Decryption failed (both AES-GCM and legacy fallback failed):", error);
+    console.error(
+      "Decryption failed (both AES-GCM and legacy fallback failed):",
+      error,
+    );
     return null;
   }
 }
