@@ -319,7 +319,7 @@ export default function DictionarySearchOverlay({ onClose }: Props) {
               color: "var(--text-secondary)",
             }}
           >
-            No results found for "{query}"
+            No results found for &quot;{query}&quot;
           </ResultsContainer>
         )}
       </SearchContainer>

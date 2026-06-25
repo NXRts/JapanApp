@@ -32,6 +32,11 @@ public/workbox-*.js.map
 .DS_Store
 *.pem
 
+# Android signing keys (NEVER commit these!)
+*.jks
+*.keystore
+buildozer.spec
+
 # debug
 npm-debug.log*
 yarn-debug.log*
