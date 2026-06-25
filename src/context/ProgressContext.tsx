@@ -10,6 +10,7 @@ import React, {
 import styled from "styled-components";
 import { calculateNextSRS, SRSItem } from "@/lib/srs";
 import { encryptData, decryptData } from "@/lib/encryption";
+import { logError } from "@/lib/logger";
 import {
   GamificationAlert,
   GamificationAlertData,
@@ -183,7 +184,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
               ]),
             );
 
-            setProgress({
+            const candidateProgress = {
               ...INITIAL_DATA,
               ...parsed,
               srs: parsed.srs || {},
@@ -202,7 +203,33 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
                 ...DEFAULT_PROFILE,
                 ...(parsed.profile || {}),
               },
-            });
+            };
+
+            // Server-side validation (anti-cheat) — runs after UI hydration
+            // Runs in background; on failure falls back to INITIAL_DATA
+            try {
+              const res = await fetch("/api/progress/validate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(candidateProgress),
+              });
+
+              if (!res.ok) {
+                const result = await res.json().catch(() => ({}));
+                logError(
+                  new Error("Progress validation failed"),
+                  { reason: result?.reason, status: res.status },
+                );
+                // Progress is invalid — reset to initial state
+                setProgress(INITIAL_DATA);
+                setIsLoaded(true);
+                return;
+              }
+            } catch {
+              // Network error — allow progress (fail open for offline support)
+            }
+
+            setProgress(candidateProgress);
           }
         } catch (e) {
           console.error("Failed to parse progress data", e);

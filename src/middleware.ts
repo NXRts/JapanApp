@@ -1,6 +1,23 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+// Note: logger uses console in middleware edge runtime — swap for an HTTP
+// logging service (e.g. Axiom, Datadog) if you want persistent log storage.
+function logSecurityEvent(event: {
+  type: string;
+  ip: string;
+  path: string;
+  details?: Record<string, unknown>;
+}) {
+  const entry = {
+    ...event,
+    timestamp: new Date().toISOString(),
+    level: "SECURITY",
+  };
+  // In production, forward to your logging service here
+  console.warn("[SECURITY]", JSON.stringify(entry));
+}
+
 // In-memory rate limiting (fallback implementation)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
@@ -147,6 +164,14 @@ export async function middleware(request: NextRequest) {
     const rateLimit = await checkRedisRateLimit(identifier);
 
     if (!rateLimit.allowed) {
+      // Log the rate limit violation
+      logSecurityEvent({
+        type: "rate_limit",
+        ip,
+        path,
+        details: { limit: rateLimit.limit },
+      });
+
       return new NextResponse(
         JSON.stringify({ error: "Too many requests. Please try again later." }),
         {
