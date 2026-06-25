@@ -80,7 +80,7 @@ export function SakuraBackground() {
     // Check if user disabled it previously
     const status = localStorage.getItem("sakura-particles-enabled");
     if (status === "false") {
-      setEnabled(false);
+      setTimeout(() => setEnabled(false), 0);
     }
 
     // Generate random configurations for 20 petals

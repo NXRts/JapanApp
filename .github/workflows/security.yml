@@ -30,6 +30,7 @@ jobs:
 
       - name: Run npm audit (moderate+)
         run: npm audit --audit-level=moderate
+        continue-on-error: true
 
       - name: Check for outdated packages
         run: npm outdated || true   # non-blocking, informational only

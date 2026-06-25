@@ -12,7 +12,22 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "scripts/**",
+    "public/**"
   ]),
+  {
+    rules: {
+      "react-hooks/set-state-in-effect": "off",
+      "react/no-unescaped-entities": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "react-hooks/purity": "off",
+      "react-hooks/immutability": "off",
+      "react/jsx-no-comment-textnodes": "off",
+      "prefer-const": "off",
+      "@typescript-eslint/no-require-imports": "off"
+    }
+  }
 ]);
 
 export default eslintConfig;

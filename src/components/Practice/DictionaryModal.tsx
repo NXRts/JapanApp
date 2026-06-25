@@ -118,17 +118,28 @@ interface DictionaryModalProps {
   onClose: () => void;
 }
 
+interface DictionaryData {
+  japanese: string;
+  reading: string;
+  meaning: string;
+}
+
 export const DictionaryModal: React.FC<DictionaryModalProps> = ({
   word,
   onClose,
 }) => {
-  const [data, setData] = useState<any>(null);
+  const [prevWord, setPrevWord] = useState(word);
+  const [data, setData] = useState<DictionaryData | null>(null);
   const [loading, setLoading] = useState(true);
   const { updateSRS, addExp } = useProgress();
   const [added, setAdded] = useState(false);
 
-  useEffect(() => {
+  if (word !== prevWord) {
+    setPrevWord(word);
     setLoading(true);
+  }
+
+  useEffect(() => {
     // Using a public dictionary API proxy or search
     fetch(`https://jisho.org/api/v1/search/words?keyword=${word}`)
       .then((res) => res.json())
@@ -170,9 +181,9 @@ export const DictionaryModal: React.FC<DictionaryModalProps> = ({
       <Modal onClick={(e) => e.stopPropagation()}>
         {loading ? (
           <div style={{ textAlign: "center", padding: "2rem" }}>
-            Looking up "{word}"...
+            Looking up &quot;{word}&quot;...
           </div>
-        ) : (
+        ) : data && (
           <>
             <WordHeader>
               <WordTitle>{data.japanese}</WordTitle>

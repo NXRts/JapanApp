@@ -258,6 +258,17 @@ export const DrawingCanvas = forwardRef<
       contextRef.current = ctx;
     }, [width, height]);
 
+    const clearCanvas = () => {
+      const canvas = canvasRef.current;
+      const ctx = contextRef.current;
+      if (canvas && ctx) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      setUserStrokes([]);
+      setScore(null);
+      setWarning(null);
+    };
+
     // Clear canvas when trigger changes
     useEffect(() => {
       clearCanvas();
@@ -312,17 +323,6 @@ export const DrawingCanvas = forwardRef<
           offsetY: (event as MouseEvent).offsetY,
         };
       }
-    };
-
-    const clearCanvas = () => {
-      const canvas = canvasRef.current;
-      const ctx = contextRef.current;
-      if (canvas && ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-      setUserStrokes([]);
-      setScore(null);
-      setWarning(null);
     };
 
     const calculateScore = () => {
