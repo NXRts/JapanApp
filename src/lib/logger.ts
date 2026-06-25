@@ -51,13 +51,18 @@ export async function logSecurityEvent(event: SecurityEvent): Promise<void> {
 /**
  * Log an application error with context.
  */
-export function logError(error: AppError | Error, context?: Record<string, unknown>): void {
+export function logError(
+  error: AppError | Error,
+  context?: Record<string, unknown>,
+): void {
   const entry = {
     level: "ERROR",
     timestamp: new Date().toISOString(),
     message: error instanceof Error ? error.message : error.message,
     stack: error instanceof Error ? error.stack : undefined,
-    context: context ?? (error instanceof Error ? undefined : (error as AppError).context),
+    context:
+      context ??
+      (error instanceof Error ? undefined : (error as AppError).context),
   };
 
   if (isProd) {

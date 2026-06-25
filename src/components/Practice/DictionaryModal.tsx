@@ -183,25 +183,27 @@ export const DictionaryModal: React.FC<DictionaryModalProps> = ({
           <div style={{ textAlign: "center", padding: "2rem" }}>
             Looking up &quot;{word}&quot;...
           </div>
-        ) : data && (
-          <>
-            <WordHeader>
-              <WordTitle>{data.japanese}</WordTitle>
-              <Reading>{data.reading}</Reading>
-            </WordHeader>
+        ) : (
+          data && (
+            <>
+              <WordHeader>
+                <WordTitle>{data.japanese}</WordTitle>
+                <Reading>{data.reading}</Reading>
+              </WordHeader>
 
-            <MeaningSection>
-              <MeaningLabel>Definition</MeaningLabel>
-              <MeaningText>{data.meaning}</MeaningText>
-            </MeaningSection>
+              <MeaningSection>
+                <MeaningLabel>Definition</MeaningLabel>
+                <MeaningText>{data.meaning}</MeaningText>
+              </MeaningSection>
 
-            <ActionButtons>
-              <Button onClick={onClose}>Close</Button>
-              <Button $primary onClick={handleAddReview} disabled={added}>
-                {added ? "Added! ✓" : "Add to SRS"}
-              </Button>
-            </ActionButtons>
-          </>
+              <ActionButtons>
+                <Button onClick={onClose}>Close</Button>
+                <Button $primary onClick={handleAddReview} disabled={added}>
+                  {added ? "Added! ✓" : "Add to SRS"}
+                </Button>
+              </ActionButtons>
+            </>
+          )
         )}
       </Modal>
     </Overlay>

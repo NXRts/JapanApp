@@ -13,7 +13,7 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "scripts/**",
-    "public/**"
+    "public/**",
   ]),
   {
     rules: {
@@ -25,9 +25,9 @@ const eslintConfig = defineConfig([
       "react-hooks/immutability": "off",
       "react/jsx-no-comment-textnodes": "off",
       "prefer-const": "off",
-      "@typescript-eslint/no-require-imports": "off"
-    }
-  }
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
