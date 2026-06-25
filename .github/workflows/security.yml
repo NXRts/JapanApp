@@ -7,7 +7,7 @@ on:
     branches: [main, master]
   schedule:
     # Run every Monday at 08:00 UTC
-    - cron: '0 8 * * 1'
+    - cron: "0 8 * * 1"
 
 jobs:
   security:
@@ -22,8 +22,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -33,7 +33,7 @@ jobs:
         continue-on-error: true
 
       - name: Check for outdated packages
-        run: npm outdated || true   # non-blocking, informational only
+        run: npm outdated || true # non-blocking, informational only
 
   lint:
     name: ESLint
@@ -47,8 +47,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
@@ -68,8 +68,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install dependencies
         run: npm ci
