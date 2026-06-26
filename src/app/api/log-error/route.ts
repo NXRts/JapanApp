@@ -17,19 +17,19 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    
+
     // Validate request body structure
     const validation = ErrorLogSchema.safeParse(body);
     if (!validation.success) {
       const response = NextResponse.json(
         { success: false, error: "Invalid error log structure" },
-        { status: 400 }
+        { status: 400 },
       );
       return addCorsHeaders(response, origin);
     }
 
     const { message, stack, componentStack } = validation.data;
-    
+
     // Log the error using the app's structured logger
     logError(new Error(message), {
       stack,
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     const response = NextResponse.json(
       { success: false, error: "Malformed request or server error" },
-      { status: 500 }
+      { status: 500 },
     );
     return addCorsHeaders(response, origin);
   }
