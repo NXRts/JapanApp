@@ -47,7 +47,8 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 10000) {
     return res;
   } catch (err) {
     clearTimeout(id);
-    if (err.name === "AbortError") throw new Error(`Timed out after ${timeoutMs}ms`);
+    if (err.name === "AbortError")
+      throw new Error(`Timed out after ${timeoutMs}ms`);
     throw err;
   }
 }
@@ -71,8 +72,11 @@ async function runTests() {
   });
 
   await check("/privacy redirects to /privacy-policy", async () => {
-    const res = await fetchWithTimeout(`${BASE_URL}/privacy`, { redirect: "manual" });
-    if (res.status !== 301 && res.status !== 308) throw new Error(`Expected redirect, got HTTP ${res.status}`);
+    const res = await fetchWithTimeout(`${BASE_URL}/privacy`, {
+      redirect: "manual",
+    });
+    if (res.status !== 301 && res.status !== 308)
+      throw new Error(`Expected redirect, got HTTP ${res.status}`);
   });
 
   await check("manifest.json accessible", async () => {
@@ -89,7 +93,10 @@ async function runTests() {
     const res = await fetchWithTimeout(`${BASE_URL}/api/log-error`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: "smoke-test error", stack: "at smoke-test:1:1" }),
+      body: JSON.stringify({
+        message: "smoke-test error",
+        stack: "at smoke-test:1:1",
+      }),
     });
     if (res.status !== 200) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
@@ -102,7 +109,8 @@ async function runTests() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ message: "x".repeat(2000) }), // over 1000 char limit
     });
-    if (res.status !== 400) throw new Error(`Expected 400, got HTTP ${res.status}`);
+    if (res.status !== 400)
+      throw new Error(`Expected 400, got HTTP ${res.status}`);
   });
 
   await check("/api/progress/validate is accessible", async () => {
@@ -147,7 +155,9 @@ async function runTests() {
   console.log(`\n${ANSI.bold}4. Static Assets${ANSI.reset}`);
 
   await check("Feature graphic accessible", async () => {
-    const res = await fetchWithTimeout(`${BASE_URL}/images/feature-graphic.png`);
+    const res = await fetchWithTimeout(
+      `${BASE_URL}/images/feature-graphic.png`,
+    );
     if (res.status !== 200) throw new Error(`HTTP ${res.status}`);
   });
 
@@ -159,10 +169,12 @@ async function runTests() {
   // ── Summary ─────────────────────────────────────────────────
   console.log(`\n${"─".repeat(50)}`);
   if (failCount === 0) {
-    console.log(`${ANSI.green}${ANSI.bold}✓ All ${passCount} tests passed!${ANSI.reset} 🎉`);
+    console.log(
+      `${ANSI.green}${ANSI.bold}✓ All ${passCount} tests passed!${ANSI.reset} 🎉`,
+    );
   } else {
     console.log(
-      `${ANSI.red}${ANSI.bold}✗ ${failCount} test(s) failed${ANSI.reset}, ${ANSI.green}${passCount} passed${ANSI.reset}`
+      `${ANSI.red}${ANSI.bold}✗ ${failCount} test(s) failed${ANSI.reset}, ${ANSI.green}${passCount} passed${ANSI.reset}`,
     );
     process.exit(1);
   }

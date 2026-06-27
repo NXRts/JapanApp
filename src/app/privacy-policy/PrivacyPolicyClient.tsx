@@ -212,8 +212,8 @@ export default function PrivacyPolicyClient() {
         <Paragraph>
           Welcome to <strong>Japan Learning App</strong> (&ldquo;we&rdquo;,
           &ldquo;our&rdquo;, or &ldquo;us&rdquo;). We are committed to
-          protecting your privacy and being transparent about the minimal data we
-          interact with. This Privacy Policy describes our practices for the
+          protecting your privacy and being transparent about the minimal data
+          we interact with. This Privacy Policy describes our practices for the
           Japan Learning App website at{" "}
           <strong>https://japan-mee.vercel.app</strong> and the Android
           application distributed via Google Play.
@@ -230,9 +230,10 @@ export default function PrivacyPolicyClient() {
       <Section>
         <SectionTitle>2. Data We Store Locally (On Your Device)</SectionTitle>
         <Paragraph>
-          All learning-related data is stored <strong>exclusively on your device</strong> using
-          the browser&apos;s <code>localStorage</code> API. We never transmit this data
-          to our servers. The following data may be stored locally:
+          All learning-related data is stored{" "}
+          <strong>exclusively on your device</strong> using the browser&apos;s{" "}
+          <code>localStorage</code> API. We never transmit this data to our
+          servers. The following data may be stored locally:
         </Paragraph>
         <List>
           <ListItem>
@@ -371,8 +372,9 @@ export default function PrivacyPolicyClient() {
         </Paragraph>
         <List>
           <ListItem>
-            Local progress data is encrypted with <strong>AES-GCM 256-bit</strong> encryption
-            using the Web Crypto API before being written to localStorage
+            Local progress data is encrypted with{" "}
+            <strong>AES-GCM 256-bit</strong> encryption using the Web Crypto API
+            before being written to localStorage
           </ListItem>
           <ListItem>
             All network connections use <strong>HTTPS/TLS</strong> (enforced via
@@ -455,15 +457,14 @@ export default function PrivacyPolicyClient() {
       <Section>
         <SectionTitle>10. Contact Us</SectionTitle>
         <Paragraph>
-          If you have any questions, concerns, or requests regarding this Privacy
-          Policy, please contact us:
+          If you have any questions, concerns, or requests regarding this
+          Privacy Policy, please contact us:
         </Paragraph>
         <ContactCard>
           <ContactItem>
             <span>📧</span>
             <span>
-              Email:{" "}
-              <a href="mailto:japanapp@gmail.com">japanapp@gmail.com</a>
+              Email: <a href="mailto:japanapp@gmail.com">japanapp@gmail.com</a>
             </span>
           </ContactItem>
           <ContactItem>
@@ -481,7 +482,10 @@ export default function PrivacyPolicyClient() {
           </ContactItem>
           <ContactItem>
             <span>📋</span>
-            <span>Privacy Policy URL (for Google Play): https://japan-mee.vercel.app/privacy-policy</span>
+            <span>
+              Privacy Policy URL (for Google Play):
+              https://japan-mee.vercel.app/privacy-policy
+            </span>
           </ContactItem>
         </ContactCard>
       </Section>
