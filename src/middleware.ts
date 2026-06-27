@@ -118,7 +118,9 @@ async function checkRedisRateLimit(identifier: string): Promise<{
       fetch(expireUrl, {
         headers: { Authorization: `Bearer ${token}` },
       }).catch((err: any) => {
-        console.warn(`[Rate Limit] Failed to set Redis key expiry: ${err.message || err}`);
+        console.warn(
+          `[Rate Limit] Failed to set Redis key expiry: ${err.message || err}`,
+        );
       });
     }
 
@@ -129,13 +131,17 @@ async function checkRedisRateLimit(identifier: string): Promise<{
     return { allowed, limit, remaining };
   } catch (error: any) {
     clearTimeout(timeoutId);
-    
+
     // Log clean warning instead of full error trace to avoid cluttering developer console
     const isTimeout = error.name === "AbortError";
     if (isTimeout) {
-      console.warn("[Rate Limit] Upstash Redis timed out. Falling back to in-memory rate limiting.");
+      console.warn(
+        "[Rate Limit] Upstash Redis timed out. Falling back to in-memory rate limiting.",
+      );
     } else {
-      console.warn(`[Rate Limit] Redis rate limiting unavailable (${error.message || error}). Falling back to in-memory.`);
+      console.warn(
+        `[Rate Limit] Redis rate limiting unavailable (${error.message || error}). Falling back to in-memory.`,
+      );
     }
 
     // Fallback to in-memory on error

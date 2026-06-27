@@ -212,8 +212,8 @@ export default function PrivacyPolicy() {
         <Paragraph>
           Welcome to <strong>Japan Learning App</strong> (&ldquo;we&rdquo;,
           &ldquo;our&rdquo;, or &ldquo;us&rdquo;). We are committed to
-          protecting your privacy and being transparent about the minimal data we
-          interact with. This Privacy Policy describes our practices for the
+          protecting your privacy and being transparent about the minimal data
+          we interact with. This Privacy Policy describes our practices for the
           Japan Learning App website at{" "}
           <strong>https://japan-mee.vercel.app</strong> and the Android
           application distributed via Google Play.
@@ -457,15 +457,14 @@ export default function PrivacyPolicy() {
       <Section>
         <SectionTitle>10. Contact Us</SectionTitle>
         <Paragraph>
-          If you have any questions, concerns, or requests regarding this Privacy
-          Policy, please contact us:
+          If you have any questions, concerns, or requests regarding this
+          Privacy Policy, please contact us:
         </Paragraph>
         <ContactCard>
           <ContactItem>
             <span>📧</span>
             <span>
-              Email:{" "}
-              <a href="mailto:japanapp@gmail.com">japanapp@gmail.com</a>
+              Email: <a href="mailto:japanapp@gmail.com">japanapp@gmail.com</a>
             </span>
           </ContactItem>
           <ContactItem>
@@ -484,8 +483,7 @@ export default function PrivacyPolicy() {
           <ContactItem>
             <span>📋</span>
             <span>
-              Privacy Policy URL:{" "}
-              https://japan-mee.vercel.app/privacy-policy
+              Privacy Policy URL: https://japan-mee.vercel.app/privacy-policy
             </span>
           </ContactItem>
         </ContactCard>
