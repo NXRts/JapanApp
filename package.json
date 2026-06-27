@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "eslint",
     "security-audit": "npm audit --audit-level=moderate",
-    "check-env": "node scripts/check-env.js"
+    "check-env": "node scripts/check-env.js",
+    "smoke-test": "node scripts/smoke-test.js",
+    "smoke-test:local": "node scripts/smoke-test.js http://localhost:3000"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
