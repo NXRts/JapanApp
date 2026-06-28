@@ -860,12 +860,12 @@ const ChoiceButton = styled.button<{
     $isChecking &&
     $selected &&
     css`
-      border-color: ${$isCorrect
-        ? "var(--secondary)"
-        : "var(--accent)"} !important;
-      background: ${$isCorrect
-        ? "rgba(16, 185, 129, 0.08)"
-        : "rgba(244, 63, 94, 0.08)"} !important;
+      border-color: ${
+        $isCorrect ? "var(--secondary)" : "var(--accent)"
+      } !important;
+      background: ${
+        $isCorrect ? "rgba(16, 185, 129, 0.08)" : "rgba(244, 63, 94, 0.08)"
+      } !important;
       color: ${$isCorrect ? "var(--secondary)" : "var(--accent)"} !important;
     `}
 
@@ -1035,10 +1035,7 @@ const ScoreLabel = styled.span`
 // ========================================================
 
 type QuestionType =
-  | "kana-to-romaji"
-  | "romaji-to-kana"
-  | "audio-to-kana"
-  | "matching";
+  "kana-to-romaji" | "romaji-to-kana" | "audio-to-kana" | "matching";
 
 interface Question {
   type: QuestionType;

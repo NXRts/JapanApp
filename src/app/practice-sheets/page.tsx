@@ -2861,11 +2861,13 @@ export default function PracticeSheetsPage() {
 
           /* Set paper layout size and margins - margin: 0 hides default browser headers & footers */
           @page {
-            size: ${sheetType === "flashcards"
-              ? "A4 portrait"
-              : landscape
-                ? "A4 landscape"
-                : "A4 portrait"};
+            size: ${
+              sheetType === "flashcards"
+                ? "A4 portrait"
+                : landscape
+                  ? "A4 landscape"
+                  : "A4 portrait"
+            };
             margin: 0 !important;
           }
 
