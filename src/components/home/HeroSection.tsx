@@ -3,7 +3,6 @@
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { CheckIcon } from "../icons/AppIcons";
-import { useDeviceMode } from "@/context/DeviceModeContext";
 
 const float = keyframes`
   0% { transform: translateY(0px); }
@@ -145,34 +144,6 @@ const SecondaryButton = styled(NavButton)`
   }
 `;
 
-const MobileModeButton = styled.button`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.85rem 2rem;
-  font-weight: 700;
-  border-radius: 999px;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 0.95rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--foreground);
-  cursor: pointer;
-
-  &:hover {
-    background: var(--background);
-    border-color: var(--primary-light);
-    transform: translateY(-3px);
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    font-size: 0.85rem;
-  }
-`;
-
 const SpecialtyButton = styled(NavButton)`
   background: rgba(0, 212, 255, 0.05);
   border: 1px solid rgba(0, 212, 255, 0.3);
@@ -300,8 +271,6 @@ const MainPrimaryButton = styled(PrimaryButton)`
 `;
 
 export function HeroSection({ isDailyCompleted }: HeroSectionProps) {
-  const { setDeviceMode } = useDeviceMode();
-
   return (
     <Section>
       <HeroContent>
@@ -315,7 +284,7 @@ export function HeroSection({ isDailyCompleted }: HeroSectionProps) {
         </Subtitle>
 
         <ButtonGroup>
-          <RoadmapButton href="/roadmap">Learning Path</RoadmapButton>
+          <RoadmapButton href="/learning">Learning Path</RoadmapButton>
           <MainPrimaryButton href="/kana">
             Hiragana & Katakana
           </MainPrimaryButton>
@@ -343,24 +312,6 @@ export function HeroSection({ isDailyCompleted }: HeroSectionProps) {
               "Daily Quiz"
             )}
           </SecondaryButton>
-
-          <MobileModeButton onClick={() => setDeviceMode("mobile")}>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              style={{ marginRight: "0.5rem" }}
-            >
-              <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-              <line x1="12" y1="18" x2="12.01" y2="18" />
-            </svg>
-            Mode Mobile
-          </MobileModeButton>
         </ButtonGroup>
       </HeroContent>
 
