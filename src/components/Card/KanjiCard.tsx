@@ -19,6 +19,7 @@ import {
   ErrorNote,
 } from "./KanjiCard.styled";
 import { playJapaneseAudio } from "@/lib/audio";
+import { KANJI_DATA } from "@/data/kanji";
 
 interface ReadingDetail {
   onyomi: { kana: string; romaji: string }[];
@@ -39,6 +40,42 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
     setLoading(true);
     setFetchError(false);
 
+    // 1. Try to load from the local offline KANJI_DATA database
+    let localKanji: any = null;
+    for (const level of ["N5", "N4", "N3", "N2", "N1"]) {
+      const match = KANJI_DATA[level]?.find((item) => item.char === char);
+      if (match) {
+        localKanji = match;
+        break;
+      }
+    }
+
+    if (localKanji) {
+      const onyomiArray = localKanji.on && localKanji.on !== "-"
+        ? localKanji.on.split(/[・、,]/).map((s: string) => s.trim()).filter(Boolean)
+        : [];
+      const kunyomiArray = localKanji.kun && localKanji.kun !== "-"
+        ? localKanji.kun.split(/[・、,]/).map((s: string) => s.trim()).filter(Boolean)
+        : [];
+      const meanings = localKanji.meaning
+        ? localKanji.meaning.split(/\s*[/;,]\s*/).filter(Boolean)
+        : [];
+
+      const onyomi = onyomiArray.map((k: string) => ({
+        kana: k,
+        romaji: toRomaji(k),
+      }));
+      const kunyomi = kunyomiArray.map((k: string) => ({
+        kana: k,
+        romaji: toRomaji(k),
+      }));
+
+      setDetail({ onyomi, kunyomi, meanings });
+      setLoading(false);
+      return;
+    }
+
+    // 2. Fallback to API if not found locally
     fetch(`https://kanjiapi.dev/v1/kanji/${encodeURIComponent(char)}`)
       .then((res) => {
         if (!res.ok) {
