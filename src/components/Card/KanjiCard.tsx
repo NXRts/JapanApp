@@ -16,6 +16,7 @@ import {
   LanguageButton,
   Meanings,
   MeaningText,
+  ErrorNote,
 } from "./KanjiCard.styled";
 import { playJapaneseAudio } from "@/lib/audio";
 
@@ -29,12 +30,14 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
   const [flipped, setFlipped] = useState(false);
   const [detail, setDetail] = useState<ReadingDetail | null>(null);
   const [loading, setLoading] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
   const [lang, setLang] = useState<"en" | "id">("en");
 
   useEffect(() => {
     if (!flipped || detail || loading) return;
 
     setLoading(true);
+    setFetchError(false);
 
     fetch(`https://kanjiapi.dev/v1/kanji/${encodeURIComponent(char)}`)
       .then((res) => {
@@ -55,12 +58,11 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
         const meanings = data.meanings ?? [];
 
         setDetail({ onyomi, kunyomi, meanings });
+        setFetchError(false);
       })
       .catch((error) => {
-        // Use console.warn instead of console.error to prevent Next.js dev overlay
-        // interrupting the UI just because of a network error or missing character
         console.warn("Error fetching kanji details:", error.message || error);
-        setDetail(null);
+        setFetchError(true);
       })
       .finally(() => setLoading(false));
   }, [flipped, char, detail]);
@@ -85,6 +87,7 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
         <Face>{char}</Face>
 
         <Back>
+          {/* Kanji character title + audio button */}
           <div
             style={{
               display: "flex",
@@ -92,6 +95,7 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
               justifyContent: "center",
               width: "100%",
               position: "relative",
+              flexShrink: 0,
             }}
           >
             <h3>{char}</h3>
@@ -102,8 +106,29 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
             </AudioButton>
           </div>
 
-          {loading && <p>Loading...</p>}
+          {/* Loading */}
+          {loading && (
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                fontSize: "0.85rem",
+                marginTop: "1rem",
+              }}
+            >
+              Loading...
+            </p>
+          )}
 
+          {/* Network/API error */}
+          {!loading && fetchError && (
+            <ErrorNote>
+              ⚠️ Could not load details.
+              <br />
+              Check your connection.
+            </ErrorNote>
+          )}
+
+          {/* Loaded detail */}
           {!loading && detail && (
             <>
               <ReadingGroup>
@@ -138,7 +163,7 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
                 </Readings>
               </ReadingGroup>
 
-              <Label style={{ marginTop: "12px" }}>Translate</Label>
+              <Label style={{ marginTop: "10px" }}>Translate</Label>
               <LanguageContainer>
                 <LanguageButton
                   $active={lang === "en"}
@@ -167,7 +192,6 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
                     .map((m, i) => <MeaningText key={i}>{m}</MeaningText>)
                 ) : (
                   <>
-                    {/* Mock translation data since API is English only */}
                     <MeaningText className="id-note">
                       Terjemahan Indonesia (Auto):
                     </MeaningText>
@@ -176,7 +200,7 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
                     ))}
                     <MeaningText
                       className="id-note"
-                      style={{ fontSize: "0.7em", marginTop: "10px" }}
+                      style={{ fontSize: "0.7em", marginTop: "8px" }}
                     >
                       *Maaf, API saat ini hanya mendukung Bahasa Inggris.
                     </MeaningText>

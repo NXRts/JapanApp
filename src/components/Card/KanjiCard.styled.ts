@@ -1,24 +1,25 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
+/* Float animation only on a wrapper that does NOT use transform,
+   so it never conflicts with the preserve-3d flip on Inner */
+const float = keyframes`
+  0%   { translate: 0 0px; }
+  50%  { translate: 0 -6px; }
+  100% { translate: 0 0px; }
+`;
+
+/* Card is the perspective container + hover shadow + float.
+   We use the modern `translate` property (separate from `transform`)
+   so the float never clobbers the rotateY on Inner. */
 export const Card = styled.div`
   width: 100%;
   aspect-ratio: 3/4;
-  perspective: 1000px;
+  perspective: 1200px;
   cursor: pointer;
+  animation: ${float} 6s ease-in-out infinite;
 
-  /* Floating animation */
-  animation: float 6s ease-in-out infinite;
-
-  @keyframes float {
-    0% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-6px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
+  &:hover > div {
+    box-shadow: var(--shadow-lg);
   }
 `;
 
@@ -27,40 +28,32 @@ export const Inner = styled.div<{ $flipped: boolean }>`
   width: 100%;
   height: 100%;
   text-align: center;
-  transition:
-    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s ease;
   transform-style: preserve-3d;
   box-shadow: var(--shadow-md);
   border-radius: 20px;
-
   transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg)" : "rotateY(0)")};
-
-  ${Card}:hover & {
-    box-shadow: var(--shadow-lg);
-  }
 `;
 
-export const Face = styled.div`
+const Baseface = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  border-radius: 20px;
+  overflow: hidden;
+`;
+
+export const Face = styled(Baseface)`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--primary-dark) 100%
-  );
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: white;
   font-size: 5rem;
   font-weight: 700;
   text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
 
   &::before {
     content: "";
@@ -69,22 +62,20 @@ export const Face = styled.div`
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(
-      circle,
-      rgba(255, 255, 255, 0.1) 0%,
-      transparent 60%
-    );
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
     pointer-events: none;
   }
 `;
 
-export const Back = styled(Face)`
+export const Back = styled(Baseface)`
   transform: rotateY(180deg);
   background: var(--surface);
   color: var(--foreground);
+  display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: flex-start;
-  padding: 20px;
+  padding: 20px 16px 16px;
   font-size: 1rem;
   overflow-y: auto;
   text-shadow: none;
@@ -97,7 +88,7 @@ export const Back = styled(Face)`
   }
 
   h3 {
-    margin: 0 0 12px;
+    margin: 0 0 10px;
     font-size: 1.8rem;
     color: var(--primary);
     border-bottom: 2px solid var(--border);
@@ -105,6 +96,7 @@ export const Back = styled(Face)`
     padding-bottom: 8px;
     flex-shrink: 0;
     font-family: "Noto Sans JP", sans-serif;
+    text-align: center;
   }
 `;
 
@@ -112,53 +104,53 @@ export const ReadingGroup = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   text-align: left;
   flex-shrink: 0;
 `;
 
 export const Label = styled.span`
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   text-transform: uppercase;
   color: var(--text-secondary);
   font-weight: 700;
-  margin-bottom: 6px;
-  letter-spacing: 0.05em;
+  margin-bottom: 5px;
+  letter-spacing: 0.06em;
 `;
 
 export const Readings = styled.div`
   font-weight: 500;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
   line-height: 1.4;
 `;
 
 export const ReadingItem = styled.span`
   background: var(--background);
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  padding: 4px 8px;
+  border-radius: 7px;
+  font-size: 0.88rem;
   border: 1px solid var(--border);
 
   span.romaji {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-secondary);
     font-weight: 400;
-    margin-top: 2px;
+    margin-top: 1px;
   }
 `;
 
 export const AudioButton = styled.button`
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 8px;
+  right: 8px;
   background: transparent;
   border: none;
   cursor: pointer;
   color: var(--text-secondary);
-  padding: 8px;
+  padding: 6px;
   border-radius: 50%;
   transition: all 0.2s;
   display: flex;
@@ -173,28 +165,28 @@ export const AudioButton = styled.button`
   }
 
   svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     fill: currentColor;
   }
 `;
 
 export const LanguageContainer = styled.div`
   display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 6px;
+  margin-bottom: 10px;
   justify-content: center;
   width: 100%;
+  flex-shrink: 0;
 `;
 
 export const LanguageButton = styled.button<{ $active: boolean }>`
-  padding: 6px 16px;
-  border: 1px solid
-    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  padding: 4px 14px;
+  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
   background: ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
   color: ${({ $active }) => ($active ? "white" : "var(--text-secondary)")};
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -208,25 +200,38 @@ export const LanguageButton = styled.button<{ $active: boolean }>`
 export const Meanings = styled.div`
   width: 100%;
   text-align: center;
-  margin-bottom: 16px;
-  padding: 8px;
+  margin-bottom: 0;
+  padding: 8px 6px;
   background: var(--background);
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid var(--border);
+  flex-shrink: 0;
 `;
 
 export const MeaningText = styled.p`
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--foreground);
-  line-height: 1.5;
-  margin-bottom: 4px;
+  line-height: 1.45;
+  margin-bottom: 3px;
   font-weight: 500;
 
+  &:last-child {
+    margin-bottom: 0;
+  }
+
   &.id-note {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-secondary);
     font-weight: 400;
     font-style: italic;
-    margin-top: 8px;
+    margin-top: 6px;
   }
+`;
+
+export const ErrorNote = styled.p`
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  margin-top: 8px;
 `;
