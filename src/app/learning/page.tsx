@@ -372,8 +372,7 @@ export default function LearningPage() {
 
         {/* Units + Lessons */}
         {activeUnits.map((unit) => {
-          const unitNum =
-            parseInt(unit.id.match(/u(\d+)/i)?.[1] || "1", 10);
+          const unitNum = parseInt(unit.id.match(/u(\d+)/i)?.[1] || "1", 10);
           const numLessons = unit.lessons.length;
           const completedInUnit = unit.lessons.filter((l) =>
             progress.completedExercises?.includes(l.id),
