@@ -1,22 +1,11 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
-/* Float animation only on a wrapper that does NOT use transform,
-   so it never conflicts with the preserve-3d flip on Inner */
-const float = keyframes`
-  0%   { translate: 0 0px; }
-  50%  { translate: 0 -6px; }
-  100% { translate: 0 0px; }
-`;
-
-/* Card is the perspective container + hover shadow + float.
-   We use the modern `translate` property (separate from `transform`)
-   so the float never clobbers the rotateY on Inner. */
+/* Card is the perspective container + hover shadow. */
 export const Card = styled.div`
   width: 100%;
   aspect-ratio: 3/4;
   perspective: 1200px;
   cursor: pointer;
-  animation: ${float} 6s ease-in-out infinite;
 
   &:hover > div {
     box-shadow: var(--shadow-lg);

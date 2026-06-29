@@ -5,21 +5,6 @@ export const Card = styled.div`
   aspect-ratio: 3/4;
   perspective: 1000px;
   cursor: pointer;
-
-  /* Floating animation */
-  animation: float 6s ease-in-out infinite;
-
-  @keyframes float {
-    0% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-6px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
-  }
 `;
 
 export const Inner = styled.div<{ $flipped: boolean }>`
