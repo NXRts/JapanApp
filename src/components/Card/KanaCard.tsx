@@ -1,18 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { toRomaji } from "wanakana";
 import { Card, Inner, Face, Back, AudioButton } from "./KanaCard.styled";
 import { playJapaneseAudio } from "@/lib/audio";
-import { usePwaTouch } from "@/hooks/usePwaTouch";
 
 export function KanaCard({ char }: { char: string }) {
-  const cardRef = useRef<HTMLDivElement>(null);
   const [flipped, setFlipped] = useState(false);
   const romaji = toRomaji(char);
-
-  // PWA: block context menu + text selection at JS level
-  usePwaTouch(cardRef);
 
   const playAudio = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card flip
@@ -29,7 +24,10 @@ export function KanaCard({ char }: { char: string }) {
   }, []);
 
   return (
-    <Card ref={cardRef} onClick={() => setFlipped(!flipped)}>
+    <Card
+      onClick={() => setFlipped(!flipped)}
+      onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
+    >
       <Inner $flipped={flipped}>
         <Face>
           <span>{char}</span>

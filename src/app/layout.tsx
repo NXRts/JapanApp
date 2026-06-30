@@ -86,20 +86,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      style={
-        {
-          WebkitUserSelect: "none",
-          userSelect: "none",
-        } as React.CSSProperties
-      }
-    >
+    <html lang="en">
       <body
         suppressHydrationWarning
-        draggable="false"
         className={`${inter.className} ${notoSansJP.variable}`}
-        style={{ WebkitTouchCallout: "none" } as React.CSSProperties}
       >
         <ThemeProvider>
           <DeviceModeProvider>
