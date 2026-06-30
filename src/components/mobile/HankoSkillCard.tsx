@@ -32,6 +32,12 @@ const CardContainer = styled.button<{
   cursor: pointer;
   outline: none;
   flex-shrink: 0;
+  /* PWA: no tap highlight, no selection */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 
   ${({ $state, $color }) =>
     $state === "locked" &&
