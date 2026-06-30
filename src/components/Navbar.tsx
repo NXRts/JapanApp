@@ -29,6 +29,11 @@ const NavRoot = styled.nav<{ $hideOnDesktop?: boolean; $isMenuOpen?: boolean }>`
   /* Prevent navbar itself from being wider than the viewport */
   width: 100%;
   max-width: 100vw;
+  /* PWA Touch optimizations */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 
   ${({ $hideOnDesktop }) =>
     $hideOnDesktop &&

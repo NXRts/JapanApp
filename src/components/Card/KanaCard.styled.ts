@@ -5,6 +5,12 @@ export const Card = styled.div`
   aspect-ratio: 3/4;
   perspective: 1000px;
   cursor: pointer;
+  /* PWA touch: no highlight, no selection, no context menu */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 `;
 
 export const Inner = styled.div<{ $flipped: boolean }>`

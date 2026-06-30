@@ -98,6 +98,10 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  /* PWA: remove blue tap flash on all elements */
+  -webkit-tap-highlight-color: transparent;
+  /* PWA: disable long-press context menu system-wide */
+  -webkit-touch-callout: none;
 }
 
 html {
@@ -132,8 +136,32 @@ body {
   overflow-x: hidden;
   position: relative;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+  /* PWA: prevent accidental text selection globally */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ─── PWA Touch: restore selectability for actual text content ── */
+p,
+article,
+blockquote,
+li,
+th,
+td,
+.selectable {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+/* Always allow selection inside form controls */
+input,
+textarea,
+[contenteditable="true"],
+[contenteditable=""] {
+  user-select: text;
+  -webkit-user-select: text;
+  -webkit-touch-callout: default;
 }
 
 button {
@@ -168,11 +196,20 @@ button {
   }
 }
 
-/* Ensure all interactive elements are optimized for touch */
+/* ─── PWA Touch: interactive elements — no delay, no selection ── */
 button,
 a,
-[role="button"] {
+[role="button"],
+[role="tab"],
+[role="menuitem"],
+label,
+select,
+summary {
   touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 
 /* Device Mode: Mobile View Utilities */

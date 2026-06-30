@@ -6,6 +6,12 @@ export const Card = styled.div`
   aspect-ratio: 3/4;
   perspective: 1200px;
   cursor: pointer;
+  /* PWA touch: no highlight, no selection, no context menu */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 
   &:hover > div {
     box-shadow: var(--shadow-lg);
@@ -32,6 +38,10 @@ const Baseface = styled.div`
   -webkit-backface-visibility: hidden;
   border-radius: 20px;
   overflow: hidden;
+  /* PWA: inherit no-selection from Card */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 `;
 
 export const Face = styled(Baseface)`

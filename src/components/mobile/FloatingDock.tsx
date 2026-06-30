@@ -34,6 +34,9 @@ const DockContainer = styled.nav`
   box-shadow: var(--dock-shadow);
   padding: 0 4px;
   padding-bottom: env(safe-area-inset-bottom, 0);
+  /* PWA: no text selection on dock */
+  user-select: none;
+  -webkit-user-select: none;
 
   /* Only show on mobile mode */
   @media (min-width: 1101px) {
@@ -53,6 +56,12 @@ const DockItem = styled(Link)<{ $active?: boolean }>`
   position: relative;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 16px;
+  /* PWA: no tap highlight, no selection */
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 
   &:active {
     transform: scale(0.92);
