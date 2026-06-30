@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, memo, useRef } from "react";
+import { useState, useEffect, memo } from "react";
 import { toRomaji } from "wanakana";
 import {
   Card,
@@ -20,7 +20,6 @@ import {
 } from "./KanjiCard.styled";
 import { playJapaneseAudio } from "@/lib/audio";
 import { KANJI_DATA } from "@/data/kanji";
-import { usePwaTouch } from "@/hooks/usePwaTouch";
 
 interface ReadingDetail {
   onyomi: { kana: string; romaji: string }[];
@@ -29,15 +28,11 @@ interface ReadingDetail {
 }
 
 export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
-  const cardRef = useRef<HTMLDivElement>(null);
   const [flipped, setFlipped] = useState(false);
   const [detail, setDetail] = useState<ReadingDetail | null>(null);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState(false);
   const [lang, setLang] = useState<"en" | "id">("en");
-
-  // PWA: block context menu + text selection at JS level
-  usePwaTouch(cardRef);
 
   useEffect(() => {
     if (!flipped || detail || loading) return;
@@ -124,7 +119,10 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
   }, []);
 
   return (
-    <Card ref={cardRef} onClick={() => setFlipped(!flipped)}>
+    <Card
+      onClick={() => setFlipped(!flipped)}
+      onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
+    >
       <Inner $flipped={flipped}>
         <Face>{char}</Face>
 
