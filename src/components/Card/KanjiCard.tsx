@@ -51,12 +51,20 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
     }
 
     if (localKanji) {
-      const onyomiArray = localKanji.on && localKanji.on !== "-"
-        ? localKanji.on.split(/[・、,]/).map((s: string) => s.trim()).filter(Boolean)
-        : [];
-      const kunyomiArray = localKanji.kun && localKanji.kun !== "-"
-        ? localKanji.kun.split(/[・、,]/).map((s: string) => s.trim()).filter(Boolean)
-        : [];
+      const onyomiArray =
+        localKanji.on && localKanji.on !== "-"
+          ? localKanji.on
+              .split(/[・、,]/)
+              .map((s: string) => s.trim())
+              .filter(Boolean)
+          : [];
+      const kunyomiArray =
+        localKanji.kun && localKanji.kun !== "-"
+          ? localKanji.kun
+              .split(/[・、,]/)
+              .map((s: string) => s.trim())
+              .filter(Boolean)
+          : [];
       const meanings = localKanji.meaning
         ? localKanji.meaning.split(/\s*[/;,]\s*/).filter(Boolean)
         : [];
