@@ -23,7 +23,8 @@ export const Inner = styled.div<{ $flipped: boolean }>`
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+  transition:
+    transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s ease;
   transform-style: preserve-3d;
   box-shadow: var(--shadow-md);
@@ -48,7 +49,11 @@ export const Face = styled(Baseface)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   font-size: 5rem;
   font-weight: 700;
@@ -61,7 +66,11 @@ export const Face = styled(Baseface)`
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 60%
+    );
     pointer-events: none;
   }
 `;
@@ -181,7 +190,8 @@ export const LanguageContainer = styled.div`
 
 export const LanguageButton = styled.button<{ $active: boolean }>`
   padding: 4px 14px;
-  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
   background: ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
   color: ${({ $active }) => ($active ? "white" : "var(--text-secondary)")};
   border-radius: 20px;

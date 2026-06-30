@@ -93,11 +93,13 @@ export function KanaGrid() {
   useEffect(() => {
     Promise.all([
       fetch("/api/kana?type=hiragana").then((res) => {
-        if (!res.ok) throw new Error(`Failed to load hiragana: ${res.statusText}`);
+        if (!res.ok)
+          throw new Error(`Failed to load hiragana: ${res.statusText}`);
         return res.json() as Promise<string[]>;
       }),
       fetch("/api/kana?type=katakana").then((res) => {
-        if (!res.ok) throw new Error(`Failed to load katakana: ${res.statusText}`);
+        if (!res.ok)
+          throw new Error(`Failed to load katakana: ${res.statusText}`);
         return res.json() as Promise<string[]>;
       }),
     ])
