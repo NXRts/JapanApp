@@ -340,7 +340,7 @@ const SupportButton = styled.a`
 
 export function Footer() {
   const year = new Date().getFullYear();
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
 
   if (pathname === "/login" || pathname === "/register") return null;
 

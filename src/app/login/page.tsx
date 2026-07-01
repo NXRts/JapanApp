@@ -150,7 +150,7 @@ export default function LoginPage() {
       </Form>
 
       <FooterText>
-        Don't have an account? <Link href="/register">Sign Up</Link>
+        Don&apos;t have an account? <Link href="/register">Sign Up</Link>
       </FooterText>
     </AuthLayout>
   );

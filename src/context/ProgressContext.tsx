@@ -68,6 +68,8 @@ interface ProgressData {
   completedGrammarSections: string[];
   showFurigana: boolean;
   profile?: UserProfile;
+  /** true once the user has explicitly entered their name on first launch */
+  hasSetName: boolean;
 }
 
 interface ProgressContextType {
@@ -83,6 +85,8 @@ interface ProgressContextType {
   updateProfile: (profileData: Partial<UserProfile>) => void;
   markGrammarSectionCompleted: (key: string) => void;
   setShowFurigana: (show: boolean) => void;
+  /** First-launch onboarding: sets the display name and marks hasSetName true */
+  initializeName: (name: string) => void;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(
@@ -111,6 +115,7 @@ const INITIAL_DATA: ProgressData = {
   completedGrammarSections: [],
   showFurigana: true,
   profile: DEFAULT_PROFILE,
+  hasSetName: false,
 };
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
@@ -203,6 +208,12 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
                 ...DEFAULT_PROFILE,
                 ...(parsed.profile || {}),
               },
+              // Existing users: consider them "onboarded" if they already have
+              // a real name OR the hasSetName flag was previously stored.
+              hasSetName:
+                parsed.hasSetName === true ||
+                (parsed.profile?.displayName &&
+                  parsed.profile.displayName !== DEFAULT_PROFILE.displayName),
             };
 
             // Server-side validation (anti-cheat) — runs after UI hydration
@@ -476,6 +487,22 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
+  /** First-launch onboarding handler — stores display name and unlocks learning routes */
+  const initializeName = useCallback((name: string) => {
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    setProgress((prev) => ({
+      ...prev,
+      hasSetName: true,
+      profile: {
+        ...DEFAULT_PROFILE,
+        ...(prev.profile || {}),
+        displayName: trimmed,
+        username: trimmed.toLowerCase().replace(/\s+/g, "_"),
+      },
+    }));
+  }, []);
+
   const resetProgress = useCallback(() => {
     if (typeof window !== "undefined") {
       // 1. Atomic wipe of all storage (Learning + Theme settings)
@@ -516,6 +543,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       updateProfile,
       markGrammarSectionCompleted,
       setShowFurigana,
+      initializeName,
     }),
     [
       progress,
@@ -530,6 +558,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       updateProfile,
       markGrammarSectionCompleted,
       setShowFurigana,
+      initializeName,
     ],
   );
 
