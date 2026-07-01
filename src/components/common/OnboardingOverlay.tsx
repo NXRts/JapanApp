@@ -39,7 +39,7 @@ export function OnboardingOverlay() {
 
   useEffect(() => {
     const isRestrictedRoute = RESTRICTED_ROUTES.some(
-      (route) => pathname === route || pathname.startsWith(route + "/")
+      (route) => pathname === route || pathname.startsWith(route + "/"),
     );
 
     if (!progress.hasSetName && isRestrictedRoute) {

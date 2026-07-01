@@ -36,7 +36,8 @@ const Input = styled.input<{ $hasError?: boolean }>`
   width: 100%;
   padding: 1rem 1.25rem;
   background: var(--background);
-  border: 1px solid ${({ $hasError }) => ($hasError ? "var(--accent)" : "var(--border)")};
+  border: 1px solid
+    ${({ $hasError }) => ($hasError ? "var(--accent)" : "var(--border)")};
   border-radius: 12px;
   color: var(--foreground);
   font-size: 1rem;
@@ -203,13 +204,18 @@ function OnboardingForm() {
           <ErrorMsg>{error}</ErrorMsg>
         </FormGroup>
 
-        <SubmitButton type="submit" $disabled={isDisabled} disabled={isDisabled}>
+        <SubmitButton
+          type="submit"
+          $disabled={isDisabled}
+          disabled={isDisabled}
+        >
           {isDisabled ? "Masukkan nama dulu..." : "Mulai Belajar →"}
         </SubmitButton>
       </Form>
 
       <FooterText>
-        Tidak perlu email atau password.<br />
+        Tidak perlu email atau password.
+        <br />
         <span>Progresmu tersimpan lokal di perangkat ini.</span>
       </FooterText>
     </AuthLayout>
@@ -227,4 +233,3 @@ export default function OnboardingPage() {
     </Suspense>
   );
 }
-
