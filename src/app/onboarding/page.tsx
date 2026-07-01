@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import styled from "styled-components";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useProgress } from "@/context/ProgressContext";
@@ -123,7 +123,7 @@ const FooterText = styled.p`
 // ─── Component ────────────────────────────────────────────────────────────────
 const MAX_NAME_LENGTH = 20;
 
-export default function OnboardingPage() {
+function OnboardingForm() {
   const { progress, initializeName } = useProgress();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -215,3 +215,16 @@ export default function OnboardingPage() {
     </AuthLayout>
   );
 }
+
+/**
+ * Default export wraps the form in Suspense because useSearchParams()
+ * requires a Suspense boundary when statically generating the page.
+ */
+export default function OnboardingPage() {
+  return (
+    <Suspense fallback={null}>
+      <OnboardingForm />
+    </Suspense>
+  );
+}
+
