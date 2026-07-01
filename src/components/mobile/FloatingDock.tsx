@@ -265,7 +265,7 @@ const DOCK_TABS: DockTab[] = [
 // ========================================================
 
 export function FloatingDock() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
 
   const isTabActive = (tab: DockTab) => {
     if (pathname === tab.href) return true;

@@ -79,6 +79,7 @@ import { ProgressProvider } from "@/context/ProgressContext";
 import { DeviceModeProvider } from "@/context/DeviceModeContext";
 import { SakuraBackground } from "@/components/common/SakuraBackground";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { OnboardingOverlay } from "@/components/common/OnboardingOverlay";
 
 export default function RootLayout({
   children,
@@ -103,6 +104,7 @@ export default function RootLayout({
                   </main>
                   <Footer />
                   <ScrollToTop />
+                  <OnboardingOverlay />
                 </StyledRegistry>
               </ErrorBoundary>
             </ProgressProvider>

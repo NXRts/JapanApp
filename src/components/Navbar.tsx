@@ -1253,7 +1253,7 @@ function ContactIcon({ stroke, ...props }: React.SVGProps<SVGSVGElement>) {
 }
 
 export function Navbar() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
 
   const [isDictionaryOpen, setIsDictionaryOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

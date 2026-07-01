@@ -60,7 +60,7 @@ const StyledLink = styled(Link)`
 `;
 
 export function BackToHome() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "";
 
   if (pathname === "/") return null;
 
