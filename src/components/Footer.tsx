@@ -342,7 +342,12 @@ export function Footer() {
   const year = new Date().getFullYear();
   const pathname = usePathname() || "";
 
-  if (pathname === "/login" || pathname === "/register" || pathname === "/onboarding") return null;
+  if (
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname === "/onboarding"
+  )
+    return null;
 
   return (
     <FooterRoot>
