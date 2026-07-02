@@ -13,84 +13,104 @@ export interface TipItem {
 export const JAPANESE_TIPS: TipItem[] = [
   {
     quote: "七転び八起き (Nana korobi ya oki)",
-    authorOrTranslation: "Jatuh tujuh kali, bangkit delapan kali. Pantang menyerah!",
+    authorOrTranslation:
+      "Jatuh tujuh kali, bangkit delapan kali. Pantang menyerah!",
   },
   {
     quote: "継続は力なり (Keizoku wa chikara nari)",
-    authorOrTranslation: "Keberlanjutan adalah kekuatan. Konsistensi harian membawa hasil besar.",
+    authorOrTranslation:
+      "Keberlanjutan adalah kekuatan. Konsistensi harian membawa hasil besar.",
   },
   {
     quote: "Did you know?",
-    authorOrTranslation: "Katakana sebagian besar digunakan untuk kata serapan asing dan onomatopoia.",
+    authorOrTranslation:
+      "Katakana sebagian besar digunakan untuk kata serapan asing dan onomatopoia.",
   },
   {
     quote: "Did you know?",
-    authorOrTranslation: "Hiragana memiliki 46 karakter dasar yang melambangkan setiap suku kata bahasa Jepang.",
+    authorOrTranslation:
+      "Hiragana memiliki 46 karakter dasar yang melambangkan setiap suku kata bahasa Jepang.",
   },
   {
     quote: "猿も木から落ちる (Saru mo ki kara ochiru)",
-    authorOrTranslation: "Bahkan monyet pun bisa jatuh dari pohon. Semua orang pasti pernah salah.",
+    authorOrTranslation:
+      "Bahkan monyet pun bisa jatuh dari pohon. Semua orang pasti pernah salah.",
   },
   {
     quote: "Tip Belajar",
-    authorOrTranslation: "Belajar 10 menit setiap hari jauh lebih efektif daripada 2 jam sekali seminggu.",
+    authorOrTranslation:
+      "Belajar 10 menit setiap hari jauh lebih efektif daripada 2 jam sekali seminggu.",
   },
   {
     quote: "千里の道も一歩から (Senri no michi mo ippo kara)",
-    authorOrTranslation: "Perjalanan seribu mil dimulai dengan satu langkah pertama.",
+    authorOrTranslation:
+      "Perjalanan seribu mil dimulai dengan satu langkah pertama.",
   },
   {
     quote: "Tip Kanji",
-    authorOrTranslation: "Kanji memuat arti (makna) sedangkan Kana melambangkan pelafalan (bunyi).",
+    authorOrTranslation:
+      "Kanji memuat arti (makna) sedangkan Kana melambangkan pelafalan (bunyi).",
   },
   {
     quote: "一期一会 (Ichigo ichie)",
-    authorOrTranslation: "Satu pertemuan, satu kesempatan sekali seumur hidup. Hargai setiap momen belajar!",
+    authorOrTranslation:
+      "Satu pertemuan, satu kesempatan sekali seumur hidup. Hargai setiap momen belajar!",
   },
   {
     quote: "石の上にも三年 (Ishi no ue ni mo san nen)",
-    authorOrTranslation: "Duduk di atas batu selama tiga tahun. Ketekunan akan membuahkan hasil pada akhirnya.",
+    authorOrTranslation:
+      "Duduk di atas batu selama tiga tahun. Ketekunan akan membuahkan hasil pada akhirnya.",
   },
   {
     quote: "Did you know?",
-    authorOrTranslation: "Katakana juga digunakan untuk menulis nama orang asing atau nama negara selain Jepang.",
+    authorOrTranslation:
+      "Katakana juga digunakan untuk menulis nama orang asing atau nama negara selain Jepang.",
   },
   {
     quote: "Did you know?",
-    authorOrTranslation: "Kanji bahasa Jepang memiliki dua cara baca: Onyomi (cara baca Cina) dan Kunyomi (cara baca Jepang).",
+    authorOrTranslation:
+      "Kanji bahasa Jepang memiliki dua cara baca: Onyomi (cara baca Cina) dan Kunyomi (cara baca Jepang).",
   },
   {
     quote: "Did you know?",
-    authorOrTranslation: "JLPT (Japanese-Language Proficiency Test) memiliki 5 tingkatan, mulai dari N5 (terendah) hingga N1 (tertinggi).",
+    authorOrTranslation:
+      "JLPT (Japanese-Language Proficiency Test) memiliki 5 tingkatan, mulai dari N5 (terendah) hingga N1 (tertinggi).",
   },
   {
     quote: "Tip Belajar",
-    authorOrTranslation: "Partikel 'wa' (は) ditulis dengan huruf 'ha', tetapi dibaca 'wa' saat berfungsi sebagai partikel penunjuk topik.",
+    authorOrTranslation:
+      "Partikel 'wa' (は) ditulis dengan huruf 'ha', tetapi dibaca 'wa' saat berfungsi sebagai partikel penunjuk topik.",
   },
   {
     quote: "Tip Belajar",
-    authorOrTranslation: "Gunakan teknik SRS (Spaced Repetition System) yang ada di aplikasi ini untuk mengingat kosakata lebih lama!",
+    authorOrTranslation:
+      "Gunakan teknik SRS (Spaced Repetition System) yang ada di aplikasi ini untuk mengingat kosakata lebih lama!",
   },
   {
     quote: "聞くは一時の恥、聞かぬは一生の恥",
-    authorOrTranslation: "Bertanya adalah rasa malu sesaat, tidak bertanya adalah rasa malu seumur hidup. Jangan ragu bertanya!",
+    authorOrTranslation:
+      "Bertanya adalah rasa malu sesaat, tidak bertanya adalah rasa malu seumur hidup. Jangan ragu bertanya!",
   },
   {
     quote: "習うより慣れよ (Narau yori nareyo)",
-    authorOrTranslation: "Lebih baik membiasakan diri daripada hanya sekadar menghafal. Praktikkan!",
+    authorOrTranslation:
+      "Lebih baik membiasakan diri daripada hanya sekadar menghafal. Praktikkan!",
   },
   {
     quote: "Did you know?",
-    authorOrTranslation: "Tanda baca dalam bahasa Jepang menggunakan lingkaran kecil (。) sebagai titik dan koma miring (、).",
+    authorOrTranslation:
+      "Tanda baca dalam bahasa Jepang menggunakan lingkaran kecil (。) sebagai titik dan koma miring (、).",
   },
   {
     quote: "Did you know?",
-    authorOrTranslation: "Bahasa Jepang tidak memiliki gender kata benda (seperti Perancis/Jerman) dan tidak memiliki bentuk jamak khusus.",
+    authorOrTranslation:
+      "Bahasa Jepang tidak memiliki gender kata benda (seperti Perancis/Jerman) dan tidak memiliki bentuk jamak khusus.",
   },
   {
     quote: "Tip Belajar",
-    authorOrTranslation: "Coba ubah bahasa di ponsel Anda ke Bahasa Jepang untuk mempercepat pembiasaan sehari-hari!"
-  }
+    authorOrTranslation:
+      "Coba ubah bahasa di ponsel Anda ke Bahasa Jepang untuk mempercepat pembiasaan sehari-hari!",
+  },
 ];
 
 // ─── Keyframes ────────────────────────────────────────────────────────────────
@@ -118,7 +138,7 @@ const Overlay = styled.div<{ $isClosing: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #0B1121; /* Solid dark background matching default theme */
+  background: #0b1121; /* Solid dark background matching default theme */
   padding: 2rem;
   transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 
@@ -259,7 +279,9 @@ export function SplashLoader() {
   const changeTip = (e: React.MouseEvent) => {
     e.stopPropagation();
     const remainingTips = JAPANESE_TIPS.filter(
-      (t) => t.quote !== randomTip.quote || t.authorOrTranslation !== randomTip.authorOrTranslation
+      (t) =>
+        t.quote !== randomTip.quote ||
+        t.authorOrTranslation !== randomTip.authorOrTranslation,
     );
     if (remainingTips.length > 0) {
       const randomIndex = Math.floor(Math.random() * remainingTips.length);

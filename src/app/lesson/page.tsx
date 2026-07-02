@@ -163,7 +163,7 @@ const LocalSplashOverlay = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #0B1121; /* Match the dark theme background exactly */
+  background: #0b1121; /* Match the dark theme background exactly */
   padding: 2rem;
   animation: ${localFadeIn} 0.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 `;
@@ -1264,7 +1264,9 @@ function LessonPlayerContent() {
   const changeExitTip = (e: React.MouseEvent) => {
     e.stopPropagation();
     const remainingTips = JAPANESE_TIPS.filter(
-      (t) => t.quote !== randomTip.quote || t.authorOrTranslation !== randomTip.authorOrTranslation
+      (t) =>
+        t.quote !== randomTip.quote ||
+        t.authorOrTranslation !== randomTip.authorOrTranslation,
     );
     if (remainingTips.length > 0) {
       const randomIndex = Math.floor(Math.random() * remainingTips.length);
@@ -1425,7 +1427,11 @@ function LessonPlayerContent() {
   // Global exiting transition loader
   if (isExiting) {
     return (
-      <LocalSplashOverlay onClick={changeExitTip} style={{ cursor: "pointer" }} title="Klik untuk mengganti tips">
+      <LocalSplashOverlay
+        onClick={changeExitTip}
+        style={{ cursor: "pointer" }}
+        title="Klik untuk mengganti tips"
+      >
         <LocalSplashContent>
           <div style={{ fontSize: "3.5rem", marginBottom: "0.5rem" }}>🇯🇵</div>
           <LocalSplashTitle>JapanApp</LocalSplashTitle>
@@ -1477,10 +1483,7 @@ function LessonPlayerContent() {
             </span>
           </VictorySubtitle>
 
-          <ContinueBtn
-            onClick={handleExit}
-            style={{ maxWidth: "280px" }}
-          >
+          <ContinueBtn onClick={handleExit} style={{ maxWidth: "280px" }}>
             Back to Roadmap
           </ContinueBtn>
         </LockedOverlay>
@@ -1540,9 +1543,7 @@ function LessonPlayerContent() {
             </StatCard>
           </StatsGrid>
 
-          <ContinueBtn onClick={handleExit}>
-            Continue
-          </ContinueBtn>
+          <ContinueBtn onClick={handleExit}>Continue</ContinueBtn>
         </VictoryOverlay>
       </FullscreenContainer>
     );
