@@ -7,6 +7,7 @@ import { useProgress } from "@/context/ProgressContext";
 import { lessonsData, Lesson, Question } from "@/data/lessonsData";
 import { generatorBank } from "@/data/generatorBank";
 import Link from "next/link";
+import { JAPANESE_TIPS, TipItem } from "@/components/common/SplashLoader";
 
 // ==========================================
 // ANIMATIONS
@@ -130,6 +131,116 @@ const LivesIndicator = styled.div`
   font-weight: 800;
   font-size: 1.25rem;
   color: #ef4444;
+`;
+
+// Local transition loader to avoid page flashes when exiting/finishing
+const localFadeIn = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
+
+const localPulse = keyframes`
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(184, 134, 11, 0.4)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(184, 134, 11, 0.6)); }
+`;
+
+const localShimmer = keyframes`
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+`;
+
+const localProgressAnim = keyframes`
+  0% { left: -100%; width: 50%; }
+  50% { left: 20%; width: 60%; }
+  100% { left: 100%; width: 30%; }
+`;
+
+const LocalSplashOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 10005;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #0B1121; /* Match the dark theme background exactly */
+  padding: 2rem;
+  animation: ${localFadeIn} 0.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+`;
+
+const LocalSplashContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+`;
+
+const LocalSplashTitle = styled.h1`
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0 0 2.5rem 0;
+  background: linear-gradient(
+    135deg,
+    #ffd700 0%,
+    var(--zen-gold, #b8860b) 50%,
+    #ffd700 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: ${localShimmer} 3s linear infinite;
+`;
+
+const LocalSplashBarWrapper = styled.div`
+  width: 180px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+`;
+
+const LocalSplashBarActive = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    var(--primary, #4f46e5) 0%,
+    var(--primary-light, #818cf8) 100%
+  );
+  border-radius: 999px;
+  animation: ${localProgressAnim} 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+`;
+
+const LocalSplashQuoteContainer = styled.div`
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+  text-align: center;
+  animation: ${localFadeIn} 0.5s ease-out;
+`;
+
+const LocalSplashJapaneseText = styled.h2`
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--foreground, #f8fafc);
+  margin: 0;
+  line-height: 1.5;
+`;
+
+const LocalSplashTranslationText = styled.p`
+  font-size: 0.85rem;
+  color: var(--text-secondary, #94a3b8);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 380px;
 `;
 
 // Question Card & Elements
@@ -1140,6 +1251,34 @@ function LessonPlayerContent() {
   const [shakeBox, setShakeBox] = useState(false);
   const [hasVoiceTriggered, setHasVoiceTriggered] = useState(false);
   const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [isExiting, setIsExiting] = useState(false);
+  const [randomTip, setRandomTip] = useState<TipItem>(JAPANESE_TIPS[0]);
+
+  // Pick a random tip once on component load to override the default
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * JAPANESE_TIPS.length);
+    setRandomTip(JAPANESE_TIPS[randomIndex]);
+  }, []);
+
+  // Pick a new tip that is different from the current one when user clicks/taps
+  const changeExitTip = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const remainingTips = JAPANESE_TIPS.filter(
+      (t) => t.quote !== randomTip.quote || t.authorOrTranslation !== randomTip.authorOrTranslation
+    );
+    if (remainingTips.length > 0) {
+      const randomIndex = Math.floor(Math.random() * remainingTips.length);
+      setRandomTip(remainingTips[randomIndex]);
+    }
+  };
+
+  // Transition handler to gracefully route out of the lesson
+  const handleExit = () => {
+    setIsExiting(true);
+    setTimeout(() => {
+      router.push(returnUrl);
+    }, 800);
+  };
 
   // Initialize questions and start time safely on client-side mount
   useEffect(() => {
@@ -1283,6 +1422,27 @@ function LessonPlayerContent() {
     startTime.current = Date.now();
   };
 
+  // Global exiting transition loader
+  if (isExiting) {
+    return (
+      <LocalSplashOverlay onClick={changeExitTip} style={{ cursor: "pointer" }} title="Klik untuk mengganti tips">
+        <LocalSplashContent>
+          <div style={{ fontSize: "3.5rem", marginBottom: "0.5rem" }}>🇯🇵</div>
+          <LocalSplashTitle>JapanApp</LocalSplashTitle>
+          <LocalSplashBarWrapper>
+            <LocalSplashBarActive />
+          </LocalSplashBarWrapper>
+          <LocalSplashQuoteContainer>
+            <LocalSplashJapaneseText>{randomTip.quote}</LocalSplashJapaneseText>
+            <LocalSplashTranslationText>
+              {randomTip.authorOrTranslation}
+            </LocalSplashTranslationText>
+          </LocalSplashQuoteContainer>
+        </LocalSplashContent>
+      </LocalSplashOverlay>
+    );
+  }
+
   if (isUnlocked === null) {
     return (
       <FullscreenContainer style={{ justifyContent: "center" }}>
@@ -1318,7 +1478,7 @@ function LessonPlayerContent() {
           </VictorySubtitle>
 
           <ContinueBtn
-            onClick={() => router.push(returnUrl)}
+            onClick={handleExit}
             style={{ maxWidth: "280px" }}
           >
             Back to Roadmap
@@ -1380,7 +1540,7 @@ function LessonPlayerContent() {
             </StatCard>
           </StatsGrid>
 
-          <ContinueBtn onClick={() => router.push(returnUrl)}>
+          <ContinueBtn onClick={handleExit}>
             Continue
           </ContinueBtn>
         </VictoryOverlay>
@@ -1401,11 +1561,11 @@ function LessonPlayerContent() {
           </VictorySubtitle>
 
           <RetryBtn onClick={handleRetry}>Try Again</RetryBtn>
-          <ExitBtn href={returnUrl}>
+          <ContinueBtn onClick={handleExit} style={{ marginTop: "1rem" }}>
             {returnUrl === "/practice"
               ? "Back to Practice Hub"
               : "Back to Roadmap"}
-          </ExitBtn>
+          </ContinueBtn>
         </GameOverOverlay>
       </FullscreenContainer>
     );
@@ -1425,7 +1585,7 @@ function LessonPlayerContent() {
               <ExitKeepLearningBtn onClick={() => setShowExitModal(false)}>
                 Keep Learning
               </ExitKeepLearningBtn>
-              <ExitEndSessionBtn onClick={() => router.push(returnUrl)}>
+              <ExitEndSessionBtn onClick={handleExit}>
                 End Session
               </ExitEndSessionBtn>
             </ExitModalButtonContainer>
