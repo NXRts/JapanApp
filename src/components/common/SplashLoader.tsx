@@ -207,10 +207,29 @@ export function SplashLoader() {
     }
   }, [isLoaded, minDurationElapsed]);
 
+  // Pick a new tip that is different from the current one
+  const changeTip = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const remainingTips = JAPANESE_TIPS.filter(
+      (t) => t.quote !== randomTip.quote || t.authorOrTranslation !== randomTip.authorOrTranslation
+    );
+    if (remainingTips.length > 0) {
+      const randomIndex = Math.floor(Math.random() * remainingTips.length);
+      setRandomTip(remainingTips[randomIndex]);
+    }
+  };
+
   if (!shouldRender) return null;
 
   return (
-    <Overlay $isClosing={isClosing} role="status" aria-busy="true">
+    <Overlay
+      $isClosing={isClosing}
+      role="status"
+      aria-busy="true"
+      onClick={changeTip}
+      style={{ cursor: "pointer" }}
+      title="Klik untuk mengganti tips"
+    >
       <ContentWrapper>
         <LogoContainer>
           <FlagIcon aria-hidden="true">🇯🇵</FlagIcon>
