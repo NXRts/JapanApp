@@ -24,18 +24,19 @@ export function DeviceModeProvider({
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsMounted(true);
+    // Synchronize state and marker on mount safely (client-only lifecycle)
+    setIsMounted(true);
+    try {
       const saved = localStorage.getItem("device-mode") as DeviceMode;
       if (saved === "pc" || saved === "mobile") {
         setDeviceModeState(saved);
       } else {
-        // Auto-detect: mobile if screen is small
         const isMobileSize = window.innerWidth <= 768;
         setDeviceModeState(isMobileSize ? "mobile" : "pc");
       }
-    }, 0);
-    return () => clearTimeout(timer);
+    } catch {
+      // localStorage is disabled or restricted
+    }
   }, []);
 
   const setDeviceMode = (mode: DeviceMode) => {

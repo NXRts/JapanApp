@@ -879,17 +879,10 @@ export default function Home() {
   };
 
   if (!mounted) {
-    return (
-      <>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <Container>
-          <HeroSection isDailyCompleted={false} />
-        </Container>
-      </>
-    );
+    // Return null during pre-mount to avoid flashing the wrong device view.
+    // DeviceModeContext now resolves the correct mode synchronously, so
+    // this null state is only visible for a tiny SSR hydration window.
+    return null;
   }
 
   // Serpentine offset pattern: Center, Right, Center, Left...

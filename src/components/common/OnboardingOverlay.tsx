@@ -33,11 +33,15 @@ const RESTRICTED_ROUTES = [
  * they are instantly redirected to the standalone `/login` page.
  */
 export function OnboardingOverlay() {
-  const { progress } = useProgress();
+  const { progress, isLoaded } = useProgress();
   const pathname = usePathname() || "";
   const router = useRouter();
 
   useEffect(() => {
+    // Only perform route guarding once the progress state is successfully
+    // hydrated from localStorage.
+    if (!isLoaded) return;
+
     const isRestrictedRoute = RESTRICTED_ROUTES.some(
       (route) => pathname === route || pathname.startsWith(route + "/"),
     );
@@ -47,7 +51,7 @@ export function OnboardingOverlay() {
       const redirectUrl = encodeURIComponent(pathname);
       router.replace(`/onboarding?redirect=${redirectUrl}`);
     }
-  }, [progress.hasSetName, pathname, router]);
+  }, [progress.hasSetName, isLoaded, pathname, router]);
 
   return null;
 }
