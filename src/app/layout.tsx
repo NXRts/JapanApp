@@ -80,6 +80,7 @@ import { DeviceModeProvider } from "@/context/DeviceModeContext";
 import { SakuraBackground } from "@/components/common/SakuraBackground";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { OnboardingOverlay } from "@/components/common/OnboardingOverlay";
+import { SplashLoader } from "@/components/common/SplashLoader";
 
 export default function RootLayout({
   children,
@@ -97,6 +98,7 @@ export default function RootLayout({
             <ProgressProvider>
               <ErrorBoundary>
                 <StyledRegistry>
+                  <SplashLoader />
                   <SakuraBackground />
                   <Navbar />
                   <main style={{ flex: 1, position: "relative" }}>
