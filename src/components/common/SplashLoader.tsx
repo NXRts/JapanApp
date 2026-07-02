@@ -182,23 +182,30 @@ export function SplashLoader() {
   const [shouldRender, setShouldRender] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
   const [randomTip, setRandomTip] = useState<TipItem>(JAPANESE_TIPS[0]);
+  const [minDurationElapsed, setMinDurationElapsed] = useState(false);
 
   // Pick a random tip once on component load to override the default
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * JAPANESE_TIPS.length);
     setRandomTip(JAPANESE_TIPS[randomIndex]);
+
+    // Enforce 3 seconds minimum display duration
+    const timer = setTimeout(() => {
+      setMinDurationElapsed(true);
+    }, 3000);
+    return () => clearTimeout(timer);
   }, []);
 
-  // Handle closing sequence when app finishes loading from localStorage
+  // Handle closing sequence when BOTH app is loaded and minimum duration has elapsed
   useEffect(() => {
-    if (isLoaded) {
+    if (isLoaded && minDurationElapsed) {
       setIsClosing(true);
       const timer = setTimeout(() => {
         setShouldRender(false);
       }, 500); // matches the 0.5s transition opacity
       return () => clearTimeout(timer);
     }
-  }, [isLoaded]);
+  }, [isLoaded, minDurationElapsed]);
 
   if (!shouldRender) return null;
 
