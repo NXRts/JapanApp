@@ -87,6 +87,8 @@ interface ProgressContextType {
   setShowFurigana: (show: boolean) => void;
   /** First-launch onboarding: sets the display name and marks hasSetName true */
   initializeName: (name: string) => void;
+  /** Whether the user progress has finished loading from localStorage */
+  isLoaded: boolean;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(
@@ -544,6 +546,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       markGrammarSectionCompleted,
       setShowFurigana,
       initializeName,
+      isLoaded,
     }),
     [
       progress,
@@ -559,6 +562,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       markGrammarSectionCompleted,
       setShowFurigana,
       initializeName,
+      isLoaded,
     ],
   );
 
