@@ -788,10 +788,7 @@ export default function Home() {
   >("N5");
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMounted(true);
-    }, 0);
-    return () => clearTimeout(timer);
+    setMounted(true);
   }, []);
 
   // Level config with custom colors
