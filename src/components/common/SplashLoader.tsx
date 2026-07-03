@@ -371,6 +371,18 @@ export function SplashLoader() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Lock body scrolling when the loading screen is active
+  useEffect(() => {
+    if (shouldRender) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [shouldRender]);
+
   // Close overlay when app loads and min duration completes
   useEffect(() => {
     if (isLoaded && minDurationElapsed) {
