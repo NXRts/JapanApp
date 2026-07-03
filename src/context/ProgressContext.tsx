@@ -228,10 +228,19 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
               });
 
               if (!res.ok) {
-                const result = await res.json().catch(() => ({}));
+                const text = await res.text().catch(() => "");
+                console.error(
+                  "Progress validation failed. Raw response text:",
+                  text,
+                );
+                let result: any = {};
+                try {
+                  result = JSON.parse(text);
+                } catch {}
                 logError(new Error("Progress validation failed"), {
-                  reason: result?.reason,
+                  reason: result?.reason || text || "Empty response",
                   status: res.status,
+                  details: result?.errors || result,
                 });
                 // Progress is invalid — reset to initial state
                 setProgress(INITIAL_DATA);

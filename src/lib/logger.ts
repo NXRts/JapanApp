@@ -73,8 +73,10 @@ export function logError(
     console.error(`[ERROR] ${entry.message}`, {
       timestamp: entry.timestamp,
       context: entry.context,
-      stack: entry.stack,
     });
+    if (entry.stack) {
+      console.error(entry.stack);
+    }
   }
 }
 
