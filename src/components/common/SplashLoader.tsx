@@ -171,6 +171,20 @@ const Overlay = styled.div<{ $isClosing: boolean }>`
       opacity: 0;
       pointer-events: none;
     `}
+
+  /* CSS-based loading variant visibility (Anti-flash) */
+  html.session-refresh & .first-open-only {
+    display: none !important;
+  }
+  
+  html.session-first-open & .refresh-only {
+    display: none !important;
+  }
+
+  /* Fallback: default to showing first-open if script hasn't run or is blocked */
+  html:not(.session-refresh):not(.session-first-open) & .refresh-only {
+    display: none !important;
+  }
 `;
 
 // Falling Sakura Petals for First Open
@@ -330,41 +344,29 @@ export function SplashLoader() {
   const { isLoaded } = useProgress();
   const [shouldRender, setShouldRender] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
-  const [loaderStyle, setLoaderStyle] = useState<"first-open" | "refresh">("refresh");
   const [randomTip, setRandomTip] = useState<TipItem>(JAPANESE_TIPS[0]);
   const [minDurationElapsed, setMinDurationElapsed] = useState(false);
+  const [isInteractive, setIsInteractive] = useState(false);
 
-  // 1. Detect if it is the first open of this session synchronously on mount (client-only)
-  useEffect(() => {
-    try {
-      const hasLoaded = sessionStorage.getItem("has-loaded-before");
-      if (hasLoaded) {
-        setLoaderStyle("refresh");
-      } else {
-        setLoaderStyle("first-open");
-        sessionStorage.setItem("has-loaded-before", "true");
-      }
-    } catch {
-      setLoaderStyle("first-open");
-    }
-  }, []);
-
-  // 2. Select random tip and handle durations based on loaderStyle
+  // Determine visitor status and enforce correct delay duration
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * JAPANESE_TIPS.length);
     setRandomTip(JAPANESE_TIPS[randomIndex]);
 
-    // First open loader gets 3.5s to appreciate the beautiful animation
-    // Refresh loader gets 3.0s (quicker transition)
-    const duration = loaderStyle === "first-open" ? 3500 : 3000;
+    let isRefresh = false;
+    try {
+      isRefresh = !!sessionStorage.getItem("has-loaded-before");
+      setIsInteractive(isRefresh);
+    } catch {}
 
+    const duration = isRefresh ? 3000 : 3500;
     const timer = setTimeout(() => {
       setMinDurationElapsed(true);
     }, duration);
     return () => clearTimeout(timer);
-  }, [loaderStyle]);
+  }, []);
 
-  // 3. Close Overlay when loaded and min duration completed
+  // Close overlay when app loads and min duration completes
   useEffect(() => {
     if (isLoaded && minDurationElapsed) {
       setIsClosing(true);
@@ -375,10 +377,10 @@ export function SplashLoader() {
     }
   }, [isLoaded, minDurationElapsed]);
 
-  // Click handler to change tips (only applicable in Refresh style)
+  // Click handler to change tips (only active on refresh screen)
   const changeTip = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (loaderStyle !== "refresh") return; // Prevent changing quotes on cold start screen
+    if (!isInteractive) return;
 
     const remainingTips = JAPANESE_TIPS.filter(
       (t) =>
@@ -399,67 +401,62 @@ export function SplashLoader() {
       role="status"
       aria-busy="true"
       onClick={changeTip}
-      style={{ cursor: loaderStyle === "refresh" ? "pointer" : "default" }}
-      title={loaderStyle === "refresh" ? "Klik untuk mengganti tips" : undefined}
+      className={isInteractive ? "session-refresh" : "session-first-open"}
+      style={{ cursor: isInteractive ? "pointer" : "default" }}
+      title={isInteractive ? "Klik untuk mengganti tips" : undefined}
     >
       {/* Falling Sakura Petals for First-Time Welcoming Screen */}
-      {loaderStyle === "first-open" && (
-        <SakuraContainer>
-          {STATIC_PETALS.map((petal, index) => (
-            <Petal
-              key={index}
-              $delay={petal.delay}
-              $left={petal.left}
-              $scale={petal.scale}
-              $duration={petal.duration}
-            />
-          ))}
-        </SakuraContainer>
-      )}
+      <SakuraContainer className="first-open-only">
+        {STATIC_PETALS.map((petal, index) => (
+          <Petal
+            key={index}
+            $delay={petal.delay}
+            $left={petal.left}
+            $scale={petal.scale}
+            $duration={petal.duration}
+          />
+        ))}
+      </SakuraContainer>
 
       <ContentWrapper>
-        {loaderStyle === "first-open" && (
-          /* ⛩️ FIRST OPEN LAYOUT (Traditional Zen Aesthetics) */
-          <>
-            <LogoContainer style={{ marginBottom: "2rem" }}>
-              <ToriiIcon aria-hidden="true">⛩️</ToriiIcon>
-              <Title>JapanApp</Title>
-              <WelcomeText>ようこそ</WelcomeText>
-            </LogoContainer>
+        {/* ⛩️ FIRST OPEN LAYOUT (Traditional Zen Aesthetics) */}
+        <div className="first-open-only" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <LogoContainer style={{ marginBottom: "2rem" }}>
+            <ToriiIcon aria-hidden="true">⛩️</ToriiIcon>
+            <Title>JapanApp</Title>
+            <WelcomeText>ようこそ</WelcomeText>
+          </LogoContainer>
 
-            <ProgressBarWrapper style={{ marginBottom: "2.5rem" }}>
-              <ProgressBarActive />
-            </ProgressBarWrapper>
+          <ProgressBarWrapper style={{ marginBottom: "2.5rem" }}>
+            <ProgressBarActive />
+          </ProgressBarWrapper>
 
-            <QuoteContainer>
-              <JapaneseText style={{ color: "var(--zen-gold)" }}>
-                Mempersiapkan kuil pembelajaran Anda...
-              </JapaneseText>
-              <TranslationText style={{ opacity: 0.8 }}>
-                Belajar hiragana, katakana, dan kanji secara interaktif.
-              </TranslationText>
-            </QuoteContainer>
-          </>
-        )}
+          <QuoteContainer>
+            <JapaneseText style={{ color: "var(--zen-gold)" }}>
+              Mempersiapkan kuil pembelajaran Anda...
+            </JapaneseText>
+            <TranslationText style={{ opacity: 0.8 }}>
+              Belajar hiragana, katakana, dan kanji secara interaktif.
+            </TranslationText>
+          </QuoteContainer>
+        </div>
 
-        {loaderStyle === "refresh" && (
-          /* 🇯🇵 REFRESH LAYOUT (Interactive Tips) */
-          <>
-            <LogoContainer>
-              <FlagIcon aria-hidden="true">🇯🇵</FlagIcon>
-              <Title>JapanApp</Title>
-            </LogoContainer>
+        {/* 🇯🇵 REFRESH LAYOUT (Interactive Tips) */}
+        <div className="refresh-only" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <LogoContainer>
+            <FlagIcon aria-hidden="true">🇯🇵</FlagIcon>
+            <Title>JapanApp</Title>
+          </LogoContainer>
 
-            <ProgressBarWrapper>
-              <ProgressBarActive />
-            </ProgressBarWrapper>
+          <ProgressBarWrapper>
+            <ProgressBarActive />
+          </ProgressBarWrapper>
 
-            <QuoteContainer>
-              <JapaneseText>{randomTip.quote}</JapaneseText>
-              <TranslationText>{randomTip.authorOrTranslation}</TranslationText>
-            </QuoteContainer>
-          </>
-        )}
+          <QuoteContainer>
+            <JapaneseText>{randomTip.quote}</JapaneseText>
+            <TranslationText>{randomTip.authorOrTranslation}</TranslationText>
+          </QuoteContainer>
+        </div>
       </ContentWrapper>
     </Overlay>
   );

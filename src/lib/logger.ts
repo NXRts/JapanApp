@@ -70,7 +70,11 @@ export function logError(
     // Sentry.captureException(error, { extra: context });
     console.error("[ERROR]", JSON.stringify(entry));
   } else {
-    console.error("[ERROR]", entry);
+    console.error(`[ERROR] ${entry.message}`, {
+      timestamp: entry.timestamp,
+      context: entry.context,
+      stack: entry.stack,
+    });
   }
 }
 
