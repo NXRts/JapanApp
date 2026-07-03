@@ -129,6 +129,28 @@ const pulse = keyframes`
   50% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(184, 134, 11, 0.6)); }
 `;
 
+const toriiPulse = keyframes`
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(196, 30, 58, 0.5)); }
+  50% { transform: scale(1.04); filter: drop-shadow(0 0 35px rgba(196, 30, 58, 0.8)); }
+`;
+
+const sakuraFall = keyframes`
+  0% {
+    transform: translateY(-10vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(110vh) translateX(120px) rotate(360deg);
+    opacity: 0;
+  }
+`;
+
 // ─── Styled Components ────────────────────────────────────────────────────────
 const Overlay = styled.div<{ $isClosing: boolean }>`
   position: fixed;
@@ -141,6 +163,7 @@ const Overlay = styled.div<{ $isClosing: boolean }>`
   background: #0b1121; /* Solid dark background matching default theme */
   padding: 2rem;
   transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  overflow: hidden;
 
   ${({ $isClosing }) =>
     $isClosing &&
@@ -150,6 +173,31 @@ const Overlay = styled.div<{ $isClosing: boolean }>`
     `}
 `;
 
+// Falling Sakura Petals for First Open
+const SakuraContainer = styled.div`
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+`;
+
+const Petal = styled.div<{ $delay: number; $left: number; $scale: number; $duration: number }>`
+  position: absolute;
+  top: -10%;
+  left: ${({ $left }) => `${$left}%`};
+  width: 14px;
+  height: 20px;
+  background: linear-gradient(135deg, #ffb7c5, #ffa3b1);
+  border-radius: 50% 0 50% 50%;
+  transform-origin: center;
+  opacity: 0;
+  animation: ${sakuraFall} ${({ $duration }) => `${$duration}s`} linear infinite;
+  animation-delay: ${({ $delay }) => `${$delay}s`};
+  transform: scale(${({ $scale }) => $scale});
+  filter: drop-shadow(0 2px 4px rgba(255, 183, 197, 0.3));
+`;
+
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -157,6 +205,7 @@ const ContentWrapper = styled.div`
   max-width: 480px;
   width: 100%;
   text-align: center;
+  z-index: 2; /* Sits above Sakura background */
 `;
 
 const LogoContainer = styled.div`
@@ -171,6 +220,24 @@ const FlagIcon = styled.div`
   margin-bottom: 0.5rem;
   animation: ${pulse} 3s ease-in-out infinite;
   user-select: none;
+`;
+
+const ToriiIcon = styled.div`
+  font-size: 5rem;
+  margin-bottom: 1rem;
+  animation: ${toriiPulse} 4s ease-in-out infinite;
+  user-select: none;
+  color: var(--torii-red, #c41e3a);
+`;
+
+const WelcomeText = styled.h2`
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--zen-gold, #b8860b);
+  margin-top: 0.75rem;
+  letter-spacing: 0.15em;
+  font-family: "Noto Sans JP", sans-serif;
+  text-shadow: 0 0 12px rgba(184, 134, 11, 0.3);
 `;
 
 const Title = styled.h1`
@@ -226,6 +293,7 @@ const QuoteContainer = styled.div`
   flex-direction: column;
   gap: 0.5rem;
   animation: ${fadeIn} 0.5s ease-out;
+  align-items: center;
 `;
 
 const JapaneseText = styled.h2`
@@ -245,43 +313,77 @@ const TranslationText = styled.p`
 `;
 
 // ─── Component ────────────────────────────────────────────────────────────────
+// Pre-generated static values to avoid hydration mismatch on Sakura Petals
+const STATIC_PETALS = [
+  { delay: 0.2, left: 10, scale: 0.8, duration: 6.2 },
+  { delay: 1.5, left: 25, scale: 1.1, duration: 5.5 },
+  { delay: 0.7, left: 45, scale: 0.6, duration: 7.1 },
+  { delay: 2.3, left: 60, scale: 0.9, duration: 6.8 },
+  { delay: 1.1, left: 75, scale: 1.2, duration: 5.2 },
+  { delay: 3.0, left: 90, scale: 0.7, duration: 7.5 },
+  { delay: 0.9, left: 20, scale: 0.9, duration: 6.4 },
+  { delay: 2.5, left: 55, scale: 0.8, duration: 6.9 },
+  { delay: 1.8, left: 80, scale: 1.0, duration: 5.8 }
+];
+
 export function SplashLoader() {
   const { isLoaded } = useProgress();
   const [shouldRender, setShouldRender] = useState(true);
   const [isClosing, setIsClosing] = useState(false);
+  const [loaderStyle, setLoaderStyle] = useState<"first-open" | "refresh">("refresh");
   const [randomTip, setRandomTip] = useState<TipItem>(JAPANESE_TIPS[0]);
   const [minDurationElapsed, setMinDurationElapsed] = useState(false);
 
-  // Pick a random tip once on component load to override the default
+  // 1. Detect if it is the first open of this session synchronously on mount (client-only)
+  useEffect(() => {
+    try {
+      const hasLoaded = sessionStorage.getItem("has-loaded-before");
+      if (hasLoaded) {
+        setLoaderStyle("refresh");
+      } else {
+        setLoaderStyle("first-open");
+        sessionStorage.setItem("has-loaded-before", "true");
+      }
+    } catch {
+      setLoaderStyle("first-open");
+    }
+  }, []);
+
+  // 2. Select random tip and handle durations based on loaderStyle
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * JAPANESE_TIPS.length);
     setRandomTip(JAPANESE_TIPS[randomIndex]);
 
-    // Enforce 3 seconds minimum display duration
+    // First open loader gets 3.5s to appreciate the beautiful animation
+    // Refresh loader gets 3.0s (quicker transition)
+    const duration = loaderStyle === "first-open" ? 3500 : 3000;
+
     const timer = setTimeout(() => {
       setMinDurationElapsed(true);
-    }, 3000);
+    }, duration);
     return () => clearTimeout(timer);
-  }, []);
+  }, [loaderStyle]);
 
-  // Handle closing sequence when BOTH app is loaded and minimum duration has elapsed
+  // 3. Close Overlay when loaded and min duration completed
   useEffect(() => {
     if (isLoaded && minDurationElapsed) {
       setIsClosing(true);
       const timer = setTimeout(() => {
         setShouldRender(false);
-      }, 500); // matches the 0.5s transition opacity
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [isLoaded, minDurationElapsed]);
 
-  // Pick a new tip that is different from the current one
+  // Click handler to change tips (only applicable in Refresh style)
   const changeTip = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (loaderStyle !== "refresh") return; // Prevent changing quotes on cold start screen
+
     const remainingTips = JAPANESE_TIPS.filter(
       (t) =>
         t.quote !== randomTip.quote ||
-        t.authorOrTranslation !== randomTip.authorOrTranslation,
+        t.authorOrTranslation !== randomTip.authorOrTranslation
     );
     if (remainingTips.length > 0) {
       const randomIndex = Math.floor(Math.random() * remainingTips.length);
@@ -297,23 +399,67 @@ export function SplashLoader() {
       role="status"
       aria-busy="true"
       onClick={changeTip}
-      style={{ cursor: "pointer" }}
-      title="Klik untuk mengganti tips"
+      style={{ cursor: loaderStyle === "refresh" ? "pointer" : "default" }}
+      title={loaderStyle === "refresh" ? "Klik untuk mengganti tips" : undefined}
     >
+      {/* Falling Sakura Petals for First-Time Welcoming Screen */}
+      {loaderStyle === "first-open" && (
+        <SakuraContainer>
+          {STATIC_PETALS.map((petal, index) => (
+            <Petal
+              key={index}
+              $delay={petal.delay}
+              $left={petal.left}
+              $scale={petal.scale}
+              $duration={petal.duration}
+            />
+          ))}
+        </SakuraContainer>
+      )}
+
       <ContentWrapper>
-        <LogoContainer>
-          <FlagIcon aria-hidden="true">🇯🇵</FlagIcon>
-          <Title>JapanApp</Title>
-        </LogoContainer>
+        {loaderStyle === "first-open" && (
+          /* ⛩️ FIRST OPEN LAYOUT (Traditional Zen Aesthetics) */
+          <>
+            <LogoContainer style={{ marginBottom: "2rem" }}>
+              <ToriiIcon aria-hidden="true">⛩️</ToriiIcon>
+              <Title>JapanApp</Title>
+              <WelcomeText>ようこそ</WelcomeText>
+            </LogoContainer>
 
-        <ProgressBarWrapper>
-          <ProgressBarActive />
-        </ProgressBarWrapper>
+            <ProgressBarWrapper style={{ marginBottom: "2.5rem" }}>
+              <ProgressBarActive />
+            </ProgressBarWrapper>
 
-        <QuoteContainer>
-          <JapaneseText>{randomTip.quote}</JapaneseText>
-          <TranslationText>{randomTip.authorOrTranslation}</TranslationText>
-        </QuoteContainer>
+            <QuoteContainer>
+              <JapaneseText style={{ color: "var(--zen-gold)" }}>
+                Mempersiapkan kuil pembelajaran Anda...
+              </JapaneseText>
+              <TranslationText style={{ opacity: 0.8 }}>
+                Belajar hiragana, katakana, dan kanji secara interaktif.
+              </TranslationText>
+            </QuoteContainer>
+          </>
+        )}
+
+        {loaderStyle === "refresh" && (
+          /* 🇯🇵 REFRESH LAYOUT (Interactive Tips) */
+          <>
+            <LogoContainer>
+              <FlagIcon aria-hidden="true">🇯🇵</FlagIcon>
+              <Title>JapanApp</Title>
+            </LogoContainer>
+
+            <ProgressBarWrapper>
+              <ProgressBarActive />
+            </ProgressBarWrapper>
+
+            <QuoteContainer>
+              <JapaneseText>{randomTip.quote}</JapaneseText>
+              <TranslationText>{randomTip.authorOrTranslation}</TranslationText>
+            </QuoteContainer>
+          </>
+        )}
       </ContentWrapper>
     </Overlay>
   );
