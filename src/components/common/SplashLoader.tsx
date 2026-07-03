@@ -176,7 +176,7 @@ const Overlay = styled.div<{ $isClosing: boolean }>`
   html.session-refresh & .first-open-only {
     display: none !important;
   }
-  
+
   html.session-first-open & .refresh-only {
     display: none !important;
   }
@@ -196,7 +196,12 @@ const SakuraContainer = styled.div`
   z-index: 1;
 `;
 
-const Petal = styled.div<{ $delay: number; $left: number; $scale: number; $duration: number }>`
+const Petal = styled.div<{
+  $delay: number;
+  $left: number;
+  $scale: number;
+  $duration: number;
+}>`
   position: absolute;
   top: -10%;
   left: ${({ $left }) => `${$left}%`};
@@ -337,7 +342,7 @@ const STATIC_PETALS = [
   { delay: 3.0, left: 90, scale: 0.7, duration: 7.5 },
   { delay: 0.9, left: 20, scale: 0.9, duration: 6.4 },
   { delay: 2.5, left: 55, scale: 0.8, duration: 6.9 },
-  { delay: 1.8, left: 80, scale: 1.0, duration: 5.8 }
+  { delay: 1.8, left: 80, scale: 1.0, duration: 5.8 },
 ];
 
 export function SplashLoader() {
@@ -385,7 +390,7 @@ export function SplashLoader() {
     const remainingTips = JAPANESE_TIPS.filter(
       (t) =>
         t.quote !== randomTip.quote ||
-        t.authorOrTranslation !== randomTip.authorOrTranslation
+        t.authorOrTranslation !== randomTip.authorOrTranslation,
     );
     if (remainingTips.length > 0) {
       const randomIndex = Math.floor(Math.random() * remainingTips.length);
@@ -420,7 +425,14 @@ export function SplashLoader() {
 
       <ContentWrapper>
         {/* ⛩️ FIRST OPEN LAYOUT (Traditional Zen Aesthetics) */}
-        <div className="first-open-only" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div
+          className="first-open-only"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <LogoContainer style={{ marginBottom: "2rem" }}>
             <ToriiIcon aria-hidden="true">⛩️</ToriiIcon>
             <Title>JapanApp</Title>
@@ -442,7 +454,14 @@ export function SplashLoader() {
         </div>
 
         {/* 🇯🇵 REFRESH LAYOUT (Interactive Tips) */}
-        <div className="refresh-only" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <div
+          className="refresh-only"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <LogoContainer>
             <FlagIcon aria-hidden="true">🇯🇵</FlagIcon>
             <Title>JapanApp</Title>

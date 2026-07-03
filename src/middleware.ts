@@ -173,8 +173,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Apply stricter rate limiting to API routes
-  if (path.startsWith("/api")) {
+  // Apply stricter rate limiting to API routes (disabled in development)
+  if (path.startsWith("/api") && process.env.NODE_ENV !== "development") {
     const identifier = `${ip}:${path}`;
     const rateLimit = await checkRedisRateLimit(identifier);
 
