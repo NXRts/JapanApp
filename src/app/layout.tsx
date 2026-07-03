@@ -88,11 +88,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`${inter.className} ${notoSansJP.variable}`}
       >
+        {/* Anti-flash script: Syncs sessionStorage visitor status with document element classes before first paint */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var h=sessionStorage.getItem('has-loaded-before');if(h){document.documentElement.classList.add('session-refresh');}else{document.documentElement.classList.add('session-first-open');sessionStorage.setItem('has-loaded-before','true');}}catch(e){}})();`,
+          }}
+        />
         <ThemeProvider>
           <DeviceModeProvider>
             <ProgressProvider>
