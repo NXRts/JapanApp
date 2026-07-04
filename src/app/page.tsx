@@ -186,6 +186,16 @@ const LevelSelector = styled.div`
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
   }
+
+  @media (max-width: 480px) {
+    gap: 0.35rem;
+  }
+`;
+
+const LevelTabText = styled.span`
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
@@ -225,6 +235,13 @@ const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
   @media (prefers-color-scheme: light) {
     border-bottom-color: ${({ $active, $activeColor }) =>
       $active ? $activeColor : "rgba(0, 0, 0, 0.08)"};
+  }
+
+  @media (max-width: 480px) {
+    min-width: 42px;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 0.78rem;
   }
 
   &:hover {
@@ -784,8 +801,8 @@ export default function Home() {
   );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState<
-    "N5" | "N4" | "N3" | "N2" | "N1"
-  >("N5");
+    "Basic" | "N5" | "N4" | "N3" | "N2" | "N1"
+  >("Basic");
 
   useEffect(() => {
     setMounted(true);
@@ -793,6 +810,7 @@ export default function Home() {
 
   // Level config with custom colors
   const levels = [
+    { code: "Basic" as const, label: "Basic", color: "#f59e0b" }, // Amber
     { code: "N5" as const, label: "JLPT N5", color: "#10b981" }, // Emerald
     { code: "N4" as const, label: "JLPT N4", color: "#8b5cf6" }, // Violet
     { code: "N3" as const, label: "JLPT N3", color: "#ea580c" }, // Orange
@@ -971,7 +989,14 @@ export default function Home() {
                 $activeColor={level.color}
                 onClick={() => setSelectedLevel(level.code)}
               >
-                {level.label}
+                {level.code === "Basic" ? (
+                  "Basic"
+                ) : (
+                  <>
+                    <LevelTabText>JLPT </LevelTabText>
+                    {level.code}
+                  </>
+                )}
               </LevelTab>
             ))}
           </LevelSelector>
