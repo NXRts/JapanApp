@@ -209,7 +209,7 @@ const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
     ${({ $active, $activeColor }) =>
       $active ? $activeColor : "rgba(0, 0, 0, 0.15)"};
   background: ${({ $active }) =>
-    $active ? "rgba(255, 255, 255, 0.02)" : "var(--surface)"};
+    $active ? "#16223f" : "var(--surface)"};
   color: ${({ $active, $activeColor }) =>
     $active ? $activeColor : "var(--text-secondary)"};
   font-weight: 800;
@@ -228,7 +228,7 @@ const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
   ${({ $active, $activeColor }) =>
     $active &&
     css`
-      background: ${$activeColor}15; /* Transparent overlay matching level color */
+      background: #16223f; /* Solid dark color to block background grid dots */
       text-shadow: 0 0 8px ${$activeColor}20;
     `}
 
