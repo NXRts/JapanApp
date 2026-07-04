@@ -152,6 +152,16 @@ const LevelSelector = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media (max-width: 480px) {
+    gap: 0.35rem;
+  }
+`;
+
+const LevelTabText = styled.span`
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
 const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
@@ -187,6 +197,13 @@ const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
       background: ${$activeColor}15;
       text-shadow: 0 0 8px ${$activeColor}20;
     `}
+
+  @media (max-width: 480px) {
+    min-width: 42px;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+  }
 
   &:hover {
     ${({ $active }) =>
@@ -233,8 +250,8 @@ export default function LearningPage() {
   const { progress } = useProgress();
   const [mounted, setMounted] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState<
-    "N5" | "N4" | "N3" | "N2" | "N1"
-  >("N5");
+    "Basic" | "N5" | "N4" | "N3" | "N2" | "N1"
+  >("Basic");
   const [selectedNode, setSelectedNode] = useState<SelectedNodeData | null>(
     null,
   );
@@ -245,6 +262,7 @@ export default function LearningPage() {
   }, []);
 
   const levels = [
+    { code: "Basic" as const, label: "Basic", color: "#f59e0b" },
     { code: "N5" as const, label: "JLPT N5", color: "#10b981" },
     { code: "N4" as const, label: "JLPT N4", color: "#8b5cf6" },
     { code: "N3" as const, label: "JLPT N3", color: "#ea580c" },
@@ -360,7 +378,14 @@ export default function LearningPage() {
               $activeColor={level.color}
               onClick={() => setSelectedLevel(level.code)}
             >
-              {level.label}
+              {level.code === "Basic" ? (
+                "Basic"
+              ) : (
+                <>
+                  <LevelTabText>JLPT </LevelTabText>
+                  {level.code}
+                </>
+              )}
             </LevelTab>
           ))}
         </LevelSelector>

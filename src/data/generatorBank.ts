@@ -23,9 +23,14 @@ export interface GeneratorBank {
 }
 
 export const generatorBank: Record<
-  "N5" | "N4" | "N3" | "N2" | "N1",
+  "Basic" | "N5" | "N4" | "N3" | "N2" | "N1",
   GeneratorBank
 > = {
+  Basic: {
+    vocabulary: [],
+    grammar: [],
+    matchingPairs: [],
+  },
   N5: {
     vocabulary: [
       { japanese: "あ", romaji: "a", english: "Vowel A", category: "vowels" },

@@ -15,7 +15,7 @@ export interface Question {
 
 export interface Lesson {
   id: string;
-  level: "N5" | "N4" | "N3" | "N2" | "N1";
+  level: "Basic" | "N5" | "N4" | "N3" | "N2" | "N1";
   unitId: string;
   unitTitle: string;
   unitDescription: string;
