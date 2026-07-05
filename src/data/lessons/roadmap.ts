@@ -2,6 +2,45 @@ import { RoadmapChapter } from "./types";
 
 export const ROADMAP_DATA: RoadmapChapter[] = [
   {
+    id: "basic-foundation",
+    title: "Basic: Hiragana & Katakana",
+    level: "Basic",
+    lessons: [
+      {
+        id: "hiragana-p1",
+        title: "Hiragana: Vowels & K-Row",
+        description: "Practice あいうえお and かきくけこ.",
+        link: "/study/writing",
+        type: "writing",
+        xpReward: 30,
+      },
+      {
+        id: "hiragana-p2",
+        title: "Hiragana: S-Row & T-Row",
+        description: "Practice さしすせそ and たちつてと.",
+        link: "/study/writing",
+        type: "writing",
+        xpReward: 30,
+      },
+      {
+        id: "katakana-p1",
+        title: "Katakana: Vowels & K-Row",
+        description: "Practice アイウエオ and カキクケコ.",
+        link: "/study/writing",
+        type: "writing",
+        xpReward: 30,
+      },
+      {
+        id: "basic-phrases",
+        title: "Basic Greetings",
+        description: "Learn everyday greetings and simple words.",
+        link: "/study/vocabulary",
+        type: "vocabulary",
+        xpReward: 45,
+      },
+    ],
+  },
+  {
     id: "n5-foundation",
     title: "N5: The Foundations",
     level: "N5",
