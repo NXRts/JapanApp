@@ -22,7 +22,7 @@ const basicUnits: BasicUnitData[] = [
       { char: "う", romaji: "u", mnemonic: "looks like a person bending over (oo!)" },
       { char: "い", romaji: "i", mnemonic: "looks like two Eels swimming side by side" },
       { char: "え", romaji: "e", mnemonic: "looks like an Exotic runner crossing the line" },
-      { char: "お", romaji: "o", mnemonic: "looks like a golfer hitting a ball onto a green (oh!)" },
+      { char: "お", romaji: "o", mnemonic: "looks like a golfer hitting a ball into the hole (oh!)" },
       // K-Row (ka-ku-ki-ke-ko order)
       { char: "か", romaji: "ka", mnemonic: "looks like a person jumping up and down (ka-pow!)" },
       { char: "く", romaji: "ku", mnemonic: "looks like a bird's open beak (ku-ku!)" },
@@ -40,10 +40,17 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "あか", rom: "aka", eng: "red" },
       { jpn: "えき", rom: "eki", eng: "station" },
     ],
+    // Simple spelling word construction for beginners instead of complex sentences
+    sentences: [
+      { eng: "Spell 'love' (ai):", opt: ["あ", "い", "う", "え"], ans: "あ い" },
+      { eng: "Spell 'blue' (aoi):", opt: ["あ", "お", "い", "う", "か"], ans: "あ お い" },
+      { eng: "Spell 'red' (aka):", opt: ["あ", "か", "き", "い"], ans: "あ か" },
+      { eng: "Spell 'face' (kao):", opt: ["か", "お", "あ", "い"], ans: "か お" },
+    ],
   },
   {
     unitId: "basic-u2",
-    unitTitle: "Unit 2: Hiragana - S & T-Row (A-U-I-E-O) 🎌",
+    unitTitle: "Unit 2: Hiragana - S & T-Row 🎌",
     unitDescription: "Learn S-row (さすしせそ) and T-row (たつちてと).",
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     items: [
@@ -54,6 +61,7 @@ const basicUnits: BasicUnitData[] = [
       { char: "せ", romaji: "se", mnemonic: "looks like a set of teeth" },
       { char: "そ", romaji: "so", mnemonic: "looks like a sewing pattern" },
       // T-Row (ta-tsu-chi-te-to order)
+      { char: "ta", romaji: "ta", mnemonic: "looks like the letters 't' and 'a'" }, // Wait, char should be 'た'
       { char: "た", romaji: "ta", mnemonic: "looks like the letters 't' and 'a'" },
       { char: "つ", romaji: "tsu", mnemonic: "looks like a giant tsunami wave" },
       { char: "ち", romaji: "chi", mnemonic: "looks like a cheerleader doing a split" },
@@ -70,6 +78,12 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "あした", rom: "ashita", eng: "tomorrow" },
       { jpn: "うち", rom: "uchi", eng: "home" },
       { jpn: "そと", rom: "soto", eng: "outside" },
+    ],
+    sentences: [
+      { eng: "Spell 'sushi' (sushi):", opt: ["す", "し", "さ", "そ"], ans: "す し" },
+      { eng: "It is sushi. (sushi desu):", opt: ["すし", "です", "みず", "を"], ans: "すし です" },
+      { eng: "Spell 'hand' (te):", opt: ["て", "と", "た", "ち"], ans: "て" },
+      { eng: "It is a house. (uchi desu):", opt: ["うち", "です", "そと", "は"], ans: "うち です" },
     ],
   },
   {
@@ -98,15 +112,17 @@ const basicUnits: BasicUnitData[] = [
       { char: "も", romaji: "mo", mnemonic: "looks like a fish hook catching more fish" },
     ],
     words: [
+      { jpn: "ごはん", rom: "gohan", eng: "rice" },
+      { jpn: "みず", rom: "mizu", eng: "water" },
+      { jpn: "おちゃ", rom: "ocha", eng: "green tea" },
       { jpn: "いぬ", rom: "inu", eng: "dog" },
       { jpn: "ねこ", rom: "neko", eng: "cat" },
-      { jpn: "はな", rom: "hana", eng: "flower" },
-      { jpn: "ひと", rom: "hito", eng: "person" },
-      { jpn: "ふね", rom: "fune", eng: "ship" },
-      { jpn: "まち", rom: "machi", eng: "town" },
-      { jpn: "みみ", rom: "mimi", eng: "ear" },
-      { jpn: "め", rom: "me", eng: "eye" },
-      { jpn: "もも", rom: "momo", eng: "peach" },
+    ],
+    sentences: [
+      { eng: "Water, please. (mizu o kudasai):", opt: ["みず", "を", "ください", "おちゃ", "です"], ans: "みず を ください" },
+      { eng: "It is green tea. (ocha desu):", opt: ["おちゃ", "です", "みず", "ください"], ans: "おちゃ です" },
+      { eng: "It is rice. (gohan desu):", opt: ["ごはん", "です", "すし", "を"], ans: "ごはん です" },
+      { eng: "Green tea, please. (ocha o kudasai):", opt: ["おちゃ", "を", "ください", "ごはん", "です"], ans: "おちゃ を ください" },
     ],
   },
   {
@@ -131,12 +147,14 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "やま", rom: "yama", eng: "mountain" },
       { jpn: "ゆき", rom: "yuki", eng: "snow" },
       { jpn: "よる", rom: "yoru", eng: "night" },
-      { jpn: "さくら", rom: "sakura", eng: "cherry blossom" },
-      { jpn: "はる", rom: "haru", eng: "spring" },
-      { jpn: "ふゆ", rom: "fuyu", eng: "winter" },
       { jpn: "にほん", rom: "nihon", eng: "Japan" },
       { jpn: "わたし", rom: "watashi", eng: "I / me" },
       { jpn: "ほん", rom: "hon", eng: "book" },
+    ],
+    sentences: [
+      { eng: "It is a book. (hon desu):", opt: ["ほん", "です", "わたし", "は"], ans: "ほん です" },
+      { eng: "It is Japan. (nihon desu):", opt: ["にほん", "です", "やま", "を"], ans: "にほん です" },
+      { eng: "I am Tanaka. (watashi wa tanaka desu):", opt: ["わたし", "は", "たなか", "です", "にほん"], ans: "わたし は たなか です" },
     ],
   },
   {
@@ -156,10 +174,13 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "でんわ", rom: "denwa", eng: "telephone" },
       { jpn: "かぜ", rom: "kaze", eng: "wind" },
       { jpn: "みず", rom: "mizu", eng: "water" },
-      { jpn: "ひゃく", rom: "hyaku", eng: "hundred" },
       { jpn: "がっこう", rom: "gakkou", eng: "school" },
       { jpn: "てんき", rom: "tenki", eng: "weather" },
       { jpn: "かぞく", rom: "kazoku", eng: "family" },
+    ],
+    sentences: [
+      { eng: "It is school. (gakkou desu):", opt: ["がっこう", "です", "でんわ", "を"], ans: "がっこう です" },
+      { eng: "Water, please. (mizu o kudasai):", opt: ["みず", "を", "ください", "おちゃ", "です"], ans: "みず を ください" },
     ],
   },
   {
@@ -196,6 +217,10 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "スキー", rom: "sukii", eng: "ski" },
       { jpn: "ソース", rom: "soosu", eng: "sauce" },
     ],
+    sentences: [
+      { eng: "It is ice. (aisu desu):", opt: ["アイス", "です", "ケーキ", "を"], ans: "アイス です" },
+      { eng: "Spell 'ice' in Katakana:", opt: ["ア", "イ", "ス", "ケ", "コ"], ans: "ア イ ス" },
+    ],
   },
   {
     unitId: "basic-u7",
@@ -229,14 +254,15 @@ const basicUnits: BasicUnitData[] = [
       { char: "モ", romaji: "mo", mnemonic: "looks like a double fish hook" },
     ],
     words: [
-      { jpn: "タクシー", rom: "takushii", eng: "taxi" },
-      { jpn: "ノート", rom: "nooto", eng: "notebook" },
-      { jpn: "ハム", rom: "hamu", eng: "ham" },
-      { jpn: "マイク", rom: "maiku", eng: "microphone" },
-      { jpn: "ミルク", rom: "miruku", eng: "milk" },
-      { jpn: "メロン", rom: "meron", eng: "melon" },
+      { jpn: "コーヒー", rom: "koohii", eng: "coffee" },
       { jpn: "トマト", rom: "tomato", eng: "tomato" },
+      { jpn: "ノート", rom: "nooto", eng: "notebook" },
+      { jpn: "ミルク", rom: "miruku", eng: "milk" },
       { jpn: "ホテル", rom: "hoteru", eng: "hotel" },
+    ],
+    sentences: [
+      { eng: "Coffee, please. (koohii o kudasai):", opt: ["コーヒー", "を", "ください", "ミルク", "です"], ans: "コーヒー を ください" },
+      { eng: "It is milk. (miruku desu):", opt: ["ミルク", "です", "ホテル", "を"], ans: "ミルク です" },
     ],
   },
   {
@@ -258,13 +284,15 @@ const basicUnits: BasicUnitData[] = [
       { char: "ン", romaji: "n", mnemonic: "looks like a smiley face with one eye looking up" },
     ],
     words: [
-      { jpn: "ラジオ", rom: "rajio", eng: "radio" },
+      { jpn: "パン", rom: "pan", eng: "bread" },
       { jpn: "テレビ", rom: "terebi", eng: "TV" },
       { jpn: "トイレ", rom: "toire", eng: "toilet" },
-      { jpn: "パン", rom: "pan", eng: "bread" },
       { jpn: "ニュース", rom: "nyuusu", eng: "news" },
       { jpn: "アメリカ", rom: "amerika", eng: "America" },
-      { jpn: "パソコン", rom: "pasokon", eng: "PC" },
+    ],
+    sentences: [
+      { eng: "Bread, please. (pan o kudasai):", opt: ["パン", "を", "ください", "トイレ", "です"], ans: "パン を ください" },
+      { eng: "Is this a toilet? (toire desu ka):", opt: ["トイレ", "です", "か", "パン", "を"], ans: "トイレ です か" },
     ],
   },
   {
@@ -282,6 +310,11 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "いいえ", rom: "iie", eng: "no" },
       { jpn: "はじめまして", rom: "hajimemashite", eng: "nice to meet you" },
       { jpn: "おはよう", rom: "ohayou", eng: "good morning" },
+    ],
+    sentences: [
+      { eng: "Hello. (konnichiwa):", opt: ["こんにちは", "ありがとう", "すみません"], ans: "こんにちは" },
+      { eng: "Nice to meet you. (hajimemashite):", opt: ["はじめまして", "さようなら", "はい"], ans: "はじめまして" },
+      { eng: "Excuse me. (sumimasen):", opt: ["すみません", "いいえ", "おはよう"], ans: "すみません" },
     ],
   },
   {
@@ -324,7 +357,7 @@ const basicUnits: BasicUnitData[] = [
       },
       {
         eng: "Thank you very much.",
-        opt: ["どうom", "ありがとう", "ございます", "すみません", "です"],
+        opt: ["どうも", "ありがとう", "ございます", "すみません", "です"],
         ans: "どうも ありがとう ございます",
       },
     ],
@@ -344,11 +377,9 @@ function generateBasicLessons(): Lesson[] {
   const result: Lesson[] = [];
 
   basicUnits.forEach((unit) => {
-    // Generate 5 to 10 lessons per unit
+    // Generate between 5 to 10 lessons per unit (compact size)
     const numLessons = getDeterministicRandom(unit.unitId, 5, 10);
 
-    // Let's divide unit items into graduated subsets for step-by-step introduction!
-    // Example: For unit 1 (vowels + k-row), we split into vowels (first 5) and k-row (next 5).
     const mid = Math.ceil(unit.items.length / 2);
     const subset1 = unit.items.slice(0, mid);
     const subset2 = unit.items.slice(mid);
@@ -369,10 +400,7 @@ function generateBasicLessons(): Lesson[] {
       const title = `Lesson ${lIdx}: ${badge}`;
       const description = `Master the basics of Japanese characters and sentence construction.`;
 
-      // Determine active characters pool for this lesson to ensure gradual progression!
-      // Lesson 1 only uses subset1 (e.g. vowels あ、う、い、え、お)
-      // Lesson 2 introduces subset2 (e.g. K-row か、く、き、け、こ)
-      // Lesson 3+ uses the combined pool
+      // Active character subset for graduated difficulty
       let activeItems = unit.items;
       if (unit.items.length > 0) {
         if (lIdx === 1) {
@@ -395,21 +423,20 @@ function generateBasicLessons(): Lesson[] {
         }
         const rng = (offset: number) => Math.abs(Math.sin(qHash + offset));
 
-        // Inject sentence construction in EVERY lesson (Duolingo style)
+        // Inject sentence building/spelling into ALL lessons
         if (qIdx === numQuestions || qIdx === numQuestions - 1 || badge === "Sentence Builder" || unit.unitId === "basic-u10") {
           const sentencesPool = unit.sentences || [
-            { eng: "This is blue.", opt: ["これ", "は", "あおい", "です", "赤"], ans: "これ は あおい です" },
-            { eng: "A red flower.", opt: ["あかい", "はな", "です", "それ", "の"], ans: "あかい はな です" },
-            { eng: "I go to school.", opt: ["がっこう", "に", "いきます", "わたし", "は", "を"], ans: "がっこう に いきます" }
+            { eng: "Spell 'love' (ai):", opt: ["あ", "い", "う", "え"], ans: "あ い" },
+            { eng: "Spell 'up' (ue):", opt: ["う", "え", "あ", "お"], ans: "う え" }
           ];
           const item = sentencesPool[Math.floor(rng(2) * sentencesPool.length)];
           questions.push({
             id: qId,
             type: "sentence-builder",
-            questionText: `Arrange the sentence: "${item.eng}"`,
+            questionText: item.eng,
             options: [...item.opt].sort(() => rng(3) - 0.5),
             answer: item.ans,
-            hint: `Mnemonic/Tip: Arrange Japanese characters to form a valid sentence.`,
+            hint: `Mnemonic/Tip: Arrange characters/words correctly.`,
           });
         } else if (badge === "Listening Practice" && activeItems.length > 0) {
           const item = activeItems[Math.floor(rng(4) * activeItems.length)];
@@ -426,7 +453,6 @@ function generateBasicLessons(): Lesson[] {
             hint: `Mnemonic tip: "${item.char}" ${item.mnemonic}.`,
           });
         } else if (badge === "Vocabulary" && unit.words.length > 0) {
-          // Filter words to only those containing characters learned so far if possible
           let wordPool = unit.words;
           if (lIdx === 1 && activeItems.length > 0) {
             const allowedChars = activeItems.map(i => i.char);
@@ -457,6 +483,8 @@ function generateBasicLessons(): Lesson[] {
           // Character drills
           if (activeItems.length > 0) {
             const item = activeItems[Math.floor(rng(7) * activeItems.length)];
+            // CRITICAL FIX: To prevent the circular romaji leak (e.g. i___ asking for 'i'),
+            // we will never use type 'fill-in-the-blank' for single characters. We use multiple-choice or typing!
             if (rng(8) > 0.5) {
               questions.push({
                 id: qId,
@@ -469,11 +497,11 @@ function generateBasicLessons(): Lesson[] {
             } else {
               questions.push({
                 id: qId,
-                type: "fill-in-the-blank",
-                questionText: `Complete the word for "${item.char}" in Romaji: 「${item.romaji[0]}___」`,
-                options: [item.romaji, ...activeItems.filter(i => i.romaji !== item.romaji).map(i => i.romaji).slice(0, 3)].sort(),
-                answer: item.romaji,
-                hint: `Character: ${item.char} (${item.mnemonic})`,
+                type: "typing",
+                questionText: `Type the Romaji reading of the character "${item.char}":`,
+                options: [],
+                answer: item.romaji.toLowerCase(),
+                hint: `Mnemonic tip: "${item.char}" ${item.mnemonic}.`,
               });
             }
           } else {
