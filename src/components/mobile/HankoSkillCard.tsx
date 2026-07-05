@@ -15,10 +15,10 @@ const CardContainer = styled.button<{
 }>`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: space-between;
-  width: 170px;
-  height: 145px;
+  width: 185px;
+  height: 150px;
   padding: 1rem;
   border-radius: 20px;
   background-color: var(--surface) !important;
@@ -101,13 +101,28 @@ const CardContainer = styled.button<{
     `}
 `;
 
+const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 4px;
+  min-height: 26px;
+`;
+
 const CardBadge = styled.span<{ $state: string; $color: string }>`
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   padding: 3px 8px;
   border-radius: 8px;
+  /* Prevent badge from overflowing into the icon */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+  flex: 1;
   background: ${({ $state, $color }) =>
     $state === "locked"
       ? "rgba(0,0,0,0.08)"
@@ -156,18 +171,16 @@ const CardFooter = styled.div`
 `;
 
 const HankoStamp = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 30px;
-  height: 30px;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 2px solid var(--torii-red);
   color: var(--torii-red);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 900;
   transform: rotate(-12deg);
   font-family: "Noto Sans JP", sans-serif;
@@ -182,11 +195,12 @@ const HankoStamp = styled.div`
 `;
 
 const LockIcon = styled.div`
-  position: absolute;
-  top: 12px;
-  right: 12px;
+  flex-shrink: 0;
   color: var(--text-secondary);
   opacity: 0.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 interface HankoSkillCardProps {
@@ -220,31 +234,34 @@ export function HankoSkillCard({
       onClick={state === "locked" ? (e) => e.preventDefault() : onClick}
       aria-disabled={state === "locked"}
     >
-      <CardBadge $state={state} $color={solidColor}>
-        {badge}
-      </CardBadge>
+      {/* Header row: badge label + lock/stamp icon side by side, no overlap */}
+      <CardHeader>
+        <CardBadge $state={state} $color={solidColor}>
+          {badge}
+        </CardBadge>
 
-      {state === "locked" && (
-        <LockIcon>
-          <svg
-            viewBox="0 0 24 24"
-            width="16"
-            height="16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          </svg>
-        </LockIcon>
-      )}
+        {state === "locked" && (
+          <LockIcon>
+            <svg
+              viewBox="0 0 24 24"
+              width="15"
+              height="15"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+          </LockIcon>
+        )}
 
-      {state === "mastered" && <HankoStamp />}
+        {state === "mastered" && <HankoStamp />}
+      </CardHeader>
 
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", flex: 1 }}>
         <div style={{ fontSize: "1.2rem", marginBottom: "2px" }}>{icon}</div>
         <CardTitle>{title}</CardTitle>
       </div>
