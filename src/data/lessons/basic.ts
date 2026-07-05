@@ -352,7 +352,6 @@ const basicUnits: BasicUnitData[] = [
       {
         eng: "Excuse me, where is the station?",
         opt: ["すみません", "えき", "は", "どこ", "です", "か", "これ"],
-        ans: "すみません えき は dove です か", // typo fix: "dove" -> "where" in options, wait, let's keep it clean
         ans: "すみません えき は どこ です か",
       },
       {
