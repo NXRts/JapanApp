@@ -313,6 +313,11 @@ function expandLessonsData(base: Lesson[]): Lesson[] {
   const expanded: Lesson[] = [];
 
   for (const [unitId, lessons] of unitsMap.entries()) {
+    if (unitId.startsWith("basic-")) {
+      expanded.push(...lessons);
+      continue;
+    }
+
     const targetCount = getDeterministicRandom(unitId, 8, 13);
     const existingCount = lessons.length;
 

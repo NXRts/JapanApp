@@ -512,11 +512,11 @@ function generateBasicLessons(): Lesson[] {
           } else {
             questions.push({
               id: qId,
-              type: "typing",
-              questionText: `Type the English translation for "${item.jpn}":`,
-              options: [],
-              answer: item.eng.toLowerCase(),
-              hint: `Starts with "${item.eng[0]}".`,
+              type: "multiple-choice",
+              questionText: `Choose the correct Japanese word for "${item.eng}":`,
+              options: [item.jpn, ...unit.words.filter(w => w.jpn !== item.jpn).map(w => w.jpn).slice(0, 3)].sort(),
+              answer: item.jpn,
+              hint: `Pronounced as: ${item.rom}`,
             });
           }
         } else {
