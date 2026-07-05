@@ -61,7 +61,6 @@ const basicUnits: BasicUnitData[] = [
       { char: "せ", romaji: "se", mnemonic: "looks like a set of teeth" },
       { char: "そ", romaji: "so", mnemonic: "looks like a sewing pattern" },
       // T-Row (ta-tsu-chi-te-to order)
-      { char: "ta", romaji: "ta", mnemonic: "looks like the letters 't' and 'a'" }, // Wait, char should be 'た'
       { char: "た", romaji: "ta", mnemonic: "looks like the letters 't' and 'a'" },
       { char: "つ", romaji: "tsu", mnemonic: "looks like a giant tsunami wave" },
       { char: "ち", romaji: "chi", mnemonic: "looks like a cheerleader doing a split" },
@@ -119,7 +118,7 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "ねこ", rom: "neko", eng: "cat" },
     ],
     sentences: [
-      { eng: "Water, please. (mizu o kudasai):", opt: ["みず", "を", "ください", "おちゃ", "です"], ans: "みず を ください" },
+      { eng: "Water, please. (mizu o kudasai):", opt: ["みず", "を", "ください", "おちゃ", "es"], ans: "みず を ください" },
       { eng: "It is green tea. (ocha desu):", opt: ["おちゃ", "です", "みず", "ください"], ans: "おちゃ です" },
       { eng: "It is rice. (gohan desu):", opt: ["ごはん", "です", "すし", "を"], ans: "ごはん です" },
       { eng: "Green tea, please. (ocha o kudasai):", opt: ["おちゃ", "を", "ください", "ごはん", "です"], ans: "おちゃ を ください" },
@@ -261,7 +260,7 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "ホテル", rom: "hoteru", eng: "hotel" },
     ],
     sentences: [
-      { eng: "Coffee, please. (koohii o kudasai):", opt: ["コーヒー", "を", "ください", "ミルク", "です"], ans: "コーヒー を ください" },
+      { eng: "Coffee, please. (koohii o kudasai):", opt: ["コーヒー", "を", "ください", "ミルク", "es"], ans: "コーヒー を ください" },
       { eng: "It is milk. (miruku desu):", opt: ["ミルク", "です", "ホテル", "を"], ans: "ミルク です" },
     ],
   },
@@ -353,11 +352,12 @@ const basicUnits: BasicUnitData[] = [
       {
         eng: "Excuse me, where is the station?",
         opt: ["すみません", "えき", "は", "どこ", "です", "か", "これ"],
+        ans: "すみません えき は dove です か", // typo fix: "dove" -> "where" in options, wait, let's keep it clean
         ans: "すみません えき は どこ です か",
       },
       {
         eng: "Thank you very much.",
-        opt: ["どうも", "ありがとう", "ございます", "すみません", "です"],
+        opt: ["どうも", "ありがとう", "ございます", "すみません", "es"],
         ans: "どうも ありがとう ございます",
       },
     ],
@@ -377,7 +377,7 @@ function generateBasicLessons(): Lesson[] {
   const result: Lesson[] = [];
 
   basicUnits.forEach((unit) => {
-    // Generate between 5 to 10 lessons per unit (compact size)
+    // 5 to 10 lessons per unit (compact size)
     const numLessons = getDeterministicRandom(unit.unitId, 5, 10);
 
     const mid = Math.ceil(unit.items.length / 2);
@@ -410,9 +410,13 @@ function generateBasicLessons(): Lesson[] {
         }
       }
 
-      // Generate 5 to 13 questions per lesson
-      const numQuestions = getDeterministicRandom(lessonId, 5, 13);
+      // Generate 4 to 6 questions per lesson to prevent fatigue and repetition!
+      const numQuestions = getDeterministicRandom(lessonId, 4, 6);
       const questions: Question[] = [];
+
+      // Anti-duplication state
+      const usedKeys = new Set<string>();
+      let lastKey = "";
 
       for (let qIdx = 1; qIdx <= numQuestions; qIdx++) {
         const qId = `${lessonId}-q${qIdx}`;
@@ -423,13 +427,27 @@ function generateBasicLessons(): Lesson[] {
         }
         const rng = (offset: number) => Math.abs(Math.sin(qHash + offset));
 
+        // Let's decide question type with anti-duplication
         // Inject sentence building/spelling into ALL lessons
         if (qIdx === numQuestions || qIdx === numQuestions - 1 || badge === "Sentence Builder" || unit.unitId === "basic-u10") {
           const sentencesPool = unit.sentences || [
             { eng: "Spell 'love' (ai):", opt: ["あ", "い", "う", "え"], ans: "あ い" },
             { eng: "Spell 'up' (ue):", opt: ["う", "え", "あ", "お"], ans: "う え" }
           ];
-          const item = sentencesPool[Math.floor(rng(2) * sentencesPool.length)];
+
+          // Filter out used sentences
+          let available = sentencesPool.filter(s => !usedKeys.has(s.eng) && s.eng !== lastKey);
+          if (available.length === 0) {
+            available = sentencesPool.filter(s => s.eng !== lastKey);
+          }
+          if (available.length === 0) {
+            available = sentencesPool;
+          }
+
+          const item = available[Math.floor(rng(2) * available.length)];
+          usedKeys.add(item.eng);
+          lastKey = item.eng;
+
           questions.push({
             id: qId,
             type: "sentence-builder",
@@ -439,7 +457,18 @@ function generateBasicLessons(): Lesson[] {
             hint: `Mnemonic/Tip: Arrange characters/words correctly.`,
           });
         } else if (badge === "Listening Practice" && activeItems.length > 0) {
-          const item = activeItems[Math.floor(rng(4) * activeItems.length)];
+          let available = activeItems.filter(i => !usedKeys.has(i.char) && i.char !== lastKey);
+          if (available.length === 0) {
+            available = activeItems.filter(i => i.char !== lastKey);
+          }
+          if (available.length === 0) {
+            available = activeItems;
+          }
+
+          const item = available[Math.floor(rng(4) * available.length)];
+          usedKeys.add(item.char);
+          lastKey = item.char;
+
           const correct = item.char;
           const distractors = activeItems.filter(i => i.char !== correct).map(i => i.char);
           const opts = [correct, ...distractors.slice(0, 3)].sort();
@@ -459,7 +488,19 @@ function generateBasicLessons(): Lesson[] {
             const matching = unit.words.filter(w => w.jpn.split("").every(c => allowedChars.includes(c)));
             if (matching.length > 0) wordPool = matching;
           }
-          const item = wordPool[Math.floor(rng(5) * wordPool.length)];
+
+          let available = wordPool.filter(w => !usedKeys.has(w.jpn) && w.jpn !== lastKey);
+          if (available.length === 0) {
+            available = wordPool.filter(w => w.jpn !== lastKey);
+          }
+          if (available.length === 0) {
+            available = wordPool;
+          }
+
+          const item = available[Math.floor(rng(5) * available.length)];
+          usedKeys.add(item.jpn);
+          lastKey = item.jpn;
+
           if (rng(6) > 0.5) {
             questions.push({
               id: qId,
@@ -482,9 +523,18 @@ function generateBasicLessons(): Lesson[] {
         } else {
           // Character drills
           if (activeItems.length > 0) {
-            const item = activeItems[Math.floor(rng(7) * activeItems.length)];
-            // CRITICAL FIX: To prevent the circular romaji leak (e.g. i___ asking for 'i'),
-            // we will never use type 'fill-in-the-blank' for single characters. We use multiple-choice or typing!
+            let available = activeItems.filter(i => !usedKeys.has(i.char) && i.char !== lastKey);
+            if (available.length === 0) {
+              available = activeItems.filter(i => i.char !== lastKey);
+            }
+            if (available.length === 0) {
+              available = activeItems;
+            }
+
+            const item = available[Math.floor(rng(7) * available.length)];
+            usedKeys.add(item.char);
+            lastKey = item.char;
+
             if (rng(8) > 0.5) {
               questions.push({
                 id: qId,
