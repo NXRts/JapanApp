@@ -553,10 +553,9 @@ export default function StudyHub() {
                 <path d="m2 2 2 5"></path>
               </svg>
             </IconWrapper>
-            <CardTitle>Kanji Flashcards</CardTitle>
+            <CardTitle>Kanji Writer</CardTitle>
             <CardDescription>
-              Practice writing Kanji strokes and memorize meanings with our
-              digital self-check flashcards.
+              Practice writing Kanji characters with real-time stroke analysis and stroke order guides.
             </CardDescription>
             <PlayButton $color="16, 185, 129">
               Start Studying
