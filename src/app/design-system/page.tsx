@@ -4,6 +4,9 @@ import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { ToriiPhaseHeader } from "@/components/mobile/ToriiPhaseHeader";
+import { HankoSkillCard } from "@/components/mobile/HankoSkillCard";
+import { InkProgressBar } from "@/components/mobile/InkProgressBar";
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(15px); }
@@ -821,6 +824,77 @@ const Toast = styled(motion.div)`
   border: 1px solid rgba(255, 255, 255, 0.08);
 `;
 
+const ZenMobilePlayground = styled.div`
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.02);
+
+  .preview-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 1.5rem;
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+    box-shadow: var(--shadow-md);
+  }
+
+  .controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1.5rem;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+`;
+
+const ZenPlaygroundButton = styled.button<{ $active: boolean; $color: string }>`
+  padding: 0.4rem 0.75rem;
+  border-radius: 10px;
+  border: 1.5px solid
+    ${(props) => (props.$active ? props.$color : "var(--border)")};
+  background: ${(props) => (props.$active ? `${props.$color}15` : "var(--surface)")};
+  color: ${(props) => (props.$active ? props.$color : "var(--text-secondary)")};
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  outline: none;
+
+  &:hover {
+    border-color: ${(props) => props.$color};
+    color: ${(props) => props.$color};
+  }
+`;
+
 export default function DesignSystemPage() {
   // Color Card Copy-to-clipboard handler
   const [toastMessage, setToastMessage] = useState("");
@@ -847,6 +921,23 @@ export default function DesignSystemPage() {
 
   // Mobile menu radial popup
   const [isRadialOpen, setIsRadialOpen] = useState(false);
+
+  // Zen Mobile Components states
+  const [zenHankoState, setZenHankoState] = useState<
+    "locked" | "available" | "active" | "mastered"
+  >("active");
+  const [zenCompletedCount, setZenCompletedCount] = useState(6);
+  const [zenThemeLevel, setZenThemeLevel] = useState<
+    "N5" | "N4" | "N3" | "N2" | "N1"
+  >("N5");
+
+  const levelColors: Record<string, string> = {
+    N5: "#10b981",
+    N4: "#8b5cf6",
+    N3: "#ea580c",
+    N2: "#3b82f6",
+    N1: "#dc2626",
+  };
 
   const colorsList = [
     {
@@ -1402,6 +1493,152 @@ export default function DesignSystemPage() {
                 </HankoMenuButton>
               </HankoRadialContainer>
             </VisualSandbox>
+
+            <SubsectionTitle>
+              Komponen Seluler Zen Riil & Arena Bermain Interaktif
+            </SubsectionTitle>
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                fontSize: "0.95rem",
+                marginBottom: "1.5rem",
+              }}
+            >
+              Uji coba komponen seluler <strong>Zen Japanese</strong> yang nyata
+              (diimpor langsung dari direktori komponen). Ubah opsi kontrol di
+              bawah untuk melihat perubahan tema warna, status kartu Hanko, dan
+              tingkat persentase sapuan tinta secara dinamis.
+            </p>
+
+            <ZenMobilePlayground>
+              <div className="preview-area">
+                <ToriiPhaseHeader
+                  unitLabel="Bab Utama"
+                  title="Aksara Jepang & Budaya"
+                  description="Materi dasar mengenalkan huruf vokal Hiragana あいうえお dan filosofi Wabi-Sabi."
+                  color={levelColors[zenThemeLevel]}
+                />
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    padding: "0.5rem 0",
+                  }}
+                >
+                  <HankoSkillCard
+                    title="Tata Bahasa Dasar"
+                    badge="Pelajaran 1"
+                    icon="🏮"
+                    expReward={15}
+                    state={zenHankoState}
+                    color={levelColors[zenThemeLevel]}
+                    onClick={() => alert("Hanko Card diklik!")}
+                  />
+                </div>
+
+                <InkProgressBar
+                  completed={zenCompletedCount}
+                  total={10}
+                  color={levelColors[zenThemeLevel]}
+                />
+              </div>
+
+              <div className="controls-grid">
+                <div className="control-group">
+                  <label>1. Level & Tema Warna (JLPT)</label>
+                  <div className="btn-group">
+                    {(["N5", "N4", "N3", "N2", "N1"] as const).map((lvl) => (
+                      <ZenPlaygroundButton
+                        key={lvl}
+                        $active={zenThemeLevel === lvl}
+                        $color={levelColors[lvl]}
+                        onClick={() => setZenThemeLevel(lvl)}
+                        style={{
+                          flex: "1 0 calc(30% - 4px)",
+                          fontSize: "0.75rem",
+                          padding: "0.4rem 0.6rem",
+                        }}
+                      >
+                        {lvl}
+                      </ZenPlaygroundButton>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="control-group">
+                  <label>2. Status Kartu Hanko (State)</label>
+                  <div className="btn-group">
+                    {(
+                      ["locked", "available", "active", "mastered"] as const
+                    ).map((st) => (
+                      <ZenPlaygroundButton
+                        key={st}
+                        $active={zenHankoState === st}
+                        $color={
+                          st === "active"
+                            ? "var(--torii-red)"
+                            : levelColors[zenThemeLevel]
+                        }
+                        onClick={() => setZenHankoState(st)}
+                        style={{
+                          flex: "1 0 calc(45% - 4px)",
+                          fontSize: "0.72rem",
+                          padding: "0.4rem 0.6rem",
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {st}
+                      </ZenPlaygroundButton>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="control-group">
+                  <label>
+                    3. Progres Sapuan Tinta ({zenCompletedCount} / 10):
+                  </label>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                    }}
+                  >
+                    <ZenPlaygroundButton
+                      $active={false}
+                      $color="var(--primary)"
+                      onClick={() =>
+                        setZenCompletedCount((prev) => Math.max(0, prev - 1))
+                      }
+                      style={{ padding: "0.3rem 0.6rem", minWidth: "32px" }}
+                    >
+                      -
+                    </ZenPlaygroundButton>
+                    <span
+                      style={{
+                        fontSize: "0.9rem",
+                        fontWeight: "bold",
+                        width: "40px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {Math.round((zenCompletedCount / 10) * 100)}%
+                    </span>
+                    <ZenPlaygroundButton
+                      $active={false}
+                      $color="var(--primary)"
+                      onClick={() =>
+                        setZenCompletedCount((prev) => Math.min(10, prev + 1))
+                      }
+                      style={{ padding: "0.3rem 0.6rem", minWidth: "32px" }}
+                    >
+                      +
+                    </ZenPlaygroundButton>
+                  </div>
+                </div>
+              </div>
+            </ZenMobilePlayground>
           </Section>
         </Container>
       </ContentWrapper>

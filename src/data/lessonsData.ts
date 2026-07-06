@@ -1,4 +1,9 @@
-import { Lesson, Question, RoadmapLesson, RoadmapChapter } from "./lessons/types";
+import {
+  Lesson,
+  Question,
+  RoadmapLesson,
+  RoadmapChapter,
+} from "./lessons/types";
 import { ROADMAP_DATA } from "./lessons/roadmap";
 import { basicLessons } from "./lessons/basic";
 import { n5Lessons } from "./lessons/n5";
