@@ -950,16 +950,9 @@ export default function KanjiWriterPage() {
           .charCodeAt(0)
           .toString(16)
           .padStart(5, "0");
-        const res = await fetch(
-          `https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${hex}.svg`,
-        );
+        const res = await fetch(`/api/kanji-svg?hex=${hex}`);
         if (res.ok) {
-          const text = await res.text();
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(text, "image/svg+xml");
-          const paths = Array.from(doc.querySelectorAll('path[id*="-s"]'))
-            .map((p) => p.getAttribute("d"))
-            .filter(Boolean) as string[];
+          const paths = (await res.json()) as string[];
           if (active) setSvgPaths(paths);
         } else {
           if (active) setSvgPaths([]);
@@ -1981,7 +1974,7 @@ export default function KanjiWriterPage() {
                       >
                         {/* Future strokes */}
                         <g
-                          stroke="rgba(255,255,255,0.12)"
+                          stroke={mode === "light" ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.12)"}
                           strokeWidth="3"
                           fill="none"
                           strokeLinecap="round"
@@ -1993,7 +1986,7 @@ export default function KanjiWriterPage() {
                         </g>
                         {/* Past strokes */}
                         <g
-                          stroke="rgba(255,255,255,0.7)"
+                          stroke={mode === "light" ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.7)"}
                           strokeWidth="4"
                           fill="none"
                           strokeLinecap="round"

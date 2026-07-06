@@ -29,7 +29,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com",
               "img-src 'self' data: https: blob:",
               "font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com",
-              "connect-src 'self' https://jisho.org https://ja.wiktionary.org https://tatoeba.org https://www.googletagmanager.com",
+              "connect-src 'self' https://jisho.org https://ja.wiktionary.org https://tatoeba.org https://www.googletagmanager.com https://raw.githubusercontent.com",
               "media-src 'self' blob:",
               "object-src 'none'",
               "base-uri 'self'",

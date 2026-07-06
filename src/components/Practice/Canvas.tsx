@@ -205,19 +205,11 @@ export const DrawingCanvas = forwardRef<
 
       const fetchGuide = async () => {
         try {
-          // Determine Hex Code (KanjiVG uses 5-digit hex)
           const code = char.charCodeAt(0).toString(16).padStart(5, "0");
-          const res = await fetch(
-            `https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg@master/kanji/${code}.svg`,
-          );
+          const res = await fetch(`/api/kanji-svg?hex=${code}`);
           if (!res.ok) return;
 
-          const text = await res.text();
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(text, "image/svg+xml");
-          const paths = Array.from(doc.querySelectorAll("path"))
-            .map((p) => p.getAttribute("d") || "")
-            .filter((d) => d);
+          const paths = (await res.json()) as string[];
           setGuidePaths(paths);
           setShowGuide(true); // Auto-show guide when new char loads? Maybe better to keep user preference, but let's default ON for now based on request.
         } catch (err) {
