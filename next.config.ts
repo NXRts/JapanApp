@@ -67,6 +67,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: "/study/kanji",
+        destination: "/jlpt/kanji-writer",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withPWA(nextConfig);

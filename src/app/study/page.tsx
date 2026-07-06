@@ -536,7 +536,7 @@ export default function StudyHub() {
           </CardContent>
         </CategoryCard>
 
-        <CategoryCard href="/study/kanji">
+        <CategoryCard href="/jlpt/kanji-writer">
           <CardContent>
             <IconWrapper $color="16, 185, 129" className="icon-wrapper">
               <svg
