@@ -361,7 +361,7 @@ export default function ReviewPage() {
               Lanjut Belajar
             </h3>
             <TaskGrid style={{ marginTop: "1rem" }}>
-              <TaskCard href="/study/kanji">
+              <TaskCard href="/jlpt/kanji-writer">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
