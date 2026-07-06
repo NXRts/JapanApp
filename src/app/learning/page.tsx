@@ -174,8 +174,7 @@ const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
   border-bottom: 4px solid
     ${({ $active, $activeColor }) =>
       $active ? $activeColor : "rgba(0, 0, 0, 0.15)"};
-  background: ${({ $active }) =>
-    $active ? "#16223f" : "var(--surface)"};
+  background: ${({ $active }) => ($active ? "#16223f" : "var(--surface)")};
   color: ${({ $active, $activeColor }) =>
     $active ? $activeColor : "var(--text-secondary)"};
   font-weight: 800;

@@ -632,7 +632,7 @@ export const n5Lessons: Lesson[] = [
           "Please give me a warm bento",
           "Please give me a plastic bag",
           "Please one warm tea",
-         ],
+        ],
         answer: "Please the total bill / payment",
         hint: "Polite pattern for requesting the bill/payment.",
       },
@@ -4635,4 +4635,3 @@ export const n5Lessons: Lesson[] = [
     ],
   },
 ];
-

@@ -19,16 +19,48 @@ const basicUnits: BasicUnitData[] = [
     items: [
       // Vowels (a-u-i-e-o order)
       { char: "あ", romaji: "a", mnemonic: "looks like an Apple with a stem" },
-      { char: "う", romaji: "u", mnemonic: "looks like a person bending over (oo!)" },
-      { char: "い", romaji: "i", mnemonic: "looks like two Eels swimming side by side" },
-      { char: "え", romaji: "e", mnemonic: "looks like an Exotic runner crossing the line" },
-      { char: "お", romaji: "o", mnemonic: "looks like a golfer hitting a ball into the hole (oh!)" },
+      {
+        char: "う",
+        romaji: "u",
+        mnemonic: "looks like a person bending over (oo!)",
+      },
+      {
+        char: "い",
+        romaji: "i",
+        mnemonic: "looks like two Eels swimming side by side",
+      },
+      {
+        char: "え",
+        romaji: "e",
+        mnemonic: "looks like an Exotic runner crossing the line",
+      },
+      {
+        char: "お",
+        romaji: "o",
+        mnemonic: "looks like a golfer hitting a ball into the hole (oh!)",
+      },
       // K-Row (ka-ku-ki-ke-ko order)
-      { char: "か", romaji: "ka", mnemonic: "looks like a person jumping up and down (ka-pow!)" },
-      { char: "く", romaji: "ku", mnemonic: "looks like a bird's open beak (ku-ku!)" },
-      { char: "き", romaji: "ki", mnemonic: "looks like a key to unlock a door" },
+      {
+        char: "か",
+        romaji: "ka",
+        mnemonic: "looks like a person jumping up and down (ka-pow!)",
+      },
+      {
+        char: "く",
+        romaji: "ku",
+        mnemonic: "looks like a bird's open beak (ku-ku!)",
+      },
+      {
+        char: "き",
+        romaji: "ki",
+        mnemonic: "looks like a key to unlock a door",
+      },
       { char: "け", romaji: "ke", mnemonic: "looks like a keg of drink" },
-      { char: "こ", romaji: "ko", mnemonic: "looks like two cozy worms cuddling" },
+      {
+        char: "こ",
+        romaji: "ko",
+        mnemonic: "looks like two cozy worms cuddling",
+      },
     ],
     words: [
       { jpn: "あい", rom: "ai", eng: "love" },
@@ -42,10 +74,26 @@ const basicUnits: BasicUnitData[] = [
     ],
     // Simple spelling word construction for beginners instead of complex sentences
     sentences: [
-      { eng: "Spell 'love' (ai):", opt: ["あ", "い", "う", "え"], ans: "あ い" },
-      { eng: "Spell 'blue' (aoi):", opt: ["あ", "お", "い", "う", "か"], ans: "あ お い" },
-      { eng: "Spell 'red' (aka):", opt: ["あ", "か", "き", "い"], ans: "あ か" },
-      { eng: "Spell 'face' (kao):", opt: ["か", "お", "あ", "い"], ans: "か お" },
+      {
+        eng: "Spell 'love' (ai):",
+        opt: ["あ", "い", "う", "え"],
+        ans: "あ い",
+      },
+      {
+        eng: "Spell 'blue' (aoi):",
+        opt: ["あ", "お", "い", "う", "か"],
+        ans: "あ お い",
+      },
+      {
+        eng: "Spell 'red' (aka):",
+        opt: ["あ", "か", "き", "い"],
+        ans: "あ か",
+      },
+      {
+        eng: "Spell 'face' (kao):",
+        opt: ["か", "お", "あ", "い"],
+        ans: "か お",
+      },
     ],
   },
   {
@@ -55,17 +103,49 @@ const basicUnits: BasicUnitData[] = [
     unitColor: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
     items: [
       // S-Row (sa-su-shi-se-so order)
-      { char: "さ", romaji: "sa", mnemonic: "looks like a smiling face (say cheese!)" },
-      { char: "す", romaji: "su", mnemonic: "looks like a swing at a playground" },
-      { char: "し", romaji: "shi", mnemonic: "looks like a fishing shish-kebab hook" },
+      {
+        char: "さ",
+        romaji: "sa",
+        mnemonic: "looks like a smiling face (say cheese!)",
+      },
+      {
+        char: "す",
+        romaji: "su",
+        mnemonic: "looks like a swing at a playground",
+      },
+      {
+        char: "し",
+        romaji: "shi",
+        mnemonic: "looks like a fishing shish-kebab hook",
+      },
       { char: "せ", romaji: "se", mnemonic: "looks like a set of teeth" },
       { char: "そ", romaji: "so", mnemonic: "looks like a sewing pattern" },
       // T-Row (ta-tsu-chi-te-to order)
-      { char: "た", romaji: "ta", mnemonic: "looks like the letters 't' and 'a'" },
-      { char: "つ", romaji: "tsu", mnemonic: "looks like a giant tsunami wave" },
-      { char: "ち", romaji: "chi", mnemonic: "looks like a cheerleader doing a split" },
-      { char: "て", romaji: "te", mnemonic: "looks like a telephone line pole" },
-      { char: "と", romaji: "to", mnemonic: "looks like a toe with a splinter in it" },
+      {
+        char: "た",
+        romaji: "ta",
+        mnemonic: "looks like the letters 't' and 'a'",
+      },
+      {
+        char: "つ",
+        romaji: "tsu",
+        mnemonic: "looks like a giant tsunami wave",
+      },
+      {
+        char: "ち",
+        romaji: "chi",
+        mnemonic: "looks like a cheerleader doing a split",
+      },
+      {
+        char: "て",
+        romaji: "te",
+        mnemonic: "looks like a telephone line pole",
+      },
+      {
+        char: "と",
+        romaji: "to",
+        mnemonic: "looks like a toe with a splinter in it",
+      },
     ],
     words: [
       { jpn: "すし", rom: "sushi", eng: "sushi" },
@@ -79,36 +159,77 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "そと", rom: "soto", eng: "outside" },
     ],
     sentences: [
-      { eng: "Spell 'sushi' (sushi):", opt: ["す", "し", "さ", "そ"], ans: "す し" },
-      { eng: "It is sushi. (sushi desu):", opt: ["すし", "です", "みず", "を"], ans: "すし です" },
+      {
+        eng: "Spell 'sushi' (sushi):",
+        opt: ["す", "し", "さ", "そ"],
+        ans: "す し",
+      },
+      {
+        eng: "It is sushi. (sushi desu):",
+        opt: ["すし", "です", "みず", "を"],
+        ans: "すし です",
+      },
       { eng: "Spell 'hand' (te):", opt: ["て", "と", "た", "ち"], ans: "て" },
-      { eng: "It is a house. (uchi desu):", opt: ["うち", "です", "そと", "は"], ans: "うち です" },
+      {
+        eng: "It is a house. (uchi desu):",
+        opt: ["うち", "です", "そと", "は"],
+        ans: "うち です",
+      },
     ],
   },
   {
     unitId: "basic-u3",
     unitTitle: "Unit 3: Hiragana - N, H & M-Row 🎌",
-    unitDescription: "Learn N-row (なぬにねの), H-row (はふひへほ), and M-row (まむみめも).",
+    unitDescription:
+      "Learn N-row (なぬにねの), H-row (はふひへほ), and M-row (まむみめも).",
     unitColor: "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
     items: [
       // N-Row (na-nu-ni-ne-no order)
       { char: "な", romaji: "na", mnemonic: "looks like a nun praying" },
-      { char: "ぬ", romaji: "nu", mnemonic: "looks like noodles eaten with chopsticks" },
-      { char: "に", romaji: "ni", mnemonic: "looks like two needles side by side" },
-      { char: "ね", romaji: "ne", mnemonic: "looks like a net for catching cats" },
+      {
+        char: "ぬ",
+        romaji: "nu",
+        mnemonic: "looks like noodles eaten with chopsticks",
+      },
+      {
+        char: "に",
+        romaji: "ni",
+        mnemonic: "looks like two needles side by side",
+      },
+      {
+        char: "ね",
+        romaji: "ne",
+        mnemonic: "looks like a net for catching cats",
+      },
       { char: "の", romaji: "no", mnemonic: "looks like a no-entry sign" },
       // H-Row (ha-fu-hi-he-ho order)
-      { char: "は", romaji: "ha", mnemonic: "looks like a hockey stick and a puck" },
+      {
+        char: "は",
+        romaji: "ha",
+        mnemonic: "looks like a hockey stick and a puck",
+      },
       { char: "ふ", romaji: "fu", mnemonic: "looks like Mount Fuji" },
-      { char: "ひ", romaji: "hi", mnemonic: "looks like a laughing mouth (hee-hee!)" },
+      {
+        char: "ひ",
+        romaji: "hi",
+        mnemonic: "looks like a laughing mouth (hee-hee!)",
+      },
       { char: "へ", romaji: "he", mnemonic: "looks like a hill climb" },
-      { char: "ほ", romaji: "ho", mnemonic: "looks like a hot stove with steam" },
+      {
+        char: "ほ",
+        romaji: "ho",
+        mnemonic: "looks like a hot stove with steam",
+      },
       // M-Row (ma-mu-mi-me-mo order)
       { char: "ま", romaji: "ma", mnemonic: "looks like a mast of a ship" },
       { char: "む", romaji: "mu", mnemonic: "looks like a cow saying moo" },
       { char: "み", romaji: "mi", mnemonic: "looks like a musical note" },
       { char: "め", romaji: "me", mnemonic: "looks like a messy plate" },
-      { char: "も", romaji: "mo", mnemonic: "looks like a fish hook catching more fish" },
+      {
+        char: "も",
+        romaji: "mo",
+        mnemonic: "looks like a fish hook catching more fish",
+      },
     ],
     words: [
       { jpn: "ごはん", rom: "gohan", eng: "rice" },
@@ -118,28 +239,69 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "ねこ", rom: "neko", eng: "cat" },
     ],
     sentences: [
-      { eng: "Water, please. (mizu o kudasai):", opt: ["みず", "を", "ください", "おちゃ", "es"], ans: "みず を ください" },
-      { eng: "It is green tea. (ocha desu):", opt: ["おちゃ", "です", "みず", "ください"], ans: "おちゃ です" },
-      { eng: "It is rice. (gohan desu):", opt: ["ごはん", "です", "すし", "を"], ans: "ごはん です" },
-      { eng: "Green tea, please. (ocha o kudasai):", opt: ["おちゃ", "を", "ください", "ごはん", "です"], ans: "おちゃ を ください" },
+      {
+        eng: "Water, please. (mizu o kudasai):",
+        opt: ["みず", "を", "ください", "おちゃ", "es"],
+        ans: "みず を ください",
+      },
+      {
+        eng: "It is green tea. (ocha desu):",
+        opt: ["おちゃ", "です", "みず", "ください"],
+        ans: "おちゃ です",
+      },
+      {
+        eng: "It is rice. (gohan desu):",
+        opt: ["ごはん", "です", "すし", "を"],
+        ans: "ごはん です",
+      },
+      {
+        eng: "Green tea, please. (ocha o kudasai):",
+        opt: ["おちゃ", "を", "ください", "ごはん", "です"],
+        ans: "おちゃ を ください",
+      },
     ],
   },
   {
     unitId: "basic-u4",
     unitTitle: "Unit 4: Hiragana - Y, R, W & N 🎌",
-    unitDescription: "Learn Y-row (やゆよ), R-row (らるりれろ), W-row (わを), and N (ん).",
+    unitDescription:
+      "Learn Y-row (やゆよ), R-row (らるりれろ), W-row (わを), and N (ん).",
     unitColor: "linear-gradient(135deg, #ec4899 0%, #db2777 100%)",
     items: [
       { char: "や", romaji: "ya", mnemonic: "looks like a yak walking" },
-      { char: "ゆ", romaji: "yu", mnemonic: "looks like a fish swimming forward" },
+      {
+        char: "ゆ",
+        romaji: "yu",
+        mnemonic: "looks like a fish swimming forward",
+      },
       { char: "よ", romaji: "yo", mnemonic: "looks like a yo-yo on a string" },
-      { char: "ら", romaji: "ra", mnemonic: "looks like a rabbit looking back" },
-      { char: "る", romaji: "ru", mnemonic: "looks like a road with a loop at the end" },
+      {
+        char: "ら",
+        romaji: "ra",
+        mnemonic: "looks like a rabbit looking back",
+      },
+      {
+        char: "る",
+        romaji: "ru",
+        mnemonic: "looks like a road with a loop at the end",
+      },
       { char: "り", romaji: "ri", mnemonic: "looks like ribbons hanging" },
-      { char: "れ", romaji: "re", mnemonic: "looks like a person resting near a tree" },
-      { char: "ろ", romaji: "ro", mnemonic: "looks like a road without a loop" },
+      {
+        char: "れ",
+        romaji: "re",
+        mnemonic: "looks like a person resting near a tree",
+      },
+      {
+        char: "ろ",
+        romaji: "ro",
+        mnemonic: "looks like a road without a loop",
+      },
       { char: "わ", romaji: "wa", mnemonic: "looks like a wasp flying" },
-      { char: "を", romaji: "wo", mnemonic: "looks like a person crossing a wall" },
+      {
+        char: "を",
+        romaji: "wo",
+        mnemonic: "looks like a person crossing a wall",
+      },
       { char: "ん", romaji: "n", mnemonic: "looks like the letter 'n' itself" },
     ],
     words: [
@@ -151,22 +313,55 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "ほん", rom: "hon", eng: "book" },
     ],
     sentences: [
-      { eng: "It is a book. (hon desu):", opt: ["ほん", "です", "わたし", "は"], ans: "ほん です" },
-      { eng: "It is Japan. (nihon desu):", opt: ["にほん", "です", "やま", "を"], ans: "にほん です" },
-      { eng: "I am Tanaka. (watashi wa tanaka desu):", opt: ["わたし", "は", "たなか", "です", "にほん"], ans: "わたし は たなか です" },
+      {
+        eng: "It is a book. (hon desu):",
+        opt: ["ほん", "です", "わたし", "は"],
+        ans: "ほん です",
+      },
+      {
+        eng: "It is Japan. (nihon desu):",
+        opt: ["にほん", "です", "やま", "を"],
+        ans: "にほん です",
+      },
+      {
+        eng: "I am Tanaka. (watashi wa tanaka desu):",
+        opt: ["わたし", "は", "たなか", "です", "にほん"],
+        ans: "わたし は たなか です",
+      },
     ],
   },
   {
     unitId: "basic-u5",
     unitTitle: "Unit 5: Hiragana - Dakuon & Yoon 🎌",
-    unitDescription: "Master modified sounds (が、ざ、だ、ば、ぱ) and combinations (きゃ、しゃ).",
+    unitDescription:
+      "Master modified sounds (が、ざ、だ、ば、ぱ) and combinations (きゃ、しゃ).",
     unitColor: "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)",
     items: [
-      { char: "が", romaji: "ga", mnemonic: "か with quotation marks (dakuon)" },
-      { char: "ざ", romaji: "za", mnemonic: "さ with quotation marks (dakuon)" },
-      { char: "だ", romaji: "da", mnemonic: "た with quotation marks (dakuon)" },
-      { char: "ば", romaji: "ba", mnemonic: "は with quotation marks (dakuon)" },
-      { char: "ぱ", romaji: "pa", mnemonic: "は with small circle (handakuon)" },
+      {
+        char: "が",
+        romaji: "ga",
+        mnemonic: "か with quotation marks (dakuon)",
+      },
+      {
+        char: "ざ",
+        romaji: "za",
+        mnemonic: "さ with quotation marks (dakuon)",
+      },
+      {
+        char: "だ",
+        romaji: "da",
+        mnemonic: "た with quotation marks (dakuon)",
+      },
+      {
+        char: "ば",
+        romaji: "ba",
+        mnemonic: "は with quotation marks (dakuon)",
+      },
+      {
+        char: "ぱ",
+        romaji: "pa",
+        mnemonic: "は with small circle (handakuon)",
+      },
     ],
     words: [
       { jpn: "おちゃ", rom: "ocha", eng: "green tea" },
@@ -178,14 +373,23 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "かぞく", rom: "kazoku", eng: "family" },
     ],
     sentences: [
-      { eng: "It is school. (gakkou desu):", opt: ["がっこう", "です", "でんわ", "を"], ans: "がっこう です" },
-      { eng: "Water, please. (mizu o kudasai):", opt: ["みず", "を", "ください", "おちゃ", "です"], ans: "みず を ください" },
+      {
+        eng: "It is school. (gakkou desu):",
+        opt: ["がっこう", "です", "でんわ", "を"],
+        ans: "がっこう です",
+      },
+      {
+        eng: "Water, please. (mizu o kudasai):",
+        opt: ["みず", "を", "ください", "おちゃ", "です"],
+        ans: "みず を ください",
+      },
     ],
   },
   {
     unitId: "basic-u6",
     unitTitle: "Unit 6: Katakana - Vowels, K & S-Row (A-U-I-E-O) 🎌",
-    unitDescription: "Learn Katakana vowels (アウイエオ), K-row (カクキケコ), and S-row (サスシセソ).",
+    unitDescription:
+      "Learn Katakana vowels (アウイエオ), K-row (カクキケコ), and S-row (サスシセソ).",
     unitColor: "linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)",
     items: [
       // Vowels (A-U-I-E-O order)
@@ -195,17 +399,37 @@ const basicUnits: BasicUnitData[] = [
       { char: "エ", romaji: "e", mnemonic: "looks like an engineering frame" },
       { char: "オ", romaji: "o", mnemonic: "looks like a person running fast" },
       // K-Row (Ka-Ku-Ki-Ke-Ko order)
-      { char: "カ", romaji: "ka", mnemonic: "looks like Hiragana か without the extra line" },
-      { char: "ク", romaji: "ku", mnemonic: "looks like a crescent moon shape" },
+      {
+        char: "カ",
+        romaji: "ka",
+        mnemonic: "looks like Hiragana か without the extra line",
+      },
+      {
+        char: "ク",
+        romaji: "ku",
+        mnemonic: "looks like a crescent moon shape",
+      },
       { char: "キ", romaji: "ki", mnemonic: "looks like a key frame" },
       { char: "ケ", romaji: "ke", mnemonic: "looks like a kettle stand" },
       { char: "コ", romaji: "ko", mnemonic: "looks like a corner brace" },
       // S-Row (Sa-Su-Shi-Se-So order)
       { char: "サ", romaji: "sa", mnemonic: "looks like a satellite dish" },
-      { char: "ス", romaji: "su", mnemonic: "looks like a coat hanger structure" },
-      { char: "シ", romaji: "shi", mnemonic: "looks like a smiley face looking up" },
+      {
+        char: "ス",
+        romaji: "su",
+        mnemonic: "looks like a coat hanger structure",
+      },
+      {
+        char: "シ",
+        romaji: "shi",
+        mnemonic: "looks like a smiley face looking up",
+      },
       { char: "セ", romaji: "se", mnemonic: "looks like a sofa side view" },
-      { char: "ソ", romaji: "so", mnemonic: "looks like a needle sewing downward" },
+      {
+        char: "ソ",
+        romaji: "so",
+        mnemonic: "looks like a needle sewing downward",
+      },
     ],
     words: [
       { jpn: "アイス", rom: "aisu", eng: "ice" },
@@ -217,30 +441,59 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "ソース", rom: "soosu", eng: "sauce" },
     ],
     sentences: [
-      { eng: "It is ice. (aisu desu):", opt: ["アイス", "です", "ケーキ", "を"], ans: "アイス です" },
-      { eng: "Spell 'ice' in Katakana:", opt: ["ア", "イ", "ス", "ケ", "コ"], ans: "ア イ ス" },
+      {
+        eng: "It is ice. (aisu desu):",
+        opt: ["アイス", "です", "ケーキ", "を"],
+        ans: "アイス です",
+      },
+      {
+        eng: "Spell 'ice' in Katakana:",
+        opt: ["ア", "イ", "ス", "ケ", "コ"],
+        ans: "ア イ ス",
+      },
     ],
   },
   {
     unitId: "basic-u7",
     unitTitle: "Unit 7: Katakana - T, N, H & M-Row 🎌",
-    unitDescription: "Learn Katakana T-row (タツチテト), N-row (ナヌネノ), H-row (ハフヒヘホ), and M-row (マムミメモ).",
+    unitDescription:
+      "Learn Katakana T-row (タツチテト), N-row (ナヌネノ), H-row (ハフヒヘホ), and M-row (マムミメモ).",
     unitColor: "linear-gradient(135deg, #10b981 0%, #047857 100%)",
     items: [
       // T-Row (Ta-Tsu-Chi-Te-To order)
       { char: "タ", romaji: "ta", mnemonic: "looks like a tidal wave" },
-      { char: "ツ", romaji: "tsu", mnemonic: "looks like two droplets falling downward" },
-      { char: "チ", romaji: "chi", mnemonic: "looks like a cheerleader's flags" },
+      {
+        char: "ツ",
+        romaji: "tsu",
+        mnemonic: "looks like two droplets falling downward",
+      },
+      {
+        char: "チ",
+        romaji: "chi",
+        mnemonic: "looks like a cheerleader's flags",
+      },
       { char: "テ", romaji: "te", mnemonic: "looks like a television antenna" },
-      { char: "ト", romaji: "to", mnemonic: "looks like a tree branch growing out" },
+      {
+        char: "ト",
+        romaji: "to",
+        mnemonic: "looks like a tree branch growing out",
+      },
       // N-Row (Na-Nu-Ni-Ne-No order)
       { char: "ナ", romaji: "na", mnemonic: "looks like a cross sword hanger" },
-      { char: "ヌ", romaji: "nu", mnemonic: "looks like chopsticks with noodles" },
+      {
+        char: "ヌ",
+        romaji: "nu",
+        mnemonic: "looks like chopsticks with noodles",
+      },
       { char: "ニ", romaji: "ni", mnemonic: "looks like two horizontal lines" },
       { char: "ネ", romaji: "ne", mnemonic: "looks like a net frame" },
       { char: "ノ", romaji: "no", mnemonic: "looks like a sliding slope" },
       // H-Row (Ha-Fu-Hi-He-Ho order)
-      { char: "ハ", romaji: "ha", mnemonic: "looks like two hands pointing down" },
+      {
+        char: "ハ",
+        romaji: "ha",
+        mnemonic: "looks like two hands pointing down",
+      },
       { char: "フ", romaji: "fu", mnemonic: "looks like a flag flying" },
       { char: "ヒ", romaji: "hi", mnemonic: "looks like a high-heel boot" },
       { char: "ヘ", romaji: "he", mnemonic: "looks like a mountain peak" },
@@ -260,27 +513,48 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "ホテル", rom: "hoteru", eng: "hotel" },
     ],
     sentences: [
-      { eng: "Coffee, please. (koohii o kudasai):", opt: ["コーヒー", "を", "ください", "ミルク", "es"], ans: "コーヒー を ください" },
-      { eng: "It is milk. (miruku desu):", opt: ["ミルク", "です", "ホテル", "を"], ans: "ミルク です" },
+      {
+        eng: "Coffee, please. (koohii o kudasai):",
+        opt: ["コーヒー", "を", "ください", "ミルク", "es"],
+        ans: "コーヒー を ください",
+      },
+      {
+        eng: "It is milk. (miruku desu):",
+        opt: ["ミルク", "です", "ホテル", "を"],
+        ans: "ミルク です",
+      },
     ],
   },
   {
     unitId: "basic-u8",
     unitTitle: "Unit 8: Katakana - Y, R, W, N & Dakuon 🎌",
-    unitDescription: "Learn Katakana Y-row (ヤユヨ), R-row (ラルレロ), W-row (ワヲ), N (ン) and Dakuon.",
+    unitDescription:
+      "Learn Katakana Y-row (ヤユヨ), R-row (ラルレロ), W-row (ワヲ), N (ン) and Dakuon.",
     unitColor: "linear-gradient(135deg, #f43f5e 0%, #be123c 100%)",
     items: [
       { char: "ヤ", romaji: "ya", mnemonic: "similar to Hiragana や" },
       { char: "ユ", romaji: "yu", mnemonic: "looks like a hook" },
-      { char: "ヨ", romaji: "yo", mnemonic: "looks like the letter E facing backward" },
+      {
+        char: "ヨ",
+        romaji: "yo",
+        mnemonic: "looks like the letter E facing backward",
+      },
       { char: "ラ", romaji: "ra", mnemonic: "looks like a rabbit hopping" },
       { char: "ル", romaji: "ru", mnemonic: "looks like two legs standing" },
       { char: "リ", romaji: "ri", mnemonic: "similar to Hiragana り" },
       { char: "レ", romaji: "re", mnemonic: "looks like a single leg kicking" },
       { char: "ロ", romaji: "ro", mnemonic: "looks like a square box" },
-      { char: "ワ", romaji: "wa", mnemonic: "similar to ア but with a closed curve" },
+      {
+        char: "ワ",
+        romaji: "wa",
+        mnemonic: "similar to ア but with a closed curve",
+      },
       { char: "ヲ", romaji: "wo", mnemonic: "looks like a hand lifting a box" },
-      { char: "ン", romaji: "n", mnemonic: "looks like a smiley face with one eye looking up" },
+      {
+        char: "ン",
+        romaji: "n",
+        mnemonic: "looks like a smiley face with one eye looking up",
+      },
     ],
     words: [
       { jpn: "パン", rom: "pan", eng: "bread" },
@@ -290,14 +564,23 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "アメリカ", rom: "amerika", eng: "America" },
     ],
     sentences: [
-      { eng: "Bread, please. (pan o kudasai):", opt: ["パン", "を", "ください", "トイレ", "です"], ans: "パン を ください" },
-      { eng: "Is this a toilet? (toire desu ka):", opt: ["トイレ", "です", "か", "パン", "を"], ans: "トイレ です か" },
+      {
+        eng: "Bread, please. (pan o kudasai):",
+        opt: ["パン", "を", "ください", "トイレ", "です"],
+        ans: "パン を ください",
+      },
+      {
+        eng: "Is this a toilet? (toire desu ka):",
+        opt: ["トイレ", "です", "か", "パン", "を"],
+        ans: "トイレ です か",
+      },
     ],
   },
   {
     unitId: "basic-u9",
     unitTitle: "Unit 9: Everyday Words & Greetings 🗣️",
-    unitDescription: "Practice common phrases and greetings in standard Japanese conversation.",
+    unitDescription:
+      "Practice common phrases and greetings in standard Japanese conversation.",
     unitColor: "linear-gradient(135deg, #14b8a6 0%, #0f766e 100%)",
     items: [],
     words: [
@@ -311,15 +594,28 @@ const basicUnits: BasicUnitData[] = [
       { jpn: "おはよう", rom: "ohayou", eng: "good morning" },
     ],
     sentences: [
-      { eng: "Hello. (konnichiwa):", opt: ["こんにちは", "ありがとう", "すみません"], ans: "こんにちは" },
-      { eng: "Nice to meet you. (hajimemashite):", opt: ["はじめまして", "さようなら", "はい"], ans: "はじめまして" },
-      { eng: "Excuse me. (sumimasen):", opt: ["すみません", "いいえ", "おはよう"], ans: "すみません" },
+      {
+        eng: "Hello. (konnichiwa):",
+        opt: ["こんにちは", "ありがとう", "すみません"],
+        ans: "こんにちは",
+      },
+      {
+        eng: "Nice to meet you. (hajimemashite):",
+        opt: ["はじめまして", "さようなら", "はい"],
+        ans: "はじめまして",
+      },
+      {
+        eng: "Excuse me. (sumimasen):",
+        opt: ["すみません", "いいえ", "おはよう"],
+        ans: "すみません",
+      },
     ],
   },
   {
     unitId: "basic-u10",
     unitTitle: "Unit 10: First Sentences & Particles 📝",
-    unitDescription: "Build your very first basic sentences using particles like は, を, の and copula です.",
+    unitDescription:
+      "Build your very first basic sentences using particles like は, を, の and copula です.",
     unitColor: "linear-gradient(135deg, #6366f1 0%, #4338ca 100%)",
     items: [],
     words: [],
@@ -363,7 +659,11 @@ const basicUnits: BasicUnitData[] = [
   },
 ];
 
-function getDeterministicRandom(seed: string, min: number, max: number): number {
+function getDeterministicRandom(
+  seed: string,
+  min: number,
+  max: number,
+): number {
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
     hash = seed.charCodeAt(i) + ((hash << 5) - hash);
@@ -385,11 +685,17 @@ function generateBasicLessons(): Lesson[] {
 
     for (let lIdx = 1; lIdx <= numLessons; lIdx++) {
       const lessonId = `${unit.unitId}-l${lIdx}`;
-      
+
       // Determine lesson type/badge
-      const badgeTypes = ["Writing Practice", "Character Quiz", "Vocabulary", "Sentence Builder", "Listening Practice"];
+      const badgeTypes = [
+        "Writing Practice",
+        "Character Quiz",
+        "Vocabulary",
+        "Sentence Builder",
+        "Listening Practice",
+      ];
       const badge = badgeTypes[(lIdx - 1) % badgeTypes.length];
-      
+
       let icon = "✍️";
       if (badge === "Character Quiz") icon = "❓";
       else if (badge === "Vocabulary") icon = "📚";
@@ -419,7 +725,7 @@ function generateBasicLessons(): Lesson[] {
 
       for (let qIdx = 1; qIdx <= numQuestions; qIdx++) {
         const qId = `${lessonId}-q${qIdx}`;
-        
+
         let qHash = 0;
         for (let i = 0; i < qId.length; i++) {
           qHash = qId.charCodeAt(i) + ((qHash << 5) - qHash);
@@ -428,16 +734,31 @@ function generateBasicLessons(): Lesson[] {
 
         // Let's decide question type with anti-duplication
         // Inject sentence building/spelling into ALL lessons
-        if (qIdx === numQuestions || qIdx === numQuestions - 1 || badge === "Sentence Builder" || unit.unitId === "basic-u10") {
+        if (
+          qIdx === numQuestions ||
+          qIdx === numQuestions - 1 ||
+          badge === "Sentence Builder" ||
+          unit.unitId === "basic-u10"
+        ) {
           const sentencesPool = unit.sentences || [
-            { eng: "Spell 'love' (ai):", opt: ["あ", "い", "う", "え"], ans: "あ い" },
-            { eng: "Spell 'up' (ue):", opt: ["う", "え", "あ", "お"], ans: "う え" }
+            {
+              eng: "Spell 'love' (ai):",
+              opt: ["あ", "い", "う", "え"],
+              ans: "あ い",
+            },
+            {
+              eng: "Spell 'up' (ue):",
+              opt: ["う", "え", "あ", "お"],
+              ans: "う え",
+            },
           ];
 
           // Filter out used sentences
-          let available = sentencesPool.filter(s => !usedKeys.has(s.eng) && s.eng !== lastKey);
+          let available = sentencesPool.filter(
+            (s) => !usedKeys.has(s.eng) && s.eng !== lastKey,
+          );
           if (available.length === 0) {
-            available = sentencesPool.filter(s => s.eng !== lastKey);
+            available = sentencesPool.filter((s) => s.eng !== lastKey);
           }
           if (available.length === 0) {
             available = sentencesPool;
@@ -456,9 +777,11 @@ function generateBasicLessons(): Lesson[] {
             hint: `Mnemonic/Tip: Arrange characters/words correctly.`,
           });
         } else if (badge === "Listening Practice" && activeItems.length > 0) {
-          let available = activeItems.filter(i => !usedKeys.has(i.char) && i.char !== lastKey);
+          let available = activeItems.filter(
+            (i) => !usedKeys.has(i.char) && i.char !== lastKey,
+          );
           if (available.length === 0) {
-            available = activeItems.filter(i => i.char !== lastKey);
+            available = activeItems.filter((i) => i.char !== lastKey);
           }
           if (available.length === 0) {
             available = activeItems;
@@ -469,12 +792,15 @@ function generateBasicLessons(): Lesson[] {
           lastKey = item.char;
 
           const correct = item.char;
-          const distractors = activeItems.filter(i => i.char !== correct).map(i => i.char);
+          const distractors = activeItems
+            .filter((i) => i.char !== correct)
+            .map((i) => i.char);
           const opts = [correct, ...distractors.slice(0, 3)].sort();
           questions.push({
             id: qId,
             type: "listening",
-            questionText: "Listen to the pronunciation and select the correct character:",
+            questionText:
+              "Listen to the pronunciation and select the correct character:",
             audioText: correct,
             options: opts,
             answer: correct,
@@ -483,14 +809,18 @@ function generateBasicLessons(): Lesson[] {
         } else if (badge === "Vocabulary" && unit.words.length > 0) {
           let wordPool = unit.words;
           if (lIdx === 1 && activeItems.length > 0) {
-            const allowedChars = activeItems.map(i => i.char);
-            const matching = unit.words.filter(w => w.jpn.split("").every(c => allowedChars.includes(c)));
+            const allowedChars = activeItems.map((i) => i.char);
+            const matching = unit.words.filter((w) =>
+              w.jpn.split("").every((c) => allowedChars.includes(c)),
+            );
             if (matching.length > 0) wordPool = matching;
           }
 
-          let available = wordPool.filter(w => !usedKeys.has(w.jpn) && w.jpn !== lastKey);
+          let available = wordPool.filter(
+            (w) => !usedKeys.has(w.jpn) && w.jpn !== lastKey,
+          );
           if (available.length === 0) {
-            available = wordPool.filter(w => w.jpn !== lastKey);
+            available = wordPool.filter((w) => w.jpn !== lastKey);
           }
           if (available.length === 0) {
             available = wordPool;
@@ -505,7 +835,13 @@ function generateBasicLessons(): Lesson[] {
               id: qId,
               type: "multiple-choice",
               questionText: `What is the meaning of "${item.jpn}" (${item.rom})?`,
-              options: [item.eng, ...unit.words.filter(w => w.eng !== item.eng).map(w => w.eng).slice(0, 3)].sort(),
+              options: [
+                item.eng,
+                ...unit.words
+                  .filter((w) => w.eng !== item.eng)
+                  .map((w) => w.eng)
+                  .slice(0, 3),
+              ].sort(),
               answer: item.eng,
               hint: `Romaji: ${item.rom}`,
             });
@@ -514,7 +850,13 @@ function generateBasicLessons(): Lesson[] {
               id: qId,
               type: "multiple-choice",
               questionText: `Choose the correct Japanese word for "${item.eng}":`,
-              options: [item.jpn, ...unit.words.filter(w => w.jpn !== item.jpn).map(w => w.jpn).slice(0, 3)].sort(),
+              options: [
+                item.jpn,
+                ...unit.words
+                  .filter((w) => w.jpn !== item.jpn)
+                  .map((w) => w.jpn)
+                  .slice(0, 3),
+              ].sort(),
               answer: item.jpn,
               hint: `Pronounced as: ${item.rom}`,
             });
@@ -522,9 +864,11 @@ function generateBasicLessons(): Lesson[] {
         } else {
           // Character drills
           if (activeItems.length > 0) {
-            let available = activeItems.filter(i => !usedKeys.has(i.char) && i.char !== lastKey);
+            let available = activeItems.filter(
+              (i) => !usedKeys.has(i.char) && i.char !== lastKey,
+            );
             if (available.length === 0) {
-              available = activeItems.filter(i => i.char !== lastKey);
+              available = activeItems.filter((i) => i.char !== lastKey);
             }
             if (available.length === 0) {
               available = activeItems;
@@ -539,7 +883,13 @@ function generateBasicLessons(): Lesson[] {
                 id: qId,
                 type: "multiple-choice",
                 questionText: `What is the Romaji reading of the character "${item.char}"?`,
-                options: [item.romaji, ...activeItems.filter(i => i.romaji !== item.romaji).map(i => i.romaji).slice(0, 3)].sort(),
+                options: [
+                  item.romaji,
+                  ...activeItems
+                    .filter((i) => i.romaji !== item.romaji)
+                    .map((i) => i.romaji)
+                    .slice(0, 3),
+                ].sort(),
                 answer: item.romaji,
                 hint: `Mnemonic tip: "${item.char}" ${item.mnemonic}.`,
               });
