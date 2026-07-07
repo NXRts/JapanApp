@@ -127,13 +127,17 @@ const PageContainer = styled.div`
   color: var(--foreground);
   overflow-x: hidden;
 
+  @media (max-width: 1100px) {
+    padding-bottom: 96px;
+  }
+
   @media (max-width: 1024px) {
-    padding: 1rem;
+    padding: 1rem 1rem 96px 1rem;
     gap: 0.75rem;
   }
 
   @media (max-width: 640px) {
-    padding: 0.75rem 0.5rem;
+    padding: 0.75rem 0.5rem 96px 0.5rem;
     gap: 0.5rem;
   }
   @media (max-width: 768px) {
@@ -166,7 +170,7 @@ const MobileFilters = styled.div`
   margin-bottom: 0.5rem;
 
   @media (max-width: 1024px) {
-    display: flex;
+    display: none;
   }
 
   @media (max-width: 640px) {
@@ -1071,16 +1075,37 @@ const ModesRow = styled.div`
   gap: 0.5rem;
   padding: 0.5rem 0;
   width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 
-  @media (max-width: 1024px) {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 0.35rem;
-    padding: 0.4rem 0;
+  &::-webkit-scrollbar {
+    display: none;
   }
 
-  @media (max-width: 640px) {
-    gap: 0.2rem;
+  @media (max-width: 1024px) {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    padding: 0.4rem 0;
+  }
+`;
+
+const MobileLevelRow = styled.div`
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-bottom: 1px dashed rgba(var(--primary-rgb, 79, 70, 229), 0.15);
+  margin-bottom: 0.25rem;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    display: flex;
   }
 `;
 
@@ -1132,24 +1157,25 @@ const ModeBtn = styled.button<{ $active?: boolean }>`
   }
 
   @media (max-width: 1024px) {
-    width: 100%;
-    padding: 0.4rem 0.3rem;
-    font-size: 0.75rem;
+    width: auto;
+    padding: 0.4rem 0.85rem;
+    font-size: 0.76rem;
   }
 
   @media (max-width: 640px) {
-    padding: 0.35rem 0.15rem;
-    font-size: 0.7rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.72rem;
 
     svg {
       width: 10px;
       height: 10px;
-      margin-left: 0 !important;
+      margin-left: 0.1rem !important;
     }
   }
 
   @media (max-width: 360px) {
-    font-size: 0.62rem;
+    font-size: 0.68rem;
+    padding: 0.3rem 0.65rem;
   }
 `;
 
@@ -2039,6 +2065,18 @@ export default function DictionaryPage() {
                 )}
               </div>
             </SearchInputContainer>
+
+            <MobileLevelRow>
+              {["N5", "N4", "N3", "N2", "N1"].map((lvl) => (
+                <ModeBtn
+                  key={lvl}
+                  $active={activeLevel === lvl}
+                  onClick={() => setActiveLevel(lvl as typeof activeLevel)}
+                >
+                  {lvl}
+                </ModeBtn>
+              ))}
+            </MobileLevelRow>
 
             <ModesRow>
               {[

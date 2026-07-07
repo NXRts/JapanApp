@@ -146,8 +146,12 @@ const PageContainer = styled.div`
   min-height: 100vh;
   color: var(--foreground);
 
+  @media (max-width: 1100px) {
+    padding-bottom: 96px;
+  }
+
   @media (max-width: 768px) {
-    padding: 1rem 0.75rem;
+    padding: 1rem 0.75rem 96px 0.75rem;
     gap: 1rem;
   }
 `;
@@ -219,6 +223,59 @@ const LevelTab = styled.button<{ $active?: boolean }>`
   @media (max-width: 768px) {
     padding: 4px 10px;
     font-size: 0.7rem;
+  }
+`;
+
+const MobileTabNav = styled.div`
+  display: none;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 4px;
+  gap: 4px;
+  margin-bottom: 8px;
+
+  @media (max-width: 960px) {
+    display: flex;
+  }
+`;
+
+const MobileTabButton = styled.button<{ $active: boolean }>`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
+  transition: all 0.2s ease;
+  outline: none;
+
+  &:hover {
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--primary)")};
+  }
+
+  svg {
+    width: 15px;
+    height: 15px;
+  }
+`;
+
+const MobileTabContent = styled.div<{ $tabId: "practice" | "list" | "stats"; $activeTab: string }>`
+  display: contents;
+
+  @media (max-width: 960px) {
+    display: ${({ $tabId, $activeTab }) => ($tabId === $activeTab ? "flex" : "none")};
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
   }
 `;
 
@@ -409,17 +466,14 @@ const CanvasWrap = styled.div`
 
 const CanvasBox = styled.div`
   position: relative;
-  width: 340px;
-  height: 340px;
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 1 / 1;
+  height: auto;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--border);
   background: var(--background);
-
-  @media (max-width: 400px) {
-    width: 300px;
-    height: 300px;
-  }
 
   /* Grid lines */
   &::before {
@@ -433,13 +487,9 @@ const CanvasBox = styled.div`
         rgba(var(--primary-rgb), 0.05) 1px,
         transparent 1px
       );
-    background-size: 170px 170px;
+    background-size: 50% 50%;
     pointer-events: none;
     z-index: 1;
-
-    @media (max-width: 400px) {
-      background-size: 150px 150px;
-    }
   }
 
   /* Center cross */
@@ -454,20 +504,16 @@ const CanvasBox = styled.div`
         rgba(var(--primary-rgb), 0.08) 1px,
         transparent 1px
       );
-    background-size: 85px 85px;
-    background-position: 85px 85px;
+    background-size: 25% 25%;
     pointer-events: none;
     z-index: 1;
-
-    @media (max-width: 400px) {
-      background-size: 75px 75px;
-      background-position: 75px 75px;
-    }
   }
 
   canvas {
     position: absolute;
     inset: 0;
+    width: 100% !important;
+    height: 100% !important;
   }
 
   #guideCanvas {
@@ -830,6 +876,9 @@ export default function KanjiWriterPage() {
     () => getKanjiListForLevel("N5")[0],
   );
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeMobileTab, setActiveMobileTab] = useState<
+    "practice" | "list" | "stats"
+  >("practice");
   const { addExp, updateMastery } = useProgress();
 
   // Canvas State
@@ -937,6 +986,7 @@ export default function KanjiWriterPage() {
     setResult(null);
     setSvgPaths([]); // Clear old SVG paths immediately
     clearCanvas();
+    setActiveMobileTab("practice");
   }, []);
 
   // Fetch SVG Paths when kanji changes
@@ -1432,9 +1482,40 @@ export default function KanjiWriterPage() {
         </LevelTabs>
       </HeaderRow>
 
+      <MobileTabNav>
+        <MobileTabButton
+          $active={activeMobileTab === "practice"}
+          onClick={() => setActiveMobileTab("practice")}
+        >
+          <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          </svg>
+          Latihan
+        </MobileTabButton>
+        <MobileTabButton
+          $active={activeMobileTab === "list"}
+          onClick={() => setActiveMobileTab("list")}
+        >
+          <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          Daftar Kanji
+        </MobileTabButton>
+        <MobileTabButton
+          $active={activeMobileTab === "stats"}
+          onClick={() => setActiveMobileTab("stats")}
+        >
+          <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          Statistik
+        </MobileTabButton>
+      </MobileTabNav>
+
       <WriterGrid>
         {/* LEFT COLUMN: Kanji List */}
-        <Card>
+        <MobileTabContent $tabId="list" $activeTab={activeMobileTab}>
+          <Card>
           <CardHeader>
             <CardTitle>Kanji List</CardTitle>
             <span
@@ -1489,9 +1570,11 @@ export default function KanjiWriterPage() {
             ))}
           </KanjiList>
         </Card>
+        </MobileTabContent>
 
         {/* CENTER COLUMN: Canvas Area */}
-        <Card>
+        <MobileTabContent $tabId="practice" $activeTab={activeMobileTab}>
+          <Card>
           {currentKanji && (
             <>
               <KanjiInfo>
@@ -1807,11 +1890,13 @@ export default function KanjiWriterPage() {
             </>
           )}
         </Card>
+        </MobileTabContent>
 
         {/* RIGHT COLUMN: Stats & Progress */}
         <RightColumn>
           {/* Progress Ring */}
-          <Card>
+          <MobileTabContent $tabId="stats" $activeTab={activeMobileTab}>
+            <Card>
             <CardHeader>
               <CardTitle>Session Progress</CardTitle>
             </CardHeader>
@@ -1948,10 +2033,12 @@ export default function KanjiWriterPage() {
               </StatRow>
             </div>
           </Card>
+          </MobileTabContent>
 
           {/* Stroke Guide */}
           {currentKanji && (
-            <Card>
+            <MobileTabContent $tabId="practice" $activeTab={activeMobileTab}>
+              <Card>
               <CardHeader>
                 <CardTitle>Stroke Order</CardTitle>
               </CardHeader>
@@ -2024,10 +2111,12 @@ export default function KanjiWriterPage() {
                 ))}
               </StrokeGuide>
             </Card>
+            </MobileTabContent>
           )}
 
           {/* History */}
-          <Card>
+          <MobileTabContent $tabId="stats" $activeTab={activeMobileTab}>
+            <Card>
             <CardHeader>
               <CardTitle>Recent Practice</CardTitle>
             </CardHeader>
@@ -2088,6 +2177,7 @@ export default function KanjiWriterPage() {
               ))}
             </HistoryList>
           </Card>
+          </MobileTabContent>
         </RightColumn>
       </WriterGrid>
     </PageContainer>
