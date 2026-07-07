@@ -8,6 +8,7 @@ import { lessonsData, Lesson, Question } from "@/data/lessonsData";
 import { generatorBank } from "@/data/generatorBank";
 import Link from "next/link";
 import { JAPANESE_TIPS, TipItem } from "@/components/common/SplashLoader";
+import { playJapaneseAudio } from "@/lib/audio";
 
 // ==========================================
 // ANIMATIONS
@@ -849,16 +850,11 @@ const ExitEndSessionBtn = styled.button`
 // UTILITIES
 // ==========================================
 const speakText = (text: string) => {
-  if (typeof window === "undefined") return;
-  try {
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "ja-JP";
-    utterance.rate = 0.8; // Learner pace
-    window.speechSynthesis.speak(utterance);
-  } catch (e) {
+  // Delegates to shared audio utility which handles Firefox voice-loading
+  // and the cancel() hang bug across all browsers
+  playJapaneseAudio(text, { rate: 0.8 }).catch((e) => {
     console.error("Audio synthesis failed", e);
-  }
+  });
 };
 
 const playCorrectSound = () => {
