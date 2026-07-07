@@ -257,9 +257,16 @@ const MobileTabButton = styled.button<{ $active: boolean }>`
   color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
   transition: all 0.2s ease;
   outline: none;
+  white-space: nowrap;
 
   &:hover {
     color: ${({ $active }) => ($active ? "#ffffff" : "var(--primary)")};
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.72rem;
+    padding: 8px 6px;
+    gap: 4px;
   }
 
   svg {
@@ -538,8 +545,28 @@ const CanvasControls = styled.div`
 const ControlGroup = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
+  gap: 12px;
+
+  @media (max-width: 600px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+  }
+`;
+
+const StrokeIndicator = styled.div`
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-family: "DM Mono", monospace;
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  @media (max-width: 600px) {
+    padding-left: 4px;
+  }
 `;
 
 const ActionGroup = styled.div`
@@ -628,6 +655,24 @@ const Btn = styled.button<{ $variant?: "primary" | "danger" | "ghost" }>`
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+`;
+
+const PlayDemoBtn = styled(Btn)`
+  margin-left: auto;
+  background: rgba(var(--primary-rgb), 0.05);
+  color: var(--primary);
+  border-color: rgba(var(--primary-rgb), 0.1);
+  padding: 5px 12px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+
+  @media (max-width: 600px) {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    padding: 6px 10px;
   }
 `;
 
@@ -1717,60 +1762,38 @@ export default function KanjiWriterPage() {
                   {mounted && (
                     <>
                       <ControlGroup>
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "12px",
-                          }}
-                        >
-                          <HintToggle>
-                            <ToggleSwitch
-                              $on={hintEnabled}
-                              onClick={() => setHintEnabled(!hintEnabled)}
-                            />
-                            <span>Ghost Guide</span>
-                          </HintToggle>
-                          <HintToggle>
-                            <ToggleSwitch
-                              $on={brushType === "aesthetic"}
-                              onClick={() =>
-                                setBrushType((prev) =>
-                                  prev === "aesthetic"
-                                    ? "uniform"
-                                    : "aesthetic",
-                                )
-                              }
-                            />
-                            <span>Aesthetic</span>
-                          </HintToggle>
-                          <div
-                            style={{
-                              fontSize: "0.72rem",
-                              color: "var(--text-secondary)",
-                              fontFamily: "'DM Mono', monospace",
-                            }}
-                          >
-                            Stroke {strokeCount} / {currentKanji.strokes}
-                          </div>
-                        </div>
-
-                        <Btn
+                        <HintToggle>
+                          <ToggleSwitch
+                            $on={hintEnabled}
+                            onClick={() => setHintEnabled(!hintEnabled)}
+                          />
+                          <span>Ghost Guide</span>
+                        </HintToggle>
+                        <HintToggle>
+                          <ToggleSwitch
+                            $on={brushType === "aesthetic"}
+                            onClick={() =>
+                              setBrushType((prev) =>
+                                prev === "aesthetic"
+                                  ? "uniform"
+                                  : "aesthetic",
+                              )
+                            }
+                          />
+                          <span>Aesthetic</span>
+                        </HintToggle>
+                        <StrokeIndicator>
+                          Stroke {strokeCount} / {currentKanji.strokes}
+                        </StrokeIndicator>
+                        <PlayDemoBtn
                           $variant="ghost"
                           onClick={runWritingDemo}
                           disabled={
                             isAnimating || isChecking || svgPaths.length === 0
                           }
-                          style={{
-                            background: "rgba(var(--primary-rgb), 0.05)",
-                            color: "var(--primary)",
-                            borderColor: "rgba(var(--primary-rgb), 0.1)",
-                            padding: "5px 12px",
-                            fontSize: "0.7rem",
-                          }}
                         >
                           Play Demo 🎬
-                        </Btn>
+                        </PlayDemoBtn>
                       </ControlGroup>
 
                       <ActionGroup>
