@@ -346,6 +346,27 @@ const KanjiSearch = styled.div`
   }
 `;
 
+const ListControlsRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(var(--primary-rgb), 0.01);
+`;
+
+const ListControlToggle = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-family: "DM Mono", monospace;
+  cursor: pointer;
+  user-select: none;
+`;
+
 const KanjiList = styled.div`
   padding: 12px;
   display: grid;
@@ -1002,6 +1023,10 @@ export default function KanjiWriterPage() {
       console.error("Failed to save kanji progress", e);
     }
   }, [currentLevel, currentKanji, history, session, isLoaded, brushType]);
+  // Sort and Shuffle States
+  const [isRandomized, setIsRandomized] = useState(false);
+
+  // Base list of kanji for the active level
   const levelKanjiList = useMemo(() => {
     return getKanjiListForLevel(currentLevel);
   }, [currentLevel]);
@@ -1014,6 +1039,11 @@ export default function KanjiWriterPage() {
         k.meaning.toLowerCase().includes(searchQuery.toLowerCase()),
     );
   }, [levelKanjiList, searchQuery]);
+
+  // Toggle handlers
+  const handleToggleRandomized = () => {
+    setIsRandomized((prev) => !prev);
+  };
 
   // Handle Level Change
   const handleLevelChange = (level: any) => {
@@ -1296,19 +1326,29 @@ export default function KanjiWriterPage() {
     const currentList = levelKanjiList;
     if (!currentList || currentList.length === 0) return null;
 
-    // 1. Find unmastered kanji (not in practicedChars)
-    const unmastered = currentList.filter(
-      (k) => !session.practicedChars.includes(k.char),
-    );
+    if (isRandomized) {
+      // 1. Find unmastered kanji (not in practicedChars)
+      const unmastered = currentList.filter(
+        (k) => !session.practicedChars.includes(k.char),
+      );
 
-    if (unmastered.length > 0) {
-      // 2. Pick a random one from the unmastered pool
-      const randomIndex = Math.floor(Math.random() * unmastered.length);
-      return unmastered[randomIndex];
+      if (unmastered.length > 0) {
+        // 2. Pick a random one from the unmastered pool
+        const randomIndex = Math.floor(Math.random() * unmastered.length);
+        return unmastered[randomIndex];
+      } else {
+        // 3. All mastered! Just pick a random one for review
+        const randomIndex = Math.floor(Math.random() * currentList.length);
+        return currentList[randomIndex];
+      }
     } else {
-      // 3. All mastered! Just pick a random one for review
-      const randomIndex = Math.floor(Math.random() * currentList.length);
-      return currentList[randomIndex];
+      // Sequential Mode!
+      const currentIndex = currentList.findIndex((k) => k.char === currentKanji?.char);
+      if (currentIndex === -1) return currentList[0];
+      
+      // Select the next one sequentially, wrapping around
+      const nextIndex = (currentIndex + 1) % currentList.length;
+      return currentList[nextIndex];
     }
   };
 
@@ -1497,6 +1537,30 @@ export default function KanjiWriterPage() {
         )
       : 0;
   const ringOffset = 238.76 - (238.76 * Math.min(progressPct, 100)) / 100;
+
+  if (!mounted) {
+    return (
+      <PageContainer>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "JLPT Mastery", href: "/jlpt" },
+          ]}
+          current="Kanji Writer"
+        />
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", flexDirection: "column", gap: "16px" }}>
+          <LoadingDots>
+            <div className="dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <span>Loading workspace...</span>
+          </LoadingDots>
+        </div>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>
@@ -1781,6 +1845,13 @@ export default function KanjiWriterPage() {
                             }
                           />
                           <span>Aesthetic</span>
+                        </HintToggle>
+                        <HintToggle>
+                          <ToggleSwitch
+                            $on={isRandomized}
+                            onClick={handleToggleRandomized}
+                          />
+                          <span>Acak Kanji 🎲</span>
                         </HintToggle>
                         <StrokeIndicator>
                           Stroke {strokeCount} / {currentKanji.strokes}
