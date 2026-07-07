@@ -30,7 +30,7 @@ const nextConfig: NextConfig = {
               "img-src 'self' data: https: blob:",
               "font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com",
               "connect-src 'self' https://jisho.org https://ja.wiktionary.org https://tatoeba.org https://www.googletagmanager.com https://raw.githubusercontent.com",
-              "media-src 'self' blob:",
+              "media-src 'self' blob: https://translate.google.com https://dict.youdao.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
