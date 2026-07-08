@@ -564,30 +564,21 @@ const CanvasControls = styled.div`
 `;
 
 const ControlGroup = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px 6px;
   align-items: center;
   width: 100%;
-  gap: 12px;
-
-  @media (max-width: 600px) {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    align-items: center;
-  }
 `;
 
 const StrokeIndicator = styled.div`
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
   font-family: "DM Mono", monospace;
   display: flex;
   align-items: center;
   height: 100%;
-
-  @media (max-width: 600px) {
-    padding-left: 4px;
-  }
+  white-space: nowrap;
 `;
 
 const ActionGroup = styled.div`
@@ -599,12 +590,13 @@ const ActionGroup = styled.div`
 const HintToggle = styled.label`
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
+  gap: 5px;
+  font-size: 0.68rem;
   color: var(--text-secondary);
   font-family: "DM Mono", monospace;
   cursor: pointer;
   user-select: none;
+  white-space: nowrap;
 `;
 
 const ToggleSwitch = styled.div<{ $on: boolean }>`
@@ -680,21 +672,19 @@ const Btn = styled.button<{ $variant?: "primary" | "danger" | "ghost" }>`
 `;
 
 const PlayDemoBtn = styled(Btn)`
-  margin-left: auto;
   background: rgba(var(--primary-rgb), 0.05);
   color: var(--primary);
   border-color: rgba(var(--primary-rgb), 0.1);
-  padding: 5px 12px;
+  padding: 6px 10px;
   font-size: 0.7rem;
   white-space: nowrap;
-
-  @media (max-width: 600px) {
-    margin-left: 0;
-    width: 100%;
-    text-align: center;
-    justify-content: center;
-    padding: 6px 10px;
-  }
+  grid-column: span 2;
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 const ResultBox = styled.div`
@@ -1831,7 +1821,7 @@ export default function KanjiWriterPage() {
                             $on={hintEnabled}
                             onClick={() => setHintEnabled(!hintEnabled)}
                           />
-                          <span>Ghost Guide</span>
+                          <span>Guide</span>
                         </HintToggle>
                         <HintToggle>
                           <ToggleSwitch
@@ -1851,7 +1841,7 @@ export default function KanjiWriterPage() {
                             $on={isRandomized}
                             onClick={handleToggleRandomized}
                           />
-                          <span>Acak Kanji 🎲</span>
+                          <span>Acak 🎲</span>
                         </HintToggle>
                         <StrokeIndicator>
                           Stroke {strokeCount} / {currentKanji.strokes}
