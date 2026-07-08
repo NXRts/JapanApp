@@ -424,7 +424,7 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   border-top: 2px solid var(--border);
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
   z-index: 1001; /* Above overlay */
-  padding: 1.25rem 1.25rem 90px; /* Extra padding at bottom to clear the PWA/device mode switcher badge */
+  padding: 1.25rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
