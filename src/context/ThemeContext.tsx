@@ -57,6 +57,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const root = document.documentElement;
     const theme = themes[color];
 
+    // Add/remove dark class for styled-components html.dark selectors
+    root.classList.toggle("dark", mode === "dark");
+    root.classList.toggle("light", mode === "light");
+
     root.style.setProperty("--primary", theme.primary);
     root.style.setProperty("--primary-light", theme.primaryLight);
     root.style.setProperty("--primary-dark", theme.primaryDark);
@@ -93,6 +97,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         "--btn-secondary-border",
         "rgba(255, 255, 255, 0.1)",
       );
+
+      /* Dark: Floating Dock */
+      root.style.setProperty("--dock-bg", "rgba(15, 23, 42, 0.88)");
+      root.style.setProperty("--dock-border", "rgba(51, 65, 85, 0.5)");
+      root.style.setProperty("--dock-shadow", "0 -8px 32px rgba(0, 0, 0, 0.25)");
+      root.style.setProperty("--ink-stroke", "#F8FAFC");
     } else {
       root.style.setProperty("--background", "#F8FAFC");
       root.style.setProperty("--surface", "#FFFFFF");
@@ -112,6 +122,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         "#4F46E5",
       ); /* Primary color */
       root.style.setProperty("--btn-secondary-border", "#E2E8F0");
+
+      /* Light: Floating Dock — bright white glass */
+      root.style.setProperty("--dock-bg", "rgba(255, 255, 255, 0.95)");
+      root.style.setProperty("--dock-border", "rgba(226, 232, 240, 0.8)");
+      root.style.setProperty("--dock-shadow", "0 -8px 32px rgba(0, 0, 0, 0.08)");
+      root.style.setProperty("--ink-stroke", "#1E293B");
     }
 
     localStorage.setItem("theme-color", color);

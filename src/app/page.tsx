@@ -5,6 +5,7 @@ import styled, { keyframes, css } from "styled-components";
 import dynamic from "next/dynamic";
 import { useProgress } from "@/context/ProgressContext";
 import { useDeviceMode } from "@/context/DeviceModeContext";
+import { useTheme } from "@/context/ThemeContext";
 import { RoadmapNodeDrawer } from "@/components/home/RoadmapNodeDrawer";
 import { lessonsData, Lesson } from "@/data/lessonsData";
 import React from "react";
@@ -198,7 +199,7 @@ const LevelTabText = styled.span`
   }
 `;
 
-const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
+const LevelTab = styled.button<{ $active: boolean; $activeColor: string; $activeBg: string }>`
   flex: 1;
   min-width: 80px;
   height: 44px;
@@ -207,8 +208,8 @@ const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
     ${({ $active, $activeColor }) => ($active ? $activeColor : "var(--border)")};
   border-bottom: 4px solid
     ${({ $active, $activeColor }) =>
-      $active ? $activeColor : "rgba(0, 0, 0, 0.15)"};
-  background: ${({ $active }) => ($active ? "#16223f" : "var(--surface)")};
+      $active ? $activeColor : "rgba(0, 0, 0, 0.12)"};
+  background: ${({ $active, $activeBg }) => ($active ? $activeBg : "var(--surface)")};
   color: ${({ $active, $activeColor }) =>
     $active ? $activeColor : "var(--text-secondary)"};
   font-weight: 800;
@@ -222,19 +223,13 @@ const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
   outline: none;
   white-space: nowrap;
   box-shadow: ${({ $active }) =>
-    $active ? "0 4px 12px rgba(0, 0, 0, 0.12)" : "none"};
+    $active ? "0 4px 12px rgba(0, 0, 0, 0.08)" : "none"};
 
   ${({ $active, $activeColor }) =>
     $active &&
     css`
-      background: #16223f; /* Solid dark color to block background grid dots */
-      text-shadow: 0 0 8px ${$activeColor}20;
+      text-shadow: 0 0 8px ${$activeColor}30;
     `}
-
-  @media (prefers-color-scheme: light) {
-    border-bottom-color: ${({ $active, $activeColor }) =>
-      $active ? $activeColor : "rgba(0, 0, 0, 0.08)"};
-  }
 
   @media (max-width: 480px) {
     min-width: 42px;
@@ -244,11 +239,11 @@ const LevelTab = styled.button<{ $active: boolean; $activeColor: string }>`
   }
 
   &:hover {
-    ${({ $active }) =>
+    ${({ $active, $activeColor }) =>
       !$active &&
       css`
-        border-color: var(--text-secondary);
-        color: var(--foreground);
+        border-color: ${$activeColor};
+        color: ${$activeColor};
       `}
   }
 
@@ -794,6 +789,8 @@ interface SelectedNodeData {
 export default function Home() {
   const { progress, addExp } = useProgress();
   const { deviceMode, isMounted } = useDeviceMode();
+  const { mode } = useTheme();
+  const isDark = mode === "dark";
   const [mounted, setMounted] = useState(false);
   const [selectedNode, setSelectedNode] = useState<SelectedNodeData | null>(
     null,
@@ -819,6 +816,21 @@ export default function Home() {
 
   const activeLevelColor =
     levels.find((l) => l.code === selectedLevel)?.color || "#10b981";
+
+  const getActiveBgColor = (levelCode: string) => {
+    if (isDark) {
+      return "#16223f"; // Solid dark navy to block background grid dots
+    }
+    switch (levelCode) {
+      case "Basic": return "#FFFBEB"; // Solid light amber (Amber 50)
+      case "N5": return "#ECFDF5";    // Solid light emerald (Emerald 50)
+      case "N4": return "#F5F3FF";    // Solid light violet (Violet 50)
+      case "N3": return "#FFF7ED";    // Solid light orange (Orange 50)
+      case "N2": return "#EFF6FF";    // Solid light blue (Blue 50)
+      case "N1": return "#FEF2F2";    // Solid light red (Red 50)
+      default: return "#EEF2FF";
+    }
+  };
 
   // O(1) lesson relationship index lookup map to optimize lesson unlock status checks
   const lessonRelations = useMemo(() => {
@@ -986,6 +998,7 @@ export default function Home() {
                 key={level.code}
                 $active={selectedLevel === level.code}
                 $activeColor={level.color}
+                $activeBg={getActiveBgColor(level.code)}
                 onClick={() => setSelectedLevel(level.code)}
               >
                 {level.code === "Basic" ? (
