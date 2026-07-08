@@ -424,7 +424,7 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   border-top: 2px solid var(--border);
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
   z-index: 1001; /* Above overlay */
-  padding: 1.25rem 2rem 2.5rem;
+  padding: 1.25rem 1.25rem 90px; /* Extra padding at bottom to clear the PWA/device mode switcher badge */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -460,18 +460,20 @@ const KanjiBadge = styled.span`
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  background: rgba(196, 30, 58, 0.08);
-  color: var(--torii-red);
+  background: rgba(var(--primary-rgb), 0.08);
+  color: var(--primary);
   font-weight: 800;
   font-size: 0.82rem;
   font-family: "Noto Sans JP", sans-serif;
-  border: 1px solid rgba(196, 30, 58, 0.15);
+  border: 1px solid rgba(var(--primary-rgb), 0.15);
   line-height: 1;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
 
   html.dark & {
-    background: rgba(196, 30, 58, 0.15);
-    color: #ffffff;
-    border-color: rgba(196, 30, 58, 0.3);
+    background: rgba(var(--primary-rgb), 0.15);
+    color: var(--primary-light);
+    border-color: rgba(var(--primary-rgb), 0.3);
   }
 `;
 
@@ -480,50 +482,41 @@ const MobileLink = styled(Link)<{
   $isOpen: boolean;
   $delay: number;
 }>`
-  font-size: 1.15rem;
-  font-weight: ${({ $active }) => ($active ? "800" : "600")};
+  font-size: 0.88rem;
+  font-weight: ${({ $active }) => ($active ? "700" : "600")};
   color: ${({ $active }) => ($active ? "var(--primary)" : "var(--foreground)")};
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.5rem 0.65rem;
   text-decoration: none;
-  padding: 0.65rem 0.5rem;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--navbar-border);
+  gap: 8px;
+  min-height: 42px;
 
   /* Staggered animation */
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(15px);
   ${({ $isOpen }) =>
     $isOpen &&
     `
     opacity: 1;
     transform: translateY(0);
   `}
-  transition-property: opacity, transform, color, padding, border;
+  transition-property: opacity, transform, color, padding, border, background;
   transition-delay: ${({ $delay }) => $delay}s;
 
-  &:hover {
-    color: var(--primary);
-    padding-left: 0.75rem;
-    border-bottom-color: var(--primary);
-  }
-
-  span {
-    opacity: 0.5;
-    transition: transform 0.3s ease;
-  }
-
-  &:hover span {
-    transform: translateX(5px);
-    opacity: 1;
+  &:active {
+    transform: scale(0.97);
   }
 `;
 
 const MobileMenuSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
   margin-bottom: 0.75rem;
 `;
 
@@ -536,6 +529,7 @@ const MobileSectionIndicator = styled.span`
 `;
 
 const MobileMenuSectionTitle = styled.div<{ $isOpen: boolean; $delay: number }>`
+  grid-column: span 2;
   font-size: 0.72rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -1893,19 +1887,8 @@ export function Navbar() {
               $delay={0.05}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>学</KanjiBadge>
-                Study
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>学</KanjiBadge>
+              Study
             </MobileLink>
 
             <MobileLink
@@ -1915,19 +1898,8 @@ export function Navbar() {
               $delay={0.08}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>問</KanjiBadge>
-                Quiz
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>問</KanjiBadge>
+              Quiz
             </MobileLink>
 
             <MobileLink
@@ -1937,19 +1909,8 @@ export function Navbar() {
               $delay={0.11}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>資</KanjiBadge>
-                Materials
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>資</KanjiBadge>
+              Materials
             </MobileLink>
 
             <MobileLink
@@ -1959,19 +1920,8 @@ export function Navbar() {
               $delay={0.14}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>遊</KanjiBadge>
-                Game
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>遊</KanjiBadge>
+              Game
             </MobileLink>
 
             <MobileLink
@@ -1980,20 +1930,10 @@ export function Navbar() {
               $isOpen={isMobileMenuOpen}
               $delay={0.17}
               onClick={() => setIsMobileMenuOpen(false)}
+              style={{ gridColumn: "span 2" }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>書</KanjiBadge>
-                Practice Sheets
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>書</KanjiBadge>
+              Practice Sheets
             </MobileLink>
           </MobileMenuSection>
 
@@ -2010,19 +1950,8 @@ export function Navbar() {
               $delay={0.25}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>計</KanjiBadge>
-                Stats
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>計</KanjiBadge>
+              Stats
             </MobileLink>
 
             <MobileLink
@@ -2032,19 +1961,8 @@ export function Navbar() {
               $delay={0.28}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>誌</KanjiBadge>
-                Blog
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>誌</KanjiBadge>
+              Blog
             </MobileLink>
 
             <MobileLink
@@ -2054,19 +1972,8 @@ export function Navbar() {
               $delay={0.31}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>設</KanjiBadge>
-                Settings
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>設</KanjiBadge>
+              Settings
             </MobileLink>
 
             <MobileLink
@@ -2076,19 +1983,8 @@ export function Navbar() {
               $delay={0.34}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>伝</KanjiBadge>
-                About
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>伝</KanjiBadge>
+              About
             </MobileLink>
 
             <MobileLink
@@ -2098,19 +1994,8 @@ export function Navbar() {
               $delay={0.37}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>助</KanjiBadge>
-                Bantuan
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>助</KanjiBadge>
+              Bantuan
             </MobileLink>
 
             <MobileLink
@@ -2119,28 +2004,18 @@ export function Navbar() {
               $isOpen={isMobileMenuOpen}
               $delay={0.38}
               onClick={() => setIsMobileMenuOpen(false)}
+              style={{ color: "#ffb7c5" }}
             >
-              <div
+              <KanjiBadge
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
+                  background: "rgba(255, 183, 197, 0.15)",
                   color: "#ffb7c5",
+                  borderColor: "rgba(255, 183, 197, 0.3)",
                 }}
               >
-                <KanjiBadge
-                  style={{
-                    background: "rgba(255, 183, 197, 0.15)",
-                    color: "#ffb7c5",
-                  }}
-                >
-                  桜
-                </KanjiBadge>
-                SakuraFitur
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+                桜
+              </KanjiBadge>
+              SakuraFitur
             </MobileLink>
 
             <MobileLink
@@ -2150,19 +2025,8 @@ export function Navbar() {
               $delay={0.4}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>信</KanjiBadge>
-                Contact
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>信</KanjiBadge>
+              Contact
             </MobileLink>
 
             <MobileLink
@@ -2176,19 +2040,8 @@ export function Navbar() {
                 window.location.href = "/login";
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.75rem",
-                }}
-              >
-                <KanjiBadge>退</KanjiBadge>
-                Keluar
-              </div>
-              <span>
-                <ArrowRightIcon size={18} />
-              </span>
+              <KanjiBadge>退</KanjiBadge>
+              Keluar
             </MobileLink>
           </MobileMenuSection>
 
