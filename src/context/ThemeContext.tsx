@@ -2,8 +2,8 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type ThemeColor = "indigo" | "rose" | "emerald" | "blue" | "orange";
-type ThemeMode = "light" | "dark";
+export type ThemeColor = "indigo" | "rose" | "emerald" | "blue" | "orange";
+export type ThemeMode = "light" | "dark";
 
 interface ThemeContextType {
   color: ThemeColor;
@@ -40,20 +40,21 @@ export const themes: Record<
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [color, setColor] = useState<ThemeColor>("indigo");
   const [mode, setMode] = useState<ThemeMode>("dark");
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Load from local storage on mount
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const savedColor = localStorage.getItem("theme-color") as ThemeColor;
-      const savedMode = localStorage.getItem("theme-mode") as ThemeMode;
-      if (savedColor) setColor(savedColor);
-      if (savedMode) setMode(savedMode);
-    }, 0);
-    return () => clearTimeout(timer);
+    const savedColor = localStorage.getItem("theme-color") as ThemeColor;
+    const savedMode = localStorage.getItem("theme-mode") as ThemeMode;
+    if (savedColor) setColor(savedColor);
+    if (savedMode) setMode(savedMode);
+    setIsInitialized(true);
   }, []);
 
   // Update CSS variables when state changes
   useEffect(() => {
+    if (!isInitialized) return;
+
     const root = document.documentElement;
     const theme = themes[color];
 
@@ -130,9 +131,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty("--ink-stroke", "#1E293B");
     }
 
-    localStorage.setItem("theme-color", color);
-    localStorage.setItem("theme-mode", mode);
-  }, [color, mode]);
+    if (isInitialized) {
+      localStorage.setItem("theme-color", color);
+      localStorage.setItem("theme-mode", mode);
+    }
+  }, [color, mode, isInitialized]);
 
   return (
     <ThemeContext.Provider value={{ color, mode, setColor, setMode }}>
