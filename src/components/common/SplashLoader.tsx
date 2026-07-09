@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { useProgress } from "@/context/ProgressContext";
+import { themes, ThemeColor } from "@/context/ThemeContext";
 
 // ─── Quotes & Tips Data ──────────────────────────────────────────────────────
 export interface TipItem {
@@ -160,7 +161,7 @@ const Overlay = styled.div<{ $isClosing: boolean }>`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #0b1121; /* Solid dark background matching default theme */
+  background: var(--background);
   padding: 2rem;
   transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   overflow: hidden;
@@ -252,11 +253,11 @@ const ToriiIcon = styled.div`
 const WelcomeText = styled.h2`
   font-size: 1.4rem;
   font-weight: 800;
-  color: var(--zen-gold, #b8860b);
+  color: var(--primary);
   margin-top: 0.75rem;
   letter-spacing: 0.15em;
   font-family: "Noto Sans JP", sans-serif;
-  text-shadow: 0 0 12px rgba(184, 134, 11, 0.3);
+  text-shadow: 0 0 12px rgba(var(--primary-rgb), 0.3);
 `;
 
 const Title = styled.h1`
@@ -266,9 +267,9 @@ const Title = styled.h1`
   margin: 0;
   background: linear-gradient(
     135deg,
-    #ffd700 0%,
-    var(--zen-gold, #b8860b) 50%,
-    #ffd700 100%
+    var(--primary) 0%,
+    var(--primary-light) 50%,
+    var(--primary) 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -280,7 +281,7 @@ const Title = styled.h1`
 const ProgressBarWrapper = styled.div`
   width: 180px;
   height: 4px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--border);
   border-radius: 999px;
   overflow: hidden;
   margin-bottom: 2.5rem;
@@ -297,11 +298,7 @@ const ProgressBarActive = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  background: linear-gradient(
-    90deg,
-    var(--primary, #4f46e5) 0%,
-    var(--primary-light, #818cf8) 100%
-  );
+  background: var(--primary);
   border-radius: 999px;
   animation: ${progressAnim} 1.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 `;
@@ -318,14 +315,14 @@ const QuoteContainer = styled.div`
 const JapaneseText = styled.h2`
   font-size: 1.15rem;
   font-weight: 700;
-  color: var(--foreground, #f8fafc);
+  color: var(--foreground);
   margin: 0;
   line-height: 1.5;
 `;
 
 const TranslationText = styled.p`
   font-size: 0.85rem;
-  color: var(--text-secondary, #94a3b8);
+  color: var(--text-secondary);
   margin: 0;
   line-height: 1.6;
   max-width: 380px;
@@ -456,7 +453,7 @@ export function SplashLoader() {
           </ProgressBarWrapper>
 
           <QuoteContainer>
-            <JapaneseText style={{ color: "var(--zen-gold)" }}>
+            <JapaneseText>
               Mempersiapkan kuil pembelajaran Anda...
             </JapaneseText>
             <TranslationText style={{ opacity: 0.8 }}>

@@ -204,6 +204,7 @@ const LockIcon = styled.div`
 `;
 
 interface HankoSkillCardProps {
+  id?: string;
   title: string;
   badge: string;
   icon: string;
@@ -214,6 +215,7 @@ interface HankoSkillCardProps {
 }
 
 export function HankoSkillCard({
+  id,
   title,
   badge,
   icon,
@@ -229,6 +231,7 @@ export function HankoSkillCard({
 
   return (
     <CardContainer
+      id={id}
       $state={state}
       $color={solidColor}
       onClick={state === "locked" ? (e) => e.preventDefault() : onClick}

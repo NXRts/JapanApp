@@ -804,6 +804,36 @@ export default function Home() {
     setMounted(true);
   }, []);
 
+  // Automatically switch to the active level matching the user's current progress
+  useEffect(() => {
+    if (progress.completedExercises && progress.completedExercises.length > 0) {
+      const activeLesson = lessonsData.find(
+        (lesson) => !progress.completedExercises.includes(lesson.id)
+      );
+      if (activeLesson) {
+        setSelectedLevel(activeLesson.level);
+      }
+    }
+  }, [progress.completedExercises]);
+
+  // Smoothly auto-scroll to the current active lesson node on mount or tab change
+  useEffect(() => {
+    if (!mounted) return;
+
+    const timer = setTimeout(() => {
+      const activeNode = document.getElementById("active-lesson-node");
+      if (activeNode) {
+        activeNode.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+      }
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [mounted, selectedLevel, progress.completedExercises]);
+
   // Level config with custom colors
   const levels = [
     { code: "Basic" as const, label: "Basic", color: "#f59e0b" }, // Amber
@@ -1066,6 +1096,7 @@ export default function Home() {
                     return (
                       <HankoSkillCard
                         key={lesson.id}
+                        id={isActive ? "active-lesson-node" : undefined}
                         title={lesson.title}
                         badge={lesson.badge}
                         icon={lesson.icon}
