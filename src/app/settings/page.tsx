@@ -9,9 +9,9 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Container = styled.div`
-  max-width: 1040px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -19,8 +19,25 @@ const Container = styled.div`
   width: 100%;
   position: relative;
 
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 1040px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
   @media (max-width: 768px) {
-    padding: 1rem 0.75rem;
     gap: 1.25rem;
   }
 `;
@@ -710,7 +727,8 @@ export default function SettingsPage() {
         current="Pengaturan"
       />
 
-      <PageHeader>
+      <ContentWrapper>
+        <PageHeader>
         <h1>Pengaturan Dashboard</h1>
         <p>
           Kelola detail akun, preferensi suara, tema tampilan, dan data belajar
@@ -1125,6 +1143,7 @@ export default function SettingsPage() {
           </Toast>
         )}
       </AnimatePresence>
+      </ContentWrapper>
     </Container>
   );
 }

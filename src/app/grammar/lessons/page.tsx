@@ -2,6 +2,7 @@
 
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { grammarLessons, totalSections } from "@/data/grammarLessons";
 import { useProgress } from "@/context/ProgressContext";
 
@@ -18,15 +19,32 @@ const shimmer = keyframes`
 
 /* ─── Styled components ────────────────────────────────────────────────── */
 const Container = styled.div`
-  max-width: 900px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 3rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
   animation: ${fadeUp} 0.45s ease both;
 
-  @media (max-width: 768px) {
-    padding: 1.5rem 1rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -368,23 +386,19 @@ export default function GrammarLessonsPage() {
 
   return (
     <Container>
-      <Header>
-        <BackLink href="/grammar">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
-          Back to Grammar
-        </BackLink>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Materials", href: "/materi" },
+            { label: "Grammar", href: "/grammar" },
+          ]}
+          current="Interactive Lessons"
+        />
+      </BreadcrumbWrapper>
+
+      <ContentWrapper>
+        <Header>
         <HeaderTop>
           <PageTitle>Grammar Lessons</PageTitle>
           <FuriganaToggleBtn
@@ -503,6 +517,7 @@ export default function GrammarLessonsPage() {
           );
         })}
       </LessonList>
+      </ContentWrapper>
     </Container>
   );
 }

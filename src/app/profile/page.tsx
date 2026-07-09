@@ -16,9 +16,9 @@ import {
 } from "@/components/icons/AppIcons";
 
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -26,8 +26,24 @@ const Container = styled.div`
   width: 100%;
   position: relative;
 
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
   @media (max-width: 768px) {
-    padding: 1.5rem 1rem;
     min-height: auto;
   }
 `;
@@ -507,7 +523,8 @@ export default function ProfilePage() {
     <Container>
       <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Profile" />
 
-      <ProfileHeader>
+      <ContentWrapper>
+        <ProfileHeader>
         <AvatarCircle>
           {progress.profile?.avatar ? (
             <span style={{ fontSize: "3.5rem", lineHeight: 1 }}>
@@ -639,6 +656,7 @@ export default function ProfilePage() {
           </ActionButton>
         </SettingItem>
       </SettingsSection>
+      </ContentWrapper>
     </Container>
   );
 }

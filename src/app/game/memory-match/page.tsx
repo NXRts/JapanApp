@@ -8,24 +8,42 @@ import { useProgress } from "@/context/ProgressContext";
 import { useDeviceMode } from "@/context/DeviceModeContext";
 import Link from "next/link";
 
-// Styled Components
 const Container = styled.div`
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   background: radial-gradient(
     circle at center,
     rgba(245, 158, 11, 0.05) 0%,
     transparent 70%
   );
 
-  @media (max-width: 600px) {
-    padding: 1.5rem 1rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Header = styled.div`
@@ -62,17 +80,15 @@ const RefreshButton = styled.button<{ $isRefreshing?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px; /* Slightly larger hit area */
+  padding: 4px;
   border-radius: 50%;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* smoother transition */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
     background: rgba(245, 158, 11, 0.2);
-    /* Subtle hover scale, we don't spin on hover anymore for a cleaner click effect */
     transform: scale(1.1);
   }
 
-  /* Spin when active/refreshing */
   ${({ $isRefreshing }) =>
     $isRefreshing &&
     `
@@ -180,7 +196,6 @@ const CardsGrid = styled.div`
   gap: 1rem;
 
   @media (max-width: 600px) {
-    /* To keep 16 cards (8 pairs) we should stick to 4x4 even on mobile or make it tighter */
     grid-template-columns: repeat(4, 1fr);
     gap: 0.4rem;
   }
@@ -221,7 +236,7 @@ const CardFace = styled.div`
 
   @media (max-width: 600px) {
     font-size: 1.75rem;
-    border-radius: 8px; /* Tighter rounding for smaller cards */
+    border-radius: 8px;
     border-width: 1px;
   }
 `;
@@ -262,7 +277,6 @@ const CardBack = styled(CardFace)<{
   color: ${({ $isMatched }) => ($isMatched ? "#10b981" : "var(--foreground)")};
   transform: rotateY(180deg);
 
-  /* Optional: differentiate hiragana/katakana slightly by text color if not matched */
   ${({ $isMatched, $type }) =>
     !$isMatched &&
     `
@@ -295,11 +309,11 @@ const GameOverScreen = styled.div`
 `;
 
 interface Card {
-  id: string; // unique string id
+  id: string;
   char: string;
   romaji: string;
   type: "hiragana" | "katakana";
-  pairId: number; // to match Hiragana with Katakana
+  pairId: number;
   isFlipped: boolean;
   isMatched: boolean;
 }
@@ -320,8 +334,8 @@ export default function MemoryMatchPage() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [lives, setLives] = useState(5);
 
-  const PAIRS_COUNT = isMobileView ? 4 : 8; // Number of pairs to match (8 cards mobile, 16 desktop)
-  const MAX_MOVES = isMobileView ? 15 : 30; // Limit when Easy Mode (showRomaji) is on
+  const PAIRS_COUNT = isMobileView ? 4 : 8;
+  const MAX_MOVES = isMobileView ? 15 : 30;
 
   const shuffleArray = <T,>(array: T[]): T[] => {
     const newArray = [...array];
@@ -343,7 +357,6 @@ export default function MemoryMatchPage() {
       const { hiragana, katakana } = data;
       const totalAvailable = Math.min(hiragana.length, katakana.length);
 
-      // Select random pairs
       const indices = Array.from({ length: totalAvailable }, (_, i) => i);
       const shuffledIndices = shuffleArray(indices).slice(0, PAIRS_COUNT);
 
@@ -354,7 +367,7 @@ export default function MemoryMatchPage() {
           char: hiragana[dictIndex],
           romaji: toRomaji(hiragana[dictIndex]),
           type: "hiragana",
-          pairId: dictIndex, // This is the matching identifier
+          pairId: dictIndex,
           isFlipped: false,
           isMatched: false,
         });
@@ -376,7 +389,6 @@ export default function MemoryMatchPage() {
       setLives(5);
       setGameStatus("playing");
 
-      // Reset rotation animation after a short delay
       setTimeout(() => setIsRefreshing(false), 600);
     } catch (error) {
       console.error("Failed to fetch kana for Memory Match", error);
@@ -384,9 +396,8 @@ export default function MemoryMatchPage() {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [PAIRS_COUNT]);
 
-  // Initialize game on mount
   useEffect(() => {
     generateGame();
   }, [generateGame]);
@@ -394,7 +405,6 @@ export default function MemoryMatchPage() {
   const { addExp } = useProgress();
 
   const handleCardClick = (index: number) => {
-    // Prevent clicking if two cards are already flipped, or if card is already flipped/matched, or game not active
     if (
       gameStatus !== "playing" ||
       flippedIndices.length >= 2 ||
@@ -407,14 +417,12 @@ export default function MemoryMatchPage() {
     const newFlippedIndices = [...flippedIndices, index];
     setFlippedIndices(newFlippedIndices);
 
-    // Optimistically flip the card
     setCards((prev) => {
       const copy = [...prev];
       copy[index].isFlipped = true;
       return copy;
     });
 
-    // If two cards are flipped, check for match
     if (newFlippedIndices.length === 2) {
       const newMoves = moves + 1;
       setMoves(newMoves);
@@ -429,7 +437,6 @@ export default function MemoryMatchPage() {
         firstCard.pairId === secondCard.pairId &&
         firstCard.type !== secondCard.type
       ) {
-        // Match!
         setTimeout(() => {
           setCards((prev) => {
             const copy = [...prev];
@@ -442,7 +449,7 @@ export default function MemoryMatchPage() {
             const newMatches = m + 1;
             if (newMatches === PAIRS_COUNT) {
               setGameStatus("won");
-              addExp(isMobileView ? 60 : 120); // Reward for winning (balanced)
+              addExp(isMobileView ? 60 : 120);
             } else if (showRomaji && newMoves >= MAX_MOVES) {
               setGameStatus("lost");
             }
@@ -451,7 +458,6 @@ export default function MemoryMatchPage() {
           setFlippedIndices([]);
         }, 600);
       } else {
-        // No match, flip back
         setTimeout(() => {
           setCards((prev) => {
             const copy = [...prev];
@@ -479,20 +485,8 @@ export default function MemoryMatchPage() {
 
   return (
     <Container>
-      {isMobileView ? (
-        <LessonHeader>
-          <CloseLessonBtn href="/game" title="Tutup Sesi">
-            ✕
-          </CloseLessonBtn>
-          <LessonProgressBarContainer>
-            <LessonProgressBarFill
-              $percent={matches > 0 ? (matches / PAIRS_COUNT) * 100 : 0}
-            />
-          </LessonProgressBarContainer>
-          <LessonHearts>❤️ {lives}</LessonHearts>
-        </LessonHeader>
-      ) : (
-        <>
+      {!isMobileView && (
+        <BreadcrumbWrapper>
           <Breadcrumbs
             items={[
               { label: "Home", href: "/" },
@@ -500,7 +494,23 @@ export default function MemoryMatchPage() {
             ]}
             current="Memory Match"
           />
+        </BreadcrumbWrapper>
+      )}
 
+      <ContentWrapper>
+        {isMobileView ? (
+          <LessonHeader>
+            <CloseLessonBtn href="/game" title="Tutup Sesi">
+              ✕
+            </CloseLessonBtn>
+            <LessonProgressBarContainer>
+              <LessonProgressBarFill
+                $percent={matches > 0 ? (matches / PAIRS_COUNT) * 100 : 0}
+              />
+            </LessonProgressBarContainer>
+            <LessonHearts>❤️ {lives}</LessonHearts>
+          </LessonHeader>
+        ) : (
           <Header>
             <TitleBadge>
               Memory Match
@@ -523,159 +533,159 @@ export default function MemoryMatchPage() {
               </RefreshButton>
             </TitleBadge>
           </Header>
-        </>
-      )}
+        )}
 
-      <GameBoard>
-        {isLoading ? (
-          <div
-            style={{
-              textAlign: "center",
-              padding: "4rem",
-              color: "var(--text-secondary)",
-            }}
-          >
-            Loading cards...
-          </div>
-        ) : gameStatus !== "playing" ? (
-          <GameOverScreen>
-            <h2
-              style={{
-                fontSize: "2.5rem",
-                marginBottom: "1rem",
-                color: gameStatus === "won" ? "#f59e0b" : "#ef4444",
-              }}
-            >
-              {gameStatus === "won" ? "You Won! 🎉" : "Game Over! 😢"}
-            </h2>
-            <p
-              style={{
-                fontSize: "1.25rem",
-                color: "var(--text-secondary)",
-                marginBottom: "2rem",
-              }}
-            >
-              {gameStatus === "won"
-                ? `You matched all ${PAIRS_COUNT} pairs in ${moves} moves.`
-                : `You reached the limit of ${MAX_MOVES} moves. Keep practicing without Romaji if you prefer no limit!`}
-            </p>
-            {gameStatus === "won" && (
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  color: "#f59e0b",
-                  background: "rgba(245, 158, 11, 0.1)",
-                  padding: "0.6rem 1.5rem",
-                  borderRadius: "999px",
-                  fontWeight: 800,
-                  fontSize: "1.25rem",
-                  marginBottom: "2rem",
-                  border: "1px solid rgba(245, 158, 11, 0.2)",
-                  boxShadow: "0 4px 12px rgba(245, 158, 11, 0.1)",
-                }}
-              >
-                ⭐ +{isMobileView ? 60 : 120} EXP Gained
-              </div>
-            )}
-            <br />
-            <Button onClick={generateGame}>Play Again</Button>
-          </GameOverScreen>
-        ) : (
-          <>
+        <GameBoard>
+          {isLoading ? (
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.75rem",
-                marginBottom: "1.5rem",
-                justifyContent: "center",
+                textAlign: "center",
+                padding: "4rem",
+                color: "var(--text-secondary)",
               }}
             >
-              <input
-                type="checkbox"
-                id="showRomaji"
-                checked={showRomaji}
-                onChange={(e) => setShowRomaji(e.target.checked)}
-                disabled={moves > 0}
+              Loading cards...
+            </div>
+          ) : gameStatus !== "playing" ? (
+            <GameOverScreen>
+              <h2
                 style={{
-                  width: "18px",
-                  height: "18px",
-                  cursor: moves > 0 ? "not-allowed" : "pointer",
-                }}
-              />
-              <label
-                htmlFor="showRomaji"
-                style={{
-                  color: "var(--text-secondary)",
-                  fontWeight: 600,
-                  cursor: moves > 0 ? "not-allowed" : "pointer",
+                  fontSize: "2.5rem",
+                  marginBottom: "1rem",
+                  color: gameStatus === "won" ? "#f59e0b" : "#ef4444",
                 }}
               >
-                Show Romaji letters (Max 30 moves limit)
-              </label>
-            </div>
-            <StatsRow>
-              <div>
-                Moves:{" "}
-                <span
+                {gameStatus === "won" ? "You Won! 🎉" : "Game Over! 😢"}
+              </h2>
+              <p
+                style={{
+                  fontSize: "1.2rem",
+                  color: "var(--text-secondary)",
+                  marginBottom: "2rem",
+                }}
+              >
+                {gameStatus === "won"
+                  ? `Congratulations! You matched all pairs in ${moves} moves.`
+                  : "Keep practicing! You can do it next time."}
+              </p>
+              {gameStatus === "won" && (
+                <div
                   style={{
-                    color: showRomaji && moves >= 25 ? "#ef4444" : "#f59e0b",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    color: "#f59e0b",
+                    background: "rgba(245, 158, 11, 0.1)",
+                    padding: "0.6rem 1.5rem",
+                    borderRadius: "999px",
+                    fontWeight: 800,
+                    fontSize: "1.25rem",
+                    marginBottom: "2rem",
+                    border: "1px solid rgba(245, 158, 11, 0.2)",
+                    boxShadow: "0 4px 12px rgba(245, 158, 11, 0.1)",
                   }}
                 >
-                  {moves}
-                  {showRomaji ? ` / ${MAX_MOVES}` : ""}
-                </span>
-              </div>
-              <div>
-                Matches:{" "}
-                <span style={{ color: "#10b981" }}>
-                  {matches} / {PAIRS_COUNT}
-                </span>
-              </div>
-            </StatsRow>
-
-            <CardsGrid>
-              {cards.map((card, index) => (
-                <CardContainer
-                  key={card.id}
-                  $isFlipped={card.isFlipped}
-                  $isMatched={card.isMatched}
-                  onClick={() => handleCardClick(index)}
+                  ⭐ +{isMobileView ? 60 : 120} EXP Gained
+                </div>
+              )}
+              <br />
+              <Button onClick={generateGame}>Play Again</Button>
+            </GameOverScreen>
+          ) : (
+            <>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  marginBottom: "1.5rem",
+                  justifyContent: "center",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  id="showRomaji"
+                  checked={showRomaji}
+                  onChange={(e) => setShowRomaji(e.target.checked)}
+                  disabled={moves > 0}
+                  style={{
+                    width: "18px",
+                    height: "18px",
+                    cursor: moves > 0 ? "not-allowed" : "pointer",
+                  }}
+                />
+                <label
+                  htmlFor="showRomaji"
+                  style={{
+                    color: "var(--text-secondary)",
+                    fontWeight: 600,
+                    cursor: moves > 0 ? "not-allowed" : "pointer",
+                  }}
                 >
-                  <CardInner $isFlipped={card.isFlipped}>
-                    <CardFront />
-                    <CardBack $type={card.type} $isMatched={card.isMatched}>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                      >
-                        <span>{card.char}</span>
-                        {showRomaji && (
-                          <span
-                            style={{
-                              fontSize: "1.25rem",
-                              marginTop: "0.2rem",
-                              color: "var(--text-secondary)",
-                              fontWeight: 600,
-                            }}
-                          >
-                            {card.romaji}
-                          </span>
-                        )}
-                      </div>
-                    </CardBack>
-                  </CardInner>
-                </CardContainer>
-              ))}
-            </CardsGrid>
-          </>
-        )}
-      </GameBoard>
+                  Show Romaji letters (Max 30 moves limit)
+                </label>
+              </div>
+              <StatsRow>
+                <div>
+                  Moves:{" "}
+                  <span
+                    style={{
+                      color: showRomaji && moves >= 25 ? "#ef4444" : "#f59e0b",
+                    }}
+                  >
+                    {moves}
+                    {showRomaji ? ` / ${MAX_MOVES}` : ""}
+                  </span>
+                </div>
+                <div>
+                  Matches:{" "}
+                  <span style={{ color: "#10b981" }}>
+                    {matches} / {PAIRS_COUNT}
+                  </span>
+                </div>
+              </StatsRow>
+
+              <CardsGrid>
+                {cards.map((card, index) => (
+                  <CardContainer
+                    key={card.id}
+                    $isFlipped={card.isFlipped}
+                    $isMatched={card.isMatched}
+                    onClick={() => handleCardClick(index)}
+                  >
+                    <CardInner $isFlipped={card.isFlipped}>
+                      <CardFront />
+                      <CardBack $type={card.type} $isMatched={card.isMatched}>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                          }}
+                        >
+                          <span>{card.char}</span>
+                          {showRomaji && (
+                            <span
+                              style={{
+                                fontSize: "1.25rem",
+                                marginTop: "0.2rem",
+                                color: "var(--text-secondary)",
+                                fontWeight: 600,
+                              }}
+                            >
+                              {card.romaji}
+                            </span>
+                          )}
+                        </div>
+                      </CardBack>
+                    </CardInner>
+                  </CardContainer>
+                ))}
+              </CardsGrid>
+            </>
+          )}
+        </GameBoard>
+      </ContentWrapper>
     </Container>
   );
 }

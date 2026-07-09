@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import {
   searchDictionary,
   allVocabulary,
@@ -30,6 +31,21 @@ const PageWrapper = styled.div`
   background-size: 32px 32px;
 `;
 
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 0 2rem;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 0 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 0 0.5rem;
+  }
+`;
+
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
@@ -46,7 +62,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-start;
   margin-bottom: 2.5rem;
   width: 100%;
@@ -69,36 +85,6 @@ const HeaderRight = styled.div`
   @media (max-width: 600px) {
     align-items: flex-start;
     text-align: left;
-  }
-`;
-
-const Breadcrumbs = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-
-  a {
-    color: var(--foreground);
-    text-decoration: none;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    transition: color 0.2s;
-
-    &:hover {
-      color: var(--primary);
-    }
-  }
-
-  span.separator {
-    opacity: 0.3;
-    font-weight: 300;
-  }
-
-  span.current {
-    font-weight: 400;
-    opacity: 0.8;
   }
 `;
 
@@ -586,13 +572,17 @@ function PracticeContent() {
 
   return (
     <PageWrapper>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "JLPT Mastery", href: "/jlpt" },
+          ]}
+          current="Practice"
+        />
+      </BreadcrumbWrapper>
       <Container>
         <Header>
-          <Breadcrumbs>
-            <Link href="/jlpt">JLPT</Link> <span className="separator">/</span>{" "}
-            <span className="current">Practice</span>
-          </Breadcrumbs>
-
           <HeaderRight>
             <div
               style={{

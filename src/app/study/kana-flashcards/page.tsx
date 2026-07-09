@@ -73,9 +73,32 @@ const GameOverScreen = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -593,143 +616,40 @@ export default function KanaFlashcards() {
     }
   };
 
-  if (loading)
+  if (loading) {
     return (
       <PageWrapper>
         <Container>
-          <div
-            style={{
-              color: "var(--text-secondary)",
-              fontSize: "1.2rem",
-              marginTop: "4rem",
-            }}
-          >
-            Loading Characters...
-          </div>
+          <ContentWrapper>
+            <div
+              style={{
+                color: "var(--text-secondary)",
+                fontSize: "1.2rem",
+                marginTop: "4rem",
+              }}
+            >
+              Loading Characters...
+            </div>
+          </ContentWrapper>
         </Container>
       </PageWrapper>
     );
+  }
 
   if (!currentKana)
     return (
       <PageWrapper>
-        <Container>No Kana found for this level.</Container>
+        <Container>
+          <ContentWrapper>No Kana found for this level.</ContentWrapper>
+        </Container>
       </PageWrapper>
     );
 
   return (
     <PageWrapper>
       <Container>
-        {isMobileView ? (
-          sessionComplete ? (
-            <GameOverScreen>
-              <h2
-                style={{
-                  fontSize: "2.5rem",
-                  marginBottom: "1rem",
-                  color: "#10b981",
-                }}
-              >
-                Lesson Complete! 🎉
-              </h2>
-              <p
-                style={{
-                  fontSize: "1.25rem",
-                  color: "var(--text-secondary)",
-                  marginBottom: "2rem",
-                }}
-              >
-                Hebat! Kamu telah mempelajari 5 karakter dasar Kana.
-              </p>
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  color: "#10b981",
-                  background: "rgba(16, 185, 129, 0.1)",
-                  padding: "0.6rem 1.5rem",
-                  borderRadius: "999px",
-                  fontWeight: 800,
-                  fontSize: "1.25rem",
-                  marginBottom: "2rem",
-                  border: "1px solid rgba(16, 185, 129, 0.2)",
-                  boxShadow: "0 4px 12px rgba(16, 185, 129, 0.1)",
-                }}
-              >
-                ⭐ +20 EXP Gained
-              </div>
-              <br />
-              <Link
-                href="/"
-                style={{
-                  textDecoration: "none",
-                  display: "inline-block",
-                  width: "100%",
-                  maxWidth: "300px",
-                }}
-              >
-                <ActionBtn
-                  as="span"
-                  style={{ display: "inline-block", width: "100%" }}
-                >
-                  Lanjut
-                </ActionBtn>
-              </Link>
-            </GameOverScreen>
-          ) : (
-            <>
-              <LessonHeader>
-                <CloseLessonBtn href="/" title="Tutup Sesi">
-                  ✕
-                </CloseLessonBtn>
-                <LessonProgressBarContainer>
-                  <LessonProgressBarFill $percent={(reviewedCount / 5) * 100} />
-                </LessonProgressBarContainer>
-                <div style={{ width: "38px" }} />
-              </LessonHeader>
-
-              <FlashcardContainer>
-                <SectionTitle>Kana Memorization</SectionTitle>
-                <AnimContainer key={currentIndex} $dir={slideDir}>
-                  <CardPerspective
-                    onClick={() => setFlipped(!flipped)}
-                    onTouchStart={onTouchStart}
-                    onTouchMove={onTouchMove}
-                    onTouchEnd={onTouchEnd}
-                  >
-                    <CardInner $flipped={flipped}>
-                      <CardFace>
-                        <InstructionText>Character</InstructionText>
-                        <BigCharacter>{currentKana.character}</BigCharacter>
-                        <HintText>Tap to Reveal ⟳</HintText>
-                      </CardFace>
-
-                      <CardBack>
-                        <InstructionText>Romaji</InstructionText>
-                        <HighlightRomaji>{currentKana.romaji}</HighlightRomaji>
-                        <HintText>Tap to Flip ⟳</HintText>
-                      </CardBack>
-                    </CardInner>
-                  </CardPerspective>
-                </AnimContainer>
-
-                <ActionButtons>
-                  {!flipped ? (
-                    <ActionBtn onClick={() => setFlipped(true)}>
-                      Reveal Meaning
-                    </ActionBtn>
-                  ) : (
-                    <ActionBtn onClick={nextCard}>
-                      Next Character ({reviewedCount + 1} / 5)
-                    </ActionBtn>
-                  )}
-                </ActionButtons>
-              </FlashcardContainer>
-            </>
-          )
-        ) : (
-          <>
+        {!isMobileView && (
+          <BreadcrumbWrapper>
             <Breadcrumbs
               items={[
                 { label: "Home", href: "/" },
@@ -737,7 +657,121 @@ export default function KanaFlashcards() {
               ]}
               current="Kana Flashcards"
             />
-            <Header>
+          </BreadcrumbWrapper>
+        )}
+
+        <ContentWrapper>
+          {isMobileView ? (
+            sessionComplete ? (
+              <GameOverScreen>
+                <h2
+                  style={{
+                    fontSize: "2.5rem",
+                    marginBottom: "1rem",
+                    color: "#10b981",
+                  }}
+                >
+                  Lesson Complete! 🎉
+                </h2>
+                <p
+                  style={{
+                    fontSize: "1.25rem",
+                    color: "var(--text-secondary)",
+                    marginBottom: "2rem",
+                  }}
+                >
+                  Hebat! Kamu telah mempelajari 5 karakter dasar Kana.
+                </p>
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    color: "#10b981",
+                    background: "rgba(16, 185, 129, 0.1)",
+                    padding: "0.6rem 1.5rem",
+                    borderRadius: "999px",
+                    fontWeight: 800,
+                    fontSize: "1.25rem",
+                    marginBottom: "2rem",
+                    border: "1px solid rgba(16, 185, 129, 0.2)",
+                    boxShadow: "0 4px 12px rgba(16, 185, 129, 0.1)",
+                  }}
+                >
+                  ⭐ +20 EXP Gained
+                </div>
+                <br />
+                <Link
+                  href="/"
+                  style={{
+                    textDecoration: "none",
+                    display: "inline-block",
+                    width: "100%",
+                    maxWidth: "300px",
+                  }}
+                >
+                  <ActionBtn
+                    as="span"
+                    style={{ display: "inline-block", width: "100%" }}
+                  >
+                    Lanjut
+                  </ActionBtn>
+                </Link>
+              </GameOverScreen>
+            ) : (
+              <>
+                <LessonHeader>
+                  <CloseLessonBtn href="/" title="Tutup Sesi">
+                    ✕
+                  </CloseLessonBtn>
+                  <LessonProgressBarContainer>
+                    <LessonProgressBarFill $percent={(reviewedCount / 5) * 100} />
+                  </LessonProgressBarContainer>
+                  <div style={{ width: "38px" }} />
+                </LessonHeader>
+
+                <FlashcardContainer>
+                  <SectionTitle>Kana Memorization</SectionTitle>
+                  <AnimContainer key={currentIndex} $dir={slideDir}>
+                    <CardPerspective
+                      onClick={() => setFlipped(!flipped)}
+                      onTouchStart={onTouchStart}
+                      onTouchMove={onTouchMove}
+                      onTouchEnd={onTouchEnd}
+                    >
+                      <CardInner $flipped={flipped}>
+                        <CardFace>
+                          <InstructionText>Character</InstructionText>
+                          <BigCharacter>{currentKana.character}</BigCharacter>
+                          <HintText>Tap to Reveal ⟳</HintText>
+                        </CardFace>
+
+                        <CardBack>
+                          <InstructionText>Romaji</InstructionText>
+                          <HighlightRomaji>{currentKana.romaji}</HighlightRomaji>
+                          <HintText>Tap to Flip ⟳</HintText>
+                        </CardBack>
+                      </CardInner>
+                    </CardPerspective>
+                  </AnimContainer>
+
+                  <ActionButtons>
+                    {!flipped ? (
+                      <ActionBtn onClick={() => setFlipped(true)}>
+                        Reveal Meaning
+                      </ActionBtn>
+                    ) : (
+                      <ActionBtn onClick={nextCard}>
+                        Next Character ({reviewedCount + 1} / 5)
+                      </ActionBtn>
+                    )}
+                  </ActionButtons>
+                </FlashcardContainer>
+              </>
+            )
+          ) : (
+            <>
+              <Header>
               <Controls>
                 <ToggleBtn
                   $active={isRandom}
@@ -870,6 +904,7 @@ export default function KanaFlashcards() {
             </FlashcardContainer>
           </>
         )}
+        </ContentWrapper>
       </Container>
     </PageWrapper>
   );

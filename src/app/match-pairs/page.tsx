@@ -8,18 +8,40 @@ import { toRomaji } from "wanakana";
 
 // Styled Components
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   background: radial-gradient(
     circle at center,
     rgba(79, 70, 229, 0.05) 0%,
     transparent 70%
   );
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.div`
@@ -376,23 +398,27 @@ export default function MatchPairsPage() {
   if (loading || questions.length === 0) {
     return (
       <Container>
-        <Breadcrumbs
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Quiz Hub", href: "/quiz" },
-          ]}
-          current="Match Pairs"
-        />
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: "1.25rem",
-            color: "var(--text-secondary)",
-            marginTop: "4rem",
-          }}
-        >
-          Loading cards...
-        </div>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Quiz Hub", href: "/quiz" },
+            ]}
+            current="Match Pairs"
+          />
+        </BreadcrumbWrapper>
+        <ContentWrapper>
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "1.25rem",
+              color: "var(--text-secondary)",
+              marginTop: "4rem",
+            }}
+          >
+            Loading cards...
+          </div>
+        </ContentWrapper>
       </Container>
     );
   }
@@ -400,14 +426,17 @@ export default function MatchPairsPage() {
   if (isFinished) {
     return (
       <Container>
-        <Breadcrumbs
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Quiz Hub", href: "/quiz" },
-          ]}
-          current="Match Pairs"
-        />
-        <ResultOverlay>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Quiz Hub", href: "/quiz" },
+            ]}
+            current="Match Pairs"
+          />
+        </BreadcrumbWrapper>
+        <ContentWrapper>
+          <ResultOverlay>
           <h2>{gameOver ? "Game Over!" : "Round Complete!"}</h2>
           <p>
             {gameOver
@@ -438,6 +467,7 @@ export default function MatchPairsPage() {
             </Link>
           </div>
         </ResultOverlay>
+        </ContentWrapper>
       </Container>
     );
   }
@@ -446,16 +476,20 @@ export default function MatchPairsPage() {
 
   return (
     <Container>
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Quiz Hub", href: "/quiz" },
-        ]}
-        current="Match Pairs"
-      />
-      <Header>
-        <TitleBadge>Match the Pairs</TitleBadge>
-      </Header>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Quiz Hub", href: "/quiz" },
+          ]}
+          current="Match Pairs"
+        />
+      </BreadcrumbWrapper>
+
+      <ContentWrapper>
+        <Header>
+          <TitleBadge>Match the Pairs</TitleBadge>
+        </Header>
 
       <QuizCard>
         <div
@@ -541,6 +575,7 @@ export default function MatchPairsPage() {
           />
         </ProgressBarContainer>
       </QuizCard>
+      </ContentWrapper>
     </Container>
   );
 }

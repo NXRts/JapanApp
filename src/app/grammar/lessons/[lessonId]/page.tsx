@@ -2,6 +2,7 @@
 
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { grammarLessons } from "@/data/grammarLessons";
 import { use } from "react";
 import { useRouter } from "next/navigation";
@@ -20,38 +21,32 @@ const progressAnim = keyframes`
 
 /* ─── Styled components ────────────────────────────────────────────────── */
 const Container = styled.div`
-  max-width: 860px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 3rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
   animation: ${fadeUp} 0.4s ease both;
 
-  @media (max-width: 768px) {
-    padding: 1.5rem 1rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
   }
 `;
 
-const BackLink = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.9rem;
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  margin-bottom: 1.5rem;
-  transition: all 0.2s ease;
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
 
-  &:hover {
-    color: var(--foreground);
-    border-color: var(--primary-light, var(--primary));
-    background: rgba(var(--primary-rgb, 79, 70, 229), 0.04);
-    transform: translateX(-2px);
-  }
+const ContentWrapper = styled.div`
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 /* Progress bar across top */
@@ -397,23 +392,19 @@ export default function LessonDetailPage({
   if (!lesson) {
     return (
       <Container>
-        <BackLink href="/grammar/lessons">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
-          Back to Lessons
-        </BackLink>
-        <h1>Lesson not found</h1>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Materials", href: "/materi" },
+              { label: "Lessons", href: "/grammar/lessons" },
+            ]}
+            current="Not Found"
+          />
+        </BreadcrumbWrapper>
+        <ContentWrapper>
+          <h1>Lesson not found</h1>
+        </ContentWrapper>
       </Container>
     );
   }
@@ -440,22 +431,18 @@ export default function LessonDetailPage({
 
   return (
     <Container>
-      <BackLink href="/grammar/lessons">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="19" y1="12" x2="5" y2="12" />
-          <polyline points="12 19 5 12 12 5" />
-        </svg>
-        Back to Lessons
-      </BackLink>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Materials", href: "/materi" },
+            { label: "Lessons", href: "/grammar/lessons" },
+          ]}
+          current={lesson.title}
+        />
+      </BreadcrumbWrapper>
+
+      <ContentWrapper>
 
       {/* Top progress */}
       <TopProgressWrap>
@@ -562,6 +549,7 @@ export default function LessonDetailPage({
           {exerciseDone ? "Redo Exercise" : "Start Exercise →"}
         </ExBtn>
       </ExerciseBanner>
+      </ContentWrapper>
     </Container>
   );
 }

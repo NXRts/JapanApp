@@ -23,6 +23,21 @@ const PageWrapper = styled.div`
   color: var(--foreground);
 `;
 
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 0 2rem;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 0 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 0 0.5rem;
+  }
+`;
+
 const Container = styled.div`
   max-width: 900px;
   margin: 0 auto;
@@ -38,7 +53,7 @@ const Container = styled.div`
 
 const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: flex-start;
   margin-bottom: 2.5rem;
   width: 100%;
@@ -1265,15 +1280,17 @@ function FlashcardContent() {
   if (isLoading) {
     return (
       <PageWrapper>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "JLPT Mastery", href: "/jlpt" },
+            ]}
+            current="Flashcards"
+          />
+        </BreadcrumbWrapper>
         <Container>
           <Header>
-            <Breadcrumbs
-              items={[
-                { label: "Home", href: "/" },
-                { label: "JLPT Mastery", href: "/jlpt" },
-              ]}
-              current="Flashcards"
-            />
             <HeaderRight>
               <div
                 style={{
@@ -1311,15 +1328,17 @@ function FlashcardContent() {
   if (!filteredData || filteredData.length === 0) {
     return (
       <PageWrapper>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "JLPT Mastery", href: "/jlpt" },
+            ]}
+            current="Flashcards"
+          />
+        </BreadcrumbWrapper>
         <Container>
           <Header>
-            <Breadcrumbs
-              items={[
-                { label: "Home", href: "/" },
-                { label: "JLPT Mastery", href: "/jlpt" },
-              ]}
-              current="Flashcards"
-            />
             <HeaderRight>
               <div
                 style={{
@@ -1436,15 +1455,17 @@ function FlashcardContent() {
 
   return (
     <PageWrapper>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "JLPT Mastery", href: "/jlpt" },
+          ]}
+          current="Flashcards"
+        />
+      </BreadcrumbWrapper>
       <Container>
         <Header>
-          <Breadcrumbs
-            items={[
-              { label: "Home", href: "/" },
-              { label: "JLPT Mastery", href: "/jlpt" },
-            ]}
-            current="Flashcards"
-          />
           <HeaderRight>
             <div
               style={{

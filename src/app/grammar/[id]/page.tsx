@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { n5Grammar } from "@/data/jlpt/n5/grammar";
 import { n4Grammar } from "@/data/jlpt/n4/grammar";
 import { n3Grammar } from "@/data/jlpt/n3/grammar";
@@ -10,25 +11,31 @@ import { n1Grammar } from "@/data/jlpt/n1/grammar";
 import { use } from "react";
 
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 4rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
 `;
 
-const BackLink = styled(Link)`
-  color: var(--text-secondary);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  font-weight: 600;
-  transition: color 0.2s;
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
 
-  &:hover {
-    color: var(--primary);
-  }
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -128,22 +135,36 @@ export default function GrammarDetailPage({
   if (!point) {
     return (
       <Container>
-        <Header>
-          <Title>Grammar point not found</Title>
-          <BackLink href="/grammar">← Back to Grammar</BackLink>
-        </Header>
+        <ContentWrapper>
+          <Header>
+            <Title>Grammar point not found</Title>
+            <Link href="/grammar" style={{ color: "var(--text-secondary)", textDecoration: "none", fontWeight: 600 }}>
+              ← Back to Grammar
+            </Link>
+          </Header>
+        </ContentWrapper>
       </Container>
     );
   }
 
   return (
     <Container>
-      <BackLink href="/grammar">← Back to Grammar</BackLink>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Materials", href: "/materi" },
+            { label: "Grammar", href: "/grammar" },
+          ]}
+          current={point.title}
+        />
+      </BreadcrumbWrapper>
 
-      <Header>
-        <Title>{point.title}</Title>
-        <Meaning>{point.meaning}</Meaning>
-      </Header>
+      <ContentWrapper>
+        <Header>
+          <Title>{point.title}</Title>
+          <Meaning>{point.meaning}</Meaning>
+        </Header>
 
       <Section>
         <SectionTitle>Structure</SectionTitle>
@@ -167,6 +188,7 @@ export default function GrammarDetailPage({
           ))}
         </ExampleList>
       </Section>
+      </ContentWrapper>
     </Container>
   );
 }

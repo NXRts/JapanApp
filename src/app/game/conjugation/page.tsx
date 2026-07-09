@@ -16,14 +16,31 @@ const fadeIn = keyframes`
 `;
 
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
 
-  @media (max-width: 600px) {
-    padding: 1.5rem 1rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const LessonHeader = styled.div`
@@ -574,34 +591,39 @@ export default function ConjugationDrillsPage() {
 
   return (
     <Container>
-      {isMobileView && gameState === "playing" ? (
-        <LessonHeader>
-          <CloseLessonBtn href="/game" title="Tutup Sesi">
-            ✕
-          </CloseLessonBtn>
-          <LessonProgressBarContainer>
-            <LessonProgressBarFill
-              $percent={
-                ((currentQuestionIndex +
-                  (selectedAnswer !== null || typingFeedback !== null
-                    ? 1
-                    : 0)) /
-                  totalQuestions) *
-                100
-              }
-            />
-          </LessonProgressBarContainer>
-          <LessonHearts>❤️ {lives}</LessonHearts>
-        </LessonHeader>
-      ) : (
-        <Breadcrumbs
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Games Hub", href: "/game" },
-          ]}
-          current="Conjugation Drills"
-        />
+      {!(isMobileView && gameState === "playing") && (
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Games Hub", href: "/game" },
+            ]}
+            current="Conjugation Drills"
+          />
+        </BreadcrumbWrapper>
       )}
+
+      <ContentWrapper>
+        {isMobileView && gameState === "playing" ? (
+          <LessonHeader>
+            <CloseLessonBtn href="/game" title="Tutup Sesi">
+              ✕
+            </CloseLessonBtn>
+            <LessonProgressBarContainer>
+              <LessonProgressBarFill
+                $percent={
+                  ((currentQuestionIndex +
+                    (selectedAnswer !== null || typingFeedback !== null
+                      ? 1
+                      : 0)) /
+                    totalQuestions) *
+                  100
+                }
+              />
+            </LessonProgressBarContainer>
+            <LessonHearts>❤️ {lives}</LessonHearts>
+          </LessonHeader>
+        ) : null}
 
       <GameArea>
         {gameState === "start" && (
@@ -794,6 +816,7 @@ export default function ConjugationDrillsPage() {
           </ResultScreen>
         )}
       </GameArea>
+      </ContentWrapper>
     </Container>
   );
 }

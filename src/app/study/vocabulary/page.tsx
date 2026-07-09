@@ -67,9 +67,32 @@ const LessonProgressBarFill = styled.div<{ $percent: number }>`
 `;
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -749,20 +772,8 @@ export default function VocabularyFlashcards() {
   return (
     <PageWrapper>
       <Container>
-        {isMobileView ? (
-          <LessonHeader>
-            <CloseLessonBtn href="/" title="Tutup Sesi">
-              ✕
-            </CloseLessonBtn>
-            <LessonProgressBarContainer>
-              <LessonProgressBarFill
-                $percent={(sessionStats.total / SESSION_LIMIT) * 100}
-              />
-            </LessonProgressBarContainer>
-            <div style={{ width: "38px" }} />
-          </LessonHeader>
-        ) : (
-          <>
+        {!isMobileView && (
+          <BreadcrumbWrapper>
             <Breadcrumbs
               items={[
                 { label: "Home", href: "/" },
@@ -770,6 +781,23 @@ export default function VocabularyFlashcards() {
               ]}
               current="Vocabulary Flashcards"
             />
+          </BreadcrumbWrapper>
+        )}
+
+        <ContentWrapper>
+          {isMobileView ? (
+            <LessonHeader>
+              <CloseLessonBtn href="/" title="Tutup Sesi">
+                ✕
+              </CloseLessonBtn>
+              <LessonProgressBarContainer>
+                <LessonProgressBarFill
+                  $percent={(sessionStats.total / SESSION_LIMIT) * 100}
+                />
+              </LessonProgressBarContainer>
+              <div style={{ width: "38px" }} />
+            </LessonHeader>
+          ) : (
             <Header>
               <DropdownContainer>
                 <DropdownTrigger
@@ -783,7 +811,7 @@ export default function VocabularyFlashcards() {
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
@@ -815,8 +843,7 @@ export default function VocabularyFlashcards() {
                 )}
               </DropdownContainer>
             </Header>
-          </>
-        )}
+          )}
 
         <FlashcardContainer>
           <SectionTitle>Memorization Mode</SectionTitle>
@@ -895,6 +922,7 @@ export default function VocabularyFlashcards() {
             )}
           </ActionButtons>
         </FlashcardContainer>
+      </ContentWrapper>
       </Container>
     </PageWrapper>
   );

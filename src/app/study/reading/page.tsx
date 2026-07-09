@@ -8,10 +8,31 @@ import { readingPassages } from "@/data/reading";
 import { useProgress } from "@/context/ProgressContext";
 
 const Container = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 4rem;
+  min-height: 90vh;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2.5rem 2rem 4rem;
-  min-height: 90vh;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -128,15 +149,18 @@ export default function ReadingHub() {
 
   return (
     <Container>
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Study", href: "/study" },
-        ]}
-        current="Reading"
-      />
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Study", href: "/study" },
+          ]}
+          current="Reading"
+        />
+      </BreadcrumbWrapper>
 
-      <Header>
+      <ContentWrapper>
+        <Header>
         <Title>Reading Comprehension</Title>
         <p
           style={{
@@ -228,6 +252,7 @@ export default function ReadingHub() {
           </ArticleCard>
         ))}
       </Grid>
+      </ContentWrapper>
     </Container>
   );
 }

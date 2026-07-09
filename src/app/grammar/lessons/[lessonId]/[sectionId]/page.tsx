@@ -2,6 +2,7 @@
 
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { grammarLessons } from "@/data/grammarLessons";
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -29,15 +30,32 @@ const glowPulse = keyframes`
 
 /* ─── Styled components ────────────────────────────────────────────────── */
 const Container = styled.div`
-  max-width: 820px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
   animation: ${fadeIn} 0.4s ease both;
 
-  @media (max-width: 768px) {
-    padding: 1.25rem 1rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 820px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const TopRow = styled.div`
@@ -49,30 +67,7 @@ const TopRow = styled.div`
   @media (max-width: 600px) {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
-    width: 100%;
-  }
-`;
-
-const BackBtn = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.9rem;
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  transition: all 0.2s ease;
-
-  &:hover {
-    color: var(--foreground);
-    border-color: var(--primary-light, var(--primary));
-    background: rgba(var(--primary-rgb, 79, 70, 229), 0.04);
-    transform: translateX(-2px);
+    gap: 0.75rem;
   }
 `;
 
@@ -434,23 +429,19 @@ export default function SectionPage({
   if (!lesson || !section) {
     return (
       <Container>
-        <BackBtn href="/grammar/lessons">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
-          Back
-        </BackBtn>
-        <h1>Section not found</h1>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Materials", href: "/materi" },
+              { label: "Lessons", href: "/grammar/lessons" },
+            ]}
+            current="Not Found"
+          />
+        </BreadcrumbWrapper>
+        <ContentWrapper>
+          <h1>Section not found</h1>
+        </ContentWrapper>
       </Container>
     );
   }
@@ -483,24 +474,21 @@ export default function SectionPage({
 
   return (
     <Container>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Materials", href: "/materi" },
+            { label: "Lessons", href: "/grammar/lessons" },
+            { label: `Lesson ${lesson.lessonNumber}`, href: `/grammar/lessons/${lessonId}` },
+          ]}
+          current={section.title}
+        />
+      </BreadcrumbWrapper>
+
+      <ContentWrapper>
       {/* Top nav */}
       <TopRow>
-        <BackBtn href={`/grammar/lessons/${lessonId}`}>
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
-          Back to Lesson {lesson.lessonNumber}
-        </BackBtn>
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
           <FuriganaToggleBtn
             $active={progress.showFurigana}
@@ -677,6 +665,7 @@ export default function SectionPage({
           </MarkDoneBtn>
         )}
       </NavRow>
+      </ContentWrapper>
     </Container>
   );
 }

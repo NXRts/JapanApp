@@ -15,14 +15,31 @@ import {
 
 // Styled Components
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 100vh;
 
-  @media (max-width: 768px) {
-    padding: 1.5rem 1.5rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -275,14 +292,18 @@ export default function TipsPage() {
 
   return (
     <Container>
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Materials", href: "/materi" },
-        ]}
-        current="Tips & Tricks"
-      />
-      <Header>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Materials", href: "/materi" },
+          ]}
+          current="Tips & Tricks"
+        />
+      </BreadcrumbWrapper>
+
+      <ContentWrapper>
+        <Header>
         <Title>Language Mastery Hub</Title>
         <Subtitle>
           Curated professional strategies to accelerate your Japanese learning
@@ -315,6 +336,7 @@ export default function TipsPage() {
           </Card>
         ))}
       </Grid>
+      </ContentWrapper>
     </Container>
   );
 }

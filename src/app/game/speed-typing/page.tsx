@@ -10,22 +10,41 @@ import { toRomaji } from "wanakana";
 
 // Styled Components
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   background: radial-gradient(
     circle at center,
     rgba(79, 70, 229, 0.05) 0%,
     transparent 70%
   );
 
-  @media (max-width: 600px) {
-    padding: 1.5rem 1rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const GameCard = styled.div`
@@ -286,20 +305,8 @@ export default function GamePage() {
 
   return (
     <Container>
-      {isMobileView ? (
-        <LessonHeader>
-          <CloseLessonBtn href="/game" title="Tutup Sesi">
-            ✕
-          </CloseLessonBtn>
-          <LessonProgressBarContainer>
-            <LessonProgressBarFill
-              $percent={score > 0 ? (score / 10) * 100 : 0}
-            />
-          </LessonProgressBarContainer>
-          <div style={{ width: "38px" }} />
-        </LessonHeader>
-      ) : (
-        <>
+      {!isMobileView && (
+        <BreadcrumbWrapper>
           <Breadcrumbs
             items={[
               { label: "Home", href: "/" },
@@ -307,12 +314,27 @@ export default function GamePage() {
             ]}
             current="Kana Speed Typing"
           />
+        </BreadcrumbWrapper>
+      )}
 
+      <ContentWrapper>
+        {isMobileView ? (
+          <LessonHeader>
+            <CloseLessonBtn href="/game" title="Tutup Sesi">
+              ✕
+            </CloseLessonBtn>
+            <LessonProgressBarContainer>
+              <LessonProgressBarFill
+                $percent={score > 0 ? (score / 10) * 100 : 0}
+              />
+            </LessonProgressBarContainer>
+            <div style={{ width: "38px" }} />
+          </LessonHeader>
+        ) : (
           <Header>
             <TitleBadge>Kana Speed Typing</TitleBadge>
           </Header>
-        </>
-      )}
+        )}
 
       <GameCard>
         {!isPlaying && !isGameOver && (
@@ -421,6 +443,7 @@ export default function GamePage() {
           </div>
         )}
       </GameCard>
+      </ContentWrapper>
     </Container>
   );
 }

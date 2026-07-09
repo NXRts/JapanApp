@@ -10,10 +10,31 @@ import { useProgress } from "@/context/ProgressContext";
 import { ClickableJapaneseText } from "@/components/common/ClickableJapaneseText";
 
 const Container = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 6rem;
+  min-height: 100vh;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
   max-width: 850px;
   margin: 0 auto;
-  padding: 2.5rem 2rem 6rem;
-  min-height: 100vh;
+  width: 100%;
 `;
 
 const ControlsContainer = styled.div`
@@ -408,14 +429,18 @@ export default function ReadingDetailPage() {
   if (!passage) {
     return (
       <Container>
-        <Breadcrumbs
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Reading", href: "/study/reading" },
-          ]}
-          current="Not Found"
-        />
-        <Title>Passage Not Found</Title>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Reading", href: "/study/reading" },
+            ]}
+            current="Not Found"
+          />
+        </BreadcrumbWrapper>
+        <ContentWrapper>
+          <Title>Passage Not Found</Title>
+        </ContentWrapper>
       </Container>
     );
   }
@@ -433,15 +458,18 @@ export default function ReadingDetailPage() {
 
   return (
     <Container>
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Reading", href: "/study/reading" },
-        ]}
-        current={passage.title}
-      />
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Reading", href: "/study/reading" },
+          ]}
+          current={passage.title}
+        />
+      </BreadcrumbWrapper>
 
-      <ControlsContainer>
+      <ContentWrapper>
+        <ControlsContainer>
         <div>
           <span
             style={{
@@ -563,6 +591,7 @@ export default function ReadingDetailPage() {
           )}
         </NextStepsContainer>
       )}
+      </ContentWrapper>
     </Container>
   );
 }

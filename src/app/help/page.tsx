@@ -20,6 +20,21 @@ const Container = styled.div`
   overflow-x: hidden;
 `;
 
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 0 2rem;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 0 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 0 0.5rem;
+  }
+`;
+
 const ContentWrapper = styled.div`
   max-width: 1000px;
   width: 100%;
@@ -1109,8 +1124,10 @@ export default function HelpPage() {
 
   return (
     <Container>
-      <ContentWrapper>
+      <BreadcrumbWrapper>
         <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Bantuan" />
+      </BreadcrumbWrapper>
+      <ContentWrapper>
 
         {/* HERO SEARCH SECTION */}
         <HeroSection>

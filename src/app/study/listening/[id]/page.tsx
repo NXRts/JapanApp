@@ -11,10 +11,31 @@ import { ClickableJapaneseText } from "@/components/common/ClickableJapaneseText
 import { playJapaneseAudio } from "@/lib/audio";
 
 const Container = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 6rem;
+  min-height: 100vh;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
   max-width: 850px;
   margin: 0 auto;
-  padding: 2.5rem 2rem 6rem;
-  min-height: 100vh;
+  width: 100%;
 `;
 
 const ControlsContainer = styled.div`
@@ -470,14 +491,18 @@ export default function ListeningDetailPage() {
   if (!exercise) {
     return (
       <Container>
-        <Breadcrumbs
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Listening", href: "/study/listening" },
-          ]}
-          current="Not Found"
-        />
-        <Title>Exercise Not Found</Title>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Listening", href: "/study/listening" },
+            ]}
+            current="Not Found"
+          />
+        </BreadcrumbWrapper>
+        <ContentWrapper>
+          <Title>Exercise Not Found</Title>
+        </ContentWrapper>
       </Container>
     );
   }
@@ -554,15 +579,18 @@ export default function ListeningDetailPage() {
 
   return (
     <Container>
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Listening", href: "/study/listening" },
-        ]}
-        current={exercise.title}
-      />
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Listening", href: "/study/listening" },
+          ]}
+          current={exercise.title}
+        />
+      </BreadcrumbWrapper>
 
-      <ControlsContainer>
+      <ContentWrapper>
+        <ControlsContainer>
         <div>
           <span
             style={{
@@ -713,6 +741,7 @@ export default function ListeningDetailPage() {
           )}
         </NextStepsContainer>
       )}
+      </ContentWrapper>
     </Container>
   );
 }

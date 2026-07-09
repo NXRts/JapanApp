@@ -53,10 +53,20 @@ const PageWrapper = styled.div`
     100% 100%,
     32px 32px;
   color: var(--foreground);
-  padding: 2rem;
+`;
 
-  @media (max-width: 768px) {
-    padding: 1rem 0.75rem;
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 0 2rem;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 0 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 0 0.5rem;
   }
 `;
 
@@ -66,6 +76,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem 0.75rem;
+  }
 
   @media (max-width: 640px) {
     gap: 1.25rem;
@@ -769,7 +784,7 @@ function MiniTestContent() {
 
   return (
     <PageWrapper>
-      <Container>
+      <BreadcrumbWrapper>
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
@@ -777,6 +792,8 @@ function MiniTestContent() {
           ]}
           current={`${level} Mini Test`}
         />
+      </BreadcrumbWrapper>
+      <Container>
 
         <AnimatePresence mode="wait">
           {testState === "intro" && (

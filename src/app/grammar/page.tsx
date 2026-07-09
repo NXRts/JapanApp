@@ -11,14 +11,31 @@ import { n2Grammar } from "@/data/jlpt/n2/grammar";
 import { n1Grammar } from "@/data/jlpt/n1/grammar";
 
 const Container = styled.div`
-  max-width: 1000px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
 
-  @media (max-width: 768px) {
-    padding: 1.5rem 1.5rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -261,14 +278,18 @@ export default function GrammarPage() {
 
   return (
     <Container>
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Materials", href: "/materi" },
-        ]}
-        current="Grammar"
-      />
-      <Header>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Materials", href: "/materi" },
+          ]}
+          current="Grammar"
+        />
+      </BreadcrumbWrapper>
+
+      <ContentWrapper>
+        <Header>
         <Title>Grammar Guide</Title>
         <Subtitle>
           Master Japanese sentence structures and particles. Choose your target
@@ -347,6 +368,7 @@ export default function GrammarPage() {
           </GrammarCard>
         ))}
       </GrammarGrid>
+      </ContentWrapper>
     </Container>
   );
 }

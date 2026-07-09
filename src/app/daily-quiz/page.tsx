@@ -11,9 +11,9 @@ import { TestResultStats } from "@/components/jlpt/TestResultStats";
 
 // Styled Components (Reusing similar style to KanaQuizPage for consistency)
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
@@ -21,7 +21,30 @@ const Container = styled.div`
     circle at center,
     rgba(16, 185, 129, 0.05) 0%,
     transparent 70%
-  ); /* Green tint for Daily */
+  );
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.div`
@@ -392,23 +415,27 @@ export default function KanaQuizPage() {
   if (loading || questions.length === 0) {
     return (
       <Container>
-        <Breadcrumbs
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Quiz Hub", href: "/quiz" },
-          ]}
-          current="Daily Challenge"
-        />
-        <div
-          style={{
-            textAlign: "center",
-            fontSize: "1.25rem",
-            color: "var(--text-secondary)",
-            marginTop: "4rem",
-          }}
-        >
-          Loading Today's Challenge...
-        </div>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Quiz Hub", href: "/quiz" },
+            ]}
+            current="Daily Challenge"
+          />
+        </BreadcrumbWrapper>
+        <ContentWrapper>
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: "1.25rem",
+              color: "var(--text-secondary)",
+              marginTop: "4rem",
+            }}
+          >
+            Loading Today's Challenge...
+          </div>
+        </ContentWrapper>
       </Container>
     );
   }
@@ -416,14 +443,17 @@ export default function KanaQuizPage() {
   if (isFinished) {
     return (
       <Container>
-        <Breadcrumbs
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Quiz Hub", href: "/quiz" },
-          ]}
-          current="Daily Challenge"
-        />
-        <ResultOverlay>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Quiz Hub", href: "/quiz" },
+            ]}
+            current="Daily Challenge"
+          />
+        </BreadcrumbWrapper>
+        <ContentWrapper>
+          <ResultOverlay>
           <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🏆</div>
           <h2 style={{ marginBottom: "2rem" }}>Daily Challenge Complete!</h2>
 
@@ -531,6 +561,7 @@ export default function KanaQuizPage() {
             </Link>
           </div>
         </ResultOverlay>
+        </ContentWrapper>
       </Container>
     );
   }
@@ -539,14 +570,18 @@ export default function KanaQuizPage() {
 
   return (
     <Container>
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Quiz Hub", href: "/quiz" },
-        ]}
-        current="Daily Challenge"
-      />
-      <Header>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Quiz Hub", href: "/quiz" },
+          ]}
+          current="Daily Challenge"
+        />
+      </BreadcrumbWrapper>
+
+      <ContentWrapper>
+        <Header>
         <HeaderRight>
           <div
             style={{
@@ -621,6 +656,7 @@ export default function KanaQuizPage() {
           />
         </ProgressBarContainer>
       </QuizCard>
+      </ContentWrapper>
     </Container>
   );
 }

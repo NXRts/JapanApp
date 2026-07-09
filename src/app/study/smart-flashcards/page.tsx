@@ -18,13 +18,37 @@ const PageWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Header = styled.div`
@@ -432,14 +456,18 @@ export default function SmartFlashcardsPage() {
   return (
     <PageWrapper>
       <Container>
-        <Breadcrumbs
-          items={[
-            { label: "Home", href: "/" },
-            { label: "Study", href: "/study" },
-          ]}
-          current="Smart Flashcards"
-        />
-        <Header>
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Study", href: "/study" },
+            ]}
+            current="Smart Flashcards"
+          />
+        </BreadcrumbWrapper>
+
+        <ContentWrapper>
+          <Header>
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <div
               style={{
@@ -582,6 +610,7 @@ export default function SmartFlashcardsPage() {
             <ActionBtn onClick={restart}>Study Again</ActionBtn>
           </SummaryScreen>
         )}
+      </ContentWrapper>
       </Container>
     </PageWrapper>
   );

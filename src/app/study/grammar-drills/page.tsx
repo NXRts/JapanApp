@@ -7,18 +7,40 @@ import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { particleDrills, ParticleDrill } from "@/data/particles_drills";
 
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
-  /* Premium radial background */
   background: radial-gradient(
     circle at center,
     rgba(59, 130, 246, 0.05) 0%,
     transparent 70%
-  ); /* Blue tint for grammar */
+  );
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Header = styled.div`
@@ -384,22 +406,24 @@ export default function GrammarDrillsPage() {
   if (isFinished) {
     return (
       <Container>
-        <ResultOverlay>
-          <h2>Quiz Complete!</h2>
-          <p>
-            You scored <strong>{score}</strong> out of{" "}
-            <strong>{TOTAL_QUESTIONS}</strong>
-          </p>
-          <ButtonGroup>
-            <Button onClick={generateQuiz}>Try Again</Button>
-            <Link
-              href="/study"
-              style={{ textDecoration: "none", display: "flex", width: "100%" }}
-            >
-              <SecondaryButton style={{ width: "100%" }}>Exit</SecondaryButton>
-            </Link>
-          </ButtonGroup>
-        </ResultOverlay>
+        <ContentWrapper>
+          <ResultOverlay>
+            <h2>Quiz Complete!</h2>
+            <p>
+              You scored <strong>{score}</strong> out of{" "}
+              <strong>{TOTAL_QUESTIONS}</strong>
+            </p>
+            <ButtonGroup>
+              <Button onClick={generateQuiz}>Try Again</Button>
+              <Link
+                href="/study"
+                style={{ textDecoration: "none", display: "flex", width: "100%" }}
+              >
+                <SecondaryButton style={{ width: "100%" }}>Exit</SecondaryButton>
+              </Link>
+            </ButtonGroup>
+          </ResultOverlay>
+        </ContentWrapper>
       </Container>
     );
   }
@@ -435,16 +459,20 @@ export default function GrammarDrillsPage() {
 
   return (
     <Container>
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Study", href: "/study" },
-        ]}
-        current="Particle Drills"
-      />
-      <Header>
-        <ScoreBadge>Score: {score}</ScoreBadge>
-      </Header>
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Study", href: "/study" },
+          ]}
+          current="Particle Drills"
+        />
+      </BreadcrumbWrapper>
+
+      <ContentWrapper>
+        <Header>
+          <ScoreBadge>Score: {score}</ScoreBadge>
+        </Header>
 
       <QuizCard>
         <ProgressInfo>
@@ -518,6 +546,7 @@ export default function GrammarDrillsPage() {
           </InfoItem>
         </InfoGrid>
       </InfoSection>
+      </ContentWrapper>
     </Container>
   );
 }
