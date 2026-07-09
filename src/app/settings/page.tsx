@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { useTheme, themes } from "@/context/ThemeContext";
+import { useTheme, themes, ThemeColor, ThemeMode } from "@/context/ThemeContext";
 import { useProgress } from "@/context/ProgressContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import Link from "next/link";
@@ -506,7 +506,7 @@ const ActionButtonGroup = styled.div`
   }
 `;
 
-const CancelButton = styled(Link)`
+const CancelButton = styled.button`
   padding: 0.85rem 1.75rem;
   border-radius: 14px;
   font-weight: 700;
@@ -634,8 +634,30 @@ const Toast = styled(motion.div)`
 `;
 
 export default function SettingsPage() {
-  const { color, setColor, mode, setMode } = useTheme();
+  const { color, setColor, mode, setMode, saveTheme } = useTheme();
   const { resetProgress } = useProgress();
+
+  // Track original settings to allow cancel/revert on navigate away
+  const initialColor = useRef(color);
+  const initialMode = useRef(mode);
+  const isSaved = useRef(false);
+
+  useEffect(() => {
+    // Record initial settings directly from localStorage to ensure accurate cancel/revert behavior
+    const savedColor = localStorage.getItem("theme-color") as ThemeColor;
+    const savedMode = localStorage.getItem("theme-mode") as ThemeMode;
+    if (savedColor) initialColor.current = savedColor;
+    if (savedMode) initialMode.current = savedMode;
+    isSaved.current = false;
+
+    return () => {
+      // Revert if the user navigates away without explicitly saving changes
+      if (!isSaved.current) {
+        setColor(initialColor.current);
+        setMode(initialMode.current);
+      }
+    };
+  }, [setColor, setMode]);
 
   // Tab State
   const [activeTab, setActiveTab] = useState<
@@ -666,6 +688,18 @@ export default function SettingsPage() {
   };
 
   const handleSave = () => {
+    const savedColor = localStorage.getItem("theme-color");
+    const savedMode = localStorage.getItem("theme-mode");
+
+    if (color === savedColor && mode === savedMode) {
+      triggerToast("Tidak ada perubahan yang dilakukan! ⚙️");
+      return;
+    }
+
+    isSaved.current = true;
+    saveTheme(color, mode);
+    initialColor.current = color;
+    initialMode.current = mode;
     triggerToast("Pengaturan berhasil disimpan! ⚙️");
   };
 
@@ -898,7 +932,7 @@ export default function SettingsPage() {
                         $isSelected={color === key}
                         onClick={() => {
                           setColor(key as any);
-                          triggerToast(`Warna tema diubah ke ${key}! 🎨`);
+                          triggerToast(`Pratinjau aksen: ${key} 🎨`);
                         }}
                         title={key}
                       />
@@ -913,7 +947,7 @@ export default function SettingsPage() {
                       $active={mode === "light"}
                       onClick={() => {
                         setMode("light");
-                        triggerToast("Mode terang diaktifkan! ☀️");
+                        triggerToast("Pratinjau Mode Terang ☀️");
                       }}
                     >
                       <span className="icon">☀️</span>
@@ -923,7 +957,7 @@ export default function SettingsPage() {
                       $active={mode === "dark"}
                       onClick={() => {
                         setMode("dark");
-                        triggerToast("Mode gelap diaktifkan! 🌙");
+                        triggerToast("Pratinjau Mode Gelap 🌙");
                       }}
                     >
                       <span className="icon">🌙</span>
@@ -1042,7 +1076,21 @@ export default function SettingsPage() {
 
           {/* SAVE ACTIONS */}
           <ActionButtonGroup>
-            <CancelButton href="/profile">Batal</CancelButton>
+            <CancelButton
+              type="button"
+              onClick={() => {
+                const isUnchanged = color === initialColor.current && mode === initialMode.current;
+                if (isUnchanged) {
+                  triggerToast("Tidak ada perubahan yang dibatalkan! ⚙️");
+                } else {
+                  setColor(initialColor.current);
+                  setMode(initialMode.current);
+                  triggerToast("Perubahan tampilan dibatalkan! ↩️");
+                }
+              }}
+            >
+              Batal
+            </CancelButton>
             <SaveButton type="button" onClick={handleSave}>
               <svg
                 width="18"

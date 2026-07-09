@@ -10,6 +10,7 @@ interface ThemeContextType {
   mode: ThemeMode;
   setColor: (color: ThemeColor) => void;
   setMode: (mode: ThemeMode) => void;
+  saveTheme: (color: ThemeColor, mode: ThemeMode) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -27,9 +28,9 @@ export const themes: Record<
   emerald: {
     primary: "#059669",
     primaryLight: "#34D399",
-    primaryDark: "#064E3B",
+    primaryDark: "#065F46",
   },
-  blue: { primary: "#2563EB", primaryLight: "#60A5FA", primaryDark: "#1E3A8A" },
+  blue: { primary: "#2563EB", primaryLight: "#60A5FA", primaryDark: "#1E40AF" },
   orange: {
     primary: "#EA580C",
     primaryLight: "#FB923C",
@@ -130,15 +131,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty("--dock-shadow", "0 -8px 32px rgba(0, 0, 0, 0.08)");
       root.style.setProperty("--ink-stroke", "#1E293B");
     }
-
-    if (isInitialized) {
-      localStorage.setItem("theme-color", color);
-      localStorage.setItem("theme-mode", mode);
-    }
   }, [color, mode, isInitialized]);
 
+  const saveTheme = (newColor: ThemeColor, newMode: ThemeMode) => {
+    localStorage.setItem("theme-color", newColor);
+    localStorage.setItem("theme-mode", newMode);
+  };
+
   return (
-    <ThemeContext.Provider value={{ color, mode, setColor, setMode }}>
+    <ThemeContext.Provider value={{ color, mode, setColor, setMode, saveTheme }}>
       {children}
     </ThemeContext.Provider>
   );
