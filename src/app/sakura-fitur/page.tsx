@@ -6,13 +6,26 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
 const Container = styled.div`
-  max-width: 900px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem 4rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
 
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+
   @media (max-width: 768px) {
-    padding: 1.5rem 1rem 1.5rem;
     min-height: auto;
   }
 `;
@@ -192,7 +205,8 @@ export default function SakuraFitur() {
         current="SakuraFitur"
       />
 
-      <Header>
+      <ContentWrapper>
+        <Header>
         <Title>SakuraFitur Hub 🌸</Title>
         <Subtitle>
           Daftar peningkatan dan fitur premium baru yang diadaptasi dari
@@ -275,6 +289,7 @@ export default function SakuraFitur() {
           </FeatureInfo>
         </FeatureCard>
       </FeatureGrid>
+      </ContentWrapper>
     </Container>
   );
 }

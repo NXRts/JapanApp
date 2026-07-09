@@ -11,10 +11,33 @@ import { ClickableJapaneseText } from "@/components/common/ClickableJapaneseText
 import { playJapaneseAudio } from "@/lib/audio";
 
 const Container = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 6rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 0 1rem 0;
+`;
+
+const ContentWrapper = styled.div`
   max-width: 800px;
   margin: 0 auto;
-  padding: 2.5rem 2rem 6rem;
-  min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
 `;
@@ -371,7 +394,9 @@ export default function KaiwaRoleplayPage() {
   if (!mounted || !exercise)
     return (
       <Container>
-        <Title>Loading...</Title>
+        <ContentWrapper>
+          <Title>Loading...</Title>
+        </ContentWrapper>
       </Container>
     );
 
@@ -405,15 +430,18 @@ export default function KaiwaRoleplayPage() {
 
   return (
     <Container>
-      <Breadcrumbs
-        items={[
-          { label: "Home", href: "/" },
-          { label: "Speaking", href: "/study/speaking" },
-        ]}
-        current={exercise.title}
-      />
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Speaking", href: "/study/speaking" },
+          ]}
+          current={exercise.title}
+        />
+      </BreadcrumbWrapper>
 
-      <Header>
+      <ContentWrapper>
+        <Header>
         <Title>{exercise.title}</Title>
         <Subtitle>{exercise.scenario}</Subtitle>
       </Header>
@@ -625,6 +653,7 @@ export default function KaiwaRoleplayPage() {
           )}
         </NextStepsContainer>
       )}
+      </ContentWrapper>
     </Container>
   );
 }

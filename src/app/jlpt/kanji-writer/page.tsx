@@ -139,7 +139,7 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   gap: 1.5rem;
   padding: 1.5rem 2rem 2rem 2rem;
@@ -150,9 +150,13 @@ const PageContainer = styled.div`
     padding-bottom: 96px;
   }
 
-  @media (max-width: 768px) {
-    padding: 1rem 0.75rem 96px 0.75rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
     gap: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
   }
 `;
 

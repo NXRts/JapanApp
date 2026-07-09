@@ -9,14 +9,24 @@ import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
 // Styled Components
 const Container = styled.div`
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   min-height: 90vh;
 
-  @media (max-width: 768px) {
-    padding: 1.5rem 1rem 3rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
+
+const ContentWrapper = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -230,7 +240,8 @@ export default function MateriHubPage() {
   return (
     <Container>
       <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Materials" />
-      <Header>
+      <ContentWrapper>
+        <Header>
         <Title>Learning Materials</Title>
         <Subtitle>
           Master Japanese in a structured way through selected Grammar,
@@ -424,6 +435,7 @@ export default function MateriHubPage() {
           </CardContent>
         </HubCardLink>
       </HubGrid>
+      </ContentWrapper>
     </Container>
   );
 }

@@ -36,13 +36,22 @@ const PageWrapper = styled.div`
     rgba(79, 70, 229, 0.03) 0%,
     transparent 60%
   );
-  padding: 2rem 1.5rem;
   width: 100%;
   overflow-x: hidden;
+`;
 
-  @media (max-width: 768px) {
-    padding: 1.5rem 1rem 1.5rem;
-    min-height: auto;
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 0 2rem;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 0 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 0 0.5rem;
   }
 `;
 
@@ -50,6 +59,11 @@ const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
+  padding: 2rem 1.5rem;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem 1.5rem;
+  }
 `;
 
 const Header = styled.div`
@@ -568,11 +582,13 @@ export default function PracticeHubPage() {
 
   return (
     <PageWrapper>
-      <Container>
+      <BreadcrumbWrapper>
         <Breadcrumbs
           items={[{ label: "Home", href: "/" }]}
           current="Practice Hub"
         />
+      </BreadcrumbWrapper>
+      <Container>
 
         <Header>
           <Title>Practice Hub</Title>

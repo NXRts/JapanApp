@@ -22,13 +22,28 @@ const PageWrapper = styled.div`
   flex-direction: column;
 `;
 
+const BreadcrumbWrapper = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 0 2rem;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 0 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 0 0.5rem;
+  }
+`;
+
 const Header = styled.div`
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 2rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   z-index: 10;
 
@@ -521,7 +536,7 @@ export default function KanjiWritingQuizPage() {
 
   return (
     <PageWrapper>
-      <Header>
+      <BreadcrumbWrapper>
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
@@ -529,6 +544,8 @@ export default function KanjiWritingQuizPage() {
           ]}
           current="Kanji Writing"
         />
+      </BreadcrumbWrapper>
+      <Header>
         <ToolbarHeader>
           <ScoreBadge>Score: {score}</ScoreBadge>
           <DropdownContainer ref={dropdownRef}>
