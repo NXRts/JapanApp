@@ -76,6 +76,47 @@ const HeaderRight = styled.div`
   }
 `;
 
+const FilterRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 1.5rem;
+  padding: 0 0.5rem;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+`;
+
+const FilterTitle = styled.h3`
+  margin: 0;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+
+  @media (max-width: 640px) {
+    font-size: 1.25rem;
+  }
+`;
+
+const FilterSelectors = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  @media (max-width: 640px) {
+    justify-content: space-between;
+    width: 100%;
+    & > * {
+      flex: 1;
+    }
+  }
+`;
+
 const CardArea = styled.div`
   display: flex;
   align-items: center;
@@ -118,8 +159,7 @@ const NavArrow = styled.button`
   }
 
   @media (max-width: 640px) {
-    width: 40px;
-    height: 40px;
+    display: none;
   }
 `;
 
@@ -166,6 +206,9 @@ const FlashcardSide = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
 
   @media (max-width: 640px) {
     padding: 1.5rem 1rem 3.5rem 1rem;
@@ -330,27 +373,30 @@ const FlipBtn = styled.button`
 
 const BottomActions = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   align-items: center;
+  width: 100%;
+  max-width: 600px;
+  justify-content: center;
+  margin-top: 1.5rem;
 
   @media (max-width: 640px) {
-    gap: 1rem;
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0 0.5rem;
   }
 `;
 
-const ActionCircle = styled.button<{ $color: string }>`
+const ActionCircle = styled.button<{ $color: string; $variant?: "remembered" | "forgot" | "secondary" }>`
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   border-radius: 99px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--foreground);
   cursor: pointer;
   transition: all 0.2s;
@@ -366,19 +412,86 @@ const ActionCircle = styled.button<{ $color: string }>`
     color: ${({ $color }) => $color};
   }
 
-  &:hover {
+  &:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
     border-color: ${({ $color }) => $color};
   }
 
-  @media (max-width: 640px) {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-    flex: 1;
-    min-width: 140px;
-    justify-content: center;
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    flex: 1;
+    
+    ${({ $variant }) =>
+      $variant === "remembered" &&
+      `
+      background: rgba(34, 197, 94, 0.15);
+      border-color: rgba(34, 197, 94, 0.4);
+      color: #22c55e;
+      .icon-wrapper {
+        border-color: #22c55e;
+        color: #22c55e;
+      }
+    `}
+
+    ${({ $variant }) =>
+      $variant === "forgot" &&
+      `
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #ef4444;
+      .icon-wrapper {
+        border-color: #ef4444;
+        color: #ef4444;
+      }
+    `}
+
+    ${({ $variant }) =>
+      $variant === "secondary" &&
+      `
+      background: var(--surface);
+      border-color: var(--border);
+      color: var(--text-secondary);
+      flex: 0 0 auto;
+      min-width: unset;
+      padding: 0.75rem;
+    `}
+  }
+`;
+
+const SwipeContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  will-change: transform;
+  position: relative;
+`;
+
+const SwipeBadge = styled.div<{ $type: "remembered" | "forgot"; $opacity: number }>`
+  position: absolute;
+  top: 2.5rem;
+  ${({ $type }) => ($type === "remembered" ? "right: 2.5rem;" : "left: 2.5rem;")}
+  border: 3px solid ${({ $type }) => ($type === "remembered" ? "#22c55e" : "#ef4444")};
+  color: ${({ $type }) => ($type === "remembered" ? "#22c55e" : "#ef4444")};
+  background: var(--surface);
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  font-weight: 900;
+  border-radius: 8px;
+  text-transform: uppercase;
+  transform: rotate(${({ $type }) => ($type === "remembered" ? "15deg" : "-15deg")});
+  opacity: ${({ $opacity }) => $opacity};
+  pointer-events: none;
+  z-index: 100;
+  transition: opacity 0.1s ease;
 `;
 
 // --- Dropdown Components ---
@@ -749,19 +862,126 @@ const KanjiStrokeBox = styled.div`
   }
 `;
 
-const KanjiStrokeImage = styled.img`
-  position: relative;
-  z-index: 2;
-  width: 85%;
-  height: 85%;
-  object-fit: contain;
-  filter: none !important;
+const ThumbnailPlaceholder = styled.div`
+  flex-shrink: 0;
+  width: 120px;
+  height: 80px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(79, 70, 229, 0.15) 100%);
+  border-radius: 8px;
+  border: 1px solid rgba(79, 70, 229, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
 `;
 
-const getKanjiVgUrl = (kanji: string) => {
-  const hex = kanji.charCodeAt(0).toString(16).padStart(5, "0");
-  return `https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${hex}.svg`;
-};
+interface KanjiStrokeDiagramProps {
+  kanji: string;
+}
+
+function KanjiStrokeDiagram({ kanji }: KanjiStrokeDiagramProps) {
+  const [paths, setPaths] = React.useState<string[]>([]);
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const cleanKanji = kanji ? kanji.trim() : "";
+    if (!cleanKanji) return;
+    let active = true;
+
+    const loadPaths = async () => {
+      setLoading(true);
+      try {
+        const hex = cleanKanji.charCodeAt(0).toString(16).padStart(5, "0");
+        
+        // 1. Try direct browser CDN fetch first (works if browser has internet but server does not)
+        try {
+          const cdnRes = await fetch(`https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg@master/kanji/${hex}.svg`);
+          if (cdnRes.ok && active) {
+            const text = await cdnRes.text();
+            const matches = [...text.matchAll(/<path[^>]*\bd="([^"]+)"/g)];
+            const extractedPaths = matches.map((m) => m[1]);
+            if (extractedPaths.length > 0) {
+              setPaths(extractedPaths);
+              setLoading(false);
+              return;
+            }
+          }
+        } catch (cdnErr) {
+          console.warn("Direct JSDelivr fetch failed, trying local proxy:", cdnErr);
+        }
+
+        // 2. Fallback to local server proxy API route
+        if (active) {
+          const res = await fetch(`/api/kanji-svg?hex=${hex}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (active) setPaths(data);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load kanji SVG paths:", err);
+      } finally {
+        if (active) setLoading(false);
+      }
+    };
+    loadPaths();
+    return () => {
+      active = false;
+    };
+  }, [kanji]);
+
+  if (loading) {
+    return (
+      <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%" }}>
+        Loading...
+      </div>
+    );
+  }
+
+  // Fallback: If both fail, render a bold, highly visible character so the user still has a clear guideline!
+  if (paths.length === 0) {
+    const cleanKanji = kanji ? kanji.trim() : "";
+    return (
+      <div style={{ fontSize: "3.5rem", fontWeight: 700, color: "#111827", opacity: 0.9, display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%" }}>
+        {cleanKanji}
+      </div>
+    );
+  }
+
+  const cleanKanji = kanji ? kanji.trim() : "";
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      {/* Faint underlay guide behind the strokes */}
+      <div style={{ position: "absolute", fontSize: "3.5rem", fontWeight: 400, color: "#111827", opacity: 0.08, pointerEvents: "none", zIndex: 1 }}>
+        {cleanKanji}
+      </div>
+
+      <svg
+        viewBox="0 0 109 109"
+        style={{
+          width: "85%",
+          height: "85%",
+          pointerEvents: "none",
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
+        {paths.map((d, i) => (
+          <path
+            key={i}
+            d={d}
+            fill="none"
+            stroke="#111827"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        ))}
+      </svg>
+    </div>
+  );
+}
 
 interface ExternalSentence {
   japanese: string;
@@ -803,6 +1023,11 @@ function FlashcardContent() {
   // State
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchStartY, setTouchStartY] = useState<number | null>(null);
+  const [touchDeltaX, setTouchDeltaX] = useState(0);
+  const [touchDeltaY, setTouchDeltaY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [reviewStatus, setReviewStatus] = useState<
     Record<string, "remembered" | "not-remembered">
@@ -982,6 +1207,47 @@ function FlashcardContent() {
     currentItem?.indonesian ||
     currentItem?.english ||
     "No definition";
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    setTouchStartX(touch.clientX);
+    setTouchStartY(touch.clientY);
+    setTouchDeltaX(0);
+    setTouchDeltaY(0);
+    setIsDragging(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (touchStartX === null || touchStartY === null) return;
+    const touch = e.touches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    
+    if (Math.abs(dx) > Math.abs(dy)) {
+      if (e.cancelable) e.preventDefault();
+    }
+    
+    setTouchDeltaX(dx);
+    setTouchDeltaY(dy);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX === null || !currentItem) return;
+    const threshold = 120;
+    if (touchDeltaX > threshold) {
+      saveStatus(getItemKey(currentItem), "remembered");
+      setTimeout(() => handleNext(), 150);
+    } else if (touchDeltaX < -threshold) {
+      saveStatus(getItemKey(currentItem), "not-remembered");
+      if (!isFlipped) setIsFlipped(true);
+    }
+    
+    setTouchStartX(null);
+    setTouchStartY(null);
+    setTouchDeltaX(0);
+    setTouchDeltaY(0);
+    setIsDragging(false);
+  };
 
   // Dynamic Kanji & Related Words (must be called before early returns to preserve Hook order)
   const kanjisInWord = useMemo(() => {
@@ -1360,34 +1626,9 @@ function FlashcardContent() {
             </HeaderRight>
           </Header>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-              maxWidth: "600px",
-              marginBottom: "1.5rem",
-              padding: "0 0.5rem",
-            }}
-          >
-            <h3
-              style={{
-                margin: 0,
-                color: "var(--text-secondary)",
-                textTransform: "capitalize",
-              }}
-            >
-              {activeCategory.replace("-", " ")}
-            </h3>
-            <div
-              style={{
-                display: "flex",
-                gap: "0.75rem",
-                flexWrap: "wrap",
-                justifyContent: "flex-end",
-              }}
-            >
+          <FilterRow>
+            <FilterTitle>{activeCategory.replace("-", " ")}</FilterTitle>
+            <FilterSelectors>
               <FilterDropdown
                 value={
                   activeStatus === "remembered"
@@ -1417,8 +1658,8 @@ function FlashcardContent() {
                 onChange={handleLevelChange}
                 options={["All", "N5", "N4", "N3", "N2", "N1"]}
               />
-            </div>
-          </div>
+            </FilterSelectors>
+          </FilterRow>
 
           <CardArea>
             <FlashcardContainer>
@@ -1487,34 +1728,9 @@ function FlashcardContent() {
           </HeaderRight>
         </Header>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            maxWidth: "600px",
-            marginBottom: "1.5rem",
-            padding: "0 0.5rem",
-          }}
-        >
-          <h3
-            style={{
-              margin: 0,
-              color: "var(--text-secondary)",
-              textTransform: "capitalize",
-            }}
-          >
-            {activeCategory.replace("-", " ")}
-          </h3>
-          <div
-            style={{
-              display: "flex",
-              gap: "0.75rem",
-              flexWrap: "wrap",
-              justifyContent: "flex-end",
-            }}
-          >
+        <FilterRow>
+          <FilterTitle>{activeCategory.replace("-", " ")}</FilterTitle>
+          <FilterSelectors>
             <FilterDropdown
               value={
                 activeStatus === "remembered"
@@ -1544,8 +1760,8 @@ function FlashcardContent() {
               onChange={handleLevelChange}
               options={["All", "N5", "N4", "N3", "N2", "N1"]}
             />
-          </div>
-        </div>
+          </FilterSelectors>
+        </FilterRow>
 
         <CardArea>
           <NavArrow onClick={handlePrev} disabled={currentIndex === 0}>
@@ -1561,117 +1777,188 @@ function FlashcardContent() {
             </svg>
           </NavArrow>
 
-          <FlashcardContainer>
-            <FlashcardInner $isFlipped={isFlipped}>
-              {/* --- FRONT SIDE --- */}
-              <FlashcardSide>
-                {reviewStatus[getItemKey(currentItem)] && (
-                  <StatusIndicator
-                    $status={reviewStatus[getItemKey(currentItem)]}
-                  />
-                )}
+          <FlashcardContainer
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <SwipeContainer
+              style={
+                isDragging
+                  ? {
+                      transform: `translate3d(${touchDeltaX}px, ${touchDeltaY * 0.2}px, 0) rotate(${touchDeltaX * 0.05}deg)`,
+                      transition: "none",
+                    }
+                  : {
+                      transition: "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                    }
+              }
+            >
+              {touchDeltaX > 20 && (
+                <SwipeBadge
+                  $type="remembered"
+                  $opacity={Math.min(Math.abs(touchDeltaX) / 100, 1)}
+                >
+                  Remembered
+                </SwipeBadge>
+              )}
+              {touchDeltaX < -20 && (
+                <SwipeBadge
+                  $type="forgot"
+                  $opacity={Math.min(Math.abs(touchDeltaX) / 100, 1)}
+                >
+                  Forgot
+                </SwipeBadge>
+              )}
 
-                <SpeakerIcon onClick={(e) => playAudio(e, resolveTargetWord())}>
-                  <svg
-                    width="32"
-                    height="32"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                  </svg>
-                </SpeakerIcon>
-
-                <MainWord>{resolveTargetWord()}</MainWord>
-
-                <Readings>
-                  {targetKana.length > 0
-                    ? `「 ${targetKana.join(" 」 「 ")} 」`
-                    : ""}
-                </Readings>
-
-                {romaji && (
-                  <div
-                    style={{
-                      color: "var(--text-secondary)",
-                      fontSize: "1.1rem",
-                      marginTop: "0.25rem",
-                    }}
-                  >
-                    {romaji}
-                  </div>
-                )}
-
-                <DetailsBtn
+              <FlashcardInner $isFlipped={isFlipped}>
+                {/* --- FRONT SIDE --- */}
+                <FlashcardSide
                   onClick={(e) => {
-                    e.stopPropagation();
-                    setShowDetailModal(true);
+                    if (
+                      e.target instanceof HTMLElement &&
+                      (e.target.closest("button") ||
+                        e.target.closest("a") ||
+                        e.target.closest(".no-flip"))
+                    ) {
+                      return;
+                    }
+                    setIsFlipped(!isFlipped);
                   }}
                 >
-                  View details
-                </DetailsBtn>
+                  {reviewStatus[getItemKey(currentItem)] && (
+                    <StatusIndicator
+                      $status={reviewStatus[getItemKey(currentItem)]}
+                    />
+                  )}
 
-                <BottomLeftText>
-                  {currentIndex + 1} / {filteredData.length}
-                </BottomLeftText>
+                  <SpeakerIcon onClick={(e) => playAudio(e, resolveTargetWord())}>
+                    <svg
+                      width="32"
+                      height="32"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                    </svg>
+                  </SpeakerIcon>
 
-                <FlipBtn onClick={() => setIsFlipped(true)}>
-                  Flip
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
+                  <MainWord>{resolveTargetWord()}</MainWord>
+
+                  <Readings>
+                    {targetKana.length > 0
+                      ? `「 ${targetKana.join(" 」 「 ")} 」`
+                      : ""}
+                  </Readings>
+
+                  {romaji && (
+                    <div
+                      style={{
+                        color: "var(--text-secondary)",
+                        fontSize: "1.1rem",
+                        marginTop: "0.25rem",
+                      }}
+                    >
+                      {romaji}
+                    </div>
+                  )}
+
+                  <DetailsBtn
+                    className="no-flip"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowDetailModal(true);
+                    }}
                   >
-                    <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
-                    <path d="M3 3v5h5" />
-                  </svg>
-                </FlipBtn>
-              </FlashcardSide>
+                    View details
+                  </DetailsBtn>
 
-              {/* --- BACK SIDE --- */}
-              <FlashcardBack>
-                {reviewStatus[getItemKey(currentItem)] && (
-                  <StatusIndicator
-                    $status={reviewStatus[getItemKey(currentItem)]}
-                  />
-                )}
+                  <BottomLeftText>
+                    {currentIndex + 1} / {filteredData.length}
+                  </BottomLeftText>
 
-                <SpeakerIcon onClick={(e) => playAudio(e, resolveTargetWord())}>
-                  <svg
-                    width="32"
-                    height="32"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
+                  <FlipBtn
+                    className="no-flip"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsFlipped(true);
+                    }}
                   >
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                  </svg>
-                </SpeakerIcon>
+                    Flip
+                    <svg
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
+                      <path d="M3 3v5h5" />
+                    </svg>
+                  </FlipBtn>
+                </FlashcardSide>
 
-                <MainWord>{meaning}</MainWord>
+                {/* --- BACK SIDE --- */}
+                <FlashcardBack
+                  onClick={(e) => {
+                    if (
+                      e.target instanceof HTMLElement &&
+                      (e.target.closest("button") ||
+                        e.target.closest("a") ||
+                        e.target.closest(".no-flip"))
+                    ) {
+                      return;
+                    }
+                    setIsFlipped(!isFlipped);
+                  }}
+                >
+                  {reviewStatus[getItemKey(currentItem)] && (
+                    <StatusIndicator
+                      $status={reviewStatus[getItemKey(currentItem)]}
+                    />
+                  )}
 
-                <BottomLeftText>
-                  {currentIndex + 1} / {filteredData.length}
-                </BottomLeftText>
+                  <SpeakerIcon onClick={(e) => playAudio(e, resolveTargetWord())}>
+                    <svg
+                      width="32"
+                      height="32"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                    </svg>
+                  </SpeakerIcon>
 
-                <FlipBtn onClick={() => setIsFlipped(false)}>
-                  Back
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
+                  <MainWord>{meaning}</MainWord>
+
+                  <BottomLeftText>
+                    {currentIndex + 1} / {filteredData.length}
+                  </BottomLeftText>
+
+                  <FlipBtn
+                    className="no-flip"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsFlipped(false);
+                    }}
                   >
-                    <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
-                    <path d="M3 3v5h5" />
-                  </svg>
-                </FlipBtn>
-              </FlashcardBack>
-            </FlashcardInner>
+                    Back
+                    <svg
+                      width="16"
+                      height="16"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M3 12a9 9 0 109-9 9.75 9.75 0 00-6.74 2.74L3 8" />
+                      <path d="M3 3v5h5" />
+                    </svg>
+                  </FlipBtn>
+                </FlashcardBack>
+              </FlashcardInner>
+            </SwipeContainer>
           </FlashcardContainer>
 
           <NavArrow
@@ -1693,7 +1980,28 @@ function FlashcardContent() {
 
         <BottomActions>
           <ActionCircle
+            $color="var(--text-secondary)"
+            $variant="secondary"
+            onClick={handlePrev}
+            disabled={currentIndex === 0}
+            title="Previous Card"
+            className="no-flip"
+          >
+            <svg
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </ActionCircle>
+
+          <ActionCircle
             $color="#22c55e"
+            $variant="remembered"
             onClick={() => {
               saveStatus(getItemKey(currentItem), "remembered");
               setTimeout(() => handleNext(), 150);
@@ -1713,8 +2021,10 @@ function FlashcardContent() {
             </div>
             Remembered
           </ActionCircle>
+
           <ActionCircle
             $color="#ef4444"
+            $variant="forgot"
             onClick={() => {
               saveStatus(getItemKey(currentItem), "not-remembered");
               if (!isFlipped) setIsFlipped(true);
@@ -2202,18 +2512,18 @@ function FlashcardContent() {
                                 borderRadius: "12px",
                               }}
                             >
-                              <img
-                                src={`https://picsum.photos/seed/japan-${targetWordForDetails}-${idx}/120/80`}
-                                alt="Contextual thumbnail"
-                                style={{
-                                  flexShrink: 0,
-                                  width: "120px",
-                                  height: "80px",
-                                  objectFit: "cover",
-                                  borderRadius: "8px",
-                                  border: "1px solid var(--border)",
-                                }}
-                              />
+                              <ThumbnailPlaceholder>
+                                <svg
+                                  width="28"
+                                  height="28"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                              </ThumbnailPlaceholder>
                               <div
                                 style={{
                                   display: "flex",
@@ -3198,16 +3508,11 @@ function FlashcardContent() {
                                     margin: "0",
                                   }}
                                 >
-                                  <KanjiStrokeImage
-                                    src={getKanjiVgUrl(
-                                      relatedKanjis[activeSelectedKanjiIndex]
-                                        .kanji,
-                                    )}
-                                    alt={
+                                  <KanjiStrokeDiagram
+                                    kanji={
                                       relatedKanjis[activeSelectedKanjiIndex]
                                         .kanji
                                     }
-                                    loading="lazy"
                                   />
                                 </KanjiStrokeBox>
                               </div>
@@ -3980,11 +4285,7 @@ function FlashcardContent() {
 
                           {k.kanji && (
                             <KanjiStrokeBox>
-                              <KanjiStrokeImage
-                                src={getKanjiVgUrl(k.kanji)}
-                                alt={k.kanji}
-                                loading="lazy"
-                              />
+                              <KanjiStrokeDiagram kanji={k.kanji} />
                             </KanjiStrokeBox>
                           )}
 
