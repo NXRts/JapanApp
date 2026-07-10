@@ -752,6 +752,7 @@ const ModalLayout = styled.div`
 const MainContent = styled.div`
   flex: 1;
   min-width: 0;
+  padding-bottom: 2rem;
 `;
 
 const SidePanelWrapper = styled.div`
@@ -760,9 +761,11 @@ const SidePanelWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  padding-bottom: 2rem;
 
   @media (max-width: 800px) {
     width: 100%;
+    padding-bottom: 1.5rem;
   }
 `;
 
@@ -952,11 +955,6 @@ function KanjiStrokeDiagram({ kanji }: KanjiStrokeDiagramProps) {
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      {/* Faint underlay guide behind the strokes */}
-      <div style={{ position: "absolute", fontSize: "3.5rem", fontWeight: 400, color: "#111827", opacity: 0.08, pointerEvents: "none", zIndex: 1 }}>
-        {cleanKanji}
-      </div>
-
       <svg
         viewBox="0 0 109 109"
         style={{
@@ -1254,12 +1252,50 @@ function FlashcardContent() {
     if (!targetWordForDetails || targetWordForDetails === "?") return [];
     return String(targetWordForDetails)
       .split("")
-      .filter((char: string) => char >= "\u4e00" && char <= "\u9faf");
+      .filter((char: string) =>
+        /[\u4e00-\u9faf\u3040-\u309f\u30a0-\u30ff\u3005]/.test(char)
+      );
   }, [targetWordForDetails]);
 
   const relatedKanjis = useMemo(() => {
     if (kanjisInWord.length === 0) return [];
-    return allKanji.filter((k) => k.kanji && kanjisInWord.includes(k.kanji));
+    return kanjisInWord.map((char, idx) => {
+      const existing = allKanji.find((k) => k.kanji === char);
+      if (existing) {
+        return {
+          ...existing,
+          id: `${existing.id}-${idx}`,
+        };
+      }
+
+      const isHiragana = char >= "\u3040" && char <= "\u309f";
+      const isKatakana = char >= "\u30a0" && char <= "\u30ff";
+      const isIteration = char === "\u3005";
+
+      return {
+        id: `char-${char}-${idx}`,
+        type: "kanji" as const,
+        kanji: char,
+        level: isHiragana
+          ? "Hiragana"
+          : isKatakana
+          ? "Katakana"
+          : isIteration
+          ? "Symbol"
+          : "Character",
+        meaning: isHiragana
+          ? "Hiragana character"
+          : isKatakana
+          ? "Katakana character"
+          : isIteration
+          ? "Iteration mark"
+          : "Japanese character",
+        onyomi: [],
+        kunyomi: [],
+        stroke_count: undefined,
+        source: "local" as const,
+      };
+    });
   }, [kanjisInWord]);
 
   const relatedWords = useMemo(() => {
@@ -4216,7 +4252,7 @@ function FlashcardContent() {
                 {/* Related Kanji Section */}
                 {relatedKanjis.length > 0 && (
                   <PanelCard>
-                    <PanelHeader>Kanji from {resolveTargetWord()}</PanelHeader>
+                    <PanelHeader>Characters from {resolveTargetWord()}</PanelHeader>
                     <PanelBody
                       style={{
                         display: "flex",
