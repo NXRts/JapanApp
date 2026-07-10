@@ -300,6 +300,48 @@ const MainWord = styled.h1`
   }
 `;
 
+const BackMeaning = styled.div<{ $textLength: number }>`
+  font-size: ${({ $textLength }) => {
+    if ($textLength > 60) return "1.6rem";
+    if ($textLength > 30) return "2.2rem";
+    return "3.2rem";
+  }};
+  font-weight: 600;
+  color: var(--primary);
+  text-align: center;
+  line-height: 1.4;
+  word-break: break-word;
+  max-width: 90%;
+  margin: 0 auto;
+  overflow-y: auto;
+  max-height: 60%;
+  padding: 0.5rem;
+
+  /* Custom scrollbar to look sleek */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.2);
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.4);
+  }
+
+  @media (max-width: 640px) {
+    font-size: ${({ $textLength }) => {
+      if ($textLength > 60) return "1.25rem";
+      if ($textLength > 30) return "1.6rem";
+      return "2.2rem";
+    }};
+    max-height: 55%;
+  }
+`;
+
 const Readings = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -1966,7 +2008,7 @@ function FlashcardContent() {
                     </svg>
                   </SpeakerIcon>
 
-                  <MainWord>{meaning}</MainWord>
+                  <BackMeaning $textLength={meaning.length}>{meaning}</BackMeaning>
 
                   <BottomLeftText>
                     {currentIndex + 1} / {filteredData.length}
