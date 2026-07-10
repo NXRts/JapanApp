@@ -22,12 +22,24 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch the SVG server-side (immune to browser CSP and CORS headers)
-    const res = await fetch(
-      `https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${cleanHex}.svg`,
+    // Try JSDelivr CDN first for speed and high availability
+    let res = await fetch(
+      `https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg@master/kanji/${cleanHex}.svg`,
       {
         next: { revalidate: 86400 }, // Cache on server for 24 hours to improve performance
       }
     );
+
+    // Fallback to GitHub raw if JSDelivr fails
+    if (!res.ok) {
+      console.warn(`JSDelivr CDN failed for ${cleanHex}, falling back to raw GitHub.`);
+      res = await fetch(
+        `https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/${cleanHex}.svg`,
+        {
+          next: { revalidate: 86400 },
+        }
+      );
+    }
 
     if (!res.ok) {
       return NextResponse.json(
