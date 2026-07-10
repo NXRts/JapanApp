@@ -1360,7 +1360,7 @@ function FlashcardContent() {
         source: "local" as const,
       };
     });
-  }, [kanjisInWord]);
+  }, [kanjisInWord, targetWordForDetails, currentItem]);
 
   const relatedWords = useMemo(() => {
     if (!targetWordForDetails || targetWordForDetails === "?") return [];
