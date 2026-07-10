@@ -826,6 +826,20 @@ const PanelHeader = styled.div`
   background: rgba(120, 120, 120, 0.05);
 `;
 
+const EduNote = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  align-items: flex-start;
+  margin-top: 0.5rem;
+`;
+
 const PanelBody = styled.div`
   padding: 1.25rem;
 `;
@@ -1304,9 +1318,17 @@ function FlashcardContent() {
     return kanjisInWord.map((char, idx) => {
       const existing = allKanji.find((k) => k.kanji === char);
       if (existing) {
+        // If the vocabulary word is a single character (e.g. "戸"), align its kanji level
+        // with the vocabulary word's level to prevent student confusion.
+        const shouldOverrideLevel = targetWordForDetails && targetWordForDetails.length === 1;
+        const levelOverride = shouldOverrideLevel && currentItem?.level 
+          ? (currentItem.level.includes("JLPT") ? currentItem.level.replace("JLPT ", "") : currentItem.level)
+          : undefined;
+
         return {
           ...existing,
           id: `${existing.id}-${idx}`,
+          level: levelOverride ? `N${levelOverride.replace("N", "")}` : existing.level,
         };
       }
 
@@ -2297,7 +2319,7 @@ function FlashcardContent() {
                         fontWeight: 600,
                       }}
                     >
-                      Level:
+                      Word Level:
                       <span
                         style={{
                           background: "#10b981",
@@ -3055,7 +3077,11 @@ function FlashcardContent() {
                                     width: "90px",
                                   }}
                                 >
-                                  JLPT
+                                  {["Hiragana", "Katakana", "Symbol", "Character"].includes(
+                                    relatedKanjis[activeSelectedKanjiIndex].level || ""
+                                  )
+                                    ? "Type"
+                                    : "Kanji Level"}
                                 </span>
                                 <span
                                   style={{
@@ -3593,6 +3619,18 @@ function FlashcardContent() {
                                     }
                                   />
                                 </KanjiStrokeBox>
+                              </div>
+                            )}
+
+                            {/* Educational Note */}
+                            {relatedKanjis.some((k) => !["Hiragana", "Katakana", "Symbol", "Character"].includes(k.level || "")) && (
+                              <div style={{ marginTop: "2rem" }}>
+                                <EduNote>
+                                  <span style={{ fontSize: "1rem", lineHeight: 1 }}>💡</span>
+                                  <div>
+                                    <strong>Catatan Level:</strong> Kosakata tingkat dasar (seperti N5) sering kali menggunakan huruf Kanji dari tingkat yang lebih tinggi (seperti N3 atau N1) untuk penulisan resminya.
+                                  </div>
+                                </EduNote>
                               </div>
                             )}
                           </div>
@@ -4379,17 +4417,32 @@ function FlashcardContent() {
                             </div>
                             {k.stroke_count && (
                               <div style={{ marginBottom: "0.25rem" }}>
-                                <strong>Strokes:</strong> {k.stroke_count}
+                                <strong>Kanji Strokes:</strong> {k.stroke_count}
                               </div>
                             )}
                             {k.level && (
                               <div>
-                                <strong>Level:</strong> {k.level}
+                                <strong>
+                                  {["Hiragana", "Katakana", "Symbol", "Character"].includes(k.level)
+                                    ? "Type:"
+                                    : "Kanji Level:"}
+                                </strong>{" "}
+                                {k.level}
                               </div>
                             )}
                           </div>
                         </div>
                       ))}
+
+                      {/* Educational Note */}
+                      {relatedKanjis.some((k) => !["Hiragana", "Katakana", "Symbol", "Character"].includes(k.level || "")) && (
+                        <EduNote>
+                          <span style={{ fontSize: "1rem", lineHeight: 1 }}>💡</span>
+                          <div>
+                            <strong>Catatan Level:</strong> Kosakata tingkat dasar (seperti N5) sering kali menggunakan huruf Kanji dari tingkat yang lebih tinggi (seperti N3 atau N1) untuk penulisan resminya.
+                          </div>
+                        </EduNote>
+                      )}
                     </PanelBody>
                   </PanelCard>
                 )}
