@@ -694,8 +694,8 @@ const ModalOverlay = styled.div`
   justify-content: center;
   padding: 2rem;
 
-  @media (max-width: 640px) {
-    padding: 1rem;
+  @media (max-width: 768px) {
+    padding: 0;
   }
 `;
 
@@ -709,6 +709,13 @@ const ModalContent = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
 `;
 
 const ModalHeader = styled.div`
@@ -721,13 +728,10 @@ const ModalHeader = styled.div`
   z-index: 10;
   padding: 0 1rem;
 
-  @media (max-width: 640px) {
-    padding: 0 0.5rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+  @media (max-width: 768px) {
+    padding: 0;
+    width: 100%;
+    overflow: hidden;
   }
 `;
 
@@ -748,9 +752,11 @@ const ModalTab = styled.button<{ $active?: boolean }>`
     color: var(--primary);
   }
 
-  @media (max-width: 640px) {
-    padding: 1rem 0.6rem;
-    font-size: 0.85rem;
+  @media (max-width: 768px) {
+    flex: 1;
+    text-align: center;
+    padding: 1rem 0.2rem;
+    font-size: 0.8rem;
   }
 `;
 
@@ -768,12 +774,8 @@ const CloseModalBtn = styled.button`
     color: var(--foreground);
   }
 
-  @media (max-width: 640px) {
-    position: sticky;
-    right: 0;
-    background: var(--surface);
-    padding: 1rem 0.5rem;
-    box-shadow: -10px 0 15px -10px var(--surface);
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -2192,7 +2194,7 @@ function FlashcardContent() {
                 $active={activeTab === "jpjp"}
                 onClick={() => setActiveTab("jpjp")}
               >
-                Japanese - Japanese
+                JP-JP
               </ModalTab>
               <CloseModalBtn
                 onClick={() => {
@@ -2209,6 +2211,16 @@ function FlashcardContent() {
             </ModalHeader>
             <ModalLayout>
               <MainContent>
+                <div style={{ marginBottom: "1.5rem" }}>
+                  <Breadcrumbs
+                    items={[
+                      { label: "Home", href: "/" },
+                      { label: "JLPT Mastery", href: "/jlpt" },
+                      { label: "Flashcards", href: "/jlpt/flashcards" },
+                    ]}
+                    current={`${resolveTargetWord()} (${currentItem?.level || "N/A"})`}
+                  />
+                </div>
                 {activeTab === "vocabulary" && (
                   <>
                     <div
@@ -3322,7 +3334,9 @@ function FlashcardContent() {
                                                   width: "25%",
                                                 }}
                                               >
-                                                {w.reading || w.romaji}
+                                                {w.reading
+                                                  ? `${w.reading} (${toRomaji(w.reading)})`
+                                                  : w.romaji}
                                               </td>
                                               <td
                                                 style={{
@@ -3478,7 +3492,9 @@ function FlashcardContent() {
                                                   width: "25%",
                                                 }}
                                               >
-                                                {w.reading || w.romaji}
+                                                {w.reading
+                                                  ? `${w.reading} (${toRomaji(w.reading)})`
+                                                  : w.romaji}
                                               </td>
                                               <td
                                                 style={{
