@@ -378,17 +378,22 @@ export function Footer() {
 
         <FooterColumn>
           <ColumnTitle>Learn</ColumnTitle>
-          <FooterLink href="/kanji">Kanji Library</FooterLink>
-          <FooterLink href="/kana">Hiragana & Katakana</FooterLink>
-          <FooterLink href="/daily-quiz">Daily Quiz</FooterLink>
+          <FooterLink href="/characters">Character</FooterLink>
+          <FooterLink href="/jlpt">JLPT</FooterLink>
+          <FooterLink href="/study">Study</FooterLink>
+          <FooterLink href="/quiz">Quiz Hub</FooterLink>
         </FooterColumn>
 
         <FooterColumn>
           <ColumnTitle>Resources</ColumnTitle>
-          <FooterLink href="/blog">Our Blog</FooterLink>
-          <FooterLink href="/jlpt">JLPT Guides</FooterLink>
-          <FooterLink href="/materi">Study Material</FooterLink>
-          <FooterLink href="/contact">Get Help</FooterLink>
+          <FooterLink href="/blog">Blog</FooterLink>
+          <FooterLink href="/materi">Learning Material</FooterLink>
+          <FooterLink href="/practice-sheets">Practice Sheets</FooterLink>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+            <FooterLink href="/about">About</FooterLink>
+            <span style={{ color: "var(--text-secondary)", opacity: 0.4 }}>•</span>
+            <FooterLink href="/contact">Contact</FooterLink>
+          </div>
         </FooterColumn>
 
         <FooterColumn>
