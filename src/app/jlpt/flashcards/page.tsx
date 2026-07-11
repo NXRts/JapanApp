@@ -527,19 +527,19 @@ const SwipeContainer = styled.div`
   position: relative;
 `;
 
-const SwipeBadge = styled.div<{ $type: "remembered" | "forgot"; $opacity: number }>`
+const SwipeBadge = styled.div<{ $type: "next" | "back"; $opacity: number }>`
   position: absolute;
   top: 2.5rem;
-  ${({ $type }) => ($type === "remembered" ? "right: 2.5rem;" : "left: 2.5rem;")}
-  border: 3px solid ${({ $type }) => ($type === "remembered" ? "#22c55e" : "#ef4444")};
-  color: ${({ $type }) => ($type === "remembered" ? "#22c55e" : "#ef4444")};
+  ${({ $type }) => ($type === "back" ? "left: 2.5rem;" : "right: 2.5rem;")}
+  border: 3px solid var(--primary);
+  color: var(--primary);
   background: var(--surface);
   padding: 0.5rem 1rem;
   font-size: 1.5rem;
   font-weight: 900;
   border-radius: 8px;
   text-transform: uppercase;
-  transform: rotate(${({ $type }) => ($type === "remembered" ? "15deg" : "-15deg")});
+  transform: rotate(${({ $type }) => ($type === "back" ? "-15deg" : "15deg")});
   opacity: ${({ $opacity }) => $opacity};
   pointer-events: none;
   z-index: 100;
@@ -1299,13 +1299,11 @@ function FlashcardContent() {
 
   const handleTouchEnd = () => {
     if (touchStartX === null || !currentItem) return;
-    const threshold = 120;
+    const threshold = 100;
     if (touchDeltaX > threshold) {
-      saveStatus(getItemKey(currentItem), "remembered");
-      setTimeout(() => handleNext(), 150);
+      handlePrev();
     } else if (touchDeltaX < -threshold) {
-      saveStatus(getItemKey(currentItem), "not-remembered");
-      if (!isFlipped) setIsFlipped(true);
+      handleNext();
     }
     
     setTouchStartX(null);
@@ -1906,22 +1904,7 @@ function FlashcardContent() {
                     }
               }
             >
-              {touchDeltaX > 20 && (
-                <SwipeBadge
-                  $type="remembered"
-                  $opacity={Math.min(Math.abs(touchDeltaX) / 100, 1)}
-                >
-                  Remembered
-                </SwipeBadge>
-              )}
-              {touchDeltaX < -20 && (
-                <SwipeBadge
-                  $type="forgot"
-                  $opacity={Math.min(Math.abs(touchDeltaX) / 100, 1)}
-                >
-                  Forgot
-                </SwipeBadge>
-              )}
+
 
               <FlashcardInner $isFlipped={isFlipped}>
                 {/* --- FRONT SIDE --- */}
