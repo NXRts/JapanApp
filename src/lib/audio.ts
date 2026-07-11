@@ -192,13 +192,27 @@ export const playJapaneseAudio = (
   options: AudioOptions = {},
 ): Promise<void> => {
   return new Promise(async (resolve) => {
-    if (typeof window === "undefined" || !window.speechSynthesis) {
-      console.warn("Speech synthesis not supported");
+    if (typeof window === "undefined") {
+      return resolve();
+    }
+
+    if (!text || text.trim() === "") {
+      console.warn("Empty text passed to playJapaneseAudio");
+      return resolve();
+    }
+
+    const rate = options.rate ?? 0.85;
+
+    if (!window.speechSynthesis) {
+      console.warn("Speech synthesis not supported, trying external TTS...");
+      const successGoogle = await playWithGoogleTTS(text, rate);
+      if (!successGoogle) {
+        await playWithYoudaoTTS(text, rate);
+      }
       return resolve();
     }
 
     const synth = window.speechSynthesis;
-    const rate = options.rate ?? 0.85;
 
     // Ensure voices are loaded (critical for Firefox)
     const availableVoices = voices.length > 0 ? voices : await getVoicesAsync();
@@ -246,7 +260,7 @@ export const playJapaneseAudio = (
       console.warn("External TTS backends failed. Falling back to local SpeechSynthesis.");
     }
 
-    // Use SpeechSynthesis
+    // Cancel any ongoing speech
     synth.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
@@ -257,8 +271,29 @@ export const playJapaneseAudio = (
       utterance.voice = anyJapaneseVoice;
     }
 
-    utterance.onend = () => resolve();
+    // Safety timeout: if speech doesn't start within 1.2s (browser is hung/silent), fallback to external TTS
+    let speakingTimeout = setTimeout(async () => {
+      console.warn("SpeechSynthesis took too long to respond. Falling back to external TTS...");
+      synth.cancel();
+      const successGoogle = await playWithGoogleTTS(text, rate);
+      if (!successGoogle) {
+        await playWithYoudaoTTS(text, rate);
+      }
+      resolve();
+    }, 1200);
+
+    utterance.onstart = () => {
+      // It successfully started speaking, we can clear the hang timeout
+      clearTimeout(speakingTimeout);
+    };
+
+    utterance.onend = () => {
+      clearTimeout(speakingTimeout);
+      resolve();
+    };
+
     utterance.onerror = async (e) => {
+      clearTimeout(speakingTimeout);
       if (e.error !== "interrupted") {
         console.warn("SpeechSynthesis error:", e.error, "— trying external fallbacks...");
         const successGoogle = await playWithGoogleTTS(text, rate);
@@ -269,9 +304,9 @@ export const playJapaneseAudio = (
       resolve();
     };
 
-    // Firefox workaround: delay speak() by one tick after cancel()
+    // Delay speak() slightly after cancel() to prevent the browser from cancelling the new utterance
     setTimeout(() => {
       synth.speak(utterance);
-    }, 50);
+    }, 100);
   });
 };
