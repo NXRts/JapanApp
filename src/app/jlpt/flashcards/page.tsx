@@ -1947,7 +1947,7 @@ function FlashcardContent() {
 
                   <Readings>
                     {targetKana.length > 0
-                      ? `「 ${targetKana.join(" 」 「 ")} 」`
+                      ? `「 ${targetKana.map((k) => `${k} (${toRomaji(k)})`).join(" 」 「 ")} 」`
                       : ""}
                   </Readings>
 
@@ -2261,7 +2261,7 @@ function FlashcardContent() {
                       }}
                     >
                       {targetKana.length > 0
-                        ? `「 ${targetKana.join(" 」 「 ")} 」`
+                        ? `「 ${targetKana.map((k) => `${k} (${toRomaji(k)})`).join(" 」 「 ")} 」`
                         : ""}
                     </Readings>
 
@@ -2512,62 +2512,84 @@ function FlashcardContent() {
                             const synWord = syn.word;
                             if (!synWord) return null;
                             return (
-                              <div
-                                key={`syn-${syn.id}`}
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  gap: "0.5rem",
-                                  fontSize: "1rem",
-                                }}
-                              >
-                                <div
-                                  style={{
-                                    padding: "0.2rem",
-                                    background: "#3b82f6",
-                                    borderRadius: "50%",
-                                    transform: "scale(0.5)",
-                                  }}
-                                ></div>
-                                <span
-                                  style={{
-                                    fontWeight: 600,
-                                    color: "var(--foreground)",
-                                  }}
-                                >
-                                  {synWord}
-                                </span>
-                                <SpeakerIcon
-                                  style={{
-                                    margin: 0,
-                                    padding: 0,
-                                    width: 18,
-                                    height: 18,
-                                    opacity: 0.5,
-                                    cursor: "pointer",
-                                    color: "#3b82f6",
-                                  }}
-                                  onClick={(e) => playAudio(e, synWord)}
-                                >
-                                  <svg
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                    style={{ width: "100%", height: "100%" }}
-                                  >
-                                    <path d="M3 9v6h4l5 5V4L7 9H3z" />
-                                  </svg>
-                                </SpeakerIcon>
-                                <span
-                                  style={{
-                                    color: "var(--text-secondary)",
-                                    fontSize: "0.9rem",
-                                  }}
-                                >
-                                  ; {syn.meaning.split(/[,;]/)[0]}
-                                </span>
-                              </div>
-                            );
-                          })}
+                               <div
+                                 key={`syn-${syn.id}`}
+                                 style={{
+                                   display: "flex",
+                                   flexDirection: "column",
+                                   gap: "0.35rem",
+                                   padding: "0.6rem 0.8rem",
+                                   background: "var(--surface)",
+                                   border: "1px solid var(--border)",
+                                   borderRadius: "8px",
+                                   borderLeft: "3px solid #3b82f6",
+                                 }}
+                               >
+                                 <div
+                                   style={{
+                                     display: "flex",
+                                     alignItems: "center",
+                                     gap: "0.5rem",
+                                     flexWrap: "wrap",
+                                   }}
+                                 >
+                                   <span
+                                     style={{
+                                       fontWeight: 700,
+                                       color: "var(--foreground)",
+                                       fontSize: "1.05rem",
+                                     }}
+                                   >
+                                     {synWord}
+                                   </span>
+                                   <SpeakerIcon
+                                     style={{
+                                       margin: 0,
+                                       padding: 0,
+                                       width: 16,
+                                       height: 16,
+                                       opacity: 0.5,
+                                       cursor: "pointer",
+                                       color: "#3b82f6",
+                                     }}
+                                     onClick={(e) => playAudio(e, synWord)}
+                                   >
+                                     <svg
+                                       fill="currentColor"
+                                       viewBox="0 0 24 24"
+                                       style={{ width: "100%", height: "100%" }}
+                                     >
+                                       <path d="M3 9v6h4l5 5V4L7 9H3z" />
+                                     </svg>
+                                   </SpeakerIcon>
+                                   {syn.reading && (
+                                     <span
+                                       style={{
+                                         color: "var(--text-secondary)",
+                                         fontSize: "0.8rem",
+                                         fontFamily: "monospace",
+                                         background: "rgba(0,0,0,0.03)",
+                                         padding: "0.1rem 0.4rem",
+                                         borderRadius: "4px",
+                                         whiteSpace: "nowrap",
+                                       }}
+                                     >
+                                       {syn.reading} ({toRomaji(syn.reading)})
+                                     </span>
+                                   )}
+                                 </div>
+                                 <div
+                                   style={{
+                                     color: "var(--text-secondary)",
+                                     fontSize: "0.9rem",
+                                     lineHeight: "1.4",
+                                   }}
+                                 >
+                                   {syn.meaning.split(/[,;]/)[0]}
+                                 </div>
+                               </div>
+                             );
+                           })}
                         </div>
                       </div>
                     )}
@@ -2613,16 +2635,16 @@ function FlashcardContent() {
                               }}
                             >
                               <ThumbnailPlaceholder>
-                                <svg
-                                  width="28"
-                                  height="28"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  strokeWidth="2"
-                                  viewBox="0 0 24 24"
+                                <span
+                                  style={{
+                                    fontSize: targetWordForDetails.length > 2 ? "1.25rem" : "2rem",
+                                    fontWeight: "bold",
+                                    color: "var(--primary)",
+                                    fontFamily: '"Noto Sans JP", sans-serif',
+                                  }}
                                 >
-                                  <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                </svg>
+                                  {targetWordForDetails}
+                                </span>
                               </ThumbnailPlaceholder>
                               <div
                                 style={{
@@ -4226,7 +4248,7 @@ function FlashcardContent() {
                                               fontSize: "0.95rem",
                                             }}
                                           >
-                                            「{entry.reading}」
+                                            「{entry.reading} ({toRomaji(entry.reading)})」
                                           </span>
                                         )}
                                       </div>
@@ -4511,7 +4533,7 @@ function FlashcardContent() {
                                 marginBottom: "0.25rem",
                               }}
                             >
-                              「 {w.reading} 」
+                              「 {w.reading} ({toRomaji(w.reading)}) 」
                             </div>
                           )}
                           <div
