@@ -416,7 +416,7 @@ const FlipBtn = styled.button`
 
 const BottomActions = styled.div`
   display: flex;
-  gap: 1.5rem;
+  gap: 1.25rem;
   align-items: center;
   width: 100%;
   max-width: 600px;
@@ -424,8 +424,8 @@ const BottomActions = styled.div`
   margin-top: 1.5rem;
 
   @media (max-width: 640px) {
-    gap: 0.75rem;
-    padding: 0 0.5rem;
+    gap: 0.6rem;
+    padding: 0 0.25rem;
   }
 `;
 
@@ -466,6 +466,16 @@ const ActionCircle = styled.button<{ $color: string; $variant?: "remembered" | "
     cursor: not-allowed;
   }
 
+  ${({ $variant }) =>
+    $variant === "secondary" &&
+    `
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    flex: 0 0 auto;
+  `}
+
   @media (max-width: 640px) {
     padding: 0.75rem 1rem;
     font-size: 0.85rem;
@@ -498,12 +508,11 @@ const ActionCircle = styled.button<{ $color: string; $variant?: "remembered" | "
     ${({ $variant }) =>
       $variant === "secondary" &&
       `
-      background: var(--surface);
-      border-color: var(--border);
-      color: var(--text-secondary);
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border-radius: 50%;
       flex: 0 0 auto;
-      min-width: unset;
-      padding: 0.75rem;
     `}
   }
 `;
@@ -2146,6 +2155,26 @@ function FlashcardContent() {
               </svg>
             </div>
             Forgot
+          </ActionCircle>
+
+          <ActionCircle
+            $color="var(--text-secondary)"
+            $variant="secondary"
+            onClick={handleNext}
+            disabled={currentIndex === filteredData.length - 1}
+            title="Next Card"
+            className="no-flip"
+          >
+            <svg
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
           </ActionCircle>
         </BottomActions>
       </Container>
