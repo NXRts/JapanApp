@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useState, useEffect, Suspense, useMemo, useRef } from "react";
-import styled from "styled-components";
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import { useSearchParams } from "next/navigation";
 import {
-  searchDictionary,
-  allVocabulary,
-  allKanji,
   allGrammar,
+  allKanji,
+  allVocabulary,
+  searchDictionary,
 } from "@/lib/dictionary";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import styled from "styled-components";
 
 // --- Types & Interfaces ---
 interface QuizQuestion {
@@ -35,20 +34,50 @@ interface QuizStats {
 
 // --- Icons ---
 const SpeakerIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
     <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
   </svg>
 );
 
 const CheckIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#10b981"
+    strokeWidth="3"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <polyline points="20 6 9 17 4 12"></polyline>
   </svg>
 );
 
 const CrossIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#ef4444"
+    strokeWidth="3"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <line x1="18" y1="6" x2="6" y2="18"></line>
     <line x1="6" y1="6" x2="18" y2="18"></line>
   </svg>
@@ -109,7 +138,8 @@ const Container = styled.div`
   );
 
   @media (max-width: 640px) {
-    padding: 1rem 0.75rem 3rem 0.75rem;
+    padding: 1rem 0.75rem 0.5rem 0.75rem;
+    margin-bottom: 5.5rem;
   }
 `;
 
@@ -129,6 +159,7 @@ const LobbyCard = styled.div`
   @media (max-width: 600px) {
     padding: 1.25rem 1rem;
     gap: 1.1rem;
+    min-height: calc(100vh - 215px);
   }
 `;
 
@@ -207,8 +238,10 @@ const QuestionCountGrid = styled.div`
 `;
 
 const SelectButton = styled.button<{ $active: boolean }>`
-  background: ${({ $active }) => ($active ? "var(--primary)" : "rgba(255, 255, 255, 0.02)")};
-  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) =>
+    $active ? "var(--primary)" : "rgba(255, 255, 255, 0.02)"};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
   color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
   padding: 0.75rem 1rem;
   border-radius: 14px;
@@ -220,7 +253,8 @@ const SelectButton = styled.button<{ $active: boolean }>`
 
   &:hover {
     border-color: var(--primary);
-    background: ${({ $active }) => ($active ? "var(--primary)" : "rgba(255, 255, 255, 0.05)")};
+    background: ${({ $active }) =>
+      $active ? "var(--primary)" : "rgba(255, 255, 255, 0.05)"};
   }
 
   @media (max-width: 600px) {
@@ -242,8 +276,12 @@ const ModeGrid = styled.div`
 `;
 
 const ModeCard = styled.button<{ $active: boolean }>`
-  background: ${({ $active }) => ($active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)" : "rgba(255, 255, 255, 0.02)")};
-  border: 2px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  background: ${({ $active }) =>
+    $active
+      ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)"
+      : "rgba(255, 255, 255, 0.02)"};
+  border: 2px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
   border-radius: 18px;
   padding: 1.25rem;
   text-align: left;
@@ -257,7 +295,8 @@ const ModeCard = styled.button<{ $active: boolean }>`
   h5 {
     font-size: 1.05rem;
     font-weight: 700;
-    color: ${({ $active }) => ($active ? "var(--primary-light, #818cf8)" : "var(--foreground)")};
+    color: ${({ $active }) =>
+      $active ? "var(--primary-light, #818cf8)" : "var(--foreground)"};
     margin: 0;
   }
 
@@ -308,7 +347,11 @@ const StatItem = styled.div`
 const StartButton = styled.button`
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark, #4f46e5) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark, #4f46e5) 100%
+  );
   color: white;
   border: none;
   border-radius: 16px;
@@ -330,6 +373,12 @@ const StartButton = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  @media (max-width: 600px) {
+    margin-top: auto;
+    padding: 0.85rem;
+    font-size: 1rem;
+  }
 `;
 
 // --- Play Screen Styles ---
@@ -343,10 +392,13 @@ const QuizCard = styled.div`
   box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: 600px) {
-    padding: 1.75rem 1.25rem;
+    padding: 1.5rem 1rem;
     border-radius: 20px;
+    min-height: calc(100vh - 215px);
   }
 `;
 
@@ -537,9 +589,12 @@ const OptionButton = styled.button<{
   }
 
   &:hover {
-    transform: ${({ $state }) => ($state === "neutral" ? "translateY(-2px)" : "none")};
-    border-color: ${({ $state }) => ($state === "neutral" ? "var(--primary)" : "")};
-    background: ${({ $state }) => ($state === "neutral" ? "rgba(255, 255, 255, 0.04)" : "")};
+    transform: ${({ $state }) =>
+      $state === "neutral" ? "translateY(-2px)" : "none"};
+    border-color: ${({ $state }) =>
+      $state === "neutral" ? "var(--primary)" : ""};
+    background: ${({ $state }) =>
+      $state === "neutral" ? "rgba(255, 255, 255, 0.04)" : ""};
   }
 
   @media (max-width: 600px) {
@@ -566,7 +621,8 @@ const ProgressBarContainer = styled.div`
 
   @media (max-width: 600px) {
     height: 5px;
-    margin-top: 0.75rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
   }
 `;
 
@@ -626,6 +682,7 @@ const ResultOverlay = styled.div`
   @media (max-width: 600px) {
     padding: 2rem 1rem;
     gap: 1.5rem;
+    min-height: calc(100vh - 215px);
   }
 `;
 
@@ -641,7 +698,7 @@ const GradeBadge = styled.div<{ $grade: string }>`
   border: 4px solid;
   margin: 0 auto;
   box-shadow: var(--shadow-md);
-  
+
   color: ${({ $grade }) => {
     if ($grade === "S") return "#f59e0b";
     if ($grade === "A") return "#10b981";
@@ -664,7 +721,7 @@ const ResultHeader = styled.div`
     font-weight: 800;
     margin: 0;
   }
-  
+
   p {
     color: var(--text-secondary);
     font-size: 0.9rem;
@@ -759,7 +816,7 @@ const ReviewList = styled.div`
   max-height: 400px;
   overflow-y: auto;
   padding-right: 0.5rem;
-  
+
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -835,7 +892,7 @@ const ReviewItemHeader = styled.button`
     .q-text {
       font-size: 0.95rem;
     }
-    
+
     .q-type-meta {
       font-size: 0.68rem;
     }
@@ -853,8 +910,14 @@ const ReviewItemBody = styled.div`
   animation: slideDown 0.2s ease-out;
 
   @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .meta-row {
@@ -898,14 +961,18 @@ const ActionsRow = styled.div`
   @media (max-width: 600px) {
     flex-direction: row;
     gap: 0.5rem;
-    margin-top: 0.5rem;
+    margin-top: auto;
   }
 `;
 
 const PrimaryButton = styled.button`
   flex: 1;
   padding: 1rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark, #4f46e5) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark, #4f46e5) 100%
+  );
   color: white;
   border: none;
   border-radius: 14px;
@@ -991,16 +1058,22 @@ function QuizContent() {
   });
 
   // Gameplay States
-  const [quizState, setQuizState] = useState<"lobby" | "loading" | "playing" | "results" | "error">("lobby");
+  const [quizState, setQuizState] = useState<
+    "lobby" | "loading" | "playing" | "results" | "error"
+  >("lobby");
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(null);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
+    null,
+  );
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [maxStreak, setMaxStreak] = useState(0);
   const [xpEarned, setXpEarned] = useState(0);
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
-  const [expandedReviewIdx, setExpandedReviewIdx] = useState<number | null>(null);
+  const [expandedReviewIdx, setExpandedReviewIdx] = useState<number | null>(
+    null,
+  );
 
   // Time Attack Timer State
   const [timeLeft, setTimeLeft] = useState<number>(10);
@@ -1051,20 +1124,26 @@ function QuizContent() {
       utterance.rate = 0.85;
 
       const failsafe = setTimeout(() => {
-        const audio = new Audio(`https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`);
+        const audio = new Audio(
+          `https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`,
+        );
         audio.play().catch(() => {});
       }, 1000);
 
       utterance.onstart = () => clearTimeout(failsafe);
       utterance.onerror = () => {
         clearTimeout(failsafe);
-        const audio = new Audio(`https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`);
+        const audio = new Audio(
+          `https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`,
+        );
         audio.play().catch(() => {});
       };
 
       window.speechSynthesis.speak(utterance);
     } else {
-      const audio = new Audio(`https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`);
+      const audio = new Audio(
+        `https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`,
+      );
       audio.play().catch(() => {});
     }
   };
@@ -1076,27 +1155,35 @@ function QuizContent() {
       let pool: any[] = [];
 
       if (selectedCategory === "kanji") {
-        pool = allKanji.map(x => ({ ...x, type: "kanji" }));
+        pool = allKanji.map((x) => ({ ...x, type: "kanji" }));
       } else if (selectedCategory === "grammar") {
-        pool = allGrammar.map(x => ({ ...x, type: "grammar" }));
+        pool = allGrammar.map((x) => ({ ...x, type: "grammar" }));
       } else if (selectedCategory === "vocabulary") {
-        pool = allVocabulary.filter(x => x.id.startsWith("lib-")).map(x => ({ ...x, type: "vocabulary" }));
+        pool = allVocabulary
+          .filter((x) => x.id.startsWith("lib-"))
+          .map((x) => ({ ...x, type: "vocabulary" }));
       } else {
         pool = [
-          ...allKanji.map(x => ({ ...x, type: "kanji" })),
-          ...allGrammar.map(x => ({ ...x, type: "grammar" })),
-          ...allVocabulary.filter(x => x.id.startsWith("lib-")).map(x => ({ ...x, type: "vocabulary" })),
+          ...allKanji.map((x) => ({ ...x, type: "kanji" })),
+          ...allGrammar.map((x) => ({ ...x, type: "grammar" })),
+          ...allVocabulary
+            .filter((x) => x.id.startsWith("lib-"))
+            .map((x) => ({ ...x, type: "vocabulary" })),
         ];
       }
 
       if (selectedLevel !== "All") {
-        pool = pool.filter(item => item.level === selectedLevel);
+        pool = pool.filter((item) => item.level === selectedLevel);
       }
 
       if (queryParam && queryParam.trim() !== "") {
-        const filteredSearch = await searchDictionary(queryParam, "vocabulary", selectedLevel);
+        const filteredSearch = await searchDictionary(
+          queryParam,
+          "vocabulary",
+          selectedLevel,
+        );
         if (filteredSearch.length > 0) {
-          pool = pool.filter(p => filteredSearch.some(f => f.id === p.id));
+          pool = pool.filter((p) => filteredSearch.some((f) => f.id === p.id));
         }
       }
 
@@ -1105,9 +1192,12 @@ function QuizContent() {
         return;
       }
 
-      const selected = shuffleArray(pool).slice(0, Math.min(questionCount, pool.length));
+      const selected = shuffleArray(pool).slice(
+        0,
+        Math.min(questionCount, pool.length),
+      );
 
-      const generated: QuizQuestion[] = selected.map(item => {
+      const generated: QuizQuestion[] = selected.map((item) => {
         let types: ("meaning" | "reading" | "kanji")[] = ["meaning"];
         if (item.type === "kanji") {
           types = ["meaning", "reading", "kanji"];
@@ -1117,7 +1207,7 @@ function QuizContent() {
 
         const qType = types[Math.floor(Math.random() * types.length)];
 
-        const others = pool.filter(x => {
+        const others = pool.filter((x) => {
           if (x.id === item.id) return false;
           if (item.type === "kanji") return x.type === "kanji";
           if (item.type === "grammar") return x.type === "grammar";
@@ -1126,7 +1216,7 @@ function QuizContent() {
 
         const wrongs = shuffleArray(others).slice(0, 3);
         const options = shuffleArray([item, ...wrongs]);
-        const correctOptionIndex = options.findIndex(o => o.id === item.id);
+        const correctOptionIndex = options.findIndex((o) => o.id === item.id);
 
         return {
           type: qType,
@@ -1200,8 +1290,6 @@ function QuizContent() {
       },
     ]);
 
-
-
     setTimeout(() => {
       if (currentIndex < questions.length - 1) {
         setCurrentIndex((prev) => prev + 1);
@@ -1220,7 +1308,8 @@ function QuizContent() {
     if (q.type === "kanji") {
       return {
         instruction: "Find the correct Kanji / Word:",
-        main: item.meaning || item.indonesian || item.english || "No Definition",
+        main:
+          item.meaning || item.indonesian || item.english || "No Definition",
       };
     }
     if (q.type === "reading") {
@@ -1255,11 +1344,35 @@ function QuizContent() {
   };
 
   const getPerformanceGrade = (ratio: number) => {
-    if (ratio === 1) return { grade: "S", title: "Perfect Score! 💮", desc: "Amazing! Your knowledge is flawless!" };
-    if (ratio >= 0.9) return { grade: "A", title: "Outstanding! 🌟", desc: "Incredible accuracy. Keep up the high score!" };
-    if (ratio >= 0.8) return { grade: "B", title: "Great Job! 👍", desc: "Very strong understanding. Study details to reach S!" };
-    if (ratio >= 0.6) return { grade: "C", title: "Good Effort! 💪", desc: "Solid attempt. Review wrong answers below." };
-    return { grade: "D", title: "Keep Practicing! 📚", desc: "Review the vocabulary library and try again." };
+    if (ratio === 1)
+      return {
+        grade: "S",
+        title: "Perfect Score! 💮",
+        desc: "Amazing! Your knowledge is flawless!",
+      };
+    if (ratio >= 0.9)
+      return {
+        grade: "A",
+        title: "Outstanding! 🌟",
+        desc: "Incredible accuracy. Keep up the high score!",
+      };
+    if (ratio >= 0.8)
+      return {
+        grade: "B",
+        title: "Great Job! 👍",
+        desc: "Very strong understanding. Study details to reach S!",
+      };
+    if (ratio >= 0.6)
+      return {
+        grade: "C",
+        title: "Good Effort! 💪",
+        desc: "Solid attempt. Review wrong answers below.",
+      };
+    return {
+      grade: "D",
+      title: "Keep Practicing! 📚",
+      desc: "Review the vocabulary library and try again.",
+    };
   };
 
   const resultsGrade = useMemo(() => {
@@ -1355,17 +1468,28 @@ function QuizContent() {
               </QuestionCountGrid>
             </FormSection>
 
-
             <FormSection>
               <SectionLabel>Select Game Mode</SectionLabel>
               <ModeGrid>
-                <ModeCard $active={!timeAttack} onClick={() => setTimeAttack(false)}>
+                <ModeCard
+                  $active={!timeAttack}
+                  onClick={() => setTimeAttack(false)}
+                >
                   <h5>Relaxed Mode</h5>
-                  <p>Study at your own pace without pressure. Ideal for thorough learning.</p>
+                  <p>
+                    Study at your own pace without pressure. Ideal for thorough
+                    learning.
+                  </p>
                 </ModeCard>
-                <ModeCard $active={timeAttack} onClick={() => setTimeAttack(true)}>
+                <ModeCard
+                  $active={timeAttack}
+                  onClick={() => setTimeAttack(true)}
+                >
                   <h5>Time Attack ⚡</h5>
-                  <p>10 seconds per question limit. Build instant recall speeds under fire.</p>
+                  <p>
+                    10 seconds per question limit. Build instant recall speeds
+                    under fire.
+                  </p>
                 </ModeCard>
               </ModeGrid>
             </FormSection>
@@ -1376,10 +1500,23 @@ function QuizContent() {
 
         {/* --- 2. LOADING STATE --- */}
         {quizState === "loading" && (
-          <LobbyCard style={{ alignItems: "center", justifyContent: "center", minHeight: "300px" }}>
-            <div className="spinner" style={{ fontSize: "2rem", marginBottom: "1rem" }}>⌛</div>
+          <LobbyCard
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "300px",
+            }}
+          >
+            <div
+              className="spinner"
+              style={{ fontSize: "2rem", marginBottom: "1rem" }}
+            >
+              ⌛
+            </div>
             <h3 style={{ margin: 0 }}>Generating Quiz...</h3>
-            <p style={{ color: "var(--text-secondary)", margin: "0.5rem 0 0 0" }}>
+            <p
+              style={{ color: "var(--text-secondary)", margin: "0.5rem 0 0 0" }}
+            >
               Curating mixed questions for Level {selectedLevel}...
             </p>
           </LobbyCard>
@@ -1390,9 +1527,13 @@ function QuizContent() {
           <LobbyCard style={{ textAlign: "center" }}>
             <h3 style={{ color: "#ef4444" }}>Not Enough Content</h3>
             <p style={{ color: "var(--text-secondary)" }}>
-              The selected filter combination (Level {selectedLevel} - {selectedCategory}) does not contain enough items in the dictionary database to build a 4-choice quiz.
+              The selected filter combination (Level {selectedLevel} -{" "}
+              {selectedCategory}) does not contain enough items in the
+              dictionary database to build a 4-choice quiz.
             </p>
-            <StartButton onClick={() => setQuizState("lobby")}>Back to Lobby</StartButton>
+            <StartButton onClick={() => setQuizState("lobby")}>
+              Back to Lobby
+            </StartButton>
           </LobbyCard>
         )}
 
@@ -1400,9 +1541,7 @@ function QuizContent() {
         {quizState === "playing" && questions.length > 0 && (
           <QuizCard>
             <TopActionBar>
-              <StreakBadge $streak={streak}>
-                🔥 {streak} Streak
-              </StreakBadge>
+              <StreakBadge $streak={streak}>🔥 {streak} Streak</StreakBadge>
               <QuestionCount>
                 {currentIndex + 1} / {questions.length}
               </QuestionCount>
@@ -1415,7 +1554,7 @@ function QuizContent() {
               <QuestionText>
                 {getQuestionContent(questions[currentIndex]).main}
               </QuestionText>
-              
+
               <SpeakerButton
                 onClick={() => {
                   const item = questions[currentIndex].item;
@@ -1429,7 +1568,8 @@ function QuizContent() {
 
             <OptionsGrid>
               {questions[currentIndex].options.map((opt, idx) => {
-                const isCorrect = idx === questions[currentIndex].correctOptionIndex;
+                const isCorrect =
+                  idx === questions[currentIndex].correctOptionIndex;
                 let state: "neutral" | "correct" | "incorrect" = "neutral";
 
                 if (selectedOptionIndex !== null) {
@@ -1437,7 +1577,10 @@ function QuizContent() {
                   else if (idx === selectedOptionIndex) state = "incorrect";
                 }
 
-                const optStrings = getOptionLabel(opt, questions[currentIndex].type);
+                const optStrings = getOptionLabel(
+                  opt,
+                  questions[currentIndex].type,
+                );
 
                 return (
                   <OptionButton
@@ -1447,22 +1590,38 @@ function QuizContent() {
                   >
                     <div className="option-text-wrapper">
                       <span className="option-main">{optStrings.main}</span>
-                      {optStrings.sub && <span className="option-sub">{optStrings.sub}</span>}
+                      {optStrings.sub && (
+                        <span className="option-sub">{optStrings.sub}</span>
+                      )}
                     </div>
 
                     {selectedOptionIndex !== null && isCorrect && (
-                      <div className="feedback-icon" style={{ color: "#10b981" }}><CheckIcon /></div>
+                      <div
+                        className="feedback-icon"
+                        style={{ color: "#10b981" }}
+                      >
+                        <CheckIcon />
+                      </div>
                     )}
-                    {selectedOptionIndex !== null && idx === selectedOptionIndex && !isCorrect && (
-                      <div className="feedback-icon" style={{ color: "#ef4444" }}><CrossIcon /></div>
-                    )}
+                    {selectedOptionIndex !== null &&
+                      idx === selectedOptionIndex &&
+                      !isCorrect && (
+                        <div
+                          className="feedback-icon"
+                          style={{ color: "#ef4444" }}
+                        >
+                          <CrossIcon />
+                        </div>
+                      )}
                   </OptionButton>
                 );
               })}
             </OptionsGrid>
 
             <ProgressBarContainer>
-              <ProgressFill $percent={((currentIndex + 1) / questions.length) * 100} />
+              <ProgressFill
+                $percent={((currentIndex + 1) / questions.length) * 100}
+              />
             </ProgressBarContainer>
 
             {timeAttack && (
@@ -1487,11 +1646,15 @@ function QuizContent() {
 
             <ResultGrid>
               <ResultStatBox>
-                <span className="value">{score} / {questions.length}</span>
+                <span className="value">
+                  {score} / {questions.length}
+                </span>
                 <span className="label">Score</span>
               </ResultStatBox>
               <ResultStatBox>
-                <span className="value">{Math.round((score / questions.length) * 100)}%</span>
+                <span className="value">
+                  {Math.round((score / questions.length) * 100)}%
+                </span>
                 <span className="label">Accuracy</span>
               </ResultStatBox>
               <ResultStatBox>
@@ -1513,16 +1676,21 @@ function QuizContent() {
                   return (
                     <ReviewItemContainer key={index}>
                       <ReviewItemHeader
-                        onClick={() => setExpandedReviewIdx(isExpanded ? null : index)}
+                        onClick={() =>
+                          setExpandedReviewIdx(isExpanded ? null : index)
+                        }
                       >
                         <div className="left-side">
                           <div className="marker">
                             {answer.isCorrect ? <CheckIcon /> : <CrossIcon />}
                           </div>
                           <div>
-                            <div className="q-text">{item.word || item.kanji || item.title}</div>
+                            <div className="q-text">
+                              {item.word || item.kanji || item.title}
+                            </div>
                             <div className="q-type-meta">
-                              {answer.question.type.toUpperCase()} MATCH • LEVEL {item.level}
+                              {answer.question.type.toUpperCase()} MATCH • LEVEL{" "}
+                              {item.level}
                             </div>
                           </div>
                         </div>
@@ -1532,19 +1700,32 @@ function QuizContent() {
                       {isExpanded && (
                         <ReviewItemBody>
                           <div className="meta-row">
-                            <span className="meta-tag">Level: {item.level}</span>
-                            <span className="meta-tag">Type: {item.type?.toUpperCase() || "VOCABULARY"}</span>
-                            {item.strokes && <span className="meta-tag">Strokes: {item.strokes}</span>}
+                            <span className="meta-tag">
+                              Level: {item.level}
+                            </span>
+                            <span className="meta-tag">
+                              Type: {item.type?.toUpperCase() || "VOCABULARY"}
+                            </span>
+                            {item.strokes && (
+                              <span className="meta-tag">
+                                Strokes: {item.strokes}
+                              </span>
+                            )}
                           </div>
 
                           <div>
                             <span className="detail-label">Reading: </span>
-                            {item.reading ? `${item.reading} (${item.romaji || ""})` : "N/A"}
+                            {item.reading
+                              ? `${item.reading} (${item.romaji || ""})`
+                              : "N/A"}
                           </div>
 
                           <div>
                             <span className="detail-label">Meaning: </span>
-                            {item.meaning || item.indonesian || item.english || "No definition"}
+                            {item.meaning ||
+                              item.indonesian ||
+                              item.english ||
+                              "No definition"}
                           </div>
 
                           {item.type === "kanji" && (
@@ -1557,7 +1738,9 @@ function QuizContent() {
                               )}
                               {item.kunyomi && item.kunyomi.length > 0 && (
                                 <div>
-                                  <span className="detail-label">Kunyomi: </span>
+                                  <span className="detail-label">
+                                    Kunyomi:{" "}
+                                  </span>
                                   {item.kunyomi.join(", ")}
                                 </div>
                               )}
@@ -1566,15 +1749,37 @@ function QuizContent() {
 
                           <div className="answer-comparison">
                             <div>
-                              <span className="detail-label" style={{ color: "#ef4444" }}>Your Choice: </span>
+                              <span
+                                className="detail-label"
+                                style={{ color: "#ef4444" }}
+                              >
+                                Your Choice:{" "}
+                              </span>
                               {answer.selectedIndex === -1
                                 ? "Time Out"
-                                : getOptionLabel(answer.question.options[answer.selectedIndex], answer.question.type).main}
+                                : getOptionLabel(
+                                    answer.question.options[
+                                      answer.selectedIndex
+                                    ],
+                                    answer.question.type,
+                                  ).main}
                             </div>
                             {!answer.isCorrect && (
                               <div>
-                                <span className="detail-label" style={{ color: "#10b981" }}>Correct Choice: </span>
-                                {getOptionLabel(answer.question.options[answer.question.correctOptionIndex], answer.question.type).main}
+                                <span
+                                  className="detail-label"
+                                  style={{ color: "#10b981" }}
+                                >
+                                  Correct Choice:{" "}
+                                </span>
+                                {
+                                  getOptionLabel(
+                                    answer.question.options[
+                                      answer.question.correctOptionIndex
+                                    ],
+                                    answer.question.type,
+                                  ).main
+                                }
                               </div>
                             )}
                           </div>
@@ -1588,7 +1793,9 @@ function QuizContent() {
 
             <ActionsRow>
               <PrimaryButton onClick={startQuiz}>Try Again</PrimaryButton>
-              <SecondaryButton onClick={() => setQuizState("lobby")}>Back to Lobby</SecondaryButton>
+              <SecondaryButton onClick={() => setQuizState("lobby")}>
+                Back to Lobby
+              </SecondaryButton>
             </ActionsRow>
           </ResultOverlay>
         )}
@@ -1600,7 +1807,13 @@ function QuizContent() {
 // --- Next.js Entry Page Wrapper ---
 export default function QuizPage() {
   return (
-    <Suspense fallback={<div style={{ padding: "4rem", textAlign: "center" }}>Loading Quiz Hub...</div>}>
+    <Suspense
+      fallback={
+        <div style={{ padding: "4rem", textAlign: "center" }}>
+          Loading Quiz Hub...
+        </div>
+      }
+    >
       <QuizContent />
     </Suspense>
   );
