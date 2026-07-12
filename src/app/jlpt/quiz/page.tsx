@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useMemo, useRef } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
@@ -11,6 +11,69 @@ import {
   allKanji,
   allGrammar,
 } from "@/lib/dictionary";
+
+// --- Types & Interfaces ---
+interface QuizQuestion {
+  type: "meaning" | "reading" | "kanji";
+  item: any;
+  options: any[];
+  correctOptionIndex: number;
+}
+
+interface UserAnswer {
+  question: QuizQuestion;
+  selectedIndex: number; // -1 if timed out
+  isCorrect: boolean;
+}
+
+interface QuizStats {
+  gamesPlayed: number;
+  highScore: number;
+  totalXP: number;
+  accuracySum: number;
+}
+
+// --- Icons ---
+const SpeakerIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+  </svg>
+);
+
+const CheckIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+);
+
+const CrossIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="18" y1="6" x2="6" y2="18"></line>
+    <line x1="6" y1="6" x2="18" y2="18"></line>
+  </svg>
+);
+
+const ChevronIcon = ({ expanded }: { expanded: boolean }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="18"
+    height="18"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{
+      transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+      transition: "transform 0.2s ease",
+      color: "var(--text-secondary)",
+    }}
+  >
+    <polyline points="6 9 12 15 18 9"></polyline>
+  </svg>
+);
 
 // --- Styled Components ---
 const PageWrapper = styled.div`
@@ -36,116 +99,359 @@ const BreadcrumbWrapper = styled.div`
 const Container = styled.div`
   max-width: 800px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
-  min-height: 90vh;
+  padding: 1.5rem 1.5rem 4rem 1.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   background: radial-gradient(
     circle at center,
-    rgba(var(--primary-rgb, 79, 70, 229), 0.05) 0%,
+    rgba(var(--primary-rgb, 79, 70, 229), 0.03) 0%,
     transparent 70%
   );
 
   @media (max-width: 640px) {
-    padding: 1rem 0.75rem;
+    padding: 1rem 0.75rem 3rem 0.75rem;
   }
 `;
 
-const Header = styled.div`
+// --- Lobby Styles ---
+const LobbyCard = styled.div`
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-lg);
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
-  margin-bottom: 2.5rem;
+  flex-direction: column;
+  gap: 2rem;
+
+  @media (max-width: 600px) {
+    padding: 1.25rem 1rem;
+    gap: 1.1rem;
+  }
+`;
+
+const LobbyHeader = styled.div`
+  text-align: center;
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.25rem;
+    }
+    p {
+      font-size: 0.8rem;
+    }
+  }
+`;
+
+const FormSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  @media (max-width: 600px) {
+    gap: 0.4rem;
+  }
+`;
+
+const SectionLabel = styled.label`
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+`;
+
+const LevelGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 600px) {
+    gap: 0.3rem;
+  }
+`;
+
+const CategoryGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 600px) {
+    gap: 0.3rem;
+  }
+`;
+
+const QuestionCountGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 600px) {
+    gap: 0.3rem;
+  }
+`;
+
+const SelectButton = styled.button<{ $active: boolean }>`
+  background: ${({ $active }) => ($active ? "var(--primary)" : "rgba(255, 255, 255, 0.02)")};
+  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    border-color: var(--primary);
+    background: ${({ $active }) => ($active ? "var(--primary)" : "rgba(255, 255, 255, 0.05)")};
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.5rem 0.2rem;
+    font-size: 0.72rem;
+    border-radius: 8px;
+  }
+`;
+
+const ModeGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+`;
+
+const ModeCard = styled.button<{ $active: boolean }>`
+  background: ${({ $active }) => ($active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)" : "rgba(255, 255, 255, 0.02)")};
+  border: 2px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  border-radius: 18px;
+  padding: 1.25rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
   width: 100%;
 
-  @media (max-width: 600px) {
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+  h5 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: ${({ $active }) => ($active ? "var(--primary-light, #818cf8)" : "var(--foreground)")};
+    margin: 0;
+  }
+
+  p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  &:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
   }
 `;
 
-const HeaderRight = styled.div`
-  text-align: right;
+const StatsRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem;
+  text-align: center;
+`;
 
-  @media (max-width: 600px) {
-    text-align: left;
+const StatItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  .value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--primary-light, #818cf8);
+  }
+
+  .label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 `;
 
+const StartButton = styled.button`
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark, #4f46e5) 100%);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 10px 15px -3px rgba(var(--primary-rgb, 79, 70, 229), 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 20px -5px rgba(var(--primary-rgb, 79, 70, 229), 0.35);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+// --- Play Screen Styles ---
 const QuizCard = styled.div`
   background: var(--surface);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 32px;
+  border-radius: 28px;
   border: 1px solid var(--border);
-  padding: 4rem 3rem;
-  text-align: center;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+  padding: 3rem 2.5rem;
+  box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
-  transition: all 0.5s ease;
 
   @media (max-width: 600px) {
-    padding: 1.5rem 1rem;
+    padding: 2rem 1.25rem;
     border-radius: 20px;
   }
 `;
 
-const ProgressInfo = styled.div`
-  position: absolute;
-  top: 45px;
-  right: 30px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+const TopActionBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
+`;
 
-  @media (max-width: 600px) {
-    top: 15px;
-    right: 15px;
-    font-size: 0.8rem;
-  }
+const StreakBadge = styled.div<{ $streak: number }>`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(249, 115, 22, 0.1);
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  padding: 0.4rem 0.8rem;
+  border-radius: 99px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  opacity: ${({ $streak }) => ($streak > 0 ? 1 : 0)};
+  transform: scale(${({ $streak }) => ($streak > 0 ? 1 : 0.8)});
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+`;
+
+const QuestionCount = styled.div`
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+`;
+
+const QTypeBadge = styled.div`
+  display: inline-block;
+  background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+  color: var(--primary-light, #818cf8);
+  border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.2);
+  padding: 0.35rem 0.75rem;
+  border-radius: 99px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+`;
+
+const QuestionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  text-align: center;
 `;
 
 const QuestionText = styled.div`
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: 800;
-  margin-bottom: 3.5rem;
   line-height: 1.2;
-  background: linear-gradient(
-    135deg,
-    var(--foreground) 0%,
-    var(--text-secondary) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+  margin-bottom: 1rem;
+  color: var(--foreground);
 
   @media (max-width: 600px) {
     font-size: 2.2rem;
-    margin-bottom: 1.5rem;
+  }
+`;
+
+const SpeakerButton = styled.button`
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: scale(1.05);
   }
 `;
 
 const OptionsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  gap: 1rem;
+  margin-bottom: 2rem;
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
+    gap: 0.6rem;
   }
 `;
 
 const OptionButton = styled.button<{
   $state?: "correct" | "incorrect" | "neutral";
 }>`
-  padding: 1.5rem;
-  border-radius: 20px;
+  padding: 1.25rem 1.5rem;
+  border-radius: 18px;
   border: 2px solid
     ${({ $state }) =>
       $state === "correct"
@@ -158,52 +464,70 @@ const OptionButton = styled.button<{
       ? "rgba(16, 185, 129, 0.1)"
       : $state === "incorrect"
         ? "rgba(239, 68, 68, 0.1)"
-        : "var(--surface)"};
+        : "rgba(255, 255, 255, 0.02)"};
   color: ${({ $state }) =>
     $state === "correct"
       ? "#10b981"
       : $state === "incorrect"
         ? "#ef4444"
         : "var(--foreground)"};
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.2s ease;
   pointer-events: ${({ $state }) =>
     $state && $state !== "neutral" ? "none" : "auto"};
-  box-shadow: ${({ $state }) =>
-    $state === "neutral" ? "0 4px 6px -1px rgba(0, 0, 0, 0.05)" : "none"};
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
+  justify-content: space-between;
+  gap: 0.5rem;
 
-  &:hover {
-    transform: ${({ $state }) =>
-      $state === "neutral" ? "translateY(-3px)" : "none"};
-    border-color: ${({ $state }) =>
-      $state === "neutral" ? "var(--primary)" : ""};
+  .option-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    text-align: left;
   }
 
-  span.option-reading {
-    font-size: 0.9rem;
+  .option-main {
+    font-size: 1.05rem;
+  }
+
+  .option-sub {
+    font-size: 0.8rem;
     color: var(--text-secondary);
-    font-weight: 400;
+    font-weight: 500;
+  }
+
+  .feedback-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid currentColor;
+  }
+
+  &:hover {
+    transform: ${({ $state }) => ($state === "neutral" ? "translateY(-2px)" : "none")};
+    border-color: ${({ $state }) => ($state === "neutral" ? "var(--primary)" : "")};
+    background: ${({ $state }) => ($state === "neutral" ? "rgba(255, 255, 255, 0.04)" : "")};
   }
 
   @media (max-width: 600px) {
-    padding: 1rem 0.5rem;
+    padding: 1rem 1.25rem;
   }
 `;
 
 const ProgressBarContainer = styled.div`
   width: 100%;
   height: 6px;
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 99px;
-  margin-top: 1rem;
   overflow: hidden;
+  margin-top: 1rem;
 `;
 
 const ProgressFill = styled.div<{ $percent: number }>`
@@ -218,104 +542,378 @@ const ProgressFill = styled.div<{ $percent: number }>`
   border-radius: 99px;
 `;
 
-const ResultOverlay = styled.div`
-  text-align: center;
-  animation: fadeIn 0.8s ease-out;
-  padding: 4rem 3rem;
-  background: var(--surface);
-  border-radius: 32px;
-  border: 1px solid var(--border);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-  max-width: 600px;
+const TimerContainer = styled.div`
   width: 100%;
-  margin: 0 auto;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-top: 1.5rem;
+`;
+
+const TimerProgress = styled.div<{ $percent: number }>`
+  height: 100%;
+  width: ${({ $percent }) => `${$percent}%`};
+  background: ${({ $percent }) => {
+    if ($percent > 50) return "#10b981";
+    if ($percent > 20) return "#f59e0b";
+    return "#ef4444";
+  }};
+  transition: width 0.1s linear;
+  border-radius: 99px;
+`;
+
+// --- Results Dashboard Styles ---
+const ResultOverlay = styled.div`
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 28px;
+  border: 1px solid var(--border);
+  padding: 3rem 2rem;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
 
   @media (max-width: 600px) {
-    padding: 2.5rem 1.5rem;
+    padding: 2rem 1rem;
+    gap: 1.5rem;
   }
 `;
 
-const ActionButtonParams = styled(Link)`
-  padding: 1rem 3rem;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--primary-dark, #4338ca) 100%
-  );
-  color: white;
-  border: none;
-  border-radius: 999px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 10px 15px -3px rgba(var(--primary-rgb, 79, 70, 229), 0.3);
-  display: inline-flex;
+const GradeBadge = styled.div<{ $grade: string }>`
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 160px;
+  font-size: 3.5rem;
+  font-weight: 900;
+  border: 4px solid;
+  margin: 0 auto;
+  box-shadow: var(--shadow-md);
+  
+  color: ${({ $grade }) => {
+    if ($grade === "S") return "#f59e0b";
+    if ($grade === "A") return "#10b981";
+    if ($grade === "B") return "#3b82f6";
+    if ($grade === "C") return "#8b5cf6";
+    return "#ef4444";
+  }};
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 25px -5px rgba(var(--primary-rgb, 79, 70, 229), 0.4);
+  @media (max-width: 600px) {
+    width: 68px;
+    height: 68px;
+    font-size: 2.2rem;
+    border-width: 3px;
   }
 `;
 
-const RestartButton = styled.button`
-  padding: 1rem 3rem;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--primary-dark, #4338ca) 100%
-  );
-  color: white;
-  border: none;
-  border-radius: 999px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 10px 15px -3px rgba(var(--primary-rgb, 79, 70, 229), 0.3);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 160px;
+const ResultHeader = styled.div`
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin: 0;
+  }
+  
+  p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0.25rem 0 0 0;
+  }
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 25px -5px rgba(var(--primary-rgb, 79, 70, 229), 0.4);
+  @media (max-width: 600px) {
+    h2 {
+      font-size: 1.25rem;
+    }
+    p {
+      font-size: 0.75rem;
+    }
   }
 `;
 
-const ActionSecondary = styled(Link)`
-  padding: 1rem 3rem;
-  background: var(--surface);
-  color: var(--foreground);
+const ResultGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.5rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.3rem;
+  }
+`;
+
+const ResultStatBox = styled.div`
+  background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border);
-  border-radius: 999px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 160px;
+  border-radius: 14px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  .value {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--foreground);
+  }
+
+  .label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.4rem 0.15rem;
+    border-radius: 10px;
+
+    .value {
+      font-size: 0.82rem;
+    }
+
+    .label {
+      font-size: 0.5rem;
+      letter-spacing: 0.01em;
+    }
   }
 `;
 
-// --- Logic ---
-interface QuizQuestion {
-  item: any;
-  options: any[];
-}
+const ReviewSection = styled.div`
+  width: 100%;
+  text-align: left;
+  margin-top: 1rem;
+`;
 
+const ReviewTitle = styled.h3`
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: var(--foreground);
+  border-left: 3px solid var(--primary);
+  padding-left: 0.75rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+  }
+`;
+
+const ReviewList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 99px;
+  }
+
+  @media (max-width: 600px) {
+    max-height: 210px;
+    gap: 0.5rem;
+  }
+`;
+
+const ReviewItemContainer = styled.div`
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.01);
+  overflow: hidden;
+  transition: all 0.2s;
+  flex-shrink: 0;
+`;
+
+const ReviewItemHeader = styled.button`
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: var(--foreground);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .left-side {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .marker {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .q-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .q-type-meta {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.15rem;
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.75rem 0.6rem;
+
+    .q-text {
+      font-size: 0.95rem;
+    }
+    
+    .q-type-meta {
+      font-size: 0.68rem;
+    }
+  }
+`;
+
+const ReviewItemBody = styled.div`
+  padding: 0 1rem 1rem 1rem;
+  border-top: 1px dashed var(--border);
+  background: rgba(0, 0, 0, 0.05);
+  font-size: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  animation: slideDown 0.2s ease-out;
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .meta-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    color: var(--text-secondary);
+  }
+
+  .detail-label {
+    font-weight: 700;
+    color: var(--text-secondary);
+  }
+
+  .answer-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 0.6rem;
+    border-radius: 8px;
+  }
+`;
+
+const ActionsRow = styled.div`
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
+
+  @media (max-width: 600px) {
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+`;
+
+const PrimaryButton = styled.button`
+  flex: 1;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark, #4f46e5) 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 8px 12px -3px rgba(var(--primary-rgb, 79, 70, 229), 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 16px -4px rgba(var(--primary-rgb, 79, 70, 229), 0.35);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+`;
+
+const SecondaryButton = styled.button`
+  flex: 1;
+  padding: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+    border-radius: 10px;
+  }
+`;
+
+// --- Utility Functions ---
 function shuffleArray(array: any[]) {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -325,89 +923,243 @@ function shuffleArray(array: any[]) {
   return newArray;
 }
 
+// --- Main Quiz Content Component ---
 function QuizContent() {
   const searchParams = useSearchParams();
 
-  const query = searchParams.get("q") || "";
-  const activeCategory = searchParams.get("category") || "vocabulary";
-  const activeLevel = searchParams.get("level") || "All";
+  const queryParam = searchParams.get("q") || "";
+  const categoryParam = searchParams.get("category") || "";
+  const levelParam = searchParams.get("level") || "";
 
+  // Lobby States
+  const [selectedLevel, setSelectedLevel] = useState<string>("All");
+  const [selectedCategory, setSelectedCategory] = useState<string>("mix");
+  const [questionCount, setQuestionCount] = useState<number>(10);
+  const [timeAttack, setTimeAttack] = useState<boolean>(false);
+
+  // Stats from LocalStorage
+  const [stats, setStats] = useState<QuizStats>({
+    gamesPlayed: 0,
+    highScore: 0,
+    totalXP: 0,
+    accuracySum: 0,
+  });
+
+  // Gameplay States
+  const [quizState, setQuizState] = useState<"lobby" | "loading" | "playing" | "results" | "error">("lobby");
   const [questions, setQuestions] = useState<QuizQuestion[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(null);
   const [score, setScore] = useState(0);
-  const [quizState, setQuizState] = useState<
-    "loading" | "playing" | "results" | "error"
-  >("loading");
-  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number | null>(
-    null,
-  );
+  const [streak, setStreak] = useState(0);
+  const [maxStreak, setMaxStreak] = useState(0);
+  const [xpEarned, setXpEarned] = useState(0);
+  const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+  const [expandedReviewIdx, setExpandedReviewIdx] = useState<number | null>(null);
 
+  // Time Attack Timer State
+  const [timeLeft, setTimeLeft] = useState<number>(10);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Load stats and set lobby configurations from URL params on mount
   useEffect(() => {
-    let isMounted = true;
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("jlpt-quiz-stats-v2");
+      if (stored) {
+        try {
+          setStats(JSON.parse(stored));
+        } catch (_) {}
+      }
+    }
 
-    const generateQuiz = async () => {
-      setQuizState("loading");
-      try {
-        let baseData: any[] = [];
+    if (levelParam) setSelectedLevel(levelParam);
+    if (categoryParam) setSelectedCategory(categoryParam);
+  }, [levelParam, categoryParam]);
 
-        if (query && query.trim() !== "") {
-          baseData = await searchDictionary(
-            query,
-            activeCategory as any,
-            activeLevel,
-          );
-        } else {
-          if (activeCategory === "kanji") baseData = allKanji;
-          else if (activeCategory === "grammar") baseData = allGrammar;
-          else baseData = allVocabulary.filter((v) => v.id.startsWith("lib-"));
+  // Save Stats to LocalStorage
+  const saveStats = (finalScore: number, finalXP: number, qLength: number) => {
+    const accuracy = Math.round((finalScore / qLength) * 100);
+    const newStats: QuizStats = {
+      gamesPlayed: stats.gamesPlayed + 1,
+      highScore: Math.max(stats.highScore, finalScore),
+      totalXP: stats.totalXP + finalXP,
+      accuracySum: stats.accuracySum + accuracy,
+    };
+    setStats(newStats);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("jlpt-quiz-stats-v2", JSON.stringify(newStats));
+    }
+  };
 
-          if (activeLevel !== "All" && activeLevel !== "all") {
-            baseData = baseData.filter((item) => item.level === activeLevel);
-          }
+  // Average Accuracy Helper
+  const averageAccuracy = useMemo(() => {
+    if (stats.gamesPlayed === 0) return 0;
+    return Math.round(stats.accuracySum / stats.gamesPlayed);
+  }, [stats]);
+
+  // Fail-Safe TTS Audio Speech
+  const playAudio = (text: string) => {
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "ja-JP";
+      utterance.rate = 0.85;
+
+      const failsafe = setTimeout(() => {
+        const audio = new Audio(`https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`);
+        audio.play().catch(() => {});
+      }, 1000);
+
+      utterance.onstart = () => clearTimeout(failsafe);
+      utterance.onerror = () => {
+        clearTimeout(failsafe);
+        const audio = new Audio(`https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`);
+        audio.play().catch(() => {});
+      };
+
+      window.speechSynthesis.speak(utterance);
+    } else {
+      const audio = new Audio(`https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`);
+      audio.play().catch(() => {});
+    }
+  };
+
+  // Generate dynamic questions logic
+  const startQuiz = async () => {
+    setQuizState("loading");
+    try {
+      let pool: any[] = [];
+
+      if (selectedCategory === "kanji") {
+        pool = allKanji.map(x => ({ ...x, type: "kanji" }));
+      } else if (selectedCategory === "grammar") {
+        pool = allGrammar.map(x => ({ ...x, type: "grammar" }));
+      } else if (selectedCategory === "vocabulary") {
+        pool = allVocabulary.filter(x => x.id.startsWith("lib-")).map(x => ({ ...x, type: "vocabulary" }));
+      } else {
+        pool = [
+          ...allKanji.map(x => ({ ...x, type: "kanji" })),
+          ...allGrammar.map(x => ({ ...x, type: "grammar" })),
+          ...allVocabulary.filter(x => x.id.startsWith("lib-")).map(x => ({ ...x, type: "vocabulary" })),
+        ];
+      }
+
+      if (selectedLevel !== "All") {
+        pool = pool.filter(item => item.level === selectedLevel);
+      }
+
+      if (queryParam && queryParam.trim() !== "") {
+        const filteredSearch = await searchDictionary(queryParam, "vocabulary", selectedLevel);
+        if (filteredSearch.length > 0) {
+          pool = pool.filter(p => filteredSearch.some(f => f.id === p.id));
+        }
+      }
+
+      if (pool.length < 4) {
+        setQuizState("error");
+        return;
+      }
+
+      const selected = shuffleArray(pool).slice(0, Math.min(questionCount, pool.length));
+
+      const generated: QuizQuestion[] = selected.map(item => {
+        let types: ("meaning" | "reading" | "kanji")[] = ["meaning"];
+        if (item.type === "kanji") {
+          types = ["meaning", "reading", "kanji"];
+        } else if (item.type === "vocabulary") {
+          types = ["meaning", "reading", "kanji"];
         }
 
-        if (!isMounted) return;
+        const qType = types[Math.floor(Math.random() * types.length)];
 
-        if (baseData.length < 4) {
-          setQuizState("error");
-          return;
-        }
-
-        const shuffledBase = shuffleArray(baseData);
-        const selectedQuestions = shuffledBase.slice(
-          0,
-          Math.min(10, shuffledBase.length),
-        );
-
-        const generatedQuestions = selectedQuestions.map((item) => {
-          const others = shuffledBase.filter((x) => x.id !== item.id);
-          const wrongOptions = shuffleArray(others).slice(0, 3);
-          const options = shuffleArray([item, ...wrongOptions]);
-          return { item, options };
+        const others = pool.filter(x => {
+          if (x.id === item.id) return false;
+          if (item.type === "kanji") return x.type === "kanji";
+          if (item.type === "grammar") return x.type === "grammar";
+          return x.type !== "kanji" && x.type !== "grammar";
         });
 
-        setQuestions(generatedQuestions);
-        setQuizState("playing");
-        setCurrentIndex(0);
-        setScore(0);
-        setSelectedOptionIndex(null);
-      } catch (err) {
-        if (isMounted) setQuizState("error");
-      }
-    };
+        const wrongs = shuffleArray(others).slice(0, 3);
+        const options = shuffleArray([item, ...wrongs]);
+        const correctOptionIndex = options.findIndex(o => o.id === item.id);
 
-    generateQuiz();
+        return {
+          type: qType,
+          item,
+          options,
+          correctOptionIndex,
+        };
+      });
+
+      setQuestions(generated);
+      setCurrentIndex(0);
+      setScore(0);
+      setStreak(0);
+      setMaxStreak(0);
+      setXpEarned(0);
+      setUserAnswers([]);
+      setSelectedOptionIndex(null);
+      setQuizState("playing");
+    } catch (_) {
+      setQuizState("error");
+    }
+  };
+
+  useEffect(() => {
+    if (quizState !== "playing" || !timeAttack) return;
+
+    setTimeLeft(10);
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 0.1) {
+          clearInterval(timerRef.current!);
+          handleOptionClick(-1, false);
+          return 0;
+        }
+        return prev - 0.1;
+      });
+    }, 100);
+
     return () => {
-      isMounted = false;
+      if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [query, activeCategory, activeLevel]);
+  }, [currentIndex, quizState, timeAttack]);
 
-  const handleOptionClick = (idx: number, isCorrect: boolean) => {
+  const handleOptionClick = (optionIndex: number, isCorrect: boolean) => {
     if (selectedOptionIndex !== null) return;
+    if (timerRef.current) clearInterval(timerRef.current);
 
-    setSelectedOptionIndex(idx);
+    setSelectedOptionIndex(optionIndex);
+
+    const currentQuestion = questions[currentIndex];
+    let addedXP = 0;
+
     if (isCorrect) {
       setScore((prev) => prev + 1);
+      const currentStreak = streak + 1;
+      setStreak(currentStreak);
+      setMaxStreak((prev) => Math.max(prev, currentStreak));
+
+      addedXP = 100 + currentStreak * 20;
+      setXpEarned((prev) => prev + addedXP);
+    } else {
+      setStreak(0);
+    }
+
+    setUserAnswers((prev) => [
+      ...prev,
+      {
+        question: currentQuestion,
+        selectedIndex: optionIndex,
+        isCorrect,
+      },
+    ]);
+
+    if (isCorrect) {
+      const audioText = currentQuestion.item.word || currentQuestion.item.kanji || currentQuestion.item.title;
+      if (audioText) {
+        setTimeout(() => playAudio(audioText), 150);
+      }
     }
 
     setTimeout(() => {
@@ -415,41 +1167,65 @@ function QuizContent() {
         setCurrentIndex((prev) => prev + 1);
         setSelectedOptionIndex(null);
       } else {
+        const finalScore = score + (isCorrect ? 1 : 0);
+        const finalXP = xpEarned + addedXP;
+        saveStats(finalScore, finalXP, questions.length);
         setQuizState("results");
       }
-    }, 1500);
+    }, 1600);
   };
 
-  const handleRestart = () => {
-    const reShuffled = shuffleArray(questions).map((q) => ({
-      ...q,
-      options: shuffleArray(q.options),
-    }));
-    setQuestions(reShuffled);
-    setCurrentIndex(0);
-    setScore(0);
-    setSelectedOptionIndex(null);
-    setQuizState("playing");
-  };
-
-  const getQuestionText = (item: any) => {
-    if (item.type === "kanji") return item.kanji;
-    if (item.type === "grammar") return item.title;
-    return item.word || item.title;
-  };
-
-  const getSubTextConfig = (opt: any) => {
-    if (opt.type === "kanji") {
-      const readings = [...(opt.onyomi || []), ...(opt.kunyomi || [])].join(
-        ", ",
-      );
-      return { read: readings, mean: opt.meaning };
+  const getQuestionContent = (q: QuizQuestion) => {
+    const item = q.item;
+    if (q.type === "kanji") {
+      return {
+        instruction: "Find the correct Kanji / Word:",
+        main: item.meaning || item.indonesian || item.english || "No Definition",
+      };
     }
-    if (opt.type === "grammar") {
-      return { read: "", mean: opt.meaning };
+    if (q.type === "reading") {
+      return {
+        instruction: "What is the reading (Furigana)?",
+        main: item.word || item.kanji || item.title,
+      };
     }
-    return { read: opt.reading || opt.romaji || "", mean: opt.meaning };
+    return {
+      instruction: "What does this mean?",
+      main: item.word || item.kanji || item.title,
+    };
   };
+
+  const getOptionLabel = (opt: any, qType: "meaning" | "reading" | "kanji") => {
+    if (qType === "kanji") {
+      return {
+        main: opt.word || opt.kanji || opt.title,
+        sub: opt.reading || "",
+      };
+    }
+    if (qType === "reading") {
+      return {
+        main: opt.reading || opt.romaji || "No reading",
+        sub: opt.meaning || opt.indonesian || opt.english || "",
+      };
+    }
+    return {
+      main: opt.meaning || opt.indonesian || opt.english || "No Definition",
+      sub: opt.reading || opt.romaji || "",
+    };
+  };
+
+  const getPerformanceGrade = (ratio: number) => {
+    if (ratio === 1) return { grade: "S", title: "Perfect Score! 💮", desc: "Amazing! Your knowledge is flawless!" };
+    if (ratio >= 0.9) return { grade: "A", title: "Outstanding! 🌟", desc: "Incredible accuracy. Keep up the high score!" };
+    if (ratio >= 0.8) return { grade: "B", title: "Great Job! 👍", desc: "Very strong understanding. Study details to reach S!" };
+    if (ratio >= 0.6) return { grade: "C", title: "Good Effort! 💪", desc: "Solid attempt. Review wrong answers below." };
+    return { grade: "D", title: "Keep Practicing! 📚", desc: "Review the vocabulary library and try again." };
+  };
+
+  const resultsGrade = useMemo(() => {
+    if (questions.length === 0) return { grade: "D", title: "", desc: "" };
+    return getPerformanceGrade(score / questions.length);
+  }, [score, questions]);
 
   return (
     <PageWrapper>
@@ -462,73 +1238,158 @@ function QuizContent() {
           current="Quiz"
         />
       </BreadcrumbWrapper>
+
       <Container>
-        <Header>
-          <HeaderRight>
-            <div
-              style={{
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                color: "var(--primary)",
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-              }}
-            >
-              JLPT Custom Quiz
-            </div>
-            <div
-              style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}
-            >
-              Level {activeLevel !== "All" ? activeLevel : "All"} •{" "}
-              {activeCategory.replace("-", " ").toUpperCase()}
-            </div>
-          </HeaderRight>
-        </Header>
+        {/* --- 1. LOBBY STATE --- */}
+        {quizState === "lobby" && (
+          <LobbyCard>
+            <LobbyHeader>
+              <h2>JLPT Quiz Hub</h2>
+              <p>Customize your vocabulary, kanji, and grammar quizzes.</p>
+            </LobbyHeader>
 
+            {stats.gamesPlayed > 0 && (
+              <StatsRow>
+                <StatItem>
+                  <span className="value">{stats.gamesPlayed}</span>
+                  <span className="label">Played</span>
+                </StatItem>
+                <StatItem>
+                  <span className="value">{averageAccuracy}%</span>
+                  <span className="label">Accuracy</span>
+                </StatItem>
+                <StatItem>
+                  <span className="value">{stats.totalXP}</span>
+                  <span className="label">Total XP</span>
+                </StatItem>
+              </StatsRow>
+            )}
+
+            <FormSection>
+              <SectionLabel>Select JLPT Level</SectionLabel>
+              <LevelGrid>
+                {["All", "N5", "N4", "N3", "N2", "N1"].map((lvl) => (
+                  <SelectButton
+                    key={lvl}
+                    $active={selectedLevel === lvl}
+                    onClick={() => setSelectedLevel(lvl)}
+                  >
+                    {lvl}
+                  </SelectButton>
+                ))}
+              </LevelGrid>
+            </FormSection>
+
+            <FormSection>
+              <SectionLabel>Select Category</SectionLabel>
+              <CategoryGrid>
+                {[
+                  { id: "mix", label: "Mix Mode" },
+                  { id: "vocabulary", label: "Vocabulary" },
+                  { id: "kanji", label: "Kanji" },
+                  { id: "grammar", label: "Grammar" },
+                ].map((cat) => (
+                  <SelectButton
+                    key={cat.id}
+                    $active={selectedCategory === cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
+                  >
+                    {cat.label}
+                  </SelectButton>
+                ))}
+              </CategoryGrid>
+            </FormSection>
+
+            <FormSection>
+              <SectionLabel>Number of Questions</SectionLabel>
+              <QuestionCountGrid>
+                {[10, 20, 30].map((num) => (
+                  <SelectButton
+                    key={num}
+                    $active={questionCount === num}
+                    onClick={() => setQuestionCount(num)}
+                  >
+                    {num} Qs
+                  </SelectButton>
+                ))}
+              </QuestionCountGrid>
+            </FormSection>
+
+
+            <FormSection>
+              <SectionLabel>Select Game Mode</SectionLabel>
+              <ModeGrid>
+                <ModeCard $active={!timeAttack} onClick={() => setTimeAttack(false)}>
+                  <h5>Relaxed Mode</h5>
+                  <p>Study at your own pace without pressure. Ideal for thorough learning.</p>
+                </ModeCard>
+                <ModeCard $active={timeAttack} onClick={() => setTimeAttack(true)}>
+                  <h5>Time Attack ⚡</h5>
+                  <p>10 seconds per question limit. Build instant recall speeds under fire.</p>
+                </ModeCard>
+              </ModeGrid>
+            </FormSection>
+
+            <StartButton onClick={startQuiz}>Start Practice Quiz</StartButton>
+          </LobbyCard>
+        )}
+
+        {/* --- 2. LOADING STATE --- */}
         {quizState === "loading" && (
-          <div
-            style={{
-              padding: "4rem",
-              textAlign: "center",
-              color: "var(--text-secondary)",
-            }}
-          >
-            <p>Preparing Quiz {activeLevel !== "All" ? activeLevel : ""}...</p>
-          </div>
-        )}
-
-        {quizState === "error" && (
-          <QuizCard>
-            <h2 style={{ color: "var(--foreground)" }}>Not Enough Data</h2>
-            <p
-              style={{
-                marginTop: "1rem",
-                textAlign: "center",
-                color: "var(--text-secondary)",
-                marginBottom: "2rem",
-              }}
-            >
-              Sorry, available data for this filter is less than 4 items.
-              <br /> Please adjust your filters on the JLPT page to generate a
-              Quiz.
+          <LobbyCard style={{ alignItems: "center", justifyContent: "center", minHeight: "300px" }}>
+            <div className="spinner" style={{ fontSize: "2rem", marginBottom: "1rem" }}>⌛</div>
+            <h3 style={{ margin: 0 }}>Generating Quiz...</h3>
+            <p style={{ color: "var(--text-secondary)", margin: "0.5rem 0 0 0" }}>
+              Curating mixed questions for Level {selectedLevel}...
             </p>
-            <ActionButtonParams href="/jlpt">Back to JLPT</ActionButtonParams>
-          </QuizCard>
+          </LobbyCard>
         )}
 
+        {/* --- 3. ERROR STATE --- */}
+        {quizState === "error" && (
+          <LobbyCard style={{ textAlign: "center" }}>
+            <h3 style={{ color: "#ef4444" }}>Not Enough Content</h3>
+            <p style={{ color: "var(--text-secondary)" }}>
+              The selected filter combination (Level {selectedLevel} - {selectedCategory}) does not contain enough items in the dictionary database to build a 4-choice quiz.
+            </p>
+            <StartButton onClick={() => setQuizState("lobby")}>Back to Lobby</StartButton>
+          </LobbyCard>
+        )}
+
+        {/* --- 4. PLAYING STATE --- */}
         {quizState === "playing" && questions.length > 0 && (
           <QuizCard>
-            <ProgressInfo>
-              {currentIndex + 1} / {questions.length}
-            </ProgressInfo>
+            <TopActionBar>
+              <StreakBadge $streak={streak}>
+                🔥 {streak} Streak
+              </StreakBadge>
+              <QuestionCount>
+                {currentIndex + 1} / {questions.length}
+              </QuestionCount>
+            </TopActionBar>
 
-            <QuestionText>
-              {getQuestionText(questions[currentIndex].item)}
-            </QuestionText>
+            <QuestionWrapper>
+              <QTypeBadge>
+                {getQuestionContent(questions[currentIndex]).instruction}
+              </QTypeBadge>
+              <QuestionText>
+                {getQuestionContent(questions[currentIndex]).main}
+              </QuestionText>
+              
+              <SpeakerButton
+                onClick={() => {
+                  const item = questions[currentIndex].item;
+                  playAudio(item.word || item.kanji || item.title);
+                }}
+                title="Listen Pronunciation"
+              >
+                <SpeakerIcon />
+              </SpeakerButton>
+            </QuestionWrapper>
 
             <OptionsGrid>
               {questions[currentIndex].options.map((opt, idx) => {
-                const isCorrect = opt.id === questions[currentIndex].item.id;
+                const isCorrect = idx === questions[currentIndex].correctOptionIndex;
                 let state: "neutral" | "correct" | "incorrect" = "neutral";
 
                 if (selectedOptionIndex !== null) {
@@ -536,7 +1397,7 @@ function QuizContent() {
                   else if (idx === selectedOptionIndex) state = "incorrect";
                 }
 
-                const texts = getSubTextConfig(opt);
+                const optStrings = getOptionLabel(opt, questions[currentIndex].type);
 
                 return (
                   <OptionButton
@@ -544,9 +1405,16 @@ function QuizContent() {
                     $state={state}
                     onClick={() => handleOptionClick(idx, isCorrect)}
                   >
-                    <span>{texts.mean}</span>
-                    {texts.read && (
-                      <span className="option-reading">{texts.read}</span>
+                    <div className="option-text-wrapper">
+                      <span className="option-main">{optStrings.main}</span>
+                      {optStrings.sub && <span className="option-sub">{optStrings.sub}</span>}
+                    </div>
+
+                    {selectedOptionIndex !== null && isCorrect && (
+                      <div className="feedback-icon" style={{ color: "#10b981" }}><CheckIcon /></div>
+                    )}
+                    {selectedOptionIndex !== null && idx === selectedOptionIndex && !isCorrect && (
+                      <div className="feedback-icon" style={{ color: "#ef4444" }}><CrossIcon /></div>
                     )}
                   </OptionButton>
                 );
@@ -554,44 +1422,134 @@ function QuizContent() {
             </OptionsGrid>
 
             <ProgressBarContainer>
-              <ProgressFill
-                $percent={((currentIndex + 1) / questions.length) * 100}
-              />
+              <ProgressFill $percent={((currentIndex + 1) / questions.length) * 100} />
             </ProgressBarContainer>
+
+            {timeAttack && (
+              <TimerContainer>
+                <TimerProgress $percent={(timeLeft / 10) * 100} />
+              </TimerContainer>
+            )}
           </QuizCard>
         )}
 
+        {/* --- 5. RESULTS & REVIEW STATE --- */}
         {quizState === "results" && (
           <ResultOverlay>
-            <div style={{ fontSize: "3rem", margin: "0 0 1rem 0" }}>🏆</div>
-            <h2>Quiz Complete!</h2>
-            <p
-              style={{
-                fontSize: "1.25rem",
-                marginBottom: "0.5rem",
-                marginTop: "1rem",
-              }}
-            >
-              You scored <strong>{score}</strong> out of{" "}
-              <strong>{questions.length}</strong>
-            </p>
-            <p style={{ color: "var(--text-secondary)", marginBottom: "2rem" }}>
-              {score === questions.length
-                ? "Amazing! Your score is perfect!"
-                : "Good job! Keep practicing."}
-            </p>
+            <GradeBadge $grade={resultsGrade.grade}>
+              {resultsGrade.grade}
+            </GradeBadge>
 
-            <div
-              style={{
-                display: "flex",
-                gap: "1rem",
-                flexWrap: "wrap",
-                justifyContent: "center",
-              }}
-            >
-              <RestartButton onClick={handleRestart}>Try Again</RestartButton>
-              <ActionSecondary href="/jlpt">Back to JLPT</ActionSecondary>
-            </div>
+            <ResultHeader>
+              <h2>{resultsGrade.title}</h2>
+              <p>{resultsGrade.desc}</p>
+            </ResultHeader>
+
+            <ResultGrid>
+              <ResultStatBox>
+                <span className="value">{score} / {questions.length}</span>
+                <span className="label">Score</span>
+              </ResultStatBox>
+              <ResultStatBox>
+                <span className="value">{Math.round((score / questions.length) * 100)}%</span>
+                <span className="label">Accuracy</span>
+              </ResultStatBox>
+              <ResultStatBox>
+                <span className="value">+{xpEarned}</span>
+                <span className="label">XP Gained</span>
+              </ResultStatBox>
+              <ResultStatBox>
+                <span className="value">🔥 {maxStreak}</span>
+                <span className="label">Max Streak</span>
+              </ResultStatBox>
+            </ResultGrid>
+
+            <ReviewSection>
+              <ReviewTitle>Question Log & Review</ReviewTitle>
+              <ReviewList>
+                {userAnswers.map((answer, index) => {
+                  const isExpanded = expandedReviewIdx === index;
+                  const item = answer.question.item;
+                  return (
+                    <ReviewItemContainer key={index}>
+                      <ReviewItemHeader
+                        onClick={() => setExpandedReviewIdx(isExpanded ? null : index)}
+                      >
+                        <div className="left-side">
+                          <div className="marker">
+                            {answer.isCorrect ? <CheckIcon /> : <CrossIcon />}
+                          </div>
+                          <div>
+                            <div className="q-text">{item.word || item.kanji || item.title}</div>
+                            <div className="q-type-meta">
+                              {answer.question.type.toUpperCase()} MATCH • LEVEL {item.level}
+                            </div>
+                          </div>
+                        </div>
+                        <ChevronIcon expanded={isExpanded} />
+                      </ReviewItemHeader>
+
+                      {isExpanded && (
+                        <ReviewItemBody>
+                          <div className="meta-row">
+                            <span className="meta-tag">Level: {item.level}</span>
+                            <span className="meta-tag">Type: {item.type?.toUpperCase() || "VOCABULARY"}</span>
+                            {item.strokes && <span className="meta-tag">Strokes: {item.strokes}</span>}
+                          </div>
+
+                          <div>
+                            <span className="detail-label">Reading: </span>
+                            {item.reading ? `${item.reading} (${item.romaji || ""})` : "N/A"}
+                          </div>
+
+                          <div>
+                            <span className="detail-label">Meaning: </span>
+                            {item.meaning || item.indonesian || item.english || "No definition"}
+                          </div>
+
+                          {item.type === "kanji" && (
+                            <>
+                              {item.onyomi && item.onyomi.length > 0 && (
+                                <div>
+                                  <span className="detail-label">Onyomi: </span>
+                                  {item.onyomi.join(", ")}
+                                </div>
+                              )}
+                              {item.kunyomi && item.kunyomi.length > 0 && (
+                                <div>
+                                  <span className="detail-label">Kunyomi: </span>
+                                  {item.kunyomi.join(", ")}
+                                </div>
+                              )}
+                            </>
+                          )}
+
+                          <div className="answer-comparison">
+                            <div>
+                              <span className="detail-label" style={{ color: "#ef4444" }}>Your Choice: </span>
+                              {answer.selectedIndex === -1
+                                ? "Time Out"
+                                : getOptionLabel(answer.question.options[answer.selectedIndex], answer.question.type).main}
+                            </div>
+                            {!answer.isCorrect && (
+                              <div>
+                                <span className="detail-label" style={{ color: "#10b981" }}>Correct Choice: </span>
+                                {getOptionLabel(answer.question.options[answer.question.correctOptionIndex], answer.question.type).main}
+                              </div>
+                            )}
+                          </div>
+                        </ReviewItemBody>
+                      )}
+                    </ReviewItemContainer>
+                  );
+                })}
+              </ReviewList>
+            </ReviewSection>
+
+            <ActionsRow>
+              <PrimaryButton onClick={startQuiz}>Try Again</PrimaryButton>
+              <SecondaryButton onClick={() => setQuizState("lobby")}>Back to Lobby</SecondaryButton>
+            </ActionsRow>
           </ResultOverlay>
         )}
       </Container>
@@ -599,13 +1557,10 @@ function QuizContent() {
   );
 }
 
+// --- Next.js Entry Page Wrapper ---
 export default function QuizPage() {
   return (
-    <Suspense
-      fallback={
-        <div style={{ padding: "4rem", textAlign: "center" }}>Loading...</div>
-      }
-    >
+    <Suspense fallback={<div style={{ padding: "4rem", textAlign: "center" }}>Loading Quiz Hub...</div>}>
       <QuizContent />
     </Suspense>
   );
