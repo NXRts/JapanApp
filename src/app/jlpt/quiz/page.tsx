@@ -345,7 +345,7 @@ const QuizCard = styled.div`
   overflow: hidden;
 
   @media (max-width: 600px) {
-    padding: 2rem 1.25rem;
+    padding: 1.75rem 1.25rem;
     border-radius: 20px;
   }
 `;
@@ -356,6 +356,10 @@ const TopActionBar = styled.div`
   align-items: center;
   margin-bottom: 2rem;
   width: 100%;
+
+  @media (max-width: 600px) {
+    margin-bottom: 1.25rem;
+  }
 `;
 
 const StreakBadge = styled.div<{ $streak: number }>`
@@ -392,6 +396,12 @@ const QTypeBadge = styled.div`
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 1.5rem;
+
+  @media (max-width: 600px) {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.72rem;
+    margin-bottom: 0.85rem;
+  }
 `;
 
 const QuestionWrapper = styled.div`
@@ -400,6 +410,10 @@ const QuestionWrapper = styled.div`
   align-items: center;
   margin-bottom: 2.5rem;
   text-align: center;
+
+  @media (max-width: 600px) {
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const QuestionText = styled.div`
@@ -411,6 +425,7 @@ const QuestionText = styled.div`
 
   @media (max-width: 600px) {
     font-size: 2.2rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -433,6 +448,16 @@ const SpeakerButton = styled.button`
     border-color: var(--primary);
     transform: scale(1.05);
   }
+
+  @media (max-width: 600px) {
+    width: 36px;
+    height: 36px;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
 `;
 
 const OptionsGrid = styled.div`
@@ -443,7 +468,8 @@ const OptionsGrid = styled.div`
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
-    gap: 0.6rem;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
   }
 `;
 
@@ -517,7 +543,16 @@ const OptionButton = styled.button<{
   }
 
   @media (max-width: 600px) {
-    padding: 1rem 1.25rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 14px;
+
+    .option-main {
+      font-size: 1.05rem;
+    }
+
+    .option-sub {
+      font-size: 0.78rem;
+    }
   }
 `;
 
@@ -528,6 +563,11 @@ const ProgressBarContainer = styled.div`
   border-radius: 99px;
   overflow: hidden;
   margin-top: 1rem;
+
+  @media (max-width: 600px) {
+    height: 5px;
+    margin-top: 0.75rem;
+  }
 `;
 
 const ProgressFill = styled.div<{ $percent: number }>`
@@ -549,6 +589,11 @@ const TimerContainer = styled.div`
   border-radius: 99px;
   overflow: hidden;
   margin-top: 1.5rem;
+
+  @media (max-width: 600px) {
+    height: 4px;
+    margin-top: 0.75rem;
+  }
 `;
 
 const TimerProgress = styled.div<{ $percent: number }>`
@@ -1155,12 +1200,7 @@ function QuizContent() {
       },
     ]);
 
-    if (isCorrect) {
-      const audioText = currentQuestion.item.word || currentQuestion.item.kanji || currentQuestion.item.title;
-      if (audioText) {
-        setTimeout(() => playAudio(audioText), 150);
-      }
-    }
+
 
     setTimeout(() => {
       if (currentIndex < questions.length - 1) {
