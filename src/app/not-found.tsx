@@ -1,15 +1,23 @@
+"use client";
+
 import Link from "next/link";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, createGlobalStyle } from "styled-components";
 
 export const dynamic = "force-static";
 
+const NotFoundGlobalStyle = createGlobalStyle`
+  main {
+    background: var(--surface) !important;
+  }
+`;
+
 const NotFoundContainer = styled.div`
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 4rem 2rem;
   text-align: center;
   background: var(--surface);
 `;
@@ -125,34 +133,37 @@ const SuggestionLink = styled(Link)`
 
 export default function NotFound() {
   return (
-    <NotFoundContainer>
-      <NotFoundIcon>⛩️</NotFoundIcon>
-      <NotFoundTitle>404</NotFoundTitle>
-      <NotFoundSubtitle>
-        Lost in Translation / ページが見つかりません
-      </NotFoundSubtitle>
-      <NotFoundMessage>
-        We couldn't find the page you were looking for. It might have been
-        moved, deleted, or perhaps the spelling is incorrect. Let's get you back
-        on track!
-      </NotFoundMessage>
+    <>
+      <NotFoundGlobalStyle />
+      <NotFoundContainer>
+        <NotFoundIcon>⛩️</NotFoundIcon>
+        <NotFoundTitle>404</NotFoundTitle>
+        <NotFoundSubtitle>
+          Lost in Translation / ページが見つかりません
+        </NotFoundSubtitle>
+        <NotFoundMessage>
+          We couldn't find the page you were looking for. It might have been
+          moved, deleted, or perhaps the spelling is incorrect. Let's get you back
+          on track!
+        </NotFoundMessage>
 
-      <ButtonGroup>
-        <PrimaryButton href="/">Go Home</PrimaryButton>
-        <SecondaryButton href="/practice">Try Practice</SecondaryButton>
-      </ButtonGroup>
+        <ButtonGroup>
+          <PrimaryButton href="/">Go Home</PrimaryButton>
+          <SecondaryButton href="/practice">Try Practice</SecondaryButton>
+        </ButtonGroup>
 
-      <SuggestionList>
-        <SuggestionTitle>Popular Destinations</SuggestionTitle>
-        <SuggestionLink href="/kana">
-          🇯🇵 Learn Hiragana & Katakana (Kana)
-        </SuggestionLink>
-        <SuggestionLink href="/kanji">🏮 Learn Kanji Characters</SuggestionLink>
-        <SuggestionLink href="/grammar/lessons">
-          📖 Japanese Grammar Lessons
-        </SuggestionLink>
-        <SuggestionLink href="/review">📚 Vocab Review (SRS)</SuggestionLink>
-      </SuggestionList>
-    </NotFoundContainer>
+        <SuggestionList>
+          <SuggestionTitle>Popular Destinations</SuggestionTitle>
+          <SuggestionLink href="/kana">
+            🇯🇵 Learn Hiragana & Katakana (Kana)
+          </SuggestionLink>
+          <SuggestionLink href="/kanji">🏮 Learn Kanji Characters</SuggestionLink>
+          <SuggestionLink href="/grammar/lessons">
+            📖 Japanese Grammar Lessons
+          </SuggestionLink>
+          <SuggestionLink href="/review">📚 Vocab Review (SRS)</SuggestionLink>
+        </SuggestionList>
+      </NotFoundContainer>
+    </>
   );
 }
