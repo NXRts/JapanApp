@@ -3,8 +3,6 @@
 import Link from "next/link";
 import styled, { keyframes, createGlobalStyle } from "styled-components";
 
-export const dynamic = "force-static";
-
 const NotFoundGlobalStyle = createGlobalStyle`
   main {
     background: var(--surface) !important;
