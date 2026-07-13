@@ -18,6 +18,12 @@ const NotFoundContainer = styled.div`
   padding: 4rem 2rem;
   text-align: center;
   background: var(--surface);
+
+  @media (max-width: 600px) {
+    padding: 1.25rem 1rem 5.5rem 1rem;
+    min-height: calc(100vh - 170px);
+    justify-content: center;
+  }
 `;
 
 const floatAnimation = keyframes`
@@ -29,6 +35,11 @@ const NotFoundIcon = styled.div`
   font-size: 6rem;
   margin-bottom: 1.5rem;
   animation: ${floatAnimation} 3s ease-in-out infinite;
+
+  @media (max-width: 600px) {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const NotFoundTitle = styled.h1`
@@ -36,12 +47,22 @@ const NotFoundTitle = styled.h1`
   font-weight: 900;
   color: var(--foreground);
   margin-bottom: 0.5rem;
+
+  @media (max-width: 600px) {
+    font-size: 2.2rem;
+    margin-bottom: 0.2rem;
+  }
 `;
 
 const NotFoundSubtitle = styled.p`
   font-size: 1.25rem;
   color: var(--text-secondary);
   margin-bottom: 2rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const NotFoundMessage = styled.p`
@@ -50,6 +71,13 @@ const NotFoundMessage = styled.p`
   max-width: 500px;
   margin-bottom: 2.5rem;
   line-height: 1.6;
+
+  @media (max-width: 600px) {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    margin-bottom: 1.25rem;
+    max-width: 320px;
+  }
 `;
 
 const ButtonGroup = styled.div`
@@ -57,6 +85,11 @@ const ButtonGroup = styled.div`
   gap: 1rem;
   flex-wrap: wrap;
   justify-content: center;
+
+  @media (max-width: 600px) {
+    gap: 0.5rem;
+    width: 100%;
+  }
 `;
 
 const PrimaryButton = styled(Link)`
@@ -82,6 +115,11 @@ const PrimaryButton = styled(Link)`
     transform: translateY(2px);
     border-bottom-width: 2px;
   }
+
+  @media (max-width: 600px) {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.88rem;
+  }
 `;
 
 const SecondaryButton = styled(Link)`
@@ -102,19 +140,53 @@ const SecondaryButton = styled(Link)`
   &:active {
     transform: translateY(2px);
   }
+
+  @media (max-width: 600px) {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.88rem;
+  }
 `;
 
-const SuggestionList = styled.div`
+const SuggestionSection = styled.div`
   margin-top: 3rem;
-  max-width: 400px;
-  text-align: left;
+  max-width: 680px;
+  width: 100%;
+
+  @media (max-width: 600px) {
+    margin-top: 1.25rem;
+  }
 `;
 
 const SuggestionTitle = styled.h3`
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--foreground);
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+
+  @media (max-width: 600px) {
+    font-size: 0.92rem;
+    margin-bottom: 0.4rem;
+  }
+`;
+
+const SuggestionGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 2.5rem;
+  text-align: left;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+    text-align: center;
+  }
+`;
+
+const SecondarySuggestionColumn = styled.div`
+  @media (max-width: 600px) {
+    display: none;
+  }
 `;
 
 const SuggestionLink = styled(Link)`
@@ -122,10 +194,16 @@ const SuggestionLink = styled(Link)`
   padding: 0.5rem 0;
   color: var(--text-secondary);
   text-decoration: none;
+  font-weight: 500;
   transition: color 0.2s;
 
   &:hover {
     color: var(--primary);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.35rem 0;
+    font-size: 0.82rem;
   }
 `;
 
@@ -147,20 +225,51 @@ export default function NotFound() {
 
         <ButtonGroup>
           <PrimaryButton href="/">Go Home</PrimaryButton>
-          <SecondaryButton href="/practice">Try Practice</SecondaryButton>
+          <SecondaryButton href="/jlpt">Try JLPT</SecondaryButton>
         </ButtonGroup>
 
-        <SuggestionList>
+        <SuggestionSection>
           <SuggestionTitle>Popular Destinations</SuggestionTitle>
-          <SuggestionLink href="/kana">
-            🇯🇵 Learn Hiragana & Katakana (Kana)
-          </SuggestionLink>
-          <SuggestionLink href="/kanji">🏮 Learn Kanji Characters</SuggestionLink>
-          <SuggestionLink href="/grammar/lessons">
-            📖 Japanese Grammar Lessons
-          </SuggestionLink>
-          <SuggestionLink href="/review">📚 Vocab Review (SRS)</SuggestionLink>
-        </SuggestionList>
+          <SuggestionGrid>
+            {/* Left Column (5 items - Visible on Desktop & Mobile) */}
+            <div>
+              <SuggestionLink href="/characters">
+                あ Learn Characters (Kana & Kanji)
+              </SuggestionLink>
+              <SuggestionLink href="/jlpt">
+                🏆 JLPT Level Practice
+              </SuggestionLink>
+              <SuggestionLink href="/study">
+                📖 Study Hub & Lessons
+              </SuggestionLink>
+              <SuggestionLink href="/quiz">
+                🎯 Quiz Hub & Practice
+              </SuggestionLink>
+              <SuggestionLink href="/game">
+                🎮 Game Hub & Mini Games
+              </SuggestionLink>
+            </div>
+
+            {/* Right Column (5 items - Hidden on Mobile) */}
+            <SecondarySuggestionColumn>
+              <SuggestionLink href="/jlpt/kanji-writer">
+                ✍️ Kanji Stroke Writer
+              </SuggestionLink>
+              <SuggestionLink href="/study/smart-flashcards">
+                🎴 Smart Flashcards (SRS)
+              </SuggestionLink>
+              <SuggestionLink href="/study/listening">
+                🎧 Listening Practice
+              </SuggestionLink>
+              <SuggestionLink href="/study/speaking">
+                🗣️ Speaking & Pitch Accent
+              </SuggestionLink>
+              <SuggestionLink href="/study/vocabulary">
+                📚 Vocabulary Review
+              </SuggestionLink>
+            </SecondarySuggestionColumn>
+          </SuggestionGrid>
+        </SuggestionSection>
       </NotFoundContainer>
     </>
   );
