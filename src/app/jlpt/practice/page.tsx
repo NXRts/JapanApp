@@ -11,6 +11,7 @@ import {
   allKanji,
   allGrammar,
 } from "@/lib/dictionary";
+import { playJapaneseAudio } from "@/lib/audio";
 
 // --- Animations ---
 const fadeIn = keyframes`
@@ -334,34 +335,6 @@ const MainTargetWord = styled.h1`
   }
 `;
 
-const HintSentenceBox = styled.div`
-  background: rgba(var(--foreground-rgb), 0.03);
-  border: 1px dashed var(--border);
-  border-radius: 16px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1.5rem;
-  font-size: 1rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  animation: ${popIn} 0.3s ease-out;
-
-  .ja {
-    font-weight: 700;
-    color: var(--foreground);
-    margin-bottom: 0.25rem;
-  }
-
-  .id {
-    font-size: 0.88rem;
-    color: var(--text-secondary);
-  }
-
-  @media (max-width: 600px) {
-    padding: 0.75rem 1rem;
-    font-size: 0.88rem;
-  }
-`;
-
 const RevealBox = styled.div`
   background: rgba(var(--primary-rgb, 79, 70, 229), 0.04);
   border: 1.5px solid rgba(var(--primary-rgb, 79, 70, 229), 0.2);
@@ -663,6 +636,167 @@ function shuffleArray<T>(array: T[]): T[] {
   return newArray;
 }
 
+const kanaToRomajiMap: Record<string, string> = {
+  あ: "a", い: "i", う: "u", え: "e", お: "o",
+  か: "ka", き: "ki", く: "ku", け: "ke", こ: "ko",
+  さ: "sa", し: "shi", す: "su", せ: "se", そ: "so",
+  た: "ta", ち: "chi", つ: "tsu", て: "te", と: "to",
+  な: "na", に: "ni", ぬ: "nu", ね: "ne", の: "no",
+  は: "ha", ひ: "hi", ふ: "fu", へ: "he", ほ: "ho",
+  ま: "ma", み: "mi", む: "mu", め: "me", も: "mo",
+  や: "ya", ゆ: "yu", よ: "yo",
+  ら: "ra", り: "ri", る: "ru", れ: "re", ろ: "ro",
+  わ: "wa", を: "wo", ん: "n",
+  が: "ga", ぎ: "gi", ぐ: "gu", げ: "ge", ご: "go",
+  ざ: "za", じ: "ji", ず: "zu", ぜ: "ze", ぞ: "zo",
+  だ: "da", ぢ: "ji", づ: "zu", で: "de", ど: "do",
+  ば: "ba", び: "bi", ぶ: "bu", べ: "be", ぼ: "bo",
+  ぱ: "pa", ぴ: "pi", ぷ: "pu", ぺ: "pe", ぽ: "po",
+  きゃ: "kya", きゅ: "kyu", きょ: "kyo",
+  しゃ: "sha", しゅ: "shu", しょ: "sho",
+  ちゃ: "cha", ちゅ: "chu", ちょ: "cho",
+  にゃ: "nya", にゅ: "nyu", にょ: "nyo",
+  ひゃ: "hya", ひゅ: "hyu", ひょ: "hyo",
+  みゃ: "mya", みゅ: "myu", みょ: "myo",
+  りゃ: "rya", りゅ: "ryu", りょ: "ryo",
+  ぎゃ: "gya", ぎゅ: "gyu", ぎょ: "gyo",
+  じゃ: "ja", じゅ: "ju", じょ: "jo",
+  びゃ: "bya", びゅ: "byu", びょ: "byo",
+  ぴゃ: "pya", ぴゅ: "pyu", ぴょ: "pyo",
+  ア: "a", イ: "i", ウ: "u", エ: "e", オ: "o",
+  カ: "ka", キ: "ki", ク: "ku", ケ: "ke", コ: "ko",
+  サ: "sa", シ: "shi", ス: "su", セ: "se", ソ: "so",
+  タ: "ta", チ: "chi", ツ: "tsu", テ: "te", ト: "to",
+  ナ: "na", ニ: "ni", ヌ: "nu", ネ: "ne", ノ: "no",
+  ハ: "ha", ヒ: "hi", フ: "fu", ヘ: "he", ホ: "ho",
+  マ: "ma", ミ: "mi", ム: "mu", メ: "me", モ: "mo",
+  ヤ: "ya", ユ: "yu", ヨ: "yo",
+  ラ: "ra", リ: "ri", ル: "ru", レ: "re", ロ: "ro",
+  ワ: "wa", ヲ: "wo", ン: "n",
+  ガ: "ga", ギ: "gi", グ: "gu", ゲ: "ge", ゴ: "go",
+  ザ: "za", ジ: "ji", ズ: "zu", ゼ: "ze", ゾ: "zo",
+  ダ: "da", ヂ: "ji", ヅ: "zu", デ: "de", ド: "do",
+  バ: "ba", ビ: "bi", ブ: "bu", ベ: "be", ボ: "bo",
+  パ: "pa", ピ: "pi", プ: "pu", ペ: "pe", ポ: "po",
+  キャ: "kya", キュ: "kyu", キョ: "kyo",
+  シャ: "sha", シュ: "shu", ショ: "sho",
+  チャ: "cha", チュ: "chu", チョ: "cho",
+  ニャ: "nya", ニュ: "nyu", ニョ: "nyo",
+  ヒャ: "hya", ヒュ: "hyu", ヒョ: "hyo",
+  ミャ: "mya", ミュ: "myu", ミョ: "myo",
+  リャ: "rya", リュ: "ryu", リョ: "ryo",
+  ギャ: "gya", ギュ: "gyu", ギョ: "gyo",
+  ジャ: "ja", ジュ: "ju", ジョ: "jo",
+  ビャ: "bya", ビュ: "byu", ビョ: "byo",
+  ピャ: "pya", ピュ: "pyu", ピョ: "pyo",
+};
+
+function convertKanaToRomaji(text: string): string {
+  if (!text) return "";
+  let res = "";
+  let i = 0;
+  while (i < text.length) {
+    if (i + 1 < text.length && kanaToRomajiMap[text.slice(i, i + 2)]) {
+      res += kanaToRomajiMap[text.slice(i, i + 2)];
+      i += 2;
+    } else if (kanaToRomajiMap[text[i]]) {
+      res += kanaToRomajiMap[text[i]];
+      i += 1;
+    } else if (text[i] === "っ" || text[i] === "ッ") {
+      if (i + 1 < text.length) {
+        const nextR = convertKanaToRomaji(text[i + 1]);
+        if (nextR) res += nextR[0];
+      }
+      i += 1;
+    } else if (text[i] === "ー") {
+      i += 1;
+    } else {
+      res += text[i];
+      i += 1;
+    }
+  }
+  return res;
+}
+
+function formatReadingsWithRomaji(readings: string[] | string): string {
+  const list = Array.isArray(readings) ? readings : [readings];
+  return list
+    .map((r) => {
+      const rom = convertKanaToRomaji(r);
+      return rom && rom !== r ? `${r} (${rom})` : r;
+    })
+    .join(", ");
+}
+
+function getItemKanjiDetails(item: any) {
+  if (!item) return { onyomiStr: "", kunyomiStr: "" };
+
+  let onyomiList: string[] = [];
+  let kunyomiList: string[] = [];
+
+  if (item.onyomi && (Array.isArray(item.onyomi) ? item.onyomi.length > 0 : true)) {
+    onyomiList = Array.isArray(item.onyomi) ? item.onyomi : [item.onyomi];
+  }
+  if (item.kunyomi && (Array.isArray(item.kunyomi) ? item.kunyomi.length > 0 : true)) {
+    kunyomiList = Array.isArray(item.kunyomi) ? item.kunyomi : [item.kunyomi];
+  }
+
+  // If item is Vocabulary and doesn't explicitly have onyomi/kunyomi, lookup kanji characters in item.word from allKanji
+  const targetChars = item.word || item.kanji || "";
+  if (targetChars) {
+    for (const char of targetChars) {
+      const match = allKanji.find((k) => k.kanji === char);
+      if (match) {
+        if (match.onyomi) {
+          const arr = Array.isArray(match.onyomi) ? match.onyomi : [match.onyomi];
+          onyomiList.push(...arr);
+        }
+        if (match.kunyomi) {
+          const arr = Array.isArray(match.kunyomi) ? match.kunyomi : [match.kunyomi];
+          kunyomiList.push(...arr);
+        }
+      }
+    }
+  }
+
+  // Remove duplicates
+  onyomiList = Array.from(new Set(onyomiList));
+  kunyomiList = Array.from(new Set(kunyomiList));
+
+  return {
+    onyomiStr: onyomiList.length > 0 ? formatReadingsWithRomaji(onyomiList) : "",
+    kunyomiStr: kunyomiList.length > 0 ? formatReadingsWithRomaji(kunyomiList) : "",
+  };
+}
+
+function getRevealedReadingHeader(item: any): string {
+  if (!item) return "";
+
+  const mainWord = item.word || item.title || item.kanji || "";
+  const rawReading =
+    item.reading ||
+    (item.type === "kanji" ? item.kunyomi?.[0] || item.onyomi?.[0] : "");
+
+  const targetForRomaji = rawReading || mainWord;
+  const rom = item.romaji || convertKanaToRomaji(targetForRomaji);
+
+  if (rawReading) {
+    if (rom && rawReading.toLowerCase() !== rom.toLowerCase()) {
+      return `${rawReading} (${rom})`;
+    }
+    return rawReading;
+  }
+
+  if (mainWord) {
+    if (rom && mainWord.toLowerCase() !== rom.toLowerCase()) {
+      return `${mainWord} (${rom})`;
+    }
+    return mainWord;
+  }
+
+  return "";
+}
+
 function PracticeContent() {
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q") || "";
@@ -735,7 +869,7 @@ function PracticeContent() {
   const [isRevealed, setIsRevealed] = useState(false);
   const [showFurigana, setShowFurigana] = useState(true);
   const [showRomaji, setShowRomaji] = useState(false);
-  const [showHintSentence, setShowHintSentence] = useState(false);
+  const [showOnyomi, setShowOnyomi] = useState(false);
 
   // Drill Mode State
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -781,7 +915,7 @@ function PracticeContent() {
       setIsRevealed(false);
       setSelectedOption(null);
       setIsSubmitted(false);
-      setShowHintSentence(false);
+      setShowOnyomi(false);
       setStats({ easy: 0, good: 0, hard: 0 });
     } catch (err) {
       setSessionState("error");
@@ -799,8 +933,17 @@ function PracticeContent() {
 
   const getDisplayReading = (item: any) => {
     if (!item) return "";
-    if (item.type === "kanji") {
-      return [...(item.onyomi || []), ...(item.kunyomi || [])].join(", ");
+    if (item.type === "kanji" || item.onyomi || item.kunyomi) {
+      const parts = [];
+      if (item.onyomi && (Array.isArray(item.onyomi) ? item.onyomi.length > 0 : true)) {
+        const onStr = Array.isArray(item.onyomi) ? item.onyomi.join(", ") : item.onyomi;
+        parts.push(`音読み (Onyomi): ${onStr}`);
+      }
+      if (item.kunyomi && (Array.isArray(item.kunyomi) ? item.kunyomi.length > 0 : true)) {
+        const kunStr = Array.isArray(item.kunyomi) ? item.kunyomi.join(", ") : item.kunyomi;
+        parts.push(`訓読み (Kunyomi): ${kunStr}`);
+      }
+      if (parts.length > 0) return parts.join(" • ");
     }
     return item.reading || item.romaji || "";
   };
@@ -818,12 +961,8 @@ function PracticeContent() {
   }, [currentItem, items]);
 
   const playAudio = (text: string) => {
-    if (typeof window !== "undefined" && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "ja-JP";
-      utterance.rate = 0.8;
-      window.speechSynthesis.speak(utterance);
+    if (text) {
+      playJapaneseAudio(text);
     }
   };
 
@@ -833,7 +972,7 @@ function PracticeContent() {
     if (currentIndex < items.length - 1) {
       setCurrentIndex((prev) => prev + 1);
       setIsRevealed(false);
-      setShowHintSentence(false);
+      setShowOnyomi(false);
     } else {
       setSessionState("completed");
     }
@@ -857,7 +996,7 @@ function PracticeContent() {
       setCurrentIndex((prev) => prev + 1);
       setSelectedOption(null);
       setIsSubmitted(false);
-      setShowHintSentence(false);
+      setShowOnyomi(false);
     } else {
       setSessionState("completed");
     }
@@ -1048,13 +1187,6 @@ function PracticeContent() {
                       abc Romaji
                     </ToolIconButton>
                   )}
-
-                  <ToolIconButton
-                    $active={showHintSentence}
-                    onClick={() => setShowHintSentence(!showHintSentence)}
-                  >
-                    💡 Petunjuk Kalimat
-                  </ToolIconButton>
                 </HintToolbar>
 
                 {/* Main Word Display */}
@@ -1076,25 +1208,11 @@ function PracticeContent() {
                       fontSize: "1.1rem",
                       color: "var(--primary)",
                       fontWeight: 700,
-                      marginBottom: "1rem",
+                      marginBottom: "0.75rem",
                     }}
                   >
                     [{currentItem.romaji}]
                   </div>
-                )}
-
-                {/* Sentence Context Hint */}
-                {showHintSentence && (
-                  <HintSentenceBox>
-                    <div className="ja">
-                      {currentItem.exampleSentence ||
-                        currentItem.example ||
-                        `TIPS: Perhatikan baik-baik kanji/kosakata ini di soal JLPT ${setupLevel}.`}
-                    </div>
-                    {currentItem.exampleMeaning && (
-                      <div className="id">{currentItem.exampleMeaning}</div>
-                    )}
-                  </HintSentenceBox>
                 )}
 
                 {/* Reveal & Self-Assessment */}
@@ -1119,12 +1237,36 @@ function PracticeContent() {
                 ) : (
                   <RevealBox>
                     <ReadingText>
-                      {getDisplayReading(currentItem)}{" "}
-                      {currentItem.romaji ? `(${currentItem.romaji})` : ""}
+                      {getRevealedReadingHeader(currentItem)}
                     </ReadingText>
                     <MeaningText>{currentItem.meaning}</MeaningText>
 
-                    {/* Breakdown if present */}
+                    {/* Onyomi & Kunyomi Breakdown with Latin Romaji */}
+                    {(() => {
+                      const { onyomiStr, kunyomiStr } = getItemKanjiDetails(currentItem);
+                      if (!onyomiStr && !kunyomiStr) return null;
+                      return (
+                        <BreakdownBox style={{ marginBottom: "0.85rem", marginTop: "1rem" }}>
+                          <div className="title">Cara Baca Kanji (Onyomi & Kunyomi)</div>
+                          <div className="content">
+                            {onyomiStr && (
+                              <div>
+                                <strong style={{ color: "var(--primary)" }}>音読み (Onyomi):</strong>{" "}
+                                {onyomiStr}
+                              </div>
+                            )}
+                            {kunyomiStr && (
+                              <div style={{ marginTop: "0.35rem" }}>
+                                <strong style={{ color: "var(--primary)" }}>訓読み (Kunyomi):</strong>{" "}
+                                {kunyomiStr}
+                              </div>
+                            )}
+                          </div>
+                        </BreakdownBox>
+                      );
+                    })()}
+
+                    {/* Kanji stroke count / radical breakdown if present */}
                     {currentItem.strokeCount && (
                       <BreakdownBox>
                         <div className="title">Detail Kanji</div>
