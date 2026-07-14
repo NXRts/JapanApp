@@ -683,6 +683,54 @@ function PracticeContent() {
   const [setupLevel, setSetupLevel] = useState(initialLevel);
   const [setupCategory, setSetupCategory] = useState(initialCategory);
 
+  // Load saved preferences from localStorage on mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const savedMode = localStorage.getItem("japanapp_practice_mode");
+      if (savedMode === "flashcard" || savedMode === "drill") {
+        setPracticeMode(savedMode);
+      }
+
+      if (!searchParams.get("level")) {
+        const savedLevel = localStorage.getItem("japanapp_practice_level");
+        if (savedLevel && ["All", "N5", "N4", "N3", "N2", "N1"].includes(savedLevel)) {
+          setSetupLevel(savedLevel);
+        }
+      }
+
+      if (!searchParams.get("category")) {
+        const savedCategory = localStorage.getItem("japanapp_practice_category");
+        if (savedCategory && ["vocabulary", "kanji", "grammar"].includes(savedCategory)) {
+          setSetupCategory(savedCategory);
+        }
+      }
+    } catch (e) {
+      // ignore storage errors
+    }
+  }, [searchParams]);
+
+  const handleModeChange = (mode: "flashcard" | "drill") => {
+    setPracticeMode(mode);
+    try {
+      localStorage.setItem("japanapp_practice_mode", mode);
+    } catch (e) {}
+  };
+
+  const handleLevelChange = (level: string) => {
+    setSetupLevel(level);
+    try {
+      localStorage.setItem("japanapp_practice_level", level);
+    } catch (e) {}
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSetupCategory(category);
+    try {
+      localStorage.setItem("japanapp_practice_category", category);
+    } catch (e) {}
+  };
+
   // Card View States
   const [isRevealed, setIsRevealed] = useState(false);
   const [showFurigana, setShowFurigana] = useState(true);
@@ -856,13 +904,13 @@ function PracticeContent() {
                 <OptionGrid $cols={2}>
                   <OptionButton
                     $active={practiceMode === "flashcard"}
-                    onClick={() => setPracticeMode("flashcard")}
+                    onClick={() => handleModeChange("flashcard")}
                   >
                     🎴 Flashcard Mastery (Flip Card)
                   </OptionButton>
                   <OptionButton
                     $active={practiceMode === "drill"}
-                    onClick={() => setPracticeMode("drill")}
+                    onClick={() => handleModeChange("drill")}
                   >
                     🎯 Interactive Drill (Pilihan Ganda)
                   </OptionButton>
@@ -872,11 +920,11 @@ function PracticeContent() {
               <div>
                 <SelectionLabel>Pilih Level JLPT</SelectionLabel>
                 <OptionGrid $cols={6}>
-                  {["All", "N1", "N2", "N3", "N4", "N5"].map((l) => (
+                  {["All", "N5", "N4", "N3", "N2", "N1"].map((l) => (
                     <OptionButton
                       key={l}
                       $active={setupLevel === l}
-                      onClick={() => setSetupLevel(l)}
+                      onClick={() => handleLevelChange(l)}
                     >
                       {l}
                     </OptionButton>
@@ -895,7 +943,7 @@ function PracticeContent() {
                     <OptionButton
                       key={c.id}
                       $active={setupCategory === c.id}
-                      onClick={() => setSetupCategory(c.id as any)}
+                      onClick={() => handleCategoryChange(c.id)}
                     >
                       {c.label}
                     </OptionButton>
