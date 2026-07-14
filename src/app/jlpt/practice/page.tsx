@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -14,11 +14,16 @@ import {
 
 // --- Animations ---
 const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 `;
 
-const slideIn = keyframes`
+const popIn = keyframes`
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+`;
+
+const slideInRight = keyframes`
   from { transform: translateX(20px); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
 `;
@@ -29,11 +34,12 @@ const PageWrapper = styled.div`
   color: var(--foreground);
   background-image: radial-gradient(var(--dot-color) 1.2px, transparent 1.2px);
   background-size: 32px 32px;
+  padding-bottom: 4rem;
 `;
 
 const BreadcrumbWrapper = styled.div`
   width: 100%;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 1.5rem 2rem 0 2rem;
 
@@ -47,71 +53,96 @@ const BreadcrumbWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 820px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
-  min-height: 90vh;
+  padding: 2rem 1.5rem;
+  min-height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   @media (max-width: 640px) {
-    padding: 1rem 0.75rem;
+    padding: 1rem 0.75rem 5rem 0.75rem;
   }
 `;
 
-const Header = styled.div`
+const SessionHeader = styled.div`
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
-  margin-bottom: 2.5rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
   width: 100%;
-  animation: ${fadeIn} 0.5s ease-out;
+  animation: ${fadeIn} 0.4s ease-out;
 
   @media (max-width: 600px) {
-    flex-direction: column;
-    gap: 0.75rem;
+    flex-direction: row;
+    gap: 0.5rem;
     margin-bottom: 1rem;
   }
 `;
 
-const HeaderRight = styled.div`
+const SessionBadgeGroup = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   gap: 0.75rem;
-  text-align: right;
+  flex-wrap: wrap;
+`;
 
-  @media (max-width: 600px) {
-    align-items: flex-start;
-    text-align: left;
-  }
+const LevelTag = styled.span`
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
+`;
+
+const CategoryTag = styled.span`
+  background: rgba(var(--foreground-rgb), 0.06);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: capitalize;
+`;
+
+const ProgressCounter = styled.div`
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.4rem 1rem;
+  border-radius: 99px;
 `;
 
 const PracticeCard = styled.div`
   background: var(--surface);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 32px;
-  border: 1px solid var(--border);
-  padding: 4rem 3rem;
+  border-radius: 28px;
+  border: 1.5px solid var(--border);
+  padding: 3rem 2.5rem;
   text-align: center;
   box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  animation: ${fadeIn} 0.6s ease-out;
+  animation: ${fadeIn} 0.5s ease-out;
 
   @media (max-width: 600px) {
-    padding: 1.5rem 1rem;
+    padding: 1.75rem 1.25rem;
     border-radius: 20px;
   }
 `;
 
 const SetupTitle = styled.h2`
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 2.5rem;
+  font-size: 2.25rem;
+  font-weight: 850;
+  margin-bottom: 0.5rem;
   background: linear-gradient(
     135deg,
     var(--foreground) 0%,
@@ -121,46 +152,54 @@ const SetupTitle = styled.h2`
   -webkit-text-fill-color: transparent;
 
   @media (max-width: 600px) {
-    font-size: 1.8rem;
-    margin-bottom: 1.25rem;
+    font-size: 1.75rem;
+  }
+`;
+
+const SetupSub = styled.p`
+  color: var(--text-secondary);
+  font-size: 0.98rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.88rem;
+    margin-bottom: 1.5rem;
   }
 `;
 
 const SelectionGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 3rem;
+  gap: 1.75rem;
+  margin-bottom: 2.5rem;
+  text-align: left;
 
   @media (max-width: 600px) {
     gap: 1.25rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
   }
 `;
 
 const SelectionLabel = styled.label`
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 800;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   display: block;
-  margin-bottom: 1rem;
-  text-align: left;
-
-  @media (max-width: 600px) {
-    margin-bottom: 0.5rem;
-    font-size: 0.85rem;
-  }
+  margin-bottom: 0.75rem;
 `;
 
-const LevelGrid = styled.div`
+const OptionGrid = styled.div<{ $cols?: number }>`
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(${({ $cols }) => $cols || 3}, 1fr);
   gap: 0.75rem;
 
   @media (max-width: 600px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(
+      ${({ $cols }) => ($cols && $cols > 3 ? 3 : 1)},
+      1fr
+    );
     gap: 0.5rem;
   }
 `;
@@ -169,174 +208,260 @@ const OptionButton = styled.button<{ $active: boolean }>`
   background: ${({ $active }) =>
     $active ? "var(--primary)" : "rgba(var(--foreground-rgb), 0.03)"};
   color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
-  border: 1px solid
+  border: 1.5px solid
     ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
-  padding: 0.85rem;
+  padding: 0.85rem 1rem;
   border-radius: 16px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
   &:hover {
     transform: translateY(-2px);
     border-color: var(--primary);
     color: ${({ $active }) => ($active ? "white" : "var(--primary)")};
-    box-shadow: var(--shadow-sm);
   }
 
   @media (max-width: 600px) {
-    padding: 0.6rem;
-    border-radius: 10px;
-    font-size: 0.9rem;
-  }
-`;
-
-const CategoryGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.88rem;
   }
 `;
 
-const ProgressInfo = styled.div`
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  background: rgba(var(--foreground-rgb), 0.05);
-  padding: 0.4rem 1rem;
-  border-radius: 99px;
+const InstructionBanner = styled.div`
+  background: rgba(var(--primary-rgb, 79, 70, 229), 0.08);
+  border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.2);
+  border-radius: 16px;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  text-align: left;
 
-  @media (max-width: 600px) {
-    top: 15px;
-    right: 15px;
+  .text {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--foreground);
+  }
+
+  .sub {
     font-size: 0.8rem;
-    padding: 0.25rem 0.6rem;
+    color: var(--text-secondary);
   }
-`;
-
-const ItemLevelBadge = styled.div`
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: var(--primary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 
   @media (max-width: 600px) {
-    top: 15px;
-    left: 15px;
-    font-size: 0.75rem;
-  }
-`;
-
-const MainText = styled.h1`
-  font-size: 4.5rem;
-  font-weight: 800;
-  margin-bottom: 2rem;
-  line-height: 1.1;
-  color: var(--foreground);
-
-  @media (max-width: 600px) {
-    font-size: 2.2rem;
+    padding: 0.6rem 0.85rem;
     margin-bottom: 1rem;
+
+    .text {
+      font-size: 0.82rem;
+    }
+    .sub {
+      display: none;
+    }
   }
 `;
 
-const RevealSection = styled.div<{ $isVisible: boolean }>`
-  opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
-  transform: ${({ $isVisible }) =>
-    $isVisible ? "translateY(0)" : "translateY(10px)"};
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: ${({ $isVisible }) => ($isVisible ? "auto" : "none")};
-  margin-top: 1rem;
+const HintToolbar = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+`;
+
+const ToolIconButton = styled.button<{ $active?: boolean }>`
+  background: ${({ $active }) =>
+    $active ? "var(--primary)" : "rgba(var(--foreground-rgb), 0.05)"};
+  color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  border-radius: 12px;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.78rem;
+  }
+`;
+
+const MainTargetWord = styled.h1`
+  font-size: 4.25rem;
+  font-weight: 850;
+  margin: 1rem 0 1.5rem 0;
+  color: var(--foreground);
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+
+  ruby {
+    ruby-position: over;
+    rt {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.2rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    font-size: 2.5rem;
+    margin: 0.5rem 0 1rem 0;
+
+    ruby rt {
+      font-size: 1rem;
+    }
+  }
+`;
+
+const HintSentenceBox = styled.div`
+  background: rgba(var(--foreground-rgb), 0.03);
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  animation: ${popIn} 0.3s ease-out;
+
+  .ja {
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 0.25rem;
+  }
+
+  .id {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+  }
+`;
+
+const RevealBox = styled.div`
+  background: rgba(var(--primary-rgb, 79, 70, 229), 0.04);
+  border: 1.5px solid rgba(var(--primary-rgb, 79, 70, 229), 0.2);
+  border-radius: 20px;
+  padding: 1.75rem 1.5rem;
+  margin-top: 1.5rem;
+  animation: ${popIn} 0.4s ease-out;
+  text-align: center;
+
+  @media (max-width: 600px) {
+    padding: 1.25rem 1rem;
+    margin-top: 1rem;
+  }
 `;
 
 const ReadingText = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   color: var(--text-secondary);
-  font-weight: 600;
-  margin-bottom: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
 
   @media (max-width: 600px) {
-    font-size: 1.15rem;
-    margin-bottom: 0.4rem;
+    font-size: 1.1rem;
   }
 `;
 
 const MeaningText = styled.div`
-  font-size: 1.8rem;
-  font-weight: 700;
+  font-size: 1.65rem;
+  font-weight: 850;
   color: var(--primary);
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.25rem;
 
   @media (max-width: 600px) {
-    font-size: 1.35rem;
-    margin-bottom: 1.25rem;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+`;
+
+const BreakdownBox = styled.div`
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.85rem 1.25rem;
+  margin-top: 1rem;
+  text-align: left;
+  font-size: 0.88rem;
+
+  .title {
+    font-weight: 800;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+  }
+
+  .content {
+    color: var(--foreground);
+    line-height: 1.5;
   }
 `;
 
 const ActionGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-top: 1.75rem;
 
   @media (max-width: 600px) {
-    gap: 0.5rem;
-    margin-top: 1rem;
-  }
-`;
-
-const FinalActions = styled.div`
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 2.5rem;
-  flex-wrap: wrap;
-
-  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
     gap: 0.5rem;
     margin-top: 1.25rem;
   }
 `;
 
 const BaseButton = styled.button`
-  padding: 1.25rem 2rem;
-  border-radius: 20px;
+  padding: 1rem 1.75rem;
+  border-radius: 16px;
   font-weight: 800;
-  font-size: 1.1rem;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   border: none;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
   }
 
   &:active {
-    transform: translateY(-1px);
+    transform: translateY(1px);
   }
 
   @media (max-width: 600px) {
     padding: 0.75rem 1rem;
     border-radius: 12px;
-    font-size: 0.95rem;
-    gap: 0.4rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -344,28 +469,116 @@ const PrimaryButton = styled(BaseButton)`
   background: var(--primary);
   color: white;
   width: 100%;
-  box-shadow: 0 10px 15px -3px rgba(var(--primary-rgb, 79, 70, 229), 0.3);
+  box-shadow: 0 8px 16px -4px rgba(var(--primary-rgb, 79, 70, 229), 0.35);
 `;
 
-const ConfidenceButton = styled(BaseButton)<{ $success?: boolean }>`
-  background: ${({ $success }) =>
-    $success
-      ? "rgba(var(--secondary-rgb, 16, 185, 129), 0.1)"
-      : "rgba(var(--accent-rgb, 244, 63, 94), 0.1)"};
-  color: var(${({ $success }) => ($success ? "--secondary" : "--accent")});
-  border: 1px solid
-    var(${({ $success }) => ($success ? "--secondary" : "--accent")});
+const SelfAssessButton = styled(BaseButton)<{ $type: "hard" | "good" | "easy" }>`
+  background: ${({ $type }) =>
+    $type === "easy"
+      ? "rgba(16, 185, 129, 0.12)"
+      : $type === "good"
+        ? "rgba(59, 130, 246, 0.12)"
+        : "rgba(244, 63, 94, 0.12)"};
+  color: ${({ $type }) =>
+    $type === "easy" ? "#10b981" : $type === "good" ? "#3b82f6" : "#f43f5e"};
+  border: 1.5px solid
+    ${({ $type }) =>
+      $type === "easy"
+        ? "rgba(16, 185, 129, 0.4)"
+        : $type === "good"
+          ? "rgba(59, 130, 246, 0.4)"
+          : "rgba(244, 63, 94, 0.4)"};
 
   &:hover {
-    background: var(
-      ${({ $success }) => ($success ? "--secondary" : "--accent")}
-    );
+    background: ${({ $type }) =>
+      $type === "easy" ? "#10b981" : $type === "good" ? "#3b82f6" : "#f43f5e"};
     color: white;
-    box-shadow: 0 10px 15px -3px
-      ${({ $success }) =>
-        $success
-          ? "rgba(var(--secondary-rgb), 0.3)"
-          : "rgba(var(--accent-rgb), 0.3)"};
+  }
+`;
+
+// --- Drill Mode Components ---
+const DrillOptionsGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+`;
+
+const DrillOptionCard = styled.button<{
+  $state: "default" | "correct" | "incorrect" | "disabled";
+}>`
+  padding: 1rem 1.25rem;
+  border-radius: 16px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid
+    ${({ $state }) =>
+      $state === "correct"
+        ? "#10b981"
+        : $state === "incorrect"
+          ? "#f43f5e"
+          : "var(--border)"};
+  background: ${({ $state }) =>
+    $state === "correct"
+      ? "rgba(16, 185, 129, 0.1)"
+      : $state === "incorrect"
+        ? "rgba(244, 63, 94, 0.1)"
+        : "rgba(var(--foreground-rgb), 0.02)"};
+  color: ${({ $state }) =>
+    $state === "correct"
+      ? "#10b981"
+      : $state === "incorrect"
+        ? "#f43f5e"
+        : "var(--foreground)"};
+
+  &:hover {
+    ${({ $state }) =>
+      $state === "default" &&
+      `
+      border-color: var(--primary);
+      background: rgba(var(--primary-rgb), 0.05);
+      transform: translateX(4px);
+    `}
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.85rem 1rem;
+    font-size: 0.92rem;
+    border-radius: 12px;
+  }
+`;
+
+const ExplanationBanner = styled.div<{ $isCorrect: boolean }>`
+  background: ${({ $isCorrect }) =>
+    $isCorrect ? "rgba(16, 185, 129, 0.1)" : "rgba(244, 63, 94, 0.1)"};
+  border: 1px solid
+    ${({ $isCorrect }) => ($isCorrect ? "#10b981" : "#f43f5e")};
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  text-align: left;
+  animation: ${popIn} 0.3s ease-out;
+
+  .header {
+    font-weight: 850;
+    font-size: 1.1rem;
+    color: ${({ $isCorrect }) => ($isCorrect ? "#10b981" : "#f43f5e")};
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .body {
+    font-size: 0.92rem;
+    color: var(--foreground);
+    line-height: 1.5;
   }
 `;
 
@@ -374,11 +587,11 @@ const ProgressBarContainer = styled.div`
   height: 8px;
   background: var(--border);
   border-radius: 999px;
-  margin-top: 3rem;
+  margin-top: 2rem;
   overflow: hidden;
 
   @media (max-width: 600px) {
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
     height: 6px;
   }
 `;
@@ -391,82 +604,57 @@ const ProgressFill = styled.div<{ $percent: number }>`
     var(--primary),
     var(--primary-dark, #4f46e5)
   );
-  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.4s ease;
   border-radius: 999px;
-`;
-
-const SpeakerButton = styled.button`
-  background: rgba(var(--primary-rgb), 0.1);
-  border: none;
-  color: var(--primary);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin: 0 auto 2.5rem auto;
-  transition: all 0.2s;
-
-  &:hover {
-    transform: scale(1.1);
-    background: var(--primary);
-    color: white;
-  }
-
-  svg {
-    width: 28px;
-    height: 28px;
-  }
-
-  @media (max-width: 600px) {
-    width: 44px;
-    height: 44px;
-    margin: 0 auto 1.25rem auto;
-
-    svg {
-      width: 20px;
-      height: 20px;
-    }
-  }
-`;
-
-const StatsHeader = styled.div`
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
 `;
 
 const StatsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin: 2rem 0;
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
 `;
 
 const StatItem = styled.div<{ $color: string }>`
-  padding: 1.5rem;
+  padding: 1.25rem;
   background: rgba(var(--foreground-rgb), 0.03);
   border: 1px solid var(--border);
   border-radius: 20px;
 
   .label {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-secondary);
     font-weight: 700;
     text-transform: uppercase;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
   }
 
   .value {
-    font-size: 2rem;
-    font-weight: 800;
+    font-size: 1.75rem;
+    font-weight: 850;
     color: ${({ $color }) => $color};
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.85rem 0.5rem;
+    border-radius: 14px;
+
+    .label {
+      font-size: 0.7rem;
+    }
+    .value {
+      font-size: 1.25rem;
+    }
   }
 `;
 
-// --- Logic ---
-function shuffleArray(array: any[]) {
+// --- Helpers ---
+function shuffleArray<T>(array: T[]): T[] {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -481,17 +669,36 @@ function PracticeContent() {
   const initialCategory = (searchParams.get("category") as any) || "vocabulary";
   const initialLevel = searchParams.get("level") || "N5";
 
+  // State
   const [items, setItems] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isRevealed, setIsRevealed] = useState(false);
   const [sessionState, setSessionState] = useState<
     "setup" | "loading" | "practicing" | "completed" | "error"
   >("setup");
-  const [stats, setStats] = useState({ remembered: 0, forgotten: 0 });
 
-  // Setup state
+  // Options State
+  const [practiceMode, setPracticeMode] = useState<"flashcard" | "drill">(
+    "flashcard",
+  );
   const [setupLevel, setSetupLevel] = useState(initialLevel);
   const [setupCategory, setSetupCategory] = useState(initialCategory);
+
+  // Card View States
+  const [isRevealed, setIsRevealed] = useState(false);
+  const [showFurigana, setShowFurigana] = useState(true);
+  const [showRomaji, setShowRomaji] = useState(false);
+  const [showHintSentence, setShowHintSentence] = useState(false);
+
+  // Drill Mode State
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // Stats State
+  const [stats, setStats] = useState({
+    easy: 0,
+    good: 0,
+    hard: 0,
+  });
 
   const startSession = async () => {
     setSessionState("loading");
@@ -520,30 +727,47 @@ function PracticeContent() {
       }
 
       const shuffled = shuffleArray(baseData);
-      setItems(shuffled.slice(0, 20)); // Limit to 20 items per session
+      setItems(shuffled.slice(0, 20)); // Limit 20 per session
       setSessionState("practicing");
       setCurrentIndex(0);
       setIsRevealed(false);
-      setStats({ remembered: 0, forgotten: 0 });
+      setSelectedOption(null);
+      setIsSubmitted(false);
+      setShowHintSentence(false);
+      setStats({ easy: 0, good: 0, hard: 0 });
     } catch (err) {
       setSessionState("error");
     }
   };
 
-  const handleReveal = () => setIsRevealed(true);
+  const currentItem = items[currentIndex];
 
-  const handleConfidence = (remembered: boolean) => {
-    if (remembered)
-      setStats((prev) => ({ ...prev, remembered: prev.remembered + 1 }));
-    else setStats((prev) => ({ ...prev, forgotten: prev.forgotten + 1 }));
-
-    if (currentIndex < items.length - 1) {
-      setCurrentIndex((prev) => prev + 1);
-      setIsRevealed(false);
-    } else {
-      setSessionState("completed");
-    }
+  const getDisplayMain = (item: any) => {
+    if (!item) return "";
+    if (item.type === "kanji") return item.kanji;
+    if (item.type === "grammar") return item.title;
+    return item.word || item.title;
   };
+
+  const getDisplayReading = (item: any) => {
+    if (!item) return "";
+    if (item.type === "kanji") {
+      return [...(item.onyomi || []), ...(item.kunyomi || [])].join(", ");
+    }
+    return item.reading || item.romaji || "";
+  };
+
+  // Generate 4 Multiple Choice options for Drill Mode
+  const currentDrillOptions = useMemo(() => {
+    if (!currentItem || items.length === 0) return [];
+    const correctMeaning = currentItem.meaning;
+    const otherMeanings = items
+      .filter((i) => i.meaning !== correctMeaning)
+      .map((i) => i.meaning);
+
+    const shuffledOthers = shuffleArray(otherMeanings).slice(0, 3);
+    return shuffleArray([correctMeaning, ...shuffledOthers]);
+  }, [currentItem, items]);
 
   const playAudio = (text: string) => {
     if (typeof window !== "undefined" && window.speechSynthesis) {
@@ -555,19 +779,40 @@ function PracticeContent() {
     }
   };
 
-  const currentItem = items[currentIndex];
+  const handleSelfAssessment = (type: "hard" | "good" | "easy") => {
+    setStats((prev) => ({ ...prev, [type]: prev[type] + 1 }));
 
-  const getDisplayMain = (item: any) => {
-    if (item.type === "kanji") return item.kanji;
-    if (item.type === "grammar") return item.title;
-    return item.word || item.title;
+    if (currentIndex < items.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+      setIsRevealed(false);
+      setShowHintSentence(false);
+    } else {
+      setSessionState("completed");
+    }
   };
 
-  const getDisplayReading = (item: any) => {
-    if (item.type === "kanji") {
-      return [...(item.onyomi || []), ...(item.kunyomi || [])].join(", ");
+  const handleDrillSubmit = (option: string) => {
+    if (isSubmitted) return;
+    setSelectedOption(option);
+    setIsSubmitted(true);
+
+    const isCorrect = option === currentItem.meaning;
+    if (isCorrect) {
+      setStats((prev) => ({ ...prev, easy: prev.easy + 1 }));
+    } else {
+      setStats((prev) => ({ ...prev, hard: prev.hard + 1 }));
     }
-    return item.reading || item.romaji || "";
+  };
+
+  const handleNextDrill = () => {
+    if (currentIndex < items.length - 1) {
+      setCurrentIndex((prev) => prev + 1);
+      setSelectedOption(null);
+      setIsSubmitted(false);
+      setShowHintSentence(false);
+    } else {
+      setSessionState("completed");
+    }
   };
 
   return (
@@ -582,42 +827,51 @@ function PracticeContent() {
         />
       </BreadcrumbWrapper>
       <Container>
-        <Header>
-          <HeaderRight>
-            <div
-              style={{
-                fontSize: "0.85rem",
-                fontWeight: 800,
-                color: "var(--primary)",
-                textTransform: "uppercase",
-                letterSpacing: "0.15em",
-              }}
-            >
-              Practice Session
-            </div>
-            {sessionState === "practicing" && (
-              <div
-                style={{
-                  fontSize: "0.75rem",
-                  color: "var(--text-secondary)",
-                  marginTop: "0.2rem",
-                }}
-              >
-                {setupLevel} •{" "}
-                {setupCategory.charAt(0).toUpperCase() +
-                  setupCategory.slice(1).replace("-", " ")}
-              </div>
-            )}
-          </HeaderRight>
-        </Header>
+        {sessionState === "practicing" && (
+          <SessionHeader>
+            <SessionBadgeGroup>
+              <LevelTag>{setupLevel}</LevelTag>
+              <CategoryTag>
+                {setupCategory} • {practiceMode === "flashcard" ? "🎴 Flashcard" : "🎯 Drill"}
+              </CategoryTag>
+            </SessionBadgeGroup>
 
+            <ProgressCounter>
+              {currentIndex + 1} / {items.length}
+            </ProgressCounter>
+          </SessionHeader>
+        )}
+
+        {/* --- SETUP SCREEN --- */}
         {sessionState === "setup" && (
           <PracticeCard>
-            <SetupTitle>Start Practice</SetupTitle>
+            <SetupTitle>Start Practice Hub</SetupTitle>
+            <SetupSub>
+              Pilih mode dan filter materi latihan sesuai kebutuhan Anda untuk mengasah ingatan tanpa tekanan waktu.
+            </SetupSub>
+
             <SelectionGroup>
               <div>
-                <SelectionLabel>Select Level</SelectionLabel>
-                <LevelGrid>
+                <SelectionLabel>Pilih Mode Latihan</SelectionLabel>
+                <OptionGrid $cols={2}>
+                  <OptionButton
+                    $active={practiceMode === "flashcard"}
+                    onClick={() => setPracticeMode("flashcard")}
+                  >
+                    🎴 Flashcard Mastery (Flip Card)
+                  </OptionButton>
+                  <OptionButton
+                    $active={practiceMode === "drill"}
+                    onClick={() => setPracticeMode("drill")}
+                  >
+                    🎯 Interactive Drill (Pilihan Ganda)
+                  </OptionButton>
+                </OptionGrid>
+              </div>
+
+              <div>
+                <SelectionLabel>Pilih Level JLPT</SelectionLabel>
+                <OptionGrid $cols={6}>
                   {["All", "N1", "N2", "N3", "N4", "N5"].map((l) => (
                     <OptionButton
                       key={l}
@@ -627,16 +881,16 @@ function PracticeContent() {
                       {l}
                     </OptionButton>
                   ))}
-                </LevelGrid>
+                </OptionGrid>
               </div>
 
               <div>
-                <SelectionLabel>Select Category</SelectionLabel>
-                <CategoryGrid>
+                <SelectionLabel>Pilih Kategori Materi</SelectionLabel>
+                <OptionGrid $cols={3}>
                   {[
-                    { id: "vocabulary", label: "Vocabulary" },
+                    { id: "vocabulary", label: "Kosakata (Vocabulary)" },
                     { id: "kanji", label: "Kanji" },
-                    { id: "grammar", label: "Grammar" },
+                    { id: "grammar", label: "Tata Bahasa (Grammar)" },
                   ].map((c) => (
                     <OptionButton
                       key={c.id}
@@ -646,12 +900,12 @@ function PracticeContent() {
                       {c.label}
                     </OptionButton>
                   ))}
-                </CategoryGrid>
+                </OptionGrid>
               </div>
             </SelectionGroup>
 
             <PrimaryButton onClick={startSession}>
-              Start Session
+              Mulai Sesi Latihan Sekarang
               <svg
                 width="20"
                 height="20"
@@ -666,6 +920,7 @@ function PracticeContent() {
           </PracticeCard>
         )}
 
+        {/* --- LOADING --- */}
         {sessionState === "loading" && (
           <div
             style={{
@@ -675,14 +930,15 @@ function PracticeContent() {
             }}
           >
             <p style={{ fontSize: "1.1rem" }}>
-              Preparing practice materials...
+              Menyiapkan materi latihan JLPT Anda...
             </p>
           </div>
         )}
 
+        {/* --- ERROR / NO DATA --- */}
         {sessionState === "error" && (
           <PracticeCard>
-            <h2 style={{ color: "var(--foreground)" }}>Insufficient Data</h2>
+            <h2 style={{ color: "var(--foreground)" }}>Data Belum Tersedia</h2>
             <p
               style={{
                 marginTop: "1rem",
@@ -691,189 +947,344 @@ function PracticeContent() {
                 marginBottom: "2.5rem",
               }}
             >
-              Sorry, we couldn't find data matching your filters for this
-              practice session.
+              Maaf, belum ada item yang cocok dengan kombinasi filter level dan kategori ini. Silakan coba filter lain!
             </p>
-            <FinalActions>
-              <BaseButton
-                onClick={() => setSessionState("setup")}
-                style={{
-                  background: "var(--primary)",
-                  color: "white",
-                  flex: 1,
-                }}
-              >
-                Change Settings
-              </BaseButton>
-              <Link href="/jlpt" style={{ textDecoration: "none", flex: 1 }}>
-                <BaseButton
-                  style={{
-                    background: "transparent",
-                    color: "var(--foreground)",
-                    border: "1px solid var(--border)",
-                    width: "100%",
-                  }}
-                >
-                  Back
-                </BaseButton>
-              </Link>
-            </FinalActions>
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <PrimaryButton onClick={() => setSessionState("setup")}>
+                Ubah Filter
+              </PrimaryButton>
+            </div>
           </PracticeCard>
         )}
 
-        {sessionState === "practicing" && currentItem && (
-          <>
-            <PracticeCard>
-              <ItemLevelBadge>{currentItem.level}</ItemLevelBadge>
-              <ProgressInfo>
-                {currentIndex + 1} / {items.length}
-              </ProgressInfo>
+        {/* --- FLASHCARD PRACTICE MODE --- */}
+        {sessionState === "practicing" &&
+          currentItem &&
+          practiceMode === "flashcard" && (
+            <>
+              <PracticeCard>
+                <InstructionBanner>
+                  <div>
+                    <div className="text">
+                      💡 Tebak Cara Baca & Arti Kata Berikut
+                    </div>
+                    <div className="sub">
+                      Gunakan tombol bantuan Furigana/Audio jika diperlukan, lalu klik "Buka Jawaban".
+                    </div>
+                  </div>
+                </InstructionBanner>
 
-              <SpeakerButton
-                onClick={() => playAudio(getDisplayMain(currentItem))}
-                title="Play Audio"
-              >
-                <svg fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-                </svg>
-              </SpeakerButton>
-
-              <MainText>{getDisplayMain(currentItem)}</MainText>
-
-              {!isRevealed ? (
-                <PrimaryButton
-                  onClick={handleReveal}
-                  style={{ marginTop: "2rem" }}
-                >
-                  Show Answer
-                  <svg
-                    width="20"
-                    height="20"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    viewBox="0 0 24 24"
+                {/* Hint & Audio Toolbar */}
+                <HintToolbar>
+                  <ToolIconButton
+                    onClick={() => playAudio(getDisplayMain(currentItem))}
+                    title="Dengar Suara"
                   >
-                    <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                </PrimaryButton>
-              ) : (
-                <RevealSection $isVisible={isRevealed}>
-                  <ReadingText>{getDisplayReading(currentItem)}</ReadingText>
-                  <MeaningText>{currentItem.meaning}</MeaningText>
+                    🔊 Suara
+                  </ToolIconButton>
 
-                  <ActionGrid>
-                    <ConfidenceButton onClick={() => handleConfidence(false)}>
-                      <svg
-                        width="20"
-                        height="20"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                      Forgot
-                    </ConfidenceButton>
-                    <ConfidenceButton
-                      $success
-                      onClick={() => handleConfidence(true)}
+                  {currentItem.reading && (
+                    <ToolIconButton
+                      $active={showFurigana}
+                      onClick={() => setShowFurigana(!showFurigana)}
                     >
-                      <svg
-                        width="20"
-                        height="20"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                        viewBox="0 0 24 24"
+                      あ Furigana
+                    </ToolIconButton>
+                  )}
+
+                  {currentItem.romaji && (
+                    <ToolIconButton
+                      $active={showRomaji}
+                      onClick={() => setShowRomaji(!showRomaji)}
+                    >
+                      abc Romaji
+                    </ToolIconButton>
+                  )}
+
+                  <ToolIconButton
+                    $active={showHintSentence}
+                    onClick={() => setShowHintSentence(!showHintSentence)}
+                  >
+                    💡 Petunjuk Kalimat
+                  </ToolIconButton>
+                </HintToolbar>
+
+                {/* Main Word Display */}
+                <MainTargetWord>
+                  {showFurigana && currentItem.reading ? (
+                    <ruby>
+                      {getDisplayMain(currentItem)}
+                      <rt>{currentItem.reading}</rt>
+                    </ruby>
+                  ) : (
+                    getDisplayMain(currentItem)
+                  )}
+                </MainTargetWord>
+
+                {/* Optional Romaji Hint */}
+                {showRomaji && currentItem.romaji && (
+                  <div
+                    style={{
+                      fontSize: "1.1rem",
+                      color: "var(--primary)",
+                      fontWeight: 700,
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    [{currentItem.romaji}]
+                  </div>
+                )}
+
+                {/* Sentence Context Hint */}
+                {showHintSentence && (
+                  <HintSentenceBox>
+                    <div className="ja">
+                      {currentItem.exampleSentence ||
+                        currentItem.example ||
+                        `TIPS: Perhatikan baik-baik kanji/kosakata ini di soal JLPT ${setupLevel}.`}
+                    </div>
+                    {currentItem.exampleMeaning && (
+                      <div className="id">{currentItem.exampleMeaning}</div>
+                    )}
+                  </HintSentenceBox>
+                )}
+
+                {/* Reveal & Self-Assessment */}
+                {!isRevealed ? (
+                  <PrimaryButton
+                    onClick={() => setIsRevealed(true)}
+                    style={{ marginTop: "1.5rem" }}
+                  >
+                    Buka Jawaban (Show Answer)
+                    <svg
+                      width="20"
+                      height="20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </PrimaryButton>
+                ) : (
+                  <RevealBox>
+                    <ReadingText>
+                      {getDisplayReading(currentItem)}{" "}
+                      {currentItem.romaji ? `(${currentItem.romaji})` : ""}
+                    </ReadingText>
+                    <MeaningText>{currentItem.meaning}</MeaningText>
+
+                    {/* Breakdown if present */}
+                    {currentItem.strokeCount && (
+                      <BreakdownBox>
+                        <div className="title">Detail Kanji</div>
+                        <div className="content">
+                          Jumlah Goresan: {currentItem.strokeCount} | Radikal: {currentItem.radical || "-"}
+                        </div>
+                      </BreakdownBox>
+                    )}
+
+                    <ActionGrid>
+                      <SelfAssessButton
+                        $type="hard"
+                        onClick={() => handleSelfAssessment("hard")}
                       >
-                        <path d="M5 13l4 4L19 7" />
-                      </svg>
-                      Remembered
-                    </ConfidenceButton>
-                  </ActionGrid>
-                </RevealSection>
-              )}
-            </PracticeCard>
+                        ❌ Perlu Diulang (Hard)
+                      </SelfAssessButton>
+                      <SelfAssessButton
+                        $type="good"
+                        onClick={() => handleSelfAssessment("good")}
+                      >
+                        🤔 Cukup Paham (Good)
+                      </SelfAssessButton>
+                      <SelfAssessButton
+                        $type="easy"
+                        onClick={() => handleSelfAssessment("easy")}
+                      >
+                        ✅ Sudah Kuasai (Easy)
+                      </SelfAssessButton>
+                    </ActionGrid>
+                  </RevealBox>
+                )}
+              </PracticeCard>
 
-            <ProgressBarContainer>
-              <ProgressFill
-                $percent={((currentIndex + 1) / items.length) * 100}
-              />
-            </ProgressBarContainer>
-          </>
-        )}
+              <ProgressBarContainer>
+                <ProgressFill
+                  $percent={((currentIndex + 1) / items.length) * 100}
+                />
+              </ProgressBarContainer>
+            </>
+          )}
 
+        {/* --- INTERACTIVE DRILL PRACTICE MODE (Pilihan Ganda) --- */}
+        {sessionState === "practicing" &&
+          currentItem &&
+          practiceMode === "drill" && (
+            <>
+              <PracticeCard>
+                <InstructionBanner>
+                  <div>
+                    <div className="text">
+                      🎯 Pilih Arti Kata / Tata Bahasa yang Paling Tepat
+                    </div>
+                    <div className="sub">
+                      Klik salah satu dari 4 opsi di bawah. Penjelasan instan akan muncul begitu dipilih!
+                    </div>
+                  </div>
+                </InstructionBanner>
+
+                {/* Target word */}
+                <MainTargetWord>{getDisplayMain(currentItem)}</MainTargetWord>
+
+                {currentItem.reading && (
+                  <div
+                    style={{
+                      fontSize: "1.2rem",
+                      color: "var(--text-secondary)",
+                      fontWeight: 700,
+                      marginBottom: "1.5rem",
+                    }}
+                  >
+                    Cara Baca: {currentItem.reading}
+                  </div>
+                )}
+
+                {/* Multiple choice options */}
+                <DrillOptionsGrid>
+                  {currentDrillOptions.map((optIndex, idx) => {
+                    const isSelected = selectedOption === optIndex;
+                    const isCorrect = optIndex === currentItem.meaning;
+                    let state: "default" | "correct" | "incorrect" | "disabled" =
+                      "default";
+
+                    if (isSubmitted) {
+                      if (isCorrect) state = "correct";
+                      else if (isSelected) state = "incorrect";
+                      else state = "disabled";
+                    }
+
+                    return (
+                      <DrillOptionCard
+                        key={idx}
+                        $state={state}
+                        disabled={isSubmitted}
+                        onClick={() => handleDrillSubmit(optIndex)}
+                      >
+                        <span>
+                          <strong>{String.fromCharCode(65 + idx)}.</strong> {optIndex}
+                        </span>
+                        {isSubmitted && isCorrect && <span>✅</span>}
+                        {isSubmitted && isSelected && !isCorrect && <span>❌</span>}
+                      </DrillOptionCard>
+                    );
+                  })}
+                </DrillOptionsGrid>
+
+                {/* Instant Explanation Banner */}
+                {isSubmitted && (
+                  <>
+                    <ExplanationBanner
+                      $isCorrect={selectedOption === currentItem.meaning}
+                    >
+                      <div className="header">
+                        {selectedOption === currentItem.meaning
+                          ? "🎉 Jawaban Benar!"
+                          : "💡 Penjelasan Jawaban"}
+                      </div>
+                      <div className="body">
+                        <strong>{getDisplayMain(currentItem)}</strong> ({getDisplayReading(currentItem)}) artinya adalah{" "}
+                        <span style={{ color: "var(--primary)", fontWeight: 800 }}>
+                          "{currentItem.meaning}"
+                        </span>.
+                        {currentItem.exampleSentence && (
+                          <div style={{ marginTop: "0.5rem" }}>
+                            <em>Contoh: {currentItem.exampleSentence}</em>
+                          </div>
+                        )}
+                      </div>
+                    </ExplanationBanner>
+
+                    <PrimaryButton
+                      onClick={handleNextDrill}
+                      style={{ marginTop: "1.5rem" }}
+                    >
+                      Lanjut ke Soal Berikutnya →
+                    </PrimaryButton>
+                  </>
+                )}
+              </PracticeCard>
+
+              <ProgressBarContainer>
+                <ProgressFill
+                  $percent={((currentIndex + 1) / items.length) * 100}
+                />
+              </ProgressBarContainer>
+            </>
+          )}
+
+        {/* --- COMPLETED SUMMARY --- */}
         {sessionState === "completed" && (
-          <PracticeCard style={{ animation: `${slideIn} 0.8s ease-out` }}>
-            <StatsHeader>🎉</StatsHeader>
-            <h2 style={{ fontSize: "2rem", fontWeight: 800 }}>
-              Session Complete!
+          <PracticeCard style={{ animation: `${slideInRight} 0.5s ease-out` }}>
+            <div style={{ fontSize: "3.5rem", marginBottom: "1rem" }}>🎉</div>
+            <h2 style={{ fontSize: "2rem", fontWeight: 850 }}>
+              Sesi Latihan Selesai!
             </h2>
             <p style={{ color: "var(--text-secondary)", marginTop: "0.5rem" }}>
-              You have completed your practice session.
+              Luar biasa! Anda telah menyelesaikan 20 item latihan {setupLevel} ({setupCategory}).
             </p>
 
             <StatsGrid>
-              <StatItem $color="var(--secondary)">
-                <div className="label">Remembered</div>
-                <div className="value">{stats.remembered}</div>
+              <StatItem $color="#10b981">
+                <div className="label">Kuasai (Easy)</div>
+                <div className="value">{stats.easy}</div>
               </StatItem>
-              <StatItem $color="var(--accent)">
-                <div className="label">Needs Review</div>
-                <div className="value">{stats.forgotten}</div>
+              <StatItem $color="#3b82f6">
+                <div className="label">Cukup (Good)</div>
+                <div className="value">{stats.good}</div>
+              </StatItem>
+              <StatItem $color="#f43f5e">
+                <div className="label">Perlu Diulang</div>
+                <div className="value">{stats.hard}</div>
               </StatItem>
             </StatsGrid>
 
-            <FinalActions>
-              <BaseButton
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                flexWrap: "wrap",
+                marginTop: "2rem",
+              }}
+            >
+              <PrimaryButton
                 onClick={() => {
                   setItems(shuffleArray(items));
                   setCurrentIndex(0);
                   setIsRevealed(false);
-                  setStats({ remembered: 0, forgotten: 0 });
+                  setSelectedOption(null);
+                  setIsSubmitted(false);
+                  setStats({ easy: 0, good: 0, hard: 0 });
                   setSessionState("practicing");
                 }}
-                style={{
-                  background: "var(--primary)",
-                  color: "white",
-                  flex: 1,
-                  minWidth: "160px",
-                }}
+                style={{ flex: 1, minWidth: "160px" }}
               >
-                Repeat Session
-              </BaseButton>
+                Ulangi Sesi Ini 🔄
+              </PrimaryButton>
               <BaseButton
                 onClick={() => setSessionState("setup")}
                 style={{
                   background: "transparent",
                   color: "var(--foreground)",
-                  border: "1px solid var(--border)",
+                  border: "1.5px solid var(--border)",
                   flex: 1,
                   minWidth: "160px",
                 }}
               >
-                Change Settings
+                Pengaturan Baru ⚙️
               </BaseButton>
-              <Link
-                href="/jlpt"
-                style={{ textDecoration: "none", width: "100%" }}
-              >
-                <BaseButton
-                  style={{
-                    background: "transparent",
-                    color: "var(--text-secondary)",
-                    border: "none",
-                    width: "100%",
-                    fontSize: "0.95rem",
-                  }}
-                >
-                  Back to JLPT
-                </BaseButton>
-              </Link>
-            </FinalActions>
+            </div>
           </PracticeCard>
         )}
       </Container>
@@ -886,7 +1297,7 @@ export default function PracticePage() {
     <Suspense
       fallback={
         <div style={{ padding: "4rem", textAlign: "center" }}>
-          Loading Session...
+          Menyiapkan Sesi Latihan...
         </div>
       }
     >

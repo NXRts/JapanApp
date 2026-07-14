@@ -599,11 +599,32 @@ export default function PracticeHubPage() {
         </Header>
 
         {/* SECTION: TODAY'S REVIEW */}
-        <SectionTitle>Daily Practice</SectionTitle>
+        <SectionTitle>JLPT Practice & Drills</SectionTitle>
+
+        <PracticeCard $gradient="radial-gradient(circle, #8b5cf6 0%, transparent 60%)">
+          <CardContent>
+            <CardTitle>JLPT Practice Hub (N5 - N1)</CardTitle>
+            <CardDescription>
+              Latihan kosakata, kanji, dan tata bahasa JLPT dengan mode Flashcards SRS & Kuis Pilihan Ganda Interaktif tanpa tekanan waktu.
+            </CardDescription>
+            <ActionButton
+              $color="#8b5cf6"
+              $shadowColor="#7c3aed"
+              onClick={() => router.push("/jlpt/practice")}
+            >
+              Start JLPT Practice Hub (+25 EXP)
+            </ActionButton>
+          </CardContent>
+          <CardGraphic className="card-graphic-container">
+            <TargetBoardSvg />
+          </CardGraphic>
+        </PracticeCard>
+
+        <SectionTitle>Lesson Practice</SectionTitle>
 
         <PracticeCard $gradient="radial-gradient(circle, var(--primary) 0%, transparent 60%)">
           <CardContent>
-            <CardTitle>Targeted Practice</CardTitle>
+            <CardTitle>Targeted Lesson Drill</CardTitle>
             <CardDescription>
               Strengthen weak spots in vocabulary and grammar cards from your
               completed lessons.
@@ -615,7 +636,7 @@ export default function PracticeHubPage() {
                 router.push(`/lesson?id=${practiceLessonId}&from=practice`)
               }
             >
-              Start Practice (+20 EXP)
+              Start Lesson Drill (+20 EXP)
             </ActionButton>
           </CardContent>
           <CardGraphic className="card-graphic-container">
