@@ -36,11 +36,15 @@ const PageWrapper = styled.div`
   background-image: radial-gradient(var(--dot-color) 1.2px, transparent 1.2px);
   background-size: 32px 32px;
   padding-bottom: 4rem;
+
+  @media (max-width: 600px) {
+    padding-bottom: 2rem;
+  }
 `;
 
 const BreadcrumbWrapper = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 2rem 0 2rem;
 
@@ -56,14 +60,16 @@ const BreadcrumbWrapper = styled.div`
 const Container = styled.div`
   max-width: 820px;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
-  min-height: 85vh;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  min-height: calc(100vh - 140px);
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   @media (max-width: 640px) {
-    padding: 1rem 0.75rem 5rem 0.75rem;
+    padding: 0.5rem 0.75rem 4.5rem 0.75rem;
+    min-height: calc(100vh - 120px);
+    justify-content: center;
   }
 `;
 
@@ -73,12 +79,9 @@ const SessionHeader = styled.div`
   align-items: center;
   margin-bottom: 1.75rem;
   width: 100%;
-  animation: ${fadeIn} 0.4s ease-out;
 
   @media (max-width: 600px) {
-    flex-direction: row;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.6rem;
   }
 `;
 
@@ -87,6 +90,10 @@ const SessionBadgeGroup = styled.div`
   align-items: center;
   gap: 0.75rem;
   flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    gap: 0.4rem;
+  }
 `;
 
 const LevelTag = styled.span`
@@ -98,6 +105,11 @@ const LevelTag = styled.span`
   font-size: 0.82rem;
   letter-spacing: 0.05em;
   box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
+
+  @media (max-width: 600px) {
+    padding: 0.18rem 0.55rem;
+    font-size: 0.75rem;
+  }
 `;
 
 const CategoryTag = styled.span`
@@ -109,6 +121,11 @@ const CategoryTag = styled.span`
   font-weight: 700;
   font-size: 0.82rem;
   text-transform: capitalize;
+
+  @media (max-width: 600px) {
+    padding: 0.18rem 0.55rem;
+    font-size: 0.75rem;
+  }
 `;
 
 const ProgressCounter = styled.div`
@@ -119,6 +136,11 @@ const ProgressCounter = styled.div`
   border: 1px solid var(--border);
   padding: 0.4rem 1rem;
   border-radius: 99px;
+
+  @media (max-width: 600px) {
+    padding: 0.2rem 0.65rem;
+    font-size: 0.78rem;
+  }
 `;
 
 const PracticeCard = styled.div`
@@ -135,15 +157,15 @@ const PracticeCard = styled.div`
   animation: ${fadeIn} 0.5s ease-out;
 
   @media (max-width: 600px) {
-    padding: 1.75rem 1.25rem;
-    border-radius: 20px;
+    padding: 1.1rem 0.85rem;
+    border-radius: 18px;
   }
 `;
 
-const SetupTitle = styled.h2`
+const SetupTitle = styled.h1`
   font-size: 2.25rem;
   font-weight: 850;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   background: linear-gradient(
     135deg,
     var(--foreground) 0%,
@@ -153,7 +175,8 @@ const SetupTitle = styled.h2`
   -webkit-text-fill-color: transparent;
 
   @media (max-width: 600px) {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
   }
 `;
 
@@ -163,8 +186,8 @@ const SetupSub = styled.p`
   margin-bottom: 2rem;
 
   @media (max-width: 600px) {
-    font-size: 0.88rem;
-    margin-bottom: 1.5rem;
+    font-size: 0.82rem;
+    margin-bottom: 1.25rem;
   }
 `;
 
@@ -176,8 +199,8 @@ const SelectionGroup = styled.div`
   text-align: left;
 
   @media (max-width: 600px) {
-    gap: 1.25rem;
-    margin-bottom: 1.75rem;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
   }
 `;
 
@@ -189,6 +212,11 @@ const SelectionLabel = styled.label`
   letter-spacing: 0.08em;
   display: block;
   margin-bottom: 0.75rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem;
+  }
 `;
 
 const OptionGrid = styled.div<{ $cols?: number }>`
@@ -197,11 +225,8 @@ const OptionGrid = styled.div<{ $cols?: number }>`
   gap: 0.75rem;
 
   @media (max-width: 600px) {
-    grid-template-columns: repeat(
-      ${({ $cols }) => ($cols && $cols > 3 ? 3 : 1)},
-      1fr
-    );
-    gap: 0.5rem;
+    grid-template-columns: repeat(${({ $cols }) => $cols || 3}, 1fr);
+    gap: 0.35rem;
   }
 `;
 
@@ -222,6 +247,13 @@ const OptionButton = styled.button<{ $active: boolean }>`
   justify-content: center;
   gap: 0.5rem;
 
+  .desktop-text {
+    display: inline;
+  }
+  .mobile-text {
+    display: none;
+  }
+
   &:hover {
     transform: translateY(-2px);
     border-color: var(--primary);
@@ -229,9 +261,17 @@ const OptionButton = styled.button<{ $active: boolean }>`
   }
 
   @media (max-width: 600px) {
-    padding: 0.65rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.88rem;
+    padding: 0.55rem 0.25rem;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    .desktop-text {
+      display: none;
+    }
+    .mobile-text {
+      display: inline;
+    }
   }
 `;
 
@@ -259,11 +299,12 @@ const InstructionBanner = styled.div`
   }
 
   @media (max-width: 600px) {
-    padding: 0.6rem 0.85rem;
-    margin-bottom: 1rem;
+    padding: 0.45rem 0.75rem;
+    margin-bottom: 0.75rem;
+    border-radius: 12px;
 
     .text {
-      font-size: 0.82rem;
+      font-size: 0.78rem;
     }
     .sub {
       display: none;
@@ -278,6 +319,11 @@ const HintToolbar = styled.div`
   gap: 0.6rem;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const ToolIconButton = styled.button<{ $active?: boolean }>`
@@ -302,8 +348,9 @@ const ToolIconButton = styled.button<{ $active?: boolean }>`
   }
 
   @media (max-width: 600px) {
-    padding: 0.4rem 0.65rem;
-    font-size: 0.78rem;
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+    border-radius: 10px;
   }
 `;
 
@@ -326,11 +373,11 @@ const MainTargetWord = styled.h1`
   }
 
   @media (max-width: 600px) {
-    font-size: 2.5rem;
-    margin: 0.5rem 0 1rem 0;
+    font-size: 2.2rem;
+    margin: 0.25rem 0 0.5rem 0;
 
     ruby rt {
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
   }
 `;
@@ -345,8 +392,9 @@ const RevealBox = styled.div`
   text-align: center;
 
   @media (max-width: 600px) {
-    padding: 1.25rem 1rem;
-    margin-top: 1rem;
+    padding: 0.85rem 0.65rem;
+    margin-top: 0.6rem;
+    border-radius: 16px;
   }
 `;
 
@@ -357,7 +405,8 @@ const ReadingText = styled.div`
   margin-bottom: 0.4rem;
 
   @media (max-width: 600px) {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
   }
 `;
 
@@ -368,8 +417,8 @@ const MeaningText = styled.div`
   margin-bottom: 1.25rem;
 
   @media (max-width: 600px) {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
   }
 `;
 
@@ -395,6 +444,12 @@ const BreakdownBox = styled.div`
     color: var(--foreground);
     line-height: 1.5;
   }
+
+  @media (max-width: 600px) {
+    padding: 0.6rem 0.75rem;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+  }
 `;
 
 const ActionGrid = styled.div`
@@ -404,9 +459,9 @@ const ActionGrid = styled.div`
   margin-top: 1.75rem;
 
   @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-    margin-top: 1.25rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+    margin-top: 0.75rem;
   }
 `;
 
@@ -423,6 +478,13 @@ const BaseButton = styled.button`
   gap: 0.6rem;
   border: none;
 
+  .desktop-text {
+    display: inline;
+  }
+  .mobile-text {
+    display: none;
+  }
+
   &:hover {
     transform: translateY(-2px);
   }
@@ -432,9 +494,16 @@ const BaseButton = styled.button`
   }
 
   @media (max-width: 600px) {
-    padding: 0.75rem 1rem;
+    padding: 0.6rem 0.5rem;
     border-radius: 12px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+
+    .desktop-text {
+      display: none;
+    }
+    .mobile-text {
+      display: inline;
+    }
   }
 `;
 
@@ -462,10 +531,30 @@ const SelfAssessButton = styled(BaseButton)<{ $type: "hard" | "good" | "easy" }>
           ? "rgba(59, 130, 246, 0.4)"
           : "rgba(244, 63, 94, 0.4)"};
 
+  .desktop-text {
+    display: inline;
+  }
+  .mobile-text {
+    display: none;
+  }
+
   &:hover {
     background: ${({ $type }) =>
       $type === "easy" ? "#10b981" : $type === "good" ? "#3b82f6" : "#f43f5e"};
     color: white;
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.55rem 0.25rem;
+    font-size: 0.78rem;
+    border-radius: 12px;
+
+    .desktop-text {
+      display: none;
+    }
+    .mobile-text {
+      display: inline;
+    }
   }
 `;
 
@@ -1045,13 +1134,15 @@ function PracticeContent() {
                     $active={practiceMode === "flashcard"}
                     onClick={() => handleModeChange("flashcard")}
                   >
-                    🎴 Flashcard Mastery (Flip Card)
+                    <span className="desktop-text">🎴 Flashcard Mastery (Flip Card)</span>
+                    <span className="mobile-text">🎴 Flashcard</span>
                   </OptionButton>
                   <OptionButton
                     $active={practiceMode === "drill"}
                     onClick={() => handleModeChange("drill")}
                   >
-                    🎯 Interactive Drill (Pilihan Ganda)
+                    <span className="desktop-text">🎯 Interactive Drill (Pilihan Ganda)</span>
+                    <span className="mobile-text">🎯 Kuis Drill</span>
                   </OptionButton>
                 </OptionGrid>
               </div>
@@ -1075,16 +1166,17 @@ function PracticeContent() {
                 <SelectionLabel>Pilih Kategori Materi</SelectionLabel>
                 <OptionGrid $cols={3}>
                   {[
-                    { id: "vocabulary", label: "Kosakata (Vocabulary)" },
-                    { id: "kanji", label: "Kanji" },
-                    { id: "grammar", label: "Tata Bahasa (Grammar)" },
+                    { id: "vocabulary", desktop: "Kosakata (Vocabulary)", mobile: "Kosakata" },
+                    { id: "kanji", desktop: "Kanji", mobile: "Kanji" },
+                    { id: "grammar", desktop: "Tata Bahasa (Grammar)", mobile: "Tata Bahasa" },
                   ].map((c) => (
                     <OptionButton
                       key={c.id}
                       $active={setupCategory === c.id}
                       onClick={() => handleCategoryChange(c.id)}
                     >
-                      {c.label}
+                      <span className="desktop-text">{c.desktop}</span>
+                      <span className="mobile-text">{c.mobile}</span>
                     </OptionButton>
                   ))}
                 </OptionGrid>
@@ -1092,7 +1184,8 @@ function PracticeContent() {
             </SelectionGroup>
 
             <PrimaryButton onClick={startSession}>
-              Mulai Sesi Latihan Sekarang
+              <span className="desktop-text">Mulai Sesi Latihan Sekarang</span>
+              <span className="mobile-text">Mulai Latihan Sekarang</span>
               <svg
                 width="20"
                 height="20"
@@ -1281,19 +1374,22 @@ function PracticeContent() {
                         $type="hard"
                         onClick={() => handleSelfAssessment("hard")}
                       >
-                        ❌ Perlu Diulang (Hard)
+                        <span className="desktop-text">❌ Perlu Diulang (Hard)</span>
+                        <span className="mobile-text">❌ Hard</span>
                       </SelfAssessButton>
                       <SelfAssessButton
                         $type="good"
                         onClick={() => handleSelfAssessment("good")}
                       >
-                        🤔 Cukup Paham (Good)
+                        <span className="desktop-text">🤔 Cukup Paham (Good)</span>
+                        <span className="mobile-text">🤔 Good</span>
                       </SelfAssessButton>
                       <SelfAssessButton
                         $type="easy"
                         onClick={() => handleSelfAssessment("easy")}
                       >
-                        ✅ Sudah Kuasai (Easy)
+                        <span className="desktop-text">✅ Sudah Kuasai (Easy)</span>
+                        <span className="mobile-text">✅ Easy</span>
                       </SelfAssessButton>
                     </ActionGrid>
                   </RevealBox>
