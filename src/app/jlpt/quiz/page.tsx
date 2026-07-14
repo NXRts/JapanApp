@@ -7,6 +7,7 @@ import {
   allVocabulary,
   searchDictionary,
 } from "@/lib/dictionary";
+import { playJapaneseAudio } from "@/lib/audio";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
@@ -1117,34 +1118,8 @@ function QuizContent() {
 
   // Fail-Safe TTS Audio Speech
   const playAudio = (text: string) => {
-    if (typeof window !== "undefined" && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "ja-JP";
-      utterance.rate = 0.85;
-
-      const failsafe = setTimeout(() => {
-        const audio = new Audio(
-          `https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`,
-        );
-        audio.play().catch(() => {});
-      }, 1000);
-
-      utterance.onstart = () => clearTimeout(failsafe);
-      utterance.onerror = () => {
-        clearTimeout(failsafe);
-        const audio = new Audio(
-          `https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`,
-        );
-        audio.play().catch(() => {});
-      };
-
-      window.speechSynthesis.speak(utterance);
-    } else {
-      const audio = new Audio(
-        `https://dict.youdao.com/dictvoice?le=jap&audio=${encodeURIComponent(text)}`,
-      );
-      audio.play().catch(() => {});
+    if (text) {
+      playJapaneseAudio(text);
     }
   };
 
