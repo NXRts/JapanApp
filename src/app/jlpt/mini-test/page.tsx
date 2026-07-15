@@ -15,11 +15,11 @@ import {
   allVocabulary,
   allKanji,
   allGrammar,
-  DictionaryResult,
 } from "@/lib/dictionary";
 import { motion, AnimatePresence } from "framer-motion";
 import { TestResultStats } from "@/components/jlpt/TestResultStats";
 import { useProgress } from "@/context/ProgressContext";
+import { playJapaneseAudio } from "@/lib/audio";
 
 // --- Types ---
 interface Question {
@@ -33,26 +33,23 @@ interface Question {
   sourceItem: any;
 }
 
-// --- Styles ---
+// --- Keyframes ---
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+// --- Styled Components ---
 const PageWrapper = styled.div`
   min-height: 100vh;
-  background-image:
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(var(--primary-rgb), 0.05) 0%,
-      transparent 40%
-    ),
-    radial-gradient(
-      circle at 80% 80%,
-      rgba(var(--secondary-rgb), 0.05) 0%,
-      transparent 40%
-    ),
-    radial-gradient(var(--dot-color) 1.2px, transparent 1.2px);
-  background-size:
-    100% 100%,
-    100% 100%,
-    32px 32px;
   color: var(--foreground);
+  background-image: radial-gradient(var(--dot-color) 1.2px, transparent 1.2px);
+  background-size: 32px 32px;
+  padding-bottom: 4rem;
+
+  @media (max-width: 600px) {
+    padding-bottom: 2rem;
+  }
 `;
 
 const BreadcrumbWrapper = styled.div`
@@ -71,43 +68,134 @@ const BreadcrumbWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 900px;
+  max-width: 820px;
   margin: 0 auto;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  min-height: calc(100vh - 140px);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding: 2rem;
-
-  @media (max-width: 768px) {
-    padding: 1rem 0.75rem;
-  }
+  justify-content: center;
 
   @media (max-width: 640px) {
-    gap: 1.25rem;
+    padding: 0.5rem 0.75rem 4.5rem 0.75rem;
+    min-height: calc(100vh - 120px);
+    justify-content: center;
   }
 `;
 
-const GlassCard = styled(motion.div)`
-  background: rgba(var(--surface-rgb), 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+const SessionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.75rem;
+  width: 100%;
+
+  @media (max-width: 600px) {
+    margin-bottom: 0.6rem;
+  }
+`;
+
+const SessionBadgeGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    gap: 0.4rem;
+  }
+`;
+
+const LevelTag = styled.span`
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.3);
+
+  @media (max-width: 600px) {
+    padding: 0.18rem 0.55rem;
+    font-size: 0.75rem;
+  }
+`;
+
+const CategoryTag = styled.span`
+  background: rgba(var(--foreground-rgb), 0.06);
   border: 1px solid var(--border);
-  border-radius: 32px;
-  padding: 3rem;
-  box-shadow: var(--shadow-xl);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.75rem;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: capitalize;
+
+  @media (max-width: 600px) {
+    padding: 0.18rem 0.55rem;
+    font-size: 0.75rem;
+  }
+`;
+
+const ProgressCounter = styled.div`
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.4rem 1rem;
+  border-radius: 99px;
+
+  @media (max-width: 600px) {
+    padding: 0.2rem 0.65rem;
+    font-size: 0.78rem;
+  }
+`;
+
+const TimerDisplay = styled.div<{ $warning: boolean }>`
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: ${({ $warning }) => ($warning ? "#ef4444" : "var(--primary)")};
+  background: ${({ $warning }) =>
+    $warning ? "rgba(239, 68, 68, 0.1)" : "rgba(var(--primary-rgb), 0.1)"};
+  border: 1px solid
+    ${({ $warning }) =>
+      $warning ? "rgba(239, 68, 68, 0.3)" : "rgba(var(--primary-rgb), 0.3)"};
+  padding: 0.35rem 0.85rem;
+  border-radius: 99px;
+  transition: all 0.3s ease;
+
+  @media (max-width: 600px) {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.6rem;
+  }
+`;
+
+const PracticeCard = styled.div`
+  background: var(--surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 28px;
+  border: 1.5px solid var(--border);
+  padding: 3rem 2.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
   position: relative;
   overflow: hidden;
+  animation: ${fadeIn} 0.5s ease-out;
 
-  @media (max-width: 640px) {
-    padding: 1.5rem 1.25rem;
-    border-radius: 20px;
+  @media (max-width: 600px) {
+    padding: 1.1rem 0.85rem;
+    border-radius: 18px;
   }
 `;
 
-const Title = styled.h1`
-  font-size: 2.5rem;
-  font-weight: 900;
-  margin-bottom: 0.5rem;
+const SetupTitle = styled.h1`
+  font-size: 2.25rem;
+  font-weight: 850;
+  margin-bottom: 0.75rem;
   background: linear-gradient(
     135deg,
     var(--foreground) 0%,
@@ -116,78 +204,154 @@ const Title = styled.h1`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  @media (max-width: 640px) {
-    font-size: 1.8rem;
+  @media (max-width: 600px) {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
   }
 `;
 
-const Subtitle = styled.p`
+const SetupSub = styled.p`
   color: var(--text-secondary);
-  font-size: 1.1rem;
+  font-size: 0.98rem;
   margin-bottom: 2rem;
 
-  @media (max-width: 640px) {
-    font-size: 0.95rem;
+  @media (max-width: 600px) {
+    font-size: 0.82rem;
     margin-bottom: 1.25rem;
   }
 `;
 
-const TestHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-
-  @media (max-width: 640px) {
-    margin-bottom: 1rem;
-  }
-`;
-
-const StatsRow = styled.div`
-  display: flex;
-  gap: 1.5rem;
-
-  @media (max-width: 640px) {
-    gap: 1rem;
-  }
-`;
-
-const StatItem = styled.div`
+const SelectionGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 1.75rem;
+  margin-bottom: 2.5rem;
+  text-align: left;
+
+  @media (max-width: 600px) {
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
 `;
 
-const StatLabel = styled.span`
-  font-size: 0.75rem;
-  font-weight: 700;
+const SelectionLabel = styled.label`
+  font-size: 0.88rem;
+  font-weight: 800;
   color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-`;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 0.75rem;
 
-const StatValue = styled.span`
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--foreground);
-`;
-
-const TimerDisplay = styled.div<{ $warning: boolean }>`
-  font-family: "JetBrains Mono", monospace;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: ${({ $warning }) => ($warning ? "#ef4444" : "var(--primary)")};
-  background: ${({ $warning }) =>
-    $warning ? "rgba(239, 68, 68, 0.1)" : "rgba(var(--primary-rgb), 0.1)"};
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-
-  @media (max-width: 640px) {
-    font-size: 1.15rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 8px;
+  @media (max-width: 600px) {
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem;
   }
+`;
+
+const OptionGrid = styled.div<{ $cols?: number }>`
+  display: grid;
+  grid-template-columns: repeat(${({ $cols }) => $cols || 3}, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(${({ $cols }) => $cols || 3}, 1fr);
+    gap: 0.35rem;
+  }
+`;
+
+const OptionButton = styled.button<{ $active: boolean }>`
+  background: ${({ $active }) =>
+    $active ? "var(--primary)" : "rgba(var(--foreground-rgb), 0.03)"};
+  color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
+  border: 1.5px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  .desktop-text {
+    display: inline;
+  }
+  .mobile-text {
+    display: none;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    color: ${({ $active }) => ($active ? "white" : "var(--primary)")};
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.55rem 0.25rem;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    .desktop-text {
+      display: none;
+    }
+    .mobile-text {
+      display: inline;
+    }
+  }
+`;
+
+const BaseButton = styled.button`
+  padding: 1rem 1.75rem;
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: none;
+
+  .desktop-text {
+    display: inline;
+  }
+  .mobile-text {
+    display: none;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.6rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+
+    .desktop-text {
+      display: none;
+    }
+    .mobile-text {
+      display: inline;
+    }
+  }
+`;
+
+const PrimaryButton = styled(BaseButton)`
+  background: var(--primary);
+  color: white;
+  width: 100%;
+  box-shadow: 0 8px 16px -4px rgba(var(--primary-rgb, 79, 70, 229), 0.35);
 `;
 
 const ProgressBar = styled.div`
@@ -195,11 +359,11 @@ const ProgressBar = styled.div`
   height: 8px;
   background: var(--border);
   border-radius: 99px;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
   overflow: hidden;
 
   @media (max-width: 640px) {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     height: 6px;
   }
 `;
@@ -210,84 +374,103 @@ const ProgressFill = styled(motion.div)`
   border-radius: 99px;
 `;
 
-const QuestionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-
-  @media (max-width: 640px) {
-    gap: 1.25rem;
-  }
-`;
-
-const QuestionType = styled.div`
+const QuestionTypeBadge = styled.div`
   display: inline-flex;
-  padding: 0.5rem 1.25rem;
-  background: rgba(var(--primary-rgb), 0.1);
-  border: 1px solid rgba(var(--primary-rgb), 0.2);
+  padding: 0.35rem 0.85rem;
+  background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+  border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.2);
   color: var(--primary);
   border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 900;
+  font-size: 0.78rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  align-self: flex-start;
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.1);
-
-  @media (max-width: 640px) {
-    padding: 0.35rem 0.85rem;
-    font-size: 0.7rem;
-  }
+  letter-spacing: 0.05em;
+  margin-bottom: 0.75rem;
 `;
 
-const Prompt = styled.h2`
-  font-size: 3.5rem;
-  font-weight: 800;
-  line-height: 1.1;
-  margin: 0;
-  background: linear-gradient(
-    to bottom,
-    var(--foreground),
-    var(--text-secondary)
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+const Prompt = styled.h1`
+  font-size: 3.25rem;
+  font-weight: 850;
+  line-height: 1.15;
+  margin: 0.25rem 0;
+  color: var(--foreground);
 
   @media (max-width: 640px) {
-    font-size: 2.2rem;
+    font-size: 2.1rem;
   }
 `;
 
 const SubPrompt = styled.p`
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--text-secondary);
-  margin-top: 0.75rem;
-  font-weight: 500;
-  opacity: 0.8;
-  line-height: 1.5;
+  margin-top: 0.4rem;
+  font-weight: 600;
 
   @media (max-width: 640px) {
-    font-size: 0.95rem;
-    margin-top: 0.5rem;
+    font-size: 0.88rem;
+  }
+`;
+
+const HintToolbar = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1rem 0 1.25rem 0;
+  flex-wrap: wrap;
+
+  @media (max-width: 600px) {
+    gap: 0.4rem;
+    margin: 0.6rem 0 0.85rem 0;
+  }
+`;
+
+const ToolIconButton = styled.button<{ $active?: boolean }>`
+  background: ${({ $active }) =>
+    $active ? "var(--primary)" : "rgba(var(--foreground-rgb), 0.05)"};
+  color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  border-radius: 12px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--primary);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.75rem;
+    border-radius: 10px;
   }
 `;
 
 const OptionsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  gap: 0.85rem;
+  margin-top: 1.25rem;
 
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
-    gap: 0.6rem;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
   }
 `;
 
-const OptionButton = styled(motion.button)<{
+const TestOptionCard = styled.button<{
   $status?: "correct" | "incorrect" | "neutral";
 }>`
-  padding: 1.5rem;
-  border-radius: 20px;
+  padding: 1.1rem 1.25rem;
+  border-radius: 16px;
   border: 2px solid
     ${({ $status }) =>
       $status === "correct"
@@ -300,68 +483,73 @@ const OptionButton = styled(motion.button)<{
       ? "rgba(16, 185, 129, 0.1)"
       : $status === "incorrect"
         ? "rgba(239, 68, 68, 0.1)"
-        : "rgba(var(--surface-rgb), 0.5)"};
+        : "rgba(var(--foreground-rgb), 0.02)"};
   color: ${({ $status }) =>
     $status === "correct"
       ? "#10b981"
       : $status === "incorrect"
         ? "#ef4444"
         : "var(--foreground)"};
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.05rem;
+  font-weight: 700;
   cursor: pointer;
   text-align: left;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-  box-shadow: ${({ $status }) =>
-    $status === "neutral" ? "var(--shadow-sm)" : "none"};
+  gap: 0.85rem;
 
   &:hover {
-    border-color: ${({ $status }) =>
-      $status === "neutral" ? "var(--primary)" : ""};
-    transform: ${({ $status }) =>
-      $status === "neutral" ? "translateY(-2px)" : "none"};
-    background: ${({ $status }) =>
-      $status === "neutral" ? "rgba(var(--primary-rgb), 0.05)" : ""};
+    ${({ $status }) =>
+      $status === "neutral" &&
+      `
+      border-color: var(--primary);
+      background: rgba(var(--primary-rgb), 0.05);
+      transform: translateX(4px);
+    `}
   }
 
   span.label {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    background: rgba(var(--foreground-rgb), 0.05);
+    background: rgba(var(--foreground-rgb), 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 800;
     flex-shrink: 0;
   }
 
   @media (max-width: 640px) {
-    padding: 0.85rem 1rem;
+    padding: 0.8rem 0.95rem;
     border-radius: 12px;
-    font-size: 0.95rem;
-    gap: 0.75rem;
+    font-size: 0.9rem;
+    gap: 0.6rem;
 
     span.label {
-      width: 26px;
-      height: 26px;
-      font-size: 0.8rem;
+      width: 24px;
+      height: 24px;
+      font-size: 0.78rem;
     }
   }
 `;
 
 const ScoreCircleWrapper = styled.div`
   position: relative;
-  width: 180px;
-  height: 180px;
-  margin: 0 auto 2.5rem;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 600px) {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 1rem;
+  }
 `;
 
 const ScoreLabel = styled.div`
@@ -372,17 +560,26 @@ const ScoreLabel = styled.div`
   text-align: center;
 
   .value {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 900;
     color: var(--foreground);
     line-height: 1;
   }
   .label {
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: 0.8rem;
+    font-weight: 800;
     color: var(--text-secondary);
     text-transform: uppercase;
-    margin-top: 0.25rem;
+    margin-top: 0.2rem;
+  }
+
+  @media (max-width: 600px) {
+    .value {
+      font-size: 2.2rem;
+    }
+    .label {
+      font-size: 0.72rem;
+    }
   }
 `;
 
@@ -399,90 +596,60 @@ const ProgressRing = styled.circle`
   transition: stroke-dashoffset 1s ease-out;
 `;
 
-const ActionButton = styled(Link)`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 2.5rem;
-  background: var(--primary);
-  color: white;
-  border-radius: 99px;
-  font-weight: 800;
-  font-size: 1.1rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 20px rgba(var(--primary-rgb), 0.3);
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(var(--primary-rgb), 0.4);
-    filter: brightness(1.1);
-  }
-`;
-
-const LevelBadge = styled.div`
-  padding: 0.5rem 1.25rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 99px;
-  font-weight: 800;
-  color: var(--primary);
-  font-size: 1rem;
-`;
-
 const ReviewSection = styled.div`
-  margin-top: 3rem;
+  margin-top: 2rem;
   border-top: 1px solid var(--border);
-  padding-top: 2rem;
+  padding-top: 1.5rem;
   text-align: left;
 `;
 
 const ReviewTitle = styled.h3`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 800;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   color: var(--foreground);
 `;
 
 const ReviewList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 `;
 
 const ReviewItem = styled.div<{ $isCorrect: boolean }>`
-  background: rgba(var(--surface-rgb), 0.3);
+  background: rgba(var(--foreground-rgb), 0.02);
   border: 1px solid
     ${({ $isCorrect }) =>
-      $isCorrect ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"};
-  border-radius: 16px;
-  padding: 1.25rem;
+      $isCorrect ? "rgba(16, 185, 129, 0.25)" : "rgba(239, 68, 68, 0.25)"};
+  border-radius: 14px;
+  padding: 0.9rem 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 `;
 
 const ReviewQuestion = styled.div`
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1rem;
 `;
 
 const ReviewAnswers = styled.div`
   display: flex;
-  gap: 1.5rem;
-  font-size: 0.95rem;
+  gap: 1.25rem;
+  font-size: 0.88rem;
+  flex-wrap: wrap;
 
   .label {
     color: var(--text-secondary);
-    margin-right: 0.5rem;
+    margin-right: 0.4rem;
   }
   .user-answer {
     color: var(--foreground);
-    font-weight: 600;
+    font-weight: 700;
   }
   .correct-answer {
     color: #10b981;
-    font-weight: 600;
+    font-weight: 700;
   }
 `;
 
@@ -496,93 +663,14 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return newArray;
 };
 
-const SettingSection = styled.div`
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  padding: 2rem;
-  background: rgba(var(--foreground-rgb), 0.03);
-  border-radius: 24px;
-  border: 1px solid var(--border);
-
-  @media (max-width: 640px) {
-    padding: 1rem;
-    gap: 1rem;
-    border-radius: 16px;
-    margin-top: 1rem;
-  }
-`;
-
-const SettingGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-`;
-
-const SettingLabel = styled.label`
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-`;
-
-const SettingOptions = styled.div`
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-`;
-
-const SettingChip = styled.button<{ $active: boolean }>`
-  padding: 0.6rem 1.25rem;
-  border-radius: 12px;
-  border: 2px solid
-    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
-  background: ${({ $active }) =>
-    $active ? "rgba(var(--primary-rgb), 0.1)" : "transparent"};
-  color: ${({ $active }) =>
-    $active ? "var(--primary)" : "var(--text-secondary)"};
-  font-weight: 700;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-
-  @media (max-width: 640px) {
-    padding: 0.4rem 0.85rem;
-    font-size: 0.82rem;
-    border-radius: 8px;
-  }
-`;
-
-const CheckboxLabel = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--foreground);
-  cursor: pointer;
-
-  input {
-    width: 20px;
-    height: 20px;
-    accent-color: var(--primary);
-  }
-`;
-
 // --- Main Component ---
 function MiniTestContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { updateMastery, recordQuizResult } = useProgress();
-  const level = searchParams.get("level") || "N5";
+  const levelParam = searchParams.get("level") || "N5";
 
+  const [setupLevel, setSetupLevel] = useState<string>(levelParam);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -600,9 +688,87 @@ function MiniTestContent() {
     showInstantFeedback: true,
   });
 
+  // Load preferences from localStorage on mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const savedLevel = localStorage.getItem("japanapp_minitest_level");
+      if (savedLevel && ["N5", "N4", "N3", "N2", "N1"].includes(savedLevel) && !searchParams.get("level")) {
+        setSetupLevel(savedLevel);
+      }
+
+      const savedCount = localStorage.getItem("japanapp_minitest_count");
+      if (savedCount) {
+        const parsed = parseInt(savedCount, 10);
+        if ([10, 20, 30, 50].includes(parsed)) {
+          setSettings((prev) => ({ ...prev, count: parsed }));
+        }
+      }
+
+      const savedTime = localStorage.getItem("japanapp_minitest_time");
+      if (savedTime) {
+        const parsed = parseInt(savedTime, 10);
+        if ([5, 10, 20, 30].includes(parsed)) {
+          setSettings((prev) => ({ ...prev, time: parsed }));
+        }
+      }
+
+      const savedTypes = localStorage.getItem("japanapp_minitest_types");
+      if (savedTypes) {
+        setSettings((prev) => ({ ...prev, types: JSON.parse(savedTypes) }));
+      }
+
+      const savedFeedback = localStorage.getItem("japanapp_minitest_feedback");
+      if (savedFeedback !== null) {
+        setSettings((prev) => ({
+          ...prev,
+          showInstantFeedback: savedFeedback === "true",
+        }));
+      }
+    } catch (e) {}
+  }, [searchParams]);
+
+  const handleLevelChange = (lvl: string) => {
+    setSetupLevel(lvl);
+    try {
+      localStorage.setItem("japanapp_minitest_level", lvl);
+    } catch (e) {}
+  };
+
+  const handleCountChange = (count: number) => {
+    setSettings((prev) => ({ ...prev, count }));
+    try {
+      localStorage.setItem("japanapp_minitest_count", count.toString());
+    } catch (e) {}
+  };
+
+  const handleTimeChange = (time: number) => {
+    setSettings((prev) => ({ ...prev, time }));
+    try {
+      localStorage.setItem("japanapp_minitest_time", time.toString());
+    } catch (e) {}
+  };
+
+  const handleTypeToggle = (type: "vocabulary" | "kanji" | "grammar") => {
+    setSettings((prev) => {
+      const nextTypes = { ...prev.types, [type]: !prev.types[type] };
+      try {
+        localStorage.setItem("japanapp_minitest_types", JSON.stringify(nextTypes));
+      } catch (e) {}
+      return { ...prev, types: nextTypes };
+    });
+  };
+
+  const handleFeedbackToggle = (val: boolean) => {
+    setSettings((prev) => ({ ...prev, showInstantFeedback: val }));
+    try {
+      localStorage.setItem("japanapp_minitest_feedback", val.toString());
+    } catch (e) {}
+  };
+
   const [timeLeft, setTimeLeft] = useState(settings.time * 60);
   const [testState, setTestState] = useState<"intro" | "playing" | "results">(
-    "intro",
+    "intro"
   );
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [answers, setAnswers] = useState<
@@ -611,31 +777,32 @@ function MiniTestContent() {
 
   // Generate Test Questions
   const generateTest = useCallback(() => {
+    const activeLevel = setupLevel;
     const levelData = {
-      vocab: allVocabulary.filter((v) => v.level === level),
-      kanji: allKanji.filter((k) => k.level === level),
-      grammar: allGrammar.filter((g) => g.level === level),
+      vocab: allVocabulary.filter((v) => v.level === activeLevel),
+      kanji: allKanji.filter((k) => k.level === activeLevel),
+      grammar: allGrammar.filter((g) => g.level === activeLevel),
     };
 
     const generatedQuestions: Question[] = [];
 
-    // Calculate split
     const enabledTypes = (
       Object.keys(settings.types) as Array<keyof typeof settings.types>
     ).filter((type) => settings.types[type]);
+
     if (enabledTypes.length === 0) {
-      alert("Please select at least one question type.");
+      alert("Pilih minimal satu tipe soal (Kosakata, Kanji, atau Tata Bahasa).");
       return;
     }
 
     const countPerType = Math.ceil(settings.count / enabledTypes.length);
 
     // 1. Vocabulary Questions
-    if (settings.types.vocabulary) {
+    if (settings.types.vocabulary && levelData.vocab.length > 0) {
       const vocabPool = shuffleArray(levelData.vocab);
       vocabPool.slice(0, countPerType).forEach((item) => {
         const distractors = shuffleArray(
-          vocabPool.filter((v) => v.id !== item.id),
+          vocabPool.filter((v) => v.id !== item.id)
         )
           .slice(0, 3)
           .map((v) => v.meaning);
@@ -653,11 +820,11 @@ function MiniTestContent() {
     }
 
     // 2. Kanji Questions
-    if (settings.types.kanji) {
+    if (settings.types.kanji && levelData.kanji.length > 0) {
       const kanjiPool = shuffleArray(levelData.kanji);
       kanjiPool.slice(0, countPerType).forEach((item) => {
         const distractors = shuffleArray(
-          kanjiPool.filter((k) => k.id !== item.id),
+          kanjiPool.filter((k) => k.id !== item.id)
         )
           .slice(0, 3)
           .map((k) => k.onyomi?.[0] || k.kunyomi?.[0] || "");
@@ -668,7 +835,7 @@ function MiniTestContent() {
           id: item.id,
           type: "kanji",
           prompt: item.kanji || "",
-          subPrompt: `What is the reading?`,
+          subPrompt: `Pilih cara baca yang tepat`,
           correctAnswer: correctReading,
           options: shuffleArray([correctReading, ...distractors]),
           sourceItem: item,
@@ -677,11 +844,11 @@ function MiniTestContent() {
     }
 
     // 3. Grammar Questions
-    if (settings.types.grammar) {
+    if (settings.types.grammar && levelData.grammar.length > 0) {
       const grammarPool = shuffleArray(levelData.grammar);
       grammarPool.slice(0, countPerType).forEach((item) => {
         const distractors = shuffleArray(
-          grammarPool.filter((g) => g.id !== item.id),
+          grammarPool.filter((g) => g.id !== item.id)
         )
           .slice(0, 3)
           .map((g) => g.meaning || "");
@@ -698,6 +865,11 @@ function MiniTestContent() {
       });
     }
 
+    if (generatedQuestions.length === 0) {
+      alert("Belum ada data materi untuk kombinasi level & kategori ini.");
+      return;
+    }
+
     setQuestions(shuffleArray(generatedQuestions).slice(0, settings.count));
     setTestState("playing");
     setCurrentIndex(0);
@@ -706,7 +878,7 @@ function MiniTestContent() {
     setTimeLeft(settings.time * 60);
     setAnswers([]);
     hasRecordedResult.current = false;
-  }, [level, settings]);
+  }, [setupLevel, settings]);
 
   // Timer Effect
   useEffect(() => {
@@ -729,10 +901,10 @@ function MiniTestContent() {
       questions.length > 0 &&
       !hasRecordedResult.current
     ) {
-      recordQuizResult(score, questions.length, `JLPT ${level} Mini Test`);
+      recordQuizResult(score, questions.length, `JLPT ${setupLevel} Mini Test`);
       hasRecordedResult.current = true;
     }
-  }, [testState, score, questions.length, level, recordQuizResult]);
+  }, [testState, score, questions.length, setupLevel, recordQuizResult]);
 
   const handleOptionClick = (optionIndex: number) => {
     if (selectedOption !== null) return;
@@ -752,7 +924,6 @@ function MiniTestContent() {
       },
     ]);
 
-    // Update mastery for individual items
     updateMastery(currentQ.prompt, isCorrect);
 
     const delay = settings.showInstantFeedback ? 800 : 300;
@@ -774,13 +945,14 @@ function MiniTestContent() {
   };
 
   const getPerformanceMessage = (scorePercent: number) => {
-    if (scorePercent === 100) return "Perfect! You're a JLPT Master!";
-    if (scorePercent >= 80) return "Excellent! You're well prepared.";
-    if (scorePercent >= 60)
-      return "Good job! A bit more practice and you'll be ready.";
-    if (scorePercent >= 40) return "Not bad, but there's room for improvement.";
-    return "Keep studying! Consistency is key to mastering Japanese.";
+    if (scorePercent === 100) return "Sempurna! Anda Master JLPT Sejati!";
+    if (scorePercent >= 80) return "Sangat Bagus! Anda Sangat Siap Ujian.";
+    if (scorePercent >= 60) return "Bagus! Sedikit Latihan Lagi dan Anda Siap.";
+    if (scorePercent >= 40) return "Lumayan, Tetap Tingkatkan Penguasaan Kata.";
+    return "Terus Belajar! Konsistensi Adalah Kunci Utama.";
   };
+
+  const currentQ = questions[currentIndex];
 
   return (
     <PageWrapper>
@@ -790,213 +962,155 @@ function MiniTestContent() {
             { label: "Home", href: "/" },
             { label: "JLPT Mastery", href: "/jlpt" },
           ]}
-          current={`${level} Mini Test`}
+          current={`${setupLevel} Mini Test`}
         />
       </BreadcrumbWrapper>
+
       <Container>
+        {testState === "playing" && (
+          <SessionHeader>
+            <SessionBadgeGroup>
+              <LevelTag>{setupLevel}</LevelTag>
+              <CategoryTag>🎯 Mini Test</CategoryTag>
+            </SessionBadgeGroup>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+              <ProgressCounter>
+                {currentIndex + 1} / {questions.length}
+              </ProgressCounter>
+              <TimerDisplay $warning={timeLeft < 60}>
+                ⏱️ {formatTime(timeLeft)}
+              </TimerDisplay>
+            </div>
+          </SessionHeader>
+        )}
 
         <AnimatePresence mode="wait">
+          {/* --- 1. SETUP SCREEN --- */}
           {testState === "intro" && (
-            <GlassCard
-              key="intro"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: "1rem",
-                }}
-              >
-                <Title>JLPT {level} Mini Test</Title>
-                <LevelBadge>{level}</LevelBadge>
-              </div>
-              <Subtitle>
-                Customize your test parameters and challenge yourself to master
-                the JLPT {level} content.
-              </Subtitle>
+            <PracticeCard key="setup">
+              <SetupTitle>JLPT {setupLevel} Mini Test Hub</SetupTitle>
+              <SetupSub>
+                Kustomisasi parameter ujian singkat Anda dan uji pemahaman materi JLPT {setupLevel} secara terukur.
+              </SetupSub>
 
-              <SettingSection>
-                <SettingGroup>
-                  <SettingLabel>JLPT Level</SettingLabel>
-                  <SettingOptions>
+              <SelectionGroup>
+                <div>
+                  <SelectionLabel>Pilih Level JLPT</SelectionLabel>
+                  <OptionGrid $cols={5}>
                     {["N5", "N4", "N3", "N2", "N1"].map((lvl) => (
-                      <SettingChip
+                      <OptionButton
                         key={lvl}
-                        $active={level === lvl}
-                        onClick={() =>
-                          router.push(`/jlpt/mini-test?level=${lvl}`)
-                        }
+                        $active={setupLevel === lvl}
+                        onClick={() => handleLevelChange(lvl)}
                       >
                         {lvl}
-                      </SettingChip>
+                      </OptionButton>
                     ))}
-                  </SettingOptions>
-                </SettingGroup>
+                  </OptionGrid>
+                </div>
 
-                <SettingGroup>
-                  <SettingLabel>Question Count</SettingLabel>
-                  <SettingOptions>
+                <div>
+                  <SelectionLabel>Jumlah Soal</SelectionLabel>
+                  <OptionGrid $cols={4}>
                     {[10, 20, 30, 50].map((c) => (
-                      <SettingChip
+                      <OptionButton
                         key={c}
                         $active={settings.count === c}
-                        onClick={() =>
-                          setSettings((prev) => ({ ...prev, count: c }))
-                        }
+                        onClick={() => handleCountChange(c)}
                       >
-                        {c} Questions
-                      </SettingChip>
+                        <span className="desktop-text">{c} Soal</span>
+                        <span className="mobile-text">{c}</span>
+                      </OptionButton>
                     ))}
-                  </SettingOptions>
-                </SettingGroup>
+                  </OptionGrid>
+                </div>
 
-                <SettingGroup>
-                  <SettingLabel>Time Limit</SettingLabel>
-                  <SettingOptions>
+                <div>
+                  <SelectionLabel>Batas Waktu</SelectionLabel>
+                  <OptionGrid $cols={4}>
                     {[5, 10, 20, 30].map((t) => (
-                      <SettingChip
+                      <OptionButton
                         key={t}
                         $active={settings.time === t}
-                        onClick={() =>
-                          setSettings((prev) => ({ ...prev, time: t }))
-                        }
+                        onClick={() => handleTimeChange(t)}
                       >
-                        {t} Minutes
-                      </SettingChip>
+                        <span className="desktop-text">{t} Menit</span>
+                        <span className="mobile-text">{t} mnt</span>
+                      </OptionButton>
                     ))}
-                  </SettingOptions>
-                </SettingGroup>
+                  </OptionGrid>
+                </div>
 
-                <SettingGroup>
-                  <SettingLabel>Question Types</SettingLabel>
-                  <div
-                    style={{ display: "flex", gap: "2rem", flexWrap: "wrap" }}
-                  >
-                    <CheckboxLabel>
-                      <input
-                        type="checkbox"
-                        checked={settings.types.vocabulary}
-                        onChange={(e) =>
-                          setSettings((prev) => ({
-                            ...prev,
-                            types: {
-                              ...prev.types,
-                              vocabulary: e.target.checked,
-                            },
-                          }))
-                        }
-                      />
-                      Vocabulary
-                    </CheckboxLabel>
-                    <CheckboxLabel>
-                      <input
-                        type="checkbox"
-                        checked={settings.types.kanji}
-                        onChange={(e) =>
-                          setSettings((prev) => ({
-                            ...prev,
-                            types: { ...prev.types, kanji: e.target.checked },
-                          }))
-                        }
-                      />
-                      Kanji
-                    </CheckboxLabel>
-                    <CheckboxLabel>
-                      <input
-                        type="checkbox"
-                        checked={settings.types.grammar}
-                        onChange={(e) =>
-                          setSettings((prev) => ({
-                            ...prev,
-                            types: { ...prev.types, grammar: e.target.checked },
-                          }))
-                        }
-                      />
-                      Grammar
-                    </CheckboxLabel>
-                  </div>
-                </SettingGroup>
+                <div>
+                  <SelectionLabel>Tipe Soal Ditampilkan</SelectionLabel>
+                  <OptionGrid $cols={3}>
+                    {[
+                      { id: "vocabulary", desktop: "Kosakata", mobile: "Kosakata" },
+                      { id: "kanji", desktop: "Kanji", mobile: "Kanji" },
+                      { id: "grammar", desktop: "Tata Bahasa", mobile: "Grammar" },
+                    ].map((item) => {
+                      const key = item.id as "vocabulary" | "kanji" | "grammar";
+                      const isSelected = settings.types[key];
+                      return (
+                        <OptionButton
+                          key={item.id}
+                          $active={isSelected}
+                          onClick={() => handleTypeToggle(key)}
+                        >
+                          <span className="desktop-text">
+                            {isSelected ? "✓ " : ""}{item.desktop}
+                          </span>
+                          <span className="mobile-text">
+                            {isSelected ? "✓ " : ""}{item.mobile}
+                          </span>
+                        </OptionButton>
+                      );
+                    })}
+                  </OptionGrid>
+                </div>
 
-                <SettingGroup>
-                  <SettingLabel>Feedback Mode</SettingLabel>
-                  <div style={{ display: "flex", gap: "2rem" }}>
-                    <CheckboxLabel>
-                      <input
-                        type="checkbox"
-                        checked={settings.showInstantFeedback}
-                        onChange={(e) =>
-                          setSettings((prev) => ({
-                            ...prev,
-                            showInstantFeedback: e.target.checked,
-                          }))
-                        }
-                      />
-                      Show correct answer immediately
-                    </CheckboxLabel>
-                  </div>
-                </SettingGroup>
-              </SettingSection>
+                <div>
+                  <SelectionLabel>Mode Umpan Balik</SelectionLabel>
+                  <OptionGrid $cols={2}>
+                    <OptionButton
+                      $active={settings.showInstantFeedback}
+                      onClick={() => handleFeedbackToggle(true)}
+                    >
+                      <span className="desktop-text">Tampilkan Jawaban Instan</span>
+                      <span className="mobile-text">Umpan Balik Instan</span>
+                    </OptionButton>
+                    <OptionButton
+                      $active={!settings.showInstantFeedback}
+                      onClick={() => handleFeedbackToggle(false)}
+                    >
+                      <span className="desktop-text">Evaluasi Di Akhir Tes</span>
+                      <span className="mobile-text">Evaluasi Akhir</span>
+                    </OptionButton>
+                  </OptionGrid>
+                </div>
+              </SelectionGroup>
 
-              <div style={{ display: "flex", gap: "1rem", marginTop: "3rem" }}>
-                <button
-                  onClick={generateTest}
-                  style={{
-                    padding: "1.25rem 3rem",
-                    background: "var(--primary)",
-                    color: "white",
-                    borderRadius: "99px",
-                    border: "none",
-                    fontWeight: 900,
-                    fontSize: "1.2rem",
-                    cursor: "pointer",
-                    boxShadow: "0 10px 30px rgba(var(--primary-rgb), 0.3)",
-                    flex: 1,
-                  }}
+              <PrimaryButton onClick={generateTest}>
+                <span className="desktop-text">Mulai Mini Test Sekarang</span>
+                <span className="mobile-text">Mulai Test Sekarang</span>
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  viewBox="0 0 24 24"
                 >
-                  Start Test
-                </button>
-                <ActionButton
-                  href="/jlpt"
-                  style={{
-                    background: "transparent",
-                    color: "var(--foreground)",
-                    border: "1px solid var(--border)",
-                    boxShadow: "none",
-                    padding: "1.25rem 2rem",
-                  }}
-                >
-                  Cancel
-                </ActionButton>
-              </div>
-            </GlassCard>
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </PrimaryButton>
+            </PracticeCard>
           )}
 
-          {testState === "playing" && (
-            <div key="playing">
-              <TestHeader>
-                <StatsRow>
-                  <StatItem>
-                    <StatLabel>Progress</StatLabel>
-                    <StatValue>
-                      {currentIndex + 1} / {questions.length}
-                    </StatValue>
-                  </StatItem>
-                </StatsRow>
-
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "1rem" }}
-                >
-                  <LevelBadge>{level}</LevelBadge>
-                  <TimerDisplay $warning={timeLeft < 60}>
-                    {formatTime(timeLeft)}
-                  </TimerDisplay>
-                </div>
-              </TestHeader>
-
+          {/* --- 2. GAMEPLAY SCREEN --- */}
+          {testState === "playing" && currentQ && (
+            <PracticeCard key="playing">
               <ProgressBar>
                 <ProgressFill
                   initial={{ width: 0 }}
@@ -1006,177 +1120,139 @@ function MiniTestContent() {
                 />
               </ProgressBar>
 
-              <GlassCard
-                key={currentIndex}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ type: "spring", damping: 20, stiffness: 100 }}
-              >
-                <QuestionContainer>
-                  <QuestionType>{questions[currentIndex].type}</QuestionType>
-                  <div>
-                    <Prompt>{questions[currentIndex].prompt}</Prompt>
-                    {questions[currentIndex].subPrompt && (
-                      <SubPrompt>{questions[currentIndex].subPrompt}</SubPrompt>
-                    )}
-                  </div>
+              <QuestionTypeBadge>Soal {currentQ.type}</QuestionTypeBadge>
 
-                  <OptionsGrid>
-                    {questions[currentIndex].options.map((opt, idx) => {
-                      let status: "neutral" | "correct" | "incorrect" =
-                        "neutral";
-                      if (
-                        selectedOption !== null &&
-                        settings.showInstantFeedback
-                      ) {
-                        if (opt === questions[currentIndex].correctAnswer)
-                          status = "correct";
-                        else if (idx === selectedOption) status = "incorrect";
-                      }
+              <Prompt>{currentQ.prompt}</Prompt>
+              {currentQ.subPrompt && <SubPrompt>{currentQ.subPrompt}</SubPrompt>}
 
-                      return (
-                        <OptionButton
-                          key={idx}
-                          $status={status}
-                          onClick={() => handleOptionClick(idx)}
-                          whileHover={{
-                            scale:
-                              status === "neutral" && selectedOption === null
-                                ? 1.02
-                                : 1,
-                          }}
-                          whileTap={{
-                            scale:
-                              status === "neutral" && selectedOption === null
-                                ? 0.98
-                                : 1,
-                          }}
-                        >
-                          <span className="label">
-                            {String.fromCharCode(65 + idx)}
-                          </span>
-                          {opt}
-                        </OptionButton>
-                      );
-                    })}
-                  </OptionsGrid>
-                </QuestionContainer>
-              </GlassCard>
-            </div>
+              <HintToolbar>
+                <ToolIconButton
+                  onClick={() => playJapaneseAudio(currentQ.prompt)}
+                >
+                  🔊 Suara Pelafalan
+                </ToolIconButton>
+              </HintToolbar>
+
+              <OptionsGrid>
+                {currentQ.options.map((opt, idx) => {
+                  let status: "neutral" | "correct" | "incorrect" = "neutral";
+                  if (
+                    selectedOption !== null &&
+                    settings.showInstantFeedback
+                  ) {
+                    if (opt === currentQ.correctAnswer) status = "correct";
+                    else if (idx === selectedOption) status = "incorrect";
+                  }
+
+                  return (
+                    <TestOptionCard
+                      key={idx}
+                      $status={status}
+                      onClick={() => handleOptionClick(idx)}
+                    >
+                      <span className="label">
+                        {String.fromCharCode(65 + idx)}
+                      </span>
+                      {opt}
+                    </TestOptionCard>
+                  );
+                })}
+              </OptionsGrid>
+            </PracticeCard>
           )}
 
+          {/* --- 3. RESULTS SCREEN --- */}
           {testState === "results" && (
-            <GlassCard
-              key="results"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              style={{ overflow: "hidden" }}
-            >
-              <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-                <ScoreCircleWrapper>
-                  <SvgCircle viewBox="0 0 100 100">
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="44"
-                      stroke="rgba(var(--foreground-rgb), 0.05)"
-                      strokeWidth="12"
-                      fill="none"
-                    />
-                    <ProgressRing
-                      cx="50"
-                      cy="50"
-                      r="44"
-                      stroke="var(--primary)"
-                      strokeDasharray={276.46}
-                      strokeDashoffset={
-                        276.46 - 276.46 * (score / questions.length)
-                      }
-                    />
-                  </SvgCircle>
-                  <ScoreLabel>
-                    <div className="value">
-                      {Math.round((score / questions.length) * 100)}%
-                    </div>
-                    <div className="label">Final Score</div>
-                  </ScoreLabel>
-                </ScoreCircleWrapper>
+            <PracticeCard key="results">
+              <ScoreCircleWrapper>
+                <SvgCircle viewBox="0 0 100 100">
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="44"
+                    stroke="rgba(var(--foreground-rgb), 0.05)"
+                    strokeWidth="12"
+                    fill="none"
+                  />
+                  <ProgressRing
+                    cx="50"
+                    cy="50"
+                    r="44"
+                    stroke="var(--primary)"
+                    strokeDasharray={276.46}
+                    strokeDashoffset={
+                      276.46 - 276.46 * (score / questions.length)
+                    }
+                  />
+                </SvgCircle>
+                <ScoreLabel>
+                  <div className="value">
+                    {Math.round((score / questions.length) * 100)}%
+                  </div>
+                  <div className="label">Hasil Skor</div>
+                </ScoreLabel>
+              </ScoreCircleWrapper>
 
-                <Title style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>
-                  Test Results
-                </Title>
-                <Subtitle style={{ maxWidth: "400px", margin: "0 auto" }}>
-                  {getPerformanceMessage((score / questions.length) * 100)}
-                </Subtitle>
-              </div>
+              <SetupTitle style={{ fontSize: "2rem", marginBottom: "0.4rem" }}>
+                Hasil Mini Test
+              </SetupTitle>
+              <SetupSub style={{ maxWidth: "420px", margin: "0 auto 1.5rem auto" }}>
+                {getPerformanceMessage((score / questions.length) * 100)}
+              </SetupSub>
 
               <TestResultStats
                 stats={[
-                  { label: "Correct", value: score, color: "#10b981" },
+                  { label: "Benar", value: score, color: "#10b981" },
                   {
-                    label: "Incorrect",
+                    label: "Salah",
                     value: questions.length - score,
                     color: "#ef4444",
                   },
                   {
-                    label: "EXP Gained",
+                    label: "Bonus EXP",
                     value: `+${score * 10}`,
                     color: "#fbbf24",
                   },
                   {
-                    label: "Time",
-                    value: formatTime(600 - timeLeft),
+                    label: "Waktu Rest",
+                    value: formatTime(settings.time * 60 - timeLeft),
                     color: "var(--primary)",
                   },
-                  { label: "Level", value: level, color: "var(--primary)" },
+                  { label: "Level", value: setupLevel, color: "var(--primary)" },
                 ]}
               />
 
               <div
                 style={{
                   display: "flex",
-                  gap: "1rem",
+                  gap: "0.85rem",
                   justifyContent: "center",
-                  marginTop: "1rem",
+                  marginTop: "1.75rem",
                 }}
               >
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={generateTest}
-                  style={{
-                    padding: "1rem 2.5rem",
-                    background: "var(--primary)",
-                    color: "white",
-                    borderRadius: "99px",
-                    border: "none",
-                    fontWeight: 800,
-                    fontSize: "1.1rem",
-                    cursor: "pointer",
-                    boxShadow: "0 10px 20px rgba(var(--primary-rgb), 0.3)",
-                  }}
-                >
-                  Try Again
-                </motion.button>
-                <ActionButton
+                <PrimaryButton onClick={generateTest}>
+                  Mulai Ulang Tes
+                </PrimaryButton>
+                <BaseButton
+                  as={Link}
                   href="/jlpt"
                   style={{
                     background: "rgba(var(--foreground-rgb), 0.05)",
                     color: "var(--foreground)",
                     border: "1px solid var(--border)",
-                    boxShadow: "none",
+                    textDecoration: "none",
                   }}
                 >
-                  Finish
-                </ActionButton>
+                  Selesai
+                </BaseButton>
               </div>
 
               <ReviewSection>
-                <ReviewTitle>Question Review</ReviewTitle>
+                <ReviewTitle>Review Jawaban Soal</ReviewTitle>
                 <ReviewList>
                   {answers.map((answer, i) => {
                     const q = questions[answer.questionIndex];
+                    if (!q) return null;
                     return (
                       <ReviewItem key={i} $isCorrect={answer.isCorrect}>
                         <div
@@ -1192,7 +1268,7 @@ function MiniTestContent() {
                               style={{
                                 color: "var(--text-secondary)",
                                 fontWeight: 400,
-                                fontSize: "0.9rem",
+                                fontSize: "0.85rem",
                               }}
                             >
                               ({q.type})
@@ -1202,16 +1278,16 @@ function MiniTestContent() {
                             style={{
                               color: answer.isCorrect ? "#10b981" : "#ef4444",
                               fontWeight: 800,
-                              fontSize: "0.8rem",
+                              fontSize: "0.78rem",
                               textTransform: "uppercase",
                             }}
                           >
-                            {answer.isCorrect ? "Correct" : "Incorrect"}
+                            {answer.isCorrect ? "Benar" : "Salah"}
                           </div>
                         </div>
                         <ReviewAnswers>
                           <div>
-                            <span className="label">Your answer:</span>
+                            <span className="label">Jawaban Anda:</span>
                             <span
                               className="user-answer"
                               style={{
@@ -1223,7 +1299,7 @@ function MiniTestContent() {
                           </div>
                           {!answer.isCorrect && (
                             <div>
-                              <span className="label">Correct:</span>
+                              <span className="label">Kunci Jawaban:</span>
                               <span className="correct-answer">
                                 {q.correctAnswer}
                               </span>
@@ -1235,7 +1311,7 @@ function MiniTestContent() {
                   })}
                 </ReviewList>
               </ReviewSection>
-            </GlassCard>
+            </PracticeCard>
           )}
         </AnimatePresence>
       </Container>
@@ -1251,7 +1327,7 @@ export default function MiniTestPage() {
           <Container>
             <div style={{ textAlign: "center", padding: "4rem" }}>
               <h2 style={{ color: "var(--text-secondary)" }}>
-                Loading Test Data...
+                Memuat Data Mini Test...
               </h2>
             </div>
           </Container>
