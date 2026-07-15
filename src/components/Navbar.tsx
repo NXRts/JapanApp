@@ -393,7 +393,10 @@ const LevelBadge = styled.div`
   }
 `;
 
-const MobileMenuOverlay = styled.div<{ $isOpen: boolean }>`
+const MobileMenuOverlay = styled.div<{
+  $isOpen: boolean;
+  $dragOpacity?: number;
+}>`
   position: fixed;
   top: 0;
   left: 0;
@@ -403,7 +406,8 @@ const MobileMenuOverlay = styled.div<{ $isOpen: boolean }>`
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   z-index: 1000; /* Behind bottom sheet but above body content */
-  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+  opacity: ${({ $isOpen, $dragOpacity }) =>
+    $isOpen ? ($dragOpacity !== undefined ? $dragOpacity : 1) : 0};
   pointer-events: ${({ $isOpen }) => ($isOpen ? "all" : "none")};
   transition: opacity 0.35s ease;
 
@@ -424,7 +428,7 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   border-top: 2px solid var(--border);
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
   z-index: 1001; /* Above overlay */
-  padding: 1.25rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  padding: 1rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -434,22 +438,38 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   pointer-events: ${({ $isOpen }) => ($isOpen ? "all" : "none")};
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 
   @media (min-width: 1101px) {
     display: none;
   }
 `;
 
-const NorenRod = styled.div`
-  width: 50px;
-  height: 5px;
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 99px;
-  margin: 0 auto 0.75rem;
+const NorenRodWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0;
+  margin: -0.25rem 0 0.25rem 0;
+  cursor: grab;
+  touch-action: none;
   flex-shrink: 0;
 
+  &:active {
+    cursor: grabbing;
+  }
+`;
+
+const NorenRod = styled.div`
+  width: 52px;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 99px;
+  transition: background 0.2s;
+
   html.dark & {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.3);
   }
 `;
 
@@ -1254,6 +1274,57 @@ export function Navbar() {
   const [isLainnyaOpen, setIsLainnyaOpen] = useState(false);
   const lainnyaRef = useRef<HTMLDivElement>(null);
 
+  // Drag-to-dismiss state for Mobile Bottom Sheet
+  const [dragY, setDragY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const touchStartY = useRef(0);
+  const touchStartTime = useRef(0);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  // Reset dragY when menu opens/closes
+  useEffect(() => {
+    if (!isMobileMenuOpen) {
+      setDragY(0);
+      setIsDragging(false);
+    }
+  }, [isMobileMenuOpen]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const menuEl = mobileMenuRef.current;
+    if (!menuEl || menuEl.scrollTop <= 0) {
+      touchStartY.current = e.touches[0].clientY;
+      touchStartTime.current = Date.now();
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const menuEl = mobileMenuRef.current;
+    if (touchStartY.current > 0) {
+      const currentY = e.touches[0].clientY;
+      const deltaY = currentY - touchStartY.current;
+
+      if (deltaY > 0 && (!menuEl || menuEl.scrollTop <= 0)) {
+        setIsDragging(true);
+        setDragY(deltaY);
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (isDragging) {
+      const timeElapsed = Date.now() - touchStartTime.current;
+      const velocity = dragY / Math.max(1, timeElapsed);
+
+      if (dragY > 80 || velocity > 0.3) {
+        setIsMobileMenuOpen(false);
+      } else {
+        setDragY(0);
+      }
+      setIsDragging(false);
+    }
+    touchStartY.current = 0;
+  };
+
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -1869,10 +1940,29 @@ export function Navbar() {
 
         <MobileMenuOverlay
           $isOpen={isMobileMenuOpen}
+          $dragOpacity={isDragging ? Math.max(0, 1 - dragY / 300) : undefined}
           onClick={() => setIsMobileMenuOpen(false)}
         />
-        <MobileMenu $isOpen={isMobileMenuOpen}>
-          <NorenRod />
+        <MobileMenu
+          ref={mobileMenuRef}
+          $isOpen={isMobileMenuOpen}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          style={{
+            transform: isDragging
+              ? `translateY(${dragY}px)`
+              : isMobileMenuOpen
+                ? "translateY(0)"
+                : "translateY(100%)",
+            transition: isDragging
+              ? "none"
+              : "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+          }}
+        >
+          <NorenRodWrapper>
+            <NorenRod />
+          </NorenRodWrapper>
 
           {/* SECTION 1: FITUR PEMBELAJARAN */}
           <MobileMenuSection>
