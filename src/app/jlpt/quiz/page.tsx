@@ -10,7 +10,7 @@ import {
 import { playJapaneseAudio } from "@/lib/audio";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 // --- Types & Interfaces ---
 interface QuizQuestion {
@@ -105,6 +105,11 @@ const ChevronIcon = ({ expanded }: { expanded: boolean }) => (
   </svg>
 );
 
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
 // --- Styled Components ---
 const PageWrapper = styled.div`
   min-height: 90vh;
@@ -127,20 +132,18 @@ const BreadcrumbWrapper = styled.div`
 `;
 
 const Container = styled.div`
-  max-width: 800px;
+  max-width: 820px;
   margin: 0 auto;
-  padding: 1.5rem 1.5rem 4rem 1.5rem;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
+  min-height: calc(100vh - 140px);
   display: flex;
   flex-direction: column;
-  background: radial-gradient(
-    circle at center,
-    rgba(var(--primary-rgb, 79, 70, 229), 0.03) 0%,
-    transparent 70%
-  );
+  justify-content: center;
 
   @media (max-width: 640px) {
-    padding: 1rem 0.75rem 0.5rem 0.75rem;
-    margin-bottom: 5.5rem;
+    padding: 0.5rem 0.75rem 4.5rem 0.75rem;
+    min-height: calc(100vh - 120px);
+    justify-content: center;
   }
 `;
 
@@ -149,169 +152,181 @@ const LobbyCard = styled.div`
   background: var(--surface);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid var(--border);
-  padding: 2.5rem;
-  box-shadow: var(--shadow-lg);
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-
-  @media (max-width: 600px) {
-    padding: 1.25rem 1rem;
-    gap: 1.1rem;
-    min-height: calc(100vh - 215px);
-  }
-`;
-
-const LobbyHeader = styled.div`
+  border-radius: 28px;
+  border: 1.5px solid var(--border);
+  padding: 3rem 2.5rem;
   text-align: center;
-
-  h2 {
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin: 0 0 0.5rem 0;
-  }
-
-  p {
-    color: var(--text-secondary);
-    font-size: 0.95rem;
-    margin: 0;
-  }
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  animation: ${fadeIn} 0.5s ease-out;
 
   @media (max-width: 600px) {
-    h2 {
-      font-size: 1.4rem;
-      margin-bottom: 0.25rem;
-    }
-    p {
-      font-size: 0.8rem;
-    }
+    padding: 1.1rem 0.85rem;
+    border-radius: 18px;
   }
 `;
 
-const FormSection = styled.div`
+const SetupTitle = styled.h1`
+  font-size: 2.25rem;
+  font-weight: 850;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(
+    135deg,
+    var(--foreground) 0%,
+    var(--primary) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  @media (max-width: 600px) {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+`;
+
+const SetupSub = styled.p`
+  color: var(--text-secondary);
+  font-size: 0.98rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: 600px) {
+    font-size: 0.82rem;
+    margin-bottom: 1.25rem;
+  }
+`;
+
+const SelectionGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.75rem;
+  margin-bottom: 2.5rem;
+  text-align: left;
 
   @media (max-width: 600px) {
-    gap: 0.4rem;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
   }
 `;
 
-const SectionLabel = styled.label`
-  font-size: 0.85rem;
+const SelectionLabel = styled.label`
+  font-size: 0.88rem;
   font-weight: 800;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-`;
-
-const LevelGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.75rem;
+  display: block;
+  margin-bottom: 0.75rem;
 
   @media (max-width: 600px) {
-    gap: 0.3rem;
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem;
   }
 `;
 
-const CategoryGrid = styled.div`
+const OptionGrid = styled.div<{ $cols?: number }>`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(${({ $cols }) => $cols || 3}, 1fr);
   gap: 0.75rem;
 
   @media (max-width: 600px) {
-    gap: 0.3rem;
+    grid-template-columns: repeat(${({ $cols }) => $cols || 3}, 1fr);
+    gap: 0.35rem;
   }
 `;
 
-const QuestionCountGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.75rem;
-
-  @media (max-width: 600px) {
-    gap: 0.3rem;
-  }
-`;
-
-const SelectButton = styled.button<{ $active: boolean }>`
+const OptionButton = styled.button<{ $active: boolean }>`
   background: ${({ $active }) =>
-    $active ? "var(--primary)" : "rgba(255, 255, 255, 0.02)"};
-  border: 1px solid
-    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+    $active ? "var(--primary)" : "rgba(var(--foreground-rgb), 0.03)"};
   color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
-  padding: 0.75rem 1rem;
-  border-radius: 14px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-
-  &:hover {
-    border-color: var(--primary);
-    background: ${({ $active }) =>
-      $active ? "var(--primary)" : "rgba(255, 255, 255, 0.05)"};
-  }
-
-  @media (max-width: 600px) {
-    padding: 0.5rem 0.2rem;
-    font-size: 0.72rem;
-    border-radius: 8px;
-  }
-`;
-
-const ModeGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-`;
-
-const ModeCard = styled.button<{ $active: boolean }>`
-  background: ${({ $active }) =>
-    $active
-      ? "rgba(var(--primary-rgb, 79, 70, 229), 0.08)"
-      : "rgba(255, 255, 255, 0.02)"};
-  border: 2px solid
+  border: 1.5px solid
     ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
-  border-radius: 18px;
-  padding: 1.25rem;
-  text-align: left;
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
-  h5 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: ${({ $active }) =>
-      $active ? "var(--primary-light, #818cf8)" : "var(--foreground)"};
-    margin: 0;
+  .desktop-text {
+    display: inline;
   }
-
-  p {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    margin: 0;
-    line-height: 1.4;
+  .mobile-text {
+    display: none;
   }
 
   &:hover {
+    transform: translateY(-2px);
     border-color: var(--primary);
+    color: ${({ $active }) => ($active ? "white" : "var(--primary)")};
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.55rem 0.25rem;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    .desktop-text {
+      display: none;
+    }
+    .mobile-text {
+      display: inline;
+    }
+  }
+`;
+
+const BaseButton = styled.button`
+  padding: 1rem 1.75rem;
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border: none;
+
+  .desktop-text {
+    display: inline;
+  }
+  .mobile-text {
+    display: none;
+  }
+
+  &:hover {
     transform: translateY(-2px);
   }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  @media (max-width: 600px) {
+    padding: 0.6rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+
+    .desktop-text {
+      display: none;
+    }
+    .mobile-text {
+      display: inline;
+    }
+  }
+`;
+
+const PrimaryButton = styled(BaseButton)`
+  background: var(--primary);
+  color: white;
+  width: 100%;
+  box-shadow: 0 8px 16px -4px rgba(var(--primary-rgb, 79, 70, 229), 0.35);
 `;
 
 const StatsRow = styled.div`
@@ -526,7 +541,7 @@ const OptionsGrid = styled.div`
   }
 `;
 
-const OptionButton = styled.button<{
+const QuizOptionCard = styled.button<{
   $state?: "correct" | "incorrect" | "neutral";
 }>`
   padding: 1.25rem 1.5rem;
@@ -966,7 +981,7 @@ const ActionsRow = styled.div`
   }
 `;
 
-const PrimaryButton = styled.button`
+const ResultsPrimaryButton = styled.button`
   flex: 1;
   padding: 1rem;
   background: linear-gradient(
@@ -1371,13 +1386,13 @@ function QuizContent() {
         {/* --- 1. LOBBY STATE --- */}
         {quizState === "lobby" && (
           <LobbyCard>
-            <LobbyHeader>
-              <h2>JLPT Quiz Hub</h2>
-              <p>Customize your vocabulary, kanji, and grammar quizzes.</p>
-            </LobbyHeader>
+            <SetupTitle>JLPT Quiz Hub</SetupTitle>
+            <SetupSub>
+              Pilih mode kuis dan tantang penguasaan materi JLPT Anda dalam batasan waktu yang terukur.
+            </SetupSub>
 
             {stats.gamesPlayed > 0 && (
-              <StatsRow>
+              <StatsRow style={{ marginBottom: "1.5rem" }}>
                 <StatItem>
                   <span className="value">{stats.gamesPlayed}</span>
                   <span className="label">Played</span>
@@ -1393,83 +1408,94 @@ function QuizContent() {
               </StatsRow>
             )}
 
-            <FormSection>
-              <SectionLabel>Select JLPT Level</SectionLabel>
-              <LevelGrid>
-                {["All", "N5", "N4", "N3", "N2", "N1"].map((lvl) => (
-                  <SelectButton
-                    key={lvl}
-                    $active={selectedLevel === lvl}
-                    onClick={() => setSelectedLevel(lvl)}
+            <SelectionGroup>
+              <div>
+                <SelectionLabel>Pilih Mode Kuis</SelectionLabel>
+                <OptionGrid $cols={2}>
+                  <OptionButton
+                    $active={!timeAttack}
+                    onClick={() => setTimeAttack(false)}
                   >
-                    {lvl}
-                  </SelectButton>
-                ))}
-              </LevelGrid>
-            </FormSection>
-
-            <FormSection>
-              <SectionLabel>Select Category</SectionLabel>
-              <CategoryGrid>
-                {[
-                  { id: "mix", label: "Mix Mode" },
-                  { id: "vocabulary", label: "Vocabulary" },
-                  { id: "kanji", label: "Kanji" },
-                  { id: "grammar", label: "Grammar" },
-                ].map((cat) => (
-                  <SelectButton
-                    key={cat.id}
-                    $active={selectedCategory === cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
+                    <span className="desktop-text">⚡ Express Quiz (Relaxed)</span>
+                    <span className="mobile-text">⚡ Relaxed</span>
+                  </OptionButton>
+                  <OptionButton
+                    $active={timeAttack}
+                    onClick={() => setTimeAttack(true)}
                   >
-                    {cat.label}
-                  </SelectButton>
-                ))}
-              </CategoryGrid>
-            </FormSection>
+                    <span className="desktop-text">🔥 Time Attack (10 Detik/Soal)</span>
+                    <span className="mobile-text">🔥 Time Attack</span>
+                  </OptionButton>
+                </OptionGrid>
+              </div>
 
-            <FormSection>
-              <SectionLabel>Number of Questions</SectionLabel>
-              <QuestionCountGrid>
-                {[10, 20, 30].map((num) => (
-                  <SelectButton
-                    key={num}
-                    $active={questionCount === num}
-                    onClick={() => setQuestionCount(num)}
-                  >
-                    {num} Qs
-                  </SelectButton>
-                ))}
-              </QuestionCountGrid>
-            </FormSection>
+              <div>
+                <SelectionLabel>Pilih Level JLPT</SelectionLabel>
+                <OptionGrid $cols={6}>
+                  {["All", "N5", "N4", "N3", "N2", "N1"].map((lvl) => (
+                    <OptionButton
+                      key={lvl}
+                      $active={selectedLevel === lvl}
+                      onClick={() => setSelectedLevel(lvl)}
+                    >
+                      {lvl}
+                    </OptionButton>
+                  ))}
+                </OptionGrid>
+              </div>
 
-            <FormSection>
-              <SectionLabel>Select Game Mode</SectionLabel>
-              <ModeGrid>
-                <ModeCard
-                  $active={!timeAttack}
-                  onClick={() => setTimeAttack(false)}
-                >
-                  <h5>Relaxed Mode</h5>
-                  <p>
-                    Study at your own pace without pressure. Ideal for thorough
-                    learning.
-                  </p>
-                </ModeCard>
-                <ModeCard
-                  $active={timeAttack}
-                  onClick={() => setTimeAttack(true)}
-                >
-                  <h5>Time Attack ⚡</h5>
-                  <p>
-                    10 seconds per question limit. Build instant recall speeds
-                    under fire.
-                  </p>
-                </ModeCard>
-              </ModeGrid>
-            </FormSection>
+              <div>
+                <SelectionLabel>Pilih Kategori Materi</SelectionLabel>
+                <OptionGrid $cols={4}>
+                  {[
+                    { id: "mix", desktop: "Semua Mix", mobile: "Mix" },
+                    { id: "vocabulary", desktop: "Kosakata", mobile: "Kosakata" },
+                    { id: "kanji", desktop: "Kanji", mobile: "Kanji" },
+                    { id: "grammar", desktop: "Tata Bahasa", mobile: "Grammar" },
+                  ].map((cat) => (
+                    <OptionButton
+                      key={cat.id}
+                      $active={selectedCategory === cat.id}
+                      onClick={() => setSelectedCategory(cat.id)}
+                    >
+                      <span className="desktop-text">{cat.desktop}</span>
+                      <span className="mobile-text">{cat.mobile}</span>
+                    </OptionButton>
+                  ))}
+                </OptionGrid>
+              </div>
 
-            <StartButton onClick={startQuiz}>Start Practice Quiz</StartButton>
+              <div>
+                <SelectionLabel>Jumlah Soal</SelectionLabel>
+                <OptionGrid $cols={3}>
+                  {[10, 20, 30].map((num) => (
+                    <OptionButton
+                      key={num}
+                      $active={questionCount === num}
+                      onClick={() => setQuestionCount(num)}
+                    >
+                      <span className="desktop-text">{num} Soal</span>
+                      <span className="mobile-text">{num}</span>
+                    </OptionButton>
+                  ))}
+                </OptionGrid>
+              </div>
+            </SelectionGroup>
+
+            <PrimaryButton onClick={startQuiz}>
+              <span className="desktop-text">Mulai Sesi Kuis Sekarang</span>
+              <span className="mobile-text">Mulai Kuis Sekarang</span>
+              <svg
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </PrimaryButton>
           </LobbyCard>
         )}
 
@@ -1558,7 +1584,7 @@ function QuizContent() {
                 );
 
                 return (
-                  <OptionButton
+                  <QuizOptionCard
                     key={idx}
                     $state={state}
                     onClick={() => handleOptionClick(idx, isCorrect)}
@@ -1588,7 +1614,7 @@ function QuizContent() {
                           <CrossIcon />
                         </div>
                       )}
-                  </OptionButton>
+                  </QuizOptionCard>
                 );
               })}
             </OptionsGrid>
@@ -1767,7 +1793,7 @@ function QuizContent() {
             </ReviewSection>
 
             <ActionsRow>
-              <PrimaryButton onClick={startQuiz}>Try Again</PrimaryButton>
+              <ResultsPrimaryButton onClick={startQuiz}>Try Again</ResultsPrimaryButton>
               <SecondaryButton onClick={() => setQuizState("lobby")}>
                 Back to Lobby
               </SecondaryButton>
