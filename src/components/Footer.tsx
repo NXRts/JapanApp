@@ -45,7 +45,12 @@ const NewsletterSection = styled.div`
   @media (max-width: 968px) {
     flex-direction: column;
     text-align: center;
-    padding: 3rem 1.5rem;
+    padding: 2.5rem 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 1.5rem 1rem;
+    gap: 1rem;
   }
 `;
 
@@ -66,10 +71,19 @@ const NewsletterText = styled.div`
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
+    @media (max-width: 640px) {
+      font-size: 1.25rem;
+      margin-bottom: 0.2rem;
+    }
   }
   p {
     opacity: 0.8;
     max-width: 400px;
+
+    @media (max-width: 640px) {
+      font-size: 0.82rem;
+    }
   }
 `;
 
@@ -94,6 +108,11 @@ const NewsletterForm = styled.form`
       border-color: var(--primary);
       box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
     }
+
+    @media (max-width: 640px) {
+      padding: 0.6rem 0.85rem;
+      font-size: 0.85rem;
+    }
   }
 
   button {
@@ -112,12 +131,19 @@ const NewsletterForm = styled.form`
       transform: translateY(-1px);
       box-shadow: var(--shadow-md);
     }
+
+    @media (max-width: 640px) {
+      padding: 0.6rem 0.85rem;
+      font-size: 0.85rem;
+    }
   }
 
   @media (max-width: 480px) {
-    flex-direction: column;
+    flex-direction: row;
+    gap: 0.5rem;
+
     button {
-      width: 100%;
+      width: auto;
     }
   }
 `;
@@ -136,14 +162,15 @@ const FooterMain = styled.div`
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr 1fr;
-    padding: 4rem 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.5rem;
+    padding: 3rem 1.5rem;
   }
 
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    padding: 3rem 1rem;
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+    padding: 1.75rem 1rem;
   }
 `;
 
@@ -156,6 +183,17 @@ const BrandColumn = styled.div`
     line-height: 1.6;
     max-width: 320px;
     opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    grid-column: 1 / -1;
+    gap: 0.75rem;
+
+    p {
+      max-width: 100%;
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
   }
 `;
 
@@ -181,12 +219,20 @@ const Logo = styled(Link)`
   svg {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   }
+
+  @media (max-width: 640px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const FooterColumn = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+
+  @media (max-width: 640px) {
+    gap: 0.6rem;
+  }
 `;
 
 const ColumnTitle = styled.h4`
@@ -207,6 +253,11 @@ const ColumnTitle = styled.h4`
     background: var(--primary-light);
     border-radius: 2px;
   }
+
+  @media (max-width: 640px) {
+    font-size: 0.95rem;
+    margin-bottom: 0.2rem;
+  }
 `;
 
 const FooterLink = styled(Link)`
@@ -221,6 +272,10 @@ const FooterLink = styled(Link)`
   &:hover {
     color: var(--primary);
     transform: translateX(4px);
+  }
+
+  @media (max-width: 640px) {
+    font-size: 0.82rem;
   }
 `;
 
@@ -238,6 +293,10 @@ const FooterBottom = styled.div`
   background: var(--background);
   padding: 2rem;
   border-top: 1px solid var(--border);
+
+  @media (max-width: 640px) {
+    padding: 1.25rem 1rem 1.5rem 1rem;
+  }
 `;
 
 const BottomContent = styled.div`
@@ -250,8 +309,9 @@ const BottomContent = styled.div`
   gap: 1.5rem;
 
   @media (max-width: 640px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
     text-align: center;
+    gap: 0.75rem;
   }
 `;
 
@@ -268,11 +328,19 @@ const Copyright = styled.div`
       color: var(--primary);
     }
   }
+
+  @media (max-width: 640px) {
+    font-size: 0.78rem;
+  }
 `;
 
 const SocialLinks = styled.div`
   display: flex;
   gap: 1rem;
+
+  @media (max-width: 640px) {
+    gap: 0.6rem;
+  }
 `;
 
 const SocialIcon = styled.a`
@@ -300,6 +368,16 @@ const SocialIcon = styled.a`
     height: 20px;
     fill: currentColor;
   }
+
+  @media (max-width: 640px) {
+    width: 34px;
+    height: 34px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
 `;
 
 const SupportButtonGroup = styled.div`
@@ -307,6 +385,12 @@ const SupportButtonGroup = styled.div`
   flex-direction: column;
   gap: 0.75rem;
   margin-top: 0.5rem;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.2rem;
+  }
 `;
 
 const SupportButton = styled.a`
@@ -335,6 +419,14 @@ const SupportButton = styled.a`
     align-items: center;
     justify-content: center;
     color: var(--primary-light);
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.82rem;
+    gap: 0.5rem;
+    width: 100%;
+    justify-content: flex-start;
   }
 `;
 
