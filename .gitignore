@@ -64,4 +64,6 @@ public/Template/pagination.html
 
 PLAY_STORE_ASSETS_GUIDE.md
 QUICK_IMPLEMENTATION_PLAN.md
+public/ImplementationPlan.md
+public/ImplementationPlan/
 .env*
