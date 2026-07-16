@@ -28,30 +28,10 @@ const RESTRICTED_ROUTES = [
 ];
 
 /**
- * OnboardingRedirectHandler — Headless redirect guard.
- * If the user hasn't set their name and attempts to visit a restricted route,
- * they are instantly redirected to the standalone `/login` page.
+ * OnboardingOverlay — Passive component.
+ * Mandatory onboarding requirement is removed so users can immediately learn
+ * without being redirected or blocked.
  */
 export function OnboardingOverlay() {
-  const { progress, isLoaded } = useProgress();
-  const pathname = usePathname() || "";
-  const router = useRouter();
-
-  useEffect(() => {
-    // Only perform route guarding once the progress state is successfully
-    // hydrated from localStorage.
-    if (!isLoaded) return;
-
-    const isRestrictedRoute = RESTRICTED_ROUTES.some(
-      (route) => pathname === route || pathname.startsWith(route + "/"),
-    );
-
-    if (!progress.hasSetName && isRestrictedRoute) {
-      // Redirect to dedicated onboarding page with the target path preserved
-      const redirectUrl = encodeURIComponent(pathname);
-      router.replace(`/onboarding?redirect=${redirectUrl}`);
-    }
-  }, [progress.hasSetName, isLoaded, pathname, router]);
-
   return null;
 }

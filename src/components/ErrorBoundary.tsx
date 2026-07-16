@@ -29,8 +29,20 @@ export class ErrorBoundary extends React.Component<Props, State> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+  static getDerivedStateFromError(error: any): State {
+    let errInstance: Error;
+    if (error instanceof Error) {
+      errInstance = error;
+    } else if (typeof error === "string") {
+      errInstance = new Error(error);
+    } else if (error && typeof error.message === "string" && error.message !== "[object Event]") {
+      errInstance = new Error(error.message);
+    } else if (error && typeof error.type === "string") {
+      errInstance = new Error(`Resource / Media Event (${error.type})`);
+    } else {
+      errInstance = new Error(String(error || "An unexpected error occurred"));
+    }
+    return { hasError: true, error: errInstance };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {

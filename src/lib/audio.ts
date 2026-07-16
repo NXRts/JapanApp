@@ -135,8 +135,8 @@ const playWithGoogleTTS = (text: string, rate: number): Promise<boolean> => {
     audio.playbackRate = rate;
 
     audio.onended = () => resolve(true);
-    audio.onerror = (e) => {
-      console.warn("Google TTS fallback failed:", e);
+    audio.onerror = (e: any) => {
+      console.warn("Google TTS fallback failed:", e?.type || "error event");
       resolve(false);
     };
 
@@ -145,7 +145,7 @@ const playWithGoogleTTS = (text: string, rate: number): Promise<boolean> => {
         // Playing successfully
       })
       .catch((err) => {
-        console.warn("Google TTS play failed:", err);
+        console.warn("Google TTS play failed:", err?.message || err);
         resolve(false);
       });
   });
@@ -171,8 +171,8 @@ const playWithYoudaoTTS = (text: string, rate: number): Promise<boolean> => {
     audio.playbackRate = rate;
 
     audio.onended = () => resolve(true);
-    audio.onerror = (e) => {
-      console.warn("Youdao TTS fallback failed:", e);
+    audio.onerror = (e: any) => {
+      console.warn("Youdao TTS fallback failed:", e?.type || "error event");
       resolve(false);
     };
 
@@ -181,7 +181,7 @@ const playWithYoudaoTTS = (text: string, rate: number): Promise<boolean> => {
         // Playing successfully
       })
       .catch((err) => {
-        console.warn("Youdao TTS play failed:", err);
+        console.warn("Youdao TTS play failed:", err?.message || err);
         resolve(false);
       });
   });
@@ -292,10 +292,11 @@ export const playJapaneseAudio = (
       resolve();
     };
 
-    utterance.onerror = async (e) => {
+    utterance.onerror = async (e: any) => {
       clearTimeout(speakingTimeout);
-      if (e.error !== "interrupted") {
-        console.warn("SpeechSynthesis error:", e.error, "— trying external fallbacks...");
+      const errReason = e?.error || e?.type || "speech synthesis failure";
+      if (errReason !== "interrupted") {
+        console.warn("SpeechSynthesis warning:", errReason, "— trying external fallbacks...");
         const successGoogle = await playWithGoogleTTS(text, rate);
         if (!successGoogle) {
           await playWithYoudaoTTS(text, rate);

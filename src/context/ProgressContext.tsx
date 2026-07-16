@@ -117,7 +117,7 @@ const INITIAL_DATA: ProgressData = {
   completedGrammarSections: [],
   showFurigana: true,
   profile: DEFAULT_PROFILE,
-  hasSetName: false,
+  hasSetName: true,
 };
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
@@ -212,14 +212,11 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
               },
               // Existing users: consider them "onboarded" if they already have
               // a real name OR the hasSetName flag was previously stored.
-              hasSetName:
-                parsed.hasSetName === true ||
-                (parsed.profile?.displayName &&
-                  parsed.profile.displayName !== DEFAULT_PROFILE.displayName),
+              hasSetName: true,
             };
 
             // Server-side validation (anti-cheat) — runs after UI hydration
-            // Runs in background; on failure falls back to INITIAL_DATA
+            // Runs in background; on failure falls back gracefully without losing local data
             try {
               const res = await fetch("/api/progress/validate", {
                 method: "POST",
@@ -229,21 +226,21 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
               if (!res.ok) {
                 const text = await res.text().catch(() => "");
-                console.error(
-                  "Progress validation failed. Raw response text:",
+                console.warn(
+                  "Progress validation notice:",
                   text,
                 );
                 let result: any = {};
                 try {
                   result = JSON.parse(text);
                 } catch {}
-                logError(new Error("Progress validation failed"), {
+                logError(new Error("Progress validation notice"), {
                   reason: result?.reason || text || "Empty response",
                   status: res.status,
                   details: result?.errors || result,
                 });
-                // Progress is invalid — reset to initial state
-                setProgress(INITIAL_DATA);
+                // Preserve local candidateProgress so user data is retained safely
+                setProgress(candidateProgress);
                 setIsLoaded(true);
                 return;
               }
