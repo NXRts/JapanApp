@@ -64,8 +64,9 @@ const ProgressDataSchema = z.object({
   activityLog: z.record(z.string(), z.number()),
   completedExercises: z.array(z.string()),
   completedGrammarSections: z.array(z.string()),
-  showFurigana: z.boolean(),
+  showFurigana: z.boolean().optional(),
   profile: UserProfileSchema.optional(),
+  hasSetName: z.boolean().optional(),
 });
 
 export async function POST(request: NextRequest) {
