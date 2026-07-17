@@ -115,13 +115,15 @@ async function checkRedisRateLimit(identifier: string): Promise<{
     // If key has no expiration (ttl === -1) or is newly created, set it to expire in 60s
     if (ttl === -1 || count === 1) {
       const expireUrl = `${cleanUrl}/expire/${key}/60`;
-      fetch(expireUrl, {
-        headers: { Authorization: `Bearer ${token}` },
-      }).catch((err: any) => {
+      try {
+        await fetch(expireUrl, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      } catch (err: any) {
         console.warn(
           `[Rate Limit] Failed to set Redis key expiry: ${err.message || err}`,
         );
-      });
+      }
     }
 
     const limit = RATE_LIMIT.maxRequests;
@@ -156,74 +158,79 @@ async function checkRedisRateLimit(identifier: string): Promise<{
 }
 
 export async function middleware(request: NextRequest) {
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0] ??
-    request.headers.get("x-real-ip") ??
-    "127.0.0.1";
-  const path = request.nextUrl.pathname;
+  try {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ??
+      request.headers.get("x-real-ip") ??
+      "127.0.0.1";
+    const path = request.nextUrl.pathname;
 
-  // Skip rate limiting for static assets and Next.js internals
-  if (
-    path.startsWith("/_next") ||
-    path.startsWith("/static") ||
-    path.startsWith("/images") ||
-    path.startsWith("/icons") ||
-    path.includes(".") // Skip files with extensions
-  ) {
+    // Skip rate limiting for static assets and Next.js internals
+    if (
+      path.startsWith("/_next") ||
+      path.startsWith("/static") ||
+      path.startsWith("/images") ||
+      path.startsWith("/icons") ||
+      path.includes(".") // Skip files with extensions
+    ) {
+      return NextResponse.next();
+    }
+
+    // Apply rate limiting to API routes
+    if (path.startsWith("/api")) {
+      const identifier = `${ip}:${path}`;
+      const rateLimit = await checkRedisRateLimit(identifier);
+
+      if (!rateLimit.allowed) {
+        // Log the rate limit violation
+        logSecurityEvent({
+          type: "rate_limit",
+          ip,
+          path,
+          details: { limit: rateLimit.limit },
+        });
+
+        return new NextResponse(
+          JSON.stringify({ error: "Too many requests. Please try again later." }),
+          {
+            status: 429,
+            headers: {
+              "Content-Type": "application/json",
+              "Retry-After": "60",
+              "X-RateLimit-Limit": rateLimit.limit.toString(),
+              "X-RateLimit-Remaining": "0",
+            },
+          },
+        );
+      }
+    }
+
+    // Add security headers
+    const response = NextResponse.next();
+
+    // Prevent clickjacking
+    response.headers.set("X-Frame-Options", "DENY");
+
+    // Prevent MIME type sniffing
+    response.headers.set("X-Content-Type-Options", "nosniff");
+
+    // Enable XSS protection
+    response.headers.set("X-XSS-Protection", "1; mode=block");
+
+    // Referrer policy
+    response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+
+    // Permissions policy
+    response.headers.set(
+      "Permissions-Policy",
+      "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    );
+
+    return response;
+  } catch (err: any) {
+    console.error("[Middleware Error]", err?.message || err);
     return NextResponse.next();
   }
-
-  // Apply stricter rate limiting to API routes (disabled in development)
-  if (path.startsWith("/api") && process.env.NODE_ENV !== "development") {
-    const identifier = `${ip}:${path}`;
-    const rateLimit = await checkRedisRateLimit(identifier);
-
-    if (!rateLimit.allowed) {
-      // Log the rate limit violation
-      logSecurityEvent({
-        type: "rate_limit",
-        ip,
-        path,
-        details: { limit: rateLimit.limit },
-      });
-
-      return new NextResponse(
-        JSON.stringify({ error: "Too many requests. Please try again later." }),
-        {
-          status: 429,
-          headers: {
-            "Content-Type": "application/json",
-            "Retry-After": "60",
-            "X-RateLimit-Limit": rateLimit.limit.toString(),
-            "X-RateLimit-Remaining": "0",
-          },
-        },
-      );
-    }
-  }
-
-  // Add security headers
-  const response = NextResponse.next();
-
-  // Prevent clickjacking
-  response.headers.set("X-Frame-Options", "DENY");
-
-  // Prevent MIME type sniffing
-  response.headers.set("X-Content-Type-Options", "nosniff");
-
-  // Enable XSS protection
-  response.headers.set("X-XSS-Protection", "1; mode=block");
-
-  // Referrer policy
-  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-
-  // Permissions policy
-  response.headers.set(
-    "Permissions-Policy",
-    "camera=(), microphone=(), geolocation=(), interest-cohort=()",
-  );
-
-  return response;
 }
 
 export const config = {
