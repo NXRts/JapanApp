@@ -83,8 +83,5 @@
       "source": "/robots.txt",
       "destination": "/robots"
     }
-  ],
-  "env": {
-    "NEXT_PUBLIC_BASE_URL": "https://japan-mee.vercel.app"
-  }
+  ]
 }

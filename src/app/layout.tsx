@@ -22,7 +22,7 @@ export const viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || "https://japan-app.vercel.app",
+    process.env.NEXT_PUBLIC_BASE_URL || "https://japan-mee.vercel.app",
   ),
   title: {
     default: "Japan Learning App | Master Kanji & Kana",
