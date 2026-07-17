@@ -772,17 +772,15 @@ export default function VocabularyFlashcards() {
   return (
     <PageWrapper>
       <Container>
-        {!isMobileView && (
-          <BreadcrumbWrapper>
-            <Breadcrumbs
-              items={[
-                { label: "Home", href: "/" },
-                { label: "Study", href: "/study" },
-              ]}
-              current="Vocabulary Flashcards"
-            />
-          </BreadcrumbWrapper>
-        )}
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Study", href: "/study" },
+            ]}
+            current="Vocabulary Flashcards"
+          />
+        </BreadcrumbWrapper>
 
         <ContentWrapper>
           {isMobileView ? (

@@ -305,17 +305,15 @@ export default function GamePage() {
 
   return (
     <Container>
-      {!isMobileView && (
-        <BreadcrumbWrapper>
-          <Breadcrumbs
-            items={[
-              { label: "Home", href: "/" },
-              { label: "Games Hub", href: "/game" },
-            ]}
-            current="Kana Speed Typing"
-          />
-        </BreadcrumbWrapper>
-      )}
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Games Hub", href: "/game" },
+          ]}
+          current="Kana Speed Typing"
+        />
+      </BreadcrumbWrapper>
 
       <ContentWrapper>
         {isMobileView ? (
