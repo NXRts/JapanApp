@@ -138,7 +138,14 @@ export default function GrammarDetailPage({
         <ContentWrapper>
           <Header>
             <Title>Grammar point not found</Title>
-            <Link href="/grammar" style={{ color: "var(--text-secondary)", textDecoration: "none", fontWeight: 600 }}>
+            <Link
+              href="/grammar"
+              style={{
+                color: "var(--text-secondary)",
+                textDecoration: "none",
+                fontWeight: 600,
+              }}
+            >
               ← Back to Grammar
             </Link>
           </Header>
@@ -166,28 +173,28 @@ export default function GrammarDetailPage({
           <Meaning>{point.meaning}</Meaning>
         </Header>
 
-      <Section>
-        <SectionTitle>Structure</SectionTitle>
-        <StructureBox>{point.structure}</StructureBox>
-      </Section>
+        <Section>
+          <SectionTitle>Structure</SectionTitle>
+          <StructureBox>{point.structure}</StructureBox>
+        </Section>
 
-      <Section>
-        <SectionTitle>Explanation</SectionTitle>
-        <Explanation>{point.explanation}</Explanation>
-      </Section>
+        <Section>
+          <SectionTitle>Explanation</SectionTitle>
+          <Explanation>{point.explanation}</Explanation>
+        </Section>
 
-      <Section>
-        <SectionTitle>Examples</SectionTitle>
-        <ExampleList>
-          {point.examples.map((example, index) => (
-            <ExampleItem key={index}>
-              <JapaneseText>{example.japanese}</JapaneseText>
-              <RomajiText>{example.romaji}</RomajiText>
-              <EnglishText>{example.english}</EnglishText>
-            </ExampleItem>
-          ))}
-        </ExampleList>
-      </Section>
+        <Section>
+          <SectionTitle>Examples</SectionTitle>
+          <ExampleList>
+            {point.examples.map((example, index) => (
+              <ExampleItem key={index}>
+                <JapaneseText>{example.japanese}</JapaneseText>
+                <RomajiText>{example.romaji}</RomajiText>
+                <EnglishText>{example.english}</EnglishText>
+              </ExampleItem>
+            ))}
+          </ExampleList>
+        </Section>
       </ContentWrapper>
     </Container>
   );

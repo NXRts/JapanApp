@@ -226,10 +226,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
 
               if (!res.ok) {
                 const text = await res.text().catch(() => "");
-                console.warn(
-                  "Progress validation notice:",
-                  text,
-                );
+                console.warn("Progress validation notice:", text);
                 let result: any = {};
                 try {
                   result = JSON.parse(text);

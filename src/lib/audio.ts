@@ -111,7 +111,9 @@ const isLowQualityVoice = (v: SpeechSynthesisVoice): boolean => {
     name.includes("espeak") ||
     // espeak-ng naming pattern: "Japanese", "Japanese+Max", "Japanese+female2", etc.
     // These are all espeak variants — none of them sound natural for Japanese learning
-    (name.startsWith("japanese") && !v.name.includes("Google") && !v.name.includes("Microsoft"))
+    (name.startsWith("japanese") &&
+      !v.name.includes("Google") &&
+      !v.name.includes("Microsoft"))
   );
 };
 
@@ -140,7 +142,8 @@ const playWithGoogleTTS = (text: string, rate: number): Promise<boolean> => {
       resolve(false);
     };
 
-    audio.play()
+    audio
+      .play()
       .then(() => {
         // Playing successfully
       })
@@ -176,7 +179,8 @@ const playWithYoudaoTTS = (text: string, rate: number): Promise<boolean> => {
       resolve(false);
     };
 
-    audio.play()
+    audio
+      .play()
       .then(() => {
         // Playing successfully
       })
@@ -220,8 +224,12 @@ export const playJapaneseAudio = (
     // Find the best available Japanese voice
     const highQualityVoice =
       options.voice ||
-      availableVoices.find((v) => v.lang === "ja-JP" && isHighQualityVoice(v)) ||
-      availableVoices.find((v) => v.lang.startsWith("ja") && isHighQualityVoice(v));
+      availableVoices.find(
+        (v) => v.lang === "ja-JP" && isHighQualityVoice(v),
+      ) ||
+      availableVoices.find(
+        (v) => v.lang.startsWith("ja") && isHighQualityVoice(v),
+      );
 
     const anyJapaneseVoice =
       highQualityVoice ||
@@ -240,7 +248,9 @@ export const playJapaneseAudio = (
     const noJapaneseVoice = allJapaneseVoices.length === 0;
 
     if (hasOnlyLowQuality || noJapaneseVoice) {
-      console.log("Only low-quality voice or no voice found. Trying Google TTS fallback...");
+      console.log(
+        "Only low-quality voice or no voice found. Trying Google TTS fallback...",
+      );
       const successGoogle = await playWithGoogleTTS(text, rate);
       if (successGoogle) {
         return resolve();
@@ -257,7 +267,9 @@ export const playJapaneseAudio = (
         console.warn("No Japanese voice and all external TTS backends failed.");
         return resolve();
       }
-      console.warn("External TTS backends failed. Falling back to local SpeechSynthesis.");
+      console.warn(
+        "External TTS backends failed. Falling back to local SpeechSynthesis.",
+      );
     }
 
     // Cancel any ongoing speech
@@ -273,7 +285,9 @@ export const playJapaneseAudio = (
 
     // Safety timeout: if speech doesn't start within 1.2s (browser is hung/silent), fallback to external TTS
     let speakingTimeout = setTimeout(async () => {
-      console.warn("SpeechSynthesis took too long to respond. Falling back to external TTS...");
+      console.warn(
+        "SpeechSynthesis took too long to respond. Falling back to external TTS...",
+      );
       synth.cancel();
       const successGoogle = await playWithGoogleTTS(text, rate);
       if (!successGoogle) {
@@ -296,7 +310,11 @@ export const playJapaneseAudio = (
       clearTimeout(speakingTimeout);
       const errReason = e?.error || e?.type || "speech synthesis failure";
       if (errReason !== "interrupted") {
-        console.warn("SpeechSynthesis warning:", errReason, "— trying external fallbacks...");
+        console.warn(
+          "SpeechSynthesis warning:",
+          errReason,
+          "— trying external fallbacks...",
+        );
         const successGoogle = await playWithGoogleTTS(text, rate);
         if (!successGoogle) {
           await playWithYoudaoTTS(text, rate);

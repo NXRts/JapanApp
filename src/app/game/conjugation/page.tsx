@@ -623,197 +623,199 @@ export default function ConjugationDrillsPage() {
           </LessonHeader>
         ) : null}
 
-      <GameArea>
-        {gameState === "start" && (
-          <div style={{ textAlign: "center" }}>
-            <Header>
-              <Title>Conjugation Drills</Title>
-              <Subtitle>
-                Uji kecepatanmu mengubah bentuk kata kerja bahasa Jepang!
-              </Subtitle>
-            </Header>
+        <GameArea>
+          {gameState === "start" && (
+            <div style={{ textAlign: "center" }}>
+              <Header>
+                <Title>Conjugation Drills</Title>
+                <Subtitle>
+                  Uji kecepatanmu mengubah bentuk kata kerja bahasa Jepang!
+                </Subtitle>
+              </Header>
 
-            <OptionsPanel>
-              <OptionGroup>
-                <OptionLabel>Tipe Input</OptionLabel>
-                <ButtonRow>
-                  <SelectButton
-                    $active={inputType === "multiple-choice"}
-                    onClick={() => setInputType("multiple-choice")}
-                  >
-                    Pilihan Ganda
-                  </SelectButton>
-                  <SelectButton
-                    $active={inputType === "manual-typing"}
-                    onClick={() => setInputType("manual-typing")}
-                  >
-                    Ketik Manual
-                  </SelectButton>
-                </ButtonRow>
-                {inputType === "manual-typing" && (
-                  <p
-                    style={{
-                      fontSize: "0.85rem",
-                      color: "var(--text-secondary)",
-                      marginTop: "0.5rem",
-                    }}
-                  >
-                    * Pastikan keyboard Jepang (IME) Anda aktif untuk mengetik
-                    kanji.
-                  </p>
-                )}
-              </OptionGroup>
-
-              <OptionGroup>
-                <OptionLabel>Tingkat Kesulitan</OptionLabel>
-                <ButtonRow>
-                  <SelectButton
-                    $active={difficulty === "basic"}
-                    onClick={() => setDifficulty("basic")}
-                  >
-                    Basic (Dasar)
-                  </SelectButton>
-                  <SelectButton
-                    $active={difficulty === "advanced"}
-                    onClick={() => setDifficulty("advanced")}
-                  >
-                    Advanced (Pasif/Kausatif)
-                  </SelectButton>
-                </ButtonRow>
-              </OptionGroup>
-            </OptionsPanel>
-
-            <StartButton onClick={startGame}>Mulai Main</StartButton>
-          </div>
-        )}
-
-        {gameState === "playing" && currentVerb && (
-          <>
-            {!isMobileView && (
-              <TopBar>
-                <Score>Score: {score}</Score>
-                <QuestionCount>
-                  Question {currentQuestionIndex + 1} / {totalQuestions}
-                </QuestionCount>
-              </TopBar>
-            )}
-
-            <QuestionContainer>
-              <TargetVerb>{currentVerb.dictionary}</TargetVerb>
-              <VerbMeaning>
-                ({currentVerb.reading}) - {currentVerb.meaning}
-              </VerbMeaning>
-
-              <InstructionBox>Ubah ke: {formLabels[targetForm]}</InstructionBox>
-            </QuestionContainer>
-
-            {inputType === "multiple-choice" ? (
-              <OptionsGrid>
-                {options.map((option, index) => {
-                  const isCorrectAnswer =
-                    option === currentVerb.forms[targetForm];
-                  const isSelected = selectedAnswer === option;
-
-                  let showCorrect = false;
-                  let showWrong = false;
-
-                  if (selectedAnswer !== null) {
-                    if (isCorrectAnswer) showCorrect = true;
-                    if (isSelected && !isCorrectAnswer) showWrong = true;
-                  }
-
-                  return (
-                    <OptionButton
-                      key={index}
-                      onClick={() => handleMCAnswer(option)}
-                      $disabled={selectedAnswer !== null}
-                      $isCorrect={showCorrect}
-                      $isWrong={showWrong}
+              <OptionsPanel>
+                <OptionGroup>
+                  <OptionLabel>Tipe Input</OptionLabel>
+                  <ButtonRow>
+                    <SelectButton
+                      $active={inputType === "multiple-choice"}
+                      onClick={() => setInputType("multiple-choice")}
                     >
-                      {option}
-                    </OptionButton>
-                  );
-                })}
-              </OptionsGrid>
-            ) : (
-              <TypingContainer onSubmit={handleTypingSubmit}>
-                <TypeInput
-                  ref={inputRef}
-                  value={typedAnswer}
-                  onChange={(e) => setTypedAnswer(e.target.value)}
-                  placeholder="Ketik jawaban (Kanji/Kana)..."
-                  disabled={typingFeedback !== null}
-                  $isCorrect={typingFeedback === "correct"}
-                  $isWrong={typingFeedback === "wrong"}
-                  autoComplete="off"
-                />
-                <StartButton
-                  type="submit"
-                  disabled={typingFeedback !== null || !typedAnswer.trim()}
+                      Pilihan Ganda
+                    </SelectButton>
+                    <SelectButton
+                      $active={inputType === "manual-typing"}
+                      onClick={() => setInputType("manual-typing")}
+                    >
+                      Ketik Manual
+                    </SelectButton>
+                  </ButtonRow>
+                  {inputType === "manual-typing" && (
+                    <p
+                      style={{
+                        fontSize: "0.85rem",
+                        color: "var(--text-secondary)",
+                        marginTop: "0.5rem",
+                      }}
+                    >
+                      * Pastikan keyboard Jepang (IME) Anda aktif untuk mengetik
+                      kanji.
+                    </p>
+                  )}
+                </OptionGroup>
+
+                <OptionGroup>
+                  <OptionLabel>Tingkat Kesulitan</OptionLabel>
+                  <ButtonRow>
+                    <SelectButton
+                      $active={difficulty === "basic"}
+                      onClick={() => setDifficulty("basic")}
+                    >
+                      Basic (Dasar)
+                    </SelectButton>
+                    <SelectButton
+                      $active={difficulty === "advanced"}
+                      onClick={() => setDifficulty("advanced")}
+                    >
+                      Advanced (Pasif/Kausatif)
+                    </SelectButton>
+                  </ButtonRow>
+                </OptionGroup>
+              </OptionsPanel>
+
+              <StartButton onClick={startGame}>Mulai Main</StartButton>
+            </div>
+          )}
+
+          {gameState === "playing" && currentVerb && (
+            <>
+              {!isMobileView && (
+                <TopBar>
+                  <Score>Score: {score}</Score>
+                  <QuestionCount>
+                    Question {currentQuestionIndex + 1} / {totalQuestions}
+                  </QuestionCount>
+                </TopBar>
+              )}
+
+              <QuestionContainer>
+                <TargetVerb>{currentVerb.dictionary}</TargetVerb>
+                <VerbMeaning>
+                  ({currentVerb.reading}) - {currentVerb.meaning}
+                </VerbMeaning>
+
+                <InstructionBox>
+                  Ubah ke: {formLabels[targetForm]}
+                </InstructionBox>
+              </QuestionContainer>
+
+              {inputType === "multiple-choice" ? (
+                <OptionsGrid>
+                  {options.map((option, index) => {
+                    const isCorrectAnswer =
+                      option === currentVerb.forms[targetForm];
+                    const isSelected = selectedAnswer === option;
+
+                    let showCorrect = false;
+                    let showWrong = false;
+
+                    if (selectedAnswer !== null) {
+                      if (isCorrectAnswer) showCorrect = true;
+                      if (isSelected && !isCorrectAnswer) showWrong = true;
+                    }
+
+                    return (
+                      <OptionButton
+                        key={index}
+                        onClick={() => handleMCAnswer(option)}
+                        $disabled={selectedAnswer !== null}
+                        $isCorrect={showCorrect}
+                        $isWrong={showWrong}
+                      >
+                        {option}
+                      </OptionButton>
+                    );
+                  })}
+                </OptionsGrid>
+              ) : (
+                <TypingContainer onSubmit={handleTypingSubmit}>
+                  <TypeInput
+                    ref={inputRef}
+                    value={typedAnswer}
+                    onChange={(e) => setTypedAnswer(e.target.value)}
+                    placeholder="Ketik jawaban (Kanji/Kana)..."
+                    disabled={typingFeedback !== null}
+                    $isCorrect={typingFeedback === "correct"}
+                    $isWrong={typingFeedback === "wrong"}
+                    autoComplete="off"
+                  />
+                  <StartButton
+                    type="submit"
+                    disabled={typingFeedback !== null || !typedAnswer.trim()}
+                  >
+                    Jawab
+                  </StartButton>
+
+                  {typingFeedback !== null && (
+                    <FeedbackText $isCorrect={typingFeedback === "correct"}>
+                      {typingFeedback === "correct"
+                        ? "Tepat Sekali!"
+                        : `Salah. Jawaban yang benar: ${currentVerb.forms[targetForm]}`}
+                    </FeedbackText>
+                  )}
+                </TypingContainer>
+              )}
+            </>
+          )}
+
+          {gameState === "result" && (
+            <ResultScreen>
+              <Header>
+                <Title>
+                  {isMobileView && lives === 0 ? "Game Over! 😢" : "Selesai!"}
+                </Title>
+                <Subtitle>
+                  {isMobileView && lives === 0
+                    ? "Kamu kehabisan nyawa."
+                    : "Latihan yang bagus."}
+                </Subtitle>
+              </Header>
+              <FinalScore>
+                {score} / {totalQuestions}
+              </FinalScore>
+              {!(isMobileView && lives === 0) && (
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    color: "#10b981",
+                    background: "rgba(16, 185, 129, 0.1)",
+                    padding: "0.6rem 1.5rem",
+                    borderRadius: "999px",
+                    fontWeight: 800,
+                    fontSize: "1.25rem",
+                    marginBottom: "2rem",
+                    border: "1px solid rgba(16, 185, 129, 0.2)",
+                    boxShadow: "0 4px 12px rgba(16, 185, 129, 0.1)",
+                  }}
                 >
-                  Jawab
-                </StartButton>
-
-                {typingFeedback !== null && (
-                  <FeedbackText $isCorrect={typingFeedback === "correct"}>
-                    {typingFeedback === "correct"
-                      ? "Tepat Sekali!"
-                      : `Salah. Jawaban yang benar: ${currentVerb.forms[targetForm]}`}
-                  </FeedbackText>
-                )}
-              </TypingContainer>
-            )}
-          </>
-        )}
-
-        {gameState === "result" && (
-          <ResultScreen>
-            <Header>
-              <Title>
-                {isMobileView && lives === 0 ? "Game Over! 😢" : "Selesai!"}
-              </Title>
-              <Subtitle>
+                  🏆 +{isMobileView ? 40 : score * 15} EXP Gained
+                </div>
+              )}
+              <ResultMessage>
                 {isMobileView && lives === 0
-                  ? "Kamu kehabisan nyawa."
-                  : "Latihan yang bagus."}
-              </Subtitle>
-            </Header>
-            <FinalScore>
-              {score} / {totalQuestions}
-            </FinalScore>
-            {!(isMobileView && lives === 0) && (
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  color: "#10b981",
-                  background: "rgba(16, 185, 129, 0.1)",
-                  padding: "0.6rem 1.5rem",
-                  borderRadius: "999px",
-                  fontWeight: 800,
-                  fontSize: "1.25rem",
-                  marginBottom: "2rem",
-                  border: "1px solid rgba(16, 185, 129, 0.2)",
-                  boxShadow: "0 4px 12px rgba(16, 185, 129, 0.1)",
-                }}
-              >
-                🏆 +{isMobileView ? 40 : score * 15} EXP Gained
-              </div>
-            )}
-            <ResultMessage>
-              {isMobileView && lives === 0
-                ? "Jangan menyerah! Teruslah belajar dan coba lagi."
-                : score === totalQuestions
-                  ? "Sempurna! Kamu master konjugasi."
-                  : score >= (isMobileView ? 4 : 7)
-                    ? "Kerja bagus! Sedikit lagi menuju sempurna."
-                    : "Teruslah berlatih! Kamu pasti bisa."}
-            </ResultMessage>
-            <StartButton onClick={startGame}>Main Lagi</StartButton>
-          </ResultScreen>
-        )}
-      </GameArea>
+                  ? "Jangan menyerah! Teruslah belajar dan coba lagi."
+                  : score === totalQuestions
+                    ? "Sempurna! Kamu master konjugasi."
+                    : score >= (isMobileView ? 4 : 7)
+                      ? "Kerja bagus! Sedikit lagi menuju sempurna."
+                      : "Teruslah berlatih! Kamu pasti bisa."}
+              </ResultMessage>
+              <StartButton onClick={startGame}>Main Lagi</StartButton>
+            </ResultScreen>
+          )}
+        </GameArea>
       </ContentWrapper>
     </Container>
   );

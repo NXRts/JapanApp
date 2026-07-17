@@ -184,95 +184,99 @@ export default function ListeningHub() {
 
       <ContentWrapper>
         <Header>
-        <Title>Listening Comprehension 🎧</Title>
-        <p
-          style={{
-            color: "var(--text-secondary)",
-            fontSize: "1.2rem",
-            maxWidth: "600px",
-            margin: "0 auto",
-          }}
-        >
-          Simulate JLPT Choukai. Listen to the audio and answer without reading
-          the text.
-        </p>
-
-        <div
-          style={{
-            marginTop: "3rem",
-            display: "flex",
-            gap: "1rem",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          {levels.map((level) => (
-            <FilterBtn
-              key={level}
-              $active={filter === level}
-              onClick={() => setFilter(level)}
-            >
-              {level}
-            </FilterBtn>
-          ))}
-        </div>
-      </Header>
-
-      <Grid>
-        {filteredExercises.map((exercise) => (
-          <ExerciseCard
-            key={exercise.id}
-            href={`/study/listening/${exercise.id}`}
+          <Title>Listening Comprehension 🎧</Title>
+          <p
+            style={{
+              color: "var(--text-secondary)",
+              fontSize: "1.2rem",
+              maxWidth: "600px",
+              margin: "0 auto",
+            }}
           >
-            <ExerciseHeader>
-              <div
-                style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
+            Simulate JLPT Choukai. Listen to the audio and answer without
+            reading the text.
+          </p>
+
+          <div
+            style={{
+              marginTop: "3rem",
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {levels.map((level) => (
+              <FilterBtn
+                key={level}
+                $active={filter === level}
+                onClick={() => setFilter(level)}
               >
-                <LevelBadge $level={exercise.level}>
-                  {exercise.level}
-                </LevelBadge>
-                {progress.completedExercises?.includes(exercise.id) && (
-                  <span
-                    style={{
-                      background: "#10b981",
-                      color: "white",
-                      padding: "0.2rem 0.6rem",
-                      borderRadius: "99px",
-                      fontSize: "0.75rem",
-                      fontWeight: 700,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.2rem",
-                    }}
-                  >
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                {level}
+              </FilterBtn>
+            ))}
+          </div>
+        </Header>
+
+        <Grid>
+          {filteredExercises.map((exercise) => (
+            <ExerciseCard
+              key={exercise.id}
+              href={`/study/listening/${exercise.id}`}
+            >
+              <ExerciseHeader>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "0.5rem",
+                    alignItems: "center",
+                  }}
+                >
+                  <LevelBadge $level={exercise.level}>
+                    {exercise.level}
+                  </LevelBadge>
+                  {progress.completedExercises?.includes(exercise.id) && (
+                    <span
+                      style={{
+                        background: "#10b981",
+                        color: "white",
+                        padding: "0.2rem 0.6rem",
+                        borderRadius: "99px",
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.2rem",
+                      }}
                     >
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Completed
-                  </span>
-                )}
-              </div>
-              <span style={{ fontSize: "1.2rem" }}>🔊</span>
-            </ExerciseHeader>
-            <ExerciseTitle>{exercise.title}</ExerciseTitle>
-            <ScenarioText>{exercise.scenario}</ScenarioText>
-            <Tags>
-              {exercise.tags.map((tag) => (
-                <Tag key={tag}>#{tag}</Tag>
-              ))}
-            </Tags>
-          </ExerciseCard>
-        ))}
-      </Grid>
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Completed
+                    </span>
+                  )}
+                </div>
+                <span style={{ fontSize: "1.2rem" }}>🔊</span>
+              </ExerciseHeader>
+              <ExerciseTitle>{exercise.title}</ExerciseTitle>
+              <ScenarioText>{exercise.scenario}</ScenarioText>
+              <Tags>
+                {exercise.tags.map((tag) => (
+                  <Tag key={tag}>#{tag}</Tag>
+                ))}
+              </Tags>
+            </ExerciseCard>
+          ))}
+        </Grid>
       </ContentWrapper>
     </Container>
   );

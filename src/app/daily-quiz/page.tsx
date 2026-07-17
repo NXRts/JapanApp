@@ -454,113 +454,113 @@ export default function KanaQuizPage() {
         </BreadcrumbWrapper>
         <ContentWrapper>
           <ResultOverlay>
-          <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🏆</div>
-          <h2 style={{ marginBottom: "2rem" }}>Daily Challenge Complete!</h2>
+            <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🏆</div>
+            <h2 style={{ marginBottom: "2rem" }}>Daily Challenge Complete!</h2>
 
-          <TestResultStats
-            stats={[
-              { label: "Correct", value: score, color: "#10b981" },
-              {
-                label: "Incorrect",
-                value: TOTAL_QUESTIONS - score,
-                color: "#ef4444",
-              },
-              {
-                label: "EXP Gained",
-                value: `+${score * 10}`,
-                color: "#fbbf24",
-              },
-              {
-                label: "Streak",
-                value: `${progress.streak} Days`,
-                color: "#6366f1",
-              },
-            ]}
-          />
+            <TestResultStats
+              stats={[
+                { label: "Correct", value: score, color: "#10b981" },
+                {
+                  label: "Incorrect",
+                  value: TOTAL_QUESTIONS - score,
+                  color: "#ef4444",
+                },
+                {
+                  label: "EXP Gained",
+                  value: `+${score * 10}`,
+                  color: "#fbbf24",
+                },
+                {
+                  label: "Streak",
+                  value: `${progress.streak} Days`,
+                  color: "#6366f1",
+                },
+              ]}
+            />
 
-          <div style={{ marginTop: "2rem", textAlign: "left" }}>
-            <h3
-              style={{
-                fontSize: "1.2rem",
-                marginBottom: "1rem",
-                borderBottom: "1px solid var(--border)",
-                paddingBottom: "0.5rem",
-              }}
-            >
-              Review Today's Items
-            </h3>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
-                gap: "1rem",
-                marginBottom: "2.5rem",
-              }}
-            >
-              {userAnswers.map((ua, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    padding: "1rem",
-                    borderRadius: "16px",
-                    background: "rgba(var(--surface-rgb), 0.5)",
-                    border: `1px solid ${ua.isCorrect ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
-                    textAlign: "center",
-                  }}
-                >
-                  <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>
-                    {ua.char}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "0.8rem",
-                      color: ua.isCorrect ? "#10b981" : "#ef4444",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {ua.isCorrect ? "✓ " + ua.answer : "✗ " + ua.selected}
-                  </div>
-                  {!ua.isCorrect && (
-                    <div
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "var(--text-secondary)",
-                        marginTop: "0.2rem",
-                      }}
-                    >
-                      Correct: {ua.answer}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              gap: "1rem",
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <Link href="/quiz" style={{ textDecoration: "none" }}>
-              <Button>Back to Quizzes</Button>
-            </Link>
-            <Link href="/stats" style={{ textDecoration: "none" }}>
-              <Button
+            <div style={{ marginTop: "2rem", textAlign: "left" }}>
+              <h3
                 style={{
-                  background: "var(--surface)",
-                  color: "var(--foreground)",
-                  border: "1px solid var(--border)",
-                  boxShadow: "none",
+                  fontSize: "1.2rem",
+                  marginBottom: "1rem",
+                  borderBottom: "1px solid var(--border)",
+                  paddingBottom: "0.5rem",
                 }}
               >
-                Mastery Stats
-              </Button>
-            </Link>
-          </div>
-        </ResultOverlay>
+                Review Today's Items
+              </h3>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))",
+                  gap: "1rem",
+                  marginBottom: "2.5rem",
+                }}
+              >
+                {userAnswers.map((ua, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      padding: "1rem",
+                      borderRadius: "16px",
+                      background: "rgba(var(--surface-rgb), 0.5)",
+                      border: `1px solid ${ua.isCorrect ? "rgba(16, 185, 129, 0.2)" : "rgba(239, 68, 68, 0.2)"}`,
+                      textAlign: "center",
+                    }}
+                  >
+                    <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>
+                      {ua.char}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.8rem",
+                        color: ua.isCorrect ? "#10b981" : "#ef4444",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {ua.isCorrect ? "✓ " + ua.answer : "✗ " + ua.selected}
+                    </div>
+                    {!ua.isCorrect && (
+                      <div
+                        style={{
+                          fontSize: "0.7rem",
+                          color: "var(--text-secondary)",
+                          marginTop: "0.2rem",
+                        }}
+                      >
+                        Correct: {ua.answer}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                justifyContent: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <Link href="/quiz" style={{ textDecoration: "none" }}>
+                <Button>Back to Quizzes</Button>
+              </Link>
+              <Link href="/stats" style={{ textDecoration: "none" }}>
+                <Button
+                  style={{
+                    background: "var(--surface)",
+                    color: "var(--foreground)",
+                    border: "1px solid var(--border)",
+                    boxShadow: "none",
+                  }}
+                >
+                  Mastery Stats
+                </Button>
+              </Link>
+            </div>
+          </ResultOverlay>
         </ContentWrapper>
       </Container>
     );
@@ -582,80 +582,82 @@ export default function KanaQuizPage() {
 
       <ContentWrapper>
         <Header>
-        <HeaderRight>
-          <div
-            style={{
-              fontSize: "0.85rem",
-              fontWeight: 700,
-              color: "#10b981",
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-            }}
-          >
-            Official Daily Challenge
-          </div>
-          <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-            {new Date().toLocaleDateString("en-US", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
+          <HeaderRight>
+            <div
+              style={{
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                color: "#10b981",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+              }}
+            >
+              Official Daily Challenge
+            </div>
+            <div
+              style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}
+            >
+              {new Date().toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </div>
+          </HeaderRight>
+        </Header>
+
+        <QuizCard>
+          {isAlreadyCompleted && currentIndex === 0 && (
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                background: "rgba(16, 185, 129, 0.1)",
+                padding: "0.75rem 0.5rem",
+                fontSize: "0.7rem",
+                fontWeight: 800,
+                color: "#10b981",
+                letterSpacing: "0.05em",
+                zIndex: 10,
+              }}
+            >
+              ✓ TODAY'S CHALLENGE COMPLETED
+            </div>
+          )}
+          <ProgressInfo>
+            {currentIndex + 1} / {TOTAL_QUESTIONS}
+          </ProgressInfo>
+
+          <Character>{currentQuestion.char}</Character>
+
+          <OptionsGrid>
+            {currentQuestion.options.map((opt) => {
+              let state: "neutral" | "correct" | "incorrect" = "neutral";
+              if (selectedOption) {
+                if (opt === currentQuestion.answer) state = "correct";
+                else if (opt === selectedOption) state = "incorrect";
+              }
+
+              return (
+                <OptionButton
+                  key={opt}
+                  $state={state}
+                  onClick={() => handleAnswer(opt)}
+                >
+                  {opt}
+                </OptionButton>
+              );
             })}
-          </div>
-        </HeaderRight>
-      </Header>
+          </OptionsGrid>
 
-      <QuizCard>
-        {isAlreadyCompleted && currentIndex === 0 && (
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              background: "rgba(16, 185, 129, 0.1)",
-              padding: "0.75rem 0.5rem",
-              fontSize: "0.7rem",
-              fontWeight: 800,
-              color: "#10b981",
-              letterSpacing: "0.05em",
-              zIndex: 10,
-            }}
-          >
-            ✓ TODAY'S CHALLENGE COMPLETED
-          </div>
-        )}
-        <ProgressInfo>
-          {currentIndex + 1} / {TOTAL_QUESTIONS}
-        </ProgressInfo>
-
-        <Character>{currentQuestion.char}</Character>
-
-        <OptionsGrid>
-          {currentQuestion.options.map((opt) => {
-            let state: "neutral" | "correct" | "incorrect" = "neutral";
-            if (selectedOption) {
-              if (opt === currentQuestion.answer) state = "correct";
-              else if (opt === selectedOption) state = "incorrect";
-            }
-
-            return (
-              <OptionButton
-                key={opt}
-                $state={state}
-                onClick={() => handleAnswer(opt)}
-              >
-                {opt}
-              </OptionButton>
-            );
-          })}
-        </OptionsGrid>
-
-        <ProgressBarContainer>
-          <ProgressFill
-            $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
-          />
-        </ProgressBarContainer>
-      </QuizCard>
+          <ProgressBarContainer>
+            <ProgressFill
+              $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
+            />
+          </ProgressBarContainer>
+        </QuizCard>
       </ContentWrapper>
     </Container>
   );

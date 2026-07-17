@@ -279,7 +279,10 @@ const MobileTabButton = styled.button<{ $active: boolean }>`
   }
 `;
 
-const MobileTabContent = styled.div<{ $tabId: "practice" | "list" | "stats"; $activeTab: string }>`
+const MobileTabContent = styled.div<{
+  $tabId: "practice" | "list" | "stats";
+  $activeTab: string;
+}>`
   display: contents;
 
   @media (max-width: 960px) {
@@ -1337,9 +1340,11 @@ export default function KanjiWriterPage() {
       }
     } else {
       // Sequential Mode!
-      const currentIndex = currentList.findIndex((k) => k.char === currentKanji?.char);
+      const currentIndex = currentList.findIndex(
+        (k) => k.char === currentKanji?.char,
+      );
       if (currentIndex === -1) return currentList[0];
-      
+
       // Select the next one sequentially, wrapping around
       const nextIndex = (currentIndex + 1) % currentList.length;
       return currentList[nextIndex];
@@ -1542,7 +1547,16 @@ export default function KanjiWriterPage() {
           ]}
           current="Kanji Writer"
         />
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "50vh", flexDirection: "column", gap: "16px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "50vh",
+            flexDirection: "column",
+            gap: "16px",
+          }}
+        >
           <LoadingDots>
             <div className="dots">
               <span></span>
@@ -1590,8 +1604,17 @@ export default function KanjiWriterPage() {
           $active={activeMobileTab === "practice"}
           onClick={() => setActiveMobileTab("practice")}
         >
-          <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+          <svg
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+            />
           </svg>
           Latihan
         </MobileTabButton>
@@ -1599,8 +1622,17 @@ export default function KanjiWriterPage() {
           $active={activeMobileTab === "list"}
           onClick={() => setActiveMobileTab("list")}
         >
-          <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          <svg
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
           </svg>
           Daftar Kanji
         </MobileTabButton>
@@ -1608,8 +1640,17 @@ export default function KanjiWriterPage() {
           $active={activeMobileTab === "stats"}
           onClick={() => setActiveMobileTab("stats")}
         >
-          <svg fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          <svg
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            />
           </svg>
           Statistik
         </MobileTabButton>
@@ -1619,365 +1660,368 @@ export default function KanjiWriterPage() {
         {/* LEFT COLUMN: Kanji List */}
         <MobileTabContent $tabId="list" $activeTab={activeMobileTab}>
           <Card>
-          <CardHeader>
-            <CardTitle>Kanji List</CardTitle>
-            <span
-              style={{
-                fontFamily: "'DM Mono', monospace",
-                fontSize: "0.65rem",
-                color: "var(--text-secondary)",
-              }}
-            >
-              {filteredKanji.length} kanji
-            </span>
-          </CardHeader>
-          <div style={{ padding: "16px 16px 12px" }}>
-            <Btn
-              $variant="primary"
-              onClick={handleSmartPractice}
-              style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                background: "var(--primary)",
-                color: "#fff",
-                fontSize: "0.8rem",
-                padding: "10px",
-              }}
-            >
-              Smart Practice 🧠
-            </Btn>
-          </div>
-          <KanjiSearch>
-            <input
-              type="text"
-              placeholder="Search kanji..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </KanjiSearch>
-          <KanjiList>
-            {filteredKanji.map((k, i) => (
-              <KanjiItem
-                key={i}
-                $active={currentKanji?.char === k.char}
-                onClick={() => handleSelectKanji(k)}
+            <CardHeader>
+              <CardTitle>Kanji List</CardTitle>
+              <span
+                style={{
+                  fontFamily: "'DM Mono', monospace",
+                  fontSize: "0.65rem",
+                  color: "var(--text-secondary)",
+                }}
               >
-                <span className="char">{k.char}</span>
-                <span className="reading">
-                  {k.on.split("・")[0] || k.kun.split("・")[0]}
-                </span>
-              </KanjiItem>
-            ))}
-          </KanjiList>
-        </Card>
+                {filteredKanji.length} kanji
+              </span>
+            </CardHeader>
+            <div style={{ padding: "16px 16px 12px" }}>
+              <Btn
+                $variant="primary"
+                onClick={handleSmartPractice}
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                  background: "var(--primary)",
+                  color: "#fff",
+                  fontSize: "0.8rem",
+                  padding: "10px",
+                }}
+              >
+                Smart Practice 🧠
+              </Btn>
+            </div>
+            <KanjiSearch>
+              <input
+                type="text"
+                placeholder="Search kanji..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </KanjiSearch>
+            <KanjiList>
+              {filteredKanji.map((k, i) => (
+                <KanjiItem
+                  key={i}
+                  $active={currentKanji?.char === k.char}
+                  onClick={() => handleSelectKanji(k)}
+                >
+                  <span className="char">{k.char}</span>
+                  <span className="reading">
+                    {k.on.split("・")[0] || k.kun.split("・")[0]}
+                  </span>
+                </KanjiItem>
+              ))}
+            </KanjiList>
+          </Card>
         </MobileTabContent>
 
         {/* CENTER COLUMN: Canvas Area */}
         <MobileTabContent $tabId="practice" $activeTab={activeMobileTab}>
           <Card>
-          {currentKanji && (
-            <>
-              <KanjiInfo>
-                <KanjiBig>{currentKanji.char}</KanjiBig>
-                <KanjiMeta>
-                  <KanjiMeaning>{currentKanji.meaning}</KanjiMeaning>
-                  <KanjiReadings>
-                    {currentKanji.on && currentKanji.on !== "—" && (
-                      <ReadingBadge $type="on">{currentKanji.on}</ReadingBadge>
-                    )}
-                    {currentKanji.kun && currentKanji.kun !== "—" && (
-                      <ReadingBadge $type="kun">
-                        {currentKanji.kun}
-                      </ReadingBadge>
-                    )}
-                  </KanjiReadings>
-                </KanjiMeta>
-                <StrokesInfo>
-                  <div className="num">{currentKanji.strokes}</div>
-                  <div className="label">strokes</div>
-                </StrokesInfo>
-              </KanjiInfo>
+            {currentKanji && (
+              <>
+                <KanjiInfo>
+                  <KanjiBig>{currentKanji.char}</KanjiBig>
+                  <KanjiMeta>
+                    <KanjiMeaning>{currentKanji.meaning}</KanjiMeaning>
+                    <KanjiReadings>
+                      {currentKanji.on && currentKanji.on !== "—" && (
+                        <ReadingBadge $type="on">
+                          {currentKanji.on}
+                        </ReadingBadge>
+                      )}
+                      {currentKanji.kun && currentKanji.kun !== "—" && (
+                        <ReadingBadge $type="kun">
+                          {currentKanji.kun}
+                        </ReadingBadge>
+                      )}
+                    </KanjiReadings>
+                  </KanjiMeta>
+                  <StrokesInfo>
+                    <div className="num">{currentKanji.strokes}</div>
+                    <div className="label">strokes</div>
+                  </StrokesInfo>
+                </KanjiInfo>
 
-              <CanvasWrap style={{ position: "relative" }}>
-                {strokeFeedback && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "40%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      background: "rgba(239, 68, 68, 0.9)",
-                      color: "#fff",
-                      padding: "10px 20px",
-                      borderRadius: "20px",
-                      fontSize: "0.8rem",
-                      fontWeight: 600,
-                      pointerEvents: "none",
-                      animation: "fadeInOut 2s forwards",
-                      zIndex: 10,
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {strokeFeedback}
-                  </div>
-                )}
-                {isChecking && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background: "rgba(15,23,42,0.6)",
-                      backdropFilter: "blur(2px)",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      zIndex: 10,
-                      borderRadius: "12px",
-                    }}
-                  >
+                <CanvasWrap style={{ position: "relative" }}>
+                  {strokeFeedback && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "40%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        background: "rgba(239, 68, 68, 0.9)",
+                        color: "#fff",
+                        padding: "10px 20px",
+                        borderRadius: "20px",
+                        fontSize: "0.8rem",
+                        fontWeight: 600,
+                        pointerEvents: "none",
+                        animation: "fadeInOut 2s forwards",
+                        zIndex: 10,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {strokeFeedback}
+                    </div>
+                  )}
+                  {isChecking && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: "rgba(15,23,42,0.6)",
+                        backdropFilter: "blur(2px)",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        zIndex: 10,
+                        borderRadius: "12px",
+                      }}
+                    >
+                      <LoadingDots>
+                        <div className="dots">
+                          <span></span>
+                          <span></span>
+                          <span></span>
+                        </div>
+                        <span>Analyzing...</span>
+                      </LoadingDots>
+                    </div>
+                  )}
+                  <CanvasBox>
+                    <canvas
+                      ref={guideCanvasRef}
+                      width={340}
+                      height={340}
+                      id="guideCanvas"
+                      style={{ opacity: hintEnabled ? 0.15 : 0.08 }}
+                    />
+                    <canvas
+                      ref={drawCanvasRef}
+                      width={340}
+                      height={340}
+                      id="drawCanvas"
+                      onMouseDown={handlePointerDown}
+                      onMouseMove={handlePointerMove}
+                      onMouseUp={handlePointerUp}
+                      onMouseLeave={handlePointerUp}
+                      onTouchStart={handlePointerDown}
+                      onTouchMove={handlePointerMove}
+                      onTouchEnd={handlePointerUp}
+                      onTouchCancel={handlePointerUp}
+                    />
+
+                    {/* Writing Demo Animation Overlay - INSIDE CanvasBox for perfect alignment */}
+                    {isAnimating && (
+                      <div
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          zIndex: 10,
+                          pointerEvents: "none",
+                        }}
+                      >
+                        <svg
+                          viewBox="0 0 109 109"
+                          style={{ width: "100%", height: "100%" }}
+                        >
+                          {svgPaths.map((d, i) => (
+                            <path
+                              key={i}
+                              d={d}
+                              fill="none"
+                              stroke="#f6ad55"
+                              strokeWidth="3"
+                              strokeLinecap="round"
+                              style={{
+                                strokeDasharray: 300,
+                                strokeDashoffset:
+                                  i < animIdx || (i === animIdx && animProgress)
+                                    ? 0
+                                    : 300,
+                                transition:
+                                  i === animIdx && animProgress
+                                    ? "stroke-dashoffset 0.6s ease-in-out"
+                                    : "none",
+                                opacity: i <= animIdx ? 0.8 : 0,
+                              }}
+                            />
+                          ))}
+                        </svg>
+                      </div>
+                    )}
+                  </CanvasBox>
+
+                  <CanvasControls>
+                    {mounted && (
+                      <>
+                        <ControlGroup>
+                          <HintToggle>
+                            <ToggleSwitch
+                              $on={hintEnabled}
+                              onClick={() => setHintEnabled(!hintEnabled)}
+                            />
+                            <span>Guide</span>
+                          </HintToggle>
+                          <HintToggle>
+                            <ToggleSwitch
+                              $on={brushType === "aesthetic"}
+                              onClick={() =>
+                                setBrushType((prev) =>
+                                  prev === "aesthetic"
+                                    ? "uniform"
+                                    : "aesthetic",
+                                )
+                              }
+                            />
+                            <span>Aesthetic</span>
+                          </HintToggle>
+                          <HintToggle>
+                            <ToggleSwitch
+                              $on={isRandomized}
+                              onClick={handleToggleRandomized}
+                            />
+                            <span>Acak 🎲</span>
+                          </HintToggle>
+                          <StrokeIndicator>
+                            Stroke {strokeCount} / {currentKanji.strokes}
+                          </StrokeIndicator>
+                          <PlayDemoBtn
+                            $variant="ghost"
+                            onClick={runWritingDemo}
+                            disabled={
+                              isAnimating || isChecking || svgPaths.length === 0
+                            }
+                          >
+                            Play Demo 🎬
+                          </PlayDemoBtn>
+                        </ControlGroup>
+
+                        <ActionGroup>
+                          <div style={{ display: "flex", gap: "6px", flex: 1 }}>
+                            <Btn
+                              $variant="danger"
+                              onClick={handleUndo}
+                              disabled={
+                                userStrokes.length === 0 ||
+                                isChecking ||
+                                isAnimating
+                              }
+                              style={{ flex: 1, padding: "8px" }}
+                            >
+                              Undo
+                            </Btn>
+                            <Btn
+                              $variant="danger"
+                              onClick={clearCanvas}
+                              disabled={isChecking || isAnimating}
+                              style={{ flex: 1, padding: "8px" }}
+                            >
+                              Clear
+                            </Btn>
+                          </div>
+                          <Btn
+                            $variant="primary"
+                            onClick={handleCheck}
+                            disabled={
+                              isChecking || isAnimating || strokeCount === 0
+                            }
+                            style={{
+                              flex: 1.5,
+                              padding: "10px",
+                              fontSize: "0.85rem",
+                            }}
+                          >
+                            Check ✓
+                          </Btn>
+                          {result && result.score >= 80 && (
+                            <Btn
+                              $variant="primary"
+                              onClick={handleNextKanji}
+                              style={{
+                                background: "#10b981",
+                                borderColor: "#10b981",
+                                flex: 1,
+                                padding: "10px",
+                              }}
+                            >
+                              Next ➔
+                            </Btn>
+                          )}
+                        </ActionGroup>
+                      </>
+                    )}
+                  </CanvasControls>
+                </CanvasWrap>
+
+                <ResultBox>
+                  <ResultLabel>Accuracy Score</ResultLabel>
+                  <ResultScore>
+                    <ScoreBarWrap>
+                      <ScoreBar $score={result ? result.score : 0} />
+                    </ScoreBarWrap>
+                    <ScoreNum $score={result ? result.score : null}>
+                      {result ? `${result.score}%` : "—"}
+                    </ScoreNum>
+                  </ResultScore>
+                  {isChecking ? (
                     <LoadingDots>
+                      <span>Analyzing stroke pattern</span>
                       <div className="dots">
                         <span></span>
                         <span></span>
                         <span></span>
                       </div>
-                      <span>Analyzing...</span>
                     </LoadingDots>
-                  </div>
-                )}
-                <CanvasBox>
-                  <canvas
-                    ref={guideCanvasRef}
-                    width={340}
-                    height={340}
-                    id="guideCanvas"
-                    style={{ opacity: hintEnabled ? 0.15 : 0.08 }}
-                  />
-                  <canvas
-                    ref={drawCanvasRef}
-                    width={340}
-                    height={340}
-                    id="drawCanvas"
-                    onMouseDown={handlePointerDown}
-                    onMouseMove={handlePointerMove}
-                    onMouseUp={handlePointerUp}
-                    onMouseLeave={handlePointerUp}
-                    onTouchStart={handlePointerDown}
-                    onTouchMove={handlePointerMove}
-                    onTouchEnd={handlePointerUp}
-                    onTouchCancel={handlePointerUp}
-                  />
-
-                  {/* Writing Demo Animation Overlay - INSIDE CanvasBox for perfect alignment */}
-                  {isAnimating && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        zIndex: 10,
-                        pointerEvents: "none",
-                      }}
-                    >
-                      <svg
-                        viewBox="0 0 109 109"
-                        style={{ width: "100%", height: "100%" }}
-                      >
-                        {svgPaths.map((d, i) => (
-                          <path
-                            key={i}
-                            d={d}
-                            fill="none"
-                            stroke="#f6ad55"
-                            strokeWidth="3"
-                            strokeLinecap="round"
+                  ) : (
+                    <ResultFeedback>
+                      {result ? (
+                        <>
+                          <span
                             style={{
-                              strokeDasharray: 300,
-                              strokeDashoffset:
-                                i < animIdx || (i === animIdx && animProgress)
-                                  ? 0
-                                  : 300,
-                              transition:
-                                i === animIdx && animProgress
-                                  ? "stroke-dashoffset 0.6s ease-in-out"
-                                  : "none",
-                              opacity: i <= animIdx ? 0.8 : 0,
-                            }}
-                          />
-                        ))}
-                      </svg>
-                    </div>
-                  )}
-                </CanvasBox>
-
-                <CanvasControls>
-                  {mounted && (
-                    <>
-                      <ControlGroup>
-                        <HintToggle>
-                          <ToggleSwitch
-                            $on={hintEnabled}
-                            onClick={() => setHintEnabled(!hintEnabled)}
-                          />
-                          <span>Guide</span>
-                        </HintToggle>
-                        <HintToggle>
-                          <ToggleSwitch
-                            $on={brushType === "aesthetic"}
-                            onClick={() =>
-                              setBrushType((prev) =>
-                                prev === "aesthetic"
-                                  ? "uniform"
-                                  : "aesthetic",
-                              )
-                            }
-                          />
-                          <span>Aesthetic</span>
-                        </HintToggle>
-                        <HintToggle>
-                          <ToggleSwitch
-                            $on={isRandomized}
-                            onClick={handleToggleRandomized}
-                          />
-                          <span>Acak 🎲</span>
-                        </HintToggle>
-                        <StrokeIndicator>
-                          Stroke {strokeCount} / {currentKanji.strokes}
-                        </StrokeIndicator>
-                        <PlayDemoBtn
-                          $variant="ghost"
-                          onClick={runWritingDemo}
-                          disabled={
-                            isAnimating || isChecking || svgPaths.length === 0
-                          }
-                        >
-                          Play Demo 🎬
-                        </PlayDemoBtn>
-                      </ControlGroup>
-
-                      <ActionGroup>
-                        <div style={{ display: "flex", gap: "6px", flex: 1 }}>
-                          <Btn
-                            $variant="danger"
-                            onClick={handleUndo}
-                            disabled={
-                              userStrokes.length === 0 ||
-                              isChecking ||
-                              isAnimating
-                            }
-                            style={{ flex: 1, padding: "8px" }}
-                          >
-                            Undo
-                          </Btn>
-                          <Btn
-                            $variant="danger"
-                            onClick={clearCanvas}
-                            disabled={isChecking || isAnimating}
-                            style={{ flex: 1, padding: "8px" }}
-                          >
-                            Clear
-                          </Btn>
-                        </div>
-                        <Btn
-                          $variant="primary"
-                          onClick={handleCheck}
-                          disabled={
-                            isChecking || isAnimating || strokeCount === 0
-                          }
-                          style={{
-                            flex: 1.5,
-                            padding: "10px",
-                            fontSize: "0.85rem",
-                          }}
-                        >
-                          Check ✓
-                        </Btn>
-                        {result && result.score >= 80 && (
-                          <Btn
-                            $variant="primary"
-                            onClick={handleNextKanji}
-                            style={{
-                              background: "#10b981",
-                              borderColor: "#10b981",
-                              flex: 1,
-                              padding: "10px",
+                              color:
+                                result.score >= 75
+                                  ? "#10b981"
+                                  : result.score >= 50
+                                    ? "#f6ad55"
+                                    : "#ef4444",
+                              fontWeight: 700,
                             }}
                           >
-                            Next ➔
-                          </Btn>
-                        )}
-                      </ActionGroup>
-                    </>
-                  )}
-                </CanvasControls>
-              </CanvasWrap>
-
-              <ResultBox>
-                <ResultLabel>Accuracy Score</ResultLabel>
-                <ResultScore>
-                  <ScoreBarWrap>
-                    <ScoreBar $score={result ? result.score : 0} />
-                  </ScoreBarWrap>
-                  <ScoreNum $score={result ? result.score : null}>
-                    {result ? `${result.score}%` : "—"}
-                  </ScoreNum>
-                </ResultScore>
-                {isChecking ? (
-                  <LoadingDots>
-                    <span>Analyzing stroke pattern</span>
-                    <div className="dots">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </div>
-                  </LoadingDots>
-                ) : (
-                  <ResultFeedback>
-                    {result ? (
-                      <>
+                            {result.grade}{" "}
+                            {result.score >= 80
+                              ? "🎉"
+                              : result.score >= 60
+                                ? "👍"
+                                : "💪"}
+                          </span>
+                          <br />
+                          <span>{result.feedback}</span>
+                        </>
+                      ) : (
                         <span
                           style={{
-                            color:
-                              result.score >= 75
-                                ? "#10b981"
-                                : result.score >= 50
-                                  ? "#f6ad55"
-                                  : "#ef4444",
-                            fontWeight: 700,
+                            fontFamily: "'DM Mono', monospace",
+                            fontSize: "0.75rem",
                           }}
                         >
-                          {result.grade}{" "}
-                          {result.score >= 80
-                            ? "🎉"
-                            : result.score >= 60
-                              ? "👍"
-                              : "💪"}
+                          Draw the kanji above, then press Check to get
+                          feedback.
                         </span>
-                        <br />
-                        <span>{result.feedback}</span>
-                      </>
-                    ) : (
-                      <span
-                        style={{
-                          fontFamily: "'DM Mono', monospace",
-                          fontSize: "0.75rem",
-                        }}
-                      >
-                        Draw the kanji above, then press Check to get feedback.
-                      </span>
-                    )}
-                  </ResultFeedback>
-                )}
-              </ResultBox>
-            </>
-          )}
-        </Card>
+                      )}
+                    </ResultFeedback>
+                  )}
+                </ResultBox>
+              </>
+            )}
+          </Card>
         </MobileTabContent>
 
         {/* RIGHT COLUMN: Stats & Progress */}
@@ -1985,272 +2029,81 @@ export default function KanjiWriterPage() {
           {/* Progress Ring */}
           <MobileTabContent $tabId="stats" $activeTab={activeMobileTab}>
             <Card>
-            <CardHeader>
-              <CardTitle>Session Progress</CardTitle>
-            </CardHeader>
-            <ProgressRingWrap>
-              <svg width="96" height="96" viewBox="0 0 96 96">
-                <circle
-                  cx="48"
-                  cy="48"
-                  r="38"
-                  fill="none"
-                  stroke="var(--background)"
-                  strokeWidth="8"
-                />
-                <circle
-                  cx="48"
-                  cy="48"
-                  r="38"
-                  fill="none"
-                  stroke="var(--primary)"
-                  strokeWidth="8"
-                  strokeDasharray="238.76"
-                  strokeDashoffset={ringOffset}
-                  strokeLinecap="round"
-                  style={{ transition: "stroke-dashoffset 0.5s ease" }}
-                />
-              </svg>
-              <div
-                style={{
-                  marginTop: "-72px",
-                  marginBottom: "56px",
-                  textAlign: "center",
-                  zIndex: 1,
-                  position: "relative",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: "1.2rem",
-                    fontWeight: 800,
-                    color: "var(--foreground)",
-                  }}
-                >
-                  {progressPct}%
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.6rem",
-                    fontFamily: "'DM Mono', monospace",
-                    color: "var(--text-secondary)",
-                  }}
-                >
-                  done
-                </div>
-              </div>
-              <div
-                style={{
-                  textAlign: "center",
-                  fontSize: "0.7rem",
-                  color: "var(--text-secondary)",
-                  fontFamily: "'DM Mono', monospace",
-                  letterSpacing: "0.05em",
-                }}
-              >
-                {practicedInLevel} / {totalInLevel} practiced
-              </div>
-            </ProgressRingWrap>
-            <div
-              style={{
-                padding: "0 12px 12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-              }}
-            >
-              <StatRow>
-                <span
-                  style={{
-                    fontSize: "0.7rem",
-                    color: "var(--text-secondary)",
-                    fontFamily: "'DM Mono', monospace",
-                  }}
-                >
-                  Correct
-                </span>
-                <span
-                  style={{
-                    fontSize: "0.85rem",
-                    fontWeight: 700,
-                    color: "#10b981",
-                  }}
-                >
-                  {session.correct}
-                </span>
-              </StatRow>
-              <StatRow>
-                <span
-                  style={{
-                    fontSize: "0.7rem",
-                    color: "var(--text-secondary)",
-                    fontFamily: "'DM Mono', monospace",
-                  }}
-                >
-                  Avg Score
-                </span>
-                <span
-                  style={{
-                    fontSize: "0.85rem",
-                    fontWeight: 700,
-                    color: "var(--primary)",
-                  }}
-                >
-                  {avgScore}%
-                </span>
-              </StatRow>
-              <StatRow>
-                <span
-                  style={{
-                    fontSize: "0.7rem",
-                    color: "var(--text-secondary)",
-                    fontFamily: "'DM Mono', monospace",
-                  }}
-                >
-                  Streak
-                </span>
-                <span
-                  style={{
-                    fontSize: "0.85rem",
-                    fontWeight: 700,
-                    color: "var(--foreground)",
-                  }}
-                >
-                  🔥 {session.streak}
-                </span>
-              </StatRow>
-            </div>
-          </Card>
-          </MobileTabContent>
-
-          {/* Stroke Guide */}
-          {currentKanji && (
-            <MobileTabContent $tabId="practice" $activeTab={activeMobileTab}>
-              <Card>
               <CardHeader>
-                <CardTitle>Stroke Order</CardTitle>
+                <CardTitle>Session Progress</CardTitle>
               </CardHeader>
-              <StrokeGuide>
-                {Array.from({ length: currentKanji.strokes }).map((_, i) => (
-                  <StrokeStep
-                    key={i}
-                    $state={
-                      i < strokeCount
-                        ? "done"
-                        : i === strokeCount
-                          ? "current"
-                          : "pending"
-                    }
+              <ProgressRingWrap>
+                <svg width="96" height="96" viewBox="0 0 96 96">
+                  <circle
+                    cx="48"
+                    cy="48"
+                    r="38"
+                    fill="none"
+                    stroke="var(--background)"
+                    strokeWidth="8"
+                  />
+                  <circle
+                    cx="48"
+                    cy="48"
+                    r="38"
+                    fill="none"
+                    stroke="var(--primary)"
+                    strokeWidth="8"
+                    strokeDasharray="238.76"
+                    strokeDashoffset={ringOffset}
+                    strokeLinecap="round"
+                    style={{ transition: "stroke-dashoffset 0.5s ease" }}
+                  />
+                </svg>
+                <div
+                  style={{
+                    marginTop: "-72px",
+                    marginBottom: "56px",
+                    textAlign: "center",
+                    zIndex: 1,
+                    position: "relative",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "1.2rem",
+                      fontWeight: 800,
+                      color: "var(--foreground)",
+                    }}
                   >
-                    {svgPaths.length > 0 ? (
-                      <svg
-                        viewBox="0 0 109 109"
-                        style={{ width: "100%", height: "100%" }}
-                      >
-                        {/* Future strokes */}
-                        <g
-                          stroke={mode === "light" ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.12)"}
-                          strokeWidth="3"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          {svgPaths.slice(i + 1).map((d, idx) => (
-                            <path key={`bg-${idx}`} d={d} />
-                          ))}
-                        </g>
-                        {/* Past strokes */}
-                        <g
-                          stroke={mode === "light" ? "rgba(0, 0, 0, 0.6)" : "rgba(255, 255, 255, 0.7)"}
-                          strokeWidth="4"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          {svgPaths.slice(0, i).map((d, idx) => (
-                            <path key={`past-${idx}`} d={d} />
-                          ))}
-                        </g>
-                        {/* Current stroke */}
-                        {svgPaths[i] && (
-                          <g
-                            stroke="#f6ad55"
-                            strokeWidth="6"
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d={svgPaths[i]} />
-                          </g>
-                        )}
-                      </svg>
-                    ) : (
-                      <div
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          background: "rgba(var(--primary-rgb), 0.03)",
-                          borderRadius: "4px",
-                        }}
-                      />
-                    )}
-                    <span className="step-num">{i + 1}</span>
-                  </StrokeStep>
-                ))}
-              </StrokeGuide>
-            </Card>
-            </MobileTabContent>
-          )}
-
-          {/* History */}
-          <MobileTabContent $tabId="stats" $activeTab={activeMobileTab}>
-            <Card>
-            <CardHeader>
-              <CardTitle>Recent Practice</CardTitle>
-            </CardHeader>
-            <HistoryList>
-              {history.length === 0 && (
+                    {progressPct}%
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.6rem",
+                      fontFamily: "'DM Mono', monospace",
+                      color: "var(--text-secondary)",
+                    }}
+                  >
+                    done
+                  </div>
+                </div>
                 <div
                   style={{
                     textAlign: "center",
-                    padding: "20px 0",
+                    fontSize: "0.7rem",
                     color: "var(--text-secondary)",
-                    fontSize: "0.8rem",
+                    fontFamily: "'DM Mono', monospace",
+                    letterSpacing: "0.05em",
                   }}
                 >
-                  No practice history yet.
+                  {practicedInLevel} / {totalInLevel} practiced
                 </div>
-              )}
-              {history.map((h, i) => (
-                <HistoryItem
-                  key={i}
-                  onClick={() => {
-                    // Find correct level and select
-                    const found = allKanji.find(
-                      (k) => k.kanji === h.kanji.char,
-                    );
-                    if (found && found.level) {
-                      setCurrentLevel(found.level as any);
-                    }
-                    handleSelectKanji(h.kanji);
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "'Noto Serif JP', serif",
-                      fontSize: "1rem",
-                      width: "24px",
-                      textAlign: "center",
-                      color:
-                        h.score >= 75
-                          ? "var(--primary)"
-                          : h.score >= 50
-                            ? "#f6ad55"
-                            : "#ef4444",
-                    }}
-                  >
-                    {h.kanji.char}
-                  </span>
+              </ProgressRingWrap>
+              <div
+                style={{
+                  padding: "0 12px 12px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                }}
+              >
+                <StatRow>
                   <span
                     style={{
                       fontSize: "0.7rem",
@@ -2258,13 +2111,212 @@ export default function KanjiWriterPage() {
                       fontFamily: "'DM Mono', monospace",
                     }}
                   >
-                    {h.kanji.meaning}
+                    Correct
                   </span>
-                  <HistoryScore $score={h.score}>{h.score}%</HistoryScore>
-                </HistoryItem>
-              ))}
-            </HistoryList>
-          </Card>
+                  <span
+                    style={{
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      color: "#10b981",
+                    }}
+                  >
+                    {session.correct}
+                  </span>
+                </StatRow>
+                <StatRow>
+                  <span
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "var(--text-secondary)",
+                      fontFamily: "'DM Mono', monospace",
+                    }}
+                  >
+                    Avg Score
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      color: "var(--primary)",
+                    }}
+                  >
+                    {avgScore}%
+                  </span>
+                </StatRow>
+                <StatRow>
+                  <span
+                    style={{
+                      fontSize: "0.7rem",
+                      color: "var(--text-secondary)",
+                      fontFamily: "'DM Mono', monospace",
+                    }}
+                  >
+                    Streak
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      color: "var(--foreground)",
+                    }}
+                  >
+                    🔥 {session.streak}
+                  </span>
+                </StatRow>
+              </div>
+            </Card>
+          </MobileTabContent>
+
+          {/* Stroke Guide */}
+          {currentKanji && (
+            <MobileTabContent $tabId="practice" $activeTab={activeMobileTab}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Stroke Order</CardTitle>
+                </CardHeader>
+                <StrokeGuide>
+                  {Array.from({ length: currentKanji.strokes }).map((_, i) => (
+                    <StrokeStep
+                      key={i}
+                      $state={
+                        i < strokeCount
+                          ? "done"
+                          : i === strokeCount
+                            ? "current"
+                            : "pending"
+                      }
+                    >
+                      {svgPaths.length > 0 ? (
+                        <svg
+                          viewBox="0 0 109 109"
+                          style={{ width: "100%", height: "100%" }}
+                        >
+                          {/* Future strokes */}
+                          <g
+                            stroke={
+                              mode === "light"
+                                ? "rgba(0, 0, 0, 0.08)"
+                                : "rgba(255, 255, 255, 0.12)"
+                            }
+                            strokeWidth="3"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            {svgPaths.slice(i + 1).map((d, idx) => (
+                              <path key={`bg-${idx}`} d={d} />
+                            ))}
+                          </g>
+                          {/* Past strokes */}
+                          <g
+                            stroke={
+                              mode === "light"
+                                ? "rgba(0, 0, 0, 0.6)"
+                                : "rgba(255, 255, 255, 0.7)"
+                            }
+                            strokeWidth="4"
+                            fill="none"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            {svgPaths.slice(0, i).map((d, idx) => (
+                              <path key={`past-${idx}`} d={d} />
+                            ))}
+                          </g>
+                          {/* Current stroke */}
+                          {svgPaths[i] && (
+                            <g
+                              stroke="#f6ad55"
+                              strokeWidth="6"
+                              fill="none"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d={svgPaths[i]} />
+                            </g>
+                          )}
+                        </svg>
+                      ) : (
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            background: "rgba(var(--primary-rgb), 0.03)",
+                            borderRadius: "4px",
+                          }}
+                        />
+                      )}
+                      <span className="step-num">{i + 1}</span>
+                    </StrokeStep>
+                  ))}
+                </StrokeGuide>
+              </Card>
+            </MobileTabContent>
+          )}
+
+          {/* History */}
+          <MobileTabContent $tabId="stats" $activeTab={activeMobileTab}>
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent Practice</CardTitle>
+              </CardHeader>
+              <HistoryList>
+                {history.length === 0 && (
+                  <div
+                    style={{
+                      textAlign: "center",
+                      padding: "20px 0",
+                      color: "var(--text-secondary)",
+                      fontSize: "0.8rem",
+                    }}
+                  >
+                    No practice history yet.
+                  </div>
+                )}
+                {history.map((h, i) => (
+                  <HistoryItem
+                    key={i}
+                    onClick={() => {
+                      // Find correct level and select
+                      const found = allKanji.find(
+                        (k) => k.kanji === h.kanji.char,
+                      );
+                      if (found && found.level) {
+                        setCurrentLevel(found.level as any);
+                      }
+                      handleSelectKanji(h.kanji);
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'Noto Serif JP', serif",
+                        fontSize: "1rem",
+                        width: "24px",
+                        textAlign: "center",
+                        color:
+                          h.score >= 75
+                            ? "var(--primary)"
+                            : h.score >= 50
+                              ? "#f6ad55"
+                              : "#ef4444",
+                      }}
+                    >
+                      {h.kanji.char}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: "0.7rem",
+                        color: "var(--text-secondary)",
+                        fontFamily: "'DM Mono', monospace",
+                      }}
+                    >
+                      {h.kanji.meaning}
+                    </span>
+                    <HistoryScore $score={h.score}>{h.score}%</HistoryScore>
+                  </HistoryItem>
+                ))}
+              </HistoryList>
+            </Card>
           </MobileTabContent>
         </RightColumn>
       </WriterGrid>

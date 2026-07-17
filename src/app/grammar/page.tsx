@@ -290,84 +290,84 @@ export default function GrammarPage() {
 
       <ContentWrapper>
         <Header>
-        <Title>Grammar Guide</Title>
-        <Subtitle>
-          Master Japanese sentence structures and particles. Choose your target
-          JLPT level to begin.
-        </Subtitle>
-      </Header>
+          <Title>Grammar Guide</Title>
+          <Subtitle>
+            Master Japanese sentence structures and particles. Choose your
+            target JLPT level to begin.
+          </Subtitle>
+        </Header>
 
-      <LessonsBanner>
-        <BannerContent>
-          <BannerBadge>Baru 🌸</BannerBadge>
-          <BannerTitle>📚 Pelajaran Tata Bahasa Terstruktur</BannerTitle>
-          <BannerDesc>
-            Belajar tata bahasa Jepang secara urut mulai dari dasar (N5) dengan
-            penjelasan interaktif, contoh kalimat bersuara (furigana), dan kuis
-            latihan interaktif.
-          </BannerDesc>
-        </BannerContent>
-        <BannerBtn href="/grammar/lessons">
-          Mulai Belajar Pelajaran
-          <span>→</span>
-        </BannerBtn>
-      </LessonsBanner>
+        <LessonsBanner>
+          <BannerContent>
+            <BannerBadge>Baru 🌸</BannerBadge>
+            <BannerTitle>📚 Pelajaran Tata Bahasa Terstruktur</BannerTitle>
+            <BannerDesc>
+              Belajar tata bahasa Jepang secara urut mulai dari dasar (N5)
+              dengan penjelasan interaktif, contoh kalimat bersuara (furigana),
+              dan kuis latihan interaktif.
+            </BannerDesc>
+          </BannerContent>
+          <BannerBtn href="/grammar/lessons">
+            Mulai Belajar Pelajaran
+            <span>→</span>
+          </BannerBtn>
+        </LessonsBanner>
 
-      <LevelSelector>
-        <LevelButton
-          $active={activeLevel === "N5"}
-          onClick={() => setActiveLevel("N5")}
-        >
-          JLPT N5
-        </LevelButton>
-        <LevelButton
-          $active={activeLevel === "N4"}
-          onClick={() => setActiveLevel("N4")}
-        >
-          JLPT N4
-        </LevelButton>
-        <LevelButton
-          $active={activeLevel === "N3"}
-          onClick={() => setActiveLevel("N3")}
-        >
-          JLPT N3
-        </LevelButton>
-        <LevelButton
-          $active={activeLevel === "N2"}
-          onClick={() => setActiveLevel("N2")}
-        >
-          JLPT N2
-        </LevelButton>
-        <LevelButton
-          $active={activeLevel === "N1"}
-          onClick={() => setActiveLevel("N1")}
-        >
-          JLPT N1
-        </LevelButton>
-      </LevelSelector>
+        <LevelSelector>
+          <LevelButton
+            $active={activeLevel === "N5"}
+            onClick={() => setActiveLevel("N5")}
+          >
+            JLPT N5
+          </LevelButton>
+          <LevelButton
+            $active={activeLevel === "N4"}
+            onClick={() => setActiveLevel("N4")}
+          >
+            JLPT N4
+          </LevelButton>
+          <LevelButton
+            $active={activeLevel === "N3"}
+            onClick={() => setActiveLevel("N3")}
+          >
+            JLPT N3
+          </LevelButton>
+          <LevelButton
+            $active={activeLevel === "N2"}
+            onClick={() => setActiveLevel("N2")}
+          >
+            JLPT N2
+          </LevelButton>
+          <LevelButton
+            $active={activeLevel === "N1"}
+            onClick={() => setActiveLevel("N1")}
+          >
+            JLPT N1
+          </LevelButton>
+        </LevelSelector>
 
-      <GrammarGrid>
-        {currentData?.map((point) => (
-          <GrammarCard key={point.id} href={`/grammar/${point.id}`}>
-            <CardTitle>{point.title}</CardTitle>
-            <CardMeaning>{point.meaning}</CardMeaning>
-            <div
-              style={{
-                marginTop: "auto",
-                color: "var(--primary)",
-                fontWeight: 700,
-                fontSize: "0.95rem",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-              }}
-            >
-              Learn more
-              <span>→</span>
-            </div>
-          </GrammarCard>
-        ))}
-      </GrammarGrid>
+        <GrammarGrid>
+          {currentData?.map((point) => (
+            <GrammarCard key={point.id} href={`/grammar/${point.id}`}>
+              <CardTitle>{point.title}</CardTitle>
+              <CardMeaning>{point.meaning}</CardMeaning>
+              <div
+                style={{
+                  marginTop: "auto",
+                  color: "var(--primary)",
+                  fontWeight: 700,
+                  fontSize: "0.95rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                }}
+              >
+                Learn more
+                <span>→</span>
+              </div>
+            </GrammarCard>
+          ))}
+        </GrammarGrid>
       </ContentWrapper>
     </Container>
   );

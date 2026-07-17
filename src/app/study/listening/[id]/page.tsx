@@ -591,156 +591,156 @@ export default function ListeningDetailPage() {
 
       <ContentWrapper>
         <ControlsContainer>
-        <div>
-          <span
-            style={{
-              background: "#3b82f6",
-              color: "white",
-              padding: "0.2rem 0.8rem",
-              borderRadius: "99px",
-              fontSize: "0.85rem",
-              fontWeight: 700,
-              marginRight: "1rem",
-            }}
-          >
-            {exercise.level}
-          </span>
-          <Title style={{ display: "inline-block", fontSize: "2rem" }}>
-            {exercise.title}
-          </Title>
-        </div>
-      </ControlsContainer>
-
-      <ScenarioBox>
-        <strong>Scenario:</strong> {exercise.scenario}
-      </ScenarioBox>
-
-      <PlayButtonWrapper>
-        <PlayButton $isPlaying={isPlaying} onClick={togglePlay}>
-          {isPlaying ? (
-            <svg viewBox="0 0 24 24">
-              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-            </svg>
-          ) : (
-            <svg viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          )}
-        </PlayButton>
-        <PlayLabel>
-          {isPlaying ? "Playing Dialogue..." : "Listen to Dialogue"}
-        </PlayLabel>
-      </PlayButtonWrapper>
-
-      <QuizSection>
-        <QuizBlock
-          quiz={exercise.quiz}
-          onAnswered={() => {
-            setIsUnlocked(true);
-            setIsQuizAnswered(true);
-          }}
-        />
-      </QuizSection>
-
-      <TranscriptSection>
-        {!isUnlocked ? (
-          <TranscriptToggle onClick={() => setIsUnlocked(true)}>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-            Reveal Transcript
-          </TranscriptToggle>
-        ) : (
           <div>
-            <h3
+            <span
               style={{
-                fontSize: "1.5rem",
-                fontWeight: "800",
-                borderBottom: "2px solid var(--border)",
-                paddingBottom: "1rem",
+                background: "#3b82f6",
+                color: "white",
+                padding: "0.2rem 0.8rem",
+                borderRadius: "99px",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                marginRight: "1rem",
               }}
             >
-              Dialogue Transcript
-            </h3>
-            <DialogueList>
-              {exercise.dialogue.map((line, idx) => (
-                <DialogueBubble key={idx}>
-                  <Avatar>{line.avatar}</Avatar>
-                  <DialogueContent>
-                    <div className="speaker-name">{line.speaker}</div>
-                    <ClickableJapaneseText
-                      className="jp-text"
-                      html={line.displayHtml}
-                    />
-                    <div className="en-text">{line.translation}</div>
-                  </DialogueContent>
-                </DialogueBubble>
-              ))}
-            </DialogueList>
+              {exercise.level}
+            </span>
+            <Title style={{ display: "inline-block", fontSize: "2rem" }}>
+              {exercise.title}
+            </Title>
+          </div>
+        </ControlsContainer>
+
+        <ScenarioBox>
+          <strong>Scenario:</strong> {exercise.scenario}
+        </ScenarioBox>
+
+        <PlayButtonWrapper>
+          <PlayButton $isPlaying={isPlaying} onClick={togglePlay}>
+            {isPlaying ? (
+              <svg viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            )}
+          </PlayButton>
+          <PlayLabel>
+            {isPlaying ? "Playing Dialogue..." : "Listen to Dialogue"}
+          </PlayLabel>
+        </PlayButtonWrapper>
+
+        <QuizSection>
+          <QuizBlock
+            quiz={exercise.quiz}
+            onAnswered={() => {
+              setIsUnlocked(true);
+              setIsQuizAnswered(true);
+            }}
+          />
+        </QuizSection>
+
+        <TranscriptSection>
+          {!isUnlocked ? (
+            <TranscriptToggle onClick={() => setIsUnlocked(true)}>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              Reveal Transcript
+            </TranscriptToggle>
+          ) : (
+            <div>
+              <h3
+                style={{
+                  fontSize: "1.5rem",
+                  fontWeight: "800",
+                  borderBottom: "2px solid var(--border)",
+                  paddingBottom: "1rem",
+                }}
+              >
+                Dialogue Transcript
+              </h3>
+              <DialogueList>
+                {exercise.dialogue.map((line, idx) => (
+                  <DialogueBubble key={idx}>
+                    <Avatar>{line.avatar}</Avatar>
+                    <DialogueContent>
+                      <div className="speaker-name">{line.speaker}</div>
+                      <ClickableJapaneseText
+                        className="jp-text"
+                        html={line.displayHtml}
+                      />
+                      <div className="en-text">{line.translation}</div>
+                    </DialogueContent>
+                  </DialogueBubble>
+                ))}
+              </DialogueList>
+            </div>
+          )}
+        </TranscriptSection>
+
+        {!isCompleted && !isQuizAnswered && (
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "3rem",
+              color: "var(--text-secondary)",
+              fontWeight: 600,
+            }}
+          >
+            🎧 Please answer the question to mark this listening as completed.
           </div>
         )}
-      </TranscriptSection>
 
-      {!isCompleted && !isQuizAnswered && (
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: "3rem",
-            color: "var(--text-secondary)",
-            fontWeight: 600,
-          }}
+        <CompleteBtn
+          $completed={isCompleted}
+          onClick={() => markExerciseCompleted(exercise.id)}
+          disabled={isCompleted || !isQuizAnswered}
+          style={{ opacity: !isCompleted && !isQuizAnswered ? 0.5 : 1 }}
         >
-          🎧 Please answer the question to mark this listening as completed.
-        </div>
-      )}
-
-      <CompleteBtn
-        $completed={isCompleted}
-        onClick={() => markExerciseCompleted(exercise.id)}
-        disabled={isCompleted || !isQuizAnswered}
-        style={{ opacity: !isCompleted && !isQuizAnswered ? 0.5 : 1 }}
-      >
-        {isCompleted ? (
-          <>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            Completed
-          </>
-        ) : (
-          "Mark as Completed"
-        )}
-      </CompleteBtn>
-
-      {isCompleted && (
-        <NextStepsContainer>
-          <NavBtn href="/study/listening">⬅ Back to List</NavBtn>
-          {nextExercise && (
-            <NavBtn href={`/study/listening/${nextExercise.id}`} $primary>
-              Next Exercise ➡
-            </NavBtn>
+          {isCompleted ? (
+            <>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Completed
+            </>
+          ) : (
+            "Mark as Completed"
           )}
-        </NextStepsContainer>
-      )}
+        </CompleteBtn>
+
+        {isCompleted && (
+          <NextStepsContainer>
+            <NavBtn href="/study/listening">⬅ Back to List</NavBtn>
+            {nextExercise && (
+              <NavBtn href={`/study/listening/${nextExercise.id}`} $primary>
+                Next Exercise ➡
+              </NavBtn>
+            )}
+          </NextStepsContainer>
+        )}
       </ContentWrapper>
     </Container>
   );

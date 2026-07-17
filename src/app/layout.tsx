@@ -107,7 +107,14 @@ export default function RootLayout({
                   <SplashLoader />
                   <SakuraBackground />
                   <Navbar />
-                  <main style={{ flex: 1, position: "relative", display: "flex", flexDirection: "column" }}>
+                  <main
+                    style={{
+                      flex: 1,
+                      position: "relative",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
                     {children}
                   </main>
                   <Footer />

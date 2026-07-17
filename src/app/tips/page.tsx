@@ -304,38 +304,38 @@ export default function TipsPage() {
 
       <ContentWrapper>
         <Header>
-        <Title>Language Mastery Hub</Title>
-        <Subtitle>
-          Curated professional strategies to accelerate your Japanese learning
-          journey, from your first Hiragana to native-level literacy.
-        </Subtitle>
-      </Header>
+          <Title>Language Mastery Hub</Title>
+          <Subtitle>
+            Curated professional strategies to accelerate your Japanese learning
+            journey, from your first Hiragana to native-level literacy.
+          </Subtitle>
+        </Header>
 
-      <ToggleContainer>
-        <TabButton
-          $active={activeLevel === "beginner"}
-          onClick={() => setActiveLevel("beginner")}
-        >
-          Beginner Track
-        </TabButton>
-        <TabButton
-          $active={activeLevel === "advanced"}
-          onClick={() => setActiveLevel("advanced")}
-        >
-          Advanced Track
-        </TabButton>
-      </ToggleContainer>
+        <ToggleContainer>
+          <TabButton
+            $active={activeLevel === "beginner"}
+            onClick={() => setActiveLevel("beginner")}
+          >
+            Beginner Track
+          </TabButton>
+          <TabButton
+            $active={activeLevel === "advanced"}
+            onClick={() => setActiveLevel("advanced")}
+          >
+            Advanced Track
+          </TabButton>
+        </ToggleContainer>
 
-      <Grid>
-        {tips.map((tip) => (
-          <Card key={tip.id}>
-            <IconBox $color={tip.color}>{tip.icon}</IconBox>
-            <Tag>{tip.tag}</Tag>
-            <CardTitle>{tip.title}</CardTitle>
-            <Description>{tip.description}</Description>
-          </Card>
-        ))}
-      </Grid>
+        <Grid>
+          {tips.map((tip) => (
+            <Card key={tip.id}>
+              <IconBox $color={tip.color}>{tip.icon}</IconBox>
+              <Tag>{tip.tag}</Tag>
+              <CardTitle>{tip.title}</CardTitle>
+              <Description>{tip.description}</Description>
+            </Card>
+          ))}
+        </Grid>
       </ContentWrapper>
     </Container>
   );

@@ -1128,7 +1128,6 @@ export default function HelpPage() {
         <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Bantuan" />
       </BreadcrumbWrapper>
       <ContentWrapper>
-
         {/* HERO SEARCH SECTION */}
         <HeroSection>
           <HeroTitle>

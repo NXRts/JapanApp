@@ -60,12 +60,12 @@ export function logError(
     error instanceof Error
       ? error.message
       : typeof error === "string"
-      ? error
-      : errObj && typeof errObj.message === "string"
-      ? errObj.message
-      : errObj && typeof errObj.type === "string"
-      ? `Event error (${errObj.type})`
-      : String(error || "Unknown error");
+        ? error
+        : errObj && typeof errObj.message === "string"
+          ? errObj.message
+          : errObj && typeof errObj.type === "string"
+            ? `Event error (${errObj.type})`
+            : String(error || "Unknown error");
 
   const stack = error instanceof Error ? error.stack : undefined;
 

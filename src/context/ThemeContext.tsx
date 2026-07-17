@@ -103,7 +103,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       /* Dark: Floating Dock */
       root.style.setProperty("--dock-bg", "rgba(15, 23, 42, 0.88)");
       root.style.setProperty("--dock-border", "rgba(51, 65, 85, 0.5)");
-      root.style.setProperty("--dock-shadow", "0 -8px 32px rgba(0, 0, 0, 0.25)");
+      root.style.setProperty(
+        "--dock-shadow",
+        "0 -8px 32px rgba(0, 0, 0, 0.25)",
+      );
       root.style.setProperty("--ink-stroke", "#F8FAFC");
     } else {
       root.style.setProperty("--background", "#F8FAFC");
@@ -128,7 +131,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       /* Light: Floating Dock — bright white glass */
       root.style.setProperty("--dock-bg", "rgba(255, 255, 255, 0.95)");
       root.style.setProperty("--dock-border", "rgba(226, 232, 240, 0.8)");
-      root.style.setProperty("--dock-shadow", "0 -8px 32px rgba(0, 0, 0, 0.08)");
+      root.style.setProperty(
+        "--dock-shadow",
+        "0 -8px 32px rgba(0, 0, 0, 0.08)",
+      );
       root.style.setProperty("--ink-stroke", "#1E293B");
     }
   }, [color, mode, isInitialized]);
@@ -139,7 +145,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ color, mode, setColor, setMode, saveTheme }}>
+    <ThemeContext.Provider
+      value={{ color, mode, setColor, setMode, saveTheme }}
+    >
       {children}
     </ThemeContext.Provider>
   );

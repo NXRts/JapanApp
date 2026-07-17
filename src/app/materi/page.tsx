@@ -242,199 +242,199 @@ export default function MateriHubPage() {
       <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Materials" />
       <ContentWrapper>
         <Header>
-        <Title>Learning Materials</Title>
-        <Subtitle>
-          Master Japanese in a structured way through selected Grammar,
-          Vocabulary, and Study Strategies.
-        </Subtitle>
-      </Header>
+          <Title>Learning Materials</Title>
+          <Subtitle>
+            Master Japanese in a structured way through selected Grammar,
+            Vocabulary, and Study Strategies.
+          </Subtitle>
+        </Header>
 
-      <HubGrid>
-        {/* Grammar Hub */}
-        <HubCardLink href="/grammar">
-          <CardContent>
-            <IconWrapper $color="59, 130, 246">
-              {" "}
-              {/* Blue color */}
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-              </svg>
-            </IconWrapper>
-            <CardTitle>Grammar</CardTitle>
-            <CardDescription>
-              Learn sentence structures, particles, and Japanese patterns from
-              N5 to N4 levels with in-depth explanations.
-            </CardDescription>
-            <ActionButton $color="59, 130, 246">
-              Start Learning
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </ActionButton>
-          </CardContent>
-        </HubCardLink>
+        <HubGrid>
+          {/* Grammar Hub */}
+          <HubCardLink href="/grammar">
+            <CardContent>
+              <IconWrapper $color="59, 130, 246">
+                {" "}
+                {/* Blue color */}
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                </svg>
+              </IconWrapper>
+              <CardTitle>Grammar</CardTitle>
+              <CardDescription>
+                Learn sentence structures, particles, and Japanese patterns from
+                N5 to N4 levels with in-depth explanations.
+              </CardDescription>
+              <ActionButton $color="59, 130, 246">
+                Start Learning
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </ActionButton>
+            </CardContent>
+          </HubCardLink>
 
-        {/* Vocabulary Hub */}
-        <HubCardLink href="/vocabulary">
-          <CardContent>
-            <IconWrapper $color="16, 185, 129">
-              {" "}
-              {/* Emerald color */}
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-              </svg>
-            </IconWrapper>
-            <CardTitle>Vocabulary</CardTitle>
-            <CardDescription>
-              Enrich your vocabulary with thousands of words accompanied by
-              example sentences and pronunciation audio.
-            </CardDescription>
-            <ActionButton $color="16, 185, 129">
-              Enrich Vocabulary
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </ActionButton>
-          </CardContent>
-        </HubCardLink>
+          {/* Vocabulary Hub */}
+          <HubCardLink href="/vocabulary">
+            <CardContent>
+              <IconWrapper $color="16, 185, 129">
+                {" "}
+                {/* Emerald color */}
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                </svg>
+              </IconWrapper>
+              <CardTitle>Vocabulary</CardTitle>
+              <CardDescription>
+                Enrich your vocabulary with thousands of words accompanied by
+                example sentences and pronunciation audio.
+              </CardDescription>
+              <ActionButton $color="16, 185, 129">
+                Enrich Vocabulary
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </ActionButton>
+            </CardContent>
+          </HubCardLink>
 
-        {/* Dictionary Hub */}
-        <HubCardLink href="/jlpt">
-          <CardContent>
-            <IconWrapper $color="234, 179, 8">
-              {" "}
-              {/* Amber color */}
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="11" cy="11" r="8" />
-                <path d="m21 21-4.3-4.3" />
-              </svg>
-            </IconWrapper>
-            <CardTitle>JLPT</CardTitle>
-            <CardDescription>
-              Quickly access thousands of Japanese vocabulary and grammar
-              instantly through our smart search system.
-            </CardDescription>
-            <ActionButton $color="234, 179, 8">
-              Open JLPT
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </ActionButton>
-          </CardContent>
-        </HubCardLink>
+          {/* Dictionary Hub */}
+          <HubCardLink href="/jlpt">
+            <CardContent>
+              <IconWrapper $color="234, 179, 8">
+                {" "}
+                {/* Amber color */}
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              </IconWrapper>
+              <CardTitle>JLPT</CardTitle>
+              <CardDescription>
+                Quickly access thousands of Japanese vocabulary and grammar
+                instantly through our smart search system.
+              </CardDescription>
+              <ActionButton $color="234, 179, 8">
+                Open JLPT
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </ActionButton>
+            </CardContent>
+          </HubCardLink>
 
-        {/* Tips & Tricks Hub */}
-        <HubCardLink href="/tips">
-          <CardContent>
-            <IconWrapper $color="139, 92, 246">
-              {" "}
-              {/* Purple/Violet color */}
-              <LightBulbIcon size={32} />
-            </IconWrapper>
-            <CardTitle>Learning Tips</CardTitle>
-            <CardDescription>
-              Discover professional strategies and psychological tricks to
-              accelerate your Japanese acquisition journey.
-            </CardDescription>
-            <ActionButton $color="139, 92, 246">
-              View Strategies
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </ActionButton>
-          </CardContent>
-        </HubCardLink>
+          {/* Tips & Tricks Hub */}
+          <HubCardLink href="/tips">
+            <CardContent>
+              <IconWrapper $color="139, 92, 246">
+                {" "}
+                {/* Purple/Violet color */}
+                <LightBulbIcon size={32} />
+              </IconWrapper>
+              <CardTitle>Learning Tips</CardTitle>
+              <CardDescription>
+                Discover professional strategies and psychological tricks to
+                accelerate your Japanese acquisition journey.
+              </CardDescription>
+              <ActionButton $color="139, 92, 246">
+                View Strategies
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </ActionButton>
+            </CardContent>
+          </HubCardLink>
 
-        {/* Practice Sheets Hub */}
-        <HubCardLink href="/practice-sheets">
-          <CardContent>
-            <IconWrapper $color="244, 63, 94">
-              {" "}
-              {/* Rose color */}
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                <path d="M6 14h12v8H6z" />
-              </svg>
-            </IconWrapper>
-            <CardTitle>Practice Sheets</CardTitle>
-            <CardDescription>
-              Generate custom Japanese Genkouyoushi grids for Kana and Kanji to
-              print out and practice handwriting offline.
-            </CardDescription>
-            <ActionButton $color="244, 63, 94">
-              Print Sheets
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </ActionButton>
-          </CardContent>
-        </HubCardLink>
-      </HubGrid>
+          {/* Practice Sheets Hub */}
+          <HubCardLink href="/practice-sheets">
+            <CardContent>
+              <IconWrapper $color="244, 63, 94">
+                {" "}
+                {/* Rose color */}
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                  <path d="M6 14h12v8H6z" />
+                </svg>
+              </IconWrapper>
+              <CardTitle>Practice Sheets</CardTitle>
+              <CardDescription>
+                Generate custom Japanese Genkouyoushi grids for Kana and Kanji
+                to print out and practice handwriting offline.
+              </CardDescription>
+              <ActionButton $color="244, 63, 94">
+                Print Sheets
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </ActionButton>
+            </CardContent>
+          </HubCardLink>
+        </HubGrid>
       </ContentWrapper>
     </Container>
   );

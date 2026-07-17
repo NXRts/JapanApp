@@ -468,149 +468,149 @@ export default function SmartFlashcardsPage() {
 
         <ContentWrapper>
           <Header>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            <div
-              style={{
-                fontWeight: 700,
-                color: "var(--primary)",
-                background: "rgba(79, 70, 229, 0.1)",
-                padding: "0.5rem 1.25rem",
-                fontSize: "1rem",
-                borderRadius: "999px",
-                border: "1px solid rgba(79, 70, 229, 0.2)",
-              }}
-            >
-              Remaining: {deck.length}
-            </div>
-            <CustomDropdown
-              value={categoryFilter}
-              onChange={(val) => setCategoryFilter(val)}
-              options={["Vocabulary", "Kanji", "Grammar"]}
-            />
-            <CustomDropdown
-              value={levelFilter}
-              onChange={(val) => setLevelFilter(val)}
-              options={["All Levels", "N5", "N4", "N3", "N2", "N1"]}
-            />
-            <button
-              onClick={restart}
-              title="Refresh / Shuffle Deck"
-              style={{
-                background: "rgba(79, 70, 229, 0.1)",
-                color: "var(--primary)",
-                border: "none",
-                borderRadius: "50%",
-                width: "36px",
-                height: "36px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                transition: "transform 0.2s",
-              }}
-              onMouseOver={(e) =>
-                (e.currentTarget.style.transform = "rotate(30deg)")
-              }
-              onMouseOut={(e) =>
-                (e.currentTarget.style.transform = "rotate(0deg)")
-              }
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <div
+                style={{
+                  fontWeight: 700,
+                  color: "var(--primary)",
+                  background: "rgba(79, 70, 229, 0.1)",
+                  padding: "0.5rem 1.25rem",
+                  fontSize: "1rem",
+                  borderRadius: "999px",
+                  border: "1px solid rgba(79, 70, 229, 0.2)",
+                }}
               >
-                <polyline points="23 4 23 10 17 10"></polyline>
-                <polyline points="1 20 1 14 7 14"></polyline>
-                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-              </svg>
-            </button>
-          </div>
-        </Header>
-
-        {!isFinished ? (
-          <>
-            <DeckContainer>
-              {deck.map((card, idx) => (
-                <SwipeableCard
-                  key={card.id}
-                  card={card}
-                  index={idx}
-                  active={idx === 0}
-                  onSwipe={handleSwipe}
-                />
-              ))}
-            </DeckContainer>
-
-            {deck.length > 0 && (
-              <ControlsContainer>
-                <StudyBtn
-                  onClick={() => handleSimulateSwipe("left")}
-                  aria-label="Study Again"
+                Remaining: {deck.length}
+              </div>
+              <CustomDropdown
+                value={categoryFilter}
+                onChange={(val) => setCategoryFilter(val)}
+                options={["Vocabulary", "Kanji", "Grammar"]}
+              />
+              <CustomDropdown
+                value={levelFilter}
+                onChange={(val) => setLevelFilter(val)}
+                options={["All Levels", "N5", "N4", "N3", "N2", "N1"]}
+              />
+              <button
+                onClick={restart}
+                title="Refresh / Shuffle Deck"
+                style={{
+                  background: "rgba(79, 70, 229, 0.1)",
+                  color: "var(--primary)",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "36px",
+                  height: "36px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  transition: "transform 0.2s",
+                }}
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.transform = "rotate(30deg)")
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.transform = "rotate(0deg)")
+                }
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-                </StudyBtn>
-                <KnowBtn
-                  onClick={() => handleSimulateSwipe("right")}
-                  aria-label="Known"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M20 6L9 17l-5-5"></path>
-                  </svg>
-                </KnowBtn>
-              </ControlsContainer>
-            )}
-          </>
-        ) : (
-          <SummaryScreen>
-            <Title>Session Complete! 🎉</Title>
-            <p
-              style={{
-                fontSize: "1.2rem",
-                color: "var(--text-secondary)",
-                marginTop: "1rem",
-              }}
-            >
-              Awesome job! Keep your daily streak going.
-            </p>
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <polyline points="1 20 1 14 7 14"></polyline>
+                  <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+              </button>
+            </div>
+          </Header>
 
-            <StatRow>
-              <StatBlock>
-                <p>Mastered</p>
-                <h3 style={{ color: "#22c55e" }}>{knownCount}</h3>
-              </StatBlock>
-              <StatBlock>
-                <p>To Review</p>
-                <h3 style={{ color: "#ef4444" }}>{studyCount}</h3>
-              </StatBlock>
-            </StatRow>
+          {!isFinished ? (
+            <>
+              <DeckContainer>
+                {deck.map((card, idx) => (
+                  <SwipeableCard
+                    key={card.id}
+                    card={card}
+                    index={idx}
+                    active={idx === 0}
+                    onSwipe={handleSwipe}
+                  />
+                ))}
+              </DeckContainer>
 
-            <ActionBtn onClick={restart}>Study Again</ActionBtn>
-          </SummaryScreen>
-        )}
-      </ContentWrapper>
+              {deck.length > 0 && (
+                <ControlsContainer>
+                  <StudyBtn
+                    onClick={() => handleSimulateSwipe("left")}
+                    aria-label="Study Again"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </StudyBtn>
+                  <KnowBtn
+                    onClick={() => handleSimulateSwipe("right")}
+                    aria-label="Known"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M20 6L9 17l-5-5"></path>
+                    </svg>
+                  </KnowBtn>
+                </ControlsContainer>
+              )}
+            </>
+          ) : (
+            <SummaryScreen>
+              <Title>Session Complete! 🎉</Title>
+              <p
+                style={{
+                  fontSize: "1.2rem",
+                  color: "var(--text-secondary)",
+                  marginTop: "1rem",
+                }}
+              >
+                Awesome job! Keep your daily streak going.
+              </p>
+
+              <StatRow>
+                <StatBlock>
+                  <p>Mastered</p>
+                  <h3 style={{ color: "#22c55e" }}>{knownCount}</h3>
+                </StatBlock>
+                <StatBlock>
+                  <p>To Review</p>
+                  <h3 style={{ color: "#ef4444" }}>{studyCount}</h3>
+                </StatBlock>
+              </StatRow>
+
+              <ActionBtn onClick={restart}>Study Again</ActionBtn>
+            </SummaryScreen>
+          )}
+        </ContentWrapper>
       </Container>
     </PageWrapper>
   );

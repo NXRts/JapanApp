@@ -437,36 +437,36 @@ export default function MatchPairsPage() {
         </BreadcrumbWrapper>
         <ContentWrapper>
           <ResultOverlay>
-          <h2>{gameOver ? "Game Over!" : "Round Complete!"}</h2>
-          <p>
-            {gameOver
-              ? `You made ${MAX_MISTAKES} mistakes. Keep practicing!`
-              : `Good job! You matched all pairs with ${mistakes} mistake(s).`}
-          </p>
-          <div
-            style={{
-              marginTop: "2rem",
-              display: "flex",
-              gap: "1rem",
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <Button onClick={generateQuiz}>Play Again</Button>
-            <Link href="/quiz" style={{ textDecoration: "none" }}>
-              <Button
-                style={{
-                  background: "var(--surface)",
-                  color: "var(--foreground)",
-                  border: "1px solid var(--border)",
-                  boxShadow: "none",
-                }}
-              >
-                Quiz Hub
-              </Button>
-            </Link>
-          </div>
-        </ResultOverlay>
+            <h2>{gameOver ? "Game Over!" : "Round Complete!"}</h2>
+            <p>
+              {gameOver
+                ? `You made ${MAX_MISTAKES} mistakes. Keep practicing!`
+                : `Good job! You matched all pairs with ${mistakes} mistake(s).`}
+            </p>
+            <div
+              style={{
+                marginTop: "2rem",
+                display: "flex",
+                gap: "1rem",
+                justifyContent: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <Button onClick={generateQuiz}>Play Again</Button>
+              <Link href="/quiz" style={{ textDecoration: "none" }}>
+                <Button
+                  style={{
+                    background: "var(--surface)",
+                    color: "var(--foreground)",
+                    border: "1px solid var(--border)",
+                    boxShadow: "none",
+                  }}
+                >
+                  Quiz Hub
+                </Button>
+              </Link>
+            </div>
+          </ResultOverlay>
         </ContentWrapper>
       </Container>
     );
@@ -491,90 +491,90 @@ export default function MatchPairsPage() {
           <TitleBadge>Match the Pairs</TitleBadge>
         </Header>
 
-      <QuizCard>
-        <div
-          style={{
-            position: "absolute",
-            top: 30,
-            right: 30,
-            display: "flex",
-            gap: "1rem",
-            alignItems: "center",
-          }}
-        >
-          <ProgressInfo style={{ position: "relative", top: 0, right: 0 }}>
-            Round {currentIndex + 1} / {TOTAL_QUESTIONS}
-          </ProgressInfo>
+        <QuizCard>
           <div
             style={{
-              color:
-                mistakes >= MAX_MISTAKES - 1
-                  ? "#ef4444"
-                  : "var(--text-secondary)",
-              fontWeight: 600,
-              fontSize: "0.95rem",
+              position: "absolute",
+              top: 30,
+              right: 30,
+              display: "flex",
+              gap: "1rem",
+              alignItems: "center",
             }}
           >
-            Mistakes: {mistakes} / {MAX_MISTAKES}
+            <ProgressInfo style={{ position: "relative", top: 0, right: 0 }}>
+              Round {currentIndex + 1} / {TOTAL_QUESTIONS}
+            </ProgressInfo>
+            <div
+              style={{
+                color:
+                  mistakes >= MAX_MISTAKES - 1
+                    ? "#ef4444"
+                    : "var(--text-secondary)",
+                fontWeight: 600,
+                fontSize: "0.95rem",
+              }}
+            >
+              Mistakes: {mistakes} / {MAX_MISTAKES}
+            </div>
           </div>
-        </div>
 
-        <h3 style={{ marginBottom: "2rem", color: "var(--text-secondary)" }}>
-          Find the correct pairings
-        </h3>
+          <h3 style={{ marginBottom: "2rem", color: "var(--text-secondary)" }}>
+            Find the correct pairings
+          </h3>
 
-        <MatchGrid>
-          <MatchColumn>
-            {currentQuestion.shuffledKana.map((item) => {
-              const isMatched = matchedPairIds.includes(item.id);
-              const isSelected = selectedKanaPair === item.id;
-              const state = isMatched
-                ? "matched"
-                : isSelected
-                  ? "selected"
-                  : "neutral";
+          <MatchGrid>
+            <MatchColumn>
+              {currentQuestion.shuffledKana.map((item) => {
+                const isMatched = matchedPairIds.includes(item.id);
+                const isSelected = selectedKanaPair === item.id;
+                const state = isMatched
+                  ? "matched"
+                  : isSelected
+                    ? "selected"
+                    : "neutral";
 
-              return (
-                <MatchButton
-                  key={`kana-${item.id}`}
-                  $state={state}
-                  onClick={() => handleMatchSelection(item.id, false)}
-                >
-                  {item.kana}
-                </MatchButton>
-              );
-            })}
-          </MatchColumn>
-          <MatchColumn>
-            {currentQuestion.shuffledRomaji.map((item) => {
-              const isMatched = matchedPairIds.includes(item.id);
-              const isSelected = selectedRomajiPair === item.id;
-              const state = isMatched
-                ? "matched"
-                : isSelected
-                  ? "selected"
-                  : "neutral";
+                return (
+                  <MatchButton
+                    key={`kana-${item.id}`}
+                    $state={state}
+                    onClick={() => handleMatchSelection(item.id, false)}
+                  >
+                    {item.kana}
+                  </MatchButton>
+                );
+              })}
+            </MatchColumn>
+            <MatchColumn>
+              {currentQuestion.shuffledRomaji.map((item) => {
+                const isMatched = matchedPairIds.includes(item.id);
+                const isSelected = selectedRomajiPair === item.id;
+                const state = isMatched
+                  ? "matched"
+                  : isSelected
+                    ? "selected"
+                    : "neutral";
 
-              return (
-                <MatchButton
-                  key={`romaji-${item.id}`}
-                  $state={state}
-                  $isRomaji
-                  onClick={() => handleMatchSelection(item.id, true)}
-                >
-                  {item.romaji}
-                </MatchButton>
-              );
-            })}
-          </MatchColumn>
-        </MatchGrid>
+                return (
+                  <MatchButton
+                    key={`romaji-${item.id}`}
+                    $state={state}
+                    $isRomaji
+                    onClick={() => handleMatchSelection(item.id, true)}
+                  >
+                    {item.romaji}
+                  </MatchButton>
+                );
+              })}
+            </MatchColumn>
+          </MatchGrid>
 
-        <ProgressBarContainer>
-          <ProgressFill
-            $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
-          />
-        </ProgressBarContainer>
-      </QuizCard>
+          <ProgressBarContainer>
+            <ProgressFill
+              $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
+            />
+          </ProgressBarContainer>
+        </QuizCard>
       </ContentWrapper>
     </Container>
   );

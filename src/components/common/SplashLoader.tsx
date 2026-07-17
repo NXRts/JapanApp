@@ -453,9 +453,7 @@ export function SplashLoader() {
           </ProgressBarWrapper>
 
           <QuoteContainer>
-            <JapaneseText>
-              Mempersiapkan kuil pembelajaran Anda...
-            </JapaneseText>
+            <JapaneseText>Mempersiapkan kuil pembelajaran Anda...</JapaneseText>
             <TranslationText style={{ opacity: 0.8 }}>
               Belajar hiragana, katakana, dan kanji secara interaktif.
             </TranslationText>

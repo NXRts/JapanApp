@@ -239,202 +239,202 @@ export default function QuizHubPage() {
       <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Quiz Hub" />
       <ContentWrapper>
         <Header>
-        <Title>Quiz Hub</Title>
-        <Subtitle>
-          Test your Japanese knowledge and reading speed with our selection of
-          interactive quizzes.
-        </Subtitle>
-      </Header>
+          <Title>Quiz Hub</Title>
+          <Subtitle>
+            Test your Japanese knowledge and reading speed with our selection of
+            interactive quizzes.
+          </Subtitle>
+        </Header>
 
-      <QuizGrid>
-        {/* Daily Challenge */}
-        <QuizCard href="/daily-quiz">
-          <CardContent>
-            <IconWrapper $color="245, 158, 11">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
-            </IconWrapper>
-            <CardTitle>Daily Challenge</CardTitle>
-            <CardDescription>
-              Take today's official 10-question challenge and maintain your
-              streak.
-            </CardDescription>
-            <PlayButton $color="245, 158, 11">
-              Play Now
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </PlayButton>
-          </CardContent>
-        </QuizCard>
+        <QuizGrid>
+          {/* Daily Challenge */}
+          <QuizCard href="/daily-quiz">
+            <CardContent>
+              <IconWrapper $color="245, 158, 11">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </IconWrapper>
+              <CardTitle>Daily Challenge</CardTitle>
+              <CardDescription>
+                Take today's official 10-question challenge and maintain your
+                streak.
+              </CardDescription>
+              <PlayButton $color="245, 158, 11">
+                Play Now
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </PlayButton>
+            </CardContent>
+          </QuizCard>
 
-        {/* Kana Quiz */}
-        <QuizCard href="/quiz/kana">
-          <CardContent>
-            <IconWrapper $color="59, 130, 246">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                <path d="m2 17 10 5 10-5"></path>
-                <path d="m2 12 10 5 10-5"></path>
-              </svg>
-            </IconWrapper>
-            <CardTitle>Kana Quiz</CardTitle>
-            <CardDescription>
-              Test your reflex and memory of Hiragana and Katakana with
-              quick-fire multiple choice questions.
-            </CardDescription>
-            <PlayButton $color="59, 130, 246">
-              Play Now
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </PlayButton>
-          </CardContent>
-        </QuizCard>
-        {/* Reverse Quiz */}
-        <QuizCard href="/reverse-quiz">
-          <CardContent>
-            <IconWrapper $color="244, 63, 94">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="1 4 1 10 7 10" />
-                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
-              </svg>
-            </IconWrapper>
-            <CardTitle>Reverse Quiz</CardTitle>
-            <CardDescription>
-              Given the Romaji reading, select the correct Japanese Kana
-              character. Test your reverse recall!
-            </CardDescription>
-            <PlayButton $color="244, 63, 94">
-              Play Now
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </PlayButton>
-          </CardContent>
-        </QuizCard>
+          {/* Kana Quiz */}
+          <QuizCard href="/quiz/kana">
+            <CardContent>
+              <IconWrapper $color="59, 130, 246">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                  <path d="m2 17 10 5 10-5"></path>
+                  <path d="m2 12 10 5 10-5"></path>
+                </svg>
+              </IconWrapper>
+              <CardTitle>Kana Quiz</CardTitle>
+              <CardDescription>
+                Test your reflex and memory of Hiragana and Katakana with
+                quick-fire multiple choice questions.
+              </CardDescription>
+              <PlayButton $color="59, 130, 246">
+                Play Now
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </PlayButton>
+            </CardContent>
+          </QuizCard>
+          {/* Reverse Quiz */}
+          <QuizCard href="/reverse-quiz">
+            <CardContent>
+              <IconWrapper $color="244, 63, 94">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="1 4 1 10 7 10" />
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                </svg>
+              </IconWrapper>
+              <CardTitle>Reverse Quiz</CardTitle>
+              <CardDescription>
+                Given the Romaji reading, select the correct Japanese Kana
+                character. Test your reverse recall!
+              </CardDescription>
+              <PlayButton $color="244, 63, 94">
+                Play Now
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </PlayButton>
+            </CardContent>
+          </QuizCard>
 
-        {/* Match Pairs */}
-        <QuizCard href="/match-pairs">
-          <CardContent>
-            <IconWrapper $color="79, 70, 229">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                <path d="M3.27 6.96L12 12.01l8.73-5.05" />
-                <path d="M12 22.08V12" />
-              </svg>
-            </IconWrapper>
-            <CardTitle>Match the Pairs</CardTitle>
-            <CardDescription>
-              Find the correct Romaji reading for each Japanese Kana character.
-              Improve your reading speed!
-            </CardDescription>
-            <PlayButton $color="79, 70, 229">
-              Play Now
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </PlayButton>
-          </CardContent>
-        </QuizCard>
+          {/* Match Pairs */}
+          <QuizCard href="/match-pairs">
+            <CardContent>
+              <IconWrapper $color="79, 70, 229">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                  <path d="M3.27 6.96L12 12.01l8.73-5.05" />
+                  <path d="M12 22.08V12" />
+                </svg>
+              </IconWrapper>
+              <CardTitle>Match the Pairs</CardTitle>
+              <CardDescription>
+                Find the correct Romaji reading for each Japanese Kana
+                character. Improve your reading speed!
+              </CardDescription>
+              <PlayButton $color="79, 70, 229">
+                Play Now
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </PlayButton>
+            </CardContent>
+          </QuizCard>
 
-        {/* Kanji Writing Quiz */}
-        <QuizCard href="/quiz/writing">
-          <CardContent>
-            <IconWrapper $color="236, 72, 153">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M12 20h9"></path>
-                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-              </svg>
-            </IconWrapper>
-            <CardTitle>Kanji Writing</CardTitle>
-            <CardDescription>
-              Master Kanji stroke order with interactive drawing feedback. Learn
-              by doing!
-            </CardDescription>
-            <PlayButton $color="236, 72, 153">
-              Play Now
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </PlayButton>
-          </CardContent>
-        </QuizCard>
-      </QuizGrid>
+          {/* Kanji Writing Quiz */}
+          <QuizCard href="/quiz/writing">
+            <CardContent>
+              <IconWrapper $color="236, 72, 153">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </IconWrapper>
+              <CardTitle>Kanji Writing</CardTitle>
+              <CardDescription>
+                Master Kanji stroke order with interactive drawing feedback.
+                Learn by doing!
+              </CardDescription>
+              <PlayButton $color="236, 72, 153">
+                Play Now
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </PlayButton>
+            </CardContent>
+          </QuizCard>
+        </QuizGrid>
       </ContentWrapper>
     </Container>
   );

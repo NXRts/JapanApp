@@ -161,97 +161,103 @@ export default function ReadingHub() {
 
       <ContentWrapper>
         <Header>
-        <Title>Reading Comprehension</Title>
-        <p
-          style={{
-            color: "var(--text-secondary)",
-            fontSize: "1.2rem",
-            maxWidth: "600px",
-            margin: "0 auto",
-          }}
-        >
-          Improve your Japanese reading speed and comprehension with JLPT-graded
-          stories.
-        </p>
+          <Title>Reading Comprehension</Title>
+          <p
+            style={{
+              color: "var(--text-secondary)",
+              fontSize: "1.2rem",
+              maxWidth: "600px",
+              margin: "0 auto",
+            }}
+          >
+            Improve your Japanese reading speed and comprehension with
+            JLPT-graded stories.
+          </p>
 
-        <div
-          style={{
-            marginTop: "3rem",
-            display: "flex",
-            gap: "1rem",
-            justifyContent: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          {levels.map((level) => (
-            <FilterBtn
-              key={level}
-              $active={filter === level}
-              onClick={() => setFilter(level)}
-            >
-              {level}
-            </FilterBtn>
-          ))}
-        </div>
-      </Header>
-
-      <Grid>
-        {filteredPassages.map((passage) => (
-          <ArticleCard key={passage.id} href={`/study/reading/${passage.id}`}>
-            <ArticleHeader>
-              <div
-                style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}
+          <div
+            style={{
+              marginTop: "3rem",
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            {levels.map((level) => (
+              <FilterBtn
+                key={level}
+                $active={filter === level}
+                onClick={() => setFilter(level)}
               >
-                <LevelBadge $level={passage.level}>{passage.level}</LevelBadge>
-                {progress.completedExercises?.includes(passage.id) && (
-                  <span
-                    style={{
-                      background: "#10b981",
-                      color: "white",
-                      padding: "0.2rem 0.6rem",
-                      borderRadius: "99px",
-                      fontSize: "0.75rem",
-                      fontWeight: 700,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.2rem",
-                    }}
-                  >
-                    <svg
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                {level}
+              </FilterBtn>
+            ))}
+          </div>
+        </Header>
+
+        <Grid>
+          {filteredPassages.map((passage) => (
+            <ArticleCard key={passage.id} href={`/study/reading/${passage.id}`}>
+              <ArticleHeader>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "0.5rem",
+                    alignItems: "center",
+                  }}
+                >
+                  <LevelBadge $level={passage.level}>
+                    {passage.level}
+                  </LevelBadge>
+                  {progress.completedExercises?.includes(passage.id) && (
+                    <span
+                      style={{
+                        background: "#10b981",
+                        color: "white",
+                        padding: "0.2rem 0.6rem",
+                        borderRadius: "99px",
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.2rem",
+                      }}
                     >
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Completed
-                  </span>
-                )}
-              </div>
-              <span
-                style={{
-                  color: "var(--text-secondary)",
-                  fontSize: "0.95rem",
-                  fontWeight: 600,
-                }}
-              >
-                ⏱ {passage.estimatedTime}
-              </span>
-            </ArticleHeader>
-            <ArticleTitle>{passage.title}</ArticleTitle>
-            <Tags>
-              {passage.tags.map((tag) => (
-                <Tag key={tag}>#{tag}</Tag>
-              ))}
-            </Tags>
-          </ArticleCard>
-        ))}
-      </Grid>
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      Completed
+                    </span>
+                  )}
+                </div>
+                <span
+                  style={{
+                    color: "var(--text-secondary)",
+                    fontSize: "0.95rem",
+                    fontWeight: 600,
+                  }}
+                >
+                  ⏱ {passage.estimatedTime}
+                </span>
+              </ArticleHeader>
+              <ArticleTitle>{passage.title}</ArticleTitle>
+              <Tags>
+                {passage.tags.map((tag) => (
+                  <Tag key={tag}>#{tag}</Tag>
+                ))}
+              </Tags>
+            </ArticleCard>
+          ))}
+        </Grid>
       </ContentWrapper>
     </Container>
   );

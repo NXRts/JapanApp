@@ -417,9 +417,15 @@ export default function GrammarDrillsPage() {
               <Button onClick={generateQuiz}>Try Again</Button>
               <Link
                 href="/study"
-                style={{ textDecoration: "none", display: "flex", width: "100%" }}
+                style={{
+                  textDecoration: "none",
+                  display: "flex",
+                  width: "100%",
+                }}
               >
-                <SecondaryButton style={{ width: "100%" }}>Exit</SecondaryButton>
+                <SecondaryButton style={{ width: "100%" }}>
+                  Exit
+                </SecondaryButton>
               </Link>
             </ButtonGroup>
           </ResultOverlay>
@@ -474,78 +480,78 @@ export default function GrammarDrillsPage() {
           <ScoreBadge>Score: {score}</ScoreBadge>
         </Header>
 
-      <QuizCard>
-        <ProgressInfo>
-          {currentIndex + 1} / {TOTAL_QUESTIONS}
-        </ProgressInfo>
+        <QuizCard>
+          <ProgressInfo>
+            {currentIndex + 1} / {TOTAL_QUESTIONS}
+          </ProgressInfo>
 
-        <Sentence>
-          {selectedOption
-            ? getSentenceWithAnswer()
-            : currentQuestion.displaySentence}
-        </Sentence>
-        <Translation>{currentQuestion.translation}</Translation>
+          <Sentence>
+            {selectedOption
+              ? getSentenceWithAnswer()
+              : currentQuestion.displaySentence}
+          </Sentence>
+          <Translation>{currentQuestion.translation}</Translation>
 
-        <OptionsGrid>
-          {currentQuestion.options.map((opt) => {
-            let state: "neutral" | "correct" | "incorrect" = "neutral";
-            if (selectedOption) {
-              if (opt === currentQuestion.correctAnswer) state = "correct";
-              else if (opt === selectedOption) state = "incorrect";
-            }
+          <OptionsGrid>
+            {currentQuestion.options.map((opt) => {
+              let state: "neutral" | "correct" | "incorrect" = "neutral";
+              if (selectedOption) {
+                if (opt === currentQuestion.correctAnswer) state = "correct";
+                else if (opt === selectedOption) state = "incorrect";
+              }
 
-            return (
-              <OptionButton
-                key={opt}
-                $state={state}
-                onClick={() => handleAnswer(opt)}
-              >
-                {opt}
-              </OptionButton>
-            );
-          })}
-        </OptionsGrid>
+              return (
+                <OptionButton
+                  key={opt}
+                  $state={state}
+                  onClick={() => handleAnswer(opt)}
+                >
+                  {opt}
+                </OptionButton>
+              );
+            })}
+          </OptionsGrid>
 
-        {selectedOption && (
-          <ExplanationBox>
-            <strong>Penjelasan:</strong> {currentQuestion.explanation}
-            <NextButton onClick={handleNext}>Lanjut (Next)</NextButton>
-          </ExplanationBox>
-        )}
+          {selectedOption && (
+            <ExplanationBox>
+              <strong>Penjelasan:</strong> {currentQuestion.explanation}
+              <NextButton onClick={handleNext}>Lanjut (Next)</NextButton>
+            </ExplanationBox>
+          )}
 
-        <ProgressBarContainer>
-          <ProgressFill
-            $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
-          />
-        </ProgressBarContainer>
-      </QuizCard>
+          <ProgressBarContainer>
+            <ProgressFill
+              $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
+            />
+          </ProgressBarContainer>
+        </QuizCard>
 
-      <InfoSection>
-        <InfoTitle>Cara Kerja Particle Drills</InfoTitle>
-        <InfoGrid>
-          <InfoItem>
-            <h4>Pengacakan Soal</h4>
-            <p>
-              Sistem mengacak urutan soal dari bank data untuk memastikan
-              variasi latihan di setiap sesi.
-            </p>
-          </InfoItem>
-          <InfoItem>
-            <h4>Umpan Balik Instan</h4>
-            <p>
-              Dapatkan konfirmasi langsung benar/salah beserta penjelasan tata
-              bahasa setelah memilih jawaban.
-            </p>
-          </InfoItem>
-          <InfoItem>
-            <h4>Pelacakan Skor</h4>
-            <p>
-              Pantau kemajuan Anda melalui bar indikator dan skor akumulatif di
-              bagian atas.
-            </p>
-          </InfoItem>
-        </InfoGrid>
-      </InfoSection>
+        <InfoSection>
+          <InfoTitle>Cara Kerja Particle Drills</InfoTitle>
+          <InfoGrid>
+            <InfoItem>
+              <h4>Pengacakan Soal</h4>
+              <p>
+                Sistem mengacak urutan soal dari bank data untuk memastikan
+                variasi latihan di setiap sesi.
+              </p>
+            </InfoItem>
+            <InfoItem>
+              <h4>Umpan Balik Instan</h4>
+              <p>
+                Dapatkan konfirmasi langsung benar/salah beserta penjelasan tata
+                bahasa setelah memilih jawaban.
+              </p>
+            </InfoItem>
+            <InfoItem>
+              <h4>Pelacakan Skor</h4>
+              <p>
+                Pantau kemajuan Anda melalui bar indikator dan skor akumulatif
+                di bagian atas.
+              </p>
+            </InfoItem>
+          </InfoGrid>
+        </InfoSection>
       </ContentWrapper>
     </Container>
   );
