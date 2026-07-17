@@ -443,112 +443,113 @@ export default function LessonDetailPage({
       </BreadcrumbWrapper>
 
       <ContentWrapper>
+        {/* Top progress */}
+        <TopProgressWrap>
+          <ProgressBar>
+            <ProgressFill $pct={pct} />
+          </ProgressBar>
+          <ProgressLabel>
+            {sectionsDone}/{lesson.sections.length}
+          </ProgressLabel>
+        </TopProgressWrap>
 
-      {/* Top progress */}
-      <TopProgressWrap>
-        <ProgressBar>
-          <ProgressFill $pct={pct} />
-        </ProgressBar>
-        <ProgressLabel>
-          {sectionsDone}/{lesson.sections.length}
-        </ProgressLabel>
-      </TopProgressWrap>
+        {/* Lesson header */}
+        <LessonHeader>
+          <LessonIcon>文</LessonIcon>
+          <LessonInfo>
+            <LessonTitle>
+              Lesson {lesson.lessonNumber}: {lesson.title}
+            </LessonTitle>
+            <LessonSubtitle>{lesson.subtitle}</LessonSubtitle>
+            <LessonDesc>{lesson.description}</LessonDesc>
+            <MetaRow>
+              <span>💬 {lesson.sections.length} sections</span>
+              <MetaDot>✏️ Quiz, Fill-in &amp; Sentence Building</MetaDot>
+              <MetaDot>⏱ ~{lesson.estimatedMinutes} min</MetaDot>
+            </MetaRow>
+          </LessonInfo>
+        </LessonHeader>
 
-      {/* Lesson header */}
-      <LessonHeader>
-        <LessonIcon>文</LessonIcon>
-        <LessonInfo>
-          <LessonTitle>
-            Lesson {lesson.lessonNumber}: {lesson.title}
-          </LessonTitle>
-          <LessonSubtitle>{lesson.subtitle}</LessonSubtitle>
-          <LessonDesc>{lesson.description}</LessonDesc>
-          <MetaRow>
-            <span>💬 {lesson.sections.length} sections</span>
-            <MetaDot>✏️ Quiz, Fill-in &amp; Sentence Building</MetaDot>
-            <MetaDot>⏱ ~{lesson.estimatedMinutes} min</MetaDot>
-          </MetaRow>
-        </LessonInfo>
-      </LessonHeader>
+        {/* Progress */}
+        <SectionProgress>
+          <ProgTitle>
+            <span>Progress</span>
+            <ProgCount>
+              {sectionsDone} / {lesson.sections.length}
+            </ProgCount>
+          </ProgTitle>
+          <ProgBar>
+            <ProgFill $pct={pct} />
+          </ProgBar>
+        </SectionProgress>
 
-      {/* Progress */}
-      <SectionProgress>
-        <ProgTitle>
-          <span>Progress</span>
-          <ProgCount>
-            {sectionsDone} / {lesson.sections.length}
-          </ProgCount>
-        </ProgTitle>
-        <ProgBar>
-          <ProgFill $pct={pct} />
-        </ProgBar>
-      </SectionProgress>
+        {/* Section list */}
+        <SectionList>
+          {lesson.sections.map((section, idx) => {
+            const status = sectionStatus[idx];
+            const href = `/grammar/lessons/${lesson.id}/${section.id}`;
 
-      {/* Section list */}
-      <SectionList>
-        {lesson.sections.map((section, idx) => {
-          const status = sectionStatus[idx];
-          const href = `/grammar/lessons/${lesson.id}/${section.id}`;
+            return (
+              <SectionCard
+                key={section.id}
+                as={status.locked ? "div" : Link}
+                href={status.locked ? undefined : href}
+                $locked={status.locked}
+                $done={status.done}
+                $active={status.active}
+              >
+                <SectionNum $done={status.done} $active={status.active}>
+                  {status.done ? <CheckSvg /> : idx + 1}
+                </SectionNum>
 
-          return (
-            <SectionCard
-              key={section.id}
-              as={status.locked ? "div" : Link}
-              href={status.locked ? undefined : href}
-              $locked={status.locked}
-              $done={status.done}
-              $active={status.active}
-            >
-              <SectionNum $done={status.done} $active={status.active}>
-                {status.done ? <CheckSvg /> : idx + 1}
-              </SectionNum>
+                <SectionInfo>
+                  <SectionTitle>{section.title}</SectionTitle>
+                  <SectionSub>{section.subtitle}</SectionSub>
+                </SectionInfo>
 
-              <SectionInfo>
-                <SectionTitle>{section.title}</SectionTitle>
-                <SectionSub>{section.subtitle}</SectionSub>
-              </SectionInfo>
+                {status.active && <SectionBadge>Current</SectionBadge>}
+                {status.locked && (
+                  <span style={{ color: "var(--text-secondary)" }}>
+                    <LockSvg />
+                  </span>
+                )}
+                {status.done && (
+                  <span style={{ color: "#22c55e" }}>
+                    <CheckSvg />
+                  </span>
+                )}
+              </SectionCard>
+            );
+          })}
+        </SectionList>
 
-              {status.active && <SectionBadge>Current</SectionBadge>}
-              {status.locked && (
-                <span style={{ color: "var(--text-secondary)" }}>
-                  <LockSvg />
-                </span>
-              )}
-              {status.done && (
-                <span style={{ color: "#22c55e" }}>
-                  <CheckSvg />
-                </span>
-              )}
-            </SectionCard>
-          );
-        })}
-      </SectionList>
-
-      {/* Exercise CTA */}
-      <ExerciseBanner $locked={exerciseLocked}>
-        <div>
-          <ExTitle>
-            {exerciseDone
-              ? "✓ Exercise Completed"
-              : exerciseLocked
-                ? "🔒 Complete all sections to unlock"
-                : "🎯 Ready for the exercise?"}
-          </ExTitle>
-          <ExSub>
-            {exerciseDone
-              ? `You completed all ${lesson.exercises.length} questions!`
-              : exerciseLocked
-                ? `Complete all ${lesson.sections.length} sections first`
-                : `${lesson.exercises.length} questions · Sentence Building & Quiz`}
-          </ExSub>
-        </div>
-        <ExBtn
-          href={exerciseLocked ? "#" : `/grammar/lessons/${lesson.id}/exercise`}
-          $locked={exerciseLocked}
-        >
-          {exerciseDone ? "Redo Exercise" : "Start Exercise →"}
-        </ExBtn>
-      </ExerciseBanner>
+        {/* Exercise CTA */}
+        <ExerciseBanner $locked={exerciseLocked}>
+          <div>
+            <ExTitle>
+              {exerciseDone
+                ? "✓ Exercise Completed"
+                : exerciseLocked
+                  ? "🔒 Complete all sections to unlock"
+                  : "🎯 Ready for the exercise?"}
+            </ExTitle>
+            <ExSub>
+              {exerciseDone
+                ? `You completed all ${lesson.exercises.length} questions!`
+                : exerciseLocked
+                  ? `Complete all ${lesson.sections.length} sections first`
+                  : `${lesson.exercises.length} questions · Sentence Building & Quiz`}
+            </ExSub>
+          </div>
+          <ExBtn
+            href={
+              exerciseLocked ? "#" : `/grammar/lessons/${lesson.id}/exercise`
+            }
+            $locked={exerciseLocked}
+          >
+            {exerciseDone ? "Redo Exercise" : "Start Exercise →"}
+          </ExBtn>
+        </ExerciseBanner>
       </ContentWrapper>
     </Container>
   );

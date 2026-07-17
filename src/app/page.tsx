@@ -199,7 +199,11 @@ const LevelTabText = styled.span`
   }
 `;
 
-const LevelTab = styled.button<{ $active: boolean; $activeColor: string; $activeBg: string }>`
+const LevelTab = styled.button<{
+  $active: boolean;
+  $activeColor: string;
+  $activeBg: string;
+}>`
   flex: 1;
   min-width: 80px;
   height: 44px;
@@ -808,7 +812,7 @@ export default function Home() {
   useEffect(() => {
     if (progress.completedExercises && progress.completedExercises.length > 0) {
       const activeLesson = lessonsData.find(
-        (lesson) => !progress.completedExercises.includes(lesson.id)
+        (lesson) => !progress.completedExercises.includes(lesson.id),
       );
       if (activeLesson) {
         setSelectedLevel(activeLesson.level);
@@ -852,13 +856,20 @@ export default function Home() {
       return "#16223f"; // Solid dark navy to block background grid dots
     }
     switch (levelCode) {
-      case "Basic": return "#FFFBEB"; // Solid light amber (Amber 50)
-      case "N5": return "#ECFDF5";    // Solid light emerald (Emerald 50)
-      case "N4": return "#F5F3FF";    // Solid light violet (Violet 50)
-      case "N3": return "#FFF7ED";    // Solid light orange (Orange 50)
-      case "N2": return "#EFF6FF";    // Solid light blue (Blue 50)
-      case "N1": return "#FEF2F2";    // Solid light red (Red 50)
-      default: return "#EEF2FF";
+      case "Basic":
+        return "#FFFBEB"; // Solid light amber (Amber 50)
+      case "N5":
+        return "#ECFDF5"; // Solid light emerald (Emerald 50)
+      case "N4":
+        return "#F5F3FF"; // Solid light violet (Violet 50)
+      case "N3":
+        return "#FFF7ED"; // Solid light orange (Orange 50)
+      case "N2":
+        return "#EFF6FF"; // Solid light blue (Blue 50)
+      case "N1":
+        return "#FEF2F2"; // Solid light red (Red 50)
+      default:
+        return "#EEF2FF";
     }
   };
 

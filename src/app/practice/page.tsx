@@ -589,7 +589,6 @@ export default function PracticeHubPage() {
         />
       </BreadcrumbWrapper>
       <Container>
-
         <Header>
           <Title>Practice Hub</Title>
           <Subtitle>
@@ -605,7 +604,9 @@ export default function PracticeHubPage() {
           <CardContent>
             <CardTitle>JLPT Practice Hub (N5 - N1)</CardTitle>
             <CardDescription>
-              Latihan kosakata, kanji, dan tata bahasa JLPT dengan mode Flashcards SRS & Kuis Pilihan Ganda Interaktif tanpa tekanan waktu.
+              Latihan kosakata, kanji, dan tata bahasa JLPT dengan mode
+              Flashcards SRS & Kuis Pilihan Ganda Interaktif tanpa tekanan
+              waktu.
             </CardDescription>
             <ActionButton
               $color="#8b5cf6"

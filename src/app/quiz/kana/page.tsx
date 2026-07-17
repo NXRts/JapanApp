@@ -488,39 +488,39 @@ export default function KanaQuizPage() {
           <ScoreBadge>Score: {score}</ScoreBadge>
         </Header>
 
-      <QuizCard>
-        <ProgressInfo>
-          {currentIndex + 1} / {TOTAL_QUESTIONS}
-        </ProgressInfo>
+        <QuizCard>
+          <ProgressInfo>
+            {currentIndex + 1} / {TOTAL_QUESTIONS}
+          </ProgressInfo>
 
-        <Character>{currentQuestion.char}</Character>
+          <Character>{currentQuestion.char}</Character>
 
-        <OptionsGrid>
-          {currentQuestion.options.map((opt) => {
-            let state: "neutral" | "correct" | "incorrect" = "neutral";
-            if (selectedOption) {
-              if (opt === currentQuestion.romaji) state = "correct";
-              else if (opt === selectedOption) state = "incorrect";
-            }
+          <OptionsGrid>
+            {currentQuestion.options.map((opt) => {
+              let state: "neutral" | "correct" | "incorrect" = "neutral";
+              if (selectedOption) {
+                if (opt === currentQuestion.romaji) state = "correct";
+                else if (opt === selectedOption) state = "incorrect";
+              }
 
-            return (
-              <OptionButton
-                key={opt}
-                $state={state}
-                onClick={() => handleAnswer(opt)}
-              >
-                {opt}
-              </OptionButton>
-            );
-          })}
-        </OptionsGrid>
+              return (
+                <OptionButton
+                  key={opt}
+                  $state={state}
+                  onClick={() => handleAnswer(opt)}
+                >
+                  {opt}
+                </OptionButton>
+              );
+            })}
+          </OptionsGrid>
 
-        <ProgressBarContainer>
-          <ProgressFill
-            $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
-          />
-        </ProgressBarContainer>
-      </QuizCard>
+          <ProgressBarContainer>
+            <ProgressFill
+              $percent={((currentIndex + 1) / TOTAL_QUESTIONS) * 100}
+            />
+          </ProgressBarContainer>
+        </QuizCard>
       </ContentWrapper>
     </Container>
   );

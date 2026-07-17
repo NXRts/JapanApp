@@ -525,137 +525,137 @@ export default function ProfilePage() {
 
       <ContentWrapper>
         <ProfileHeader>
-        <AvatarCircle>
-          {progress.profile?.avatar ? (
-            <span style={{ fontSize: "3.5rem", lineHeight: 1 }}>
-              {progress.profile.avatar}
+          <AvatarCircle>
+            {progress.profile?.avatar ? (
+              <span style={{ fontSize: "3.5rem", lineHeight: 1 }}>
+                {progress.profile.avatar}
+              </span>
+            ) : (
+              <UserIcon size={64} />
+            )}
+          </AvatarCircle>
+          <ProfileInfo>
+            <Name>{progress.profile?.displayName || "JapanApp Learner"}</Name>
+            <JoinedDate>
+              Mastering {totalCharacters} items across Kanji & Vocabulary
+            </JoinedDate>
+            {progress.profile?.bio && (
+              <p
+                style={{
+                  margin: "0 0 1.25rem 0",
+                  fontStyle: "italic",
+                  color: "var(--text-secondary)",
+                  fontSize: "0.95rem",
+                  lineHeight: 1.5,
+                }}
+              >
+                {progress.profile.bio}
+              </p>
+            )}
+            <LevelBadge>
+              <span>🏆</span> Level {level}
+            </LevelBadge>
+          </ProfileInfo>
+        </ProfileHeader>
+
+        <GoalCard>
+          <GoalHeader>
+            <h3>Daily Study Goal</h3>
+            <span>
+              {dailyGoal.current} / {dailyGoal.target} EXP
             </span>
-          ) : (
-            <UserIcon size={64} />
-          )}
-        </AvatarCircle>
-        <ProfileInfo>
-          <Name>{progress.profile?.displayName || "JapanApp Learner"}</Name>
-          <JoinedDate>
-            Mastering {totalCharacters} items across Kanji & Vocabulary
-          </JoinedDate>
-          {progress.profile?.bio && (
-            <p
-              style={{
-                margin: "0 0 1.25rem 0",
-                fontStyle: "italic",
-                color: "var(--text-secondary)",
-                fontSize: "0.95rem",
-                lineHeight: 1.5,
-              }}
-            >
-              {progress.profile.bio}
-            </p>
-          )}
-          <LevelBadge>
-            <span>🏆</span> Level {level}
-          </LevelBadge>
-        </ProfileInfo>
-      </ProfileHeader>
-
-      <GoalCard>
-        <GoalHeader>
-          <h3>Daily Study Goal</h3>
-          <span>
-            {dailyGoal.current} / {dailyGoal.target} EXP
-          </span>
-        </GoalHeader>
-        <GoalProgress>
-          <GoalBar $width={goalPercent} />
-        </GoalProgress>
-        <p
-          style={{
-            margin: 0,
-            fontSize: "0.8rem",
-            color: "var(--text-secondary)",
-          }}
-        >
-          {goalPercent >= 100
-            ? "🎉 Daily goal achieved! You're amazing."
-            : `Only ${dailyGoal.target - dailyGoal.current} EXP left to hit your daily target!`}
-        </p>
-      </GoalCard>
-
-      <SectionTitle>Achievements</SectionTitle>
-      <AchievementGrid
-        ref={scrollRef}
-        $isDragging={isDragging}
-        onMouseDown={handleMouseDown}
-        onMouseLeave={handleMouseLeave}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseMove}
-      >
-        {achievements.map((a) => (
-          <AchievementCard
-            key={a.id}
-            $unlocked={a.unlocked}
-            title={a.unlocked ? "Unlocked!" : "Keep studying to unlock"}
-          >
-            <div className="icon-wrap">{a.icon}</div>
-            <h3>{a.title}</h3>
-            <p>{a.desc}</p>
-          </AchievementCard>
-        ))}
-      </AchievementGrid>
-
-      <SectionTitle>Core Statistics</SectionTitle>
-      <StatsGrid>
-        <StatCard>
-          <StatLabel>Total EXP</StatLabel>
-          <StatValue>{progress.exp.toLocaleString()}</StatValue>
-        </StatCard>
-        <StatCard>
-          <StatLabel>Current Streak</StatLabel>
-          <StatValue>{progress.streak} days</StatValue>
-        </StatCard>
-        <StatCard>
-          <StatLabel>Items Mastered</StatLabel>
-          <StatValue>{totalCharacters}</StatValue>
-        </StatCard>
-        <StatCard>
-          <StatLabel>Learning Accuracy</StatLabel>
-          <StatValue>{accuracy}%</StatValue>
-        </StatCard>
-      </StatsGrid>
-
-      <SettingsSection>
-        <SectionTitle>Account Settings</SectionTitle>
-        <SettingItem>
-          <SettingLabel>
-            <span>Display Name</span>
-            <span>How you appear to others</span>
-          </SettingLabel>
-          <ActionButton as={Link} href="/profile/edit">
-            Edit
-          </ActionButton>
-        </SettingItem>
-        <SettingItem>
-          <SettingLabel>
-            <span>App Data</span>
-            <span>Reset your progress and settings</span>
-          </SettingLabel>
-          <ActionButton
-            $danger
-            onClick={() => {
-              if (
-                confirm(
-                  "Are you sure you want to reset all progress? This cannot be undone.",
-                )
-              ) {
-                localStorage.clear();
-                window.location.reload();
-              }
+          </GoalHeader>
+          <GoalProgress>
+            <GoalBar $width={goalPercent} />
+          </GoalProgress>
+          <p
+            style={{
+              margin: 0,
+              fontSize: "0.8rem",
+              color: "var(--text-secondary)",
             }}
           >
-            Reset Data
-          </ActionButton>
-        </SettingItem>
-      </SettingsSection>
+            {goalPercent >= 100
+              ? "🎉 Daily goal achieved! You're amazing."
+              : `Only ${dailyGoal.target - dailyGoal.current} EXP left to hit your daily target!`}
+          </p>
+        </GoalCard>
+
+        <SectionTitle>Achievements</SectionTitle>
+        <AchievementGrid
+          ref={scrollRef}
+          $isDragging={isDragging}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+        >
+          {achievements.map((a) => (
+            <AchievementCard
+              key={a.id}
+              $unlocked={a.unlocked}
+              title={a.unlocked ? "Unlocked!" : "Keep studying to unlock"}
+            >
+              <div className="icon-wrap">{a.icon}</div>
+              <h3>{a.title}</h3>
+              <p>{a.desc}</p>
+            </AchievementCard>
+          ))}
+        </AchievementGrid>
+
+        <SectionTitle>Core Statistics</SectionTitle>
+        <StatsGrid>
+          <StatCard>
+            <StatLabel>Total EXP</StatLabel>
+            <StatValue>{progress.exp.toLocaleString()}</StatValue>
+          </StatCard>
+          <StatCard>
+            <StatLabel>Current Streak</StatLabel>
+            <StatValue>{progress.streak} days</StatValue>
+          </StatCard>
+          <StatCard>
+            <StatLabel>Items Mastered</StatLabel>
+            <StatValue>{totalCharacters}</StatValue>
+          </StatCard>
+          <StatCard>
+            <StatLabel>Learning Accuracy</StatLabel>
+            <StatValue>{accuracy}%</StatValue>
+          </StatCard>
+        </StatsGrid>
+
+        <SettingsSection>
+          <SectionTitle>Account Settings</SectionTitle>
+          <SettingItem>
+            <SettingLabel>
+              <span>Display Name</span>
+              <span>How you appear to others</span>
+            </SettingLabel>
+            <ActionButton as={Link} href="/profile/edit">
+              Edit
+            </ActionButton>
+          </SettingItem>
+          <SettingItem>
+            <SettingLabel>
+              <span>App Data</span>
+              <span>Reset your progress and settings</span>
+            </SettingLabel>
+            <ActionButton
+              $danger
+              onClick={() => {
+                if (
+                  confirm(
+                    "Are you sure you want to reset all progress? This cannot be undone.",
+                  )
+                ) {
+                  localStorage.clear();
+                  window.location.reload();
+                }
+              }}
+            >
+              Reset Data
+            </ActionButton>
+          </SettingItem>
+        </SettingsSection>
       </ContentWrapper>
     </Container>
   );

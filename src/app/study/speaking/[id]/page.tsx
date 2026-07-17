@@ -442,217 +442,217 @@ export default function KaiwaRoleplayPage() {
 
       <ContentWrapper>
         <Header>
-        <Title>{exercise.title}</Title>
-        <Subtitle>{exercise.scenario}</Subtitle>
-      </Header>
+          <Title>{exercise.title}</Title>
+          <Subtitle>{exercise.scenario}</Subtitle>
+        </Header>
 
-      <ChatLog>
-        {visibleLines.map((line, idx) => {
-          const isUser = line.speaker === exercise.userRole;
-          const isCurrentAI = !isUser && idx === currentLineIdx;
+        <ChatLog>
+          {visibleLines.map((line, idx) => {
+            const isUser = line.speaker === exercise.userRole;
+            const isCurrentAI = !isUser && idx === currentLineIdx;
 
-          return (
-            <MessageBubbleWrapper key={line.id} $isUser={isUser}>
+            return (
+              <MessageBubbleWrapper key={line.id} $isUser={isUser}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: isUser ? "row-reverse" : "row",
+                    gap: "1rem",
+                    alignItems: "flex-start",
+                    maxWidth: "100%",
+                  }}
+                >
+                  <MessageAvatar title={line.characterName}>
+                    {line.avatar}
+                  </MessageAvatar>
+                  <Bubble
+                    $isUser={isUser}
+                    style={{
+                      opacity: isCurrentAI && status !== "speaking" ? 0.5 : 1,
+                    }}
+                  >
+                    <ClickableJapaneseText
+                      className="jp-text"
+                      html={line.displayHtml}
+                      style={{
+                        fontSize: "1.5rem",
+                        lineHeight: "1.6",
+                        marginBottom: "0.5rem",
+                      }}
+                    />
+                    <TranslationText $isUser={isUser}>
+                      {line.translation}
+                    </TranslationText>
+                  </Bubble>
+                </div>
+              </MessageBubbleWrapper>
+            );
+          })}
+        </ChatLog>
+
+        <ControlsArea>
+          {status === "fin" ? (
+            <>
+              <StatusIndicator $status="fin">
+                🎉 Roleplay Complete!
+              </StatusIndicator>
+              <HintBox>You did a great job completing the scenario.</HintBox>
+            </>
+          ) : (
+            <>
+              <StatusIndicator $status={status}>
+                {status === "speaking"
+                  ? "AI is speaking..."
+                  : status === "success"
+                    ? "Great! Moving on..."
+                    : status === "error"
+                      ? recognizerError
+                      : isListening
+                        ? "Listening..."
+                        : "Your turn! Tap the mic to speak."}
+              </StatusIndicator>
+
+              {isUserTurn && (
+                <HintBox>
+                  <strong style={{ display: "block", marginBottom: "0.5rem" }}>
+                    Read this aloud:
+                  </strong>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: exercise.lines[currentLineIdx].displayHtml,
+                    }}
+                  />
+                </HintBox>
+              )}
+
               <div
                 style={{
                   display: "flex",
-                  flexDirection: isUser ? "row-reverse" : "row",
-                  gap: "1rem",
-                  alignItems: "flex-start",
-                  maxWidth: "100%",
+                  alignItems: "center",
+                  gap: "1.5rem",
+                  width: "100%",
+                  justifyContent: "center",
+                  position: "relative",
                 }}
               >
-                <MessageAvatar title={line.characterName}>
-                  {line.avatar}
-                </MessageAvatar>
-                <Bubble
-                  $isUser={isUser}
+                <MicBtn
+                  $isListening={isListening}
+                  onClick={toggleMic}
+                  disabled={!isUserTurn || status === "success"}
+                >
+                  {isListening ? (
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <rect x="6" y="6" width="12" height="12" rx="2" />
+                    </svg>
+                  ) : (
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                      <line x1="12" x2="12" y1="19" y2="22" />
+                    </svg>
+                  )}
+                </MicBtn>
+
+                {/* Skip button for debugging or if the API misunderstands them endlessly */}
+                <button
+                  onClick={skipTurn}
                   style={{
-                    opacity: isCurrentAI && status !== "speaking" ? 0.5 : 1,
+                    position: "absolute",
+                    right: 0,
+                    background: "none",
+                    border: "none",
+                    color: "var(--text-secondary)",
+                    textDecoration: "underline",
+                    cursor: "pointer",
                   }}
                 >
-                  <ClickableJapaneseText
-                    className="jp-text"
-                    html={line.displayHtml}
-                    style={{
-                      fontSize: "1.5rem",
-                      lineHeight: "1.6",
-                      marginBottom: "0.5rem",
-                    }}
-                  />
-                  <TranslationText $isUser={isUser}>
-                    {line.translation}
-                  </TranslationText>
-                </Bubble>
+                  Skip
+                </button>
               </div>
-            </MessageBubbleWrapper>
-          );
-        })}
-      </ChatLog>
 
-      <ControlsArea>
-        {status === "fin" ? (
-          <>
-            <StatusIndicator $status="fin">
-              🎉 Roleplay Complete!
-            </StatusIndicator>
-            <HintBox>You did a great job completing the scenario.</HintBox>
-          </>
-        ) : (
-          <>
-            <StatusIndicator $status={status}>
-              {status === "speaking"
-                ? "AI is speaking..."
-                : status === "success"
-                  ? "Great! Moving on..."
-                  : status === "error"
-                    ? recognizerError
-                    : isListening
-                      ? "Listening..."
-                      : "Your turn! Tap the mic to speak."}
-            </StatusIndicator>
-
-            {isUserTurn && (
-              <HintBox>
-                <strong style={{ display: "block", marginBottom: "0.5rem" }}>
-                  Read this aloud:
-                </strong>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: exercise.lines[currentLineIdx].displayHtml,
+              {transcript && (
+                <div
+                  style={{
+                    padding: "1rem",
+                    background: "var(--background)",
+                    borderRadius: "12px",
+                    width: "100%",
+                    textAlign: "center",
+                    color: "var(--text-secondary)",
                   }}
-                />
-              </HintBox>
-            )}
-
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "1.5rem",
-                width: "100%",
-                justifyContent: "center",
-                position: "relative",
-              }}
-            >
-              <MicBtn
-                $isListening={isListening}
-                onClick={toggleMic}
-                disabled={!isUserTurn || status === "success"}
-              >
-                {isListening ? (
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <rect x="6" y="6" width="12" height="12" rx="2" />
-                  </svg>
-                ) : (
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
-                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                    <line x1="12" x2="12" y1="19" y2="22" />
-                  </svg>
-                )}
-              </MicBtn>
-
-              {/* Skip button for debugging or if the API misunderstands them endlessly */}
-              <button
-                onClick={skipTurn}
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  background: "none",
-                  border: "none",
-                  color: "var(--text-secondary)",
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                }}
-              >
-                Skip
-              </button>
-            </div>
-
-            {transcript && (
-              <div
-                style={{
-                  padding: "1rem",
-                  background: "var(--background)",
-                  borderRadius: "12px",
-                  width: "100%",
-                  textAlign: "center",
-                  color: "var(--text-secondary)",
-                }}
-              >
-                You said:{" "}
-                <strong style={{ color: "var(--foreground)" }}>
-                  {transcript}
-                </strong>
-              </div>
-            )}
-          </>
-        )}
-      </ControlsArea>
-
-      {!isCompleted && status !== "fin" && (
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: "3rem",
-            color: "var(--text-secondary)",
-            fontWeight: 600,
-          }}
-        >
-          🗣️ Please complete the roleplay scenario to mark it as completed.
-        </div>
-      )}
-
-      <CompleteBtn
-        $completed={isCompleted}
-        onClick={() => markExerciseCompleted(exercise.id)}
-        disabled={isCompleted || status !== "fin"}
-        style={{ opacity: !isCompleted && status !== "fin" ? 0.5 : 1 }}
-      >
-        {isCompleted ? (
-          <>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            Completed
-          </>
-        ) : (
-          "Mark as Completed"
-        )}
-      </CompleteBtn>
-
-      {isCompleted && (
-        <NextStepsContainer>
-          <NavBtn href="/study/speaking">⬅ Back to List</NavBtn>
-          {nextExercise && (
-            <NavBtn href={`/study/speaking/${nextExercise.id}`} $primary>
-              Next Roleplay ➡
-            </NavBtn>
+                >
+                  You said:{" "}
+                  <strong style={{ color: "var(--foreground)" }}>
+                    {transcript}
+                  </strong>
+                </div>
+              )}
+            </>
           )}
-        </NextStepsContainer>
-      )}
+        </ControlsArea>
+
+        {!isCompleted && status !== "fin" && (
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "3rem",
+              color: "var(--text-secondary)",
+              fontWeight: 600,
+            }}
+          >
+            🗣️ Please complete the roleplay scenario to mark it as completed.
+          </div>
+        )}
+
+        <CompleteBtn
+          $completed={isCompleted}
+          onClick={() => markExerciseCompleted(exercise.id)}
+          disabled={isCompleted || status !== "fin"}
+          style={{ opacity: !isCompleted && status !== "fin" ? 0.5 : 1 }}
+        >
+          {isCompleted ? (
+            <>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Completed
+            </>
+          ) : (
+            "Mark as Completed"
+          )}
+        </CompleteBtn>
+
+        {isCompleted && (
+          <NextStepsContainer>
+            <NavBtn href="/study/speaking">⬅ Back to List</NavBtn>
+            {nextExercise && (
+              <NavBtn href={`/study/speaking/${nextExercise.id}`} $primary>
+                Next Roleplay ➡
+              </NavBtn>
+            )}
+          </NextStepsContainer>
+        )}
       </ContentWrapper>
     </Container>
   );

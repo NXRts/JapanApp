@@ -247,84 +247,86 @@ export default function VocabularyPage() {
 
       <ContentWrapper>
         <Header>
-        <Title>Vocabulary</Title>
-        <Subtitle>
-          Essential words to build your Japanese foundation. Select your target
-          JLPT level.
-        </Subtitle>
-      </Header>
+          <Title>Vocabulary</Title>
+          <Subtitle>
+            Essential words to build your Japanese foundation. Select your
+            target JLPT level.
+          </Subtitle>
+        </Header>
 
-      <LevelSelector>
-        <LevelButton
-          $active={activeLevel === "N5"}
-          onClick={() => setActiveLevel("N5")}
-        >
-          JLPT N5
-        </LevelButton>
-        <LevelButton
-          $active={activeLevel === "N4"}
-          onClick={() => setActiveLevel("N4")}
-        >
-          JLPT N4
-        </LevelButton>
-        <LevelButton
-          $active={activeLevel === "N3"}
-          onClick={() => setActiveLevel("N3")}
-        >
-          JLPT N3
-        </LevelButton>
-        <LevelButton
-          $active={activeLevel === "N2"}
-          onClick={() => setActiveLevel("N2")}
-        >
-          JLPT N2
-        </LevelButton>
-        <LevelButton
-          $active={activeLevel === "N1"}
-          onClick={() => setActiveLevel("N1")}
-        >
-          JLPT N1
-        </LevelButton>
-      </LevelSelector>
+        <LevelSelector>
+          <LevelButton
+            $active={activeLevel === "N5"}
+            onClick={() => setActiveLevel("N5")}
+          >
+            JLPT N5
+          </LevelButton>
+          <LevelButton
+            $active={activeLevel === "N4"}
+            onClick={() => setActiveLevel("N4")}
+          >
+            JLPT N4
+          </LevelButton>
+          <LevelButton
+            $active={activeLevel === "N3"}
+            onClick={() => setActiveLevel("N3")}
+          >
+            JLPT N3
+          </LevelButton>
+          <LevelButton
+            $active={activeLevel === "N2"}
+            onClick={() => setActiveLevel("N2")}
+          >
+            JLPT N2
+          </LevelButton>
+          <LevelButton
+            $active={activeLevel === "N1"}
+            onClick={() => setActiveLevel("N1")}
+          >
+            JLPT N1
+          </LevelButton>
+        </LevelSelector>
 
-      <VocabList>
-        {currentData?.map((item) => (
-          <VocabCard key={item.id}>
-            <Word>{item.word}</Word>
-            <Reading>
-              <Kana>{item.reading}</Kana>
-              <Romaji>{item.romaji}</Romaji>
-            </Reading>
-            <Meaning>{item.meaning}</Meaning>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              <CategoryBadge>{item.category}</CategoryBadge>
-              {item.example && (
-                <ExampleToggle onClick={() => toggleExample(item.id)}>
-                  {expandedId === item.id ? "Hide Example" : "Show Example"}
-                </ExampleToggle>
+        <VocabList>
+          {currentData?.map((item) => (
+            <VocabCard key={item.id}>
+              <Word>{item.word}</Word>
+              <Reading>
+                <Kana>{item.reading}</Kana>
+                <Romaji>{item.romaji}</Romaji>
+              </Reading>
+              <Meaning>{item.meaning}</Meaning>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+              >
+                <CategoryBadge>{item.category}</CategoryBadge>
+                {item.example && (
+                  <ExampleToggle onClick={() => toggleExample(item.id)}>
+                    {expandedId === item.id ? "Hide Example" : "Show Example"}
+                  </ExampleToggle>
+                )}
+              </div>
+
+              {expandedId === item.id && item.example && (
+                <ExampleBox>
+                  <div style={{ fontWeight: 700, fontSize: "1.25rem" }}>
+                    {item.example.japanese}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.9rem",
+                      color: "var(--text-secondary)",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    {item.example.romaji}
+                  </div>
+                  <div style={{ fontSize: "1rem" }}>{item.example.english}</div>
+                </ExampleBox>
               )}
-            </div>
-
-            {expandedId === item.id && item.example && (
-              <ExampleBox>
-                <div style={{ fontWeight: 700, fontSize: "1.25rem" }}>
-                  {item.example.japanese}
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.9rem",
-                    color: "var(--text-secondary)",
-                    fontStyle: "italic",
-                  }}
-                >
-                  {item.example.romaji}
-                </div>
-                <div style={{ fontSize: "1rem" }}>{item.example.english}</div>
-              </ExampleBox>
-            )}
-          </VocabCard>
-        ))}
-      </VocabList>
+            </VocabCard>
+          ))}
+        </VocabList>
       </ContentWrapper>
     </Container>
   );

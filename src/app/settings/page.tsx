@@ -2,7 +2,12 @@
 
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import styled from "styled-components";
-import { useTheme, themes, ThemeColor, ThemeMode } from "@/context/ThemeContext";
+import {
+  useTheme,
+  themes,
+  ThemeColor,
+  ThemeMode,
+} from "@/context/ThemeContext";
 import { useProgress } from "@/context/ProgressContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import Link from "next/link";
@@ -729,420 +734,424 @@ export default function SettingsPage() {
 
       <ContentWrapper>
         <PageHeader>
-        <h1>Pengaturan Dashboard</h1>
-        <p>
-          Kelola detail akun, preferensi suara, tema tampilan, dan data belajar
-          bahasa Jepang Anda.
-        </p>
-      </PageHeader>
+          <h1>Pengaturan Dashboard</h1>
+          <p>
+            Kelola detail akun, preferensi suara, tema tampilan, dan data
+            belajar bahasa Jepang Anda.
+          </p>
+        </PageHeader>
 
-      <MainLayout>
-        {/* SIDEBAR TABS */}
-        <Sidebar>
-          <TabButton
-            $active={activeTab === "account"}
-            onClick={() => setActiveTab("account")}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
+        <MainLayout>
+          {/* SIDEBAR TABS */}
+          <Sidebar>
+            <TabButton
+              $active={activeTab === "account"}
+              onClick={() => setActiveTab("account")}
             >
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-              <circle cx="12" cy="7" r="4" />
-            </svg>
-            <span className="text-desktop">Akun & Fitur</span>
-            <span className="text-mobile">Akun</span>
-          </TabButton>
-          <TabButton
-            $active={activeTab === "appearance"}
-            onClick={() => setActiveTab("appearance")}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
-              <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
-            </svg>
-            <span className="text-desktop">Tampilan / Tema</span>
-            <span className="text-mobile">Tema</span>
-          </TabButton>
-          <TabButton
-            $active={activeTab === "preferences"}
-            onClick={() => setActiveTab("preferences")}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-            </svg>
-            <span className="text-desktop">Privasi & Keamanan</span>
-            <span className="text-mobile">Privasi</span>
-          </TabButton>
-          <TabButton
-            $active={activeTab === "learning"}
-            onClick={() => setActiveTab("learning")}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-            </svg>
-            <span className="text-desktop">Data Belajar</span>
-            <span className="text-mobile">Data</span>
-          </TabButton>
-        </Sidebar>
-
-        {/* SETTINGS CARD DYNAMIC SHOWCASE */}
-        <SettingsCard>
-          {activeTab === "account" && (
-            <>
-              <TabHeader>
-                <h2>Pengaturan Akun & Fitur</h2>
-                <p>
-                  Kelola kredensial akun dan pilihan metode interaksi kuis
-                  belajar Anda.
-                </p>
-              </TabHeader>
-              <FormGrid>
-                <FormGroup>
-                  <label htmlFor="username">Nama Pengguna (Username)</label>
-                  <FormInput
-                    id="username"
-                    type="text"
-                    placeholder="japan_learner"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <label htmlFor="email">Alamat Email</label>
-                  <FormInput
-                    id="email"
-                    type="email"
-                    placeholder="learner@japanapp.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </FormGroup>
-
-                <div style={{ marginTop: "0.5rem" }}>
-                  <SectionTitle>Metode & Pengalaman Belajar</SectionTitle>
-                  <ToggleList>
-                    <ToggleRow>
-                      <ToggleInfo>
-                        <span className="title">
-                          Efek Suara (Sound Effects)
-                        </span>
-                        <span className="desc">
-                          Mainkan efek audio yang memuaskan ketika menjawab
-                          benar atau salah.
-                        </span>
-                      </ToggleInfo>
-                      <SwitchButton
-                        $checked={soundEffects}
-                        onClick={() => setSoundEffects(!soundEffects)}
-                      />
-                    </ToggleRow>
-
-                    <ToggleRow>
-                      <ToggleInfo>
-                        <span className="title">
-                          Animasi Mikro (Animations)
-                        </span>
-                        <span className="desc">
-                          Gunakan efek transisi halus pada kartu dan lencana
-                          heksagonal.
-                        </span>
-                      </ToggleInfo>
-                      <SwitchButton
-                        $checked={animations}
-                        onClick={() => setAnimations(!animations)}
-                      />
-                    </ToggleRow>
-
-                    <ToggleRow>
-                      <ToggleInfo>
-                        <span className="title">Pesan Motivasi</span>
-                        <span className="desc">
-                          Tampilkan pesan penyemangat dari maskot setelah
-                          menyelesaikan latihan kuis.
-                        </span>
-                      </ToggleInfo>
-                      <SwitchButton
-                        $checked={motivationalMsgs}
-                        onClick={() => setMotivationalMsgs(!motivationalMsgs)}
-                      />
-                    </ToggleRow>
-
-                    <ToggleRow>
-                      <ToggleInfo>
-                        <span className="title">
-                          Latihan Berbicara (Speaking)
-                        </span>
-                        <span className="desc">
-                          Aktifkan latihan pengucapan interaktif menggunakan
-                          mikrofon peramban.
-                        </span>
-                      </ToggleInfo>
-                      <SwitchButton
-                        $checked={speakingExercises}
-                        onClick={() => setSpeakingExercises(!speakingExercises)}
-                      />
-                    </ToggleRow>
-
-                    <ToggleRow>
-                      <ToggleInfo>
-                        <span className="title">
-                          Latihan Mendengarkan (Listening)
-                        </span>
-                        <span className="desc">
-                          Sertakan soal latihan pendengaran audio penutur asli
-                          Jepang (Native Speaker).
-                        </span>
-                      </ToggleInfo>
-                      <SwitchButton
-                        $checked={listeningExercises}
-                        onClick={() =>
-                          setListeningExercises(!listeningExercises)
-                        }
-                      />
-                    </ToggleRow>
-                  </ToggleList>
-                </div>
-              </FormGrid>
-            </>
-          )}
-
-          {activeTab === "appearance" && (
-            <>
-              <TabHeader>
-                <h2>Tema & Gaya Tampilan</h2>
-                <p>
-                  Kustomisasi skema warna aksen dan mode visual aplikasi
-                  JapanApp sesuai selera Anda.
-                </p>
-              </TabHeader>
-              <FormGrid>
-                <FormGroup>
-                  <label>Warna Aksen Aplikasi (Theme Accent Color)</label>
-                  <SubDescription>
-                    Klik lingkaran warna di bawah ini untuk mengubah seluruh
-                    aksen visual web secara real-time.
-                  </SubDescription>
-                  <ColorGrid>
-                    {Object.entries(themes).map(([key, value]) => (
-                      <ColorBtn
-                        key={key}
-                        type="button"
-                        $color={value.primary}
-                        $isSelected={color === key}
-                        onClick={() => {
-                          setColor(key as any);
-                          triggerToast(`Pratinjau aksen: ${key} 🎨`);
-                        }}
-                        title={key}
-                      />
-                    ))}
-                  </ColorGrid>
-                </FormGroup>
-
-                <FormGroup style={{ marginTop: "1rem" }}>
-                  <label>Mode Tampilan (Appearance Mode)</label>
-                  <ModeRow>
-                    <ModeBox
-                      $active={mode === "light"}
-                      onClick={() => {
-                        setMode("light");
-                        triggerToast("Pratinjau Mode Terang ☀️");
-                      }}
-                    >
-                      <span className="icon">☀️</span>
-                      <span>Mode Terang</span>
-                    </ModeBox>
-                    <ModeBox
-                      $active={mode === "dark"}
-                      onClick={() => {
-                        setMode("dark");
-                        triggerToast("Pratinjau Mode Gelap 🌙");
-                      }}
-                    >
-                      <span className="icon">🌙</span>
-                      <span>Mode Gelap</span>
-                    </ModeBox>
-                  </ModeRow>
-                </FormGroup>
-              </FormGrid>
-            </>
-          )}
-
-          {activeTab === "preferences" && (
-            <>
-              <TabHeader>
-                <h2>Privasi & Keamanan Sosial</h2>
-                <p>
-                  Atur visibilitas progres belajar Anda dan batasi interaksi
-                  pertemanan sosial.
-                </p>
-              </TabHeader>
-              <FormGrid>
-                <ToggleList>
-                  <ToggleRow>
-                    <ToggleInfo>
-                      <span className="title">
-                        Profil Publik (Public Profile)
-                      </span>
-                      <span className="desc">
-                        Izinkan pengguna lain mencari profil Anda dan melihat
-                        lencana heksagonal Anda.
-                      </span>
-                    </ToggleInfo>
-                    <SwitchButton
-                      $checked={publicProfile}
-                      onClick={() => setPublicProfile(!publicProfile)}
-                    />
-                  </ToggleRow>
-
-                  <ToggleRow>
-                    <ToggleInfo>
-                      <span className="title">
-                        Terima Permintaan Pertemanan
-                      </span>
-                      <span className="desc">
-                        Izinkan pengguna lain mengikuti progres belajar Anda
-                        atau mengundang ke grup belajar.
-                      </span>
-                    </ToggleInfo>
-                    <SwitchButton
-                      $checked={friendRequests}
-                      onClick={() => setFriendRequests(!friendRequests)}
-                    />
-                  </ToggleRow>
-
-                  <ToggleRow>
-                    <ToggleInfo>
-                      <span className="title">Bagikan Progres Mingguan</span>
-                      <span className="desc">
-                        Tampilkan streak belajar harian dan pencapaian Kanji
-                        Anda di papan peringkat global.
-                      </span>
-                    </ToggleInfo>
-                    <SwitchButton
-                      $checked={shareProgress}
-                      onClick={() => setShareProgress(!shareProgress)}
-                    />
-                  </ToggleRow>
-                </ToggleList>
-              </FormGrid>
-            </>
-          )}
-
-          {activeTab === "learning" && (
-            <>
-              <TabHeader>
-                <h2>Manajemen Data Belajar</h2>
-                <p>
-                  Tinjau dan reset histori kuis, statistik streak harian, serta
-                  level EXP Anda.
-                </p>
-              </TabHeader>
-              <FormGrid>
-                <DangerCard>
-                  <DangerTitle>Zona Bahaya (Danger Zone)</DangerTitle>
-                  <DangerDesc>
-                    Menyetel ulang data belajar akan menghapus semua level EXP,
-                    streak harian, lencana heksagonal, dan histori penguasaan
-                    huruf Kanji & Kosakata Anda secara permanen. Tindakan ini
-                    tidak dapat dibatalkan.
-                  </DangerDesc>
-
-                  <DangerButton
-                    type="button"
-                    $confirming={confirmReset}
-                    onClick={() => {
-                      if (confirmReset) {
-                        resetProgress();
-                        triggerToast(
-                          "Seluruh progres belajar telah di-reset! 🗑️",
-                        );
-                        setConfirmReset(false);
-                      } else {
-                        setConfirmReset(true);
-                        setTimeout(() => setConfirmReset(false), 5000); // Auto cancel after 5s
-                      }
-                    }}
-                  >
-                    {confirmReset
-                      ? "⚠️ Klik Sekali Lagi untuk Reset!"
-                      : "🗑️ Reset Seluruh Progres"}
-                  </DangerButton>
-                </DangerCard>
-              </FormGrid>
-            </>
-          )}
-
-          {/* SAVE ACTIONS */}
-          <ActionButtonGroup>
-            <CancelButton
-              type="button"
-              onClick={() => {
-                const isUnchanged = color === initialColor.current && mode === initialMode.current;
-                if (isUnchanged) {
-                  triggerToast("Tidak ada perubahan yang dibatalkan! ⚙️");
-                } else {
-                  setColor(initialColor.current);
-                  setMode(initialMode.current);
-                  triggerToast("Perubahan tampilan dibatalkan! ↩️");
-                }
-              }}
-            >
-              Batal
-            </CancelButton>
-            <SaveButton type="button" onClick={handleSave}>
               <svg
-                width="18"
-                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
               >
-                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                <polyline points="17 21 17 13 7 13 7 21" />
-                <polyline points="7 3 7 8 15 8" />
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
               </svg>
-              Simpan Perubahan
-            </SaveButton>
-          </ActionButtonGroup>
-        </SettingsCard>
-      </MainLayout>
+              <span className="text-desktop">Akun & Fitur</span>
+              <span className="text-mobile">Akun</span>
+            </TabButton>
+            <TabButton
+              $active={activeTab === "appearance"}
+              onClick={() => setActiveTab("appearance")}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+              </svg>
+              <span className="text-desktop">Tampilan / Tema</span>
+              <span className="text-mobile">Tema</span>
+            </TabButton>
+            <TabButton
+              $active={activeTab === "preferences"}
+              onClick={() => setActiveTab("preferences")}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              <span className="text-desktop">Privasi & Keamanan</span>
+              <span className="text-mobile">Privasi</span>
+            </TabButton>
+            <TabButton
+              $active={activeTab === "learning"}
+              onClick={() => setActiveTab("learning")}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+              <span className="text-desktop">Data Belajar</span>
+              <span className="text-mobile">Data</span>
+            </TabButton>
+          </Sidebar>
 
-      {/* Toast Notification */}
-      <AnimatePresence>
-        {toastMessage && (
-          <Toast
-            initial={{ opacity: 0, y: 50, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: 20, x: "-50%" }}
-            transition={{ duration: 0.2 }}
-          >
-            {toastMessage}
-          </Toast>
-        )}
-      </AnimatePresence>
+          {/* SETTINGS CARD DYNAMIC SHOWCASE */}
+          <SettingsCard>
+            {activeTab === "account" && (
+              <>
+                <TabHeader>
+                  <h2>Pengaturan Akun & Fitur</h2>
+                  <p>
+                    Kelola kredensial akun dan pilihan metode interaksi kuis
+                    belajar Anda.
+                  </p>
+                </TabHeader>
+                <FormGrid>
+                  <FormGroup>
+                    <label htmlFor="username">Nama Pengguna (Username)</label>
+                    <FormInput
+                      id="username"
+                      type="text"
+                      placeholder="japan_learner"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <label htmlFor="email">Alamat Email</label>
+                    <FormInput
+                      id="email"
+                      type="email"
+                      placeholder="learner@japanapp.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </FormGroup>
+
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <SectionTitle>Metode & Pengalaman Belajar</SectionTitle>
+                    <ToggleList>
+                      <ToggleRow>
+                        <ToggleInfo>
+                          <span className="title">
+                            Efek Suara (Sound Effects)
+                          </span>
+                          <span className="desc">
+                            Mainkan efek audio yang memuaskan ketika menjawab
+                            benar atau salah.
+                          </span>
+                        </ToggleInfo>
+                        <SwitchButton
+                          $checked={soundEffects}
+                          onClick={() => setSoundEffects(!soundEffects)}
+                        />
+                      </ToggleRow>
+
+                      <ToggleRow>
+                        <ToggleInfo>
+                          <span className="title">
+                            Animasi Mikro (Animations)
+                          </span>
+                          <span className="desc">
+                            Gunakan efek transisi halus pada kartu dan lencana
+                            heksagonal.
+                          </span>
+                        </ToggleInfo>
+                        <SwitchButton
+                          $checked={animations}
+                          onClick={() => setAnimations(!animations)}
+                        />
+                      </ToggleRow>
+
+                      <ToggleRow>
+                        <ToggleInfo>
+                          <span className="title">Pesan Motivasi</span>
+                          <span className="desc">
+                            Tampilkan pesan penyemangat dari maskot setelah
+                            menyelesaikan latihan kuis.
+                          </span>
+                        </ToggleInfo>
+                        <SwitchButton
+                          $checked={motivationalMsgs}
+                          onClick={() => setMotivationalMsgs(!motivationalMsgs)}
+                        />
+                      </ToggleRow>
+
+                      <ToggleRow>
+                        <ToggleInfo>
+                          <span className="title">
+                            Latihan Berbicara (Speaking)
+                          </span>
+                          <span className="desc">
+                            Aktifkan latihan pengucapan interaktif menggunakan
+                            mikrofon peramban.
+                          </span>
+                        </ToggleInfo>
+                        <SwitchButton
+                          $checked={speakingExercises}
+                          onClick={() =>
+                            setSpeakingExercises(!speakingExercises)
+                          }
+                        />
+                      </ToggleRow>
+
+                      <ToggleRow>
+                        <ToggleInfo>
+                          <span className="title">
+                            Latihan Mendengarkan (Listening)
+                          </span>
+                          <span className="desc">
+                            Sertakan soal latihan pendengaran audio penutur asli
+                            Jepang (Native Speaker).
+                          </span>
+                        </ToggleInfo>
+                        <SwitchButton
+                          $checked={listeningExercises}
+                          onClick={() =>
+                            setListeningExercises(!listeningExercises)
+                          }
+                        />
+                      </ToggleRow>
+                    </ToggleList>
+                  </div>
+                </FormGrid>
+              </>
+            )}
+
+            {activeTab === "appearance" && (
+              <>
+                <TabHeader>
+                  <h2>Tema & Gaya Tampilan</h2>
+                  <p>
+                    Kustomisasi skema warna aksen dan mode visual aplikasi
+                    JapanApp sesuai selera Anda.
+                  </p>
+                </TabHeader>
+                <FormGrid>
+                  <FormGroup>
+                    <label>Warna Aksen Aplikasi (Theme Accent Color)</label>
+                    <SubDescription>
+                      Klik lingkaran warna di bawah ini untuk mengubah seluruh
+                      aksen visual web secara real-time.
+                    </SubDescription>
+                    <ColorGrid>
+                      {Object.entries(themes).map(([key, value]) => (
+                        <ColorBtn
+                          key={key}
+                          type="button"
+                          $color={value.primary}
+                          $isSelected={color === key}
+                          onClick={() => {
+                            setColor(key as any);
+                            triggerToast(`Pratinjau aksen: ${key} 🎨`);
+                          }}
+                          title={key}
+                        />
+                      ))}
+                    </ColorGrid>
+                  </FormGroup>
+
+                  <FormGroup style={{ marginTop: "1rem" }}>
+                    <label>Mode Tampilan (Appearance Mode)</label>
+                    <ModeRow>
+                      <ModeBox
+                        $active={mode === "light"}
+                        onClick={() => {
+                          setMode("light");
+                          triggerToast("Pratinjau Mode Terang ☀️");
+                        }}
+                      >
+                        <span className="icon">☀️</span>
+                        <span>Mode Terang</span>
+                      </ModeBox>
+                      <ModeBox
+                        $active={mode === "dark"}
+                        onClick={() => {
+                          setMode("dark");
+                          triggerToast("Pratinjau Mode Gelap 🌙");
+                        }}
+                      >
+                        <span className="icon">🌙</span>
+                        <span>Mode Gelap</span>
+                      </ModeBox>
+                    </ModeRow>
+                  </FormGroup>
+                </FormGrid>
+              </>
+            )}
+
+            {activeTab === "preferences" && (
+              <>
+                <TabHeader>
+                  <h2>Privasi & Keamanan Sosial</h2>
+                  <p>
+                    Atur visibilitas progres belajar Anda dan batasi interaksi
+                    pertemanan sosial.
+                  </p>
+                </TabHeader>
+                <FormGrid>
+                  <ToggleList>
+                    <ToggleRow>
+                      <ToggleInfo>
+                        <span className="title">
+                          Profil Publik (Public Profile)
+                        </span>
+                        <span className="desc">
+                          Izinkan pengguna lain mencari profil Anda dan melihat
+                          lencana heksagonal Anda.
+                        </span>
+                      </ToggleInfo>
+                      <SwitchButton
+                        $checked={publicProfile}
+                        onClick={() => setPublicProfile(!publicProfile)}
+                      />
+                    </ToggleRow>
+
+                    <ToggleRow>
+                      <ToggleInfo>
+                        <span className="title">
+                          Terima Permintaan Pertemanan
+                        </span>
+                        <span className="desc">
+                          Izinkan pengguna lain mengikuti progres belajar Anda
+                          atau mengundang ke grup belajar.
+                        </span>
+                      </ToggleInfo>
+                      <SwitchButton
+                        $checked={friendRequests}
+                        onClick={() => setFriendRequests(!friendRequests)}
+                      />
+                    </ToggleRow>
+
+                    <ToggleRow>
+                      <ToggleInfo>
+                        <span className="title">Bagikan Progres Mingguan</span>
+                        <span className="desc">
+                          Tampilkan streak belajar harian dan pencapaian Kanji
+                          Anda di papan peringkat global.
+                        </span>
+                      </ToggleInfo>
+                      <SwitchButton
+                        $checked={shareProgress}
+                        onClick={() => setShareProgress(!shareProgress)}
+                      />
+                    </ToggleRow>
+                  </ToggleList>
+                </FormGrid>
+              </>
+            )}
+
+            {activeTab === "learning" && (
+              <>
+                <TabHeader>
+                  <h2>Manajemen Data Belajar</h2>
+                  <p>
+                    Tinjau dan reset histori kuis, statistik streak harian,
+                    serta level EXP Anda.
+                  </p>
+                </TabHeader>
+                <FormGrid>
+                  <DangerCard>
+                    <DangerTitle>Zona Bahaya (Danger Zone)</DangerTitle>
+                    <DangerDesc>
+                      Menyetel ulang data belajar akan menghapus semua level
+                      EXP, streak harian, lencana heksagonal, dan histori
+                      penguasaan huruf Kanji & Kosakata Anda secara permanen.
+                      Tindakan ini tidak dapat dibatalkan.
+                    </DangerDesc>
+
+                    <DangerButton
+                      type="button"
+                      $confirming={confirmReset}
+                      onClick={() => {
+                        if (confirmReset) {
+                          resetProgress();
+                          triggerToast(
+                            "Seluruh progres belajar telah di-reset! 🗑️",
+                          );
+                          setConfirmReset(false);
+                        } else {
+                          setConfirmReset(true);
+                          setTimeout(() => setConfirmReset(false), 5000); // Auto cancel after 5s
+                        }
+                      }}
+                    >
+                      {confirmReset
+                        ? "⚠️ Klik Sekali Lagi untuk Reset!"
+                        : "🗑️ Reset Seluruh Progres"}
+                    </DangerButton>
+                  </DangerCard>
+                </FormGrid>
+              </>
+            )}
+
+            {/* SAVE ACTIONS */}
+            <ActionButtonGroup>
+              <CancelButton
+                type="button"
+                onClick={() => {
+                  const isUnchanged =
+                    color === initialColor.current &&
+                    mode === initialMode.current;
+                  if (isUnchanged) {
+                    triggerToast("Tidak ada perubahan yang dibatalkan! ⚙️");
+                  } else {
+                    setColor(initialColor.current);
+                    setMode(initialMode.current);
+                    triggerToast("Perubahan tampilan dibatalkan! ↩️");
+                  }
+                }}
+              >
+                Batal
+              </CancelButton>
+              <SaveButton type="button" onClick={handleSave}>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                  <polyline points="17 21 17 13 7 13 7 21" />
+                  <polyline points="7 3 7 8 15 8" />
+                </svg>
+                Simpan Perubahan
+              </SaveButton>
+            </ActionButtonGroup>
+          </SettingsCard>
+        </MainLayout>
+
+        {/* Toast Notification */}
+        <AnimatePresence>
+          {toastMessage && (
+            <Toast
+              initial={{ opacity: 0, y: 50, x: "-50%" }}
+              animate={{ opacity: 1, y: 0, x: "-50%" }}
+              exit={{ opacity: 0, y: 20, x: "-50%" }}
+              transition={{ duration: 0.2 }}
+            >
+              {toastMessage}
+            </Toast>
+          )}
+        </AnimatePresence>
       </ContentWrapper>
     </Container>
   );

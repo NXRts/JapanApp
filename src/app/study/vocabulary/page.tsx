@@ -843,84 +843,84 @@ export default function VocabularyFlashcards() {
             </Header>
           )}
 
-        <FlashcardContainer>
-          <SectionTitle>Memorization Mode</SectionTitle>
-          <AnimContainer key={currentIndex} $dir={slideDir}>
-            <CardPerspective
-              onClick={() => setFlipped(!flipped)}
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-            >
-              <CardInner $flipped={flipped}>
-                <CardFace>
-                  <InstructionText>Word</InstructionText>
-                  <BigWord>{currentVocab.word}</BigWord>
-                  <HintText>Tap to Reveal ⟳</HintText>
-                </CardFace>
+          <FlashcardContainer>
+            <SectionTitle>Memorization Mode</SectionTitle>
+            <AnimContainer key={currentIndex} $dir={slideDir}>
+              <CardPerspective
+                onClick={() => setFlipped(!flipped)}
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
+                <CardInner $flipped={flipped}>
+                  <CardFace>
+                    <InstructionText>Word</InstructionText>
+                    <BigWord>{currentVocab.word}</BigWord>
+                    <HintText>Tap to Reveal ⟳</HintText>
+                  </CardFace>
 
-                <CardBack>
-                  <DetailsStacked>
-                    <ReadingTop>{currentVocab.reading}</ReadingTop>
-                    <WordMid>{currentVocab.word}</WordMid>
-                    <RomajiText>{currentVocab.romaji}</RomajiText>
-                    <MeaningText>{currentVocab.meaning}</MeaningText>
-                  </DetailsStacked>
-                  <HintText>Tap to Flip ⟳</HintText>
-                </CardBack>
-              </CardInner>
-            </CardPerspective>
-          </AnimContainer>
+                  <CardBack>
+                    <DetailsStacked>
+                      <ReadingTop>{currentVocab.reading}</ReadingTop>
+                      <WordMid>{currentVocab.word}</WordMid>
+                      <RomajiText>{currentVocab.romaji}</RomajiText>
+                      <MeaningText>{currentVocab.meaning}</MeaningText>
+                    </DetailsStacked>
+                    <HintText>Tap to Flip ⟳</HintText>
+                  </CardBack>
+                </CardInner>
+              </CardPerspective>
+            </AnimContainer>
 
-          <ActionButtons>
-            {!flipped ? (
-              <>
-                {!isMobileView && (
-                  <IconBtn onClick={prevCard} aria-label="Previous Word">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <polyline points="15 18 9 12 15 6"></polyline>
-                    </svg>
-                  </IconBtn>
-                )}
+            <ActionButtons>
+              {!flipped ? (
+                <>
+                  {!isMobileView && (
+                    <IconBtn onClick={prevCard} aria-label="Previous Word">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                      </svg>
+                    </IconBtn>
+                  )}
 
-                <ActionBtn onClick={() => setFlipped(true)}>
-                  Reveal Answer
-                </ActionBtn>
-              </>
-            ) : (
-              <div style={{ display: "flex", gap: "0.75rem", width: "100%" }}>
-                <ActionBtn
-                  style={{ background: "#ef4444" }}
-                  onClick={() => rateRecall(1)}
-                >
-                  Hard
-                </ActionBtn>
-                <ActionBtn
-                  style={{ background: "#3b82f6" }}
-                  onClick={() => rateRecall(3)}
-                >
-                  Good
-                </ActionBtn>
-                <ActionBtn
-                  style={{ background: "#10b981" }}
-                  onClick={() => rateRecall(5)}
-                >
-                  Easy
-                </ActionBtn>
-              </div>
-            )}
-          </ActionButtons>
-        </FlashcardContainer>
-      </ContentWrapper>
+                  <ActionBtn onClick={() => setFlipped(true)}>
+                    Reveal Answer
+                  </ActionBtn>
+                </>
+              ) : (
+                <div style={{ display: "flex", gap: "0.75rem", width: "100%" }}>
+                  <ActionBtn
+                    style={{ background: "#ef4444" }}
+                    onClick={() => rateRecall(1)}
+                  >
+                    Hard
+                  </ActionBtn>
+                  <ActionBtn
+                    style={{ background: "#3b82f6" }}
+                    onClick={() => rateRecall(3)}
+                  >
+                    Good
+                  </ActionBtn>
+                  <ActionBtn
+                    style={{ background: "#10b981" }}
+                    onClick={() => rateRecall(5)}
+                  >
+                    Easy
+                  </ActionBtn>
+                </div>
+              )}
+            </ActionButtons>
+          </FlashcardContainer>
+        </ContentWrapper>
       </Container>
     </PageWrapper>
   );

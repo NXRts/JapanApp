@@ -1388,7 +1388,8 @@ function QuizContent() {
           <LobbyCard>
             <SetupTitle>JLPT Quiz Hub</SetupTitle>
             <SetupSub>
-              Pilih mode kuis dan tantang penguasaan materi JLPT Anda dalam batasan waktu yang terukur.
+              Pilih mode kuis dan tantang penguasaan materi JLPT Anda dalam
+              batasan waktu yang terukur.
             </SetupSub>
 
             {stats.gamesPlayed > 0 && (
@@ -1416,14 +1417,18 @@ function QuizContent() {
                     $active={!timeAttack}
                     onClick={() => setTimeAttack(false)}
                   >
-                    <span className="desktop-text">⚡ Express Quiz (Relaxed)</span>
+                    <span className="desktop-text">
+                      ⚡ Express Quiz (Relaxed)
+                    </span>
                     <span className="mobile-text">⚡ Relaxed</span>
                   </OptionButton>
                   <OptionButton
                     $active={timeAttack}
                     onClick={() => setTimeAttack(true)}
                   >
-                    <span className="desktop-text">🔥 Time Attack (10 Detik/Soal)</span>
+                    <span className="desktop-text">
+                      🔥 Time Attack (10 Detik/Soal)
+                    </span>
                     <span className="mobile-text">🔥 Time Attack</span>
                   </OptionButton>
                 </OptionGrid>
@@ -1449,9 +1454,17 @@ function QuizContent() {
                 <OptionGrid $cols={4}>
                   {[
                     { id: "mix", desktop: "Semua Mix", mobile: "Mix" },
-                    { id: "vocabulary", desktop: "Kosakata", mobile: "Kosakata" },
+                    {
+                      id: "vocabulary",
+                      desktop: "Kosakata",
+                      mobile: "Kosakata",
+                    },
                     { id: "kanji", desktop: "Kanji", mobile: "Kanji" },
-                    { id: "grammar", desktop: "Tata Bahasa", mobile: "Grammar" },
+                    {
+                      id: "grammar",
+                      desktop: "Tata Bahasa",
+                      mobile: "Grammar",
+                    },
                   ].map((cat) => (
                     <OptionButton
                       key={cat.id}
@@ -1793,7 +1806,9 @@ function QuizContent() {
             </ReviewSection>
 
             <ActionsRow>
-              <ResultsPrimaryButton onClick={startQuiz}>Try Again</ResultsPrimaryButton>
+              <ResultsPrimaryButton onClick={startQuiz}>
+                Try Again
+              </ResultsPrimaryButton>
               <SecondaryButton onClick={() => setQuizState("lobby")}>
                 Back to Lobby
               </SecondaryButton>

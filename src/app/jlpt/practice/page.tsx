@@ -514,7 +514,9 @@ const PrimaryButton = styled(BaseButton)`
   box-shadow: 0 8px 16px -4px rgba(var(--primary-rgb, 79, 70, 229), 0.35);
 `;
 
-const SelfAssessButton = styled(BaseButton)<{ $type: "hard" | "good" | "easy" }>`
+const SelfAssessButton = styled(BaseButton)<{
+  $type: "hard" | "good" | "easy";
+}>`
   background: ${({ $type }) =>
     $type === "easy"
       ? "rgba(16, 185, 129, 0.12)"
@@ -619,8 +621,7 @@ const DrillOptionCard = styled.button<{
 const ExplanationBanner = styled.div<{ $isCorrect: boolean }>`
   background: ${({ $isCorrect }) =>
     $isCorrect ? "rgba(16, 185, 129, 0.1)" : "rgba(244, 63, 94, 0.1)"};
-  border: 1px solid
-    ${({ $isCorrect }) => ($isCorrect ? "#10b981" : "#f43f5e")};
+  border: 1px solid ${({ $isCorrect }) => ($isCorrect ? "#10b981" : "#f43f5e")};
   border-radius: 16px;
   padding: 1.25rem;
   margin-top: 1.5rem;
@@ -726,58 +727,214 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 const kanaToRomajiMap: Record<string, string> = {
-  あ: "a", い: "i", う: "u", え: "e", お: "o",
-  か: "ka", き: "ki", く: "ku", け: "ke", こ: "ko",
-  さ: "sa", し: "shi", す: "su", せ: "se", そ: "so",
-  た: "ta", ち: "chi", つ: "tsu", て: "te", と: "to",
-  な: "na", に: "ni", ぬ: "nu", ね: "ne", の: "no",
-  は: "ha", ひ: "hi", ふ: "fu", へ: "he", ほ: "ho",
-  ま: "ma", み: "mi", む: "mu", め: "me", も: "mo",
-  や: "ya", ゆ: "yu", よ: "yo",
-  ら: "ra", り: "ri", る: "ru", れ: "re", ろ: "ro",
-  わ: "wa", を: "wo", ん: "n",
-  が: "ga", ぎ: "gi", ぐ: "gu", げ: "ge", ご: "go",
-  ざ: "za", じ: "ji", ず: "zu", ぜ: "ze", ぞ: "zo",
-  だ: "da", ぢ: "ji", づ: "zu", で: "de", ど: "do",
-  ば: "ba", び: "bi", ぶ: "bu", べ: "be", ぼ: "bo",
-  ぱ: "pa", ぴ: "pi", ぷ: "pu", ぺ: "pe", ぽ: "po",
-  きゃ: "kya", きゅ: "kyu", きょ: "kyo",
-  しゃ: "sha", しゅ: "shu", しょ: "sho",
-  ちゃ: "cha", ちゅ: "chu", ちょ: "cho",
-  にゃ: "nya", にゅ: "nyu", にょ: "nyo",
-  ひゃ: "hya", ひゅ: "hyu", ひょ: "hyo",
-  みゃ: "mya", みゅ: "myu", みょ: "myo",
-  りゃ: "rya", りゅ: "ryu", りょ: "ryo",
-  ぎゃ: "gya", ぎゅ: "gyu", ぎょ: "gyo",
-  じゃ: "ja", じゅ: "ju", じょ: "jo",
-  びゃ: "bya", びゅ: "byu", びょ: "byo",
-  ぴゃ: "pya", ぴゅ: "pyu", ぴょ: "pyo",
-  ア: "a", イ: "i", ウ: "u", エ: "e", オ: "o",
-  カ: "ka", キ: "ki", ク: "ku", ケ: "ke", コ: "ko",
-  サ: "sa", シ: "shi", ス: "su", セ: "se", ソ: "so",
-  タ: "ta", チ: "chi", ツ: "tsu", テ: "te", ト: "to",
-  ナ: "na", ニ: "ni", ヌ: "nu", ネ: "ne", ノ: "no",
-  ハ: "ha", ヒ: "hi", フ: "fu", ヘ: "he", ホ: "ho",
-  マ: "ma", ミ: "mi", ム: "mu", メ: "me", モ: "mo",
-  ヤ: "ya", ユ: "yu", ヨ: "yo",
-  ラ: "ra", リ: "ri", ル: "ru", レ: "re", ロ: "ro",
-  ワ: "wa", ヲ: "wo", ン: "n",
-  ガ: "ga", ギ: "gi", グ: "gu", ゲ: "ge", ゴ: "go",
-  ザ: "za", ジ: "ji", ズ: "zu", ゼ: "ze", ゾ: "zo",
-  ダ: "da", ヂ: "ji", ヅ: "zu", デ: "de", ド: "do",
-  バ: "ba", ビ: "bi", ブ: "bu", ベ: "be", ボ: "bo",
-  パ: "pa", ピ: "pi", プ: "pu", ペ: "pe", ポ: "po",
-  キャ: "kya", キュ: "kyu", キョ: "kyo",
-  シャ: "sha", シュ: "shu", ショ: "sho",
-  チャ: "cha", チュ: "chu", チョ: "cho",
-  ニャ: "nya", ニュ: "nyu", ニョ: "nyo",
-  ヒャ: "hya", ヒュ: "hyu", ヒョ: "hyo",
-  ミャ: "mya", ミュ: "myu", ミョ: "myo",
-  リャ: "rya", リュ: "ryu", リョ: "ryo",
-  ギャ: "gya", ギュ: "gyu", ギョ: "gyo",
-  ジャ: "ja", ジュ: "ju", ジョ: "jo",
-  ビャ: "bya", ビュ: "byu", ビョ: "byo",
-  ピャ: "pya", ピュ: "pyu", ピョ: "pyo",
+  あ: "a",
+  い: "i",
+  う: "u",
+  え: "e",
+  お: "o",
+  か: "ka",
+  き: "ki",
+  く: "ku",
+  け: "ke",
+  こ: "ko",
+  さ: "sa",
+  し: "shi",
+  す: "su",
+  せ: "se",
+  そ: "so",
+  た: "ta",
+  ち: "chi",
+  つ: "tsu",
+  て: "te",
+  と: "to",
+  な: "na",
+  に: "ni",
+  ぬ: "nu",
+  ね: "ne",
+  の: "no",
+  は: "ha",
+  ひ: "hi",
+  ふ: "fu",
+  へ: "he",
+  ほ: "ho",
+  ま: "ma",
+  み: "mi",
+  む: "mu",
+  め: "me",
+  も: "mo",
+  や: "ya",
+  ゆ: "yu",
+  よ: "yo",
+  ら: "ra",
+  り: "ri",
+  る: "ru",
+  れ: "re",
+  ろ: "ro",
+  わ: "wa",
+  を: "wo",
+  ん: "n",
+  が: "ga",
+  ぎ: "gi",
+  ぐ: "gu",
+  げ: "ge",
+  ご: "go",
+  ざ: "za",
+  じ: "ji",
+  ず: "zu",
+  ぜ: "ze",
+  ぞ: "zo",
+  だ: "da",
+  ぢ: "ji",
+  づ: "zu",
+  で: "de",
+  ど: "do",
+  ば: "ba",
+  び: "bi",
+  ぶ: "bu",
+  べ: "be",
+  ぼ: "bo",
+  ぱ: "pa",
+  ぴ: "pi",
+  ぷ: "pu",
+  ぺ: "pe",
+  ぽ: "po",
+  きゃ: "kya",
+  きゅ: "kyu",
+  きょ: "kyo",
+  しゃ: "sha",
+  しゅ: "shu",
+  しょ: "sho",
+  ちゃ: "cha",
+  ちゅ: "chu",
+  ちょ: "cho",
+  にゃ: "nya",
+  にゅ: "nyu",
+  にょ: "nyo",
+  ひゃ: "hya",
+  ひゅ: "hyu",
+  ひょ: "hyo",
+  みゃ: "mya",
+  みゅ: "myu",
+  みょ: "myo",
+  りゃ: "rya",
+  りゅ: "ryu",
+  りょ: "ryo",
+  ぎゃ: "gya",
+  ぎゅ: "gyu",
+  ぎょ: "gyo",
+  じゃ: "ja",
+  じゅ: "ju",
+  じょ: "jo",
+  びゃ: "bya",
+  びゅ: "byu",
+  びょ: "byo",
+  ぴゃ: "pya",
+  ぴゅ: "pyu",
+  ぴょ: "pyo",
+  ア: "a",
+  イ: "i",
+  ウ: "u",
+  エ: "e",
+  オ: "o",
+  カ: "ka",
+  キ: "ki",
+  ク: "ku",
+  ケ: "ke",
+  コ: "ko",
+  サ: "sa",
+  シ: "shi",
+  ス: "su",
+  セ: "se",
+  ソ: "so",
+  タ: "ta",
+  チ: "chi",
+  ツ: "tsu",
+  テ: "te",
+  ト: "to",
+  ナ: "na",
+  ニ: "ni",
+  ヌ: "nu",
+  ネ: "ne",
+  ノ: "no",
+  ハ: "ha",
+  ヒ: "hi",
+  フ: "fu",
+  ヘ: "he",
+  ホ: "ho",
+  マ: "ma",
+  ミ: "mi",
+  ム: "mu",
+  メ: "me",
+  モ: "mo",
+  ヤ: "ya",
+  ユ: "yu",
+  ヨ: "yo",
+  ラ: "ra",
+  リ: "ri",
+  ル: "ru",
+  レ: "re",
+  ロ: "ro",
+  ワ: "wa",
+  ヲ: "wo",
+  ン: "n",
+  ガ: "ga",
+  ギ: "gi",
+  グ: "gu",
+  ゲ: "ge",
+  ゴ: "go",
+  ザ: "za",
+  ジ: "ji",
+  ズ: "zu",
+  ゼ: "ze",
+  ゾ: "zo",
+  ダ: "da",
+  ヂ: "ji",
+  ヅ: "zu",
+  デ: "de",
+  ド: "do",
+  バ: "ba",
+  ビ: "bi",
+  ブ: "bu",
+  ベ: "be",
+  ボ: "bo",
+  パ: "pa",
+  ピ: "pi",
+  プ: "pu",
+  ペ: "pe",
+  ポ: "po",
+  キャ: "kya",
+  キュ: "kyu",
+  キョ: "kyo",
+  シャ: "sha",
+  シュ: "shu",
+  ショ: "sho",
+  チャ: "cha",
+  チュ: "chu",
+  チョ: "cho",
+  ニャ: "nya",
+  ニュ: "nyu",
+  ニョ: "nyo",
+  ヒャ: "hya",
+  ヒュ: "hyu",
+  ヒョ: "hyo",
+  ミャ: "mya",
+  ミュ: "myu",
+  ミョ: "myo",
+  リャ: "rya",
+  リュ: "ryu",
+  リョ: "ryo",
+  ギャ: "gya",
+  ギュ: "gyu",
+  ギョ: "gyo",
+  ジャ: "ja",
+  ジュ: "ju",
+  ジョ: "jo",
+  ビャ: "bya",
+  ビュ: "byu",
+  ビョ: "byo",
+  ピャ: "pya",
+  ピュ: "pyu",
+  ピョ: "pyo",
 };
 
 function convertKanaToRomaji(text: string): string {
@@ -823,10 +980,16 @@ function getItemKanjiDetails(item: any) {
   let onyomiList: string[] = [];
   let kunyomiList: string[] = [];
 
-  if (item.onyomi && (Array.isArray(item.onyomi) ? item.onyomi.length > 0 : true)) {
+  if (
+    item.onyomi &&
+    (Array.isArray(item.onyomi) ? item.onyomi.length > 0 : true)
+  ) {
     onyomiList = Array.isArray(item.onyomi) ? item.onyomi : [item.onyomi];
   }
-  if (item.kunyomi && (Array.isArray(item.kunyomi) ? item.kunyomi.length > 0 : true)) {
+  if (
+    item.kunyomi &&
+    (Array.isArray(item.kunyomi) ? item.kunyomi.length > 0 : true)
+  ) {
     kunyomiList = Array.isArray(item.kunyomi) ? item.kunyomi : [item.kunyomi];
   }
 
@@ -837,11 +1000,15 @@ function getItemKanjiDetails(item: any) {
       const match = allKanji.find((k) => k.kanji === char);
       if (match) {
         if (match.onyomi) {
-          const arr = Array.isArray(match.onyomi) ? match.onyomi : [match.onyomi];
+          const arr = Array.isArray(match.onyomi)
+            ? match.onyomi
+            : [match.onyomi];
           onyomiList.push(...arr);
         }
         if (match.kunyomi) {
-          const arr = Array.isArray(match.kunyomi) ? match.kunyomi : [match.kunyomi];
+          const arr = Array.isArray(match.kunyomi)
+            ? match.kunyomi
+            : [match.kunyomi];
           kunyomiList.push(...arr);
         }
       }
@@ -853,8 +1020,10 @@ function getItemKanjiDetails(item: any) {
   kunyomiList = Array.from(new Set(kunyomiList));
 
   return {
-    onyomiStr: onyomiList.length > 0 ? formatReadingsWithRomaji(onyomiList) : "",
-    kunyomiStr: kunyomiList.length > 0 ? formatReadingsWithRomaji(kunyomiList) : "",
+    onyomiStr:
+      onyomiList.length > 0 ? formatReadingsWithRomaji(onyomiList) : "",
+    kunyomiStr:
+      kunyomiList.length > 0 ? formatReadingsWithRomaji(kunyomiList) : "",
   };
 }
 
@@ -917,14 +1086,22 @@ function PracticeContent() {
 
       if (!searchParams.get("level")) {
         const savedLevel = localStorage.getItem("japanapp_practice_level");
-        if (savedLevel && ["All", "N5", "N4", "N3", "N2", "N1"].includes(savedLevel)) {
+        if (
+          savedLevel &&
+          ["All", "N5", "N4", "N3", "N2", "N1"].includes(savedLevel)
+        ) {
           setSetupLevel(savedLevel);
         }
       }
 
       if (!searchParams.get("category")) {
-        const savedCategory = localStorage.getItem("japanapp_practice_category");
-        if (savedCategory && ["vocabulary", "kanji", "grammar"].includes(savedCategory)) {
+        const savedCategory = localStorage.getItem(
+          "japanapp_practice_category",
+        );
+        if (
+          savedCategory &&
+          ["vocabulary", "kanji", "grammar"].includes(savedCategory)
+        ) {
           setSetupCategory(savedCategory);
         }
       }
@@ -1024,12 +1201,22 @@ function PracticeContent() {
     if (!item) return "";
     if (item.type === "kanji" || item.onyomi || item.kunyomi) {
       const parts = [];
-      if (item.onyomi && (Array.isArray(item.onyomi) ? item.onyomi.length > 0 : true)) {
-        const onStr = Array.isArray(item.onyomi) ? item.onyomi.join(", ") : item.onyomi;
+      if (
+        item.onyomi &&
+        (Array.isArray(item.onyomi) ? item.onyomi.length > 0 : true)
+      ) {
+        const onStr = Array.isArray(item.onyomi)
+          ? item.onyomi.join(", ")
+          : item.onyomi;
         parts.push(`音読み (Onyomi): ${onStr}`);
       }
-      if (item.kunyomi && (Array.isArray(item.kunyomi) ? item.kunyomi.length > 0 : true)) {
-        const kunStr = Array.isArray(item.kunyomi) ? item.kunyomi.join(", ") : item.kunyomi;
+      if (
+        item.kunyomi &&
+        (Array.isArray(item.kunyomi) ? item.kunyomi.length > 0 : true)
+      ) {
+        const kunStr = Array.isArray(item.kunyomi)
+          ? item.kunyomi.join(", ")
+          : item.kunyomi;
         parts.push(`訓読み (Kunyomi): ${kunStr}`);
       }
       if (parts.length > 0) return parts.join(" • ");
@@ -1108,7 +1295,8 @@ function PracticeContent() {
             <SessionBadgeGroup>
               <LevelTag>{setupLevel}</LevelTag>
               <CategoryTag>
-                {setupCategory} • {practiceMode === "flashcard" ? "🎴 Flashcard" : "🎯 Drill"}
+                {setupCategory} •{" "}
+                {practiceMode === "flashcard" ? "🎴 Flashcard" : "🎯 Drill"}
               </CategoryTag>
             </SessionBadgeGroup>
 
@@ -1123,7 +1311,8 @@ function PracticeContent() {
           <PracticeCard>
             <SetupTitle>Start Practice Hub</SetupTitle>
             <SetupSub>
-              Pilih mode dan filter materi latihan sesuai kebutuhan Anda untuk mengasah ingatan tanpa tekanan waktu.
+              Pilih mode dan filter materi latihan sesuai kebutuhan Anda untuk
+              mengasah ingatan tanpa tekanan waktu.
             </SetupSub>
 
             <SelectionGroup>
@@ -1134,14 +1323,18 @@ function PracticeContent() {
                     $active={practiceMode === "flashcard"}
                     onClick={() => handleModeChange("flashcard")}
                   >
-                    <span className="desktop-text">🎴 Flashcard Mastery (Flip Card)</span>
+                    <span className="desktop-text">
+                      🎴 Flashcard Mastery (Flip Card)
+                    </span>
                     <span className="mobile-text">🎴 Flashcard</span>
                   </OptionButton>
                   <OptionButton
                     $active={practiceMode === "drill"}
                     onClick={() => handleModeChange("drill")}
                   >
-                    <span className="desktop-text">🎯 Interactive Drill (Pilihan Ganda)</span>
+                    <span className="desktop-text">
+                      🎯 Interactive Drill (Pilihan Ganda)
+                    </span>
                     <span className="mobile-text">🎯 Kuis Drill</span>
                   </OptionButton>
                 </OptionGrid>
@@ -1166,9 +1359,17 @@ function PracticeContent() {
                 <SelectionLabel>Pilih Kategori Materi</SelectionLabel>
                 <OptionGrid $cols={3}>
                   {[
-                    { id: "vocabulary", desktop: "Kosakata (Vocabulary)", mobile: "Kosakata" },
+                    {
+                      id: "vocabulary",
+                      desktop: "Kosakata (Vocabulary)",
+                      mobile: "Kosakata",
+                    },
                     { id: "kanji", desktop: "Kanji", mobile: "Kanji" },
-                    { id: "grammar", desktop: "Tata Bahasa (Grammar)", mobile: "Tata Bahasa" },
+                    {
+                      id: "grammar",
+                      desktop: "Tata Bahasa (Grammar)",
+                      mobile: "Tata Bahasa",
+                    },
                   ].map((c) => (
                     <OptionButton
                       key={c.id}
@@ -1227,7 +1428,8 @@ function PracticeContent() {
                 marginBottom: "2.5rem",
               }}
             >
-              Maaf, belum ada item yang cocok dengan kombinasi filter level dan kategori ini. Silakan coba filter lain!
+              Maaf, belum ada item yang cocok dengan kombinasi filter level dan
+              kategori ini. Silakan coba filter lain!
             </p>
             <div style={{ display: "flex", gap: "1rem" }}>
               <PrimaryButton onClick={() => setSessionState("setup")}>
@@ -1249,7 +1451,8 @@ function PracticeContent() {
                       💡 Tebak Cara Baca & Arti Kata Berikut
                     </div>
                     <div className="sub">
-                      Gunakan tombol bantuan Furigana/Audio jika diperlukan, lalu klik "Buka Jawaban".
+                      Gunakan tombol bantuan Furigana/Audio jika diperlukan,
+                      lalu klik "Buka Jawaban".
                     </div>
                   </div>
                 </InstructionBanner>
@@ -1336,21 +1539,30 @@ function PracticeContent() {
 
                     {/* Onyomi & Kunyomi Breakdown with Latin Romaji */}
                     {(() => {
-                      const { onyomiStr, kunyomiStr } = getItemKanjiDetails(currentItem);
+                      const { onyomiStr, kunyomiStr } =
+                        getItemKanjiDetails(currentItem);
                       if (!onyomiStr && !kunyomiStr) return null;
                       return (
-                        <BreakdownBox style={{ marginBottom: "0.85rem", marginTop: "1rem" }}>
-                          <div className="title">Cara Baca Kanji (Onyomi & Kunyomi)</div>
+                        <BreakdownBox
+                          style={{ marginBottom: "0.85rem", marginTop: "1rem" }}
+                        >
+                          <div className="title">
+                            Cara Baca Kanji (Onyomi & Kunyomi)
+                          </div>
                           <div className="content">
                             {onyomiStr && (
                               <div>
-                                <strong style={{ color: "var(--primary)" }}>音読み (Onyomi):</strong>{" "}
+                                <strong style={{ color: "var(--primary)" }}>
+                                  音読み (Onyomi):
+                                </strong>{" "}
                                 {onyomiStr}
                               </div>
                             )}
                             {kunyomiStr && (
                               <div style={{ marginTop: "0.35rem" }}>
-                                <strong style={{ color: "var(--primary)" }}>訓読み (Kunyomi):</strong>{" "}
+                                <strong style={{ color: "var(--primary)" }}>
+                                  訓読み (Kunyomi):
+                                </strong>{" "}
                                 {kunyomiStr}
                               </div>
                             )}
@@ -1364,7 +1576,8 @@ function PracticeContent() {
                       <BreakdownBox>
                         <div className="title">Detail Kanji</div>
                         <div className="content">
-                          Jumlah Goresan: {currentItem.strokeCount} | Radikal: {currentItem.radical || "-"}
+                          Jumlah Goresan: {currentItem.strokeCount} | Radikal:{" "}
+                          {currentItem.radical || "-"}
                         </div>
                       </BreakdownBox>
                     )}
@@ -1374,21 +1587,27 @@ function PracticeContent() {
                         $type="hard"
                         onClick={() => handleSelfAssessment("hard")}
                       >
-                        <span className="desktop-text">❌ Perlu Diulang (Hard)</span>
+                        <span className="desktop-text">
+                          ❌ Perlu Diulang (Hard)
+                        </span>
                         <span className="mobile-text">❌ Hard</span>
                       </SelfAssessButton>
                       <SelfAssessButton
                         $type="good"
                         onClick={() => handleSelfAssessment("good")}
                       >
-                        <span className="desktop-text">🤔 Cukup Paham (Good)</span>
+                        <span className="desktop-text">
+                          🤔 Cukup Paham (Good)
+                        </span>
                         <span className="mobile-text">🤔 Good</span>
                       </SelfAssessButton>
                       <SelfAssessButton
                         $type="easy"
                         onClick={() => handleSelfAssessment("easy")}
                       >
-                        <span className="desktop-text">✅ Sudah Kuasai (Easy)</span>
+                        <span className="desktop-text">
+                          ✅ Sudah Kuasai (Easy)
+                        </span>
                         <span className="mobile-text">✅ Easy</span>
                       </SelfAssessButton>
                     </ActionGrid>
@@ -1416,7 +1635,8 @@ function PracticeContent() {
                       🎯 Pilih Arti Kata / Tata Bahasa yang Paling Tepat
                     </div>
                     <div className="sub">
-                      Klik salah satu dari 4 opsi di bawah. Penjelasan instan akan muncul begitu dipilih!
+                      Klik salah satu dari 4 opsi di bawah. Penjelasan instan
+                      akan muncul begitu dipilih!
                     </div>
                   </div>
                 </InstructionBanner>
@@ -1442,7 +1662,8 @@ function PracticeContent() {
                   {currentDrillOptions.map((optIndex, idx) => {
                     const isSelected = selectedOption === optIndex;
                     const isCorrect = optIndex === currentItem.meaning;
-                    let state: "default" | "correct" | "incorrect" | "disabled" =
+                    let state:
+                      "default" | "correct" | "incorrect" | "disabled" =
                       "default";
 
                     if (isSubmitted) {
@@ -1459,10 +1680,13 @@ function PracticeContent() {
                         onClick={() => handleDrillSubmit(optIndex)}
                       >
                         <span>
-                          <strong>{String.fromCharCode(65 + idx)}.</strong> {optIndex}
+                          <strong>{String.fromCharCode(65 + idx)}.</strong>{" "}
+                          {optIndex}
                         </span>
                         {isSubmitted && isCorrect && <span>✅</span>}
-                        {isSubmitted && isSelected && !isCorrect && <span>❌</span>}
+                        {isSubmitted && isSelected && !isCorrect && (
+                          <span>❌</span>
+                        )}
                       </DrillOptionCard>
                     );
                   })}
@@ -1480,10 +1704,14 @@ function PracticeContent() {
                           : "💡 Penjelasan Jawaban"}
                       </div>
                       <div className="body">
-                        <strong>{getDisplayMain(currentItem)}</strong> ({getDisplayReading(currentItem)}) artinya adalah{" "}
-                        <span style={{ color: "var(--primary)", fontWeight: 800 }}>
+                        <strong>{getDisplayMain(currentItem)}</strong> (
+                        {getDisplayReading(currentItem)}) artinya adalah{" "}
+                        <span
+                          style={{ color: "var(--primary)", fontWeight: 800 }}
+                        >
                           "{currentItem.meaning}"
-                        </span>.
+                        </span>
+                        .
                         {currentItem.exampleSentence && (
                           <div style={{ marginTop: "0.5rem" }}>
                             <em>Contoh: {currentItem.exampleSentence}</em>
@@ -1518,7 +1746,8 @@ function PracticeContent() {
               Sesi Latihan Selesai!
             </h2>
             <p style={{ color: "var(--text-secondary)", marginTop: "0.5rem" }}>
-              Luar biasa! Anda telah menyelesaikan 20 item latihan {setupLevel} ({setupCategory}).
+              Luar biasa! Anda telah menyelesaikan 20 item latihan {setupLevel}{" "}
+              ({setupCategory}).
             </p>
 
             <StatsGrid>

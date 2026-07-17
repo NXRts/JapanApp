@@ -570,274 +570,274 @@ export default function EditProfilePage() {
 
       <ContentWrapper>
         <HeaderArea>
-        <TitleGroup>
-          <h1>Edit Profil Anda</h1>
-          <p>
-            Ubah identitas visual, informasi pribadi, dan target belajar harian
-            Anda.
-          </p>
-        </TitleGroup>
-        <BackLink href="/profile">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <line x1="19" y1="12" x2="5" y2="12" />
-            <polyline points="12 19 5 12 12 5" />
-          </svg>
-          Kembali
-        </BackLink>
-      </HeaderArea>
+          <TitleGroup>
+            <h1>Edit Profil Anda</h1>
+            <p>
+              Ubah identitas visual, informasi pribadi, dan target belajar
+              harian Anda.
+            </p>
+          </TitleGroup>
+          <BackLink href="/profile">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="19" y1="12" x2="5" y2="12" />
+              <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Kembali
+          </BackLink>
+        </HeaderArea>
 
-      <form onSubmit={handleSubmit}>
-        <Card>
-          {/* SECTION 1: AVATAR / FOTO PROFIL */}
-          <AvatarSection>
-            <AvatarTitle>Foto Profil / Avatar Kultural</AvatarTitle>
-            <AvatarPreviewArea>
-              <AvatarPreview>{selectedAvatar}</AvatarPreview>
+        <form onSubmit={handleSubmit}>
+          <Card>
+            {/* SECTION 1: AVATAR / FOTO PROFIL */}
+            <AvatarSection>
+              <AvatarTitle>Foto Profil / Avatar Kultural</AvatarTitle>
+              <AvatarPreviewArea>
+                <AvatarPreview>{selectedAvatar}</AvatarPreview>
 
-              <UploadZone onClick={handleCustomUploadSimulate}>
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="17 8 12 3 7 8" />
-                  <line x1="12" y1="3" x2="12" y2="15" />
-                </svg>
-                <p>Unggah Foto Kustom</p>
-                <span>Tarik gambar ke sini atau klik untuk memilih file</span>
-              </UploadZone>
-            </AvatarPreviewArea>
-
-            {customFile && (
-              <CustomUploadNotify>
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-                File "{customFile}" terdeteksi & siap diunggah!
-              </CustomUploadNotify>
-            )}
-
-            <div style={{ marginTop: "1rem" }}>
-              <span
-                style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                  color: "var(--text-secondary)",
-                }}
-              >
-                Atau pilih avatar tema Jepang yang ikonik:
-              </span>
-              <PresetGrid>
-                {presetAvatars.map((preset) => (
-                  <PresetItem
-                    key={preset.label}
-                    type="button"
-                    $active={selectedAvatar === preset.emoji && !customFile}
-                    onClick={() => handlePresetClick(preset.emoji)}
-                    title={preset.label}
-                  >
-                    {preset.emoji}
-                  </PresetItem>
-                ))}
-              </PresetGrid>
-            </div>
-          </AvatarSection>
-
-          <SectionSeparator />
-
-          {/* SECTION 2: DETAIL PROFIL */}
-          <div>
-            <AvatarTitle style={{ marginBottom: "1.25rem" }}>
-              Informasi Pribadi
-            </AvatarTitle>
-            <FormGrid>
-              <FormGroup>
-                <label htmlFor="display-name">Nama Tampilan</label>
-                <FormInput
-                  id="display-name"
-                  type="text"
-                  required
-                  placeholder="Masukkan nama tampilan Anda"
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                />
-              </FormGroup>
-
-              <FormGroup>
-                <label htmlFor="username">Username</label>
-                <FormInput
-                  id="username"
-                  type="text"
-                  required
-                  placeholder="Masukkan username Anda"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </FormGroup>
-
-              <FormGroup $fullWidth>
-                <label htmlFor="email">Alamat Email</label>
-                <FormInput
-                  id="email"
-                  type="email"
-                  required
-                  placeholder="nama@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </FormGroup>
-
-              <FormGroup $fullWidth>
-                <label htmlFor="bio">
-                  Biografi Singkat
-                  <span className="counter">{bio.length}/150 karakter</span>
-                </label>
-                <FormTextarea
-                  id="bio"
-                  maxLength={150}
-                  placeholder="Tulis bio singkat tentang perjalanan belajar Anda..."
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                />
-              </FormGroup>
-            </FormGrid>
-          </div>
-
-          <SectionSeparator />
-
-          {/* SECTION 3: PREFERENSI BELAJAR */}
-          <div>
-            <AvatarTitle style={{ marginBottom: "1.25rem" }}>
-              Target & Preferensi Belajar
-            </AvatarTitle>
-            <FormGrid>
-              <FormGroup>
-                <label htmlFor="difficulty">Tingkat Kemampuan Saat Ini</label>
-                <FormSelect
-                  id="difficulty"
-                  value={difficulty}
-                  onChange={(e) => setDifficulty(e.target.value)}
-                >
-                  <option value="pemula">
-                    Pemula (Belum tahu Kana/Hiragana)
-                  </option>
-                  <option value="dasar">
-                    Dasar (Menguasai Kana, belajar JLPT N5)
-                  </option>
-                  <option value="menengah">
-                    Menengah (Belajar JLPT N4/N3)
-                  </option>
-                  <option value="mahir">Mahir (Persiapan N2/N1)</option>
-                </FormSelect>
-              </FormGroup>
-
-              <FormGroup>
-                <label htmlFor="daily-goal">Target EXP Harian</label>
-                <FormSelect
-                  id="daily-goal"
-                  value={dailyGoal}
-                  onChange={(e) => setDailyGoal(e.target.value)}
-                >
-                  <option value="20">Santai (20 EXP / Hari)</option>
-                  <option value="50">Sedang (50 EXP / Hari)</option>
-                  <option value="100">Serius (100 EXP / Hari)</option>
-                  <option value="200">Gila Belajar (200 EXP / Hari)</option>
-                </FormSelect>
-              </FormGroup>
-            </FormGrid>
-          </div>
-
-          {/* ACTIONS */}
-          <ActionButtonGroup>
-            <CancelButton href="/profile">Batal</CancelButton>
-            <SaveButton type="submit" disabled={isSaving}>
-              {isSaving ? (
-                <>
+                <UploadZone onClick={handleCustomUploadSimulate}>
                   <svg
-                    width="18"
-                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                  <p>Unggah Foto Kustom</p>
+                  <span>Tarik gambar ke sini atau klik untuk memilih file</span>
+                </UploadZone>
+              </AvatarPreviewArea>
+
+              {customFile && (
+                <CustomUploadNotify>
+                  <svg
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="3"
-                    style={{ animation: "spin 1s linear infinite" }}
-                  >
-                    <path d="M21 12a9 9 0 0 1-9 9m-9-9a9 9 0 0 1 9-9" />
-                  </svg>
-                  Menyimpan...
-                </>
-              ) : (
-                <>
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                    <polyline points="17 21 17 13 7 13 7 21" />
-                    <polyline points="7 3 7 8 15 8" />
+                    <polyline points="20 6 9 17 4 12" />
                   </svg>
-                  Simpan Perubahan
-                </>
+                  File "{customFile}" terdeteksi & siap diunggah!
+                </CustomUploadNotify>
               )}
-            </SaveButton>
-          </ActionButtonGroup>
-        </Card>
-      </form>
 
-      {/* Global CSS spinner keyframe animation */}
-      <style jsx global>{`
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
-      `}</style>
+              <div style={{ marginTop: "1rem" }}>
+                <span
+                  style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  Atau pilih avatar tema Jepang yang ikonik:
+                </span>
+                <PresetGrid>
+                  {presetAvatars.map((preset) => (
+                    <PresetItem
+                      key={preset.label}
+                      type="button"
+                      $active={selectedAvatar === preset.emoji && !customFile}
+                      onClick={() => handlePresetClick(preset.emoji)}
+                      title={preset.label}
+                    >
+                      {preset.emoji}
+                    </PresetItem>
+                  ))}
+                </PresetGrid>
+              </div>
+            </AvatarSection>
 
-      {/* Success Notification */}
-      <AnimatePresence>
-        {showToast && (
-          <Toast
-            initial={{ opacity: 0, y: 50, x: "-50%" }}
-            animate={{ opacity: 1, y: 0, x: "-50%" }}
-            exit={{ opacity: 0, y: 20, x: "-50%" }}
-            transition={{ duration: 0.2 }}
-          >
-            <span className="emoji">🎉</span>
-            Profil berhasil disimpan! Mengalihkan...
-          </Toast>
-        )}
-      </AnimatePresence>
+            <SectionSeparator />
+
+            {/* SECTION 2: DETAIL PROFIL */}
+            <div>
+              <AvatarTitle style={{ marginBottom: "1.25rem" }}>
+                Informasi Pribadi
+              </AvatarTitle>
+              <FormGrid>
+                <FormGroup>
+                  <label htmlFor="display-name">Nama Tampilan</label>
+                  <FormInput
+                    id="display-name"
+                    type="text"
+                    required
+                    placeholder="Masukkan nama tampilan Anda"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  <label htmlFor="username">Username</label>
+                  <FormInput
+                    id="username"
+                    type="text"
+                    required
+                    placeholder="Masukkan username Anda"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </FormGroup>
+
+                <FormGroup $fullWidth>
+                  <label htmlFor="email">Alamat Email</label>
+                  <FormInput
+                    id="email"
+                    type="email"
+                    required
+                    placeholder="nama@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </FormGroup>
+
+                <FormGroup $fullWidth>
+                  <label htmlFor="bio">
+                    Biografi Singkat
+                    <span className="counter">{bio.length}/150 karakter</span>
+                  </label>
+                  <FormTextarea
+                    id="bio"
+                    maxLength={150}
+                    placeholder="Tulis bio singkat tentang perjalanan belajar Anda..."
+                    value={bio}
+                    onChange={(e) => setBio(e.target.value)}
+                  />
+                </FormGroup>
+              </FormGrid>
+            </div>
+
+            <SectionSeparator />
+
+            {/* SECTION 3: PREFERENSI BELAJAR */}
+            <div>
+              <AvatarTitle style={{ marginBottom: "1.25rem" }}>
+                Target & Preferensi Belajar
+              </AvatarTitle>
+              <FormGrid>
+                <FormGroup>
+                  <label htmlFor="difficulty">Tingkat Kemampuan Saat Ini</label>
+                  <FormSelect
+                    id="difficulty"
+                    value={difficulty}
+                    onChange={(e) => setDifficulty(e.target.value)}
+                  >
+                    <option value="pemula">
+                      Pemula (Belum tahu Kana/Hiragana)
+                    </option>
+                    <option value="dasar">
+                      Dasar (Menguasai Kana, belajar JLPT N5)
+                    </option>
+                    <option value="menengah">
+                      Menengah (Belajar JLPT N4/N3)
+                    </option>
+                    <option value="mahir">Mahir (Persiapan N2/N1)</option>
+                  </FormSelect>
+                </FormGroup>
+
+                <FormGroup>
+                  <label htmlFor="daily-goal">Target EXP Harian</label>
+                  <FormSelect
+                    id="daily-goal"
+                    value={dailyGoal}
+                    onChange={(e) => setDailyGoal(e.target.value)}
+                  >
+                    <option value="20">Santai (20 EXP / Hari)</option>
+                    <option value="50">Sedang (50 EXP / Hari)</option>
+                    <option value="100">Serius (100 EXP / Hari)</option>
+                    <option value="200">Gila Belajar (200 EXP / Hari)</option>
+                  </FormSelect>
+                </FormGroup>
+              </FormGrid>
+            </div>
+
+            {/* ACTIONS */}
+            <ActionButtonGroup>
+              <CancelButton href="/profile">Batal</CancelButton>
+              <SaveButton type="submit" disabled={isSaving}>
+                {isSaving ? (
+                  <>
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      style={{ animation: "spin 1s linear infinite" }}
+                    >
+                      <path d="M21 12a9 9 0 0 1-9 9m-9-9a9 9 0 0 1 9-9" />
+                    </svg>
+                    Menyimpan...
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                      <polyline points="17 21 17 13 7 13 7 21" />
+                      <polyline points="7 3 7 8 15 8" />
+                    </svg>
+                    Simpan Perubahan
+                  </>
+                )}
+              </SaveButton>
+            </ActionButtonGroup>
+          </Card>
+        </form>
+
+        {/* Global CSS spinner keyframe animation */}
+        <style jsx global>{`
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
+
+        {/* Success Notification */}
+        <AnimatePresence>
+          {showToast && (
+            <Toast
+              initial={{ opacity: 0, y: 50, x: "-50%" }}
+              animate={{ opacity: 1, y: 0, x: "-50%" }}
+              exit={{ opacity: 0, y: 20, x: "-50%" }}
+              transition={{ duration: 0.2 }}
+            >
+              <span className="emoji">🎉</span>
+              Profil berhasil disimpan! Mengalihkan...
+            </Toast>
+          )}
+        </AnimatePresence>
       </ContentWrapper>
     </Container>
   );

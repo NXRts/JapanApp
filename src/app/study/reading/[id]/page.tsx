@@ -470,127 +470,127 @@ export default function ReadingDetailPage() {
 
       <ContentWrapper>
         <ControlsContainer>
-        <div>
-          <span
+          <div>
+            <span
+              style={{
+                background: "var(--primary)",
+                color: "white",
+                padding: "0.2rem 0.8rem",
+                borderRadius: "99px",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                marginRight: "1rem",
+              }}
+            >
+              {passage.level}
+            </span>
+            <Title style={{ display: "inline-block", fontSize: "2rem" }}>
+              {passage.title}
+            </Title>
+          </div>
+
+          <ToggleGroup>
+            <ToggleLabel>
+              <span>Furigana</span>
+              <input
+                type="checkbox"
+                checked={showFurigana}
+                onChange={(e) => setShowFurigana(e.target.checked)}
+              />
+            </ToggleLabel>
+            <ToggleLabel>
+              <span>Translation</span>
+              <input
+                type="checkbox"
+                checked={showTranslation}
+                onChange={(e) => setShowTranslation(e.target.checked)}
+              />
+            </ToggleLabel>
+          </ToggleGroup>
+        </ControlsContainer>
+
+        <ContentContainer $showFurigana={showFurigana}>
+          {passage.paragraphs.map((para, idx) => (
+            <ParagraphBlock key={idx}>
+              <ClickableJapaneseText
+                className="jp-text"
+                html={para.japanese}
+                style={{
+                  fontSize: "1.4rem",
+                  lineHeight: "2.4",
+                  color: "var(--foreground)",
+                }}
+              />
+              {showTranslation && <EnglishText>{para.english}</EnglishText>}
+            </ParagraphBlock>
+          ))}
+        </ContentContainer>
+
+        {passage.quizzes && passage.quizzes.length > 0 && (
+          <QuizSection>
+            <QuizTitle>Reading Comprehension Check</QuizTitle>
+            {passage.quizzes.map((quiz, idx) => (
+              <QuizBlock
+                key={idx}
+                quiz={quiz}
+                onComplete={() =>
+                  setCompletedQuizzes((prev) => ({ ...prev, [idx]: true }))
+                }
+              />
+            ))}
+          </QuizSection>
+        )}
+
+        {!isCompleted && !allQuizzesCompleted && (
+          <div
             style={{
-              background: "var(--primary)",
-              color: "white",
-              padding: "0.2rem 0.8rem",
-              borderRadius: "99px",
-              fontSize: "0.85rem",
-              fontWeight: 700,
-              marginRight: "1rem",
+              textAlign: "center",
+              marginTop: "3rem",
+              color: "var(--text-secondary)",
+              fontWeight: 600,
             }}
           >
-            {passage.level}
-          </span>
-          <Title style={{ display: "inline-block", fontSize: "2rem" }}>
-            {passage.title}
-          </Title>
-        </div>
-
-        <ToggleGroup>
-          <ToggleLabel>
-            <span>Furigana</span>
-            <input
-              type="checkbox"
-              checked={showFurigana}
-              onChange={(e) => setShowFurigana(e.target.checked)}
-            />
-          </ToggleLabel>
-          <ToggleLabel>
-            <span>Translation</span>
-            <input
-              type="checkbox"
-              checked={showTranslation}
-              onChange={(e) => setShowTranslation(e.target.checked)}
-            />
-          </ToggleLabel>
-        </ToggleGroup>
-      </ControlsContainer>
-
-      <ContentContainer $showFurigana={showFurigana}>
-        {passage.paragraphs.map((para, idx) => (
-          <ParagraphBlock key={idx}>
-            <ClickableJapaneseText
-              className="jp-text"
-              html={para.japanese}
-              style={{
-                fontSize: "1.4rem",
-                lineHeight: "2.4",
-                color: "var(--foreground)",
-              }}
-            />
-            {showTranslation && <EnglishText>{para.english}</EnglishText>}
-          </ParagraphBlock>
-        ))}
-      </ContentContainer>
-
-      {passage.quizzes && passage.quizzes.length > 0 && (
-        <QuizSection>
-          <QuizTitle>Reading Comprehension Check</QuizTitle>
-          {passage.quizzes.map((quiz, idx) => (
-            <QuizBlock
-              key={idx}
-              quiz={quiz}
-              onComplete={() =>
-                setCompletedQuizzes((prev) => ({ ...prev, [idx]: true }))
-              }
-            />
-          ))}
-        </QuizSection>
-      )}
-
-      {!isCompleted && !allQuizzesCompleted && (
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: "3rem",
-            color: "var(--text-secondary)",
-            fontWeight: 600,
-          }}
-        >
-          📝 Please answer all questions to mark this reading as completed.
-        </div>
-      )}
-
-      <CompleteBtn
-        $completed={isCompleted}
-        onClick={() => markExerciseCompleted(passage.id)}
-        disabled={isCompleted || !allQuizzesCompleted}
-        style={{ opacity: !isCompleted && !allQuizzesCompleted ? 0.5 : 1 }}
-      >
-        {isCompleted ? (
-          <>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            Completed
-          </>
-        ) : (
-          "Mark as Completed"
+            📝 Please answer all questions to mark this reading as completed.
+          </div>
         )}
-      </CompleteBtn>
 
-      {isCompleted && (
-        <NextStepsContainer>
-          <NavBtn href="/study/reading">⬅ Back to List</NavBtn>
-          {nextPassage && (
-            <NavBtn href={`/study/reading/${nextPassage.id}`} $primary>
-              Next Reading ➡
-            </NavBtn>
+        <CompleteBtn
+          $completed={isCompleted}
+          onClick={() => markExerciseCompleted(passage.id)}
+          disabled={isCompleted || !allQuizzesCompleted}
+          style={{ opacity: !isCompleted && !allQuizzesCompleted ? 0.5 : 1 }}
+        >
+          {isCompleted ? (
+            <>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Completed
+            </>
+          ) : (
+            "Mark as Completed"
           )}
-        </NextStepsContainer>
-      )}
+        </CompleteBtn>
+
+        {isCompleted && (
+          <NextStepsContainer>
+            <NavBtn href="/study/reading">⬅ Back to List</NavBtn>
+            {nextPassage && (
+              <NavBtn href={`/study/reading/${nextPassage.id}`} $primary>
+                Next Reading ➡
+              </NavBtn>
+            )}
+          </NextStepsContainer>
+        )}
       </ContentWrapper>
     </Container>
   );

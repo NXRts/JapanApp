@@ -399,124 +399,124 @@ export default function GrammarLessonsPage() {
 
       <ContentWrapper>
         <Header>
-        <HeaderTop>
-          <PageTitle>Grammar Lessons</PageTitle>
-          <FuriganaToggleBtn
-            $active={progress.showFurigana}
-            onClick={() => setShowFurigana(!progress.showFurigana)}
-          >
-            <span>
-              {progress.showFurigana
-                ? "🌸 Furigana: Show"
-                : "💤 Furigana: Hide"}
-            </span>
-          </FuriganaToggleBtn>
-        </HeaderTop>
-        <PageSub>All {grammarLessons.length} lessons for N5 grammar</PageSub>
-      </Header>
+          <HeaderTop>
+            <PageTitle>Grammar Lessons</PageTitle>
+            <FuriganaToggleBtn
+              $active={progress.showFurigana}
+              onClick={() => setShowFurigana(!progress.showFurigana)}
+            >
+              <span>
+                {progress.showFurigana
+                  ? "🌸 Furigana: Show"
+                  : "💤 Furigana: Hide"}
+              </span>
+            </FuriganaToggleBtn>
+          </HeaderTop>
+          <PageSub>All {grammarLessons.length} lessons for N5 grammar</PageSub>
+        </Header>
 
-      {/* Overall Progress */}
-      <ProgressCard>
-        <div style={{ flex: 1 }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <ProgressLabel>Overall Progress</ProgressLabel>
-            <ProgressCount>
-              {totalDoneSections} / {totalSections} sections
-            </ProgressCount>
+        {/* Overall Progress */}
+        <ProgressCard>
+          <div style={{ flex: 1 }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <ProgressLabel>Overall Progress</ProgressLabel>
+              <ProgressCount>
+                {totalDoneSections} / {totalSections} sections
+              </ProgressCount>
+            </div>
+            <ProgressBarWrap>
+              <ProgressBarFill $pct={overallPct} />
+            </ProgressBarWrap>
+            <ProgressPct>{overallPct}% completed</ProgressPct>
           </div>
-          <ProgressBarWrap>
-            <ProgressBarFill $pct={overallPct} />
-          </ProgressBarWrap>
-          <ProgressPct>{overallPct}% completed</ProgressPct>
-        </div>
-      </ProgressCard>
+        </ProgressCard>
 
-      {/* Lesson List */}
-      <LessonList>
-        {grammarLessons.map((lesson, idx) => {
-          const s = statusFixed[idx];
-          const isActive = idx === currentIdx;
+        {/* Lesson List */}
+        <LessonList>
+          {grammarLessons.map((lesson, idx) => {
+            const s = statusFixed[idx];
+            const isActive = idx === currentIdx;
 
-          const cardContent = (
-            <>
-              <LessonNumBadge $done={s.done} $active={isActive && !s.done}>
-                {s.done ? <CheckIcon /> : lesson.lessonNumber}
-              </LessonNumBadge>
+            const cardContent = (
+              <>
+                <LessonNumBadge $done={s.done} $active={isActive && !s.done}>
+                  {s.done ? <CheckIcon /> : lesson.lessonNumber}
+                </LessonNumBadge>
 
-              <LessonInfo>
-                <LessonTitle>
-                  Lesson {lesson.lessonNumber}: {lesson.title}
-                  {isActive && !s.done && (
-                    <CurrentBadge style={{ marginLeft: "0.6rem" }}>
-                      Current
-                    </CurrentBadge>
+                <LessonInfo>
+                  <LessonTitle>
+                    Lesson {lesson.lessonNumber}: {lesson.title}
+                    {isActive && !s.done && (
+                      <CurrentBadge style={{ marginLeft: "0.6rem" }}>
+                        Current
+                      </CurrentBadge>
+                    )}
+                  </LessonTitle>
+                  <LessonSubtitle>{lesson.subtitle}</LessonSubtitle>
+                  <LessonMeta>
+                    <MetaTag>{lesson.sections.length} sections</MetaTag>
+                    {s.done ? (
+                      <MetaTag $green>✓ Completed</MetaTag>
+                    ) : s.sectionsDone > 0 ? (
+                      <MetaTag>
+                        {s.sectionsDone}/{s.totalInLesson} done
+                      </MetaTag>
+                    ) : null}
+                    <span
+                      style={{
+                        fontSize: "0.8rem",
+                        color: "var(--text-secondary)",
+                      }}
+                    >
+                      ~{lesson.estimatedMinutes} min
+                    </span>
+                  </LessonMeta>
+                </LessonInfo>
+
+                <SectionCount>
+                  <div style={{ marginBottom: "0.2rem" }}>
+                    {s.sectionsDone}/{s.totalInLesson}
+                  </div>
+                  {s.locked ? (
+                    <span style={{ color: "var(--text-secondary)" }}>
+                      <LockIcon />
+                    </span>
+                  ) : (
+                    <span style={{ color: "var(--primary)" }}>
+                      <ChevronIcon />
+                    </span>
                   )}
-                </LessonTitle>
-                <LessonSubtitle>{lesson.subtitle}</LessonSubtitle>
-                <LessonMeta>
-                  <MetaTag>{lesson.sections.length} sections</MetaTag>
-                  {s.done ? (
-                    <MetaTag $green>✓ Completed</MetaTag>
-                  ) : s.sectionsDone > 0 ? (
-                    <MetaTag>
-                      {s.sectionsDone}/{s.totalInLesson} done
-                    </MetaTag>
-                  ) : null}
-                  <span
-                    style={{
-                      fontSize: "0.8rem",
-                      color: "var(--text-secondary)",
-                    }}
-                  >
-                    ~{lesson.estimatedMinutes} min
-                  </span>
-                </LessonMeta>
-              </LessonInfo>
+                </SectionCount>
+              </>
+            );
 
-              <SectionCount>
-                <div style={{ marginBottom: "0.2rem" }}>
-                  {s.sectionsDone}/{s.totalInLesson}
-                </div>
-                {s.locked ? (
-                  <span style={{ color: "var(--text-secondary)" }}>
-                    <LockIcon />
-                  </span>
-                ) : (
-                  <span style={{ color: "var(--primary)" }}>
-                    <ChevronIcon />
-                  </span>
-                )}
-              </SectionCount>
-            </>
-          );
+            if (s.locked) {
+              return (
+                <LessonCard key={lesson.id} $locked $active={false}>
+                  {cardContent}
+                </LessonCard>
+              );
+            }
 
-          if (s.locked) {
             return (
-              <LessonCard key={lesson.id} $locked $active={false}>
+              <LessonCard
+                key={lesson.id}
+                as={Link}
+                href={`/grammar/lessons/${lesson.id}`}
+                $locked={false}
+                $active={isActive}
+              >
                 {cardContent}
               </LessonCard>
             );
-          }
-
-          return (
-            <LessonCard
-              key={lesson.id}
-              as={Link}
-              href={`/grammar/lessons/${lesson.id}`}
-              $locked={false}
-              $active={isActive}
-            >
-              {cardContent}
-            </LessonCard>
-          );
-        })}
-      </LessonList>
+          })}
+        </LessonList>
       </ContentWrapper>
     </Container>
   );

@@ -429,7 +429,10 @@ const BottomActions = styled.div`
   }
 `;
 
-const ActionCircle = styled.button<{ $color: string; $variant?: "remembered" | "forgot" | "secondary" }>`
+const ActionCircle = styled.button<{
+  $color: string;
+  $variant?: "remembered" | "forgot" | "secondary";
+}>`
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
@@ -480,7 +483,7 @@ const ActionCircle = styled.button<{ $color: string; $variant?: "remembered" | "
     padding: 0.75rem 1rem;
     font-size: 0.85rem;
     flex: 1;
-    
+
     ${({ $variant }) =>
       $variant === "remembered" &&
       `
@@ -937,7 +940,11 @@ const ThumbnailPlaceholder = styled.div`
   flex-shrink: 0;
   width: 120px;
   height: 80px;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.08) 0%, rgba(79, 70, 229, 0.15) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(79, 70, 229, 0.08) 0%,
+    rgba(79, 70, 229, 0.15) 100%
+  );
   border-radius: 8px;
   border: 1px solid rgba(79, 70, 229, 0.2);
   display: flex;
@@ -963,10 +970,12 @@ function KanjiStrokeDiagram({ kanji }: KanjiStrokeDiagramProps) {
       setLoading(true);
       try {
         const hex = cleanKanji.charCodeAt(0).toString(16).padStart(5, "0");
-        
+
         // 1. Try direct browser CDN fetch first (works if browser has internet but server does not)
         try {
-          const cdnRes = await fetch(`https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg@master/kanji/${hex}.svg`);
+          const cdnRes = await fetch(
+            `https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg@master/kanji/${hex}.svg`,
+          );
           if (cdnRes.ok && active) {
             const text = await cdnRes.text();
             const matches = [...text.matchAll(/<path[^>]*\bd="([^"]+)"/g)];
@@ -978,7 +987,10 @@ function KanjiStrokeDiagram({ kanji }: KanjiStrokeDiagramProps) {
             }
           }
         } catch (cdnErr) {
-          console.warn("Direct JSDelivr fetch failed, trying local proxy:", cdnErr);
+          console.warn(
+            "Direct JSDelivr fetch failed, trying local proxy:",
+            cdnErr,
+          );
         }
 
         // 2. Fallback to local server proxy API route
@@ -1003,7 +1015,17 @@ function KanjiStrokeDiagram({ kanji }: KanjiStrokeDiagramProps) {
 
   if (loading) {
     return (
-      <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%" }}>
+      <div
+        style={{
+          fontSize: "0.85rem",
+          color: "var(--text-secondary)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
         Loading...
       </div>
     );
@@ -1013,7 +1035,19 @@ function KanjiStrokeDiagram({ kanji }: KanjiStrokeDiagramProps) {
   if (paths.length === 0) {
     const cleanKanji = kanji ? kanji.trim() : "";
     return (
-      <div style={{ fontSize: "3.5rem", fontWeight: 700, color: "#111827", opacity: 0.9, display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "100%" }}>
+      <div
+        style={{
+          fontSize: "3.5rem",
+          fontWeight: 700,
+          color: "#111827",
+          opacity: 0.9,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
         {cleanKanji}
       </div>
     );
@@ -1022,7 +1056,16 @@ function KanjiStrokeDiagram({ kanji }: KanjiStrokeDiagramProps) {
   const cleanKanji = kanji ? kanji.trim() : "";
 
   return (
-    <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <svg
         viewBox="0 0 109 109"
         style={{
@@ -1288,11 +1331,11 @@ function FlashcardContent() {
     const touch = e.touches[0];
     const dx = touch.clientX - touchStartX;
     const dy = touch.clientY - touchStartY;
-    
+
     if (Math.abs(dx) > Math.abs(dy)) {
       if (e.cancelable) e.preventDefault();
     }
-    
+
     setTouchDeltaX(dx);
     setTouchDeltaY(dy);
   };
@@ -1305,7 +1348,7 @@ function FlashcardContent() {
     } else if (touchDeltaX < -threshold) {
       handleNext();
     }
-    
+
     setTouchStartX(null);
     setTouchStartY(null);
     setTouchDeltaX(0);
@@ -1319,7 +1362,7 @@ function FlashcardContent() {
     return String(targetWordForDetails)
       .split("")
       .filter((char: string) =>
-        /[\u4e00-\u9faf\u3040-\u309f\u30a0-\u30ff\u3005]/.test(char)
+        /[\u4e00-\u9faf\u3040-\u309f\u30a0-\u30ff\u3005]/.test(char),
       );
   }, [targetWordForDetails]);
 
@@ -1330,15 +1373,21 @@ function FlashcardContent() {
       if (existing) {
         // If the vocabulary word is a single character (e.g. "戸"), align its kanji level
         // with the vocabulary word's level to prevent student confusion.
-        const shouldOverrideLevel = targetWordForDetails && targetWordForDetails.length === 1;
-        const levelOverride = shouldOverrideLevel && currentItem?.level 
-          ? (currentItem.level.includes("JLPT") ? currentItem.level.replace("JLPT ", "") : currentItem.level)
-          : undefined;
+        const shouldOverrideLevel =
+          targetWordForDetails && targetWordForDetails.length === 1;
+        const levelOverride =
+          shouldOverrideLevel && currentItem?.level
+            ? currentItem.level.includes("JLPT")
+              ? currentItem.level.replace("JLPT ", "")
+              : currentItem.level
+            : undefined;
 
         return {
           ...existing,
           id: `${existing.id}-${idx}`,
-          level: levelOverride ? `N${levelOverride.replace("N", "")}` : existing.level,
+          level: levelOverride
+            ? `N${levelOverride.replace("N", "")}`
+            : existing.level,
         };
       }
 
@@ -1353,17 +1402,17 @@ function FlashcardContent() {
         level: isHiragana
           ? "Hiragana"
           : isKatakana
-          ? "Katakana"
-          : isIteration
-          ? "Symbol"
-          : "Character",
+            ? "Katakana"
+            : isIteration
+              ? "Symbol"
+              : "Character",
         meaning: isHiragana
           ? "Hiragana character"
           : isKatakana
-          ? "Katakana character"
-          : isIteration
-          ? "Iteration mark"
-          : "Japanese character",
+            ? "Katakana character"
+            : isIteration
+              ? "Iteration mark"
+              : "Japanese character",
         onyomi: [],
         kunyomi: [],
         stroke_count: undefined,
@@ -1900,12 +1949,11 @@ function FlashcardContent() {
                       transition: "none",
                     }
                   : {
-                      transition: "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+                      transition:
+                        "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
                     }
               }
             >
-
-
               <FlashcardInner $isFlipped={isFlipped}>
                 {/* --- FRONT SIDE --- */}
                 <FlashcardSide
@@ -1927,7 +1975,9 @@ function FlashcardContent() {
                     />
                   )}
 
-                  <SpeakerIcon onClick={(e) => playAudio(e, resolveTargetWord())}>
+                  <SpeakerIcon
+                    onClick={(e) => playAudio(e, resolveTargetWord())}
+                  >
                     <svg
                       width="32"
                       height="32"
@@ -2014,7 +2064,9 @@ function FlashcardContent() {
                     />
                   )}
 
-                  <SpeakerIcon onClick={(e) => playAudio(e, resolveTargetWord())}>
+                  <SpeakerIcon
+                    onClick={(e) => playAudio(e, resolveTargetWord())}
+                  >
                     <svg
                       width="32"
                       height="32"
@@ -2025,7 +2077,9 @@ function FlashcardContent() {
                     </svg>
                   </SpeakerIcon>
 
-                  <BackMeaning $textLength={meaning.length}>{meaning}</BackMeaning>
+                  <BackMeaning $textLength={meaning.length}>
+                    {meaning}
+                  </BackMeaning>
 
                   <BottomLeftText>
                     {currentIndex + 1} / {filteredData.length}
@@ -2537,84 +2591,84 @@ function FlashcardContent() {
                             const synWord = syn.word;
                             if (!synWord) return null;
                             return (
-                               <div
-                                 key={`syn-${syn.id}`}
-                                 style={{
-                                   display: "flex",
-                                   flexDirection: "column",
-                                   gap: "0.35rem",
-                                   padding: "0.6rem 0.8rem",
-                                   background: "var(--surface)",
-                                   border: "1px solid var(--border)",
-                                   borderRadius: "8px",
-                                   borderLeft: "3px solid #3b82f6",
-                                 }}
-                               >
-                                 <div
-                                   style={{
-                                     display: "flex",
-                                     alignItems: "center",
-                                     gap: "0.5rem",
-                                     flexWrap: "wrap",
-                                   }}
-                                 >
-                                   <span
-                                     style={{
-                                       fontWeight: 700,
-                                       color: "var(--foreground)",
-                                       fontSize: "1.05rem",
-                                     }}
-                                   >
-                                     {synWord}
-                                   </span>
-                                   <SpeakerIcon
-                                     style={{
-                                       margin: 0,
-                                       padding: 0,
-                                       width: 16,
-                                       height: 16,
-                                       opacity: 0.5,
-                                       cursor: "pointer",
-                                       color: "#3b82f6",
-                                     }}
-                                     onClick={(e) => playAudio(e, synWord)}
-                                   >
-                                     <svg
-                                       fill="currentColor"
-                                       viewBox="0 0 24 24"
-                                       style={{ width: "100%", height: "100%" }}
-                                     >
-                                       <path d="M3 9v6h4l5 5V4L7 9H3z" />
-                                     </svg>
-                                   </SpeakerIcon>
-                                   {syn.reading && (
-                                     <span
-                                       style={{
-                                         color: "var(--text-secondary)",
-                                         fontSize: "0.8rem",
-                                         fontFamily: "monospace",
-                                         background: "rgba(0,0,0,0.03)",
-                                         padding: "0.1rem 0.4rem",
-                                         borderRadius: "4px",
-                                         whiteSpace: "nowrap",
-                                       }}
-                                     >
-                                       {syn.reading} ({toRomaji(syn.reading)})
-                                     </span>
-                                   )}
-                                 </div>
-                                 <div
-                                   style={{
-                                     color: "var(--text-secondary)",
-                                     fontSize: "0.9rem",
-                                     lineHeight: "1.4",
-                                   }}
-                                 >
-                                   {syn.meaning.split(/[,;]/)[0]}
-                                 </div>
-                               </div>
-                             );
-                           })}
+                              <div
+                                key={`syn-${syn.id}`}
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  gap: "0.35rem",
+                                  padding: "0.6rem 0.8rem",
+                                  background: "var(--surface)",
+                                  border: "1px solid var(--border)",
+                                  borderRadius: "8px",
+                                  borderLeft: "3px solid #3b82f6",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "0.5rem",
+                                    flexWrap: "wrap",
+                                  }}
+                                >
+                                  <span
+                                    style={{
+                                      fontWeight: 700,
+                                      color: "var(--foreground)",
+                                      fontSize: "1.05rem",
+                                    }}
+                                  >
+                                    {synWord}
+                                  </span>
+                                  <SpeakerIcon
+                                    style={{
+                                      margin: 0,
+                                      padding: 0,
+                                      width: 16,
+                                      height: 16,
+                                      opacity: 0.5,
+                                      cursor: "pointer",
+                                      color: "#3b82f6",
+                                    }}
+                                    onClick={(e) => playAudio(e, synWord)}
+                                  >
+                                    <svg
+                                      fill="currentColor"
+                                      viewBox="0 0 24 24"
+                                      style={{ width: "100%", height: "100%" }}
+                                    >
+                                      <path d="M3 9v6h4l5 5V4L7 9H3z" />
+                                    </svg>
+                                  </SpeakerIcon>
+                                  {syn.reading && (
+                                    <span
+                                      style={{
+                                        color: "var(--text-secondary)",
+                                        fontSize: "0.8rem",
+                                        fontFamily: "monospace",
+                                        background: "rgba(0,0,0,0.03)",
+                                        padding: "0.1rem 0.4rem",
+                                        borderRadius: "4px",
+                                        whiteSpace: "nowrap",
+                                      }}
+                                    >
+                                      {syn.reading} ({toRomaji(syn.reading)})
+                                    </span>
+                                  )}
+                                </div>
+                                <div
+                                  style={{
+                                    color: "var(--text-secondary)",
+                                    fontSize: "0.9rem",
+                                    lineHeight: "1.4",
+                                  }}
+                                >
+                                  {syn.meaning.split(/[,;]/)[0]}
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     )}
@@ -2662,7 +2716,10 @@ function FlashcardContent() {
                               <ThumbnailPlaceholder>
                                 <span
                                   style={{
-                                    fontSize: targetWordForDetails.length > 2 ? "1.25rem" : "2rem",
+                                    fontSize:
+                                      targetWordForDetails.length > 2
+                                        ? "1.25rem"
+                                        : "2rem",
                                     fontWeight: "bold",
                                     color: "var(--primary)",
                                     fontFamily: '"Noto Sans JP", sans-serif',
@@ -3124,8 +3181,14 @@ function FlashcardContent() {
                                     width: "90px",
                                   }}
                                 >
-                                  {["Hiragana", "Katakana", "Symbol", "Character"].includes(
-                                    relatedKanjis[activeSelectedKanjiIndex].level || ""
+                                  {[
+                                    "Hiragana",
+                                    "Katakana",
+                                    "Symbol",
+                                    "Character",
+                                  ].includes(
+                                    relatedKanjis[activeSelectedKanjiIndex]
+                                      .level || "",
                                   )
                                     ? "Type"
                                     : "Kanji Level"}
@@ -3674,12 +3737,28 @@ function FlashcardContent() {
                             )}
 
                             {/* Educational Note */}
-                            {relatedKanjis.some((k) => !["Hiragana", "Katakana", "Symbol", "Character"].includes(k.level || "")) && (
+                            {relatedKanjis.some(
+                              (k) =>
+                                ![
+                                  "Hiragana",
+                                  "Katakana",
+                                  "Symbol",
+                                  "Character",
+                                ].includes(k.level || ""),
+                            ) && (
                               <div style={{ marginTop: "2rem" }}>
                                 <EduNote>
-                                  <span style={{ fontSize: "1rem", lineHeight: 1 }}>💡</span>
+                                  <span
+                                    style={{ fontSize: "1rem", lineHeight: 1 }}
+                                  >
+                                    💡
+                                  </span>
                                   <div>
-                                    <strong>Catatan Level:</strong> Kosakata tingkat dasar (seperti N5) sering kali menggunakan huruf Kanji dari tingkat yang lebih tinggi (seperti N3 atau N1) untuk penulisan resminya.
+                                    <strong>Catatan Level:</strong> Kosakata
+                                    tingkat dasar (seperti N5) sering kali
+                                    menggunakan huruf Kanji dari tingkat yang
+                                    lebih tinggi (seperti N3 atau N1) untuk
+                                    penulisan resminya.
                                   </div>
                                 </EduNote>
                               </div>
@@ -4277,7 +4356,8 @@ function FlashcardContent() {
                                               fontSize: "0.95rem",
                                             }}
                                           >
-                                            「{entry.reading} ({toRomaji(entry.reading)})」
+                                            「{entry.reading} (
+                                            {toRomaji(entry.reading)})」
                                           </span>
                                         )}
                                       </div>
@@ -4383,7 +4463,9 @@ function FlashcardContent() {
                 {/* Related Kanji Section */}
                 {relatedKanjis.length > 0 && (
                   <PanelCard>
-                    <PanelHeader>Characters from {resolveTargetWord()}</PanelHeader>
+                    <PanelHeader>
+                      Characters from {resolveTargetWord()}
+                    </PanelHeader>
                     <PanelBody
                       style={{
                         display: "flex",
@@ -4474,7 +4556,12 @@ function FlashcardContent() {
                             {k.level && (
                               <div>
                                 <strong>
-                                  {["Hiragana", "Katakana", "Symbol", "Character"].includes(k.level)
+                                  {[
+                                    "Hiragana",
+                                    "Katakana",
+                                    "Symbol",
+                                    "Character",
+                                  ].includes(k.level)
                                     ? "Type:"
                                     : "Kanji Level:"}
                                 </strong>{" "}
@@ -4486,11 +4573,24 @@ function FlashcardContent() {
                       ))}
 
                       {/* Educational Note */}
-                      {relatedKanjis.some((k) => !["Hiragana", "Katakana", "Symbol", "Character"].includes(k.level || "")) && (
+                      {relatedKanjis.some(
+                        (k) =>
+                          ![
+                            "Hiragana",
+                            "Katakana",
+                            "Symbol",
+                            "Character",
+                          ].includes(k.level || ""),
+                      ) && (
                         <EduNote>
-                          <span style={{ fontSize: "1rem", lineHeight: 1 }}>💡</span>
+                          <span style={{ fontSize: "1rem", lineHeight: 1 }}>
+                            💡
+                          </span>
                           <div>
-                            <strong>Catatan Level:</strong> Kosakata tingkat dasar (seperti N5) sering kali menggunakan huruf Kanji dari tingkat yang lebih tinggi (seperti N3 atau N1) untuk penulisan resminya.
+                            <strong>Catatan Level:</strong> Kosakata tingkat
+                            dasar (seperti N5) sering kali menggunakan huruf
+                            Kanji dari tingkat yang lebih tinggi (seperti N3
+                            atau N1) untuk penulisan resminya.
                           </div>
                         </EduNote>
                       )}

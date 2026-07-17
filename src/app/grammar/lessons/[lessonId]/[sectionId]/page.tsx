@@ -480,191 +480,194 @@ export default function SectionPage({
             { label: "Home", href: "/" },
             { label: "Materials", href: "/materi" },
             { label: "Lessons", href: "/grammar/lessons" },
-            { label: `Lesson ${lesson.lessonNumber}`, href: `/grammar/lessons/${lessonId}` },
+            {
+              label: `Lesson ${lesson.lessonNumber}`,
+              href: `/grammar/lessons/${lessonId}`,
+            },
           ]}
           current={section.title}
         />
       </BreadcrumbWrapper>
 
       <ContentWrapper>
-      {/* Top nav */}
-      <TopRow>
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <FuriganaToggleBtn
-            $active={progress.showFurigana}
-            onClick={() => setShowFurigana(!progress.showFurigana)}
-          >
-            <span>
-              {progress.showFurigana ? "🌸 Furigana: On" : "💤 Furigana: Off"}
-            </span>
-          </FuriganaToggleBtn>
-          <SectionCounter>
-            SECTION {sectionIdx + 1} OF {totalSectionsInLesson}
-          </SectionCounter>
-        </div>
-      </TopRow>
+        {/* Top nav */}
+        <TopRow>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <FuriganaToggleBtn
+              $active={progress.showFurigana}
+              onClick={() => setShowFurigana(!progress.showFurigana)}
+            >
+              <span>
+                {progress.showFurigana ? "🌸 Furigana: On" : "💤 Furigana: Off"}
+              </span>
+            </FuriganaToggleBtn>
+            <SectionCounter>
+              SECTION {sectionIdx + 1} OF {totalSectionsInLesson}
+            </SectionCounter>
+          </div>
+        </TopRow>
 
-      {/* Progress bar */}
-      <ProgressBarWrap>
-        <ProgressBarFill $pct={pct} />
-      </ProgressBarWrap>
+        {/* Progress bar */}
+        <ProgressBarWrap>
+          <ProgressBarFill $pct={pct} />
+        </ProgressBarWrap>
 
-      {/* Section header */}
-      <SectionHeader>
-        <SectionIconBadge>🎯</SectionIconBadge>
-        <div>
-          <SectionTitle>{section.title}</SectionTitle>
-          <SectionSubtitle>{section.subtitle}</SectionSubtitle>
-        </div>
-      </SectionHeader>
+        {/* Section header */}
+        <SectionHeader>
+          <SectionIconBadge>🎯</SectionIconBadge>
+          <div>
+            <SectionTitle>{section.title}</SectionTitle>
+            <SectionSubtitle>{section.subtitle}</SectionSubtitle>
+          </div>
+        </SectionHeader>
 
-      {/* Introduction */}
-      <AccordionBlock $open={true}>
-        <AccordionHeader onClick={() => toggleBlock(-1)}>
-          <AccordionTitle>Introduction</AccordionTitle>
-          <ChevronIcon $open={openBlocks.has(-1)}>
-            <Chevron />
-          </ChevronIcon>
-        </AccordionHeader>
-        <AccordionBody $open={openBlocks.has(-1)}>
-          <AccordionContent>
-            <Paragraph>{section.introduction}</Paragraph>
-          </AccordionContent>
-        </AccordionBody>
-      </AccordionBlock>
-
-      {/* Subsections */}
-      {section.subsections.map((sub, i) => (
-        <AccordionBlock key={i} $open={openBlocks.has(i)}>
-          <AccordionHeader onClick={() => toggleBlock(i)}>
-            <AccordionTitle>
-              {i + 1}. {sub.heading}
-            </AccordionTitle>
-            <ChevronIcon $open={openBlocks.has(i)}>
+        {/* Introduction */}
+        <AccordionBlock $open={true}>
+          <AccordionHeader onClick={() => toggleBlock(-1)}>
+            <AccordionTitle>Introduction</AccordionTitle>
+            <ChevronIcon $open={openBlocks.has(-1)}>
               <Chevron />
             </ChevronIcon>
           </AccordionHeader>
-          <AccordionBody $open={openBlocks.has(i)}>
+          <AccordionBody $open={openBlocks.has(-1)}>
             <AccordionContent>
-              <Paragraph>{sub.content}</Paragraph>
-
-              {sub.examples?.map((ex, ei) => (
-                <ExampleCard key={ei}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      gap: "1rem",
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <JapaneseRow>{ex.japanese}</JapaneseRow>
-                      {ex.furigana && progress.showFurigana && (
-                        <FuriganaRow>{ex.furigana}</FuriganaRow>
-                      )}
-                      <EnglishRow>{ex.english}</EnglishRow>
-                    </div>
-                    <SpeakerBtn
-                      onClick={() => speak(ex.japanese)}
-                      title="Listen to Japanese pronunciation"
-                    >
-                      🔊
-                    </SpeakerBtn>
-                  </div>
-                </ExampleCard>
-              ))}
-
-              {sub.tip && (
-                <TipBox>
-                  <span>💡</span>
-                  <span>{sub.tip}</span>
-                </TipBox>
-              )}
+              <Paragraph>{section.introduction}</Paragraph>
             </AccordionContent>
           </AccordionBody>
         </AccordionBlock>
-      ))}
 
-      {/* Key Vocabulary */}
-      {section.keyVocabulary && section.keyVocabulary.length > 0 && (
-        <AccordionBlock $open={openBlocks.has(99)}>
-          <AccordionHeader onClick={() => toggleBlock(99)}>
-            <AccordionTitle>4. Key Vocabulary</AccordionTitle>
-            <ChevronIcon $open={openBlocks.has(99)}>
-              <Chevron />
-            </ChevronIcon>
-          </AccordionHeader>
-          <AccordionBody $open={openBlocks.has(99)}>
-            <AccordionContent>
-              <Paragraph>
-                Here are the key words you need with this pattern. Furigana
-                above the kanji helps you read them right away.
-              </Paragraph>
-              <VocabGrid>
-                {section.keyVocabulary.map((v, vi) => (
-                  <VocabCard key={vi}>
-                    <VocabFuri
+        {/* Subsections */}
+        {section.subsections.map((sub, i) => (
+          <AccordionBlock key={i} $open={openBlocks.has(i)}>
+            <AccordionHeader onClick={() => toggleBlock(i)}>
+              <AccordionTitle>
+                {i + 1}. {sub.heading}
+              </AccordionTitle>
+              <ChevronIcon $open={openBlocks.has(i)}>
+                <Chevron />
+              </ChevronIcon>
+            </AccordionHeader>
+            <AccordionBody $open={openBlocks.has(i)}>
+              <AccordionContent>
+                <Paragraph>{sub.content}</Paragraph>
+
+                {sub.examples?.map((ex, ei) => (
+                  <ExampleCard key={ei}>
+                    <div
                       style={{
-                        opacity: progress.showFurigana ? 1 : 0,
-                        transition: "opacity 0.25s ease",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "flex-start",
+                        gap: "1rem",
                       }}
                     >
-                      {v.furigana || "\u00A0"}
-                    </VocabFuri>
-                    <VocabKanji>{v.kanji}</VocabKanji>
-                    <VocabMeaning>{v.meaning}</VocabMeaning>
-                  </VocabCard>
+                      <div style={{ flex: 1 }}>
+                        <JapaneseRow>{ex.japanese}</JapaneseRow>
+                        {ex.furigana && progress.showFurigana && (
+                          <FuriganaRow>{ex.furigana}</FuriganaRow>
+                        )}
+                        <EnglishRow>{ex.english}</EnglishRow>
+                      </div>
+                      <SpeakerBtn
+                        onClick={() => speak(ex.japanese)}
+                        title="Listen to Japanese pronunciation"
+                      >
+                        🔊
+                      </SpeakerBtn>
+                    </div>
+                  </ExampleCard>
                 ))}
-              </VocabGrid>
-            </AccordionContent>
-          </AccordionBody>
-        </AccordionBlock>
-      )}
 
-      {/* Summary */}
-      {section.summary.length > 0 && (
-        <SummaryBox>
-          <SummaryTitle>Summary</SummaryTitle>
-          <SummaryList>
-            {section.summary.map((item, si) => (
-              <SummaryItem key={si}>{item}</SummaryItem>
-            ))}
-          </SummaryList>
-        </SummaryBox>
-      )}
+                {sub.tip && (
+                  <TipBox>
+                    <span>💡</span>
+                    <span>{sub.tip}</span>
+                  </TipBox>
+                )}
+              </AccordionContent>
+            </AccordionBody>
+          </AccordionBlock>
+        ))}
 
-      {/* Navigation buttons */}
-      <NavRow>
-        {prevSection ? (
-          <NavBtn href={`/grammar/lessons/${lessonId}/${prevSection.id}`}>
-            ← Previous
-          </NavBtn>
-        ) : (
-          <NavBtn href={`/grammar/lessons/${lessonId}`}>
-            ← Back to Lesson
-          </NavBtn>
+        {/* Key Vocabulary */}
+        {section.keyVocabulary && section.keyVocabulary.length > 0 && (
+          <AccordionBlock $open={openBlocks.has(99)}>
+            <AccordionHeader onClick={() => toggleBlock(99)}>
+              <AccordionTitle>4. Key Vocabulary</AccordionTitle>
+              <ChevronIcon $open={openBlocks.has(99)}>
+                <Chevron />
+              </ChevronIcon>
+            </AccordionHeader>
+            <AccordionBody $open={openBlocks.has(99)}>
+              <AccordionContent>
+                <Paragraph>
+                  Here are the key words you need with this pattern. Furigana
+                  above the kanji helps you read them right away.
+                </Paragraph>
+                <VocabGrid>
+                  {section.keyVocabulary.map((v, vi) => (
+                    <VocabCard key={vi}>
+                      <VocabFuri
+                        style={{
+                          opacity: progress.showFurigana ? 1 : 0,
+                          transition: "opacity 0.25s ease",
+                        }}
+                      >
+                        {v.furigana || "\u00A0"}
+                      </VocabFuri>
+                      <VocabKanji>{v.kanji}</VocabKanji>
+                      <VocabMeaning>{v.meaning}</VocabMeaning>
+                    </VocabCard>
+                  ))}
+                </VocabGrid>
+              </AccordionContent>
+            </AccordionBody>
+          </AccordionBlock>
         )}
 
-        {marked ? (
-          nextSection ? (
-            <NavBtn
-              $primary
-              href={`/grammar/lessons/${lessonId}/${nextSection.id}`}
-            >
-              Next Section →
+        {/* Summary */}
+        {section.summary.length > 0 && (
+          <SummaryBox>
+            <SummaryTitle>Summary</SummaryTitle>
+            <SummaryList>
+              {section.summary.map((item, si) => (
+                <SummaryItem key={si}>{item}</SummaryItem>
+              ))}
+            </SummaryList>
+          </SummaryBox>
+        )}
+
+        {/* Navigation buttons */}
+        <NavRow>
+          {prevSection ? (
+            <NavBtn href={`/grammar/lessons/${lessonId}/${prevSection.id}`}>
+              ← Previous
             </NavBtn>
           ) : (
-            <NavBtn $primary href={`/grammar/lessons/${lessonId}`}>
-              Back to Lesson ✓
+            <NavBtn href={`/grammar/lessons/${lessonId}`}>
+              ← Back to Lesson
             </NavBtn>
-          )
-        ) : (
-          <MarkDoneBtn onClick={handleMarkDone}>
-            {nextSection ? "Mark as done & continue →" : "Complete section ✓"}
-          </MarkDoneBtn>
-        )}
-      </NavRow>
+          )}
+
+          {marked ? (
+            nextSection ? (
+              <NavBtn
+                $primary
+                href={`/grammar/lessons/${lessonId}/${nextSection.id}`}
+              >
+                Next Section →
+              </NavBtn>
+            ) : (
+              <NavBtn $primary href={`/grammar/lessons/${lessonId}`}>
+                Back to Lesson ✓
+              </NavBtn>
+            )
+          ) : (
+            <MarkDoneBtn onClick={handleMarkDone}>
+              {nextSection ? "Mark as done & continue →" : "Complete section ✓"}
+            </MarkDoneBtn>
+          )}
+        </NavRow>
       </ContentWrapper>
     </Container>
   );

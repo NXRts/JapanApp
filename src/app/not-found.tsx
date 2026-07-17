@@ -219,8 +219,8 @@ export default function NotFound() {
         </NotFoundSubtitle>
         <NotFoundMessage>
           We couldn't find the page you were looking for. It might have been
-          moved, deleted, or perhaps the spelling is incorrect. Let's get you back
-          on track!
+          moved, deleted, or perhaps the spelling is incorrect. Let's get you
+          back on track!
         </NotFoundMessage>
 
         <ButtonGroup>

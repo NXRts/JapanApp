@@ -11,11 +11,7 @@ import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-  allVocabulary,
-  allKanji,
-  allGrammar,
-} from "@/lib/dictionary";
+import { allVocabulary, allKanji, allGrammar } from "@/lib/dictionary";
 import { motion, AnimatePresence } from "framer-motion";
 import { TestResultStats } from "@/components/jlpt/TestResultStats";
 import { useProgress } from "@/context/ProgressContext";
@@ -693,7 +689,11 @@ function MiniTestContent() {
     if (typeof window === "undefined") return;
     try {
       const savedLevel = localStorage.getItem("japanapp_minitest_level");
-      if (savedLevel && ["N5", "N4", "N3", "N2", "N1"].includes(savedLevel) && !searchParams.get("level")) {
+      if (
+        savedLevel &&
+        ["N5", "N4", "N3", "N2", "N1"].includes(savedLevel) &&
+        !searchParams.get("level")
+      ) {
         setSetupLevel(savedLevel);
       }
 
@@ -753,7 +753,10 @@ function MiniTestContent() {
     setSettings((prev) => {
       const nextTypes = { ...prev.types, [type]: !prev.types[type] };
       try {
-        localStorage.setItem("japanapp_minitest_types", JSON.stringify(nextTypes));
+        localStorage.setItem(
+          "japanapp_minitest_types",
+          JSON.stringify(nextTypes),
+        );
       } catch (e) {}
       return { ...prev, types: nextTypes };
     });
@@ -768,7 +771,7 @@ function MiniTestContent() {
 
   const [timeLeft, setTimeLeft] = useState(settings.time * 60);
   const [testState, setTestState] = useState<"intro" | "playing" | "results">(
-    "intro"
+    "intro",
   );
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [answers, setAnswers] = useState<
@@ -791,7 +794,9 @@ function MiniTestContent() {
     ).filter((type) => settings.types[type]);
 
     if (enabledTypes.length === 0) {
-      alert("Pilih minimal satu tipe soal (Kosakata, Kanji, atau Tata Bahasa).");
+      alert(
+        "Pilih minimal satu tipe soal (Kosakata, Kanji, atau Tata Bahasa).",
+      );
       return;
     }
 
@@ -802,7 +807,7 @@ function MiniTestContent() {
       const vocabPool = shuffleArray(levelData.vocab);
       vocabPool.slice(0, countPerType).forEach((item) => {
         const distractors = shuffleArray(
-          vocabPool.filter((v) => v.id !== item.id)
+          vocabPool.filter((v) => v.id !== item.id),
         )
           .slice(0, 3)
           .map((v) => v.meaning);
@@ -824,7 +829,7 @@ function MiniTestContent() {
       const kanjiPool = shuffleArray(levelData.kanji);
       kanjiPool.slice(0, countPerType).forEach((item) => {
         const distractors = shuffleArray(
-          kanjiPool.filter((k) => k.id !== item.id)
+          kanjiPool.filter((k) => k.id !== item.id),
         )
           .slice(0, 3)
           .map((k) => k.onyomi?.[0] || k.kunyomi?.[0] || "");
@@ -848,7 +853,7 @@ function MiniTestContent() {
       const grammarPool = shuffleArray(levelData.grammar);
       grammarPool.slice(0, countPerType).forEach((item) => {
         const distractors = shuffleArray(
-          grammarPool.filter((g) => g.id !== item.id)
+          grammarPool.filter((g) => g.id !== item.id),
         )
           .slice(0, 3)
           .map((g) => g.meaning || "");
@@ -974,7 +979,9 @@ function MiniTestContent() {
               <CategoryTag>🎯 Mini Test</CategoryTag>
             </SessionBadgeGroup>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+            <div
+              style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}
+            >
               <ProgressCounter>
                 {currentIndex + 1} / {questions.length}
               </ProgressCounter>
@@ -991,7 +998,8 @@ function MiniTestContent() {
             <PracticeCard key="setup">
               <SetupTitle>JLPT {setupLevel} Mini Test Hub</SetupTitle>
               <SetupSub>
-                Kustomisasi parameter ujian singkat Anda dan uji pemahaman materi JLPT {setupLevel} secara terukur.
+                Kustomisasi parameter ujian singkat Anda dan uji pemahaman
+                materi JLPT {setupLevel} secara terukur.
               </SetupSub>
 
               <SelectionGroup>
@@ -1046,9 +1054,17 @@ function MiniTestContent() {
                   <SelectionLabel>Tipe Soal Ditampilkan</SelectionLabel>
                   <OptionGrid $cols={3}>
                     {[
-                      { id: "vocabulary", desktop: "Kosakata", mobile: "Kosakata" },
+                      {
+                        id: "vocabulary",
+                        desktop: "Kosakata",
+                        mobile: "Kosakata",
+                      },
                       { id: "kanji", desktop: "Kanji", mobile: "Kanji" },
-                      { id: "grammar", desktop: "Tata Bahasa", mobile: "Grammar" },
+                      {
+                        id: "grammar",
+                        desktop: "Tata Bahasa",
+                        mobile: "Grammar",
+                      },
                     ].map((item) => {
                       const key = item.id as "vocabulary" | "kanji" | "grammar";
                       const isSelected = settings.types[key];
@@ -1059,10 +1075,12 @@ function MiniTestContent() {
                           onClick={() => handleTypeToggle(key)}
                         >
                           <span className="desktop-text">
-                            {isSelected ? "✓ " : ""}{item.desktop}
+                            {isSelected ? "✓ " : ""}
+                            {item.desktop}
                           </span>
                           <span className="mobile-text">
-                            {isSelected ? "✓ " : ""}{item.mobile}
+                            {isSelected ? "✓ " : ""}
+                            {item.mobile}
                           </span>
                         </OptionButton>
                       );
@@ -1077,14 +1095,18 @@ function MiniTestContent() {
                       $active={settings.showInstantFeedback}
                       onClick={() => handleFeedbackToggle(true)}
                     >
-                      <span className="desktop-text">Tampilkan Jawaban Instan</span>
+                      <span className="desktop-text">
+                        Tampilkan Jawaban Instan
+                      </span>
                       <span className="mobile-text">Umpan Balik Instan</span>
                     </OptionButton>
                     <OptionButton
                       $active={!settings.showInstantFeedback}
                       onClick={() => handleFeedbackToggle(false)}
                     >
-                      <span className="desktop-text">Evaluasi Di Akhir Tes</span>
+                      <span className="desktop-text">
+                        Evaluasi Di Akhir Tes
+                      </span>
                       <span className="mobile-text">Evaluasi Akhir</span>
                     </OptionButton>
                   </OptionGrid>
@@ -1123,7 +1145,9 @@ function MiniTestContent() {
               <QuestionTypeBadge>Soal {currentQ.type}</QuestionTypeBadge>
 
               <Prompt>{currentQ.prompt}</Prompt>
-              {currentQ.subPrompt && <SubPrompt>{currentQ.subPrompt}</SubPrompt>}
+              {currentQ.subPrompt && (
+                <SubPrompt>{currentQ.subPrompt}</SubPrompt>
+              )}
 
               <HintToolbar>
                 <ToolIconButton
@@ -1136,10 +1160,7 @@ function MiniTestContent() {
               <OptionsGrid>
                 {currentQ.options.map((opt, idx) => {
                   let status: "neutral" | "correct" | "incorrect" = "neutral";
-                  if (
-                    selectedOption !== null &&
-                    settings.showInstantFeedback
-                  ) {
+                  if (selectedOption !== null && settings.showInstantFeedback) {
                     if (opt === currentQ.correctAnswer) status = "correct";
                     else if (idx === selectedOption) status = "incorrect";
                   }
@@ -1196,7 +1217,9 @@ function MiniTestContent() {
               <SetupTitle style={{ fontSize: "2rem", marginBottom: "0.4rem" }}>
                 Hasil Mini Test
               </SetupTitle>
-              <SetupSub style={{ maxWidth: "420px", margin: "0 auto 1.5rem auto" }}>
+              <SetupSub
+                style={{ maxWidth: "420px", margin: "0 auto 1.5rem auto" }}
+              >
                 {getPerformanceMessage((score / questions.length) * 100)}
               </SetupSub>
 
@@ -1218,7 +1241,11 @@ function MiniTestContent() {
                     value: formatTime(settings.time * 60 - timeLeft),
                     color: "var(--primary)",
                   },
-                  { label: "Level", value: setupLevel, color: "var(--primary)" },
+                  {
+                    label: "Level",
+                    value: setupLevel,
+                    color: "var(--primary)",
+                  },
                 ]}
               />
 

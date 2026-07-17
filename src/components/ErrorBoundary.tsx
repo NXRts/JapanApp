@@ -35,7 +35,11 @@ export class ErrorBoundary extends React.Component<Props, State> {
       errInstance = error;
     } else if (typeof error === "string") {
       errInstance = new Error(error);
-    } else if (error && typeof error.message === "string" && error.message !== "[object Event]") {
+    } else if (
+      error &&
+      typeof error.message === "string" &&
+      error.message !== "[object Event]"
+    ) {
       errInstance = new Error(error.message);
     } else if (error && typeof error.type === "string") {
       errInstance = new Error(`Resource / Media Event (${error.type})`);
