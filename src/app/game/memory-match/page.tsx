@@ -485,17 +485,15 @@ export default function MemoryMatchPage() {
 
   return (
     <Container>
-      {!isMobileView && (
-        <BreadcrumbWrapper>
-          <Breadcrumbs
-            items={[
-              { label: "Home", href: "/" },
-              { label: "Games Hub", href: "/game" },
-            ]}
-            current="Memory Match"
-          />
-        </BreadcrumbWrapper>
-      )}
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Games Hub", href: "/game" },
+          ]}
+          current="Memory Match"
+        />
+      </BreadcrumbWrapper>
 
       <ContentWrapper>
         {isMobileView ? (

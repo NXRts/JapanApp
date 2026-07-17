@@ -648,17 +648,15 @@ export default function KanaFlashcards() {
   return (
     <PageWrapper>
       <Container>
-        {!isMobileView && (
-          <BreadcrumbWrapper>
-            <Breadcrumbs
-              items={[
-                { label: "Home", href: "/" },
-                { label: "Study", href: "/study" },
-              ]}
-              current="Kana Flashcards"
-            />
-          </BreadcrumbWrapper>
-        )}
+        <BreadcrumbWrapper>
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Study", href: "/study" },
+            ]}
+            current="Kana Flashcards"
+          />
+        </BreadcrumbWrapper>
 
         <ContentWrapper>
           {isMobileView ? (

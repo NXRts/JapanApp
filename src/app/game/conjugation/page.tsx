@@ -591,17 +591,15 @@ export default function ConjugationDrillsPage() {
 
   return (
     <Container>
-      {!(isMobileView && gameState === "playing") && (
-        <BreadcrumbWrapper>
-          <Breadcrumbs
-            items={[
-              { label: "Home", href: "/" },
-              { label: "Games Hub", href: "/game" },
-            ]}
-            current="Conjugation Drills"
-          />
-        </BreadcrumbWrapper>
-      )}
+      <BreadcrumbWrapper>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Games Hub", href: "/game" },
+          ]}
+          current="Conjugation Drills"
+        />
+      </BreadcrumbWrapper>
 
       <ContentWrapper>
         {isMobileView && gameState === "playing" ? (
