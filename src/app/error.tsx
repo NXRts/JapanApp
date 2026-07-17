@@ -130,7 +130,12 @@ export default function Error({
 
       {process.env.NODE_ENV === "development" && (
         <ErrorDetails>
-          <strong>Error:</strong> {error.message}
+          <strong>Error:</strong>{" "}
+          {!error?.message ||
+          error.message === "[object Event]" ||
+          error.message.includes("[object Event]")
+            ? "A media, audio, or network resource event error occurred."
+            : error.message}
           {error.digest && (
             <div>
               <strong>Digest:</strong> {error.digest}

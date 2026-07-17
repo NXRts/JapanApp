@@ -164,6 +164,22 @@ const Container = styled.div`
   padding-bottom: 2rem;
 `;
 
+import { RightSidebar } from "@/components/home/RightSidebar";
+
+const MainLayout = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 5rem;
+
+  @media (max-width: 1024px) {
+    gap: 0;
+    padding: 0;
+  }
+`;
+
 const MobileContainer = styled.div`
   max-width: 600px;
   width: 100%;
@@ -1014,122 +1030,125 @@ export default function Home() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <MobileContainer>
-          {/* Top stats banner */}
-          <StatBanner>
-            <StatBannerItem title="Total Experience Points">
-              ⭐ <span style={{ color: "#eab308" }}>{progress.exp} EXP</span>
-            </StatBannerItem>
-            <StatBannerItem title="Daily Challenge Status">
-              🎯{" "}
-              <span
-                style={{
-                  color: isDailyCompleted ? "#10b981" : "var(--text-secondary)",
-                }}
-              >
-                {isDailyCompleted ? "Daily Done!" : "Daily Pending"}
-              </span>
-            </StatBannerItem>
-          </StatBanner>
+        <MainLayout>
+          <MobileContainer>
+            {/* Top stats banner */}
+            <StatBanner>
+              <StatBannerItem title="Total Experience Points">
+                ⭐ <span style={{ color: "#eab308" }}>{progress.exp} EXP</span>
+              </StatBannerItem>
+              <StatBannerItem title="Daily Challenge Status">
+                🎯{" "}
+                <span
+                  style={{
+                    color: isDailyCompleted ? "#10b981" : "var(--text-secondary)",
+                  }}
+                >
+                  {isDailyCompleted ? "Daily Done!" : "Daily Pending"}
+                </span>
+              </StatBannerItem>
+            </StatBanner>
 
-          {/* Level Tab Bar Selector */}
-          <LevelSelector>
-            {levels.map((level) => (
-              <LevelTab
-                key={level.code}
-                $active={selectedLevel === level.code}
-                $activeColor={level.color}
-                $activeBg={getActiveBgColor(level.code)}
-                onClick={() => setSelectedLevel(level.code)}
-              >
-                {level.code === "Basic" ? (
-                  "Basic"
-                ) : (
-                  <>
-                    <LevelTabText>JLPT </LevelTabText>
-                    {level.code}
-                  </>
-                )}
-              </LevelTab>
-            ))}
-          </LevelSelector>
+            {/* Level Tab Bar Selector */}
+            <LevelSelector>
+              {levels.map((level) => (
+                <LevelTab
+                  key={level.code}
+                  $active={selectedLevel === level.code}
+                  $activeColor={level.color}
+                  $activeBg={getActiveBgColor(level.code)}
+                  onClick={() => setSelectedLevel(level.code)}
+                >
+                  {level.code === "Basic" ? (
+                    "Basic"
+                  ) : (
+                    <>
+                      <LevelTabText>JLPT </LevelTabText>
+                      {level.code}
+                    </>
+                  )}
+                </LevelTab>
+              ))}
+            </LevelSelector>
 
-          {/* Locked indicators warnings */}
-          {levelLessons.length === 0 && (
-            <LockBanner>
-              📭 No material available for this level yet.
-            </LockBanner>
-          )}
+            {/* Locked indicators warnings */}
+            {levelLessons.length === 0 && (
+              <LockBanner>
+                📭 No material available for this level yet.
+              </LockBanner>
+            )}
 
-          {/* Render Units */}
-          {activeUnits.map((unit) => {
-            const sectHeader = getSectionTitle(unit.id, unit.title);
-            const numLessons = unit.lessons.length;
-            const completedInUnit = unit.lessons.filter((l) =>
-              progress.completedExercises?.includes(l.id),
-            ).length;
+            {/* Render Units */}
+            {activeUnits.map((unit) => {
+              const sectHeader = getSectionTitle(unit.id, unit.title);
+              const numLessons = unit.lessons.length;
+              const completedInUnit = unit.lessons.filter((l) =>
+                progress.completedExercises?.includes(l.id),
+              ).length;
 
-            return (
-              <div key={unit.id} style={{ marginBottom: "2.25rem" }}>
-                <ToriiPhaseHeader
-                  unitLabel={sectHeader.unitLabel}
-                  title={sectHeader.title}
-                  description={unit.description}
-                  color={unit.color}
-                />
+              return (
+                <div key={unit.id} style={{ marginBottom: "2.25rem" }}>
+                  <ToriiPhaseHeader
+                    unitLabel={sectHeader.unitLabel}
+                    title={sectHeader.title}
+                    description={unit.description}
+                    color={unit.color}
+                  />
 
-                <InkProgressBar
-                  completed={completedInUnit}
-                  total={numLessons}
-                  color={
-                    unit.color.includes("gradient")
-                      ? unit.color.match(/#(?:[0-9a-fA-F]{3}){1,2}/g)?.[0] ||
-                        "#10b981"
-                      : unit.color
-                  }
-                />
+                  <InkProgressBar
+                    completed={completedInUnit}
+                    total={numLessons}
+                    color={
+                      unit.color.includes("gradient")
+                        ? unit.color.match(/#(?:[0-9a-fA-F]{3}){1,2}/g)?.[0] ||
+                          "#10b981"
+                        : unit.color
+                    }
+                  />
 
-                <DraggableScrollList>
-                  {unit.lessons.map((lesson) => {
-                    const isUnlocked = isLessonUnlocked(lesson.id);
-                    const isCompleted =
-                      progress.completedExercises?.includes(lesson.id) || false;
-                    const isActive = isUnlocked && !isCompleted;
+                  <DraggableScrollList>
+                    {unit.lessons.map((lesson) => {
+                      const isUnlocked = isLessonUnlocked(lesson.id);
+                      const isCompleted =
+                        progress.completedExercises?.includes(lesson.id) || false;
+                      const isActive = isUnlocked && !isCompleted;
 
-                    const cardState = isCompleted
-                      ? "mastered"
-                      : isActive
-                        ? "active"
-                        : isUnlocked
-                          ? "available"
-                          : "locked";
+                      const cardState = isCompleted
+                        ? "mastered"
+                        : isActive
+                          ? "active"
+                          : isUnlocked
+                            ? "available"
+                            : "locked";
 
-                    return (
-                      <HankoSkillCard
-                        key={lesson.id}
-                        id={isActive ? "active-lesson-node" : undefined}
-                        title={lesson.title}
-                        badge={lesson.badge}
-                        icon={lesson.icon}
-                        expReward={lesson.expReward}
-                        state={cardState}
-                        color={unit.color}
-                        onClick={() => handleNodeClick(lesson, isUnlocked)}
-                      />
-                    );
-                  })}
-                </DraggableScrollList>
-              </div>
-            );
-          })}
+                      return (
+                        <HankoSkillCard
+                          key={lesson.id}
+                          id={isActive ? "active-lesson-node" : undefined}
+                          title={lesson.title}
+                          badge={lesson.badge}
+                          icon={lesson.icon}
+                          expReward={lesson.expReward}
+                          state={cardState}
+                          color={unit.color}
+                          onClick={() => handleNodeClick(lesson, isUnlocked)}
+                        />
+                      );
+                    })}
+                  </DraggableScrollList>
+                </div>
+              );
+            })}
 
-          {/* Node detail bottom drawer sheet */}
-          <RoadmapNodeDrawer
-            isOpen={isDrawerOpen}
-            onClose={() => setIsDrawerOpen(false)}
-            nodeData={selectedNode}
-          />
-        </MobileContainer>
+            {/* Node detail bottom drawer sheet */}
+            <RoadmapNodeDrawer
+              isOpen={isDrawerOpen}
+              onClose={() => setIsDrawerOpen(false)}
+              nodeData={selectedNode}
+            />
+          </MobileContainer>
+          <RightSidebar />
+        </MainLayout>
       </>
     );
   }
