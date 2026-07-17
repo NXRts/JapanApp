@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://japan-app.vercel.app";
+    process.env.NEXT_PUBLIC_BASE_URL || "https://japan-mee.vercel.app";
 
   return [
     {
