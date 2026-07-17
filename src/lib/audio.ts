@@ -308,19 +308,24 @@ export const playJapaneseAudio = (
 
     utterance.onerror = async (e: any) => {
       clearTimeout(speakingTimeout);
-      const errReason = e?.error || e?.type || "speech synthesis failure";
-      if (errReason !== "interrupted") {
-        console.warn(
-          "SpeechSynthesis warning:",
-          errReason,
-          "— trying external fallbacks...",
-        );
-        const successGoogle = await playWithGoogleTTS(text, rate);
-        if (!successGoogle) {
-          await playWithYoudaoTTS(text, rate);
+      try {
+        const errReason = e?.error || e?.type || "speech synthesis failure";
+        if (errReason !== "interrupted") {
+          console.warn(
+            "SpeechSynthesis warning:",
+            errReason,
+            "— trying external fallbacks...",
+          );
+          const successGoogle = await playWithGoogleTTS(text, rate);
+          if (!successGoogle) {
+            await playWithYoudaoTTS(text, rate);
+          }
         }
+      } catch (err) {
+        console.warn("Audio fallback error caught:", err);
+      } finally {
+        resolve();
       }
-      resolve();
     };
 
     // Delay speak() slightly after cancel() to prevent the browser from cancelling the new utterance

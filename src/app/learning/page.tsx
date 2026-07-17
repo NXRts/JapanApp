@@ -88,22 +88,32 @@ function DraggableScrollList({ children }: { children: React.ReactNode }) {
   );
 }
 
+import { RightSidebar } from "@/components/home/RightSidebar";
+
 /* ─── Styled Components ───────────────────────────────────────────────────── */
 const PageWrapper = styled.div`
   min-height: 100vh;
   background: transparent;
 `;
 
+const MainLayout = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 6rem;
+
+  @media (max-width: 1024px) {
+    padding: 1.5rem 1rem 5rem;
+    gap: 0;
+  }
+`;
+
 const ContentArea = styled.div`
   max-width: 680px;
   width: 100%;
-  margin: 0 auto;
-  padding: 2rem 1.25rem 6rem;
   font-family: "Nunito", "Outfit", sans-serif;
-
-  @media (max-width: 768px) {
-    padding: 1.5rem 1rem 5rem;
-  }
 `;
 
 const PageHeader = styled.div`
@@ -342,14 +352,15 @@ export default function LearningPage() {
 
   return (
     <PageWrapper>
-      <ContentArea>
-        {/* Page Header */}
-        <PageHeader>
-          <PageTitle>Learning Path</PageTitle>
-          <PageSubtitle>
-            Master Japanese step by step — from N5 basics to N1 fluency.
-          </PageSubtitle>
-        </PageHeader>
+      <MainLayout>
+        <ContentArea>
+          {/* Page Header */}
+          <PageHeader>
+            <PageTitle>Learning Path</PageTitle>
+            <PageSubtitle>
+              Master Japanese step by step — from N5 basics to N1 fluency.
+            </PageSubtitle>
+          </PageHeader>
 
         {/* Stats Banner */}
         <StatBanner>
@@ -466,6 +477,8 @@ export default function LearningPage() {
           nodeData={selectedNode}
         />
       </ContentArea>
-    </PageWrapper>
+      <RightSidebar />
+    </MainLayout>
+  </PageWrapper>
   );
 }

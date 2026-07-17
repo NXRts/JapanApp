@@ -29,6 +29,61 @@ export class ErrorBoundary extends React.Component<Props, State> {
     this.state = { hasError: false };
   }
 
+  private handleGlobalError?: (event: ErrorEvent) => void;
+  private handleUnhandledRejection?: (event: PromiseRejectionEvent) => void;
+
+  componentDidMount() {
+    this.handleGlobalError = (event: ErrorEvent) => {
+      const isEv =
+        !event.error ||
+        event.error instanceof Event ||
+        event.error?.message === "[object Event]" ||
+        String(event.error).includes("[object Event]") ||
+        String(event.message).includes("[object Event]") ||
+        Boolean(event.target && (event.target as HTMLElement).tagName);
+
+      if (isEv) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    };
+
+    this.handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      const reason = event.reason;
+      const isEv =
+        !reason ||
+        reason instanceof Event ||
+        reason === "[object Event]" ||
+        reason.message === "[object Event]" ||
+        String(reason).includes("[object Event]");
+
+      if (isEv) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    };
+
+    window.addEventListener("error", this.handleGlobalError, true);
+    window.addEventListener(
+      "unhandledrejection",
+      this.handleUnhandledRejection,
+      true
+    );
+  }
+
+  componentWillUnmount() {
+    if (this.handleGlobalError) {
+      window.removeEventListener("error", this.handleGlobalError, true);
+    }
+    if (this.handleUnhandledRejection) {
+      window.removeEventListener(
+        "unhandledrejection",
+        this.handleUnhandledRejection,
+        true
+      );
+    }
+  }
+
   static getDerivedStateFromError(error: any): State {
     let errInstance: Error;
     if (error instanceof Error) {
@@ -46,10 +101,27 @@ export class ErrorBoundary extends React.Component<Props, State> {
     } else {
       errInstance = new Error(String(error || "An unexpected error occurred"));
     }
+
+    if (
+      !errInstance.message ||
+      errInstance.message === "[object Event]" ||
+      errInstance.message.includes("[object Event]")
+    ) {
+      const typeStr =
+        error && typeof error.type === "string" ? error.type : "media/network";
+      errInstance = new Error(`Resource / Media Event (${typeStr})`);
+    }
+
     return { hasError: true, error: errInstance };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    if (
+      error.message === "[object Event]" ||
+      error.message.includes("[object Event]")
+    ) {
+      return;
+    }
     // Log to console in dev; in production wire this to Sentry or similar
     if (process.env.NODE_ENV !== "production") {
       console.error("[ErrorBoundary] Caught an error:", error, errorInfo);
