@@ -58,7 +58,7 @@ const Title = styled.h1`
 const Subtitle = styled.p`
   font-size: 1.25rem;
   color: var(--text-secondary);
-  max-width: 650px;
+  max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
 
@@ -69,7 +69,7 @@ const Subtitle = styled.p`
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
 
   @media (max-width: 768px) {
@@ -136,13 +136,12 @@ const IconWrapper = styled.div<{ $color: string }>`
   width: 64px;
   height: 64px;
   border-radius: 16px;
+  background: ${({ $color }) => `rgba(${$color}, 0.1)`};
+  color: ${({ $color }) => `rgb(${$color})`};
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5rem;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  background: ${({ $color }) => `rgba(${$color}, 0.1)`};
-  color: ${({ $color }) => `rgb(${$color})`};
 
   svg {
     width: 32px;
@@ -163,10 +162,9 @@ const IconWrapper = styled.div<{ $color: string }>`
 `;
 
 const CardTitle = styled.h2`
-  font-size: 2rem;
-  color: var(--foreground);
-  margin-bottom: 1rem;
-  font-weight: 800;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
 
   @media (max-width: 768px) {
     font-size: 1rem;
@@ -179,8 +177,7 @@ const CardTitle = styled.h2`
 
 const CardDescription = styled.p`
   color: var(--text-secondary);
-  font-size: 1.1rem;
-  line-height: 1.6;
+  line-height: 1.5;
   margin-bottom: 1.5rem;
   flex-grow: 1;
 
