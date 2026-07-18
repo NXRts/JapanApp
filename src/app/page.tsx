@@ -16,15 +16,20 @@ import { InkProgressBar } from "@/components/mobile/InkProgressBar";
 
 const HorizontalScrollList = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.85rem;
   overflow-x: auto;
-  padding: 0.75rem 0.25rem 1.75rem;
+  padding: 0.65rem 0.25rem 1.5rem;
   scrollbar-width: none; /* Firefox */
   &::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
   }
   -webkit-overflow-scrolling: touch;
   width: 100%;
+
+  @media (max-width: 480px) {
+    gap: 0.6rem;
+    padding: 0.5rem 0.15rem 1.25rem;
+  }
 
   /* Show styled scrollbar on desktop/non-touch devices */
   @media (pointer: fine) {

@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
-import styled from "styled-components";
-import Link from "next/link";
-import { useProgress } from "@/context/ProgressContext";
 import { useDeviceMode } from "@/context/DeviceModeContext";
+import { useProgress } from "@/context/ProgressContext";
+import Link from "next/link";
+import { useMemo } from "react";
+import styled from "styled-components";
 
 /* ─── Sidebar Outer Container ────────────────────────────────────────────── */
 const SidebarWrapper = styled.aside`
@@ -359,9 +359,7 @@ export function RightSidebar() {
           </ShieldIconBox>
           <LeagueTextGroup>
             <LeagueRankText>Kamu di peringkat #9</LeagueRankText>
-            <LeagueStatusText>
-              Kamu merosot ke zona penurunan!
-            </LeagueStatusText>
+            <LeagueStatusText>Kamu merosot ke zona penurunan!</LeagueStatusText>
           </LeagueTextGroup>
         </LeagueBody>
       </WidgetCard>
@@ -398,7 +396,9 @@ export function RightSidebar() {
                   $pct={isDailyCompleted ? 100 : 0}
                   $color="#10b981"
                 />
-                <ProgressText>{isDailyCompleted ? "2 / 2" : "0 / 2"}</ProgressText>
+                <ProgressText>
+                  {isDailyCompleted ? "2 / 2" : "0 / 2"}
+                </ProgressText>
               </ProgressTrack>
             </QuestContent>
             <ChestIcon $completed={isDailyCompleted}>🎁</ChestIcon>
@@ -408,15 +408,15 @@ export function RightSidebar() {
           <QuestItem>
             <QuestIcon>🎯</QuestIcon>
             <QuestContent>
-              <QuestTitle>
-                Raih skor 80% ke atas dalam 3 pelajaran
-              </QuestTitle>
+              <QuestTitle>Raih skor 80% ke atas dalam 3 pelajaran</QuestTitle>
               <ProgressTrack>
                 <ProgressFill
                   $pct={isDailyCompleted ? 66 : 0}
                   $color="#8b5cf6"
                 />
-                <ProgressText>{isDailyCompleted ? "2 / 3" : "0 / 3"}</ProgressText>
+                <ProgressText>
+                  {isDailyCompleted ? "2 / 3" : "0 / 3"}
+                </ProgressText>
               </ProgressTrack>
             </QuestContent>
             <ChestIcon $completed={false}>🎁</ChestIcon>
