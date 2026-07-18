@@ -184,12 +184,17 @@ const MobileContainer = styled.div`
   max-width: 600px;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem 1rem 1.5rem;
+  padding: 1.25rem 0.85rem 1.5rem;
   display: flex;
   flex-direction: column;
   position: relative;
   min-height: auto;
   font-family: "Nunito", "Outfit", sans-serif;
+  box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    padding: 1rem 0.65rem 1.25rem;
+  }
 `;
 
 // Level Selector Styles
@@ -764,21 +769,35 @@ const ModalButton = styled.button<{ $color?: string }>`
 
 const StatBanner = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 0.75rem;
-  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
   box-shadow: var(--shadow-sm);
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    padding: 0.6rem 0.5rem;
+    gap: 0.25rem;
+  }
 `;
 
 const StatBannerItem = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  white-space: nowrap;
+
+  @media (max-width: 480px) {
+    font-size: 0.76rem;
+    gap: 0.2rem;
+  }
 `;
 
 const LockBanner = styled.div`
@@ -1030,9 +1049,8 @@ export default function Home() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <MainLayout>
-          <MobileContainer>
-            {/* Top stats banner */}
+        <MobileContainer>
+          {/* Top stats banner */}
             <StatBanner>
               <StatBannerItem title="Total Experience Points">
                 ⭐ <span style={{ color: "#eab308" }}>{progress.exp} EXP</span>
@@ -1147,8 +1165,6 @@ export default function Home() {
               nodeData={selectedNode}
             />
           </MobileContainer>
-          <RightSidebar />
-        </MainLayout>
       </>
     );
   }

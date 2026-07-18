@@ -105,7 +105,7 @@ export async function POST(request: NextRequest) {
 
     // Allow a small discrepancy for legacy/unlogged XP or resetting anomalies,
     // but a huge gap indicates manual manipulation of local storage.
-    if (progress.exp > loggedExp + 200) {
+    if (progress.exp > loggedExp + 1000) {
       const response = NextResponse.json(
         {
           valid: false,

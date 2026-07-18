@@ -65,6 +65,12 @@ const UnitTitle = styled.h3`
   margin: 0;
   line-height: 1.3;
   font-family: "Outfit", "Nunito", sans-serif;
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  @media (max-width: 480px) {
+    font-size: 1.02rem;
+  }
 `;
 
 const UnitDesc = styled.p`
