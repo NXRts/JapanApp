@@ -82,6 +82,8 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { OnboardingOverlay } from "@/components/common/OnboardingOverlay";
 import { SplashLoader } from "@/components/common/SplashLoader";
 
+import { NavigationScrollToTop } from "@/components/NavigationScrollToTop";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -104,6 +106,7 @@ export default function RootLayout({
             <ProgressProvider>
               <ErrorBoundary>
                 <StyledRegistry>
+                  <NavigationScrollToTop />
                   <SplashLoader />
                   <SakuraBackground />
                   <Navbar />
