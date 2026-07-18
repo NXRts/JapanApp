@@ -108,9 +108,11 @@ const MainLayout = styled.div`
   max-width: 1140px;
   margin: 0 auto;
   padding: 2rem 1.25rem 6rem;
+  width: 100%;
+  box-sizing: border-box;
 
-  @media (max-width: 1024px) {
-    padding: 1.5rem 1rem 5rem;
+  @media (max-width: 1200px) {
+    padding: 0;
     gap: 0;
   }
 `;
