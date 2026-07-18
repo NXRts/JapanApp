@@ -9,6 +9,7 @@ import { lessonsData, Lesson } from "@/data/lessonsData";
 import { ToriiPhaseHeader } from "@/components/mobile/ToriiPhaseHeader";
 import { HankoSkillCard } from "@/components/mobile/HankoSkillCard";
 import { InkProgressBar } from "@/components/mobile/InkProgressBar";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
 /* ─── Horizontal Draggable Scroll ─────────────────────────────────────────── */
 const HorizontalScrollList = styled.div`
@@ -369,12 +370,31 @@ export default function LearningPage() {
     setIsDrawerOpen(true);
   };
 
+  // Smoothly auto-scroll to the current active lesson node on mount or tab change (Lessons page specific)
+  useEffect(() => {
+    if (!mounted) return;
+
+    const timer = setTimeout(() => {
+      const activeNode = document.getElementById("active-lesson-node");
+      if (activeNode) {
+        activeNode.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [mounted, selectedLevel, progress.completedExercises]);
+
   if (!mounted) return null;
 
   return (
     <PageWrapper>
       <MainLayout>
         <ContentArea>
+          <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Learning Path" />
           {/* Page Header */}
           <PageHeader>
             <PageTitle>Learning Path</PageTitle>

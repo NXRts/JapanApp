@@ -13,6 +13,7 @@ import React from "react";
 import { ToriiPhaseHeader } from "@/components/mobile/ToriiPhaseHeader";
 import { HankoSkillCard } from "@/components/mobile/HankoSkillCard";
 import { InkProgressBar } from "@/components/mobile/InkProgressBar";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
 const HorizontalScrollList = styled.div`
   display: flex;
@@ -862,7 +863,7 @@ export default function Home() {
     }
   }, [progress.completedExercises]);
 
-  // Smoothly auto-scroll to the current active lesson node on mount or tab change
+  // Smoothly auto-scroll to the current active lesson node on mount or tab change (Lessons page specific)
   useEffect(() => {
     if (!mounted) return;
 
@@ -875,7 +876,7 @@ export default function Home() {
           inline: "center",
         });
       }
-    }, 400);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [mounted, selectedLevel, progress.completedExercises]);
@@ -1058,6 +1059,8 @@ export default function Home() {
         />
         <MainLayout>
           <MobileContainer>
+            <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Learn" />
+
             {/* Top stats banner */}
             <StatBanner>
               <StatBannerItem title="Total Experience Points">
