@@ -13,15 +13,20 @@ import { InkProgressBar } from "@/components/mobile/InkProgressBar";
 /* ─── Horizontal Draggable Scroll ─────────────────────────────────────────── */
 const HorizontalScrollList = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.85rem;
   overflow-x: auto;
-  padding: 0.75rem 0.25rem 1.75rem;
+  padding: 0.65rem 0.25rem 1.5rem;
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
   }
   -webkit-overflow-scrolling: touch;
   width: 100%;
+
+  @media (max-width: 480px) {
+    gap: 0.6rem;
+    padding: 0.5rem 0.15rem 1.25rem;
+  }
   @media (pointer: fine) {
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;

@@ -17,10 +17,10 @@ const CardContainer = styled.button<{
   flex-direction: column;
   align-items: stretch;
   justify-content: space-between;
-  width: 185px;
-  height: 150px;
-  padding: 1rem;
-  border-radius: 20px;
+  width: 160px;
+  height: 135px;
+  padding: 0.85rem;
+  border-radius: 18px;
   background-color: var(--surface) !important;
   color: var(--foreground);
   border: 2px solid var(--border);
@@ -32,6 +32,13 @@ const CardContainer = styled.button<{
   cursor: pointer;
   outline: none;
   flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    width: 148px;
+    height: 128px;
+    padding: 0.7rem;
+    border-radius: 16px;
+  }
   /* PWA: no tap highlight, no selection */
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
@@ -147,16 +154,20 @@ const CardBadge = styled.span<{ $state: string; $color: string }>`
 `;
 
 const CardTitle = styled.h4`
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 800;
-  line-height: 1.25;
+  line-height: 1.2;
   color: var(--foreground);
-  margin: 0.5rem 0 0.25rem;
+  margin: 0.35rem 0 0.2rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   font-family: "Outfit", sans-serif;
+
+  @media (max-width: 480px) {
+    font-size: 0.78rem;
+  }
 `;
 
 const CardFooter = styled.div`
@@ -165,22 +176,22 @@ const CardFooter = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-top: auto;
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
   color: var(--text-secondary);
 `;
 
 const HankoStamp = styled.div`
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  border: 2px solid var(--torii-red);
+  border: 1.5px solid var(--torii-red);
   color: var(--torii-red);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 900;
   transform: rotate(-12deg);
   font-family: "Noto Sans JP", sans-serif;
