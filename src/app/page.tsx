@@ -178,8 +178,10 @@ const MainLayout = styled.div`
   max-width: 1140px;
   margin: 0 auto;
   padding: 1.5rem 1rem 5rem;
+  width: 100%;
+  box-sizing: border-box;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1200px) {
     gap: 0;
     padding: 0;
   }
@@ -1054,8 +1056,9 @@ export default function Home() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <MobileContainer>
-          {/* Top stats banner */}
+        <MainLayout>
+          <MobileContainer>
+            {/* Top stats banner */}
             <StatBanner>
               <StatBannerItem title="Total Experience Points">
                 ⭐ <span style={{ color: "#eab308" }}>{progress.exp} EXP</span>
@@ -1170,6 +1173,8 @@ export default function Home() {
               nodeData={selectedNode}
             />
           </MobileContainer>
+          <RightSidebar />
+        </MainLayout>
       </>
     );
   }
