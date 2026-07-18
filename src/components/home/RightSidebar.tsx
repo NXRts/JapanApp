@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { useProgress } from "@/context/ProgressContext";
+import { useDeviceMode } from "@/context/DeviceModeContext";
 
 /* ─── Sidebar Outer Container ────────────────────────────────────────────── */
 const SidebarWrapper = styled.aside`
@@ -306,12 +307,15 @@ const ChestIcon = styled.div<{ $completed?: boolean }>`
 /* ─── Main Component ─────────────────────────────────────────────────────── */
 export function RightSidebar() {
   const { progress } = useProgress();
+  const { deviceMode } = useDeviceMode();
 
   const isDailyCompleted = useMemo(() => {
     if (!progress.lastActiveDate) return false;
     const today = new Date().toISOString().split("T")[0];
     return progress.lastActiveDate === today;
   }, [progress.lastActiveDate]);
+
+  if (deviceMode === "mobile") return null;
 
   return (
     <SidebarWrapper>

@@ -139,6 +139,20 @@ const Logo = styled(Link)`
     font-size: 0.95rem;
     gap: 6px;
   }
+
+  @media (max-width: 400px) {
+    font-size: 0.88rem;
+    gap: 4px;
+    span {
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (max-width: 350px) {
+    span {
+      display: none;
+    }
+  }
 `;
 
 const NavList = styled.ul`

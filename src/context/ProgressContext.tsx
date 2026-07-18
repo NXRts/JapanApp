@@ -225,17 +225,6 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
               });
 
               if (!res.ok) {
-                const text = await res.text().catch(() => "");
-                console.warn("Progress validation notice:", text);
-                let result: any = {};
-                try {
-                  result = JSON.parse(text);
-                } catch {}
-                logError(new Error("Progress validation notice"), {
-                  reason: result?.reason || text || "Empty response",
-                  status: res.status,
-                  details: result?.errors || result,
-                });
                 // Preserve local candidateProgress so user data is retained safely
                 setProgress(candidateProgress);
                 setIsLoaded(true);

@@ -135,21 +135,35 @@ const PageSubtitle = styled.p`
 
 const StatBanner = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 0.75rem;
-  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
   box-shadow: var(--shadow-sm);
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    padding: 0.6rem 0.5rem;
+    gap: 0.25rem;
+  }
 `;
 
 const StatBannerItem = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   font-weight: 800;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
+  white-space: nowrap;
+
+  @media (max-width: 480px) {
+    font-size: 0.76rem;
+    gap: 0.2rem;
+  }
 `;
 
 const LevelSelector = styled.div`
