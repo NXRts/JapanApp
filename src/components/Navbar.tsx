@@ -1524,13 +1524,13 @@ export function Navbar() {
                   </PopoverItem>
                 </Link>
                 <Link
-                  href="/stats"
+                  href="/profile"
                   style={{ textDecoration: "none", color: "inherit" }}
                   onClick={() => setIsLainnyaOpen(false)}
                 >
                   <PopoverItem>
                     <StatsIcon stroke="#06b6d4" />
-                    Stats
+                    Profile & Stats
                   </PopoverItem>
                 </Link>
                 <Link
@@ -1592,7 +1592,7 @@ export function Navbar() {
               <DeviceModeSwitcher />
             </div>
 
-            <SidebarLevelCard href="/stats" title={`${progress.exp} Total EXP`}>
+            <SidebarLevelCard href="/profile" title={`${progress.exp} Total EXP`}>
               <SidebarLevelHeader>
                 <span>LEVEL {level}</span>
                 <span>{progress.exp} EXP</span>
@@ -1657,7 +1657,7 @@ export function Navbar() {
               >
                 <DeviceModeSwitcher />
                 <Link
-                  href="/stats"
+                  href="/profile"
                   style={{ textDecoration: "none", flexShrink: 0 }}
                 >
                   <LevelBadge
@@ -1798,11 +1798,7 @@ export function Navbar() {
                 {/* <NavItem>
                   <StyledLink href="/careers" $active={pathname === '/careers'}>Careers</StyledLink>
                 </NavItem> */}
-                <NavItem>
-                  <StyledLink href="/stats" $active={pathname === "/stats"}>
-                    Stats
-                  </StyledLink>
-                </NavItem>
+
                 <NavItem>
                   <StyledLink href="/profile" $active={pathname === "/profile"}>
                     Profile
@@ -1867,7 +1863,7 @@ export function Navbar() {
               <RightNavContainer>
                 <DeviceModeSwitcher />
 
-                <Link href="/stats" style={{ textDecoration: "none" }}>
+                <Link href="/profile" style={{ textDecoration: "none" }}>
                   <LevelBadge title={`${progress.exp} Total EXP`}>
                     LVL {level}{" "}
                     <span className="level-bar">
@@ -2048,14 +2044,14 @@ export function Navbar() {
             </MobileMenuSectionTitle>
 
             <MobileLink
-              href="/stats"
-              $active={pathname === "/stats"}
+              href="/profile"
+              $active={pathname === "/profile"}
               $isOpen={isMobileMenuOpen}
               $delay={0.25}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>計</KanjiBadge>
-              Stats
+              <KanjiBadge>人</KanjiBadge>
+              Profile & Stats
             </MobileLink>
 
             <MobileLink

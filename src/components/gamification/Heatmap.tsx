@@ -96,8 +96,11 @@ const Chip = styled.div`
 `;
 
 const HeatmapWrap = styled.div`
-  overflow: hidden;
+  overflow-x: auto;
   width: 100%;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const HeatmapInner = styled.div`

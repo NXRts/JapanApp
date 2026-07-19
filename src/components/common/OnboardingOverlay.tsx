@@ -18,7 +18,6 @@ const RESTRICTED_ROUTES = [
   "/quiz",
   "/game",
   "/materi",
-  "/stats",
   "/profile",
   "/daily-quiz",
   "/review",
