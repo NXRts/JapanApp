@@ -89,10 +89,10 @@ const items = [
     href: "/kanji",
   },
   {
-    title: "Study Stats",
-    description: "Track your progress and maintain your daily learning streak.",
+    title: "Learner Profile & Stats",
+    description: "Track your progress, achievements, and daily learning streak.",
     icon: <ChartBarIcon size={28} />,
-    href: "/stats",
+    href: "/profile",
   },
 ];
 

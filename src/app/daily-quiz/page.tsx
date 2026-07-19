@@ -548,7 +548,7 @@ export default function KanaQuizPage() {
               <Link href="/quiz" style={{ textDecoration: "none" }}>
                 <Button>Back to Quizzes</Button>
               </Link>
-              <Link href="/stats" style={{ textDecoration: "none" }}>
+              <Link href="/profile" style={{ textDecoration: "none" }}>
                 <Button
                   style={{
                     background: "var(--surface)",
@@ -557,7 +557,7 @@ export default function KanaQuizPage() {
                     boxShadow: "none",
                   }}
                 >
-                  Mastery Stats
+                  Profile & Stats
                 </Button>
               </Link>
             </div>
