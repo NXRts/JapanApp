@@ -756,9 +756,9 @@ export default function AboutPage() {
     <Container>
       <div
         style={{
-          maxWidth: "1200px",
+          maxWidth: "1400px",
           margin: "0 auto",
-          padding: "2rem 2rem 0",
+          padding: "1.5rem 2rem 0",
           width: "100%",
         }}
       >

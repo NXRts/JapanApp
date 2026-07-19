@@ -1059,8 +1059,6 @@ export default function Home() {
         />
         <MainLayout>
           <MobileContainer>
-            <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Learn" />
-
             {/* Top stats banner */}
             <StatBanner>
               <StatBannerItem title="Total Experience Points">

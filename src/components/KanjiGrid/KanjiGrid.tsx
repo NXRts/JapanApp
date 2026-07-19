@@ -3,19 +3,34 @@
 import { useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 import { KanjiCard } from "@/components/Card/KanjiCard";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+
+const Container = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  min-height: 90vh;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
+`;
 
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 32px;
-  padding: 40px 20px;
+  padding: 20px 0;
   max-width: 1400px;
   margin: 0 auto;
 `;
 
 const Title = styled.h1`
   text-align: center;
-  padding-top: 40px;
   margin-bottom: 2rem;
   font-size: 3rem;
   background: linear-gradient(135deg, var(--primary-dark), var(--primary));
@@ -123,7 +138,14 @@ export function KanjiGrid() {
   );
 
   return (
-    <>
+    <Container>
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Materials", href: "/materi" },
+        ]}
+        current="Kanji Library"
+      />
       <Title>JLPT {level.toUpperCase()} Kanji</Title>
 
       <Controls>
@@ -161,6 +183,6 @@ export function KanjiGrid() {
           ))}
         </Grid>
       )}
-    </>
+    </Container>
   );
 }

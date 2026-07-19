@@ -7,12 +7,13 @@ import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { particleDrills, ParticleDrill } from "@/data/particles_drills";
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 2rem;
   min-height: 90vh;
-  display: flex;
-  flex-direction: column;
   background: radial-gradient(
     circle at center,
     rgba(59, 130, 246, 0.05) 0%,
@@ -30,9 +31,6 @@ const Container = styled.div`
 
 const BreadcrumbWrapper = styled.div`
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 0 1rem 0;
 `;
 
 const ContentWrapper = styled.div`

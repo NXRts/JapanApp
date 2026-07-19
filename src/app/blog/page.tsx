@@ -8,10 +8,13 @@ import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { mockPosts } from "@/data/blog";
 
 const Container = styled.div`
-  min-height: 100vh;
-  padding: 2.5rem 2rem 4rem;
-  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
+  padding: 1.5rem 2rem;
+  min-height: 100vh;
 
   @media (max-width: 768px) {
     padding: 1.5rem 0.75rem 3rem;

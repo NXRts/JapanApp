@@ -7,12 +7,13 @@ import { Heatmap } from "@/components/gamification/Heatmap";
 import { grammarLessons, totalSections } from "@/data/grammarLessons";
 
 const Container = styled.div`
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2.5rem 2rem;
-  min-height: 90vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  min-height: 90vh;
   gap: 3rem;
 
   @media (max-width: 768px) {

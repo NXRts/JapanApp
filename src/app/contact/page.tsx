@@ -89,12 +89,13 @@ const shiroGlow = keyframes`
 
 // --- Styled Components ---
 const PageContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2.5rem 2rem;
-  min-height: 90vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  min-height: 90vh;
   gap: 4rem;
   animation: ${fadeIn} 0.6s ease-out;
 
