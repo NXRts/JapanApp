@@ -394,7 +394,6 @@ export default function LearningPage() {
     <PageWrapper>
       <MainLayout>
         <ContentArea>
-          <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Learning Path" />
           {/* Page Header */}
           <PageHeader>
             <PageTitle>Learning Path</PageTitle>

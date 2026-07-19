@@ -11,12 +11,13 @@ import { ClickableJapaneseText } from "@/components/common/ClickableJapaneseText
 import { playJapaneseAudio } from "@/lib/audio";
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 2rem 6rem;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 
   @media (max-width: 1024px) {
     padding: 1rem 1rem 96px 1rem;

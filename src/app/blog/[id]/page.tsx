@@ -29,10 +29,19 @@ const pulseGlow = keyframes`
 `;
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
   min-height: 100vh;
-  padding: 2.5rem 2rem 6rem;
+`;
+
+const ContentWrapper = styled.div`
   max-width: 850px;
   margin: 0 auto;
+  width: 100%;
 `;
 
 const HeaderBanner = styled.div<{ $category: string }>`
@@ -386,40 +395,42 @@ export default function BlogPostPage() {
         ]}
         current={post.title}
       />
-      <HeaderBanner $category={post.category}>
-        <FloatingIcon>
-          {post.category === "kanji" && "字"}
-          {post.category === "grammar" && "文"}
-          {post.category === "culture" && "和"}
-          {post.category === "learning-tips" && "学"}
-        </FloatingIcon>
-      </HeaderBanner>
+      <ContentWrapper>
+        <HeaderBanner $category={post.category}>
+          <FloatingIcon>
+            {post.category === "kanji" && "字"}
+            {post.category === "grammar" && "文"}
+            {post.category === "culture" && "和"}
+            {post.category === "learning-tips" && "学"}
+          </FloatingIcon>
+        </HeaderBanner>
 
-      <Meta>
-        <Category $category={post.category}>
-          {post.category.replace("-", " ")}
-        </Category>
-        <DateText>{post.date}</DateText>
-        <ReadTime>{post.readTime}</ReadTime>
-      </Meta>
+        <Meta>
+          <Category $category={post.category}>
+            {post.category.replace("-", " ")}
+          </Category>
+          <DateText>{post.date}</DateText>
+          <ReadTime>{post.readTime}</ReadTime>
+        </Meta>
 
-      <Title>{post.title}</Title>
+        <Title>{post.title}</Title>
 
-      <AuthorSection>
-        <AuthorAvatarWrapper>
-          <AuthorAvatar />
-        </AuthorAvatarWrapper>
-        <AuthorInfo>
-          <AuthorName>{post.author}</AuthorName>
-          <AuthorRole>Contributor, JapanApp</AuthorRole>
-        </AuthorInfo>
-      </AuthorSection>
+        <AuthorSection>
+          <AuthorAvatarWrapper>
+            <AuthorAvatar />
+          </AuthorAvatarWrapper>
+          <AuthorInfo>
+            <AuthorName>{post.author}</AuthorName>
+            <AuthorRole>Contributor, JapanApp</AuthorRole>
+          </AuthorInfo>
+        </AuthorSection>
 
-      <Content>
-        {post.content.map((paragraph, index) => (
-          <p key={index} dangerouslySetInnerHTML={{ __html: paragraph }} />
-        ))}
-      </Content>
+        <Content>
+          {post.content.map((paragraph, index) => (
+            <p key={index} dangerouslySetInnerHTML={{ __html: paragraph }} />
+          ))}
+        </Content>
+      </ContentWrapper>
     </Container>
   );
 }

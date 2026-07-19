@@ -18,12 +18,12 @@ const PageWrapper = styled.div`
 `;
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   position: relative;
 
   @media (max-width: 1024px) {
@@ -37,9 +37,6 @@ const Container = styled.div`
 
 const BreadcrumbWrapper = styled.div`
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 0 1rem 0;
 `;
 
 const ContentWrapper = styled.div`

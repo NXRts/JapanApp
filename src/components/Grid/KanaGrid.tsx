@@ -4,11 +4,21 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { KanaCard } from "@/components/Card/KanaCard";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
 const Container = styled.div`
   max-width: 1400px;
   margin: 0 auto;
-  padding: 40px 20px;
+  padding: 1.5rem 2rem;
+  min-height: 90vh;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
 `;
 
 const Section = styled.div`
@@ -120,6 +130,13 @@ export function KanaGrid() {
 
   return (
     <Container>
+      <Breadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Materials", href: "/materi" },
+        ]}
+        current="Kana Library"
+      />
       <MainTitle>Kana Learning</MainTitle>
 
       <Controls>

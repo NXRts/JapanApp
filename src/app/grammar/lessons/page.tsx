@@ -19,6 +19,9 @@ const shimmer = keyframes`
 
 /* ─── Styled components ────────────────────────────────────────────────── */
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 2rem;

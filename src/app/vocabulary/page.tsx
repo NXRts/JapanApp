@@ -26,9 +26,6 @@ const Container = styled.div`
 
 const BreadcrumbWrapper = styled.div`
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 0 1rem 0;
 `;
 
 const ContentWrapper = styled.div`

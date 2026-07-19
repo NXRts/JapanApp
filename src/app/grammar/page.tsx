@@ -11,6 +11,9 @@ import { n2Grammar } from "@/data/jlpt/n2/grammar";
 import { n1Grammar } from "@/data/jlpt/n1/grammar";
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 2rem;
@@ -27,9 +30,6 @@ const Container = styled.div`
 
 const BreadcrumbWrapper = styled.div`
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 0 1rem 0;
 `;
 
 const ContentWrapper = styled.div`

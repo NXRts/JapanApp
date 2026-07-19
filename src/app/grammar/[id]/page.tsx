@@ -11,6 +11,9 @@ import { n1Grammar } from "@/data/jlpt/n1/grammar";
 import { use } from "react";
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 2rem;

@@ -36,6 +36,8 @@ const PageWrapper = styled.div`
     rgba(79, 70, 229, 0.03) 0%,
     transparent 60%
   );
+  display: flex;
+  flex-direction: column;
   width: 100%;
   overflow-x: hidden;
 `;
