@@ -15,6 +15,7 @@ import {
   GamificationAlert,
   GamificationAlertData,
 } from "@/components/gamification/GamificationAlert";
+import { getDailyQuests } from "@/utils/dailyQuests";
 
 /* Toast container — pojok kanan atas, di bawah navbar (56px), semua ukuran layar */
 const ToastStack = styled.div`
@@ -229,9 +230,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
                 ...DEFAULT_PROFILE,
                 ...(parsed.profile || {}),
               },
-              // Existing users: consider them "onboarded" if they already have
-              // a real name OR the hasSetName flag was previously stored.
               hasSetName: true,
+              gems: typeof parsed.gems === "number" ? parsed.gems : 800,
+              hearts: typeof parsed.hearts === "number" ? parsed.hearts : 5,
+              maxHearts: typeof parsed.maxHearts === "number" ? parsed.maxHearts : 5,
+              isSuper: typeof parsed.isSuper === "boolean" ? parsed.isSuper : false,
+              hasStreakFreeze:
+                typeof parsed.hasStreakFreeze === "boolean"
+                  ? parsed.hasStreakFreeze
+                  : false,
+              claimedQuests: Array.isArray(parsed.claimedQuests)
+                ? parsed.claimedQuests
+                : [],
             };
 
             // Server-side validation (anti-cheat) — runs after UI hydration
@@ -612,18 +622,34 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   }, [triggerAlert]);
 
   const claimQuestReward = useCallback(
-    (questId: string, rewardGems: number) => {
+    (questId: string, _rewardGems: number) => {
       setProgress((prev) => {
         const claimed = prev.claimedQuests || [];
         if (claimed.includes(questId)) return prev;
+
+        const dateStr = new Date().toISOString().split("T")[0];
+        const todayQuests = getDailyQuests(dateStr, prev);
+        const quest = todayQuests.find((q) => q.id === questId);
+
+        // Anti-cheat: Ensure quest exists and is actually completed today!
+        if (!quest || !quest.isCompleted) {
+          triggerAlert(
+            "achievement",
+            "Misi Belum Selesai ⚠️",
+            "Selesaikan misi terlebih dahulu sebelum mengklaim!",
+          );
+          return prev;
+        }
+
+        const actualReward = quest.rewardGems;
         triggerAlert(
           "achievement",
           "Hadiah Diklaim! 🎁",
-          `Kamu mendapatkan +${rewardGems} Permata 💎`,
+          `Kamu mendapatkan +${actualReward} Permata 💎`,
         );
         return {
           ...prev,
-          gems: (prev.gems || 0) + rewardGems,
+          gems: (prev.gems || 0) + actualReward,
           claimedQuests: [...claimed, questId],
         };
       });
