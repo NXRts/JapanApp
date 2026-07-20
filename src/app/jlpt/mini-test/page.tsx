@@ -14,6 +14,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { allVocabulary, allKanji, allGrammar } from "@/lib/dictionary";
 import { motion, AnimatePresence } from "framer-motion";
 import { TestResultStats } from "@/components/jlpt/TestResultStats";
+import { PostLessonFlow } from "@/components/modals/DuolingoPostLessonModals";
 import { useProgress } from "@/context/ProgressContext";
 import { playJapaneseAudio } from "@/lib/audio";
 
@@ -670,6 +671,7 @@ function MiniTestContent() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [showFlow, setShowFlow] = useState(false);
   const hasRecordedResult = useRef(false);
 
   // Settings State
@@ -908,6 +910,7 @@ function MiniTestContent() {
     ) {
       recordQuizResult(score, questions.length, `JLPT ${setupLevel} Mini Test`);
       hasRecordedResult.current = true;
+      setShowFlow(true);
     }
   }, [testState, score, questions.length, setupLevel, recordQuizResult]);
 
@@ -1185,6 +1188,7 @@ function MiniTestContent() {
           {/* --- 3. RESULTS SCREEN --- */}
           {testState === "results" && (
             <PracticeCard key="results">
+              {showFlow && <PostLessonFlow onComplete={() => setShowFlow(false)} />}
               <ScoreCircleWrapper>
                 <SvgCircle viewBox="0 0 100 100">
                   <circle

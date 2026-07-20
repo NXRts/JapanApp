@@ -8,6 +8,7 @@ import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { SeededRandom, getTodaySeed } from "@/utils/seededRandom";
 import { useProgress } from "@/context/ProgressContext";
 import { TestResultStats } from "@/components/jlpt/TestResultStats";
+import { PostLessonFlow } from "@/components/modals/DuolingoPostLessonModals";
 
 // Styled Components (Reusing similar style to KanaQuizPage for consistency)
 const Container = styled.div`
@@ -300,6 +301,7 @@ export default function KanaQuizPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [showFlow, setShowFlow] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isAlreadyCompleted, setIsAlreadyCompleted] = useState(false);
   const [userAnswers, setUserAnswers] = useState<
@@ -411,6 +413,7 @@ export default function KanaQuizPage() {
           "daily-challenge",
         );
         setIsFinished(true);
+        setShowFlow(true);
       }
     }, 800);
   };
@@ -446,6 +449,7 @@ export default function KanaQuizPage() {
   if (isFinished) {
     return (
       <Container>
+        {showFlow && <PostLessonFlow onComplete={() => setShowFlow(false)} />}
         <BreadcrumbWrapper>
           <Breadcrumbs
             items={[
