@@ -70,6 +70,12 @@ interface ProgressData {
   profile?: UserProfile;
   /** true once the user has explicitly entered their name on first launch */
   hasSetName: boolean;
+  gems: number;
+  hearts: number;
+  maxHearts: number;
+  isSuper: boolean;
+  hasStreakFreeze: boolean;
+  claimedQuests: string[];
 }
 
 interface ProgressContextType {
@@ -87,6 +93,13 @@ interface ProgressContextType {
   setShowFurigana: (show: boolean) => void;
   /** First-launch onboarding: sets the display name and marks hasSetName true */
   initializeName: (name: string) => void;
+  addGems: (amount: number) => void;
+  spendGems: (amount: number) => boolean;
+  refillHearts: () => void;
+  deductHeart: () => void;
+  toggleSuper: () => void;
+  buyStreakFreeze: () => boolean;
+  claimQuestReward: (questId: string, rewardGems: number) => void;
   /** Whether the user progress has finished loading from localStorage */
   isLoaded: boolean;
 }
@@ -118,6 +131,12 @@ const INITIAL_DATA: ProgressData = {
   showFurigana: true,
   profile: DEFAULT_PROFILE,
   hasSetName: true,
+  gems: 800,
+  hearts: 5,
+  maxHearts: 5,
+  isSuper: false,
+  hasStreakFreeze: false,
+  claimedQuests: [],
 };
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
@@ -523,6 +542,95 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const addGems = useCallback((amount: number) => {
+    setProgress((prev) => ({ ...prev, gems: (prev.gems || 0) + amount }));
+  }, []);
+
+  const spendGems = useCallback((amount: number) => {
+    let success = false;
+    setProgress((prev) => {
+      const currentGems = prev.gems !== undefined ? prev.gems : 800;
+      if (currentGems >= amount) {
+        success = true;
+        return { ...prev, gems: currentGems - amount };
+      }
+      return prev;
+    });
+    return success;
+  }, []);
+
+  const refillHearts = useCallback(() => {
+    setProgress((prev) => ({ ...prev, hearts: prev.maxHearts || 5 }));
+  }, []);
+
+  const deductHeart = useCallback(() => {
+    setProgress((prev) => {
+      if (prev.isSuper) return prev;
+      const currentHearts = prev.hearts !== undefined ? prev.hearts : 5;
+      return { ...prev, hearts: Math.max(0, currentHearts - 1) };
+    });
+  }, []);
+
+  const toggleSuper = useCallback(() => {
+    setProgress((prev) => {
+      const nextSuper = !prev.isSuper;
+      triggerAlert(
+        "achievement",
+        nextSuper ? "Super JapanApp Aktif! 👑" : "Mode Standar Aktif",
+        nextSuper
+          ? "Nikmati Nyawa Tak Terbatas, Bebas Iklan & Fitur Eksklusif!"
+          : "Kamu kembali ke mode standar gratis.",
+      );
+      return {
+        ...prev,
+        isSuper: nextSuper,
+        hearts: nextSuper ? 5 : prev.hearts,
+      };
+    });
+  }, [triggerAlert]);
+
+  const buyStreakFreeze = useCallback(() => {
+    let success = false;
+    setProgress((prev) => {
+      const currentGems = prev.gems !== undefined ? prev.gems : 800;
+      if (currentGems >= 200 && !prev.hasStreakFreeze) {
+        success = true;
+        triggerAlert(
+          "achievement",
+          "Bekukan Streak Diaktifkan! 🛡️",
+          "Streak kamu dilindungi selama 1 hari jika kamu lupa belajar.",
+        );
+        return {
+          ...prev,
+          gems: currentGems - 200,
+          hasStreakFreeze: true,
+        };
+      }
+      return prev;
+    });
+    return success;
+  }, [triggerAlert]);
+
+  const claimQuestReward = useCallback(
+    (questId: string, rewardGems: number) => {
+      setProgress((prev) => {
+        const claimed = prev.claimedQuests || [];
+        if (claimed.includes(questId)) return prev;
+        triggerAlert(
+          "achievement",
+          "Hadiah Diklaim! 🎁",
+          `Kamu mendapatkan +${rewardGems} Permata 💎`,
+        );
+        return {
+          ...prev,
+          gems: (prev.gems || 0) + rewardGems,
+          claimedQuests: [...claimed, questId],
+        };
+      });
+    },
+    [triggerAlert],
+  );
+
   const contextValue = React.useMemo(
     () => ({
       progress,
@@ -538,6 +646,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       markGrammarSectionCompleted,
       setShowFurigana,
       initializeName,
+      addGems,
+      spendGems,
+      refillHearts,
+      deductHeart,
+      toggleSuper,
+      buyStreakFreeze,
+      claimQuestReward,
       isLoaded,
     }),
     [
@@ -554,6 +669,13 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       markGrammarSectionCompleted,
       setShowFurigana,
       initializeName,
+      addGems,
+      spendGems,
+      refillHearts,
+      deductHeart,
+      toggleSuper,
+      buyStreakFreeze,
+      claimQuestReward,
       isLoaded,
     ],
   );
