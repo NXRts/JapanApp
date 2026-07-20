@@ -293,7 +293,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 export default function KanaQuizPage() {
-  const { progress, updateMastery, recordQuizResult, updateSRS } =
+  const { progress, updateMastery, recordQuizResult, updateSRS, deductHeart } =
     useProgress();
   const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -391,6 +391,8 @@ export default function KanaQuizPage() {
 
     if (isCorrect) {
       setScore((s) => s + 1);
+    } else {
+      deductHeart();
     }
 
     // Record individual mastery and SRS
