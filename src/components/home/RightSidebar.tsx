@@ -368,8 +368,8 @@ export function RightSidebar() {
     "course" | "streak" | "shop" | "hearts" | "super" | "leaderboard" | "quests" | null
   >(null);
 
-  const streak = progress.streak || 1;
-  const gems = progress.gems !== undefined ? progress.gems : 800;
+  const streak = progress.streak || 0;
+  const gems = progress.gems !== undefined ? progress.gems : 100;
   const hearts = progress.hearts !== undefined ? progress.hearts : 5;
   const isSuper = progress.isSuper || false;
   const claimedQuests = progress.claimedQuests || [];

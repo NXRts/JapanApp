@@ -196,7 +196,7 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
   const { progress, buyStreakFreeze } = useProgress();
   const streak = progress.streak || 0;
   const hasFreeze = progress.hasStreakFreeze || false;
-  const gems = progress.gems !== undefined ? progress.gems : 800;
+  const gems = progress.gems !== undefined ? progress.gems : 100;
 
   const weekDays = useMemo(() => {
     const now = new Date();
@@ -285,7 +285,7 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
 /* ─── 3. SHOP MODAL (GEMS STORE) ─────────────────────────────────────────── */
 export function ShopModal({ onClose }: { onClose: () => void }) {
   const { progress, spendGems, refillHearts, buyStreakFreeze, toggleSuper } = useProgress();
-  const gems = progress.gems !== undefined ? progress.gems : 800;
+  const gems = progress.gems !== undefined ? progress.gems : 100;
   const hearts = progress.hearts !== undefined ? progress.hearts : 5;
   const isSuper = progress.isSuper || false;
   const hasFreeze = progress.hasStreakFreeze || false;
@@ -403,7 +403,7 @@ export function HeartsModal({ onClose }: { onClose: () => void }) {
   const { progress, refillHearts, spendGems } = useProgress();
   const hearts = progress.hearts !== undefined ? progress.hearts : 5;
   const isSuper = progress.isSuper || false;
-  const gems = progress.gems !== undefined ? progress.gems : 800;
+  const gems = progress.gems !== undefined ? progress.gems : 100;
 
   return (
     <Overlay onClick={onClose}>
