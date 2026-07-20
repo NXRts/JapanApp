@@ -52,6 +52,14 @@ export interface UserProfile {
   dailyGoal: string;
 }
 
+export interface UserLeagueData {
+  currentLeagueId: string; // e.g. "obsidian" or "pearl"
+  weekInLeague: number; // e.g. 1
+  rank: number; // e.g. 9
+  top3Finishes: number; // e.g. 7
+  weeklyExp: number; // e.g. 735
+}
+
 interface ProgressData {
   mastery: Record<string, MasteryRecord>;
   streak: number;
@@ -77,6 +85,7 @@ interface ProgressData {
   isSuper: boolean;
   hasStreakFreeze: boolean;
   claimedQuests: string[];
+  league?: UserLeagueData;
 }
 
 interface ProgressContextType {
@@ -119,6 +128,14 @@ export const DEFAULT_PROFILE: UserProfile = {
   dailyGoal: "50",
 };
 
+export const DEFAULT_LEAGUE: UserLeagueData = {
+  currentLeagueId: "bronze",
+  weekInLeague: 1,
+  rank: 1,
+  top3Finishes: 0,
+  weeklyExp: 0,
+};
+
 const INITIAL_DATA: ProgressData = {
   mastery: {},
   streak: 0,
@@ -138,6 +155,7 @@ const INITIAL_DATA: ProgressData = {
   isSuper: false,
   hasStreakFreeze: false,
   claimedQuests: [],
+  league: DEFAULT_LEAGUE,
 };
 
 export function ProgressProvider({ children }: { children: React.ReactNode }) {
@@ -242,6 +260,23 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
               claimedQuests: Array.isArray(parsed.claimedQuests)
                 ? parsed.claimedQuests
                 : [],
+              league: (() => {
+                const savedLeague = parsed.league || DEFAULT_LEAGUE;
+                // Auto-correct legacy "obsidian" default for users with low EXP
+                if (savedLeague.currentLeagueId === "obsidian" && (parsed.exp || 0) < 1000) {
+                  return {
+                    currentLeagueId: "bronze",
+                    weekInLeague: 1,
+                    rank: 1,
+                    top3Finishes: 0,
+                    weeklyExp: parsed.exp || 0,
+                  };
+                }
+                return {
+                  ...DEFAULT_LEAGUE,
+                  ...savedLeague,
+                };
+              })(),
             };
 
             // Server-side validation (anti-cheat) — runs after UI hydration
@@ -348,10 +383,17 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         const newActivityLog = { ...prev.activityLog };
         newActivityLog[today] = (newActivityLog[today] || 0) + amount;
 
+        const currentLeague = prev.league || DEFAULT_LEAGUE;
+        const updatedLeague = {
+          ...currentLeague,
+          weeklyExp: (currentLeague.weeklyExp || 0) + amount,
+        };
+
         return {
           ...prev,
           exp: newExp,
           activityLog: newActivityLog,
+          league: updatedLeague,
         };
       });
       checkStreak();

@@ -422,11 +422,12 @@ const MobileMenuOverlay = styled.div<{
   z-index: 1000; /* Behind bottom sheet but above body content */
   opacity: ${({ $isOpen, $dragOpacity }) =>
     $isOpen ? ($dragOpacity !== undefined ? $dragOpacity : 1) : 0};
+  visibility: ${({ $isOpen }) => ($isOpen ? "visible" : "hidden")};
   pointer-events: ${({ $isOpen }) => ($isOpen ? "all" : "none")};
-  transition: opacity 0.35s ease;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
 
   @media (min-width: 1101px) {
-    display: none;
+    display: none !important;
   }
 `;
 
@@ -446,16 +447,17 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s ease;
   transform: ${({ $isOpen }) =>
     $isOpen ? "translateY(0)" : "translateY(100%)"};
+  visibility: ${({ $isOpen }) => ($isOpen ? "visible" : "hidden")};
   pointer-events: ${({ $isOpen }) => ($isOpen ? "all" : "none")};
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
 
   @media (min-width: 1101px) {
-    display: none;
+    display: none !important;
   }
 `;
 
@@ -1303,6 +1305,17 @@ export function Navbar() {
     }
   }, [isMobileMenuOpen]);
 
+  // Close mobile menu automatically on window resize to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1100) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleTouchStart = (e: React.TouchEvent) => {
     const menuEl = mobileMenuRef.current;
     if (!menuEl || menuEl.scrollTop <= 0) {
@@ -1963,9 +1976,12 @@ export function Navbar() {
               : isMobileMenuOpen
                 ? "translateY(0)"
                 : "translateY(100%)",
+            visibility: isMobileMenuOpen || isDragging ? "visible" : "hidden",
             transition: isDragging
               ? "none"
-              : "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)",
+              : isMobileMenuOpen
+                ? "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s"
+                : "none",
           }}
         >
           <NorenRodWrapper>

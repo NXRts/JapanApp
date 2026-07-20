@@ -16,6 +16,8 @@ import {
   SparklesIcon,
   BookIcon,
 } from "@/components/icons/AppIcons";
+import { getLeagueById, getRankStatus } from "@/data/leagues";
+import { LeaderboardModal } from "@/components/modals/DuolingoModals";
 
 const Container = styled.div`
   max-width: 1400px;
@@ -61,11 +63,18 @@ const ProfileHeader = styled.div`
   padding: 2.5rem;
   box-shadow: var(--shadow-md);
 
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
+    padding: 1.5rem 1.25rem;
+    gap: 1.25rem;
+    border-radius: 24px;
+  }
+
+  @media (max-width: 480px) {
     flex-direction: column;
     text-align: center;
-    padding: 1.5rem;
-    gap: 1.25rem;
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+    border-radius: 20px;
   }
 `;
 
@@ -87,15 +96,27 @@ const AvatarCircle = styled.div`
   box-shadow: 0 10px 25px rgba(var(--primary-rgb), 0.3);
   flex-shrink: 0;
 
-  @media (max-width: 600px) {
-    width: 80px;
-    height: 80px;
-    font-size: 2rem;
+  @media (max-width: 768px) {
+    width: 90px;
+    height: 90px;
+    font-size: 2.25rem;
+  }
+
+  @media (max-width: 480px) {
+    width: 76px;
+    height: 76px;
+    font-size: 1.85rem;
   }
 `;
 
 const ProfileInfo = styled.div`
   flex: 1;
+
+  @media (max-width: 480px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const Name = styled.h1`
@@ -104,15 +125,25 @@ const Name = styled.h1`
   margin-bottom: 0.5rem;
   letter-spacing: -0.02em;
 
-  @media (max-width: 600px) {
-    font-size: 1.75rem;
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    margin-bottom: 0.35rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.35rem;
   }
 `;
 
 const JoinedDate = styled.p`
   color: var(--text-secondary);
   font-size: 0.95rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    margin-bottom: 0.85rem;
+  }
 `;
 
 const LevelBadge = styled.div`
@@ -126,6 +157,12 @@ const LevelBadge = styled.div`
   font-weight: 700;
   font-size: 0.9rem;
   border: 1px solid rgba(var(--primary-rgb), 0.2);
+
+  @media (max-width: 480px) {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.82rem;
+    border-radius: 10px;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -138,7 +175,9 @@ const SectionTitle = styled.h2`
   margin-top: 0.5rem;
 
   @media (max-width: 768px) {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
   }
 
   &::before {
@@ -147,6 +186,10 @@ const SectionTitle = styled.h2`
     height: 1.35rem;
     background: var(--primary);
     border-radius: 2px;
+
+    @media (max-width: 768px) {
+      height: 1.1rem;
+    }
   }
 `;
 
@@ -157,11 +200,12 @@ const StatsGrid = styled.div`
 
   @media (max-width: 900px) {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 
   @media (max-width: 480px) {
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
+    gap: 0.6rem;
   }
 `;
 
@@ -178,9 +222,15 @@ const MainStatCard = styled.div`
   transition: all 0.3s ease;
 
   @media (max-width: 768px) {
-    padding: 1.25rem;
-    min-height: 140px;
-    border-radius: 20px;
+    padding: 1rem;
+    min-height: 120px;
+    border-radius: 18px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.85rem;
+    min-height: 100px;
+    border-radius: 16px;
   }
 
   &:hover {
@@ -196,6 +246,11 @@ const StatLabel = styled.div`
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+  }
 `;
 
 const StatValue = styled.div`
@@ -207,13 +262,21 @@ const StatValue = styled.div`
   gap: 0.4rem;
 
   @media (max-width: 768px) {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.3rem;
   }
 
   span {
     font-size: 0.9rem;
     color: var(--text-secondary);
     font-weight: 500;
+
+    @media (max-width: 480px) {
+      font-size: 0.75rem;
+    }
   }
 `;
 
@@ -228,6 +291,10 @@ const LevelProgressBar = styled.div`
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 0.4rem;
+
+  @media (max-width: 480px) {
+    height: 6px;
+  }
 `;
 
 const ProgressBarFill = styled.div<{ $width: number }>`
@@ -251,6 +318,12 @@ const GoalCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 1.15rem 1rem;
+    border-radius: 18px;
+    gap: 0.75rem;
+  }
 `;
 
 const GoalHeader = styled.div`
@@ -262,12 +335,20 @@ const GoalHeader = styled.div`
     font-size: 1.1rem;
     font-weight: 800;
     margin: 0;
+
+    @media (max-width: 480px) {
+      font-size: 0.95rem;
+    }
   }
 
   span {
     font-size: 0.9rem;
     font-weight: 700;
     color: var(--primary);
+
+    @media (max-width: 480px) {
+      font-size: 0.8rem;
+    }
   }
 `;
 
@@ -276,6 +357,10 @@ const GoalProgress = styled.div`
   background: var(--border);
   border-radius: 6px;
   overflow: hidden;
+
+  @media (max-width: 480px) {
+    height: 8px;
+  }
 `;
 
 const GoalBar = styled.div<{ $width: number }>`
@@ -297,12 +382,17 @@ const GridTwoCol = styled.div`
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 `;
 
 const ChartCard = styled(MainStatCard)`
   grid-column: span 1;
   min-height: 280px;
+
+  @media (max-width: 768px) {
+    min-height: 210px;
+  }
 `;
 
 const BarChartContainer = styled.div`
@@ -315,8 +405,9 @@ const BarChartContainer = styled.div`
   padding-bottom: 0.5rem;
 
   @media (max-width: 768px) {
-    height: 140px;
-    gap: 0.35rem;
+    height: 120px;
+    gap: 0.3rem;
+    margin-top: 1rem;
   }
 `;
 
@@ -350,6 +441,11 @@ const Bar = styled.div<{ $height: number }>`
   transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
 
+  @media (max-width: 480px) {
+    max-width: 16px;
+    border-radius: 4px 4px 2px 2px;
+  }
+
   &:hover {
     filter: brightness(1.2);
     transform: scaleX(1.05);
@@ -360,6 +456,10 @@ const DayLabel = styled.span`
   font-size: 0.75rem;
   color: var(--text-secondary);
   font-weight: 600;
+
+  @media (max-width: 480px) {
+    font-size: 0.68rem;
+  }
 `;
 
 const SRSDistribution = styled.div`
@@ -367,6 +467,10 @@ const SRSDistribution = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 480px) {
+    gap: 0.75rem;
+  }
 `;
 
 const SRSLegend = styled.div`
@@ -377,7 +481,8 @@ const SRSLegend = styled.div`
 
   @media (max-width: 480px) {
     grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem;
+    gap: 0.4rem 0.6rem;
+    font-size: 0.72rem;
   }
 `;
 
@@ -405,6 +510,11 @@ const MultiProgressBar = styled.div`
   display: flex;
   overflow: hidden;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 480px) {
+    height: 14px;
+    border-radius: 7px;
+  }
 `;
 
 const ProgressSegment = styled.div<{ $width: number; $color: string }>`
@@ -418,6 +528,10 @@ const ActivityList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+
+  @media (max-width: 480px) {
+    gap: 0.5rem;
+  }
 `;
 
 const ActivityItem = styled.div`
@@ -431,7 +545,8 @@ const ActivityItem = styled.div`
   transition: all 0.2s;
 
   @media (max-width: 768px) {
-    padding: 0.85rem 1rem;
+    padding: 0.75rem 0.85rem;
+    border-radius: 14px;
   }
 
   &:hover {
@@ -448,11 +563,19 @@ const ActivityInfo = styled.div`
 const ActivityType = styled.span`
   font-weight: 700;
   color: var(--foreground);
+
+  @media (max-width: 480px) {
+    font-size: 0.88rem;
+  }
 `;
 
 const ActivityDate = styled.span`
   font-size: 0.8rem;
   color: var(--text-secondary);
+
+  @media (max-width: 480px) {
+    font-size: 0.74rem;
+  }
 `;
 
 const ActivityScore = styled.div<{ $perfect: boolean }>`
@@ -466,6 +589,12 @@ const ActivityScore = styled.div<{ $perfect: boolean }>`
       : "rgba(var(--primary-rgb), 0.1)"};
   padding: 0.35rem 0.85rem;
   border-radius: 10px;
+
+  @media (max-width: 480px) {
+    font-size: 0.82rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 8px;
+  }
 `;
 
 const AchievementGrid = styled.div<{ $isDragging?: boolean }>`
@@ -479,6 +608,11 @@ const AchievementGrid = styled.div<{ $isDragging?: boolean }>`
   }
   cursor: ${({ $isDragging }) => ($isDragging ? "grabbing" : "grab")};
   user-select: none;
+
+  @media (max-width: 480px) {
+    gap: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
 `;
 
 const AchievementCard = styled.div<{ $unlocked: boolean }>`
@@ -495,23 +629,42 @@ const AchievementCard = styled.div<{ $unlocked: boolean }>`
   transition: all 0.2s;
   flex-shrink: 0;
 
+  @media (max-width: 480px) {
+    min-width: 115px;
+    padding: 0.85rem 0.6rem;
+    border-radius: 16px;
+  }
+
   .icon-wrap {
     font-size: 2.25rem;
     margin-bottom: 0.5rem;
     color: ${({ $unlocked }) =>
       $unlocked ? "var(--primary)" : "var(--text-secondary)"};
+
+    @media (max-width: 480px) {
+      font-size: 1.65rem;
+      margin-bottom: 0.35rem;
+    }
   }
 
   h3 {
     font-size: 0.95rem;
     font-weight: 750;
     margin-bottom: 0.25rem;
+
+    @media (max-width: 480px) {
+      font-size: 0.8rem;
+    }
   }
 
   p {
     font-size: 0.75rem;
     color: var(--text-secondary);
     margin: 0;
+
+    @media (max-width: 480px) {
+      font-size: 0.68rem;
+    }
   }
 `;
 
@@ -520,6 +673,10 @@ const SettingsSection = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-top: 1rem;
+
+  @media (max-width: 480px) {
+    gap: 0.75rem;
+  }
 `;
 
 const SettingItem = styled.div`
@@ -532,7 +689,8 @@ const SettingItem = styled.div`
   justify-content: space-between;
 
   @media (max-width: 600px) {
-    padding: 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: 16px;
   }
 `;
 
@@ -543,11 +701,19 @@ const SettingLabel = styled.div`
   span:first-child {
     font-weight: 700;
     font-size: 1rem;
+
+    @media (max-width: 480px) {
+      font-size: 0.88rem;
+    }
   }
 
   span:last-child {
     font-size: 0.85rem;
     color: var(--text-secondary);
+
+    @media (max-width: 480px) {
+      font-size: 0.75rem;
+    }
   }
 `;
 
@@ -566,14 +732,278 @@ const ActionButton = styled.button<{ $danger?: boolean }>`
   transition: all 0.2s;
   text-decoration: none;
 
+  @media (max-width: 480px) {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
+
   &:hover {
     background: ${({ $danger }) => ($danger ? "#ef4444" : "var(--primary)")};
     color: white;
   }
 `;
 
+/* ─── Duolingo Style Statistik & Pencapaian Components ─── */
+const DuolingoStatsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+
+  @media (max-width: 480px) {
+    gap: 0.65rem;
+  }
+`;
+
+const DuoStatCard = styled.div`
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 480px) {
+    padding: 0.85rem 0.9rem;
+    gap: 0.75rem;
+    border-radius: 16px;
+  }
+`;
+
+const DuoStatIcon = styled.div`
+  font-size: 2.25rem;
+  flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    font-size: 1.75rem;
+  }
+`;
+
+const DuoStatText = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const DuoStatValue = styled.div`
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--foreground);
+  line-height: 1.1;
+
+  @media (max-width: 480px) {
+    font-size: 1.25rem;
+  }
+`;
+
+const DuoStatLabel = styled.div`
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-top: 0.2rem;
+
+  @media (max-width: 480px) {
+    font-size: 0.72rem;
+  }
+`;
+
+const WeekBadgeTag = styled.span`
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: rgba(236, 72, 153, 0.2);
+  color: #ec4899;
+  border: 1px solid rgba(236, 72, 153, 0.4);
+  font-size: 0.65rem;
+  font-weight: 900;
+  padding: 0.15rem 0.5rem;
+  border-radius: 8px;
+  letter-spacing: 0.04em;
+
+  @media (max-width: 480px) {
+    font-size: 0.55rem;
+    padding: 0.1rem 0.35rem;
+    top: 6px;
+    right: 6px;
+  }
+`;
+
+const SectionHeaderRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+`;
+
+const ActionTextLink = styled.button`
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const AchievementsStackCard = styled.div`
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 480px) {
+    border-radius: 18px;
+  }
+`;
+
+const AchievementRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1.5px solid var(--border);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  @media (max-width: 600px) {
+    padding: 1rem;
+    gap: 0.85rem;
+  }
+`;
+
+const LevelBadgeBox = styled.div<{ $bg: string }>`
+  width: 68px;
+  height: 68px;
+  background: ${({ $bg }) => $bg};
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  position: relative;
+
+  @media (max-width: 480px) {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+  }
+
+  .main-icon {
+    font-size: 1.85rem;
+
+    @media (max-width: 480px) {
+      font-size: 1.35rem;
+    }
+  }
+
+  .level-tag {
+    font-size: 0.62rem;
+    font-weight: 900;
+    color: white;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 0.1rem 0.4rem;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.1rem;
+
+    @media (max-width: 480px) {
+      font-size: 0.55rem;
+      padding: 0.08rem 0.3rem;
+    }
+  }
+`;
+
+const AchievementDetail = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+`;
+
+const AchievementHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-size: 1.05rem;
+    font-weight: 850;
+    color: var(--foreground);
+
+    @media (max-width: 480px) {
+      font-size: 0.92rem;
+    }
+  }
+
+  .progress-num {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+
+    @media (max-width: 480px) {
+      font-size: 0.75rem;
+    }
+  }
+`;
+
+const YellowProgressTrack = styled.div`
+  width: 100%;
+  height: 12px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+
+  @media (max-width: 480px) {
+    height: 10px;
+  }
+`;
+
+const YellowProgressFill = styled.div<{ $pct: number }>`
+  height: 100%;
+  width: ${({ $pct }) => Math.min(100, Math.max(0, $pct))}%;
+  background: linear-gradient(90deg, #f59e0b 0%, #eab308 100%);
+  border-radius: 999px;
+  transition: width 1s ease-in-out;
+`;
+
+const AchievementSub = styled.div`
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+
+  @media (max-width: 480px) {
+    font-size: 0.76rem;
+  }
+`;
+
 export default function ProfilePage() {
   const { progress } = useProgress();
+  const [showLeaderboardModal, setShowLeaderboardModal] = useState(false);
+
+  const leagueData = progress.league || {
+    currentLeagueId: "bronze",
+    weekInLeague: 1,
+    rank: 1,
+    top3Finishes: 0,
+    weeklyExp: 0,
+  };
+  const leagueInfo = getLeagueById(leagueData.currentLeagueId);
+  const rankInfo = getRankStatus(leagueData.rank);
 
   // Dragging logic for achievements
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -849,9 +1279,180 @@ export default function ProfilePage() {
           </GoalCard>
         </GridTwoCol>
 
+        {/* 1. DUOLINGO STYLE STATISTIK */}
+        <SectionTitle>Statistik</SectionTitle>
+        <DuolingoStatsGrid>
+          <DuoStatCard>
+            <DuoStatIcon>🔥</DuoStatIcon>
+            <DuoStatText>
+              <DuoStatValue>{progress.streak || 0}</DuoStatValue>
+              <DuoStatLabel>Runtunan hari</DuoStatLabel>
+            </DuoStatText>
+          </DuoStatCard>
+
+          <DuoStatCard>
+            <DuoStatIcon>⚡</DuoStatIcon>
+            <DuoStatText>
+              <DuoStatValue>{progress.exp || 0}</DuoStatValue>
+              <DuoStatLabel>Total XP</DuoStatLabel>
+            </DuoStatText>
+          </DuoStatCard>
+
+          <DuoStatCard style={{ cursor: "pointer" }} onClick={() => setShowLeaderboardModal(true)}>
+            <WeekBadgeTag>MINGGU KE-{leagueData.weekInLeague || 1}</WeekBadgeTag>
+            <DuoStatIcon>{leagueInfo.icon}</DuoStatIcon>
+            <DuoStatText>
+              <DuoStatValue style={{ fontSize: "1.25rem", color: leagueInfo.color }}>
+                {leagueInfo.name.replace("Liga ", "")}
+              </DuoStatValue>
+              <DuoStatLabel>Liga saat ini</DuoStatLabel>
+            </DuoStatText>
+          </DuoStatCard>
+
+          <DuoStatCard>
+            <DuoStatIcon>🎖️</DuoStatIcon>
+            <DuoStatText>
+              <DuoStatValue>{leagueData.top3Finishes || 7}</DuoStatValue>
+              <DuoStatLabel>Posisi 3 besar</DuoStatLabel>
+            </DuoStatText>
+          </DuoStatCard>
+        </DuolingoStatsGrid>
+
+        {/* LEAGUE RANKING STATUS BANNER CARD */}
+        <AchievementsStackCard style={{ padding: "1.25rem 1.5rem", marginTop: "-0.5rem" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.85rem" }}>
+            <h3 style={{ fontSize: "1.1rem", fontWeight: 850, margin: 0 }}>
+              {leagueInfo.name}
+            </h3>
+            <ActionTextLink onClick={() => setShowLeaderboardModal(true)}>
+              LIHAT LIGA
+            </ActionTextLink>
+          </div>
+
+          <div
+            onClick={() => setShowLeaderboardModal(true)}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              padding: "1rem 1.25rem",
+              borderRadius: "18px",
+              background: "rgba(255, 255, 255, 0.03)",
+              border: `1.5px solid ${rankInfo.color}`,
+              cursor: "pointer",
+            }}
+          >
+            <div
+              style={{
+                width: "48px",
+                height: "48px",
+                borderRadius: "14px",
+                background: leagueInfo.badgeBg,
+                border: `1.5px solid ${leagueInfo.borderColor}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.6rem",
+                position: "relative",
+                flexShrink: 0,
+                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              {leagueInfo.icon}
+              <span
+                style={{
+                  position: "absolute",
+                  bottom: "-3px",
+                  right: "-3px",
+                  width: "18px",
+                  height: "18px",
+                  borderRadius: "50%",
+                  background: rankInfo.color,
+                  color: "white",
+                  fontSize: "0.65rem",
+                  fontWeight: 900,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "2px solid var(--surface)",
+                }}
+              >
+                {rankInfo.zone === "demotion" ? "!" : rankInfo.zone === "promotion" ? "▲" : "✓"}
+              </span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ fontSize: "1.05rem", fontWeight: 850, color: "var(--foreground)" }}>
+                Kamu di peringkat #{leagueData.rank || 1}
+              </div>
+              <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 600 }}>
+                {rankInfo.label}
+              </div>
+            </div>
+          </div>
+        </AchievementsStackCard>
+
+        {/* 2. DUOLINGO STYLE PENCAPAIAN */}
+        <SectionHeaderRow>
+          <SectionTitle style={{ marginTop: 0 }}>Pencapaian</SectionTitle>
+          <ActionTextLink as={Link} href="/quests" style={{ textDecoration: "none" }}>
+            LIHAT SEMUA
+          </ActionTextLink>
+        </SectionHeaderRow>
+
+        <AchievementsStackCard>
+          <AchievementRow>
+            <LevelBadgeBox $bg="linear-gradient(135deg, #ef4444 0%, #dc2626 100%)">
+              <span className="main-icon">🔥</span>
+              <span className="level-tag">LEVEL 9</span>
+            </LevelBadgeBox>
+            <AchievementDetail>
+              <AchievementHeader>
+                <span className="title">Membara</span>
+                <span className="progress-num">{progress.streak || 0}/250</span>
+              </AchievementHeader>
+              <YellowProgressTrack>
+                <YellowProgressFill $pct={((progress.streak || 0) / 250) * 100} />
+              </YellowProgressTrack>
+              <AchievementSub>Capai runtunan 250 hari</AchievementSub>
+            </AchievementDetail>
+          </AchievementRow>
+
+          <AchievementRow>
+            <LevelBadgeBox $bg="linear-gradient(135deg, #22c55e 0%, #16a34a 100%)">
+              <span className="main-icon">🧙‍♂️</span>
+              <span className="level-tag">LEVEL 10</span>
+            </LevelBadgeBox>
+            <AchievementDetail>
+              <AchievementHeader>
+                <span className="title">Orang Bijak</span>
+                <span className="progress-num">{progress.exp || 0}/30000</span>
+              </AchievementHeader>
+              <YellowProgressTrack>
+                <YellowProgressFill $pct={((progress.exp || 0) / 30000) * 100} />
+              </YellowProgressTrack>
+              <AchievementSub>Dapatkan 30000 XP</AchievementSub>
+            </AchievementDetail>
+          </AchievementRow>
+
+          <AchievementRow>
+            <LevelBadgeBox $bg="linear-gradient(135deg, #eab308 0%, #ca8a04 100%)">
+              <span className="main-icon">🪶</span>
+              <span className="level-tag">LEVEL 10</span>
+            </LevelBadgeBox>
+            <AchievementDetail>
+              <AchievementHeader>
+                <span className="title">Juara</span>
+              </AchievementHeader>
+              <AchievementSub style={{ color: "var(--foreground)", fontWeight: 700 }}>
+                Kamu maju ke Liga Berlian
+              </AchievementSub>
+            </AchievementDetail>
+          </AchievementRow>
+        </AchievementsStackCard>
+
         {/* Gamification & Inventory Status */}
         <SectionTitle>Inventory & Status Duolingo</SectionTitle>
-        <StatsGrid style={{ gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}>
+        <StatsGrid>
           <MainStatCard style={{ background: "rgba(59, 130, 246, 0.08)", borderColor: "rgba(59, 130, 246, 0.2)" }}>
             <StatLabel>Permata (Gems)</StatLabel>
             <StatValue style={{ color: "#3b82f6" }}>💎 {progress.gems !== undefined ? progress.gems : 100}</StatValue>
@@ -866,14 +1467,14 @@ export default function ProfilePage() {
 
           <MainStatCard style={{ background: progress.isSuper ? "rgba(168, 85, 247, 0.12)" : "rgba(255, 255, 255, 0.03)", borderColor: progress.isSuper ? "rgba(168, 85, 247, 0.4)" : "var(--border)" }}>
             <StatLabel>Status Membership</StatLabel>
-            <StatValue style={{ fontSize: "1.25rem", color: progress.isSuper ? "#a855f7" : "var(--foreground)" }}>
+            <StatValue style={{ color: progress.isSuper ? "#a855f7" : "var(--foreground)" }}>
               {progress.isSuper ? "Member Super 👑" : "Standar 👤"}
             </StatValue>
           </MainStatCard>
 
           <MainStatCard style={{ background: "rgba(16, 185, 129, 0.08)", borderColor: "rgba(16, 185, 129, 0.2)" }}>
             <StatLabel>Pelindung Streak</StatLabel>
-            <StatValue style={{ fontSize: "1.2rem", color: "#10b981" }}>
+            <StatValue style={{ color: "#10b981" }}>
               {progress.hasStreakFreeze ? "Streak Freeze 🛡️" : "Belum Memiliki ⚪"}
             </StatValue>
           </MainStatCard>
@@ -985,8 +1586,8 @@ export default function ProfilePage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-            gap: "1rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "0.75rem",
             width: "100%",
           }}
         >
@@ -1156,6 +1757,10 @@ export default function ProfilePage() {
             </ActionButton>
           </SettingItem>
         </SettingsSection>
+
+        {showLeaderboardModal && (
+          <LeaderboardModal onClose={() => setShowLeaderboardModal(false)} />
+        )}
       </ContentWrapper>
     </Container>
   );
