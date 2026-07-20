@@ -416,7 +416,7 @@ export default function QuestsPage() {
 
             <QuestStack>
               {dailyQuests.map((q) => {
-                const isClaimed = claimedQuests.includes(q.id);
+                const isClaimed = q.isCompleted && claimedQuests.includes(q.id);
                 return (
                   <QuestRow key={q.id}>
                     <QuestIconBox>{q.icon}</QuestIconBox>

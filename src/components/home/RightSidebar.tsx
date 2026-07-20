@@ -441,7 +441,7 @@ export function RightSidebar() {
           </WidgetHeader>
           <QuestList>
             {dailyQuests.map((q) => {
-              const isClaimed = claimedQuests.includes(q.id);
+              const isClaimed = q.isCompleted && claimedQuests.includes(q.id);
               return (
                 <QuestItem key={q.id}>
                   <QuestIcon>{q.icon}</QuestIcon>

@@ -194,11 +194,30 @@ export function CourseModal({ onClose }: { onClose: () => void }) {
 /* ─── 2. STREAK MODAL ─────────────────────────────────────────────────────── */
 export function StreakModal({ onClose }: { onClose: () => void }) {
   const { progress, buyStreakFreeze } = useProgress();
-  const streak = progress.streak || 1;
+  const streak = progress.streak || 0;
   const hasFreeze = progress.hasStreakFreeze || false;
   const gems = progress.gems !== undefined ? progress.gems : 800;
 
-  const days = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
+  const weekDays = useMemo(() => {
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const distanceToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+    const monday = new Date(now);
+    monday.setDate(now.getDate() + distanceToMonday);
+
+    const labels = ["Sen", "Sel", "Rab", "Kam", "Jum", "Sab", "Min"];
+    const log = progress.activityLog || {};
+    const todayStr = now.toISOString().split("T")[0];
+
+    return labels.map((label, index) => {
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + index);
+      const dateStr = d.toISOString().split("T")[0];
+      const isToday = dateStr === todayStr;
+      const hasStudied = (log[dateStr] || 0) > 0;
+      return { label, dateStr, isToday, hasStudied };
+    });
+  }, [progress.activityLog]);
 
   return (
     <Overlay onClick={onClose}>
@@ -212,24 +231,27 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
 
         {/* Calendar Row */}
         <div style={{ display: "flex", justifyContent: "space-between", background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)", borderRadius: "18px", padding: "1rem", marginBottom: "1.5rem" }}>
-          {days.map((d, i) => (
-            <div key={d} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.4rem" }}>
-              <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", fontWeight: 700 }}>{d}</span>
+          {weekDays.map((d) => (
+            <div key={d.dateStr} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.4rem" }}>
+              <span style={{ fontSize: "0.75rem", color: d.isToday ? "#f59e0b" : "var(--text-secondary)", fontWeight: d.isToday ? 900 : 700 }}>
+                {d.label}
+              </span>
               <div
                 style={{
                   width: "32px",
                   height: "32px",
                   borderRadius: "50%",
-                  background: i <= 2 ? "#f59e0b" : "rgba(255,255,255,0.08)",
+                  background: d.hasStudied ? "#f59e0b" : "rgba(255,255,255,0.08)",
+                  border: d.isToday ? "2px solid #f59e0b" : "none",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: i <= 2 ? "white" : "var(--text-secondary)",
+                  color: d.hasStudied ? "white" : "var(--text-secondary)",
                   fontWeight: 900,
                   fontSize: "0.85rem",
                 }}
               >
-                {i <= 2 ? "✓" : ""}
+                {d.hasStudied ? "✓" : ""}
               </div>
             </div>
           ))}
@@ -564,7 +586,7 @@ export function AllQuestsModal({ onClose }: { onClose: () => void }) {
 
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
           {dailyQuests.map((q: Quest) => {
-            const isClaimed = claimedQuests.includes(q.id);
+            const isClaimed = q.isCompleted && claimedQuests.includes(q.id);
             return (
               <div
                 key={q.id}
