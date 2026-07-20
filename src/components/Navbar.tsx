@@ -1524,16 +1524,6 @@ export function Navbar() {
                   </PopoverItem>
                 </Link>
                 <Link
-                  href="/profile"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                  onClick={() => setIsLainnyaOpen(false)}
-                >
-                  <PopoverItem>
-                    <StatsIcon stroke="#06b6d4" />
-                    Profile & Stats
-                  </PopoverItem>
-                </Link>
-                <Link
                   href="/about"
                   style={{ textDecoration: "none", color: "inherit" }}
                   onClick={() => setIsLainnyaOpen(false)}
@@ -2069,7 +2059,7 @@ export function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <KanjiBadge>人</KanjiBadge>
-              Profile & Stats
+              Profile
             </MobileLink>
 
             <MobileLink

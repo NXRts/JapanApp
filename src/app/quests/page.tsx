@@ -367,13 +367,42 @@ export default function QuestsPage() {
     [todayStr, progress],
   );
 
+  const currentMonthPrefix = useMemo(
+    () => new Date().toISOString().slice(0, 7),
+    [],
+  );
+
+  const currentMonthName = useMemo(() => {
+    return new Date().toLocaleDateString("id-ID", { month: "long" }).toUpperCase();
+  }, []);
+
+  const currentMonthTitle = useMemo(() => {
+    const month = new Date().toLocaleDateString("id-ID", { month: "long" });
+    return `Misi ${month.charAt(0).toUpperCase() + month.slice(1)}`;
+  }, []);
+
+  const daysLeftInMonth = useMemo(() => {
+    const now = new Date();
+    const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    return lastDay.getDate() - now.getDate() + 1;
+  }, []);
+
+  const hoursLeftToday = useMemo(() => {
+    const now = new Date();
+    return Math.max(1, 24 - now.getHours());
+  }, []);
+
   const completedQuestsCount = useMemo(() => {
-    let count = 33; // Base conquest count
-    dailyQuests.forEach((q) => {
-      if (q.isCompleted) count++;
-    });
-    return Math.min(50, count);
-  }, [dailyQuests]);
+    const monthlyClaimed = claimedQuests.filter((id) =>
+      id.startsWith(currentMonthPrefix),
+    ).length;
+
+    const todayCompletedUnclaimed = dailyQuests.filter(
+      (q) => q.isCompleted && !claimedQuests.includes(q.id),
+    ).length;
+
+    return Math.min(50, monthlyClaimed + todayCompletedUnclaimed);
+  }, [claimedQuests, currentMonthPrefix, dailyQuests]);
 
   const monthlyBadges = [
     { name: "Misi Juni", date: "Juni 2026", icon: "🤿", color: "rgba(14, 165, 233, 0.2)", unlocked: true },
@@ -393,9 +422,9 @@ export default function QuestsPage() {
         <MainColumn>
           {/* 1. Monthly Challenge Card */}
           <MonthlyCard>
-            <MonthBadge>JULI</MonthBadge>
-            <MonthTitle>Misi Juli</MonthTitle>
-            <MonthTimeLeft>⏱️ 11 HARI SISA</MonthTimeLeft>
+            <MonthBadge>{currentMonthName}</MonthBadge>
+            <MonthTitle>{currentMonthTitle}</MonthTitle>
+            <MonthTimeLeft>⏱️ {daysLeftInMonth} HARI SISA</MonthTimeLeft>
 
             <MonthProgressBox>
               <ProgressLabel>Taklukkan 50 misi</ProgressLabel>
@@ -411,7 +440,7 @@ export default function QuestsPage() {
           <SectionCard>
             <SectionHeader>
               <SectionTitle>Misi Harian</SectionTitle>
-              <TimeTag>🕒 11 JAM</TimeTag>
+              <TimeTag>🕒 {hoursLeftToday} JAM</TimeTag>
             </SectionHeader>
 
             <QuestStack>

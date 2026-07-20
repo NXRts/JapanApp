@@ -854,7 +854,7 @@ export default function ProfilePage() {
         <StatsGrid style={{ gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}>
           <MainStatCard style={{ background: "rgba(59, 130, 246, 0.08)", borderColor: "rgba(59, 130, 246, 0.2)" }}>
             <StatLabel>Permata (Gems)</StatLabel>
-            <StatValue style={{ color: "#3b82f6" }}>💎 {progress.gems !== undefined ? progress.gems : 800}</StatValue>
+            <StatValue style={{ color: "#3b82f6" }}>💎 {progress.gems !== undefined ? progress.gems : 100}</StatValue>
           </MainStatCard>
 
           <MainStatCard style={{ background: "rgba(239, 68, 68, 0.08)", borderColor: "rgba(239, 68, 68, 0.2)" }}>

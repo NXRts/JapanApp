@@ -132,7 +132,7 @@ const INITIAL_DATA: ProgressData = {
   showFurigana: true,
   profile: DEFAULT_PROFILE,
   hasSetName: true,
-  gems: 800,
+  gems: 100,
   hearts: 5,
   maxHearts: 5,
   isSuper: false,
@@ -231,7 +231,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
                 ...(parsed.profile || {}),
               },
               hasSetName: true,
-              gems: typeof parsed.gems === "number" ? parsed.gems : 800,
+              gems: typeof parsed.gems === "number" && parsed.gems !== 800 ? parsed.gems : 100,
               hearts: typeof parsed.hearts === "number" ? parsed.hearts : 5,
               maxHearts: typeof parsed.maxHearts === "number" ? parsed.maxHearts : 5,
               isSuper: typeof parsed.isSuper === "boolean" ? parsed.isSuper : false,
@@ -559,7 +559,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const spendGems = useCallback((amount: number) => {
     let success = false;
     setProgress((prev) => {
-      const currentGems = prev.gems !== undefined ? prev.gems : 800;
+      const currentGems = prev.gems !== undefined ? prev.gems : 100;
       if (currentGems >= amount) {
         success = true;
         return { ...prev, gems: currentGems - amount };
@@ -602,7 +602,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const buyStreakFreeze = useCallback(() => {
     let success = false;
     setProgress((prev) => {
-      const currentGems = prev.gems !== undefined ? prev.gems : 800;
+      const currentGems = prev.gems !== undefined ? prev.gems : 100;
       if (currentGems >= 200 && !prev.hasStreakFreeze) {
         success = true;
         triggerAlert(
