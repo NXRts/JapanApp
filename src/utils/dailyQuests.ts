@@ -11,48 +11,140 @@ export interface Quest {
   isCompleted: boolean;
 }
 
-const QUEST_TEMPLATES = [
+// Tiered Quest Templates (Easy, Medium, Hard) to ensure 3 balanced daily quests
+const EASY_QUEST_TEMPLATES = [
   {
     icon: "⚡",
     titleTemplate: (target: number) => `Dapatkan ${target} XP hari ini`,
-    targetOptions: [20, 30, 50, 80],
-    rewardOptions: [15, 25, 35, 50],
+    targetOptions: [20, 30],
+    rewardOptions: [20, 25],
     color: "#eab308",
     type: "exp",
   },
   {
-    icon: "🎯",
-    titleTemplate: (target: number) => `Selesaikan ${target} kuis dengan skor 80%+ hari ini`,
-    targetOptions: [1, 2],
-    rewardOptions: [25, 45],
-    color: "#8b5cf6",
-    type: "quiz_score",
+    icon: "⏱️",
+    titleTemplate: (target: number) => `Belajar selama ${target} menit hari ini`,
+    targetOptions: [5, 10],
+    rewardOptions: [20, 25],
+    color: "#3b82f6",
+    type: "study_time",
   },
   {
-    icon: "🦉",
-    titleTemplate: (_target: number) => `Pertahankan streak belajar hari ini`,
+    icon: "🔤",
+    titleTemplate: (target: number) => `Latihan ${target} karakter Kana hari ini`,
+    targetOptions: [10, 15],
+    rewardOptions: [20, 25],
+    color: "#14b8a6",
+    type: "kana_practice",
+  },
+  {
+    icon: "🌅",
+    titleTemplate: (target: number) => `Selesaikan ${target} pelajaran sebelum jam 12 siang`,
     targetOptions: [1],
     rewardOptions: [30],
-    color: "#10b981",
-    type: "streak",
+    color: "#f97316",
+    type: "early_bird",
   },
   {
-    icon: "📖",
-    titleTemplate: (target: number) => `Selesaikan ${target} latihan / pelajaran hari ini`,
+    icon: "🌙",
+    titleTemplate: (target: number) => `Selesaikan ${target} pelajaran setelah jam 6 sore`,
+    targetOptions: [1],
+    rewardOptions: [30],
+    color: "#4f46e5",
+    type: "night_owl",
+  },
+];
+
+const MEDIUM_QUEST_TEMPLATES = [
+  {
+    icon: "📚",
+    titleTemplate: (target: number) => `Selesaikan ${target} pelajaran hari ini`,
+    targetOptions: [2],
+    rewardOptions: [30],
+    color: "#10b981",
+    type: "lessons",
+  },
+  {
+    icon: "🎯",
+    titleTemplate: (target: number) => `Selesaikan ${target} pelajaran dengan skor 80%+ hari ini`,
+    targetOptions: [2],
+    rewardOptions: [40],
+    color: "#8b5cf6",
+    type: "lessons_score",
+  },
+  {
+    icon: "🈸",
+    titleTemplate: (target: number) => `Hafalkan ${target} Kanji baru hari ini`,
+    targetOptions: [5, 8],
+    rewardOptions: [35, 45],
+    color: "#ec4899",
+    type: "kanji_learned",
+  },
+  {
+    icon: "🎧",
+    titleTemplate: (target: number) => `Selesaikan ${target} sesi latihan mendengarkan hari ini`,
     targetOptions: [1, 2],
-    rewardOptions: [20, 40],
-    color: "#3b82f6",
-    type: "grammar",
+    rewardOptions: [30, 40],
+    color: "#6366f1",
+    type: "listening_session",
+  },
+  {
+    icon: "🔄",
+    titleTemplate: (target: number) => `Review ${target} kosakata yang pernah dipelajari`,
+    targetOptions: [15, 25],
+    rewardOptions: [30, 40],
+    color: "#a855f7",
+    type: "vocabulary_review",
+  },
+];
+
+const HARD_QUEST_TEMPLATES = [
+  {
+    icon: "🏆",
+    titleTemplate: (target: number) => `Selesaikan ${target} Unit pelajaran hari ini`,
+    targetOptions: [1],
+    rewardOptions: [50],
+    color: "#06b6d4",
+    type: "unit",
   },
   {
     icon: "🔥",
     titleTemplate: (target: number) => `Jawab 100% sempurna dalam ${target} kuis hari ini`,
     targetOptions: [1, 2],
-    rewardOptions: [35, 60],
+    rewardOptions: [40, 60],
     color: "#f97316",
     type: "perfect_quiz",
   },
+  {
+    icon: "🎯",
+    titleTemplate: (target: number) => `Pertahankan akurasi 90%+ dalam ${target} kuis berturut-turut`,
+    targetOptions: [2, 3],
+    rewardOptions: [45, 65],
+    color: "#10b981",
+    type: "streak_accuracy",
+  },
+  {
+    icon: "⚡",
+    titleTemplate: (target: number) => `Raih ${target} XP Bonus Kombo hari ini`,
+    targetOptions: [20, 35],
+    rewardOptions: [30, 45],
+    color: "#eab308",
+    type: "combo_bonus",
+  },
+  {
+    icon: "🗣️",
+    titleTemplate: (target: number) => `Selesaikan ${target} latihan pengucapan hari ini`,
+    targetOptions: [3, 5],
+    rewardOptions: [35, 50],
+    color: "#f43f5e",
+    type: "speaking_practice",
+  },
 ];
+
+function pickRandom<T>(arr: T[], rng: SeededRandom): T {
+  const idx = Math.floor(rng.next() * arr.length);
+  return arr[idx];
+}
 
 export function getDailyQuests(dateStr: string, progress: any): Quest[] {
   // Convert dateStr (YYYY-MM-DD) to numeric seed
@@ -64,9 +156,12 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
 
   const rng = new SeededRandom(Math.abs(seed) || 12345);
 
-  // Pick 3 distinct quest templates for today
-  const shuffledTemplates = [...QUEST_TEMPLATES].sort(() => rng.next() - 0.5);
-  const selectedTemplates = shuffledTemplates.slice(0, 3);
+  // Pick 1 Easy, 1 Medium, and 1 Hard quest template for balanced daily progression
+  const easyTemplate = pickRandom(EASY_QUEST_TEMPLATES, rng);
+  const mediumTemplate = pickRandom(MEDIUM_QUEST_TEMPLATES, rng);
+  const hardTemplate = pickRandom(HARD_QUEST_TEMPLATES, rng);
+
+  const selectedTemplates = [easyTemplate, mediumTemplate, hardTemplate];
 
   const todayExp = progress?.activityLog?.[dateStr] || 0;
   const quizHistory = progress?.quizHistory || [];
@@ -92,20 +187,81 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
     let current = 0;
     if (t.type === "exp") {
       current = Math.min(target, todayExp);
-    } else if (t.type === "quiz_score") {
+    } else if (t.type === "lessons") {
+      current = Math.min(target, todayQuizzes.length);
+    } else if (t.type === "lessons_score") {
       const highScores = todayQuizzes.filter(
         (q: any) => q.total > 0 && q.score / q.total >= 0.8,
       ).length;
       current = Math.min(target, highScores);
-    } else if (t.type === "streak") {
-      current = todayExp > 0 ? 1 : 0;
-    } else if (t.type === "grammar") {
-      current = Math.min(target, todayExp >= 15 ? 1 : 0);
+    } else if (t.type === "unit") {
+      current = Math.min(target, (todayQuizzes.length >= 3 || todayExp >= 50) ? 1 : 0);
     } else if (t.type === "perfect_quiz") {
       const perfects = todayQuizzes.filter(
         (q: any) => q.total > 0 && q.score === q.total,
       ).length;
       current = Math.min(target, perfects);
+    } else if (t.type === "study_time") {
+      const estimatedMinutes = Math.floor(todayQuizzes.length * 3 + todayExp / 5);
+      current = Math.min(target, estimatedMinutes);
+    } else if (t.type === "kanji_learned") {
+      const totalCorrect = todayQuizzes.reduce((acc: number, q: any) => acc + (q.score || 0), 0);
+      current = Math.min(target, totalCorrect);
+    } else if (t.type === "listening_session") {
+      const listeningCount = todayQuizzes.filter(
+        (q: any) => q.type && (q.type.includes("listening") || q.type.includes("audio") || q.type.includes("kana")),
+      ).length;
+      current = Math.min(target, listeningCount || (todayQuizzes.length > 0 ? 1 : 0));
+    } else if (t.type === "kana_practice") {
+      const kanaItems = todayQuizzes.reduce((acc: number, q: any) => acc + (q.score || 0), 0);
+      current = Math.min(target, kanaItems);
+    } else if (t.type === "speaking_practice") {
+      const speakingCount = todayQuizzes.filter(
+        (q: any) => q.type && (q.type.includes("speaking") || q.type.includes("pronunciation")),
+      ).length;
+      current = Math.min(target, speakingCount || (todayQuizzes.length > 0 ? 1 : 0));
+    } else if (t.type === "vocabulary_review") {
+      const totalReviewed = todayQuizzes.reduce((acc: number, q: any) => acc + (q.total || 0), 0);
+      current = Math.min(target, totalReviewed);
+    } else if (t.type === "combo_bonus") {
+      const comboExp = Math.floor(todayExp * 0.4);
+      current = Math.min(target, comboExp);
+    } else if (t.type === "early_bird") {
+      const earlyCount = todayQuizzes.filter((q: any) => {
+        const ts = q.timestamp || q.date;
+        if (!ts) return false;
+        try {
+          const d = new Date(ts);
+          return d.getHours() < 12;
+        } catch {
+          return false;
+        }
+      }).length;
+      current = Math.min(target, earlyCount);
+    } else if (t.type === "night_owl") {
+      const nightCount = todayQuizzes.filter((q: any) => {
+        const ts = q.timestamp || q.date;
+        if (!ts) return false;
+        try {
+          const d = new Date(ts);
+          return d.getHours() >= 18;
+        } catch {
+          return false;
+        }
+      }).length;
+      current = Math.min(target, nightCount);
+    } else if (t.type === "streak_accuracy") {
+      let streakAcc = 0;
+      let maxStreakAcc = 0;
+      for (const q of todayQuizzes) {
+        if (q.total > 0 && q.score / q.total >= 0.9) {
+          streakAcc++;
+          maxStreakAcc = Math.max(maxStreakAcc, streakAcc);
+        } else {
+          streakAcc = 0;
+        }
+      }
+      current = Math.min(target, maxStreakAcc);
     }
 
     return {
