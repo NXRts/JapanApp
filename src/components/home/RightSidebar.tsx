@@ -15,6 +15,7 @@ import {
 } from "@/components/modals/DuolingoModals";
 
 import { getDailyQuests } from "@/utils/dailyQuests";
+import { getLeagueById, getRankStatus } from "@/data/leagues";
 
 /* ─── Sidebar Outer Container ────────────────────────────────────────────── */
 const SidebarWrapper = styled.aside`
@@ -374,6 +375,16 @@ export function RightSidebar() {
   const isSuper = progress.isSuper || false;
   const claimedQuests = progress.claimedQuests || [];
 
+  const leagueData = progress.league || {
+    currentLeagueId: "bronze",
+    weekInLeague: 1,
+    rank: 1,
+    top3Finishes: 0,
+    weeklyExp: 0,
+  };
+  const leagueInfo = getLeagueById(leagueData.currentLeagueId);
+  const rankInfo = getRankStatus(leagueData.rank);
+
   const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
   const dailyQuests = useMemo(
     () => getDailyQuests(todayStr, progress),
@@ -416,18 +427,20 @@ export function RightSidebar() {
         {/* 3. League Card */}
         <WidgetCard>
           <WidgetHeader>
-            <WidgetTitle>Liga Obsidian</WidgetTitle>
+            <WidgetTitle>{leagueInfo.name}</WidgetTitle>
             <WidgetActionText onClick={() => setActiveModal("leaderboard")}>LIHAT LIGA</WidgetActionText>
           </WidgetHeader>
-          <LeagueBody onClick={() => setActiveModal("leaderboard")}>
-            <ShieldIconBox>
-              🛡️
-              <WarningBadge>!</WarningBadge>
+          <LeagueBody onClick={() => setActiveModal("leaderboard")} style={{ borderColor: rankInfo.color }}>
+            <ShieldIconBox style={{ background: leagueInfo.badgeBg, borderColor: leagueInfo.borderColor }}>
+              {leagueInfo.icon}
+              <WarningBadge style={{ background: rankInfo.color }}>
+                {rankInfo.zone === "demotion" ? "!" : rankInfo.zone === "promotion" ? "▲" : "✓"}
+              </WarningBadge>
             </ShieldIconBox>
             <LeagueTextGroup>
-              <LeagueRankText>Kamu di peringkat #9</LeagueRankText>
+              <LeagueRankText>Kamu di peringkat #{leagueData.rank || 1}</LeagueRankText>
               <LeagueStatusText>
-                Kamu merosot ke zona penurunan!
+                {rankInfo.label}
               </LeagueStatusText>
             </LeagueTextGroup>
           </LeagueBody>

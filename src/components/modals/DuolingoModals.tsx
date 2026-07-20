@@ -5,6 +5,7 @@ import styled, { keyframes } from "styled-components";
 import { useProgress } from "@/context/ProgressContext";
 import Link from "next/link";
 import { getDailyQuests, Quest } from "@/utils/dailyQuests";
+import { getLeagueById, getRankStatus } from "@/data/leagues";
 
 /* ─── Shared Modal Overlay & Container ───────────────────────────────────── */
 const fadeIn = keyframes`
@@ -492,23 +493,25 @@ export function SuperModal({ onClose }: { onClose: () => void }) {
 /* ─── 6. LEADERBOARD / LEAGUE MODAL ───────────────────────────────────────── */
 export function LeaderboardModal({ onClose }: { onClose: () => void }) {
   const { progress } = useProgress();
-  const userExp = progress.exp || 735;
+  const leagueData = progress.league || {
+    currentLeagueId: "bronze",
+    weekInLeague: 1,
+    rank: 1,
+    top3Finishes: 0,
+    weeklyExp: 0,
+  };
+  const leagueInfo = getLeagueById(leagueData.currentLeagueId);
+  const userExp = leagueData.weeklyExp || 0;
   const userName = progress.profile?.displayName || "JapanApp Learner";
   const userAvatar = progress.profile?.avatar || "🦊";
 
-  // Simulate realistic weekly league competitors around user EXP
-  const competitors = [
-    { rank: 1, name: "Tanaka Kenji", exp: 2450, avatar: "🥷", zone: "promo" },
-    { rank: 2, name: "Sakura Learner", exp: 1980, avatar: "🌸", zone: "promo" },
-    { rank: 3, name: "Hiroshi Sato", exp: 1720, avatar: "🐉", zone: "promo" },
-    { rank: 4, name: "Yuki Takahashi", exp: 1450, avatar: "🎎", zone: "promo" },
-    { rank: 5, name: "Kaito Shira", exp: 1210, avatar: "⚡", zone: "promo" },
-    { rank: 6, name: "Aoi Natsumi", exp: 980, avatar: "🌊", zone: "safe" },
-    { rank: 7, name: "Ren Otani", exp: 890, avatar: "⛩️", zone: "safe" },
-    { rank: 8, name: "Mei Lin", exp: 810, avatar: "🍵", zone: "safe" },
-    { rank: 9, name: `${userName} (Kamu)`, exp: userExp, avatar: userAvatar, isUser: true, zone: "demotion" },
-    { rank: 10, name: "Daiki Suzuki", exp: 620, avatar: "🎌", zone: "demotion" },
+  // Single user leaderboard (lightweight & clean)
+  const rawCompetitors = [
+    { name: `${userName} (Kamu)`, exp: userExp, avatar: userAvatar, isUser: true },
   ];
+
+  const userRankIndex = 1;
+  const rankInfo = getRankStatus(userRankIndex);
 
   return (
     <Overlay onClick={onClose}>
@@ -516,46 +519,75 @@ export function LeaderboardModal({ onClose }: { onClose: () => void }) {
         <CloseButton onClick={onClose}>×</CloseButton>
 
         <div style={{ textAlign: "center", marginBottom: "1.25rem" }}>
-          <div style={{ fontSize: "3rem", marginBottom: "0.3rem" }}>🛡️</div>
-          <ModalTitle style={{ justifyContent: "center" }}>Liga Obsidian (Obsidian League)</ModalTitle>
-          <ModalSub style={{ marginBottom: "0.5rem" }}>Musim liga berakhir dalam <b>2 hari 14 jam</b>. 5 teratas akan naik r tingkat!</ModalSub>
+          <div style={{ fontSize: "3rem", marginBottom: "0.3rem" }}>{leagueInfo.icon}</div>
+          <ModalTitle style={{ justifyContent: "center" }}>
+            {leagueInfo.name} ({leagueInfo.englishName})
+          </ModalTitle>
+          <ModalSub style={{ marginBottom: "0.5rem" }}>
+            Musim liga berakhir dalam <b>2 hari 14 jam</b>. 5 teratas akan naik ke tingkat berikutnya!
+          </ModalSub>
+          <div
+            style={{
+              display: "inline-block",
+              background: rankInfo.badgeColor,
+              color: rankInfo.color,
+              padding: "0.35rem 0.85rem",
+              borderRadius: "10px",
+              fontWeight: 800,
+              fontSize: "0.85rem",
+              border: `1px solid ${rankInfo.color}`,
+              marginTop: "0.25rem",
+            }}
+          >
+            {rankInfo.label}
+          </div>
         </div>
 
         {/* Competitors List */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1.5rem" }}>
-          {competitors.map((c) => (
-            <div
-              key={c.rank}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.85rem",
-                padding: "0.75rem 1rem",
-                borderRadius: "14px",
-                background: c.isUser
-                  ? "rgba(var(--primary-rgb), 0.18)"
-                  : c.zone === "promo"
-                  ? "rgba(16, 185, 129, 0.05)"
-                  : c.zone === "demotion"
-                  ? "rgba(239, 68, 68, 0.05)"
-                  : "rgba(255, 255, 255, 0.03)",
-                border: c.isUser
-                  ? "1.5px solid var(--primary)"
-                  : c.zone === "promo"
-                  ? "1px solid rgba(16, 185, 129, 0.2)"
-                  : c.zone === "demotion"
-                  ? "1px solid rgba(239, 68, 68, 0.2)"
-                  : "1px solid var(--border)",
-              }}
-            >
-              <div style={{ width: "24px", fontWeight: 900, color: c.rank <= 3 ? "#f59e0b" : "var(--text-secondary)", textAlign: "center" }}>
-                #{c.rank}
+          {rawCompetitors.map((c, idx) => {
+            const actualRank = idx + 1;
+            return (
+              <div
+                key={actualRank}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.85rem",
+                  padding: "0.75rem 1rem",
+                  borderRadius: "14px",
+                  background: c.isUser
+                    ? "rgba(var(--primary-rgb), 0.18)"
+                    : actualRank <= 5
+                    ? "rgba(16, 185, 129, 0.05)"
+                    : actualRank >= 9
+                    ? "rgba(239, 68, 68, 0.05)"
+                    : "rgba(255, 255, 255, 0.03)",
+                  border: c.isUser
+                    ? "1.5px solid var(--primary)"
+                    : actualRank <= 5
+                    ? "1px solid rgba(16, 185, 129, 0.2)"
+                    : actualRank >= 9
+                    ? "1px solid rgba(239, 68, 68, 0.2)"
+                    : "1px solid var(--border)",
+                }}
+              >
+                <div
+                  style={{
+                    width: "24px",
+                    fontWeight: 900,
+                    color: actualRank <= 3 ? "#f59e0b" : "var(--text-secondary)",
+                    textAlign: "center",
+                  }}
+                >
+                  #{actualRank}
+                </div>
+                <div style={{ fontSize: "1.4rem" }}>{c.avatar}</div>
+                <div style={{ flex: 1, fontWeight: c.isUser ? 900 : 700, fontSize: "0.9rem" }}>{c.name}</div>
+                <div style={{ fontWeight: 800, color: "var(--primary)", fontSize: "0.88rem" }}>{c.exp} EXP</div>
               </div>
-              <div style={{ fontSize: "1.4rem" }}>{c.avatar}</div>
-              <div style={{ flex: 1, fontWeight: c.isUser ? 900 : 700, fontSize: "0.9rem" }}>{c.name}</div>
-              <div style={{ fontWeight: 800, color: "var(--primary)", fontSize: "0.88rem" }}>{c.exp} EXP</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <ActionBtn as={Link} href="/quiz" style={{ textDecoration: "none" }} onClick={onClose}>
