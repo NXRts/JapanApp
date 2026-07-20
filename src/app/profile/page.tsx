@@ -849,28 +849,39 @@ export default function ProfilePage() {
           </GoalCard>
         </GridTwoCol>
 
-        {/* Core Statistics Grid */}
-        <SectionTitle>Core Statistics</SectionTitle>
-        <StatsGrid>
-          <MainStatCard>
-            <StatLabel>Total EXP</StatLabel>
-            <StatValue>{progress.exp.toLocaleString()}</StatValue>
+        {/* Gamification & Inventory Status */}
+        <SectionTitle>Inventory & Status Duolingo</SectionTitle>
+        <StatsGrid style={{ gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}>
+          <MainStatCard style={{ background: "rgba(59, 130, 246, 0.08)", borderColor: "rgba(59, 130, 246, 0.2)" }}>
+            <StatLabel>Permata (Gems)</StatLabel>
+            <StatValue style={{ color: "#3b82f6" }}>💎 {progress.gems !== undefined ? progress.gems : 800}</StatValue>
           </MainStatCard>
-          <MainStatCard>
-            <StatLabel>Current Streak</StatLabel>
-            <StatValue>
-              {progress.streak} <span>days</span>
+
+          <MainStatCard style={{ background: "rgba(239, 68, 68, 0.08)", borderColor: "rgba(239, 68, 68, 0.2)" }}>
+            <StatLabel>Nyawa (Hearts)</StatLabel>
+            <StatValue style={{ color: "#ef4444" }}>
+              ❤️ {progress.isSuper ? "Tak Terbatas ♾️" : `${progress.hearts !== undefined ? progress.hearts : 5} / 5`}
             </StatValue>
           </MainStatCard>
-          <MainStatCard>
-            <StatLabel>Items Mastered</StatLabel>
-            <StatValue>{totalCharacters}</StatValue>
+
+          <MainStatCard style={{ background: progress.isSuper ? "rgba(168, 85, 247, 0.12)" : "rgba(255, 255, 255, 0.03)", borderColor: progress.isSuper ? "rgba(168, 85, 247, 0.4)" : "var(--border)" }}>
+            <StatLabel>Status Membership</StatLabel>
+            <StatValue style={{ fontSize: "1.25rem", color: progress.isSuper ? "#a855f7" : "var(--foreground)" }}>
+              {progress.isSuper ? "Member Super 👑" : "Standar 👤"}
+            </StatValue>
           </MainStatCard>
-          <MainStatCard>
-            <StatLabel>Overall Accuracy</StatLabel>
-            <StatValue>
-              {accuracy}
-              <span>%</span>
+
+          <MainStatCard style={{ background: "rgba(16, 185, 129, 0.08)", borderColor: "rgba(16, 185, 129, 0.2)" }}>
+            <StatLabel>Pelindung Streak</StatLabel>
+            <StatValue style={{ fontSize: "1.2rem", color: "#10b981" }}>
+              {progress.hasStreakFreeze ? "Streak Freeze 🛡️" : "Belum Memiliki ⚪"}
+            </StatValue>
+          </MainStatCard>
+
+          <MainStatCard style={{ background: "rgba(234, 179, 8, 0.08)", borderColor: "rgba(234, 179, 8, 0.2)" }}>
+            <StatLabel>Misi Selesai</StatLabel>
+            <StatValue style={{ color: "#eab308" }}>
+              🎁 {(progress.claimedQuests || []).length} Klaim
             </StatValue>
           </MainStatCard>
         </StatsGrid>

@@ -1800,6 +1800,14 @@ export function Navbar() {
                 </NavItem> */}
 
                 <NavItem>
+                  <StyledLink
+                    href="/quests"
+                    $active={pathname.startsWith("/quests")}
+                  >
+                    Misi
+                  </StyledLink>
+                </NavItem>
+                <NavItem>
                   <StyledLink href="/profile" $active={pathname === "/profile"}>
                     Profile
                   </StyledLink>
@@ -2030,10 +2038,20 @@ export function Navbar() {
               $isOpen={isMobileMenuOpen}
               $delay={0.17}
               onClick={() => setIsMobileMenuOpen(false)}
-              style={{ gridColumn: "span 2" }}
             >
               <KanjiBadge>書</KanjiBadge>
               Practice Sheets
+            </MobileLink>
+
+            <MobileLink
+              href="/quests"
+              $active={pathname.startsWith("/quests")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.19}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <KanjiBadge>務</KanjiBadge>
+              Misi
             </MobileLink>
           </MobileMenuSection>
 

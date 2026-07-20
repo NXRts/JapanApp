@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styled, { keyframes } from "styled-components";
 import { useProgress } from "@/context/ProgressContext";
 import Link from "next/link";
+import { getDailyQuests, Quest } from "@/utils/dailyQuests";
 
 /* ─── Shared Modal Overlay & Container ───────────────────────────────────── */
 const fadeIn = keyframes`
@@ -547,16 +548,11 @@ export function LeaderboardModal({ onClose }: { onClose: () => void }) {
 export function AllQuestsModal({ onClose }: { onClose: () => void }) {
   const { progress, claimQuestReward } = useProgress();
   const claimedQuests = progress.claimedQuests || [];
-  const todayStr = new Date().toISOString().split("T")[0];
-
-  const q1Id = `${todayStr}-q1`;
-  const q2Id = `${todayStr}-q2`;
-  const q3Id = `${todayStr}-q3`;
-
-  const todayExp = progress.activityLog?.[todayStr] || 10;
-  const isQ1Done = todayExp >= 10;
-  const isQ2Done = progress.streak >= 1;
-  const isQ3Done = (progress.quizHistory || []).some((q) => (q.score / q.total) >= 0.8);
+  const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
+  const dailyQuests = useMemo(
+    () => getDailyQuests(todayStr, progress),
+    [todayStr, progress],
+  );
 
   return (
     <Overlay onClick={onClose}>
@@ -564,71 +560,62 @@ export function AllQuestsModal({ onClose }: { onClose: () => void }) {
         <CloseButton onClick={onClose}>×</CloseButton>
 
         <ModalTitle>🎯 Misi & Lencana Bulanan</ModalTitle>
-        <ModalSub>Selesaikan misi harian & mingguan untuk mengumpulkan Permata 💎 dan Lencana Pahlawan.</ModalSub>
+        <ModalSub>Selesaikan misi harian untuk mengumpulkan Permata 💎 dan Lencana Pahlawan.</ModalSub>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
-          {/* Quest 1 */}
-          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)", borderRadius: "18px", padding: "1rem", display: "flex", alignItems: "center", gap: "0.85rem" }}>
-            <div style={{ fontSize: "1.75rem" }}>⚡</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 800, fontSize: "0.9rem" }}>Dapatkan 10 XP hari ini</div>
-              <div style={{ fontSize: "0.78rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>Progred: {Math.min(10, todayExp)} / 10</div>
-            </div>
-            {isQ1Done && !claimedQuests.includes(q1Id) ? (
-              <button
-                onClick={() => claimQuestReward(q1Id, 20)}
-                style={{ background: "#eab308", color: "black", border: "none", borderRadius: "10px", padding: "0.5rem 0.85rem", fontWeight: 900, fontSize: "0.8rem", cursor: "pointer" }}
+          {dailyQuests.map((q: Quest) => {
+            const isClaimed = claimedQuests.includes(q.id);
+            return (
+              <div
+                key={q.id}
+                style={{
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "18px",
+                  padding: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.85rem",
+                }}
               >
-                Klaim 🎁
-              </button>
-            ) : (
-              <span style={{ fontSize: "0.8rem", fontWeight: 800, color: claimedQuests.includes(q1Id) ? "#10b981" : "var(--text-secondary)" }}>
-                {claimedQuests.includes(q1Id) ? "Diklaim ✓" : isQ1Done ? "Selesai ✓" : "Berjalan"}
-              </span>
-            )}
-          </div>
-
-          {/* Quest 2 */}
-          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)", borderRadius: "18px", padding: "1rem", display: "flex", alignItems: "center", gap: "0.85rem" }}>
-            <div style={{ fontSize: "1.75rem" }}>🦉</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 800, fontSize: "0.9rem" }}>Pertahankan Streak Belajar 1 Hari</div>
-              <div style={{ fontSize: "0.78rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>Progres: {progress.streak >= 1 ? "1 / 1" : "0 / 1"}</div>
-            </div>
-            {isQ2Done && !claimedQuests.includes(q2Id) ? (
-              <button
-                onClick={() => claimQuestReward(q2Id, 20)}
-                style={{ background: "#eab308", color: "black", border: "none", borderRadius: "10px", padding: "0.5rem 0.85rem", fontWeight: 900, fontSize: "0.8rem", cursor: "pointer" }}
-              >
-                Klaim 🎁
-              </button>
-            ) : (
-              <span style={{ fontSize: "0.8rem", fontWeight: 800, color: claimedQuests.includes(q2Id) ? "#10b981" : "var(--text-secondary)" }}>
-                {claimedQuests.includes(q2Id) ? "Diklaim ✓" : isQ2Done ? "Selesai ✓" : "Berjalan"}
-              </span>
-            )}
-          </div>
-
-          {/* Quest 3 */}
-          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)", borderRadius: "18px", padding: "1rem", display: "flex", alignItems: "center", gap: "0.85rem" }}>
-            <div style={{ fontSize: "1.75rem" }}>🎯</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 800, fontSize: "0.9rem" }}>Raih skor 80%+ dalam Kuis</div>
-              <div style={{ fontSize: "0.78rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>Progres: {isQ3Done ? "1 / 1" : "0 / 1"}</div>
-            </div>
-            {isQ3Done && !claimedQuests.includes(q3Id) ? (
-              <button
-                onClick={() => claimQuestReward(q3Id, 20)}
-                style={{ background: "#eab308", color: "black", border: "none", borderRadius: "10px", padding: "0.5rem 0.85rem", fontWeight: 900, fontSize: "0.8rem", cursor: "pointer" }}
-              >
-                Klaim 🎁
-              </button>
-            ) : (
-              <span style={{ fontSize: "0.8rem", fontWeight: 800, color: claimedQuests.includes(q3Id) ? "#10b981" : "var(--text-secondary)" }}>
-                {claimedQuests.includes(q3Id) ? "Diklaim ✓" : isQ3Done ? "Selesai ✓" : "Berjalan"}
-              </span>
-            )}
-          </div>
+                <div style={{ fontSize: "1.75rem" }}>{q.icon}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 800, fontSize: "0.9rem" }}>{q.title}</div>
+                  <div style={{ fontSize: "0.78rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
+                    Progres: {q.current} / {q.target} (Hadiah: +{q.rewardGems} 💎)
+                  </div>
+                </div>
+                {q.isCompleted && !isClaimed ? (
+                  <button
+                    onClick={() => claimQuestReward(q.id, q.rewardGems)}
+                    style={{
+                      background: "#eab308",
+                      color: "black",
+                      border: "none",
+                      borderRadius: "10px",
+                      padding: "0.5rem 0.85rem",
+                      fontWeight: 900,
+                      fontSize: "0.8rem",
+                      cursor: "pointer",
+                      boxShadow: "0 2px 8px rgba(234,179,8,0.4)",
+                    }}
+                  >
+                    Klaim 🎁
+                  </button>
+                ) : (
+                  <span
+                    style={{
+                      fontSize: "0.8rem",
+                      fontWeight: 800,
+                      color: isClaimed ? "#10b981" : "var(--text-secondary)",
+                    }}
+                  >
+                    {isClaimed ? "Diklaim ✓" : q.isCompleted ? "Selesai ✓" : "Berjalan"}
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <ActionBtn $variant="secondary" onClick={onClose}>Tutup Misi</ActionBtn>

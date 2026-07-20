@@ -14,6 +14,8 @@ import {
   AllQuestsModal,
 } from "@/components/modals/DuolingoModals";
 
+import { getDailyQuests } from "@/utils/dailyQuests";
+
 /* ─── Sidebar Outer Container ────────────────────────────────────────────── */
 const SidebarWrapper = styled.aside`
   width: 360px;
@@ -373,15 +375,10 @@ export function RightSidebar() {
   const claimedQuests = progress.claimedQuests || [];
 
   const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
-  const todayExp = progress.activityLog?.[todayStr] || 10;
-
-  const q1Id = `${todayStr}-q1`;
-  const q2Id = `${todayStr}-q2`;
-  const q3Id = `${todayStr}-q3`;
-
-  const isQ1Done = todayExp >= 10;
-  const isQ2Done = progress.streak >= 1;
-  const isQ3Done = (progress.quizHistory || []).some((q) => q.score / q.total >= 0.8);
+  const dailyQuests = useMemo(
+    () => getDailyQuests(todayStr, progress),
+    [todayStr, progress],
+  );
 
   return (
     <>
@@ -440,68 +437,32 @@ export function RightSidebar() {
         <WidgetCard>
           <WidgetHeader>
             <WidgetTitle>Misi Harian</WidgetTitle>
-            <WidgetActionText onClick={() => setActiveModal("quests")}>LIHAT SEMUA</WidgetActionText>
+            <WidgetActionText as={Link} href="/quests" style={{ textDecoration: "none" }}>LIHAT SEMUA</WidgetActionText>
           </WidgetHeader>
           <QuestList>
-            {/* Quest 1 */}
-            <QuestItem>
-              <QuestIcon>⚡</QuestIcon>
-              <QuestContent>
-                <QuestTitle>Dapatkan 10 XP</QuestTitle>
-                <ProgressTrack>
-                  <ProgressFill $pct={Math.min(100, (todayExp / 10) * 100)} $color="#eab308" />
-                  <ProgressText>{Math.min(10, todayExp)} / 10</ProgressText>
-                </ProgressTrack>
-              </QuestContent>
-              <ChestButton
-                $completed={isQ1Done}
-                $claimed={claimedQuests.includes(q1Id)}
-                onClick={() => isQ1Done && !claimedQuests.includes(q1Id) && claimQuestReward(q1Id, 20)}
-                title={claimedQuests.includes(q1Id) ? "Diklaim ✓" : isQ1Done ? "Klaim +20 💎" : "Belum Selesai"}
-              >
-                {claimedQuests.includes(q1Id) ? "✅" : "🎁"}
-              </ChestButton>
-            </QuestItem>
-
-            {/* Quest 2 */}
-            <QuestItem>
-              <QuestIcon>🦉</QuestIcon>
-              <QuestContent>
-                <QuestTitle>Pertahankan Streak Belajar 1 Hari</QuestTitle>
-                <ProgressTrack>
-                  <ProgressFill $pct={isQ2Done ? 100 : 0} $color="#10b981" />
-                  <ProgressText>{isQ2Done ? "1 / 1" : "0 / 1"}</ProgressText>
-                </ProgressTrack>
-              </QuestContent>
-              <ChestButton
-                $completed={isQ2Done}
-                $claimed={claimedQuests.includes(q2Id)}
-                onClick={() => isQ2Done && !claimedQuests.includes(q2Id) && claimQuestReward(q2Id, 20)}
-                title={claimedQuests.includes(q2Id) ? "Diklaim ✓" : isQ2Done ? "Klaim +20 💎" : "Belum Selesai"}
-              >
-                {claimedQuests.includes(q2Id) ? "✅" : "🎁"}
-              </ChestButton>
-            </QuestItem>
-
-            {/* Quest 3 */}
-            <QuestItem>
-              <QuestIcon>🎯</QuestIcon>
-              <QuestContent>
-                <QuestTitle>Raih skor 80%+ dalam Kuis</QuestTitle>
-                <ProgressTrack>
-                  <ProgressFill $pct={isQ3Done ? 100 : 0} $color="#8b5cf6" />
-                  <ProgressText>{isQ3Done ? "1 / 1" : "0 / 1"}</ProgressText>
-                </ProgressTrack>
-              </QuestContent>
-              <ChestButton
-                $completed={isQ3Done}
-                $claimed={claimedQuests.includes(q3Id)}
-                onClick={() => isQ3Done && !claimedQuests.includes(q3Id) && claimQuestReward(q3Id, 20)}
-                title={claimedQuests.includes(q3Id) ? "Diklaim ✓" : isQ3Done ? "Klaim +20 💎" : "Belum Selesai"}
-              >
-                {claimedQuests.includes(q3Id) ? "✅" : "🎁"}
-              </ChestButton>
-            </QuestItem>
+            {dailyQuests.map((q) => {
+              const isClaimed = claimedQuests.includes(q.id);
+              return (
+                <QuestItem key={q.id}>
+                  <QuestIcon>{q.icon}</QuestIcon>
+                  <QuestContent>
+                    <QuestTitle>{q.title}</QuestTitle>
+                    <ProgressTrack>
+                      <ProgressFill $pct={(q.current / q.target) * 100} $color={q.color} />
+                      <ProgressText>{q.current} / {q.target}</ProgressText>
+                    </ProgressTrack>
+                  </QuestContent>
+                  <ChestButton
+                    $completed={q.isCompleted}
+                    $claimed={isClaimed}
+                    onClick={() => q.isCompleted && !isClaimed && claimQuestReward(q.id, q.rewardGems)}
+                    title={isClaimed ? "Diklaim ✓" : q.isCompleted ? `Klaim +${q.rewardGems} 💎` : "Belum Selesai"}
+                  >
+                    {isClaimed ? "✅" : "🎁"}
+                  </ChestButton>
+                </QuestItem>
+              );
+            })}
           </QuestList>
         </WidgetCard>
       </SidebarWrapper>
