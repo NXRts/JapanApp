@@ -598,10 +598,49 @@ export function LeaderboardModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ─── 7. ALL QUESTS & BADGES MODAL ───────────────────────────────────────── */
+const ModalQuestGoBtn = styled(Link)`
+  background: #eab308;
+  color: black;
+  border-radius: 10px;
+  padding: 0.5rem 0.85rem;
+  font-weight: 900;
+  font-size: 0.8rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(234, 179, 8, 0.4);
+  transition: all 0.2s ease;
+  min-width: 90px;
+  text-align: center;
+
+  .hover-label {
+    display: none;
+  }
+  .default-label {
+    display: inline;
+  }
+
+  &:hover {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.45);
+
+    .default-label {
+      display: none;
+    }
+    .hover-label {
+      display: inline;
+      font-weight: 900;
+    }
+  }
+`;
+
+/* ─── 7. ALL QUESTS MODAL ─────────────────────────────────────────────────── */
 export function AllQuestsModal({ onClose }: { onClose: () => void }) {
   const { progress, claimQuestReward } = useProgress();
   const claimedQuests = progress.claimedQuests || [];
+
   const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
   const dailyQuests = useMemo(
     () => getDailyQuests(todayStr, progress),
@@ -656,16 +695,15 @@ export function AllQuestsModal({ onClose }: { onClose: () => void }) {
                   >
                     Klaim 🎁
                   </button>
-                ) : (
-                  <span
-                    style={{
-                      fontSize: "0.8rem",
-                      fontWeight: 800,
-                      color: isClaimed ? "#10b981" : "var(--text-secondary)",
-                    }}
-                  >
-                    {isClaimed ? "Diklaim ✓" : q.isCompleted ? "Selesai ✓" : "Berjalan"}
+                ) : isClaimed ? (
+                  <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "#10b981" }}>
+                    Diklaim ✓
                   </span>
+                ) : (
+                  <ModalQuestGoBtn href={q.actionUrl || "/lesson"} onClick={onClose}>
+                    <span className="default-label">🎁 +{q.rewardGems} 💎</span>
+                    <span className="hover-label">GO 🚀</span>
+                  </ModalQuestGoBtn>
                 )}
               </div>
             );

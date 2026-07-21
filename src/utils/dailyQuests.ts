@@ -9,6 +9,7 @@ export interface Quest {
   color: string;
   current: number;
   isCompleted: boolean;
+  actionUrl: string;
 }
 
 // Tiered Quest Templates (Easy, Medium, Hard) to ensure 3 balanced daily quests
@@ -20,6 +21,7 @@ const EASY_QUEST_TEMPLATES = [
     rewardOptions: [20, 25],
     color: "#eab308",
     type: "exp",
+    actionUrl: "/lesson",
   },
   {
     icon: "⏱️",
@@ -28,6 +30,7 @@ const EASY_QUEST_TEMPLATES = [
     rewardOptions: [20, 25],
     color: "#3b82f6",
     type: "study_time",
+    actionUrl: "/lesson",
   },
   {
     icon: "🔤",
@@ -36,22 +39,25 @@ const EASY_QUEST_TEMPLATES = [
     rewardOptions: [20, 25],
     color: "#14b8a6",
     type: "kana_practice",
+    actionUrl: "/kana",
   },
   {
-    icon: "🌅",
-    titleTemplate: (target: number) => `Selesaikan ${target} pelajaran sebelum jam 12 siang`,
-    targetOptions: [1],
-    rewardOptions: [30],
-    color: "#f97316",
-    type: "early_bird",
-  },
-  {
-    icon: "🌙",
-    titleTemplate: (target: number) => `Selesaikan ${target} pelajaran setelah jam 6 sore`,
-    targetOptions: [1],
-    rewardOptions: [30],
+    icon: "📝",
+    titleTemplate: (target: number) => `Selesaikan ${target} latihan tata bahasa hari ini`,
+    targetOptions: [1, 2],
+    rewardOptions: [25, 30],
     color: "#4f46e5",
-    type: "night_owl",
+    type: "grammar_practice",
+    actionUrl: "/grammar",
+  },
+  {
+    icon: "🎯",
+    titleTemplate: (target: number) => `Selesaikan ${target} sesi kuis harian`,
+    targetOptions: [1, 2],
+    rewardOptions: [25, 30],
+    color: "#f97316",
+    type: "quiz_practice",
+    actionUrl: "daily-quiz",
   },
 ];
 
@@ -63,6 +69,7 @@ const MEDIUM_QUEST_TEMPLATES = [
     rewardOptions: [30],
     color: "#10b981",
     type: "lessons",
+    actionUrl: "/lesson",
   },
   {
     icon: "🎯",
@@ -71,6 +78,7 @@ const MEDIUM_QUEST_TEMPLATES = [
     rewardOptions: [40],
     color: "#8b5cf6",
     type: "lessons_score",
+    actionUrl: "/lesson",
   },
   {
     icon: "🈸",
@@ -79,6 +87,7 @@ const MEDIUM_QUEST_TEMPLATES = [
     rewardOptions: [35, 45],
     color: "#ec4899",
     type: "kanji_learned",
+    actionUrl: "/kanji",
   },
   {
     icon: "🎧",
@@ -87,6 +96,7 @@ const MEDIUM_QUEST_TEMPLATES = [
     rewardOptions: [30, 40],
     color: "#6366f1",
     type: "listening_session",
+    actionUrl: "/practice",
   },
   {
     icon: "🔄",
@@ -95,6 +105,7 @@ const MEDIUM_QUEST_TEMPLATES = [
     rewardOptions: [30, 40],
     color: "#a855f7",
     type: "vocabulary_review",
+    actionUrl: "/vocabulary",
   },
 ];
 
@@ -106,6 +117,7 @@ const HARD_QUEST_TEMPLATES = [
     rewardOptions: [50],
     color: "#06b6d4",
     type: "unit",
+    actionUrl: "/lesson",
   },
   {
     icon: "🔥",
@@ -114,6 +126,7 @@ const HARD_QUEST_TEMPLATES = [
     rewardOptions: [40, 60],
     color: "#f97316",
     type: "perfect_quiz",
+    actionUrl: "/daily-quiz",
   },
   {
     icon: "🎯",
@@ -122,6 +135,7 @@ const HARD_QUEST_TEMPLATES = [
     rewardOptions: [45, 65],
     color: "#10b981",
     type: "streak_accuracy",
+    actionUrl: "/daily-quiz",
   },
   {
     icon: "⚡",
@@ -130,6 +144,7 @@ const HARD_QUEST_TEMPLATES = [
     rewardOptions: [30, 45],
     color: "#eab308",
     type: "combo_bonus",
+    actionUrl: "/lesson",
   },
   {
     icon: "🗣️",
@@ -138,6 +153,7 @@ const HARD_QUEST_TEMPLATES = [
     rewardOptions: [35, 50],
     color: "#f43f5e",
     type: "speaking_practice",
+    actionUrl: "/practice",
   },
 ];
 
@@ -226,30 +242,8 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
     } else if (t.type === "combo_bonus") {
       const comboExp = Math.floor(todayExp * 0.4);
       current = Math.min(target, comboExp);
-    } else if (t.type === "early_bird") {
-      const earlyCount = todayQuizzes.filter((q: any) => {
-        const ts = q.timestamp || q.date;
-        if (!ts) return false;
-        try {
-          const d = new Date(ts);
-          return d.getHours() < 12;
-        } catch {
-          return false;
-        }
-      }).length;
-      current = Math.min(target, earlyCount);
-    } else if (t.type === "night_owl") {
-      const nightCount = todayQuizzes.filter((q: any) => {
-        const ts = q.timestamp || q.date;
-        if (!ts) return false;
-        try {
-          const d = new Date(ts);
-          return d.getHours() >= 18;
-        } catch {
-          return false;
-        }
-      }).length;
-      current = Math.min(target, nightCount);
+    } else if (t.type === "grammar_practice" || t.type === "quiz_practice") {
+      current = Math.min(target, todayQuizzes.length);
     } else if (t.type === "streak_accuracy") {
       let streakAcc = 0;
       let maxStreakAcc = 0;
@@ -273,6 +267,7 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
       color: t.color,
       current,
       isCompleted: current >= target,
+      actionUrl: t.actionUrl || "/lesson",
     };
   });
 }

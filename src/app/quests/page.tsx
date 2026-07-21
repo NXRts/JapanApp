@@ -303,6 +303,49 @@ const ClaimBtn = styled.button<{ $claimed?: boolean }>`
   }
 `;
 
+const QuestGoBtn = styled(Link)`
+  background: #eab308;
+  color: black;
+  border: none;
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  font-weight: 900;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(234, 179, 8, 0.35);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 95px;
+  text-align: center;
+
+  .hover-text {
+    display: none;
+  }
+  .default-text {
+    display: inline;
+  }
+
+  &:hover {
+    background: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.45);
+    transform: translateY(-1px);
+
+    .default-text {
+      display: none;
+    }
+    .hover-text {
+      display: inline-block;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+    }
+  }
+`;
+
 /* ─── 3. Monthly Badges History Side Panel ────────────────────────────────── */
 const SideTitle = styled.h3`
   font-size: 1.15rem;
@@ -460,10 +503,15 @@ export default function QuestsPage() {
                       <ClaimBtn onClick={() => claimQuestReward(q.id, q.rewardGems)}>
                         Klaim +{q.rewardGems} 💎
                       </ClaimBtn>
-                    ) : (
-                      <ClaimBtn $claimed={isClaimed} disabled>
-                        {isClaimed ? "Diklaim ✓" : `🎁 +${q.rewardGems} 💎`}
+                    ) : isClaimed ? (
+                      <ClaimBtn $claimed disabled>
+                        Diklaim ✓
                       </ClaimBtn>
+                    ) : (
+                      <QuestGoBtn href={q.actionUrl || "/lesson"}>
+                        <span className="default-text">🎁 +{q.rewardGems} 💎</span>
+                        <span className="hover-text">GO 🚀</span>
+                      </QuestGoBtn>
                     )}
                   </QuestRow>
                 );
