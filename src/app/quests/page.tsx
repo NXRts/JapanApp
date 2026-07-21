@@ -286,17 +286,22 @@ const QuestTrackText = styled.span`
 `;
 
 const ClaimBtn = styled.button<{ $claimed?: boolean }>`
+  width: 115px;
+  height: 38px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: ${({ $claimed }) => ($claimed ? "rgba(255, 255, 255, 0.08)" : "#eab308")};
   color: ${({ $claimed }) => ($claimed ? "var(--text-secondary)" : "black")};
   border: none;
   border-radius: 12px;
-  padding: 0.65rem 1rem;
+  padding: 0 0.5rem;
   font-weight: 900;
   font-size: 0.85rem;
   cursor: ${({ $claimed }) => ($claimed ? "default" : "pointer")};
   box-shadow: ${({ $claimed }) => ($claimed ? "none" : "0 4px 12px rgba(234, 179, 8, 0.35)")};
   transition: all 0.2s ease;
-  flex-shrink: 0;
 
   &:hover {
     ${({ $claimed }) => (!$claimed ? "transform: translateY(-1px); filter: brightness(1.1);" : "")}
@@ -304,22 +309,23 @@ const ClaimBtn = styled.button<{ $claimed?: boolean }>`
 `;
 
 const QuestGoBtn = styled(Link)`
+  width: 115px;
+  height: 38px;
+  flex-shrink: 0;
   background: #eab308;
   color: black;
   border: none;
   border-radius: 12px;
-  padding: 0.65rem 1rem;
+  padding: 0 0.5rem;
   font-weight: 900;
   font-size: 0.85rem;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(234, 179, 8, 0.35);
-  transition: all 0.2s ease;
-  flex-shrink: 0;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 95px;
   text-align: center;
 
   .hover-text {
@@ -340,7 +346,7 @@ const QuestGoBtn = styled(Link)`
     }
     .hover-text {
       display: inline-block;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       letter-spacing: 0.05em;
     }
   }

@@ -363,6 +363,41 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     });
   }, [progress.lastActiveDate]);
 
+  // Helper to automatically claim completed daily quests
+  const autoClaimCompletedQuests = useCallback(
+    (prev: ProgressData): ProgressData => {
+      const dateStr = new Date().toISOString().split("T")[0];
+      const todayQuests = getDailyQuests(dateStr, prev);
+      const claimed = prev.claimedQuests || [];
+
+      let newGems = prev.gems !== undefined ? prev.gems : 100;
+      let newClaimed = [...claimed];
+      let updated = false;
+
+      for (const q of todayQuests) {
+        if (q.isCompleted && !newClaimed.includes(q.id)) {
+          newGems += q.rewardGems;
+          newClaimed.push(q.id);
+          updated = true;
+          triggerAlert(
+            "achievement",
+            "Misi Harian Selesai! 🎁",
+            `Misi "${q.title}" otomatis diklaim (+${q.rewardGems} 💎)`,
+          );
+        }
+      }
+
+      if (!updated) return prev;
+
+      return {
+        ...prev,
+        gems: newGems,
+        claimedQuests: newClaimed,
+      };
+    },
+    [triggerAlert],
+  );
+
   // Handle EXP and Activity
   const addExp = useCallback(
     (amount: number) => {
@@ -389,16 +424,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
           weeklyExp: (currentLeague.weeklyExp || 0) + amount,
         };
 
-        return {
+        const nextState = {
           ...prev,
           exp: newExp,
           activityLog: newActivityLog,
           league: updatedLeague,
         };
+
+        return autoClaimCompletedQuests(nextState);
       });
       checkStreak();
     },
-    [triggerAlert, checkStreak],
+    [triggerAlert, checkStreak, autoClaimCompletedQuests],
   );
 
   const updateMastery = useCallback(
@@ -438,47 +475,53 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
           );
         }
 
-        return {
+        const nextState = {
           ...prev,
           mastery: newMastery,
         };
+
+        return autoClaimCompletedQuests(nextState);
       });
     },
-    [triggerAlert],
+    [triggerAlert, autoClaimCompletedQuests],
   );
 
   const updateSRS = useCallback((char: string, quality: number) => {
     setProgress((prev) => {
       const currentItem = prev.srs[char];
       const nextItem = calculateNextSRS(currentItem, quality);
-      return {
+      const nextState = {
         ...prev,
         srs: {
           ...prev.srs,
           [char]: nextItem,
         },
       };
+      return autoClaimCompletedQuests(nextState);
     });
-  }, []);
+  }, [autoClaimCompletedQuests]);
 
   const recordQuizResult = useCallback(
     (score: number, total: number, type: string) => {
       checkStreak(); // Record activity on quiz completion
       addExp(score * 10); // Reward 10 EXP per correct answer
-      setProgress((prev) => ({
-        ...prev,
-        quizHistory: [
-          {
-            date: new Date().toISOString(),
-            score,
-            total,
-            type,
-          },
-          ...prev.quizHistory.slice(0, 49), // Keep last 50
-        ],
-      }));
+      setProgress((prev) => {
+        const nextState = {
+          ...prev,
+          quizHistory: [
+            {
+              date: new Date().toISOString(),
+              score,
+              total,
+              type,
+            },
+            ...prev.quizHistory.slice(0, 49), // Keep last 50
+          ],
+        };
+        return autoClaimCompletedQuests(nextState);
+      });
     },
-    [checkStreak, addExp],
+    [checkStreak, addExp, autoClaimCompletedQuests],
   );
 
   const markExerciseCompleted = useCallback(
@@ -502,16 +545,18 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         const newActivityLog = { ...prev.activityLog };
         newActivityLog[today] = (newActivityLog[today] || 0) + 50;
 
-        return {
+        const nextState = {
           ...prev,
           exp: newExp,
           activityLog: newActivityLog,
           completedExercises: [...(prev.completedExercises || []), id],
         };
+
+        return autoClaimCompletedQuests(nextState);
       });
       checkStreak();
     },
-    [triggerAlert, checkStreak],
+    [triggerAlert, checkStreak, autoClaimCompletedQuests],
   );
 
   const getDueItems = useCallback(() => {

@@ -343,12 +343,21 @@ export function DailyQuestsUpdateModal({
   onNext: () => void;
 }) {
   useLockBodyScroll();
-  const { progress } = useProgress();
+  const { progress, claimQuestReward } = useProgress();
   const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
   const dailyQuests = useMemo(
     () => getDailyQuests(todayStr, progress),
     [todayStr, progress],
   );
+  const claimedQuests = progress.claimedQuests || [];
+
+  useEffect(() => {
+    dailyQuests.forEach((q) => {
+      if (q.isCompleted && !claimedQuests.includes(q.id)) {
+        claimQuestReward(q.id, q.rewardGems);
+      }
+    });
+  }, [dailyQuests, claimedQuests, claimQuestReward]);
 
   return (
     <Overlay>
@@ -358,6 +367,7 @@ export function DailyQuestsUpdateModal({
         <QuestCardStack>
           {dailyQuests.map((q) => {
             const pct = (q.current / q.target) * 100;
+            const isClaimed = q.isCompleted || claimedQuests.includes(q.id);
             return (
               <QuestProgressCard key={q.id}>
                 <QuestIconWrapper>{q.icon}</QuestIconWrapper>
@@ -370,7 +380,9 @@ export function DailyQuestsUpdateModal({
                     </YellowTrackText>
                   </YellowTrackOuter>
                 </QuestTextGroup>
-                <ChestEndIcon>🎁</ChestEndIcon>
+                <ChestEndIcon title={isClaimed ? `Hadiah Diklaim (+${q.rewardGems} 💎)` : "Belum Selesai"}>
+                  {isClaimed ? "✅" : "🎁"}
+                </ChestEndIcon>
               </QuestProgressCard>
             );
           })}

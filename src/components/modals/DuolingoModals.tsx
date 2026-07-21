@@ -619,10 +619,13 @@ export function LeaderboardModal({ onClose }: { onClose: () => void }) {
 }
 
 const ModalQuestGoBtn = styled(Link)`
+  width: 100px;
+  height: 36px;
+  flex-shrink: 0;
   background: #eab308;
   color: black;
   border-radius: 10px;
-  padding: 0.5rem 0.85rem;
+  padding: 0 0.5rem;
   font-weight: 900;
   font-size: 0.8rem;
   text-decoration: none;
@@ -631,7 +634,6 @@ const ModalQuestGoBtn = styled(Link)`
   justify-content: center;
   box-shadow: 0 2px 8px rgba(234, 179, 8, 0.4);
   transition: all 0.2s ease;
-  min-width: 90px;
   text-align: center;
 
   .hover-label {
@@ -703,21 +705,27 @@ export function AllQuestsModal({ onClose }: { onClose: () => void }) {
                   <button
                     onClick={() => claimQuestReward(q.id, q.rewardGems)}
                     style={{
+                      width: "100px",
+                      height: "36px",
+                      flexShrink: 0,
                       background: "#eab308",
                       color: "black",
                       border: "none",
                       borderRadius: "10px",
-                      padding: "0.5rem 0.85rem",
+                      padding: "0 0.5rem",
                       fontWeight: 900,
                       fontSize: "0.8rem",
                       cursor: "pointer",
                       boxShadow: "0 2px 8px rgba(234,179,8,0.4)",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
                     Klaim 🎁
                   </button>
                 ) : isClaimed ? (
-                  <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "#10b981" }}>
+                  <span style={{ width: "100px", flexShrink: 0, textAlign: "center", fontSize: "0.8rem", fontWeight: 800, color: "#10b981" }}>
                     Diklaim ✓
                   </span>
                 ) : (
