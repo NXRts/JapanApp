@@ -1,550 +1,468 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import styled, { keyframes } from "styled-components";
+import Link from "next/link";
 import { useProgress } from "@/context/ProgressContext";
 import { lessonsData } from "@/data/lessonsData";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import { useRouter } from "next/navigation";
 
 // ==========================================
 // ANIMATIONS
 // ==========================================
-const float = keyframes`
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0px); }
-`;
-
-const spinSlow = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
-
-const pulseGlow = keyframes`
-  0%, 100% { filter: drop-shadow(0 0 10px rgba(79, 70, 229, 0.4)); }
-  50% { filter: drop-shadow(0 0 22px rgba(79, 70, 229, 0.75)); }
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 `;
 
 // ==========================================
 // STYLED COMPONENTS
 // ==========================================
-const PageWrapper = styled.div`
-  min-height: 90vh;
-  background: radial-gradient(
-    circle at top right,
-    rgba(79, 70, 229, 0.03) 0%,
-    transparent 60%
-  );
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  overflow-x: hidden;
-`;
-
-const BreadcrumbWrapper = styled.div`
-  width: 100%;
+const Container = styled.div`
   max-width: 1400px;
   margin: 0 auto;
-  padding: 1.5rem 2rem 0 2rem;
+  padding: 1.5rem 2rem 4rem 2rem;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  width: 100%;
 
   @media (max-width: 1024px) {
-    padding: 1rem 1rem 0 1rem;
+    padding: 1rem 1rem 100px 1rem;
+    gap: 1.25rem;
   }
 
   @media (max-width: 640px) {
-    padding: 0.75rem 0.5rem 0 0.5rem;
+    padding: 0.75rem 0.75rem 100px 0.75rem;
+    gap: 1rem;
   }
 `;
 
-const Container = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 2rem 1.5rem;
+const HeroBanner = styled.div`
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #2563eb 100%);
+  border-radius: 28px;
+  padding: 2.25rem 2.5rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 36px rgba(79, 70, 229, 0.28);
 
   @media (max-width: 768px) {
-    padding: 1.5rem 1rem 1.5rem;
+    padding: 1.35rem 1.15rem;
+    border-radius: 20px;
   }
 `;
 
-const Header = styled.div`
-  margin-top: 1rem;
-  margin-bottom: 2.5rem;
-
-  @media (max-width: 768px) {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 2.25rem;
-  font-weight: 850;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  color: var(--foreground);
-`;
-
-const Subtitle = styled.p`
-  color: var(--text-secondary);
-  font-size: 1.05rem;
-  line-height: 1.5;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 1.25rem;
+const HeroBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
   font-weight: 800;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
-  margin-top: 2rem;
+  margin-bottom: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
 
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
-    margin-top: 1.5rem;
+  @media (max-width: 640px) {
+    font-size: 0.72rem;
+    padding: 0.25rem 0.65rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
-const PracticeCard = styled.div<{ $gradient?: string }>`
+const HeroTitle = styled.h1`
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.02em;
+
+  @media (max-width: 768px) {
+    font-size: 1.45rem;
+    margin-bottom: 0.35rem;
+  }
+`;
+
+const HeroSubtitle = styled.p`
+  font-size: 1.05rem;
+  opacity: 0.92;
+  max-width: 650px;
+  line-height: 1.55;
+  margin-bottom: 1.75rem;
+
+  @media (max-width: 768px) {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    margin-bottom: 1rem;
+  }
+`;
+
+const HeroStatsRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+
+  @media (max-width: 640px) {
+    gap: 0.4rem;
+  }
+`;
+
+const HeroStatPill = styled.div`
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border-radius: 14px;
+  padding: 0.55rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 800;
+
+  @media (max-width: 640px) {
+    flex: 1 1 calc(33% - 0.4rem);
+    padding: 0.4rem 0.5rem;
+    font-size: 0.74rem;
+    border-radius: 10px;
+    justify-content: center;
+    gap: 0.3rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+`;
+
+/* ─── Filter Tabs Bar ─────────────────────────────────────────────────────── */
+const FilterRow = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    gap: 0.45rem;
+    padding-bottom: 0.15rem;
+  }
+`;
+
+const FilterTab = styled.button<{ $active?: boolean }>`
+  background: ${({ $active }) => ($active ? "#3b82f6" : "var(--surface)")};
+  color: ${({ $active }) => ($active ? "white" : "var(--text-secondary)")};
+  border: 1.5px solid ${({ $active }) => ($active ? "#3b82f6" : "var(--border)")};
+  border-radius: 999px;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    border-color: #3b82f6;
+    color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.42rem 0.85rem;
+    font-size: 0.78rem;
+  }
+`;
+
+/* ─── Main Content Grid Layout ────────────────────────────────────────────── */
+const ContentGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2rem;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+`;
+
+const MainColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+`;
+
+const SideColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+`;
+
+const SectionHeaderTitle = styled.h2`
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+
+  @media (max-width: 640px) {
+    font-size: 1.05rem;
+  }
+`;
+
+/* ─── Practice Mode Cards Grid ────────────────────────────────────────────── */
+const CardsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+`;
+
+const ModeCard = styled.div<{ $accentColor: string }>`
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: 24px;
-  padding: 2.25rem;
-  margin-bottom: 1.5rem;
+  padding: 1.6rem 1.4rem;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  gap: 2rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  gap: 1.15rem;
   position: relative;
   overflow: hidden;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: ${fadeIn} 0.25s ease forwards;
 
-  &::after {
+  &::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 6px;
     height: 100%;
-    background: ${({ $gradient }) => $gradient || "none"};
-    opacity: 0.03;
-    pointer-events: none;
-    z-index: 0;
+    background: ${({ $accentColor }) => $accentColor};
+    border-radius: 6px 0 0 6px;
   }
 
   &:hover {
-    transform: translateY(-4px);
-    border-color: rgba(var(--primary-rgb), 0.35);
-    box-shadow:
-      0 15px 30px -10px rgba(0, 0, 0, 0.12),
-      0 5px 15px -5px rgba(var(--primary-rgb), 0.1);
-
-    .card-graphic-container {
-      transform: scale(1.05);
-    }
+    transform: translateY(-3px);
+    border-color: ${({ $accentColor }) => $accentColor};
+    box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.18);
   }
 
   @media (max-width: 768px) {
-    flex-direction: column-reverse;
-    padding: 1.5rem 1.25rem;
-    gap: 1.25rem;
-    text-align: center;
+    padding: 1.15rem 1rem;
+    border-radius: 18px;
+    gap: 0.85rem;
   }
 `;
 
-const CardContent = styled.div`
-  flex: 1;
+const CardTop = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
-  z-index: 1;
-
-  @media (max-width: 768px) {
-    align-items: center;
-  }
+  justify-content: space-between;
+  gap: 0.75rem;
 `;
 
-const CardTitle = styled.h3`
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--foreground);
-  margin-bottom: 0.5rem;
-`;
-
-const CardDescription = styled.p`
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.5;
-  margin-bottom: 1.75rem;
-  max-width: 460px;
-`;
-
-const CardGraphic = styled.div`
-  width: 140px;
-  height: 140px;
+const CardIconBox = styled.div<{ $color: string }>`
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: ${({ $color }) => `${$color}18`};
+  border: 1.5px solid ${({ $color }) => `${$color}40`};
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.75rem;
   flex-shrink: 0;
-  z-index: 1;
-  transition: transform 0.3s ease;
 
-  @media (max-width: 768px) {
-    width: 120px;
-    height: 120px;
+  @media (max-width: 640px) {
+    width: 42px;
+    height: 42px;
+    font-size: 1.35rem;
+    border-radius: 12px;
   }
 `;
 
-const ActionButton = styled.button<{ $color: string; $shadowColor: string }>`
-  padding: 0.9rem 1.75rem;
-  border-radius: 16px;
-  font-size: 0.95rem;
-  font-weight: 800;
+const BadgeTag = styled.span<{ $color: string }>`
+  background: ${({ $color }) => `${$color}1c`};
+  color: ${({ $color }) => $color};
+  border: 1px solid ${({ $color }) => `${$color}40`};
+  font-size: 0.75rem;
+  font-weight: 900;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border: none;
-  cursor: pointer;
-  background: ${({ $color }) => $color};
-  border-bottom: 4px solid ${({ $shadowColor }) => $shadowColor};
-  color: #ffffff;
-  transition: all 0.1s;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
-  &:hover:not(:disabled) {
-    filter: brightness(1.08);
+  @media (max-width: 640px) {
+    font-size: 0.68rem;
+    padding: 0.2rem 0.55rem;
+  }
+`;
+
+const ModeTitle = styled.h3`
+  font-size: 1.18rem;
+  font-weight: 850;
+  color: var(--foreground);
+  margin-top: 0.65rem;
+  margin-bottom: 0.35rem;
+
+  @media (max-width: 640px) {
+    font-size: 1.02rem;
+    margin-top: 0.4rem;
+    margin-bottom: 0.2rem;
+  }
+`;
+
+const ModeDescription = styled.p`
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+
+  @media (max-width: 640px) {
+    font-size: 0.8rem;
+    line-height: 1.42;
+  }
+`;
+
+const ActionBtn3D = styled(Link)<{ $color: string; $disabled?: boolean }>`
+  width: 100%;
+  background: ${({ $color, $disabled }) => ($disabled ? "var(--border)" : $color)};
+  color: ${({ $disabled }) => ($disabled ? "var(--text-secondary)" : "white")};
+  font-size: 0.9rem;
+  font-weight: 900;
+  text-align: center;
+  padding: 0.8rem 1.25rem;
+  border-radius: 14px;
+  text-decoration: none;
+  cursor: ${({ $disabled }) => ($disabled ? "default" : "pointer")};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.15s ease;
+  display: inline-block;
+
+  &:hover {
+    ${({ $disabled }) => (!$disabled ? "filter: brightness(1.1); transform: translateY(-1px);" : "")}
   }
 
-  &:active:not(:disabled) {
-    transform: translateY(2px);
-    border-bottom-width: 2px;
+  &:active {
+    ${({ $disabled }) => (!$disabled ? "transform: translateY(1px);" : "")}
   }
 
-  &:disabled {
-    background: var(--border);
-    border-bottom-color: rgba(0, 0, 0, 0.1);
-    color: var(--text-secondary);
-    cursor: not-allowed;
-    box-shadow: none;
+  @media (max-width: 640px) {
+    padding: 0.62rem 1rem;
+    font-size: 0.82rem;
+    border-radius: 12px;
+  }
+`;
+
+/* ─── Side Widgets ───────────────────────────────────────────────────────── */
+const SideWidget = styled.div`
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 1.35rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (max-width: 640px) {
+    padding: 1.1rem 1rem;
+    border-radius: 18px;
+    gap: 0.75rem;
+  }
+`;
+
+const WidgetHeaderRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--foreground);
+
+  @media (max-width: 640px) {
+    font-size: 0.96rem;
+  }
+`;
+
+const TipsText = styled.p`
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+
+  @media (max-width: 640px) {
+    font-size: 0.8rem;
+    line-height: 1.42;
+  }
+`;
+
+const ActivityRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0;
+  border-bottom: 1px dashed var(--border);
+
+  &:last-child {
+    border-bottom: none;
   }
 
-  @media (max-width: 768px) {
-    padding: 0.8rem 1.25rem;
-    font-size: 0.88rem;
-    width: 100%;
-    max-width: 320px;
+  @media (max-width: 640px) {
+    padding: 0.45rem 0;
+  }
+`;
+
+const ActivityLabel = styled.span`
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 700;
+
+  @media (max-width: 640px) {
+    font-size: 0.78rem;
+  }
+`;
+
+const ActivityValue = styled.span`
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: var(--foreground);
+
+  @media (max-width: 640px) {
+    font-size: 0.82rem;
   }
 `;
 
 // ==========================================
-// HIGH FIDELITY GRAPHIC SVGS (Branded, No mascot)
-// ==========================================
-const GlowingTargetSvg = styled.svg`
-  width: 100%;
-  height: 100%;
-  animation: ${pulseGlow} 3s ease-in-out infinite;
-`;
-
-const FloatingGroup = styled.g`
-  animation: ${float} 3s ease-in-out infinite;
-`;
-
-const FloatingHeadphonesSvg = styled.svg`
-  width: 100%;
-  height: 100%;
-  animation: ${float} 3.5s ease-in-out infinite;
-`;
-
-const SpinningArrowsSvg = styled.svg`
-  width: 100%;
-  height: 100%;
-  animation: ${spinSlow} 15s linear infinite;
-`;
-
-const TargetBoardSvg = () => (
-  <GlowingTargetSvg
-    viewBox="0 0 140 140"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    {/* Target Board Stand */}
-    <path
-      d="M45 110L30 135M95 110L110 135M70 100V135"
-      stroke="var(--border)"
-      strokeWidth="4"
-      strokeLinecap="round"
-    />
-
-    {/* Concentric rings (glowing neon gradients) */}
-    {/* Outer circle */}
-    <circle
-      cx="70"
-      cy="70"
-      r="48"
-      fill="var(--surface)"
-      stroke="var(--border)"
-      strokeWidth="3"
-    />
-    <circle
-      cx="70"
-      cy="70"
-      r="40"
-      fill="#F43F5E"
-      fillOpacity="0.1"
-      stroke="#F43F5E"
-      strokeWidth="4"
-    />
-
-    {/* Middle circle */}
-    <circle
-      cx="70"
-      cy="70"
-      r="28"
-      fill="var(--surface)"
-      stroke="var(--border)"
-      strokeWidth="3"
-    />
-    <circle
-      cx="70"
-      cy="70"
-      r="20"
-      fill="#10B981"
-      fillOpacity="0.1"
-      stroke="#10B981"
-      strokeWidth="4"
-    />
-
-    {/* Bullseye (Center) */}
-    <circle cx="70" cy="70" r="8" fill="#4F46E5" />
-    <circle cx="70" cy="70" r="4" fill="#818CF8" />
-
-    {/* Target Arrows (Neon glow) */}
-    <FloatingGroup>
-      {/* Arrow 1 */}
-      <line
-        x1="88"
-        y1="52"
-        x2="68"
-        y2="72"
-        stroke="#4F46E5"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      <polygon points="66,74 74,72 68,66" fill="#4F46E5" />
-      <path d="M88 52L96 44M86 54L94 46" stroke="#818CF8" strokeWidth="2.5" />
-
-      {/* Arrow 2 */}
-      <line
-        x1="110"
-        y1="40"
-        x2="76"
-        y2="66"
-        stroke="#10B981"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-      <polygon points="74,68 81,66 76,60" fill="#10B981" />
-      <path
-        d="M110 40L116 32M108 42L114 34"
-        stroke="#34D399"
-        strokeWidth="2.5"
-      />
-    </FloatingGroup>
-  </GlowingTargetSvg>
-);
-
-const HeadphonesSvg = () => (
-  <FloatingHeadphonesSvg
-    viewBox="0 0 140 140"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    {/* Headphone Arch */}
-    <path
-      d="M38 74C38 53 55 38 70 38C85 38 102 53 102 74"
-      stroke="#818CF8"
-      strokeWidth="7"
-      strokeLinecap="round"
-    />
-
-    {/* Glowing secondary line */}
-    <path
-      d="M44 74C44 58 56 46 70 46C84 46 96 58 96 74"
-      stroke="#4F46E5"
-      strokeWidth="2"
-      strokeDasharray="4 4"
-    />
-
-    {/* Earcups (Left & Right) */}
-    {/* Left Earcup */}
-    <rect
-      x="32"
-      y="70"
-      width="13"
-      height="24"
-      rx="6"
-      fill="#4F46E5"
-      stroke="var(--border)"
-      strokeWidth="2"
-    />
-    <rect x="30" y="74" width="3" height="16" rx="1.5" fill="#818CF8" />
-
-    {/* Right Earcup */}
-    <rect
-      x="95"
-      y="70"
-      width="13"
-      height="24"
-      rx="6"
-      fill="#4F46E5"
-      stroke="var(--border)"
-      strokeWidth="2"
-    />
-    <rect x="107" y="74" width="3" height="16" rx="1.5" fill="#818CF8" />
-
-    {/* Neon Soundwaves */}
-    <path
-      d="M22 82C18 79 18 73 22 70"
-      stroke="#818CF8"
-      strokeWidth="3"
-      strokeLinecap="round"
-    />
-    <path
-      d="M19 88C12 84 12 76 19 72"
-      stroke="#4F46E5"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-
-    <path
-      d="M118 82C122 79 122 73 118 70"
-      stroke="#818CF8"
-      strokeWidth="3"
-      strokeLinecap="round"
-    />
-    <path
-      d="M121 88C128 84 128 76 121 72"
-      stroke="#4F46E5"
-      strokeWidth="2"
-      strokeLinecap="round"
-    />
-  </FloatingHeadphonesSvg>
-);
-
-const GamepadSvg = () => (
-  <svg
-    viewBox="0 0 140 140"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    style={{ width: "100%", height: "100%" }}
-  >
-    {/* Outer decorative ring */}
-    <circle
-      cx="70"
-      cy="70"
-      r="45"
-      stroke="#10b981"
-      strokeWidth="2"
-      strokeDasharray="6 6"
-      strokeOpacity="0.4"
-    />
-    <FloatingGroup>
-      {/* Gamepad Body with Neon Accent */}
-      <path
-        d="M35 72c0-12 10-22 22-22h26c12 0 22 10 22 22v2c0 10-5 18-14 20l-6 1c-10 2-20 2-30 0l-6-1c-9-2-14-10-14-20v-2z"
-        fill="#10B981"
-        fillOpacity="0.1"
-        stroke="#10B981"
-        strokeWidth="4.5"
-        strokeLinejoin="round"
-      />
-      {/* Left/Right Handles */}
-      <path
-        d="M35 70c-6-1-11 4-11 10v6c0 10 8 18 18 18h6"
-        stroke="#10B981"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      <path
-        d="M105 70c6-1 11 4 11 10v6c0 10-8 18-18 18h-6"
-        stroke="#10B981"
-        strokeWidth="4"
-        strokeLinecap="round"
-      />
-      {/* D-Pad */}
-      <path
-        d="M48 76h12M54 70v12"
-        stroke="#818CF8"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-      />
-      {/* Buttons */}
-      <circle cx="86" cy="73" r="4" fill="#F43F5E" />
-      <circle cx="94" cy="81" r="4" fill="#F59E0B" />
-    </FloatingGroup>
-  </svg>
-);
-
-const SyncArrowsSvg = () => (
-  <SpinningArrowsSvg
-    viewBox="0 0 140 140"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    {/* Glowing background circle */}
-    <circle
-      cx="70"
-      cy="70"
-      r="45"
-      stroke="#F59E0B"
-      strokeWidth="2"
-      strokeDasharray="6 6"
-      strokeOpacity="0.4"
-    />
-
-    {/* Arrow paths */}
-    <path
-      d="M35 70C35 50.7 50.7 35 70 35C83 35 94.4 42.1 100.5 52.5"
-      stroke="#F59E0B"
-      strokeWidth="6"
-      strokeLinecap="round"
-    />
-    <path
-      d="M105 70C105 89.3 89.3 105 70 105C57 105 45.6 97.9 39.5 87.5"
-      stroke="#F59E0B"
-      strokeWidth="6"
-      strokeLinecap="round"
-    />
-
-    {/* Arrow Tips */}
-    <polygon points="103,55 93,52 101,45" fill="#F59E0B" />
-    <polygon points="37,85 47,88 39,95" fill="#F59E0B" />
-
-    {/* Inner decorative star/compass shape */}
-    <polygon
-      points="70,55 74,66 85,70 74,74 70,85 66,74 55,70 66,66"
-      fill="#FBBF24"
-    />
-  </SpinningArrowsSvg>
-);
-
-// ==========================================
-// CORE PRACTICE PAGE
+// MAIN COMPONENT
 // ==========================================
 export default function PracticeHubPage() {
   const { progress } = useProgress();
-  const router = useRouter();
+  const [activeFilter, setActiveFilter] = useState<"all" | "jlpt" | "audio" | "games" | "review">("all");
+
+  const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
+  const todayExp = progress.activityLog?.[todayStr] || 0;
+  const streak = progress.streak || 0;
+  const completedCount = progress.completedExercises?.length || 0;
+
+  // Mistakes count
+  const mistakesCount = useMemo(() => {
+    if (!progress.mastery) return 0;
+    return Object.values(progress.mastery).filter((m) => m.incorrect > 0).length;
+  }, [progress.mastery]);
 
   // Dynamic lesson calculations
   const practiceLessonId = useMemo(() => {
     if (progress.completedExercises && progress.completedExercises.length > 0) {
-      const idx = Math.floor(
-        Math.random() * progress.completedExercises.length,
-      );
+      const idx = Math.floor(Math.random() * progress.completedExercises.length);
       return progress.completedExercises[idx];
     }
     return "n5-u1-l1";
@@ -557,11 +475,8 @@ export default function PracticeHubPage() {
     }
 
     const audioLessons = lessonsData.filter((l) => {
-      // 1. Has listening questions?
       const hasListening = l.questions.some((q) => q.type === "listening");
       if (!hasListening) return false;
-
-      // 2. Is unlocked?
       if (l.id === "n5-u1-l1") return true;
       const prevId = relations.get(l.id);
       if (!prevId) return true;
@@ -575,150 +490,207 @@ export default function PracticeHubPage() {
     return "n5-u1-l1";
   }, [progress.completedExercises]);
 
-  // Mistakes logic
-  const mistakesCount = useMemo(() => {
-    if (!progress.mastery) return 0;
-    return Object.values(progress.mastery).filter((m) => m.incorrect > 0)
-      .length;
-  }, [progress.mastery]);
+  // Practice Modes Definition
+  const practiceModes = [
+    {
+      id: "jlpt-practice",
+      category: "jlpt",
+      icon: "🎯",
+      title: "Latihan JLPT Interaktif",
+      description: "Mode latihan pilihan ganda & Flashcards SRS untuk tingkat N5 hingga N1 tanpa tekanan waktu.",
+      tag: "+25 XP",
+      tagColor: "#8b5cf6",
+      accentColor: "#8b5cf6",
+      href: "/jlpt/practice",
+      btnText: "Mulai Latihan JLPT",
+    },
+    {
+      id: "lesson-drill",
+      category: "jlpt",
+      icon: "📚",
+      title: "Drill Pelajaran Terstruktur",
+      description: "Pertajam pemahaman dari modul pelajaran yang pernah kamu selesaikan sebelumnya.",
+      tag: "+20 XP",
+      tagColor: "#3b82f6",
+      accentColor: "#3b82f6",
+      href: `/lesson?id=${practiceLessonId}&from=practice`,
+      btnText: "Mulai Drill Pelajaran",
+    },
+    {
+      id: "audio-listening",
+      category: "audio",
+      icon: "🎧",
+      title: "Pemahaman Pendengaran (Audio)",
+      description: "Latih pendengaran alami, percakapan harian, dan partikel tata bahasa lewat kuis audio.",
+      tag: "+15 XP",
+      tagColor: "#6366f1",
+      accentColor: "#6366f1",
+      href: `/lesson?id=${listeningLessonId}&from=practice`,
+      btnText: "Latih Audio Pendengaran",
+    },
+    {
+      id: "grammar-drills",
+      category: "jlpt",
+      icon: "📝",
+      title: "Drill Tata Bahasa & Pola Kalimat",
+      description: "Latihan pemahaman pola kalimat, konjugasi kata kerja, dan penggunaan partikel secara mendalam.",
+      tag: "+20 XP",
+      tagColor: "#ec4899",
+      accentColor: "#ec4899",
+      href: "/study/grammar-drills",
+      btnText: "Mulai Drill Tata Bahasa",
+    },
+    {
+      id: "mini-games",
+      category: "games",
+      icon: "🎮",
+      title: "Mini Game Belajar Bahasa",
+      description: "Asah kecepatan daya ingat Kana dan Kanji lewat game Speed Typing & Memory Match yang seru.",
+      tag: "+15 XP",
+      tagColor: "#10b981",
+      accentColor: "#10b981",
+      href: "/game",
+      btnText: "Mainkan Mini Game",
+    },
+    {
+      id: "mistakes-review",
+      category: "review",
+      icon: "🔄",
+      title: "Perbaikan Kesalahan Soal",
+      description:
+        mistakesCount > 0
+          ? `Terdapat ${mistakesCount} item soal yang pernah salah dikerjakan. Ulangi untuk menguasainya 100%.`
+          : "Tidak ada kesalahan tersimpan saat ini! Seluruh latihan kamu tercatat sempurna.",
+      tag: mistakesCount > 0 ? `${mistakesCount} Kesalahan` : "Skor Perfek ✨",
+      tagColor: mistakesCount > 0 ? "#f59e0b" : "#10b981",
+      accentColor: "#f59e0b",
+      href: "/characters?practice=true",
+      btnText: mistakesCount > 0 ? `Perbaiki ${mistakesCount} Soal` : "Semua Benar ✓",
+      disabled: mistakesCount === 0,
+    },
+    {
+      id: "vocabulary-srs",
+      category: "review",
+      icon: "🈸",
+      title: "Review Kosakata & Kanji SRS",
+      description: "Metode Spaced Repetition System (SRS) untuk ingatan jangka panjang seluruh huruf dan kosakata.",
+      tag: "SRS Mode",
+      tagColor: "#a855f7",
+      accentColor: "#a855f7",
+      href: "/study/vocabulary",
+      btnText: "Review Kosakata SRS",
+    },
+  ];
+
+  const filteredModes = useMemo(() => {
+    if (activeFilter === "all") return practiceModes;
+    return practiceModes.filter((m) => m.category === activeFilter);
+  }, [activeFilter, practiceModes]);
 
   return (
-    <PageWrapper>
-      <BreadcrumbWrapper>
-        <Breadcrumbs
-          items={[{ label: "Home", href: "/" }]}
-          current="Practice Hub"
-        />
-      </BreadcrumbWrapper>
-      <Container>
-        <Header>
-          <Title>Practice Hub</Title>
-          <Subtitle>
-            Target specific domains, test your listening retention, or review
-            characters you found challenging.
-          </Subtitle>
-        </Header>
+    <Container>
+      <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Practice Hub" />
 
-        {/* SECTION: TODAY'S REVIEW */}
-        <SectionTitle>JLPT Practice & Drills</SectionTitle>
+      {/* Hero Banner Header */}
+      <HeroBanner>
+        <HeroBadge>🎯 Pusat Asah Kemampuan</HeroBadge>
+        <HeroTitle>Practice Hub</HeroTitle>
+        <HeroSubtitle>
+          Pertajam pemahaman tata bahasa, latih pendengaran audio, perbaiki kesalahan soal, dan nikmati latihan
+          interaktif bebas tekanan waktu.
+        </HeroSubtitle>
+        <HeroStatsRow>
+          <HeroStatPill>⚡ {todayExp} XP Hari Ini</HeroStatPill>
+          <HeroStatPill>🔄 {mistakesCount} Perlu Diperbaiki</HeroStatPill>
+          <HeroStatPill>🔥 {streak} Hari Runtunan</HeroStatPill>
+        </HeroStatsRow>
+      </HeroBanner>
 
-        <PracticeCard $gradient="radial-gradient(circle, #8b5cf6 0%, transparent 60%)">
-          <CardContent>
-            <CardTitle>JLPT Practice Hub (N5 - N1)</CardTitle>
-            <CardDescription>
-              Latihan kosakata, kanji, dan tata bahasa JLPT dengan mode
-              Flashcards SRS & Kuis Pilihan Ganda Interaktif tanpa tekanan
-              waktu.
-            </CardDescription>
-            <ActionButton
-              $color="#8b5cf6"
-              $shadowColor="#7c3aed"
-              onClick={() => router.push("/jlpt/practice")}
-            >
-              Start JLPT Practice Hub (+25 EXP)
-            </ActionButton>
-          </CardContent>
-          <CardGraphic className="card-graphic-container">
-            <TargetBoardSvg />
-          </CardGraphic>
-        </PracticeCard>
+      {/* Filter Tabs Bar */}
+      <FilterRow>
+        <FilterTab $active={activeFilter === "all"} onClick={() => setActiveFilter("all")}>
+          ✨ Semua Mode
+        </FilterTab>
+        <FilterTab $active={activeFilter === "jlpt"} onClick={() => setActiveFilter("jlpt")}>
+          🎯 JLPT & Drill
+        </FilterTab>
+        <FilterTab $active={activeFilter === "audio"} onClick={() => setActiveFilter("audio")}>
+          🎧 Fokus Audio
+        </FilterTab>
+        <FilterTab $active={activeFilter === "games"} onClick={() => setActiveFilter("games")}>
+          🎮 Mini Game
+        </FilterTab>
+        <FilterTab $active={activeFilter === "review"} onClick={() => setActiveFilter("review")}>
+          🔄 Review & Kesalahan
+        </FilterTab>
+      </FilterRow>
 
-        <SectionTitle>Lesson Practice</SectionTitle>
+      {/* Main Grid Layout */}
+      <ContentGrid>
+        <MainColumn>
+          <SectionHeaderTitle>⚡ Mode Latihan Pilihan</SectionHeaderTitle>
 
-        <PracticeCard $gradient="radial-gradient(circle, var(--primary) 0%, transparent 60%)">
-          <CardContent>
-            <CardTitle>Targeted Lesson Drill</CardTitle>
-            <CardDescription>
-              Strengthen weak spots in vocabulary and grammar cards from your
-              completed lessons.
-            </CardDescription>
-            <ActionButton
-              $color="#1cb0f6"
-              $shadowColor="#1890d8"
-              onClick={() =>
-                router.push(`/lesson?id=${practiceLessonId}&from=practice`)
-              }
-            >
-              Start Lesson Drill (+20 EXP)
-            </ActionButton>
-          </CardContent>
-          <CardGraphic className="card-graphic-container">
-            <TargetBoardSvg />
-          </CardGraphic>
-        </PracticeCard>
+          <CardsGrid>
+            {filteredModes.map((mode) => (
+              <ModeCard key={mode.id} $accentColor={mode.accentColor}>
+                <div>
+                  <CardTop>
+                    <CardIconBox $color={mode.accentColor}>{mode.icon}</CardIconBox>
+                    <BadgeTag $color={mode.tagColor}>{mode.tag}</BadgeTag>
+                  </CardTop>
+                  <ModeTitle>{mode.title}</ModeTitle>
+                  <ModeDescription>{mode.description}</ModeDescription>
+                </div>
+                <ActionBtn3D
+                  href={mode.disabled ? "#" : mode.href}
+                  $color={mode.accentColor}
+                  $disabled={mode.disabled}
+                  onClick={(e) => mode.disabled && e.preventDefault()}
+                >
+                  {mode.btnText}
+                </ActionBtn3D>
+              </ModeCard>
+            ))}
+          </CardsGrid>
+        </MainColumn>
 
-        {/* SECTION: INTERACTIVE FOCUS */}
-        <SectionTitle>Interactive Focus</SectionTitle>
+        {/* Side Column Widgets */}
+        <SideColumn>
+          <SideWidget>
+            <WidgetHeaderRow>💡 Tips Latihan Efektif</WidgetHeaderRow>
+            <TipsText>
+              Latihan konsisten 10–15 menit setiap hari jauh lebih cepat membakar ingatan jangka panjang dibandingkan
+              belajar maraton dalam satu hari! Gunakan mode Audio untuk melatih pendengaran percakapan asli.
+            </TipsText>
+          </SideWidget>
 
-        <PracticeCard $gradient="radial-gradient(circle, var(--primary) 0%, transparent 60%)">
-          <CardContent>
-            <CardTitle>Listening Comprehension</CardTitle>
-            <CardDescription>
-              Train your particles recognition and listening capabilities with
-              audio quiz items.
-            </CardDescription>
-            <ActionButton
-              $color="#818cf8"
-              $shadowColor="#4f46e5"
-              onClick={() =>
-                router.push(`/lesson?id=${listeningLessonId}&from=practice`)
-              }
-            >
-              Practice Audio (+15 EXP)
-            </ActionButton>
-          </CardContent>
-          <CardGraphic className="card-graphic-container">
-            <HeadphonesSvg />
-          </CardGraphic>
-        </PracticeCard>
+          <SideWidget>
+            <WidgetHeaderRow>📊 Statistik Latihan Hari Ini</WidgetHeaderRow>
+            <ActivityRow>
+              <ActivityLabel>XP Terkumpul Hari Ini</ActivityLabel>
+              <ActivityValue>+ {todayExp} XP</ActivityValue>
+            </ActivityRow>
+            <ActivityRow>
+              <ActivityLabel>Pelajaran Selesai</ActivityLabel>
+              <ActivityValue>{completedCount} Modul</ActivityValue>
+            </ActivityRow>
+            <ActivityRow>
+              <ActivityLabel>Nyawa Belajar</ActivityLabel>
+              <ActivityValue>{progress.isSuper ? "♾️ Super" : `${progress.hearts ?? 5} / 5 ❤️`}</ActivityValue>
+            </ActivityRow>
+          </SideWidget>
 
-        <PracticeCard $gradient="radial-gradient(circle, #10b981 0%, transparent 60%)">
-          <CardContent>
-            <CardTitle>Learning Games</CardTitle>
-            <CardDescription>
-              Play interactive games like Speed Typing and Memory Match to make
-              character and vocabulary practice fun.
-            </CardDescription>
-            <ActionButton
-              $color="#10b981"
-              $shadowColor="#059669"
-              onClick={() => router.push("/game")}
-            >
-              Play Games (+15 EXP)
-            </ActionButton>
-          </CardContent>
-          <CardGraphic className="card-graphic-container">
-            <GamepadSvg />
-          </CardGraphic>
-        </PracticeCard>
-
-        {/* SECTION: COLLECTION */}
-        <SectionTitle>Your Collection</SectionTitle>
-
-        <PracticeCard $gradient="radial-gradient(circle, #f59e0b 0%, transparent 60%)">
-          <CardContent>
-            <CardTitle>Mistakes Review</CardTitle>
-            <CardDescription>
-              {mistakesCount > 0
-                ? `Review the ${mistakesCount} characters you got incorrect during quizzes to improve mastery.`
-                : "No mistakes currently! Maintain your clean streak and continue practicing."}
-            </CardDescription>
-            <ActionButton
-              $color="#f59e0b"
-              $shadowColor="#d97706"
-              disabled={mistakesCount === 0}
-              onClick={() => router.push("/characters?practice=true")}
-            >
-              {mistakesCount > 0
-                ? `Review ${mistakesCount} Mistakes`
-                : "Zero Mistakes! 🔥"}
-            </ActionButton>
-          </CardContent>
-          <CardGraphic className="card-graphic-container">
-            <SyncArrowsSvg />
-          </CardGraphic>
-        </PracticeCard>
-      </Container>
-    </PageWrapper>
+          <SideWidget style={{ background: "linear-gradient(135deg, rgba(234, 179, 8, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%)", borderColor: "rgba(234, 179, 8, 0.3)" }}>
+            <WidgetHeaderRow>⚡ Kuis Harian Kilat</WidgetHeaderRow>
+            <TipsText style={{ color: "var(--foreground)" }}>
+              Selesaikan 10 soal kuis cepat untuk mengumpulkan XP tambahan dan mempercepat perolehan Lencana Misi Harian!
+            </TipsText>
+            <ActionBtn3D href="/daily-quiz" $color="#f59e0b">
+              Buka Kuis Harian 🚀
+            </ActionBtn3D>
+          </SideWidget>
+        </SideColumn>
+      </ContentGrid>
+    </Container>
   );
 }
