@@ -346,39 +346,55 @@ const ProgressText = styled.span`
 `;
 
 const ChestButton = styled.button<{ $completed?: boolean; $claimed?: boolean }>`
-  background: none;
-  border: none;
-  font-size: 1.3rem;
+  width: 76px;
+  height: 38px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: ${({ $completed, $claimed }) =>
+    $claimed
+      ? "rgba(255, 255, 255, 0.04)"
+      : $completed
+      ? "rgba(234, 179, 8, 0.15)"
+      : "rgba(255, 255, 255, 0.06)"};
+  border: ${({ $completed, $claimed }) =>
+    $completed && !$claimed
+      ? "1px solid #eab308"
+      : "1px solid var(--border)"};
+  border-radius: 10px;
+  font-size: 1.2rem;
   opacity: ${({ $completed, $claimed }) => ($claimed ? 0.4 : $completed ? 1 : 0.6)};
   filter: ${({ $completed }) => ($completed ? "none" : "grayscale(0.5)")};
   cursor: ${({ $completed, $claimed }) => ($completed && !$claimed ? "pointer" : "default")};
-  transform: ${({ $completed, $claimed }) => ($completed && !$claimed ? "scale(1.1)" : "scale(1)")};
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
 
   &:hover {
     ${({ $completed, $claimed }) =>
-      $completed && !$claimed ? "transform: scale(1.25);" : ""}
+      $completed && !$claimed ? "transform: scale(1.05); filter: brightness(1.1);" : ""}
   }
 `;
 
 const SidebarQuestGoBtn = styled(Link)`
+  width: 76px;
+  height: 38px;
+  flex-shrink: 0;
   font-size: 1.1rem;
   font-weight: 900;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.25rem 0.5rem;
-  border-radius: 8px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--border);
   color: var(--foreground);
-  transition: all 0.2s ease;
-  flex-shrink: 0;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 
   .hover-text {
     display: none;
-    font-size: 0.72rem;
+    font-size: 0.78rem;
+    font-weight: 900;
     color: white;
   }
   .default-text {
@@ -388,13 +404,13 @@ const SidebarQuestGoBtn = styled(Link)`
   &:hover {
     background: #3b82f6;
     border-color: #3b82f6;
+    transform: translateY(-1px);
 
     .default-text {
       display: none;
     }
     .hover-text {
-      display: inline;
-      font-weight: 900;
+      display: inline-block;
     }
   }
 `;
