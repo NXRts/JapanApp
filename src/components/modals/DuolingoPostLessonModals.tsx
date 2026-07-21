@@ -21,6 +21,20 @@ const glowPulse = keyframes`
   50% { box-shadow: 0 0 22px #f59e0b, 0 0 40px #f59e0b; }
 `;
 
+/* ─── Body Scroll Lock Hook ──────────────────────────────────────────────── */
+function useLockBodyScroll() {
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    const originalTouchAction = document.body.style.touchAction;
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.touchAction = originalTouchAction;
+    };
+  }, []);
+}
+
 /* ─── Shared Overlay & Container ─────────────────────────────────────────── */
 const Overlay = styled.div`
   position: fixed;
@@ -32,6 +46,7 @@ const Overlay = styled.div`
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
+  touch-action: none;
 `;
 
 const ModalBox = styled.div<{ $maxWidth?: string }>`
@@ -191,6 +206,7 @@ export function StreakCelebrationModal({
   streak: number;
   onNext: () => void;
 }) {
+  useLockBodyScroll();
   const { progress } = useProgress();
 
   const fillPct = useMemo(() => {
@@ -326,6 +342,7 @@ export function DailyQuestsUpdateModal({
 }: {
   onNext: () => void;
 }) {
+  useLockBodyScroll();
   const { progress } = useProgress();
   const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
   const dailyQuests = useMemo(
@@ -405,6 +422,7 @@ export function ProgressiveAchievementModal({
 }: {
   onNext: () => void;
 }) {
+  useLockBodyScroll();
   const { progress } = useProgress();
   const streak = progress.streak || 1;
   const targetDays = 365;

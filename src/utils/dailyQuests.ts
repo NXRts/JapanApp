@@ -57,7 +57,7 @@ const EASY_QUEST_TEMPLATES = [
     rewardOptions: [25, 30],
     color: "#f97316",
     type: "quiz_practice",
-    actionUrl: "daily-quiz",
+    actionUrl: "/daily-quiz",
   },
 ];
 
