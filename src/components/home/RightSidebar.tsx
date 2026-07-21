@@ -361,6 +361,44 @@ const ChestButton = styled.button<{ $completed?: boolean; $claimed?: boolean }>`
   }
 `;
 
+const SidebarQuestGoBtn = styled(Link)`
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  .hover-text {
+    display: none;
+    font-size: 0.72rem;
+    color: white;
+  }
+  .default-text {
+    display: inline;
+  }
+
+  &:hover {
+    background: #3b82f6;
+    border-color: #3b82f6;
+
+    .default-text {
+      display: none;
+    }
+    .hover-text {
+      display: inline;
+      font-weight: 900;
+    }
+  }
+`;
+
 /* ─── Main Component ─────────────────────────────────────────────────────── */
 export function RightSidebar() {
   const { progress, claimQuestReward } = useProgress();
@@ -465,14 +503,24 @@ export function RightSidebar() {
                       <ProgressText>{q.current} / {q.target}</ProgressText>
                     </ProgressTrack>
                   </QuestContent>
-                  <ChestButton
-                    $completed={q.isCompleted}
-                    $claimed={isClaimed}
-                    onClick={() => q.isCompleted && !isClaimed && claimQuestReward(q.id, q.rewardGems)}
-                    title={isClaimed ? "Diklaim ✓" : q.isCompleted ? `Klaim +${q.rewardGems} 💎` : "Belum Selesai"}
-                  >
-                    {isClaimed ? "✅" : "🎁"}
-                  </ChestButton>
+                  {q.isCompleted && !isClaimed ? (
+                    <ChestButton
+                      $completed
+                      onClick={() => claimQuestReward(q.id, q.rewardGems)}
+                      title={`Klaim +${q.rewardGems} 💎`}
+                    >
+                      🎁
+                    </ChestButton>
+                  ) : isClaimed ? (
+                    <ChestButton $claimed disabled title="Diklaim ✓">
+                      ✅
+                    </ChestButton>
+                  ) : (
+                    <SidebarQuestGoBtn href={q.actionUrl || "/lesson"} title={`Kerjakan Misi: ${q.title}`}>
+                      <span className="default-text">🎁</span>
+                      <span className="hover-text">GO 🚀</span>
+                    </SidebarQuestGoBtn>
+                  )}
                 </QuestItem>
               );
             })}
