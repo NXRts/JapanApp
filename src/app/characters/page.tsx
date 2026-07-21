@@ -6,6 +6,8 @@ import { useProgress } from "@/context/ProgressContext";
 import { playJapaneseAudio } from "@/lib/audio";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { useSearchParams, useRouter } from "next/navigation";
+import { KANJI_DATA, KanjiItem } from "@/data/kanji";
+import { KanjiDetailModal } from "@/components/modals/KanjiDetailModal";
 
 // ========================================================
 // DATA DEFINITIONS (HIRAGANA & KATAKANA)
@@ -132,17 +134,17 @@ const HIRAGANA_COMBINATIONS: KanaItem[] = [
   { char: "ぴょ", romaji: "pyo" },
   { char: "みゃ", romaji: "mya" },
   { char: "みゅ", romaji: "myu" },
-  { char: "miょ", romaji: "myo" }, // keep standard representation
+  { char: "みょ", romaji: "myo" },
   { char: "りゃ", romaji: "rya" },
   { char: "りゅ", romaji: "ryu" },
   { char: "りょ", romaji: "ryo" },
 ];
 
 const HIRAGANA_SOKUON: KanaItem[] = [
-  { char: "っk", romaji: "kk" },
-  { char: "っs", romaji: "ss" },
-  { char: "っt", romaji: "tt" },
-  { char: "っp", romaji: "pp" },
+  { char: "っか", romaji: "kka" },
+  { char: "っさ", romaji: "ssa" },
+  { char: "った", romaji: "tta" },
+  { char: "っぱ", romaji: "ppa" },
 ];
 
 const HIRAGANA_CHOON: KanaItem[] = [
@@ -278,10 +280,10 @@ const KATAKANA_COMBINATIONS: KanaItem[] = [
 ];
 
 const KATAKANA_SOKUON: KanaItem[] = [
-  { char: "ッk", romaji: "kk" },
-  { char: "ッs", romaji: "ss" },
-  { char: "ッt", romaji: "tt" },
-  { char: "ッp", romaji: "pp" },
+  { char: "ッカ", romaji: "kka" },
+  { char: "ッサ", romaji: "ssa" },
+  { char: "ッタ", romaji: "tta" },
+  { char: "ッパ", romaji: "ppa" },
 ];
 
 const KATAKANA_CHOON: KanaItem[] = [
@@ -354,28 +356,30 @@ const Subtitle = styled.p`
 `;
 
 const PrimaryCTAButton = styled.button`
-  background: linear-gradient(135deg, var(--secondary) 0%, #059669 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: #ffffff;
   border: none;
-  border-radius: 16px;
+  border-bottom: 4px solid #047857;
+  border-radius: 18px;
   padding: 0.95rem 2.25rem;
   font-size: 0.95rem;
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+  transition: all 0.15s ease;
   margin-top: 0.5rem;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
-    filter: brightness(1.05);
+    box-shadow: 0 6px 22px rgba(16, 185, 129, 0.45);
+    filter: brightness(1.08);
   }
 
   &:active {
-    transform: scale(0.97);
+    transform: translateY(2px);
+    border-bottom-width: 2px;
   }
 
   @media (max-width: 640px) {
@@ -427,10 +431,120 @@ const TabButton = styled.button<{ $active: boolean }>`
   }
 
   @media (max-width: 640px) {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
     flex: 1;
   }
+`;
+
+const KanjiFilterBar = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.25rem 0 1rem 0;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    justify-content: flex-start;
+  }
+`;
+
+const KanjiFilterTab = styled.button<{ $active?: boolean }>`
+  background: ${({ $active }) => ($active ? "#8b5cf6" : "var(--surface)")};
+  color: ${({ $active }) => ($active ? "white" : "var(--text-secondary)")};
+  border: 1.5px solid ${({ $active }) => ($active ? "#8b5cf6" : "var(--border)")};
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    border-color: #8b5cf6;
+    color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
+  }
+`;
+
+const KanjiCardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 1050px;
+  margin: 1rem auto 0 auto;
+
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+    gap: 0.65rem;
+  }
+`;
+
+const KanjiCardBtn = styled.button`
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  padding: 1.1rem 0.65rem 0.85rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  outline: none;
+  width: 100%;
+
+  &:hover {
+    border-color: #8b5cf6;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.25);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.85rem 0.4rem 0.65rem 0.4rem;
+    border-radius: 14px;
+  }
+`;
+
+const KanjiBigChar = styled.span`
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--foreground);
+  line-height: 1;
+
+  @media (max-width: 640px) {
+    font-size: 1.75rem;
+  }
+`;
+
+const KanjiLabelMeaning = styled.span`
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--foreground);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+`;
+
+const KanjiSubReading = styled.span`
+  font-size: 0.7rem;
+  color: #8b5cf6;
+  font-weight: 700;
 `;
 
 const ScrollWrapper = styled.div`
@@ -682,65 +796,119 @@ function CharacterCard({ item }: CharacterCardProps) {
 }
 
 // ========================================================
-// GAMIFIED PRACTICE MODE SYSTEM
+// GAMIFIED PRACTICE MODE SYSTEM (MATCHING LESSON UI)
 // ========================================================
+
+const slideUpAnim = keyframes`
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+`;
 
 const PracticeContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 100%;
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
-  gap: 1.5rem;
-  padding: 1rem 0;
-  min-height: 75vh;
-  justify-content: space-between;
+  padding: 0.5rem 0 3rem 0;
+  min-height: 50vh;
 `;
 
-const PracticeHeader = styled.div`
+const ContentWrapper = styled.div`
+  max-width: 580px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.5rem;
+`;
+
+const LessonHeader = styled.header`
+  width: 100%;
+  max-width: 580px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
-  width: 100%;
+  margin-bottom: 1.25rem;
+  padding: 0.5rem 0;
 `;
 
 const CloseButton = styled.button`
-  background: none;
+  background: transparent;
   border: none;
   color: var(--text-secondary);
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   cursor: pointer;
-  padding: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  transition: all 0.2s;
 
   &:hover {
+    background: rgba(255, 255, 255, 0.08);
     color: var(--foreground);
   }
 `;
 
-const ProgressTrack = styled.div`
+const ProgressBar = styled.div`
   flex: 1;
   height: 16px;
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 99px;
   overflow: hidden;
+  border: 1px solid var(--border);
   position: relative;
 `;
 
 const ProgressFill = styled.div<{ $percent: number }>`
   height: 100%;
-  width: ${({ $percent }) => $percent}%;
-  background: linear-gradient(
-    90deg,
-    var(--primary) 0%,
-    var(--primary-light) 100%
-  );
+  width: ${({ $percent }) => `${$percent}%`};
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
   border-radius: 99px;
-  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+`;
+
+const LivesIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 900;
+  font-size: 1.15rem;
+  color: #ef4444;
+`;
+
+const QuestionCategory = styled.span`
+  font-size: 0.82rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #10b981;
+  letter-spacing: 0.08em;
+`;
+
+const PracticeCard = styled.div`
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  padding: 2.25rem 2rem;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.35rem;
+  margin: 0.5rem auto;
+
+  @media (max-width: 640px) {
+    padding: 1.5rem 1.15rem;
+    border-radius: 20px;
+    gap: 1.15rem;
+  }
 `;
 
 const QuestionBox = styled.div`
@@ -748,73 +916,88 @@ const QuestionBox = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-  flex: 1;
-  justify-content: center;
+  gap: 1.25rem;
+  width: 100%;
+`;
+
+const CardFooterDivider = styled.div`
+  width: 100%;
+  border-top: 1.5px solid var(--border);
+  margin-top: 0.5rem;
+  padding-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
 `;
 
 const QuestionPrompt = styled.h2`
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: 1.35rem;
+  font-weight: 850;
   color: var(--foreground);
   margin: 0;
 
   span {
-    color: var(--primary);
+    color: #3b82f6;
+    font-weight: 900;
   }
 
   @media (max-width: 640px) {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 `;
 
 const LargeDisplayChar = styled.div`
-  font-size: 5rem;
-  font-weight: 800;
+  font-size: 4.5rem;
+  font-weight: 900;
   color: var(--foreground);
-  background: rgba(var(--primary-rgb), 0.05);
-  border: 2px dashed rgba(var(--primary-rgb), 0.25);
-  width: 140px;
-  height: 140px;
+  background: rgba(59, 130, 246, 0.08);
+  border: 2px dashed rgba(59, 130, 246, 0.3);
+  width: 130px;
+  height: 130px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 32px;
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 0.5rem;
+  border-radius: 28px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  margin-bottom: 0.25rem;
 
   @media (max-width: 640px) {
-    font-size: 4rem;
-    width: 110px;
-    height: 110px;
-    border-radius: 24px;
+    font-size: 3.5rem;
+    width: 105px;
+    height: 105px;
+    border-radius: 22px;
   }
 `;
 
 const SpeakerPlayButton = styled.button`
-  background: rgba(var(--primary-rgb), 0.1);
-  color: var(--primary);
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: white;
   border: none;
-  width: 72px;
-  height: 72px;
+  border-bottom: 4px solid #3730a3;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: var(--shadow-sm);
+  transition: all 0.15s ease;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
 
   &:hover {
-    transform: scale(1.08);
-    background: var(--primary);
-    color: #ffffff;
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
   }
 
   svg {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
   }
 `;
 
@@ -823,8 +1006,8 @@ const ChoicesGrid = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: 0.75rem;
   width: 100%;
-  max-width: 460px;
-  margin-top: 1rem;
+  max-width: 480px;
+  margin-top: 0.5rem;
 `;
 
 const ChoiceButton = styled.button<{
@@ -832,24 +1015,29 @@ const ChoiceButton = styled.button<{
   $isChecking: boolean;
   $isCorrect: boolean;
 }>`
-  background: var(--surface);
+  background: ${({ $selected }) => ($selected ? "rgba(59, 130, 246, 0.12)" : "var(--surface)")};
   border: 2px solid
-    ${({ $selected }) => ($selected ? "var(--primary)" : "var(--border)")};
-  border-radius: 16px;
-  padding: 1.1rem;
-  font-size: 1.15rem;
-  font-weight: 800;
+    ${({ $selected }) => ($selected ? "#3b82f6" : "var(--border)")};
+  border-bottom: 4px solid
+    ${({ $selected }) => ($selected ? "#2563eb" : "var(--border)")};
+  border-radius: 18px;
+  padding: 1.15rem 1rem;
+  font-size: 1.25rem;
+  font-weight: 900;
   color: var(--foreground);
   cursor: pointer;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.12s ease;
   outline: none;
   text-align: center;
-  box-shadow: ${({ $selected }) =>
-    $selected ? "0 4px 12px rgba(var(--primary-rgb), 0.15)" : "none"};
 
   &:hover:not(:disabled) {
-    border-color: var(--primary);
-    background: rgba(var(--primary-rgb), 0.02);
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.05);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
   }
 
   &:disabled {
@@ -861,81 +1049,110 @@ const ChoiceButton = styled.button<{
     $selected &&
     css`
       border-color: ${
-        $isCorrect ? "var(--secondary)" : "var(--accent)"
+        $isCorrect ? "#10b981" : "#f43f5e"
+      } !important;
+      border-bottom-color: ${
+        $isCorrect ? "#059669" : "#e11d48"
       } !important;
       background: ${
-        $isCorrect ? "rgba(16, 185, 129, 0.08)" : "rgba(244, 63, 94, 0.08)"
+        $isCorrect ? "rgba(16, 185, 129, 0.12)" : "rgba(244, 63, 94, 0.12)"
       } !important;
-      color: ${$isCorrect ? "var(--secondary)" : "var(--accent)"} !important;
+      color: ${$isCorrect ? "#10b981" : "#f43f5e"} !important;
     `}
 
   @media (max-width: 640px) {
-    padding: 0.85rem;
-    font-size: 1rem;
-    border-radius: 12px;
+    padding: 0.9rem 0.6rem;
+    font-size: 1.05rem;
+    border-radius: 14px;
   }
 `;
 
-const ActionFooter = styled.div`
+const InlineActionFooter = styled.div`
   width: 100%;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
+  max-width: 480px;
+  margin-top: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
+  align-items: center;
 `;
 
-const CheckOverlay = styled.div<{ $isCorrect: boolean }>`
+const InlineFeedbackCard = styled.div<{ $isCorrect: boolean }>`
   width: 100%;
   background: ${({ $isCorrect }) =>
-    $isCorrect ? "rgba(16, 185, 129, 0.12)" : "rgba(244, 63, 94, 0.12)"};
+    $isCorrect ? "rgba(16, 185, 129, 0.12)" : "rgba(239, 68, 68, 0.12)"};
   border: 1.5px solid
-    ${({ $isCorrect }) => ($isCorrect ? "var(--secondary)" : "var(--accent)")};
-  border-radius: 16px;
-  padding: 1rem 1.25rem;
+    ${({ $isCorrect }) => ($isCorrect ? "#10b981" : "#ef4444")};
+  border-radius: 18px;
+  padding: 0.9rem 1.15rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  align-items: flex-start;
+  gap: 0.85rem;
+  text-align: left;
 `;
 
-const OverlayTitle = styled.h4<{ $isCorrect: boolean }>`
-  font-size: 1.1rem;
-  font-weight: 800;
-  color: ${({ $isCorrect }) =>
-    $isCorrect ? "var(--secondary)" : "var(--accent)"};
-  margin: 0;
+const FeedbackTextGroup = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
 `;
 
-const OverlayText = styled.p`
-  font-size: 0.9rem;
+const FeedbackIconCircle = styled.div<{ $state: "correct" | "incorrect" }>`
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: ${({ $state }) => ($state === "correct" ? "#10b981" : "#ef4444")};
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+`;
+
+const FeedbackTitleText = styled.h4<{ $state: "correct" | "incorrect" }>`
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: ${({ $state }) => ($state === "correct" ? "#34d399" : "#fca5a5")};
+  margin: 0 0 0.15rem 0;
+`;
+
+const FeedbackSubText = styled.p`
+  font-size: 0.88rem;
   color: var(--foreground);
   margin: 0;
 `;
 
 const BottomActionBtn = styled.button`
-  background: var(--primary);
+  background: #3b82f6;
   color: #ffffff;
   border: none;
-  border-radius: 16px;
-  padding: 1rem;
+  border-bottom: 4px solid #1d4ed8;
+  border-radius: 18px;
+  padding: 0.95rem 1.5rem;
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 900;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+  transition: all 0.15s ease;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
   width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 
-  &:hover {
+  &:hover:not(:disabled) {
     filter: brightness(1.08);
     transform: translateY(-1px);
   }
 
-  &:active {
-    transform: scale(0.98);
+  &:active:not(:disabled) {
+    transform: translateY(2px);
+    border-bottom-width: 2px;
   }
 
   &:disabled {
     background: var(--border);
+    border-bottom: 4px solid rgba(255, 255, 255, 0.1);
     color: var(--text-secondary);
     box-shadow: none;
     cursor: not-allowed;
@@ -945,10 +1162,10 @@ const BottomActionBtn = styled.button`
 const MatchingContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 1.25rem;
   width: 100%;
   max-width: 480px;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 `;
 
 const MatchColumn = styled.div`
@@ -1051,9 +1268,11 @@ function CharactersPageContent() {
   const { progress, updateMastery, addExp } = useProgress();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"hiragana" | "katakana">(
+  const [activeTab, setActiveTab] = useState<"hiragana" | "katakana" | "kanji">(
     "hiragana",
   );
+  const [kanjiFilter, setKanjiFilter] = useState<string>("N5");
+  const [selectedKanji, setSelectedKanji] = useState<KanjiItem | null>(null);
   const [isPracticing, setIsPracticing] = useState(false);
   const [isMistakesReview, setIsMistakesReview] = useState(false);
 
@@ -1074,22 +1293,30 @@ function CharactersPageContent() {
 
   // Generate a practice session quiz
   const startPractice = (
-    targetTab: "hiragana" | "katakana",
+    targetTab: "hiragana" | "katakana" | "kanji",
     onlyMistakes = false,
   ) => {
-    const activeGrid = targetTab === "hiragana" ? HIRAGANA_GRID : KATAKANA_GRID;
-    const activeDakuon =
-      targetTab === "hiragana" ? HIRAGANA_DAKUON : KATAKANA_DAKUON;
-    const activeCombi =
-      targetTab === "hiragana" ? HIRAGANA_COMBINATIONS : KATAKANA_COMBINATIONS;
+    let pool: KanaItem[] = [];
 
-    // Filter valid characters from grid
-    const validGrid = activeGrid.filter(
-      (item): item is KanaItem => item !== null,
-    );
-    const pool = [...validGrid, ...activeDakuon, ...activeCombi];
+    if (targetTab === "kanji") {
+      const currentList = filteredKanjiList.length > 0 ? filteredKanjiList : KANJI_DATA.N5;
+      pool = currentList.map((item) => ({
+        char: item.char,
+        romaji: item.meaning,
+      }));
+    } else {
+      const activeGrid = targetTab === "hiragana" ? HIRAGANA_GRID : KATAKANA_GRID;
+      const activeDakuon =
+        targetTab === "hiragana" ? HIRAGANA_DAKUON : KATAKANA_DAKUON;
+      const activeCombi =
+        targetTab === "hiragana" ? HIRAGANA_COMBINATIONS : KATAKANA_COMBINATIONS;
+      const validGrid = activeGrid.filter(
+        (item): item is KanaItem => item !== null,
+      );
+      pool = [...validGrid, ...activeDakuon, ...activeCombi];
+    }
 
-    if (pool.length < 10) return;
+    if (pool.length < 4) return;
 
     let targets: KanaItem[] = [];
     if (onlyMistakes) {
@@ -1114,26 +1341,25 @@ function CharactersPageContent() {
       }
     } else {
       // Pick 5 random target items
-      targets = [...pool].sort(() => 0.5 - Math.random()).slice(0, 5);
+      targets = [...pool].sort(() => 0.5 - Math.random()).slice(0, Math.min(5, pool.length));
     }
 
     const generatedQuestions: Question[] = [];
 
     targets.forEach((target, index) => {
       // Pick random question types
-      const types: QuestionType[] = [
-        "kana-to-romaji",
-        "romaji-to-kana",
-        "audio-to-kana",
-        "matching",
-      ];
-      const qType = types[Math.floor(Math.random() * (index === 4 ? 4 : 3))]; // Let last question be matching occasionally
+      const types: QuestionType[] =
+        targetTab === "kanji"
+          ? ["romaji-to-kana", "kana-to-romaji"]
+          : ["kana-to-romaji", "romaji-to-kana", "audio-to-kana", "matching"];
+
+      const qType = types[Math.floor(Math.random() * (index === 4 && targetTab !== "kanji" ? 4 : types.length))];
 
       if (qType === "matching") {
         const matches = [...pool].sort(() => 0.5 - Math.random()).slice(0, 4);
         generatedQuestions.push({
           type: "matching",
-          prompt: "Match the matching pairs",
+          prompt: "Hubungkan pasangan huruf dan romaji yang cocok:",
           correctAnswer: "matched",
           choices: [],
           matchPairsLeft: matches
@@ -1157,7 +1383,7 @@ function CharactersPageContent() {
           ].sort(() => 0.5 - Math.random());
           generatedQuestions.push({
             type: "kana-to-romaji",
-            prompt: `What is the romaji translation for:`,
+            prompt: targetTab === "kanji" ? `Apa arti Bahasa Indonesia dari Kanji ini?` : `Apa romaji yang tepat untuk huruf ini?`,
             correctAnswer: target.romaji,
             choices,
             audioChar: target.char,
@@ -1169,9 +1395,10 @@ function CharactersPageContent() {
           ].sort(() => 0.5 - Math.random());
           generatedQuestions.push({
             type: "romaji-to-kana",
-            prompt: `Select the character for the sound:`,
+            prompt: targetTab === "kanji" ? `Pilih huruf Kanji yang berbunyi / berarti demikian:` : `Pilih huruf Jepang yang berbunyi demikian:`,
             correctAnswer: target.char,
             choices,
+            audioChar: target.romaji,
           });
         } else {
           const choices = [
@@ -1180,7 +1407,7 @@ function CharactersPageContent() {
           ].sort(() => 0.5 - Math.random());
           generatedQuestions.push({
             type: "audio-to-kana",
-            prompt: `Listen and select the matching character:`,
+            prompt: `Dengarkan suara audio dan pilih huruf yang sesuai:`,
             correctAnswer: target.char,
             choices,
             audioChar: target.char,
@@ -1208,6 +1435,34 @@ function CharactersPageContent() {
     setIsMistakesReview(false);
     startPractice(activeTab, false);
   };
+
+  const filteredKanjiList = useMemo(() => {
+    if (kanjiFilter === "N5") return KANJI_DATA.N5 || [];
+    if (kanjiFilter === "N4") return KANJI_DATA.N4 || [];
+    if (kanjiFilter === "N3") return KANJI_DATA.N3 || [];
+    if (kanjiFilter === "N2") return KANJI_DATA.N2 || [];
+    if (kanjiFilter === "N1") return KANJI_DATA.N1 || [];
+
+    const allN5 = KANJI_DATA.N5 || [];
+    if (kanjiFilter === "numbers") {
+      const chars = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "万"];
+      return allN5.filter((k) => chars.includes(k.char));
+    }
+    if (kanjiFilter === "nature") {
+      const chars = ["日", "月", "火", "水", "木", "金", "土", "山", "川", "天", "気", "雨", "花", "空"];
+      return allN5.filter((k) => chars.includes(k.char));
+    }
+    if (kanjiFilter === "people") {
+      const chars = ["人", "男", "女", "子", "目", "口", "手", "足", "父", "母"];
+      return allN5.filter((k) => chars.includes(k.char));
+    }
+    if (kanjiFilter === "directions") {
+      const chars = ["上", "下", "中", "大", "小", "左", "右", "東", "西", "南", "北"];
+      return allN5.filter((k) => chars.includes(k.char));
+    }
+
+    return KANJI_DATA.N5 || [];
+  }, [kanjiFilter]);
 
   const hasTriggeredRef = useRef(false);
 
@@ -1420,15 +1675,21 @@ function CharactersPageContent() {
         <>
           <HeaderSection>
             <MainTitle>
-              Learn {activeTab === "hiragana" ? "Hiragana" : "Katakana"}!
+              {activeTab === "hiragana"
+                ? "Belajar Hiragana Dasar!"
+                : activeTab === "katakana"
+                ? "Belajar Katakana Dasar!"
+                : "Pembelajaran Kanji Interaktif!"}
             </MainTitle>
             <Subtitle>
               {activeTab === "hiragana"
-                ? "Learn the primary writing system of Japanese. Click cards to hear their pronunciation."
-                : "Learn the writing system used for foreign loanwords. Click cards to hear their pronunciation."}
+                ? "Pelajari fondasi utama sistem penulisan Jepang. Klik kartu untuk mendengarkan pengucapan audio."
+                : activeTab === "katakana"
+                ? "Pelajari huruf sistem serapan kosakata asing. Klik kartu untuk mendengarkan pengucapan audio."
+                : "Pelajari huruf Kanji secara bertahap mulai dari angka, alam, hingga level JLPT. Klik kartu untuk melihat animasi coretan & contoh kata."}
             </Subtitle>
             <PrimaryCTAButton onClick={handleStartPractice}>
-              Practice Characters
+              {activeTab === "kanji" ? "Latihan Kanji Interaktif 🚀" : "Latihan Huruf (Practice Characters)"}
             </PrimaryCTAButton>
           </HeaderSection>
 
@@ -1445,101 +1706,167 @@ function CharactersPageContent() {
             >
               Katakana
             </TabButton>
+            <TabButton
+              $active={activeTab === "kanji"}
+              onClick={() => setActiveTab("kanji")}
+            >
+              Kanji 🈸
+            </TabButton>
           </TabContainer>
 
-          <ScrollWrapper>
-            <MainGridSection>
-              <GojuonGrid>
-                {(activeTab === "hiragana" ? HIRAGANA_GRID : KATAKANA_GRID).map(
-                  (item, idx) => (
-                    <CharacterCard
-                      key={`grid-${activeTab}-${idx}`}
-                      item={item}
-                    />
-                  ),
-                )}
-              </GojuonGrid>
+          {activeTab === "kanji" ? (
+            <div style={{ width: "100%", marginTop: "1rem" }}>
+              <KanjiFilterBar>
+                <KanjiFilterTab $active={kanjiFilter === "N5"} onClick={() => setKanjiFilter("N5")}>
+                  🎓 JLPT N5 (Dasar)
+                </KanjiFilterTab>
+                <KanjiFilterTab $active={kanjiFilter === "N4"} onClick={() => setKanjiFilter("N4")}>
+                  🎓 JLPT N4
+                </KanjiFilterTab>
+                <KanjiFilterTab $active={kanjiFilter === "N3"} onClick={() => setKanjiFilter("N3")}>
+                  🎓 JLPT N3
+                </KanjiFilterTab>
+                <KanjiFilterTab $active={kanjiFilter === "numbers"} onClick={() => setKanjiFilter("numbers")}>
+                  🔢 Angka & Hitungan
+                </KanjiFilterTab>
+                <KanjiFilterTab $active={kanjiFilter === "nature"} onClick={() => setKanjiFilter("nature")}>
+                  🌞 Alam & Waktu
+                </KanjiFilterTab>
+                <KanjiFilterTab $active={kanjiFilter === "people"} onClick={() => setKanjiFilter("people")}>
+                  👤 Manusia & Tubuh
+                </KanjiFilterTab>
+                <KanjiFilterTab $active={kanjiFilter === "directions"} onClick={() => setKanjiFilter("directions")}>
+                  🗺️ Arah & Ukuran
+                </KanjiFilterTab>
+              </KanjiFilterBar>
 
-              <GroupSection>
-                <GroupTitle>Dakuon & Handakuon</GroupTitle>
-                <GroupSubtitle>
-                  Add modification marks (voicing/half-voicing) to modify
-                  consonant sounds.
-                </GroupSubtitle>
-                <DakuonGrid>
-                  {(activeTab === "hiragana"
-                    ? HIRAGANA_DAKUON
-                    : KATAKANA_DAKUON
-                  ).map((item, idx) => (
-                    <CharacterCard
-                      key={`dakuon-${activeTab}-${idx}`}
-                      item={item}
-                    />
-                  ))}
-                </DakuonGrid>
-              </GroupSection>
+              <KanjiCardGrid>
+                {filteredKanjiList.map((item) => {
+                  const masteryData = progress.mastery[item.char] || { correct: 0, incorrect: 0 };
+                  const totalAttempts = masteryData.correct + masteryData.incorrect;
+                  const masteryPct = totalAttempts > 0 ? Math.min(100, Math.round((masteryData.correct / totalAttempts) * 100)) : 0;
+                  return (
+                    <KanjiCardBtn
+                      key={item.char}
+                      onClick={() => {
+                        playJapaneseAudio(item.char);
+                        setSelectedKanji(item);
+                      }}
+                    >
+                      <KanjiBigChar>{item.char}</KanjiBigChar>
+                      <KanjiLabelMeaning>{item.meaning}</KanjiLabelMeaning>
+                      <KanjiSubReading>{item.kun || item.on || ""}</KanjiSubReading>
+                      <MasteryBar>
+                        <MasteryFill $percent={masteryPct} />
+                      </MasteryBar>
+                    </KanjiCardBtn>
+                  );
+                })}
+              </KanjiCardGrid>
+            </div>
+          ) : (
+            <ScrollWrapper>
+              <MainGridSection>
+                <GojuonGrid>
+                  {(activeTab === "hiragana" ? HIRAGANA_GRID : KATAKANA_GRID).map(
+                    (item, idx) => (
+                      <CharacterCard
+                        key={`grid-${activeTab}-${idx}`}
+                        item={item}
+                      />
+                    ),
+                  )}
+                </GojuonGrid>
 
-              <GroupSection>
-                <GroupTitle>Combinations (Yōon)</GroupTitle>
-                <GroupSubtitle>
-                  Combine base consonants with small ya (ゃ), yu (ゅ), or yo
-                  (ょ) to speak compound sounds.
-                </GroupSubtitle>
-                <YoonGrid>
-                  {(activeTab === "hiragana"
-                    ? HIRAGANA_COMBINATIONS
-                    : KATAKANA_COMBINATIONS
-                  ).map((item, idx) => (
-                    <CharacterCard
-                      key={`yoon-${activeTab}-${idx}`}
-                      item={item}
-                    />
-                  ))}
-                </YoonGrid>
-              </GroupSection>
+                <GroupSection>
+                  <GroupTitle>Dakuon & Handakuon</GroupTitle>
+                  <GroupSubtitle>
+                    Add modification marks (voicing/half-voicing) to modify
+                    consonant sounds.
+                  </GroupSubtitle>
+                  <DakuonGrid>
+                    {(activeTab === "hiragana"
+                      ? HIRAGANA_DAKUON
+                      : KATAKANA_DAKUON
+                    ).map((item, idx) => (
+                      <CharacterCard
+                        key={`dakuon-${activeTab}-${idx}`}
+                        item={item}
+                      />
+                    ))}
+                  </DakuonGrid>
+                </GroupSection>
 
-              <GroupSection>
-                <GroupTitle>Double Consonants (Sokuon)</GroupTitle>
-                <GroupSubtitle>
-                  Small tsu (っ / ッ) is used to double the following consonant
-                  and create a glottal stop.
-                </GroupSubtitle>
-                <SokuonGrid>
-                  {(activeTab === "hiragana"
-                    ? HIRAGANA_SOKUON
-                    : KATAKANA_SOKUON
-                  ).map((item, idx) => (
-                    <CharacterCard
-                      key={`sokuon-${activeTab}-${idx}`}
-                      item={item}
-                    />
-                  ))}
-                </SokuonGrid>
-              </GroupSection>
+                <GroupSection>
+                  <GroupTitle>Combinations (Yōon)</GroupTitle>
+                  <GroupSubtitle>
+                    Combine base consonants with small ya (ゃ), yu (ゅ), or yo
+                    (ょ) to speak compound sounds.
+                  </GroupSubtitle>
+                  <YoonGrid>
+                    {(activeTab === "hiragana"
+                      ? HIRAGANA_COMBINATIONS
+                      : KATAKANA_COMBINATIONS
+                    ).map((item, idx) => (
+                      <CharacterCard
+                        key={`yoon-${activeTab}-${idx}`}
+                        item={item}
+                      />
+                    ))}
+                  </YoonGrid>
+                </GroupSection>
 
-              <GroupSection>
-                <GroupTitle>Long Vowels (Chōon)</GroupTitle>
-                <GroupSubtitle>
-                  Repeat vowel sounds to produce double-beat elongated sounds.
-                </GroupSubtitle>
-                <ChoonGrid>
-                  {(activeTab === "hiragana"
-                    ? HIRAGANA_CHOON
-                    : KATAKANA_CHOON
-                  ).map((item, idx) => (
-                    <CharacterCard
-                      key={`choon-${activeTab}-${idx}`}
-                      item={item}
-                    />
-                  ))}
-                </ChoonGrid>
-              </GroupSection>
-            </MainGridSection>
-          </ScrollWrapper>
+                <GroupSection>
+                  <GroupTitle>Double Consonants (Sokuon)</GroupTitle>
+                  <GroupSubtitle>
+                    Small tsu (っ / ッ) is used to double the following consonant
+                    and create a glottal stop.
+                  </GroupSubtitle>
+                  <SokuonGrid>
+                    {(activeTab === "hiragana"
+                      ? HIRAGANA_SOKUON
+                      : KATAKANA_SOKUON
+                    ).map((item, idx) => (
+                      <CharacterCard
+                        key={`sokuon-${activeTab}-${idx}`}
+                        item={item}
+                      />
+                    ))}
+                  </SokuonGrid>
+                </GroupSection>
+
+                <GroupSection>
+                  <GroupTitle>Long Vowels (Chōon)</GroupTitle>
+                  <GroupSubtitle>
+                    Repeat vowel sounds to produce double-beat elongated sounds.
+                  </GroupSubtitle>
+                  <ChoonGrid>
+                    {(activeTab === "hiragana"
+                      ? HIRAGANA_CHOON
+                      : KATAKANA_CHOON
+                    ).map((item, idx) => (
+                      <CharacterCard
+                        key={`choon-${activeTab}-${idx}`}
+                        item={item}
+                      />
+                    ))}
+                  </ChoonGrid>
+                </GroupSection>
+              </MainGridSection>
+            </ScrollWrapper>
+          )}
+
+          {selectedKanji && (
+            <KanjiDetailModal
+              kanji={selectedKanji}
+              onClose={() => setSelectedKanji(null)}
+              onPractice={() => router.push("/jlpt/kanji-writer")}
+            />
+          )}
         </>
       ) : (
         <PracticeContainer>
-          <PracticeHeader>
+          <LessonHeader>
             <CloseButton
               onClick={() => {
                 setIsPracticing(false);
@@ -1552,199 +1879,228 @@ function CharactersPageContent() {
             >
               ✕
             </CloseButton>
-            <ProgressTrack>
+            <ProgressBar>
               <ProgressFill
                 $percent={(currentQuestionIndex / questions.length) * 100}
               />
-            </ProgressTrack>
-            <div style={{ width: "32px" }} />
-          </PracticeHeader>
+            </ProgressBar>
+            <LivesIndicator>❤️ {progress.isSuper ? "♾️" : (progress.hearts ?? 5)}</LivesIndicator>
+          </LessonHeader>
 
-          {!showComplete ? (
-            <>
-              {currentQuestion && (
-                <QuestionBox>
-                  <QuestionPrompt>
-                    {currentQuestion.type === "kana-to-romaji" && (
-                      <>
-                        What is the romaji translation of:{" "}
-                        <span>{currentQuestion.audioChar}</span>?
-                      </>
-                    )}
-                    {currentQuestion.type === "romaji-to-kana" && (
-                      <>
-                        Select the Japanese character that pronounces:{" "}
-                        <span>{currentQuestion.correctAnswer}</span>
-                      </>
-                    )}
-                    {currentQuestion.type === "audio-to-kana" && (
-                      <>
-                        Listen to the sound and select the matching character:
-                      </>
-                    )}
-                    {currentQuestion.type === "matching" && (
-                      <>Connect the matching character pairs:</>
-                    )}
-                  </QuestionPrompt>
+          <ContentWrapper>
+            {!showComplete ? (
+              <>
+                {currentQuestion && (
+                  <PracticeCard>
+                    <QuestionBox>
+                      <QuestionCategory>
+                        LATIHAN HURUF {activeTab.toUpperCase()}
+                      </QuestionCategory>
 
-                  {/* Question visual display */}
-                  {currentQuestion.type === "kana-to-romaji" && (
-                    <LargeDisplayChar>
-                      {currentQuestion.audioChar}
-                    </LargeDisplayChar>
-                  )}
-                  {currentQuestion.type === "romaji-to-kana" && (
-                    <LargeDisplayChar
-                      style={{
-                        background: "rgba(var(--secondary-rgb), 0.05)",
-                        borderColor: "rgba(var(--secondary-rgb), 0.25)",
-                        color: "var(--secondary)",
-                      }}
-                    >
-                      {currentQuestion.correctAnswer}
-                    </LargeDisplayChar>
-                  )}
-                  {currentQuestion.type === "audio-to-kana" && (
-                    <SpeakerPlayButton
-                      onClick={() =>
-                        playJapaneseAudio(currentQuestion.audioChar!)
-                      }
-                    >
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
-                      </svg>
-                    </SpeakerPlayButton>
-                  )}
+                      <QuestionPrompt>
+                        {currentQuestion.type === "kana-to-romaji" && (
+                          <>{activeTab === "kanji" ? "Apa arti Bahasa Indonesia dari Kanji ini?" : "Apa pembacaan romaji yang tepat untuk huruf ini?"}</>
+                        )}
+                        {currentQuestion.type === "romaji-to-kana" && (
+                          <>{activeTab === "kanji" ? "Pilih huruf Kanji yang berbunyi / berarti demikian:" : "Pilih huruf Jepang yang berbunyi demikian:"}</>
+                        )}
+                        {currentQuestion.type === "audio-to-kana" && (
+                          <>Dengarkan suara audio dan pilih huruf yang sesuai:</>
+                        )}
+                        {currentQuestion.type === "matching" && (
+                          <>Hubungkan pasangan huruf dan romaji yang cocok:</>
+                        )}
+                      </QuestionPrompt>
 
-                  {/* Standard choices layout */}
-                  {currentQuestion.type !== "matching" ? (
-                    <ChoicesGrid>
-                      {currentQuestion.choices.map((choice) => (
-                        <ChoiceButton
-                          key={choice}
-                          $selected={selectedChoice === choice}
-                          $isChecking={isAnswerChecked}
-                          $isCorrect={isAnswerCorrect}
-                          disabled={isAnswerChecked}
-                          onClick={() => {
-                            setSelectedChoice(choice);
-                            // Auto play pronunciation sound on choice click
-                            if (
-                              currentQuestion.type === "romaji-to-kana" ||
-                              currentQuestion.type === "audio-to-kana"
-                            ) {
-                              playJapaneseAudio(choice);
-                            }
+                      {/* Question visual display */}
+                      {currentQuestion.type === "kana-to-romaji" && (
+                        <LargeDisplayChar>
+                          {currentQuestion.audioChar}
+                        </LargeDisplayChar>
+                      )}
+                      {currentQuestion.type === "romaji-to-kana" && (
+                        <LargeDisplayChar
+                          style={{
+                            background: "rgba(59, 130, 246, 0.08)",
+                            borderColor: "rgba(59, 130, 246, 0.3)",
+                            color: "#3b82f6",
                           }}
                         >
-                          {choice}
-                        </ChoiceButton>
-                      ))}
-                    </ChoicesGrid>
-                  ) : (
-                    /* Matching pairs layout */
-                    <MatchingContainer>
-                      <MatchColumn>
-                        {currentQuestion.matchPairsLeft?.map((char) => (
-                          <MatchButton
-                            key={char}
-                            $selected={selectedLeft === char}
-                            $matched={matchedLeft.includes(char)}
-                            onClick={() => handleLeftMatch(char)}
-                          >
-                            {char}
-                          </MatchButton>
-                        ))}
-                      </MatchColumn>
-                      <MatchColumn>
-                        {currentQuestion.matchPairsRight?.map((romaji) => (
-                          <MatchButton
-                            key={romaji}
-                            $selected={selectedRight === romaji}
-                            $matched={matchedRight.includes(romaji)}
-                            onClick={() => handleRightMatch(romaji)}
-                          >
-                            {romaji}
-                          </MatchButton>
-                        ))}
-                      </MatchColumn>
-                    </MatchingContainer>
-                  )}
-                </QuestionBox>
-              )}
+                          {currentQuestion.audioChar || currentQuestion.correctAnswer}
+                        </LargeDisplayChar>
+                      )}
+                      {currentQuestion.type === "audio-to-kana" && (
+                        <SpeakerPlayButton
+                          onClick={() =>
+                            playJapaneseAudio(currentQuestion.audioChar!)
+                          }
+                        >
+                          <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+                          </svg>
+                        </SpeakerPlayButton>
+                      )}
 
-              <ActionFooter>
-                {isAnswerChecked && (
-                  <CheckOverlay $isCorrect={isAnswerCorrect}>
-                    <OverlayTitle $isCorrect={isAnswerCorrect}>
-                      {isAnswerCorrect ? "Awesome! ✨" : "Incorrect 😢"}
-                    </OverlayTitle>
-                    <OverlayText>
-                      {isAnswerCorrect
-                        ? "Your answer is correct."
-                        : `Correct answer: ${currentQuestion.correctAnswer}`}
-                    </OverlayText>
-                  </CheckOverlay>
+                      {/* Standard choices layout */}
+                      {currentQuestion.type !== "matching" ? (
+                        <ChoicesGrid>
+                          {currentQuestion.choices.map((choice) => (
+                            <ChoiceButton
+                              key={choice}
+                              $selected={selectedChoice === choice}
+                              $isChecking={isAnswerChecked}
+                              $isCorrect={isAnswerCorrect}
+                              disabled={isAnswerChecked}
+                              onClick={() => {
+                                setSelectedChoice(choice);
+                                if (
+                                  currentQuestion.type === "romaji-to-kana" ||
+                                  currentQuestion.type === "audio-to-kana"
+                                ) {
+                                  playJapaneseAudio(choice);
+                                }
+                              }}
+                            >
+                              {choice}
+                            </ChoiceButton>
+                          ))}
+                        </ChoicesGrid>
+                      ) : (
+                        /* Matching pairs layout */
+                        <MatchingContainer>
+                          <MatchColumn>
+                            {currentQuestion.matchPairsLeft?.map((char) => (
+                              <MatchButton
+                                key={char}
+                                $selected={selectedLeft === char}
+                                $matched={matchedLeft.includes(char)}
+                                onClick={() => handleLeftMatch(char)}
+                              >
+                                {char}
+                              </MatchButton>
+                            ))}
+                          </MatchColumn>
+                          <MatchColumn>
+                            {currentQuestion.matchPairsRight?.map((romaji) => (
+                              <MatchButton
+                                key={romaji}
+                                $selected={selectedRight === romaji}
+                                $matched={matchedRight.includes(romaji)}
+                                onClick={() => handleRightMatch(romaji)}
+                              >
+                                {romaji}
+                              </MatchButton>
+                            ))}
+                          </MatchColumn>
+                        </MatchingContainer>
+                      )}
+                    </QuestionBox>
+
+                    {/* Card Footer Divider & Action Button inside PracticeCard */}
+                    <CardFooterDivider>
+                      {isAnswerChecked && (
+                        <InlineFeedbackCard $isCorrect={isAnswerCorrect}>
+                          <FeedbackIconCircle
+                            $state={isAnswerCorrect ? "correct" : "incorrect"}
+                          >
+                            {isAnswerCorrect ? "✓" : "✕"}
+                          </FeedbackIconCircle>
+                          <div>
+                            <FeedbackTitleText
+                              $state={isAnswerCorrect ? "correct" : "incorrect"}
+                            >
+                              {isAnswerCorrect
+                                ? "Luar Biasa! ✨ Benar Sekali"
+                                : "Kurang Tepat 😢"}
+                            </FeedbackTitleText>
+                            <FeedbackSubText>
+                              {isAnswerCorrect
+                                ? "Jawaban kamu sudah benar."
+                                : `Jawaban yang benar: ${currentQuestion?.correctAnswer}`}
+                            </FeedbackSubText>
+                          </div>
+                        </InlineFeedbackCard>
+                      )}
+
+                      <BottomActionBtn
+                        onClick={
+                          !isAnswerChecked ? handleCheckAnswer : handleNextQuestion
+                        }
+                        disabled={
+                          !isAnswerChecked &&
+                          currentQuestion?.type !== "matching" &&
+                          !selectedChoice
+                        }
+                        style={{
+                          width: "100%",
+                          maxWidth: "100%",
+                          background: !isAnswerChecked
+                            ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                            : isAnswerCorrect
+                            ? "#10b981"
+                            : "#ef4444",
+                          borderBottomColor: !isAnswerChecked
+                            ? "#047857"
+                            : isAnswerCorrect
+                            ? "#047857"
+                            : "#b91c1c",
+                        }}
+                      >
+                        {!isAnswerChecked ? "PERIKSA JAWABAN 🚀" : "LANJUTKAN ➡️"}
+                      </BottomActionBtn>
+                    </CardFooterDivider>
+                  </PracticeCard>
                 )}
+              </>
+            ) : (
+              /* Complete session display panel */
+              <CompletePanel>
+                <CompleteEmoji>🎉</CompleteEmoji>
+                <QuestionPrompt>
+                  {isMistakesReview
+                    ? "Evaluasi Kesalahan Selesai! 🎉"
+                    : "Sesi Latihan Selesai! 🎉"}
+                </QuestionPrompt>
+                <Subtitle>
+                  {isMistakesReview
+                    ? "Hebat sekali! Kamu berhasil memperbaiki beberapa kesalahan huruf."
+                    : "Kerja bagus! Kemampuan membaca huruf Jepang kamu makin terasah tajam."}
+                </Subtitle>
 
-                {!isAnswerChecked ? (
-                  <BottomActionBtn
-                    onClick={handleCheckAnswer}
-                    disabled={
-                      currentQuestion?.type !== "matching" && !selectedChoice
+                <CompleteScoreCard>
+                  <ScoreItem>
+                    <ScoreValue>+15 XP</ScoreValue>
+                    <ScoreLabel>XP TERKUMPUL</ScoreLabel>
+                  </ScoreItem>
+                  <ScoreItem>
+                    <ScoreValue>
+                      {Math.round((correctCount / questions.length) * 100)}%
+                    </ScoreValue>
+                    <ScoreLabel>AKURASI JAWABAN</ScoreLabel>
+                  </ScoreItem>
+                </CompleteScoreCard>
+
+                <BottomActionBtn
+                  onClick={() => {
+                    setIsPracticing(false);
+                    if (isMistakesReview) {
+                      router.push("/practice");
+                    } else {
+                      router.replace("/characters");
                     }
-                  >
-                    Check
-                  </BottomActionBtn>
-                ) : (
-                  <BottomActionBtn onClick={handleNextQuestion}>
-                    Continue
-                  </BottomActionBtn>
-                )}
-              </ActionFooter>
-            </>
-          ) : (
-            /* Complete session display panel */
-            <CompletePanel>
-              <CompleteEmoji>🎉</CompleteEmoji>
-              <QuestionPrompt>
-                {isMistakesReview
-                  ? "Mistakes Reviewed!"
-                  : "Practice Completed!"}
-              </QuestionPrompt>
-              <Subtitle>
-                {isMistakesReview
-                  ? "Great job! You have cleared some of your troubled characters."
-                  : "Great job! Your Japanese character reading skills are improving."}
-              </Subtitle>
-
-              <CompleteScoreCard>
-                <ScoreItem>
-                  <ScoreValue>+{15}</ScoreValue>
-                  <ScoreLabel>EXP GAINED</ScoreLabel>
-                </ScoreItem>
-                <ScoreItem>
-                  <ScoreValue>
-                    {Math.round((correctCount / questions.length) * 100)}%
-                  </ScoreValue>
-                  <ScoreLabel>ACCURACY</ScoreLabel>
-                </ScoreItem>
-              </CompleteScoreCard>
-
-              <BottomActionBtn
-                onClick={() => {
-                  setIsPracticing(false);
-                  if (isMistakesReview) {
-                    router.push("/practice");
-                  } else {
-                    router.replace("/characters");
-                  }
-                }}
-              >
-                Finish
-              </BottomActionBtn>
-            </CompletePanel>
-          )}
+                  }}
+                  style={{
+                    background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                    borderBottomColor: "#047857",
+                    maxWidth: "320px",
+                    marginTop: "1.5rem",
+                  }}
+                >
+                  SELESAI & KEMBALI 🏠
+                </BottomActionBtn>
+              </CompletePanel>
+            )}
+          </ContentWrapper>
         </PracticeContainer>
       )}
     </PageContainer>
