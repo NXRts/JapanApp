@@ -576,7 +576,7 @@ export default function KanaKeyboard({
                       disabled={!key}
                       onClick={(e) => {
                         e.preventDefault();
-                        key && onType(key);
+                        if (key) onType(key);
                       }}
                     >
                       {key}

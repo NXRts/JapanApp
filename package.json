@@ -6,7 +6,7 @@
     "dev": "next dev --webpack",
     "build": "NODE_OPTIONS='--max-old-space-size=4096' next build --webpack",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint .",
     "security-audit": "npm audit --audit-level=moderate",
     "check-env": "node scripts/check-env.js",
     "smoke-test": "node scripts/smoke-test.js",

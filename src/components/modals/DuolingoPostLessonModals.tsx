@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styled, { keyframes } from "styled-components";
 import { useProgress } from "@/context/ProgressContext";
-import { getDailyQuests, Quest } from "@/utils/dailyQuests";
+import { getDailyQuests } from "@/utils/dailyQuests";
 
 /* ─── Keyframe Animations ────────────────────────────────────────────────── */
 const fadeIn = keyframes`
