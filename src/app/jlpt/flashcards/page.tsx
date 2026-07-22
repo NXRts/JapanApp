@@ -12,6 +12,7 @@ import {
 } from "@/lib/dictionary";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useProgress } from "@/context/ProgressContext";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { toRomaji } from "wanakana";
@@ -1112,6 +1113,7 @@ interface JpjpDefinition {
 }
 
 function FlashcardContent() {
+  const { updateMastery, recordQuizResult, addExp } = useProgress();
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -1205,6 +1207,17 @@ function FlashcardContent() {
     const newStatus = { ...reviewStatus, [id]: status };
     setReviewStatus(newStatus);
     localStorage.setItem("jlpt-flashcards-status", JSON.stringify(newStatus));
+
+    if (status === "remembered") {
+      addExp(5);
+      recordQuizResult(1, 1, activeCategory === "kanji" ? "kanji" : "flashcards");
+      if (currentItem) {
+        const char = currentItem.kanji || currentItem.word || currentItem.title;
+        if (char) {
+          updateMastery(char, true);
+        }
+      }
+    }
   };
 
   const playAudio = (e: React.MouseEvent, text: string) => {

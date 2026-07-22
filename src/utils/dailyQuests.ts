@@ -87,7 +87,7 @@ const MEDIUM_QUEST_TEMPLATES = [
     rewardOptions: [35, 45],
     color: "#ec4899",
     type: "kanji_learned",
-    actionUrl: "/kanji",
+    actionUrl: "/jlpt/flashcards?category=kanji",
   },
   {
     icon: "🎧",

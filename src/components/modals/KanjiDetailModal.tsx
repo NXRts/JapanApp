@@ -519,7 +519,7 @@ export function KanjiDetailModal({ kanji, onClose, onPractice }: KanjiDetailModa
           </SectionBlock>
         )}
 
-        <PracticeCTA onClick={handlePracticeClick}>⚡ Selesaikan Hafalan (+10 XP)</PracticeCTA>
+        <PracticeCTA onClick={handlePracticeClick}>🎴 Hafalkan di JLPT Flashcards (+10 XP)</PracticeCTA>
       </ModalBox>
     </Overlay>
   );
