@@ -1517,6 +1517,15 @@ export function Navbar() {
                   </PopoverItem>
                 </Link>
                 <Link
+                  href="/hafalan"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem style={{ color: "#3b82f6" }}>
+                    <span>🃏</span> Hafalan (Leitner 5-Box)
+                  </PopoverItem>
+                </Link>
+                <Link
                   href="/practice-sheets"
                   style={{ textDecoration: "none", color: "inherit" }}
                   onClick={() => setIsLainnyaOpen(false)}
@@ -1853,6 +1862,12 @@ export function Navbar() {
                       Materials
                     </DropdownItem>
                     <DropdownItem
+                      href="/hafalan"
+                      $active={pathname.startsWith("/hafalan")}
+                    >
+                      Hafalan (Leitner)
+                    </DropdownItem>
+                    <DropdownItem
                       href="/practice-sheets"
                       $active={pathname === "/practice-sheets"}
                     >
@@ -2036,6 +2051,17 @@ export function Navbar() {
             >
               <KanjiBadge>遊</KanjiBadge>
               Game
+            </MobileLink>
+
+            <MobileLink
+              href="/hafalan"
+              $active={pathname.startsWith("/hafalan")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.18}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <KanjiBadge>憶</KanjiBadge>
+              Hafalan (Leitner)
             </MobileLink>
 
             <MobileLink

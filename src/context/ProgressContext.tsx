@@ -9,6 +9,7 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { calculateNextSRS, SRSItem } from "@/lib/srs";
+import { calculateNextLeitner, LeitnerItemState } from "@/lib/leitner";
 import { encryptData, decryptData } from "@/lib/encryption";
 import { logError } from "@/lib/logger";
 import {
@@ -71,6 +72,7 @@ interface ProgressData {
     type: string;
   }[];
   srs: Record<string, SRSItem>;
+  leitner: Record<string, LeitnerItemState>;
   exp: number;
   activityLog: Record<string, number>; // Date string -> EXP gained
   completedExercises: string[];
@@ -94,6 +96,7 @@ interface ProgressContextType {
   recordQuizResult: (score: number, total: number, type: string) => void;
   checkStreak: () => void;
   updateSRS: (char: string, quality: number) => void;
+  updateLeitnerProgress: (char: string, isCorrect: boolean) => void;
   addExp: (amount: number) => void;
   resetProgress: () => void;
   markExerciseCompleted: (id: string) => void;
@@ -142,6 +145,7 @@ const INITIAL_DATA: ProgressData = {
   lastActiveDate: null,
   quizHistory: [],
   srs: {},
+  leitner: {},
   exp: 0,
   activityLog: {},
   completedExercises: [],
@@ -233,6 +237,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
               ...INITIAL_DATA,
               ...parsed,
               srs: parsed.srs || {},
+              leitner: parsed.leitner || {},
               mastery: parsed.mastery || {},
               quizHistory: parsed.quizHistory || [],
               streak: parsed.streak || 0,
@@ -501,6 +506,33 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     });
   }, [autoClaimCompletedQuests]);
 
+  const updateLeitnerProgress = useCallback(
+    (char: string, isCorrect: boolean) => {
+      setProgress((prev) => {
+        const currentItem = prev.leitner?.[char];
+        const nextResult = calculateNextLeitner(
+          currentItem?.box || 1,
+          isCorrect,
+          currentItem?.lastReviewedAt,
+        );
+        const nextState = {
+          ...prev,
+          leitner: {
+            ...prev.leitner,
+            [char]: {
+              box: nextResult.newBox,
+              lastReviewedAt: new Date().toISOString(),
+              nextReviewAt: nextResult.nextReviewAt,
+            },
+          },
+        };
+        return autoClaimCompletedQuests(nextState);
+      });
+      addExp(isCorrect ? 10 : 2);
+    },
+    [addExp, autoClaimCompletedQuests],
+  );
+
   const recordQuizResult = useCallback(
     (score: number, total: number, type: string) => {
       checkStreak(); // Record activity on quiz completion
@@ -751,6 +783,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       recordQuizResult,
       checkStreak,
       updateSRS,
+      updateLeitnerProgress,
       addExp,
       markExerciseCompleted,
       getDueItems,
@@ -774,6 +807,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       recordQuizResult,
       checkStreak,
       updateSRS,
+      updateLeitnerProgress,
       addExp,
       markExerciseCompleted,
       getDueItems,

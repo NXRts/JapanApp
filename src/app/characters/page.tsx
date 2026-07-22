@@ -1445,6 +1445,10 @@ function CharactersPageContent() {
   };
 
   const handleStartPractice = () => {
+    if (activeTab === "kanji") {
+      router.push("/jlpt/flashcards?category=kanji");
+      return;
+    }
     setIsMistakesReview(false);
     startPractice(activeTab, false);
   };
@@ -1887,7 +1891,11 @@ function CharactersPageContent() {
             <KanjiDetailModal
               kanji={selectedKanji}
               onClose={() => setSelectedKanji(null)}
-              onPractice={() => router.push("/jlpt/kanji-writer")}
+              onPractice={() =>
+                router.push(
+                  `/jlpt/flashcards?category=kanji&q=${encodeURIComponent(selectedKanji.char)}`,
+                )
+              }
             />
           )}
         </>
