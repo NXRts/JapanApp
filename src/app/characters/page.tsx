@@ -1525,12 +1525,11 @@ function CharactersPageContent() {
 
   // Handle checking answers
   const handleCheckAnswer = () => {
-    if (!currentQuestion) return;
+    if (!currentQuestion || isAnswerChecked) return;
 
     if (currentQuestion.type === "matching") {
       setIsAnswerCorrect(true);
       setIsAnswerChecked(true);
-      setCorrectCount((prev) => prev + 1);
     } else {
       const isCorrect = selectedChoice === currentQuestion.correctAnswer;
       setIsAnswerCorrect(isCorrect);
@@ -1881,7 +1880,18 @@ function CharactersPageContent() {
             </CloseButton>
             <ProgressBar>
               <ProgressFill
-                $percent={(currentQuestionIndex / questions.length) * 100}
+                $percent={
+                  showComplete
+                    ? 100
+                    : Math.min(
+                        100,
+                        Math.round(
+                          ((currentQuestionIndex + (isAnswerChecked ? 1 : 0)) /
+                            (questions.length || 1)) *
+                            100,
+                        ),
+                      )
+                }
               />
             </ProgressBar>
             <LivesIndicator>❤️ {progress.isSuper ? "♾️" : (progress.hearts ?? 5)}</LivesIndicator>
@@ -2074,7 +2084,13 @@ function CharactersPageContent() {
                   </ScoreItem>
                   <ScoreItem>
                     <ScoreValue>
-                      {Math.round((correctCount / questions.length) * 100)}%
+                      {Math.min(
+                        100,
+                        Math.round(
+                          (correctCount / (questions.length || 1)) * 100,
+                        ),
+                      )}
+                      %
                     </ScoreValue>
                     <ScoreLabel>AKURASI JAWABAN</ScoreLabel>
                   </ScoreItem>

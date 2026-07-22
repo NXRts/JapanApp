@@ -484,7 +484,7 @@ export function RightSidebar() {
             <WidgetTitle>{leagueInfo.name}</WidgetTitle>
             <WidgetActionText onClick={() => setActiveModal("leaderboard")}>LIHAT LIGA</WidgetActionText>
           </WidgetHeader>
-          <LeagueBody onClick={() => setActiveModal("leaderboard")} style={{ borderColor: rankInfo.color }}>
+          <LeagueBody onClick={() => setActiveModal("leaderboard")}>
             <ShieldIconBox style={{ background: leagueInfo.badgeBg, borderColor: leagueInfo.borderColor }}>
               {leagueInfo.icon}
               <WarningBadge style={{ background: rankInfo.color }}>
