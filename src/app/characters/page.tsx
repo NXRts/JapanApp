@@ -1383,7 +1383,12 @@ function CharactersPageContent() {
           ].sort(() => 0.5 - Math.random());
           generatedQuestions.push({
             type: "kana-to-romaji",
-            prompt: targetTab === "kanji" ? `Apa arti Bahasa Indonesia dari Kanji ini?` : `Apa romaji yang tepat untuk huruf ini?`,
+            prompt:
+              targetTab === "kanji"
+                ? `Apa arti Bahasa Indonesia dari Kanji ini?`
+                : targetTab === "katakana"
+                ? `Apa romaji yang tepat untuk huruf Katakana ini?`
+                : `Apa romaji yang tepat untuk huruf Hiragana ini?`,
             correctAnswer: target.romaji,
             choices,
             audioChar: target.char,
@@ -1395,7 +1400,12 @@ function CharactersPageContent() {
           ].sort(() => 0.5 - Math.random());
           generatedQuestions.push({
             type: "romaji-to-kana",
-            prompt: targetTab === "kanji" ? `Pilih huruf Kanji yang berbunyi / berarti demikian:` : `Pilih huruf Jepang yang berbunyi demikian:`,
+            prompt:
+              targetTab === "kanji"
+                ? `Pilih huruf Kanji yang berbunyi / berarti demikian:`
+                : targetTab === "katakana"
+                ? `Pilih huruf Katakana yang berbunyi demikian:`
+                : `Pilih huruf Hiragana yang berbunyi demikian:`,
             correctAnswer: target.char,
             choices,
             audioChar: target.romaji,
@@ -1407,7 +1417,10 @@ function CharactersPageContent() {
           ].sort(() => 0.5 - Math.random());
           generatedQuestions.push({
             type: "audio-to-kana",
-            prompt: `Dengarkan suara audio dan pilih huruf yang sesuai:`,
+            prompt:
+              targetTab === "katakana"
+                ? `Dengarkan audio dan pilih huruf Katakana yang sesuai:`
+                : `Dengarkan audio dan pilih huruf Hiragana yang sesuai:`,
             correctAnswer: target.char,
             choices,
             audioChar: target.char,
@@ -1467,11 +1480,22 @@ function CharactersPageContent() {
   const hasTriggeredRef = useRef(false);
 
   useEffect(() => {
-    if (
-      searchParams &&
-      searchParams.get("practice") === "true" &&
-      !hasTriggeredRef.current
-    ) {
+    if (!searchParams || hasTriggeredRef.current) return;
+
+    const tabParam = searchParams.get("tab");
+    if (tabParam === "katakana" || tabParam === "kanji" || tabParam === "hiragana") {
+      setActiveTab(tabParam);
+    }
+
+    const practiceParam = searchParams.get("practice");
+    if (practiceParam === "hiragana" || practiceParam === "katakana" || practiceParam === "kanji") {
+      hasTriggeredRef.current = true;
+      setActiveTab(practiceParam);
+      startPractice(practiceParam, false);
+      return;
+    }
+
+    if (practiceParam === "true" || practiceParam === "mistakes") {
       hasTriggeredRef.current = true;
       setIsMistakesReview(true);
 
@@ -1688,7 +1712,11 @@ function CharactersPageContent() {
                 : "Pelajari huruf Kanji secara bertahap mulai dari angka, alam, hingga level JLPT. Klik kartu untuk melihat animasi coretan & contoh kata."}
             </Subtitle>
             <PrimaryCTAButton onClick={handleStartPractice}>
-              {activeTab === "kanji" ? "Latihan Kanji Interaktif 🚀" : "Latihan Huruf (Practice Characters)"}
+              {activeTab === "hiragana"
+                ? "🚀 LATIHAN HURUF HIRAGANA"
+                : activeTab === "katakana"
+                ? "🚀 LATIHAN HURUF KATAKANA"
+                : "🚀 LATIHAN KANJI INTERAKTIF"}
             </PrimaryCTAButton>
           </HeaderSection>
 
@@ -1904,21 +1932,45 @@ function CharactersPageContent() {
                   <PracticeCard>
                     <QuestionBox>
                       <QuestionCategory>
-                        LATIHAN HURUF {activeTab.toUpperCase()}
+                        {activeTab === "kanji"
+                          ? "LATIHAN HURUF KANJI 🈸"
+                          : activeTab === "katakana"
+                          ? "LATIHAN HURUF KATAKANA 🈁"
+                          : "LATIHAN HURUF HIRAGANA 🎌"}
                       </QuestionCategory>
 
                       <QuestionPrompt>
                         {currentQuestion.type === "kana-to-romaji" && (
-                          <>{activeTab === "kanji" ? "Apa arti Bahasa Indonesia dari Kanji ini?" : "Apa pembacaan romaji yang tepat untuk huruf ini?"}</>
+                          <>
+                            {activeTab === "kanji"
+                              ? "Apa arti Bahasa Indonesia dari Kanji ini?"
+                              : activeTab === "katakana"
+                              ? "Apa romaji yang tepat untuk huruf Katakana ini?"
+                              : "Apa romaji yang tepat untuk huruf Hiragana ini?"}
+                          </>
                         )}
                         {currentQuestion.type === "romaji-to-kana" && (
-                          <>{activeTab === "kanji" ? "Pilih huruf Kanji yang berbunyi / berarti demikian:" : "Pilih huruf Jepang yang berbunyi demikian:"}</>
+                          <>
+                            {activeTab === "kanji"
+                              ? "Pilih huruf Kanji yang berbunyi / berarti demikian:"
+                              : activeTab === "katakana"
+                              ? "Pilih huruf Katakana yang berbunyi demikian:"
+                              : "Pilih huruf Hiragana yang berbunyi demikian:"}
+                          </>
                         )}
                         {currentQuestion.type === "audio-to-kana" && (
-                          <>Dengarkan suara audio dan pilih huruf yang sesuai:</>
+                          <>
+                            {activeTab === "katakana"
+                              ? "Dengarkan audio dan pilih huruf Katakana yang sesuai:"
+                              : "Dengarkan audio dan pilih huruf Hiragana yang sesuai:"}
+                          </>
                         )}
                         {currentQuestion.type === "matching" && (
-                          <>Hubungkan pasangan huruf dan romaji yang cocok:</>
+                          <>
+                            {activeTab === "katakana"
+                              ? "Hubungkan pasangan huruf Katakana dan romaji yang cocok:"
+                              : "Hubungkan pasangan huruf Hiragana dan romaji yang cocok:"}
+                          </>
                         )}
                       </QuestionPrompt>
 
