@@ -1338,7 +1338,7 @@ export default function ProfilePage() {
               padding: "1rem 1.25rem",
               borderRadius: "18px",
               background: "rgba(255, 255, 255, 0.03)",
-              border: `1.5px solid ${rankInfo.color}`,
+              border: "1px solid var(--border)",
               cursor: "pointer",
             }}
           >
