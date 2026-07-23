@@ -2,17 +2,29 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, createGlobalStyle } from "styled-components";
+
+const ErrorGlobalStyle = createGlobalStyle`
+  main {
+    background: var(--surface) !important;
+  }
+`;
 
 const ErrorContainer = styled.div`
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 4rem 2rem;
   text-align: center;
   background: var(--surface);
+
+  @media (max-width: 600px) {
+    padding: 1.25rem 1rem 5.5rem 1rem;
+    min-height: calc(100vh - 170px);
+    justify-content: center;
+  }
 `;
 
 const shakeAnimation = keyframes`
@@ -119,38 +131,38 @@ export default function Error({
   }, [error]);
 
   return (
-    <ErrorContainer>
-      <ErrorIcon>🚨</ErrorIcon>
-      <ErrorTitle>Something went wrong!</ErrorTitle>
-      <ErrorMessage>
-        We encountered an unexpected error. This has been logged and our team
-        has been notified. You can try refreshing the page or go back to the
-        home page.
-      </ErrorMessage>
+    <>
+      <ErrorGlobalStyle />
+      <ErrorContainer>
+        <ErrorIcon>🚨</ErrorIcon>
+        <ErrorTitle>Something went wrong!</ErrorTitle>
+        <ErrorMessage>
+          We encountered an unexpected error. This has been logged and our team
+          has been notified. You can try refreshing the page or go back to the
+          home page.
+        </ErrorMessage>
 
-      {process.env.NODE_ENV === "development" && (
-        <ErrorDetails>
-          <strong>Error:</strong>{" "}
-          {!error?.message ||
-          error.message === "[object Event]" ||
-          error.message.includes("[object Event]")
-            ? "A media, audio, or network resource event error occurred."
-            : error.message}
-          {error.digest && (
-            <div>
-              <strong>Digest:</strong> {error.digest}
-            </div>
-          )}
-          <div style={{ marginTop: "0.5rem", fontSize: "0.75rem" }}>
-            {error.stack}
-          </div>
-        </ErrorDetails>
-      )}
+        {process.env.NODE_ENV === "development" && (
+          <ErrorDetails>
+            <strong>Error:</strong>{" "}
+            {!error?.message ||
+            error.message === "[object Event]" ||
+            error.message.includes("[object Event]")
+              ? "A media, audio, or network resource event error occurred."
+              : error.message}
+            {error.digest && (
+              <div>
+                <small>Digest: {error.digest}</small>
+              </div>
+            )}
+          </ErrorDetails>
+        )}
 
-      <ButtonGroup>
-        <PrimaryButton href="/">Go Home</PrimaryButton>
-        <SecondaryButton onClick={() => reset()}>Try Again</SecondaryButton>
-      </ButtonGroup>
-    </ErrorContainer>
+        <ButtonGroup>
+          <PrimaryButton href="/">Go Home</PrimaryButton>
+          <SecondaryButton onClick={() => reset()}>Try Again</SecondaryButton>
+        </ButtonGroup>
+      </ErrorContainer>
+    </>
   );
 }

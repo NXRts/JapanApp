@@ -35,17 +35,6 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `;
 
-const flipIn = keyframes`
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(180deg); }
-`;
-
-const pulse = keyframes`
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-`;
-
 // --- Styled Components ---
 const PageWrapper = styled.div`
   min-height: 90vh;
@@ -84,11 +73,11 @@ const Subtitle = styled.p`
 // --- Box Overview Section ---
 const BoxGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 1rem;
   margin-bottom: 2rem;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1100px) {
     grid-template-columns: repeat(3, 1fr);
   }
   @media (max-width: 640px) {
@@ -100,17 +89,14 @@ const BoxCard = styled.div<{ $active?: boolean; $color: string }>`
   background: var(--surface, #1e293b);
   border: 2px solid ${props => props.$active ? props.$color : "var(--border, #334155)"};
   border-radius: 16px;
-  padding: 1.25rem 1rem;
+  padding: 1.25rem 0.75rem;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
-
-  ${props => props.$active && css`
-    box-shadow: 0 8px 24px ${props.$color}33;
-    transform: translateY(-2px);
-  `}
+  box-shadow: ${props => props.$active ? `0 8px 24px ${props.$color}33` : "none"};
+  transform: ${props => props.$active ? "translateY(-2px)" : "none"};
 
   &:hover {
     border-color: ${props => props.$color};
@@ -119,12 +105,12 @@ const BoxCard = styled.div<{ $active?: boolean; $color: string }>`
 `;
 
 const BoxHeader = styled.div<{ $color: string }>`
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
   color: ${props => props.$color};
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 `;
 
 const BoxCount = styled.div`
@@ -186,11 +172,11 @@ const ActionBar = styled.div`
   gap: 1rem;
 `;
 
-const ActionButton = styled.button<{ $variant?: "primary" | "secondary" }>`
+const ActionButton = styled.button<{ $variant?: "primary" | "secondary" | "success" }>`
   padding: 0.85rem 1.75rem;
   border-radius: 14px;
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
@@ -198,14 +184,32 @@ const ActionButton = styled.button<{ $variant?: "primary" | "secondary" }>`
   align-items: center;
   gap: 0.5rem;
 
-  ${props => props.$variant === "secondary" ? css`
+  ${props => props.$variant === "secondary" && css`
     background: var(--surface, #1e293b);
     color: var(--foreground, #f8fafc);
     border: 1.5px solid var(--border, #334155);
     &:hover {
       background: var(--surface-hover, #334155);
     }
-  ` : css`
+  `}
+
+  ${props => props.$variant === "success" && css`
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+    border-bottom: 4px solid #047857;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+    &:active {
+      transform: translateY(2px);
+      border-bottom-width: 0px;
+    }
+  `}
+
+  ${props => (!props.$variant || props.$variant === "primary") && css`
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     color: #ffffff;
     box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
@@ -220,6 +224,13 @@ const ActionButton = styled.button<{ $variant?: "primary" | "secondary" }>`
       border-bottom-width: 0px;
     }
   `}
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
 `;
 
 // --- Cards Grid (Overview Mode) ---
@@ -272,7 +283,8 @@ const ItemBoxTag = styled.span<{ $box: number }>`
       case 4: return "#3b82f622";
       case 3: return "#8b5cf622";
       case 2: return "#f59e0b22";
-      default: return "#ef444422";
+      case 1: return "#ef444422";
+      default: return "#64748b22";
     }
   }};
   color: ${props => {
@@ -281,7 +293,8 @@ const ItemBoxTag = styled.span<{ $box: number }>`
       case 4: return "#60a5fa";
       case 3: return "#a78bfa";
       case 2: return "#fbbf24";
-      default: return "#f87171";
+      case 1: return "#f87171";
+      default: return "#94a3b8";
     }
   }};
 `;
@@ -491,7 +504,13 @@ const FeedbackBox = styled.div<{ $isCorrect: boolean }>`
 `;
 
 export default function LeitnerHafalanPage() {
-  const { progress, updateLeitnerProgress } = useProgress();
+  const { progress, updateLeitnerProgress, isLoaded } = useProgress();
+  const [mounted, setMounted] = useState(false);
+
+  // Prevent SSR/Client Hydration Mismatch
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // State
   const [activeCategory, setActiveCategory] = useState<"all" | "hiragana" | "katakana" | "kanji">("all");
@@ -502,6 +521,7 @@ export default function LeitnerHafalanPage() {
   const [studyIndex, setStudyIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [quizIndex, setQuizIndex] = useState(0);
+  const [activeQuizPool, setActiveQuizPool] = useState<LeitnerCardItem[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
   const [sessionCompleted, setSessionCompleted] = useState(false);
@@ -557,48 +577,75 @@ export default function LeitnerHafalanPage() {
     return list;
   }, []);
 
+  // Helper to determine exact Leitner box (0 = Belum Dipelajari / Queue)
+  const getCardBox = (card: LeitnerCardItem): number => {
+    if (!mounted || !isLoaded) return 0;
+    const leitnerState = progress.leitner?.[card.char];
+    if (leitnerState && typeof leitnerState.box === "number") {
+      return leitnerState.box;
+    }
+    const mastery = progress.mastery?.[card.char];
+    if (mastery && (mastery.correct > 0 || mastery.incorrect > 0)) {
+      return mastery.correct > 0 ? 2 : 1;
+    }
+    return 0; // 0 = Belum Dipelajari
+  };
+
   // Filtered cards by Category & Box Filter
   const filteredCards = useMemo(() => {
     return allCards.filter(card => {
       if (activeCategory !== "all" && card.type !== activeCategory) return false;
-      const state = progress.leitner?.[card.char];
-      const box = state?.box || 1;
+      const box = getCardBox(card);
       if (selectedBoxFilter !== null && box !== selectedBoxFilter) return false;
       return true;
     });
-  }, [allCards, activeCategory, selectedBoxFilter, progress.leitner]);
+  }, [allCards, activeCategory, selectedBoxFilter, progress.leitner, progress.mastery, mounted, isLoaded]);
 
-  // Due items for Quiz
+  // Active due cards for Review Quiz (Box 1 - 5)
   const dueQuizCards = useMemo(() => {
+    if (!mounted || !isLoaded) return [];
     return allCards.filter(card => {
       if (activeCategory !== "all" && card.type !== activeCategory) return false;
-      const state = progress.leitner?.[card.char];
-      if (!state) return true; // New items are due
-      return isLeitnerDue(state.nextReviewAt);
+      const box = getCardBox(card);
+      if (box === 0) return false; // Unlearned cards are NOT due review yet
+      const leitnerState = progress.leitner?.[card.char];
+      if (!leitnerState) return true;
+      return isLeitnerDue(leitnerState.nextReviewAt);
     });
-  }, [allCards, activeCategory, progress.leitner]);
+  }, [allCards, activeCategory, progress.leitner, progress.mastery, mounted, isLoaded]);
 
-  // Count items per Box
+  // Unlearned cards queue
+  const unlearnedCards = useMemo(() => {
+    return allCards.filter(card => {
+      if (activeCategory !== "all" && card.type !== activeCategory) return false;
+      return getCardBox(card) === 0;
+    });
+  }, [allCards, activeCategory, progress.leitner, progress.mastery, mounted, isLoaded]);
+
+  // Count items per Box (0: Belum Dipelajari, 1-5: Leitner Boxes)
   const boxCounts = useMemo(() => {
-    const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-    const dueCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    const counts = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    const dueCounts = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
     allCards.forEach(card => {
       if (activeCategory !== "all" && card.type !== activeCategory) return;
-      const state = progress.leitner?.[card.char];
-      const box = (state?.box || 1) as 1 | 2 | 3 | 4 | 5;
-      counts[box] = (counts[box] || 0) + 1;
-      if (!state || isLeitnerDue(state.nextReviewAt)) {
-        dueCounts[box] = (dueCounts[box] || 0) + 1;
+      const box = getCardBox(card);
+      counts[box as keyof typeof counts] = (counts[box as keyof typeof counts] || 0) + 1;
+
+      if (box > 0) {
+        const leitnerState = progress.leitner?.[card.char];
+        if (!leitnerState || isLeitnerDue(leitnerState.nextReviewAt)) {
+          dueCounts[box as keyof typeof dueCounts] = (dueCounts[box as keyof typeof dueCounts] || 0) + 1;
+        }
       }
     });
 
     return { counts, dueCounts };
-  }, [allCards, activeCategory, progress.leitner]);
+  }, [allCards, activeCategory, progress.leitner, progress.mastery, mounted, isLoaded]);
 
   // Current items for Study / Quiz
   const currentStudyCard = filteredCards[studyIndex] || filteredCards[0];
-  const currentQuizCard = dueQuizCards[quizIndex] || dueQuizCards[0];
+  const currentQuizCard = activeQuizPool[quizIndex] || activeQuizPool[0];
 
   // Options for active Quiz
   const quizOptions = useMemo(() => {
@@ -620,7 +667,20 @@ export default function LeitnerHafalanPage() {
     setMode("study");
   };
 
-  const handleStartQuiz = () => {
+  const handleStartReviewQuiz = () => {
+    if (dueQuizCards.length === 0) return;
+    setActiveQuizPool(dueQuizCards);
+    setQuizIndex(0);
+    setSelectedAnswer(null);
+    setIsAnswerChecked(false);
+    setSessionCompleted(false);
+    setMode("quiz");
+  };
+
+  const handleStartNewBatchQuiz = () => {
+    if (unlearnedCards.length === 0) return;
+    const batch = unlearnedCards.slice(0, 5); // Take 5 new cards
+    setActiveQuizPool(batch);
     setQuizIndex(0);
     setSelectedAnswer(null);
     setIsAnswerChecked(false);
@@ -647,7 +707,7 @@ export default function LeitnerHafalanPage() {
   };
 
   const handleNextQuizQuestion = () => {
-    if (quizIndex < dueQuizCards.length - 1) {
+    if (quizIndex < activeQuizPool.length - 1) {
       setQuizIndex(prev => prev + 1);
       setSelectedAnswer(null);
       setIsAnswerChecked(false);
@@ -657,6 +717,7 @@ export default function LeitnerHafalanPage() {
   };
 
   const boxColors: Record<number, string> = {
+    0: "#64748b",
     1: "#ef4444",
     2: "#f59e0b",
     3: "#8b5cf6",
@@ -665,6 +726,7 @@ export default function LeitnerHafalanPage() {
   };
 
   const boxTitles: Record<number, string> = {
+    0: "Belum Dipelajari",
     1: "Box 1 (Harian)",
     2: "Box 2 (3 Hari)",
     3: "Box 3 (1 Minggu)",
@@ -689,9 +751,9 @@ export default function LeitnerHafalanPage() {
         </Subtitle>
       </HeaderSection>
 
-      {/* 5 Box Summary Cards */}
+      {/* 6 Box Summary Cards (Belum Dipelajari + Box 1-5) */}
       <BoxGrid>
-        {[1, 2, 3, 4, 5].map((boxNum) => {
+        {[0, 1, 2, 3, 4, 5].map((boxNum) => {
           const count = boxCounts.counts[boxNum as keyof typeof boxCounts.counts];
           const due = boxCounts.dueCounts[boxNum as keyof typeof boxCounts.dueCounts];
           const isSelected = selectedBoxFilter === boxNum;
@@ -708,9 +770,9 @@ export default function LeitnerHafalanPage() {
               </BoxHeader>
               <BoxCount>{count}</BoxCount>
               <BoxInterval>
-                Review tiap {LEITNER_INTERVALS[boxNum]} hari
+                {boxNum === 0 ? "Antrean Baru" : `Review tiap ${LEITNER_INTERVALS[boxNum]} hr`}
               </BoxInterval>
-              {due > 0 && <DueBadge>🔥 {due} Due</DueBadge>}
+              {boxNum > 0 && due > 0 && <DueBadge>🔥 {due} Due</DueBadge>}
             </BoxCard>
           );
         })}
@@ -737,14 +799,21 @@ export default function LeitnerHafalanPage() {
         <ActionBar>
           <div style={{ fontWeight: 700, color: "var(--foreground-secondary)" }}>
             Menampilkan {filteredCards.length} kartu
-            {selectedBoxFilter && ` di Box ${selectedBoxFilter}`}
+            {selectedBoxFilter !== null && ` (${boxTitles[selectedBoxFilter]})`}
           </div>
-          <div style={{ display: "flex", gap: "0.75rem" }}>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <ActionButton $variant="secondary" onClick={handleStartStudy} disabled={filteredCards.length === 0}>
               📖 Modul Belajar (Flipcards)
             </ActionButton>
-            <ActionButton onClick={handleStartQuiz} disabled={dueQuizCards.length === 0}>
-              🚀 Uji Kuis Leitner ({dueQuizCards.length} Due)
+            
+            {unlearnedCards.length > 0 && (
+              <ActionButton $variant="success" onClick={handleStartNewBatchQuiz}>
+                ✨ Belajar 5 Kartu Baru
+              </ActionButton>
+            )}
+
+            <ActionButton onClick={handleStartReviewQuiz} disabled={dueQuizCards.length === 0}>
+              🚀 Uji Kuis Review ({dueQuizCards.length} Due)
             </ActionButton>
           </div>
         </ActionBar>
@@ -754,8 +823,7 @@ export default function LeitnerHafalanPage() {
       {mode === "overview" && (
         <CardGrid>
           {filteredCards.map((card) => {
-            const state = progress.leitner?.[card.char];
-            const box = state?.box || 1;
+            const box = getCardBox(card);
             const subText = card.type === "kanji" ? card.meaning : card.romaji;
 
             return (
@@ -764,7 +832,7 @@ export default function LeitnerHafalanPage() {
                 $box={box}
                 onClick={() => playJapaneseAudio(card.char)}
               >
-                <ItemBoxTag $box={box}>Box {box}</ItemBoxTag>
+                <ItemBoxTag $box={box}>{box === 0 ? "🆕 Baru" : `Box ${box}`}</ItemBoxTag>
                 <ItemChar>{card.char}</ItemChar>
                 <ItemSub>{subText}</ItemSub>
               </GridItemCard>
@@ -845,7 +913,7 @@ export default function LeitnerHafalanPage() {
               ⬅️ Keluar Kuis
             </ActionButton>
             <div style={{ fontWeight: 700 }}>
-              Kuis Leitner: {quizIndex + 1} / {dueQuizCards.length}
+              Kuis Leitner: {quizIndex + 1} / {activeQuizPool.length}
             </div>
           </ActionBar>
 
@@ -910,7 +978,7 @@ export default function LeitnerHafalanPage() {
                 Sesi Hafalan Leitner Selesai!
               </h2>
               <p style={{ color: "var(--foreground-secondary)", marginBottom: "1.5rem" }}>
-                Anda telah menyelesaikan semua kartu yang jatuh tempo hari ini. Pertahankan streak hafalan Anda!
+                Anda telah menyelesaikan semua kartu dalam sesi ini. Pertahankan streak hafalan Anda!
               </p>
               <ActionButton onClick={() => setMode("overview")} style={{ margin: "0 auto" }}>
                 Kembali ke Overview 🏠
