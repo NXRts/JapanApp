@@ -341,14 +341,57 @@ export default function LearningPage() {
     return Object.values(unitsMap);
   }, [levelLessons]);
 
+  /* Lesson lock logic: A lesson is unlocked if previous lesson is completed.
+     For N5 (and higher levels), ALL lessons in previous level (Basic) must be completed first! */
   const isLessonUnlocked = useCallback(
     (lessonId: string) => {
-      if (lessonId === "n5-u1-l1") return true;
+      const lesson = lessonsData.find((l) => l.id === lessonId);
+      if (!lesson) return false;
+
+      // Basic level lessons
+      if (lesson.level === "Basic") {
+        const basicLessons = lessonsData.filter((l) => l.level === "Basic");
+        if (lesson.id === basicLessons[0]?.id) return true;
+        const prevId = lessonRelations.get(lessonId);
+        if (!prevId) return true;
+        return progress.completedExercises?.includes(prevId) || false;
+      }
+
+      // N5, N4, N3, N2, N1 level lessons: Require previous level to be 100% completed FIRST!
+      const levelOrder: ("Basic" | "N5" | "N4" | "N3" | "N2" | "N1")[] = [
+        "Basic",
+        "N5",
+        "N4",
+        "N3",
+        "N2",
+        "N1",
+      ];
+      const currentLevelIdx = levelOrder.indexOf(lesson.level);
+      const prevLevelCode = levelOrder[currentLevelIdx - 1];
+
+      if (prevLevelCode) {
+        const prevLevelLessons = lessonsData.filter(
+          (l) => l.level === prevLevelCode,
+        );
+        const isPrevLevelCompleted = prevLevelLessons.every((l) =>
+          progress.completedExercises?.includes(l.id),
+        );
+        if (!isPrevLevelCompleted) {
+          return false; // Whole level is locked because previous level is not completed!
+        }
+      }
+
+      // If previous level is completed, check sequential unlock within current level
+      const currentLevelLessons = lessonsData.filter(
+        (l) => l.level === lesson.level,
+      );
+      if (lesson.id === currentLevelLessons[0]?.id) return true;
+
       const prevId = lessonRelations.get(lessonId);
       if (!prevId) return true;
-      return progress.completedExercises?.includes(prevId);
+      return progress.completedExercises?.includes(prevId) || false;
     },
-    [progress.completedExercises, lessonRelations],
+    [lessonRelations, progress.completedExercises],
   );
 
   const today = new Date().toISOString().split("T")[0];
@@ -495,6 +538,7 @@ export default function LearningPage() {
                   return (
                     <HankoSkillCard
                       key={lesson.id}
+                      id={isActive ? "active-lesson-node" : undefined}
                       title={lesson.title}
                       badge={lesson.badge}
                       icon={lesson.icon}
