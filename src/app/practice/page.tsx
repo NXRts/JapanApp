@@ -525,7 +525,7 @@ export default function PracticeHubPage() {
       tag: "+15 XP",
       tagColor: "#6366f1",
       accentColor: "#6366f1",
-      href: `/lesson?id=${listeningLessonId}&from=practice`,
+      href: "/study/listening",
       btnText: "Latih Audio Pendengaran",
     },
     {
