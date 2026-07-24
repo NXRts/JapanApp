@@ -225,9 +225,9 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
       current = Math.min(target, totalCorrect);
     } else if (t.type === "listening_session") {
       const listeningCount = todayQuizzes.filter(
-        (q: any) => q.type && (q.type.includes("listening") || q.type.includes("audio") || q.type.includes("kana")),
+        (q: any) => q.type && (q.type === "listening_practice" || q.type === "study_listening" || q.type === "listening"),
       ).length;
-      current = Math.min(target, listeningCount || (todayQuizzes.length > 0 ? 1 : 0));
+      current = Math.min(target, listeningCount);
     } else if (t.type === "kana_practice") {
       const kanaItems = todayQuizzes.reduce((acc: number, q: any) => acc + (q.score || 0), 0);
       current = Math.min(target, kanaItems);
