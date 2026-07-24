@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useProgress } from "@/context/ProgressContext";
 import { lessonsData } from "@/data/lessonsData";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { isItemDue } from "@/lib/srs";
 
 // ==========================================
 // ANIMATIONS
@@ -446,7 +447,9 @@ const ActivityValue = styled.span`
 // ==========================================
 export default function PracticeHubPage() {
   const { progress } = useProgress();
-  const [activeFilter, setActiveFilter] = useState<"all" | "jlpt" | "audio" | "games" | "review">("all");
+  const [activeFilter, setActiveFilter] = useState<
+    "all" | "jlpt" | "skill" | "flashcards" | "grammar" | "games" | "review"
+  >("all");
 
   const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
   const todayExp = progress.activityLog?.[todayStr] || 0;
@@ -459,6 +462,12 @@ export default function PracticeHubPage() {
     return Object.values(progress.mastery).filter((m) => m.incorrect > 0).length;
   }, [progress.mastery]);
 
+  // SRS Due items count
+  const dueItemsCount = useMemo(() => {
+    if (!progress.srs) return 0;
+    return Object.values(progress.srs).filter(isItemDue).length;
+  }, [progress.srs]);
+
   // Dynamic lesson calculations
   const practiceLessonId = useMemo(() => {
     if (progress.completedExercises && progress.completedExercises.length > 0) {
@@ -468,119 +477,160 @@ export default function PracticeHubPage() {
     return "n5-u1-l1";
   }, [progress.completedExercises]);
 
-  const listeningLessonId = useMemo(() => {
-    const relations = new Map<string, string>();
-    for (let i = 1; i < lessonsData.length; i++) {
-      relations.set(lessonsData[i].id, lessonsData[i - 1].id);
-    }
-
-    const audioLessons = lessonsData.filter((l) => {
-      const hasListening = l.questions.some((q) => q.type === "listening");
-      if (!hasListening) return false;
-      if (l.id === "n5-u1-l1") return true;
-      const prevId = relations.get(l.id);
-      if (!prevId) return true;
-      return progress.completedExercises?.includes(prevId);
-    });
-
-    if (audioLessons.length > 0) {
-      const idx = Math.floor(Math.random() * audioLessons.length);
-      return audioLessons[idx].id;
-    }
-    return "n5-u1-l1";
-  }, [progress.completedExercises]);
-
-  // Practice Modes Definition
-  const practiceModes = [
-    {
-      id: "jlpt-practice",
-      category: "jlpt",
-      icon: "🎯",
-      title: "Latihan JLPT Interaktif",
-      description: "Mode latihan pilihan ganda & Flashcards SRS untuk tingkat N5 hingga N1 tanpa tekanan waktu.",
-      tag: "+25 XP",
-      tagColor: "#8b5cf6",
-      accentColor: "#8b5cf6",
-      href: "/jlpt/practice",
-      btnText: "Mulai Latihan JLPT",
-    },
-    {
-      id: "lesson-drill",
-      category: "jlpt",
-      icon: "📚",
-      title: "Drill Pelajaran Terstruktur",
-      description: "Pertajam pemahaman dari modul pelajaran yang pernah kamu selesaikan sebelumnya.",
-      tag: "+20 XP",
-      tagColor: "#3b82f6",
-      accentColor: "#3b82f6",
-      href: `/lesson?id=${practiceLessonId}&from=practice`,
-      btnText: "Mulai Drill Pelajaran",
-    },
-    {
-      id: "audio-listening",
-      category: "audio",
-      icon: "🎧",
-      title: "Pemahaman Pendengaran (Audio)",
-      description: "Latih pendengaran alami, percakapan harian, dan partikel tata bahasa lewat kuis audio.",
-      tag: "+15 XP",
-      tagColor: "#6366f1",
-      accentColor: "#6366f1",
-      href: "/study/listening",
-      btnText: "Latih Audio Pendengaran",
-    },
-    {
-      id: "grammar-drills",
-      category: "jlpt",
-      icon: "📝",
-      title: "Drill Tata Bahasa & Pola Kalimat",
-      description: "Latihan pemahaman pola kalimat, konjugasi kata kerja, dan penggunaan partikel secara mendalam.",
-      tag: "+20 XP",
-      tagColor: "#ec4899",
-      accentColor: "#ec4899",
-      href: "/study/grammar-drills",
-      btnText: "Mulai Drill Tata Bahasa",
-    },
-    {
-      id: "mini-games",
-      category: "games",
-      icon: "🎮",
-      title: "Mini Game Belajar Bahasa",
-      description: "Asah kecepatan daya ingat Kana dan Kanji lewat game Speed Typing & Memory Match yang seru.",
-      tag: "+15 XP",
-      tagColor: "#10b981",
-      accentColor: "#10b981",
-      href: "/game",
-      btnText: "Mainkan Mini Game",
-    },
-    {
-      id: "mistakes-review",
-      category: "review",
-      icon: "🔄",
-      title: "Perbaikan Kesalahan Soal",
-      description:
-        mistakesCount > 0
-          ? `Terdapat ${mistakesCount} item soal yang pernah salah dikerjakan. Ulangi untuk menguasainya 100%.`
-          : "Tidak ada kesalahan tersimpan saat ini! Seluruh latihan kamu tercatat sempurna.",
-      tag: mistakesCount > 0 ? `${mistakesCount} Kesalahan` : "Skor Perfek ✨",
-      tagColor: mistakesCount > 0 ? "#f59e0b" : "#10b981",
-      accentColor: "#f59e0b",
-      href: "/characters?practice=true",
-      btnText: mistakesCount > 0 ? `Perbaiki ${mistakesCount} Soal` : "Semua Benar ✓",
-      disabled: mistakesCount === 0,
-    },
-    {
-      id: "vocabulary-srs",
-      category: "review",
-      icon: "🈸",
-      title: "Review Kosakata & Kanji SRS",
-      description: "Metode Spaced Repetition System (SRS) untuk ingatan jangka panjang seluruh huruf dan kosakata.",
-      tag: "SRS Mode",
-      tagColor: "#a855f7",
-      accentColor: "#a855f7",
-      href: "/study/vocabulary",
-      btnText: "Review Kosakata SRS",
-    },
-  ];
+  // Practice & Study Modes Definition
+  const practiceModes = useMemo(
+    () => [
+      {
+        id: "daily-srs-review",
+        category: "flashcards",
+        icon: "⚡",
+        title: "Daily SRS Review",
+        description: "Review vocabulary, kanji, and grammar using Spaced Repetition for long-term retention.",
+        tag: dueItemsCount > 0 ? `${dueItemsCount} Items Due` : "Up to Date ✨",
+        tagColor: dueItemsCount > 0 ? "#ef4444" : "#10b981",
+        accentColor: "#4f46e5",
+        href: "/review",
+        btnText: "Start Review",
+      },
+      {
+        id: "reading-comprehension",
+        category: "skill",
+        icon: "📖",
+        title: "Reading Comprehension (Dokkai)",
+        description: "Practice reading full Japanese passages graded by JLPT level with furigana toggles.",
+        tag: "Dokkai Mode",
+        tagColor: "#4f46e5",
+        accentColor: "#4f46e5",
+        href: "/study/reading",
+        btnText: "Start Reading",
+      },
+      {
+        id: "audio-listening",
+        category: "skill",
+        icon: "🎧",
+        title: "Listening Comprehension (Choukai)",
+        description: "Simulate real Japanese conversations with interactive AI audio players and blind quizzes.",
+        tag: "Choukai Mode",
+        tagColor: "#3b82f6",
+        accentColor: "#3b82f6",
+        href: "/study/listening",
+        btnText: "Start Listening",
+      },
+      {
+        id: "speaking-roleplay",
+        category: "skill",
+        icon: "🗣️",
+        title: "Speaking Roleplay (Kaiwa)",
+        description: "Practice real-life Japanese conversations by shadowing AI dialogue with speech recognition.",
+        tag: "Kaiwa Mode",
+        tagColor: "#10b981",
+        accentColor: "#10b981",
+        href: "/study/speaking",
+        btnText: "Start Speaking",
+      },
+      {
+        id: "jlpt-practice",
+        category: "jlpt",
+        icon: "🎯",
+        title: "Latihan JLPT Interaktif",
+        description: "Mode latihan pilihan ganda & Flashcards SRS untuk tingkat N5 hingga N1 tanpa tekanan waktu.",
+        tag: "+25 XP",
+        tagColor: "#8b5cf6",
+        accentColor: "#8b5cf6",
+        href: "/jlpt/practice",
+        btnText: "Mulai Latihan JLPT",
+      },
+      {
+        id: "lesson-drill",
+        category: "jlpt",
+        icon: "📚",
+        title: "Drill Pelajaran Terstruktur",
+        description: "Pertajam pemahaman dari modul pelajaran yang pernah kamu selesaikan sebelumnya.",
+        tag: "+20 XP",
+        tagColor: "#3b82f6",
+        accentColor: "#3b82f6",
+        href: `/lesson?id=${practiceLessonId}&from=practice`,
+        btnText: "Mulai Drill Pelajaran",
+      },
+      {
+        id: "grammar-drills",
+        category: "grammar",
+        icon: "📝",
+        title: "Drill Tata Bahasa & Partikel",
+        description: "Latihan pemahaman pola kalimat, konjugasi kata kerja, dan penggunaan partikel (は, が, を, に, で).",
+        tag: "+20 XP",
+        tagColor: "#ec4899",
+        accentColor: "#ec4899",
+        href: "/study/grammar-drills",
+        btnText: "Mulai Drill Tata Bahasa",
+      },
+      {
+        id: "kanji-writer",
+        category: "grammar",
+        icon: "✍️",
+        title: "Kanji Writer (Garis Goresan)",
+        description: "Latihan menulis Karakter Kanji secara interaktif dengan panduan urutan goresan stroke-by-stroke.",
+        tag: "Stroke Guide",
+        tagColor: "#10b981",
+        accentColor: "#10b981",
+        href: "/jlpt/kanji-writer",
+        btnText: "Mulai Menulis Kanji",
+      },
+      {
+        id: "kana-flashcards",
+        category: "flashcards",
+        icon: "🎴",
+        title: "Kana Flashcards",
+        description: "Fokus menguasai karakter Hiragana, Katakana, dan Dakuten lewat kartu membalik interaktif.",
+        tag: "Kana Basics",
+        tagColor: "#6366f1",
+        accentColor: "#6366f1",
+        href: "/study/kana-flashcards",
+        btnText: "Latih Kartu Kana",
+      },
+      {
+        id: "vocabulary-srs",
+        category: "flashcards",
+        icon: "🈸",
+        title: "Review Kosakata & Kanji SRS",
+        description: "Metode Spaced Repetition System (SRS) untuk ingatan jangka panjang seluruh huruf dan kosakata.",
+        tag: "SRS Mode",
+        tagColor: "#f59e0b",
+        accentColor: "#f59e0b",
+        href: "/study/vocabulary",
+        btnText: "Review Kosakata SRS",
+      },
+      {
+        id: "mini-games",
+        category: "games",
+        icon: "🎮",
+        title: "Mini Game Belajar Bahasa",
+        description: "Asah kecepatan daya ingat Kana dan Kanji lewat game Speed Typing & Memory Match yang seru.",
+        tag: "+15 XP",
+        tagColor: "#10b981",
+        accentColor: "#10b981",
+        href: "/game",
+        btnText: "Mainkan Mini Game",
+      },
+      {
+        id: "mistakes-review",
+        category: "review",
+        icon: "🔄",
+        title: "Perbaikan Kesalahan Soal",
+        description:
+          mistakesCount > 0
+            ? `Terdapat ${mistakesCount} item soal yang pernah salah dikerjakan. Ulangi untuk menguasainya 100%.`
+            : "Tidak ada kesalahan tersimpan saat ini! Seluruh latihan kamu tercatat sempurna.",
+        tag: mistakesCount > 0 ? `${mistakesCount} Kesalahan` : "Skor Perfek ✨",
+        tagColor: mistakesCount > 0 ? "#ef4444" : "#10b981",
+        accentColor: "#ef4444",
+        href: "/characters?practice=true",
+        btnText: mistakesCount > 0 ? `Perbaiki ${mistakesCount} Soal` : "Semua Benar ✓",
+        disabled: mistakesCount === 0,
+      },
+    ],
+    [dueItemsCount, mistakesCount, practiceLessonId],
+  );
 
   const filteredModes = useMemo(() => {
     if (activeFilter === "all") return practiceModes;
@@ -593,14 +643,14 @@ export default function PracticeHubPage() {
 
       {/* Hero Banner Header */}
       <HeroBanner>
-        <HeroBadge>🎯 Pusat Asah Kemampuan</HeroBadge>
+        <HeroBadge>🎯 Pusat Asah & Modul Belajar</HeroBadge>
         <HeroTitle>Practice Hub</HeroTitle>
         <HeroSubtitle>
-          Pertajam pemahaman tata bahasa, latih pendengaran audio, perbaiki kesalahan soal, dan nikmati latihan
-          interaktif bebas tekanan waktu.
+          Tempat terpadu untuk latihan JLPT, review SRS, pendengaran audio, bacaan Dokkai, percakapan Kaiwa, dan penulisan Kanji.
         </HeroSubtitle>
         <HeroStatsRow>
           <HeroStatPill>⚡ {todayExp} XP Hari Ini</HeroStatPill>
+          <HeroStatPill>⚡ {dueItemsCount} SRS Due</HeroStatPill>
           <HeroStatPill>🔄 {mistakesCount} Perlu Diperbaiki</HeroStatPill>
           <HeroStatPill>🔥 {streak} Hari Runtunan</HeroStatPill>
         </HeroStatsRow>
@@ -609,19 +659,25 @@ export default function PracticeHubPage() {
       {/* Filter Tabs Bar */}
       <FilterRow>
         <FilterTab $active={activeFilter === "all"} onClick={() => setActiveFilter("all")}>
-          ✨ Semua Mode
+          ✨ Semua
         </FilterTab>
         <FilterTab $active={activeFilter === "jlpt"} onClick={() => setActiveFilter("jlpt")}>
           🎯 JLPT & Drill
         </FilterTab>
-        <FilterTab $active={activeFilter === "audio"} onClick={() => setActiveFilter("audio")}>
-          🎧 Fokus Audio
+        <FilterTab $active={activeFilter === "skill"} onClick={() => setActiveFilter("skill")}>
+          🎧 Skill
+        </FilterTab>
+        <FilterTab $active={activeFilter === "flashcards"} onClick={() => setActiveFilter("flashcards")}>
+          🎴 Flashcard
+        </FilterTab>
+        <FilterTab $active={activeFilter === "grammar"} onClick={() => setActiveFilter("grammar")}>
+          📝 Tata Bahasa
         </FilterTab>
         <FilterTab $active={activeFilter === "games"} onClick={() => setActiveFilter("games")}>
           🎮 Mini Game
         </FilterTab>
         <FilterTab $active={activeFilter === "review"} onClick={() => setActiveFilter("review")}>
-          🔄 Review & Kesalahan
+          🔄 Review
         </FilterTab>
       </FilterRow>
 

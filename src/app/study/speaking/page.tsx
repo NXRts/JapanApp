@@ -115,7 +115,7 @@ export default function SpeakingHub() {
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Study", href: "/study" },
+            { label: "Practice", href: "/practice" },
           ]}
           current="Speaking Roleplay"
         />

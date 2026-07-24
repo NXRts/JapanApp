@@ -176,7 +176,7 @@ export default function ListeningHub() {
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Study", href: "/study" },
+            { label: "Practice", href: "/practice" },
           ]}
           current="Listening"
         />
