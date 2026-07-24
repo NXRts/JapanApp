@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { LessonIcon } from "./LessonIcon";
@@ -22,8 +22,13 @@ interface RoadmapNodeDrawerProps {
 }
 
 const slideUp = keyframes`
-  from { transform: translateY(100%); }
-  to { transform: translateY(0); }
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const slideDown = keyframes`
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(100%); }
 `;
 
 const fadeIn = keyframes`
@@ -31,7 +36,12 @@ const fadeIn = keyframes`
   to { opacity: 1; }
 `;
 
-const Backdrop = styled.div<{ $isOpen: boolean }>`
+const fadeOut = keyframes`
+  from { opacity: 1; }
+  to { opacity: 0; }
+`;
+
+const Backdrop = styled.div<{ $isClosing?: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -41,11 +51,10 @@ const Backdrop = styled.div<{ $isOpen: boolean }>`
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   z-index: 2000;
-  display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
-  animation: ${fadeIn} 0.3s ease-out;
+  animation: ${({ $isClosing }) => ($isClosing ? fadeOut : fadeIn)} 0.25s ease-out forwards;
 `;
 
-const DrawerContainer = styled.div<{ $isOpen: boolean }>`
+const DrawerContainer = styled.div<{ $isClosing?: boolean }>`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -55,12 +64,12 @@ const DrawerContainer = styled.div<{ $isOpen: boolean }>`
   border-radius: 32px 32px 0 0;
   padding: 2rem 2rem calc(2rem + env(safe-area-inset-bottom));
   z-index: 2001;
-  display: ${({ $isOpen }) => ($isOpen ? "flex" : "none")};
+  display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
-  animation: ${slideUp} 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: ${({ $isClosing }) => ($isClosing ? slideDown : slideUp)} 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   max-height: 80vh;
   overflow-y: auto;
 
@@ -213,25 +222,51 @@ export function RoadmapNodeDrawer({
   onClose,
   nodeData,
 }: RoadmapNodeDrawerProps) {
+  const [isClosing, setIsClosing] = useState(false);
+  const [activeData, setActiveData] = useState<NodeData | null>(nodeData);
+
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
+    if (nodeData) {
+      setActiveData(nodeData);
     }
+  }, [nodeData]);
+
+  const handleClose = useCallback(() => {
+    if (isClosing) return;
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      onClose();
+    }, 240);
+  }, [isClosing, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
-  if (!isOpen || !nodeData) return null;
+  if ((!isOpen && !isClosing) || !activeData) return null;
 
   return (
     <>
-      <Backdrop $isOpen={isOpen} onClick={onClose} />
-      <DrawerContainer $isOpen={isOpen}>
+      <Backdrop $isClosing={isClosing} onClick={handleClose} />
+      <DrawerContainer $isClosing={isClosing}>
         <Handle />
-        <CloseButton onClick={onClose} aria-label="Close details">
+        <CloseButton onClick={handleClose} aria-label="Close details">
           <svg
             width="18"
             height="18"
@@ -247,21 +282,21 @@ export function RoadmapNodeDrawer({
           </svg>
         </CloseButton>
 
-        <EmojiBadge $color={nodeData.color}>
+        <EmojiBadge $color={activeData.color}>
           <LessonIcon
-            icon={nodeData.icon}
-            badge={nodeData.badge || ""}
-            color={nodeData.color || "#10b981"}
+            icon={activeData.icon}
+            badge={activeData.badge || ""}
+            color={activeData.color || "#10b981"}
             unlocked={true}
           />
         </EmojiBadge>
-        {nodeData.badge && <Badge>{nodeData.badge}</Badge>}
-        <Title>{nodeData.title}</Title>
-        <Description>{nodeData.description}</Description>
+        {activeData.badge && <Badge>{activeData.badge}</Badge>}
+        <Title>{activeData.title}</Title>
+        <Description>{activeData.description}</Description>
 
-        <RewardTag>⭐ +{nodeData.expReward} EXP Reward</RewardTag>
+        <RewardTag>⭐ +{activeData.expReward} EXP Reward</RewardTag>
 
-        <StartButton href={nodeData.href} onClick={onClose}>
+        <StartButton href={activeData.href} onClick={handleClose}>
           Start Lesson
         </StartButton>
       </DrawerContainer>

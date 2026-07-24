@@ -366,15 +366,25 @@ export function KanjiDetailModal({ kanji, onClose, onPractice }: KanjiDetailModa
   const isDrawingRef = useRef(false);
   const canvasContainerRef = useRef<HTMLDivElement>(null);
 
-  // Lock body scroll
+  // Lock body scroll & listen to Escape key
   useEffect(() => {
     document.body.style.overflow = "hidden";
     document.body.style.touchAction = "none";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [onClose]);
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!canvasContainerRef.current) return;

@@ -136,31 +136,40 @@ export function HandwritingModal({
   }, [ctx]);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      // Init canvas
-      const canvas = canvasRef.current;
-      if (canvas) {
-        canvas.width = canvas.parentElement?.clientWidth || width;
-        canvas.height = height;
-        const context = canvas.getContext("2d");
-        if (context) {
-          context.lineCap = "round";
-          context.lineJoin = "round";
-          context.lineWidth = 4;
-          context.strokeStyle = "var(--foreground)"; // Need to resolve CSS variable to actual color if it doesn't work directly, but usually it does if not using complex transforms
-          // Actually context needs a raw color
-          const rootStyles = getComputedStyle(document.body);
-          context.strokeStyle =
-            rootStyles.getPropertyValue("--foreground").trim() || "#333";
-          setCtx(context);
-        }
+    if (!isOpen) return;
+
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
       }
-    } else {
-      document.body.style.overflow = "unset";
-      clearCanvas();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Init canvas
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.width = canvas.parentElement?.clientWidth || width;
+      canvas.height = height;
+      const context = canvas.getContext("2d");
+      if (context) {
+        context.lineCap = "round";
+        context.lineJoin = "round";
+        context.lineWidth = 4;
+        const rootStyles = getComputedStyle(document.body);
+        context.strokeStyle =
+          rootStyles.getPropertyValue("--foreground").trim() || "#333";
+        setCtx(context);
+      }
     }
-  }, [isOpen, clearCanvas]);
+    return () => {
+      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
+      clearCanvas();
+    };
+  }, [isOpen, onClose, height, width, clearCanvas]);
 
   const getCoordinates = (e: React.MouseEvent | React.TouchEvent) => {
     if (!canvasRef.current) return { x: 0, y: 0 };
