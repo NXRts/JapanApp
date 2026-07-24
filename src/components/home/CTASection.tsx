@@ -194,7 +194,7 @@ export function CTASection() {
           </Subtitle>
           <ActionGroup>
             <PrimaryButton href="/jlpt">Start JLPT Challenge</PrimaryButton>
-            <SecondaryButton href="/study">Start Studying</SecondaryButton>
+            <SecondaryButton href="/practice">Start Studying</SecondaryButton>
           </ActionGroup>
         </TitleBuffer>
       </CTAContainer>

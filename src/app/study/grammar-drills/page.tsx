@@ -414,7 +414,7 @@ export default function GrammarDrillsPage() {
             <ButtonGroup>
               <Button onClick={generateQuiz}>Try Again</Button>
               <Link
-                href="/study"
+                href="/practice"
                 style={{
                   textDecoration: "none",
                   display: "flex",
@@ -467,7 +467,7 @@ export default function GrammarDrillsPage() {
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Study", href: "/study" },
+            { label: "Practice", href: "/practice" },
           ]}
           current="Particle Drills"
         />

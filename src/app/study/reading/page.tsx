@@ -153,7 +153,7 @@ export default function ReadingHub() {
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "Study", href: "/study" },
+            { label: "Practice", href: "/practice" },
           ]}
           current="Reading"
         />

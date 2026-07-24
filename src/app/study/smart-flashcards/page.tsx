@@ -457,7 +457,7 @@ export default function SmartFlashcardsPage() {
           <Breadcrumbs
             items={[
               { label: "Home", href: "/" },
-              { label: "Study", href: "/study" },
+              { label: "Practice", href: "/practice" },
             ]}
             current="Smart Flashcards"
           />

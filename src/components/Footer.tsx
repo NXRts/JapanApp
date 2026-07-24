@@ -472,7 +472,7 @@ export function Footer() {
           <ColumnTitle>Learn</ColumnTitle>
           <FooterLink href="/characters">Character</FooterLink>
           <FooterLink href="/jlpt">JLPT</FooterLink>
-          <FooterLink href="/study">Study</FooterLink>
+          <FooterLink href="/practice">Practice</FooterLink>
           <FooterLink href="/quiz">Quiz Hub</FooterLink>
         </FooterColumn>
 

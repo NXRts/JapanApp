@@ -1445,17 +1445,12 @@ export function Navbar() {
               JLPT
             </SidebarNavItem>
 
-            <SidebarNavItem href="/practice" $active={pathname === "/practice"}>
+            <SidebarNavItem
+              href="/practice"
+              $active={pathname.startsWith("/practice") || pathname.startsWith("/study")}
+            >
               <PracticeIcon />
               Practice
-            </SidebarNavItem>
-
-            <SidebarNavItem
-              href="/study"
-              $active={pathname.startsWith("/study")}
-            >
-              <StudyIcon />
-              Study
             </SidebarNavItem>
 
             <SidebarNavItem href="/quiz" $active={pathname.startsWith("/quiz")}>
@@ -1751,25 +1746,16 @@ export function Navbar() {
 
                 <NavItem>
                   <StyledLink
-                    href="/study"
-                    $active={pathname.startsWith("/study")}
-                  >
-                    Study
-                  </StyledLink>
-                </NavItem>
-                <NavItem>
-                  <StyledLink
                     href="/characters"
                     $active={pathname.startsWith("/characters")}
                   >
                     Characters
                   </StyledLink>
                 </NavItem>
-
                 <NavItem>
                   <StyledLink
                     href="/practice"
-                    $active={pathname === "/practice"}
+                    $active={pathname.startsWith("/practice") || pathname.startsWith("/study")}
                   >
                     Practice
                   </StyledLink>
@@ -2010,14 +1996,14 @@ export function Navbar() {
             </MobileMenuSectionTitle>
 
             <MobileLink
-              href="/study"
-              $active={pathname.startsWith("/study")}
+              href="/practice"
+              $active={pathname.startsWith("/practice") || pathname.startsWith("/study")}
               $isOpen={isMobileMenuOpen}
               $delay={0.05}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>学</KanjiBadge>
-              Study
+              <KanjiBadge>練</KanjiBadge>
+              Practice
             </MobileLink>
 
             <MobileLink
