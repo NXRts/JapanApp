@@ -8,17 +8,27 @@ import { getDailyQuests, Quest } from "@/utils/dailyQuests";
 import { getLeagueById, getRankStatus } from "@/data/leagues";
 
 /* ─── Shared Modal Overlay & Container ───────────────────────────────────── */
-function useLockBodyScroll() {
+function useLockBodyScroll(onClose?: () => void) {
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     const originalTouchAction = document.body.style.touchAction;
     document.body.style.overflow = "hidden";
     document.body.style.touchAction = "none";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && onClose) {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.body.style.overflow = originalOverflow;
       document.body.style.touchAction = originalTouchAction;
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [onClose]);
 }
 
 const fadeIn = keyframes`
@@ -158,7 +168,7 @@ const ActionBtn = styled.button<{ $variant?: "primary" | "super" | "secondary" |
 
 /* ─── 1. COURSE / FLAG SELECTOR MODAL ─────────────────────────────────────── */
 export function CourseModal({ onClose }: { onClose: () => void }) {
-  useLockBodyScroll();
+  useLockBodyScroll(onClose);
   const levels = [
     { id: "n5", title: "JLPT N5 - Pemula", desc: "Dasar Kanji, Kana, & Percakapan Harian", badge: "🟢 Aktif" },
     { id: "n4", title: "JLPT N4 - Menengah Bawah", desc: "Tata bahasa dasar lanjut & Kanji N4", badge: "🔒 Segera" },
@@ -209,7 +219,7 @@ export function CourseModal({ onClose }: { onClose: () => void }) {
 
 /* ─── 2. STREAK MODAL ─────────────────────────────────────────────────────── */
 export function StreakModal({ onClose }: { onClose: () => void }) {
-  useLockBodyScroll();
+  useLockBodyScroll(onClose);
   const { progress, buyStreakFreeze } = useProgress();
   const streak = progress.streak || 0;
   const hasFreeze = progress.hasStreakFreeze || false;
@@ -301,7 +311,7 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
 
 /* ─── 3. SHOP MODAL (GEMS STORE) ─────────────────────────────────────────── */
 export function ShopModal({ onClose }: { onClose: () => void }) {
-  useLockBodyScroll();
+  useLockBodyScroll(onClose);
   const { progress, spendGems, refillHearts, buyStreakFreeze, toggleSuper } = useProgress();
   const gems = progress.gems !== undefined ? progress.gems : 100;
   const hearts = progress.hearts !== undefined ? progress.hearts : 5;
@@ -418,7 +428,7 @@ export function ShopModal({ onClose }: { onClose: () => void }) {
 
 /* ─── 4. HEARTS MODAL ─────────────────────────────────────────────────────── */
 export function HeartsModal({ onClose }: { onClose: () => void }) {
-  useLockBodyScroll();
+  useLockBodyScroll(onClose);
   const { progress, refillHearts, spendGems } = useProgress();
   const hearts = progress.hearts !== undefined ? progress.hearts : 5;
   const isSuper = progress.isSuper || false;
@@ -467,7 +477,7 @@ export function HeartsModal({ onClose }: { onClose: () => void }) {
 
 /* ─── 5. SUPER MODAL ──────────────────────────────────────────────────────── */
 export function SuperModal({ onClose }: { onClose: () => void }) {
-  useLockBodyScroll();
+  useLockBodyScroll(onClose);
   const { progress, toggleSuper } = useProgress();
   const isSuper = progress.isSuper || false;
 
@@ -511,7 +521,7 @@ export function SuperModal({ onClose }: { onClose: () => void }) {
 
 /* ─── 6. LEADERBOARD / LEAGUE MODAL ───────────────────────────────────────── */
 export function LeaderboardModal({ onClose }: { onClose: () => void }) {
-  useLockBodyScroll();
+  useLockBodyScroll(onClose);
   const { progress } = useProgress();
   const leagueData = progress.league || {
     currentLeagueId: "bronze",
@@ -660,7 +670,7 @@ const ModalQuestGoBtn = styled(Link)`
 
 /* ─── 7. ALL QUESTS MODAL ─────────────────────────────────────────────────── */
 export function AllQuestsModal({ onClose }: { onClose: () => void }) {
-  useLockBodyScroll();
+  useLockBodyScroll(onClose);
   const { progress, claimQuestReward } = useProgress();
   const claimedQuests = progress.claimedQuests || [];
 

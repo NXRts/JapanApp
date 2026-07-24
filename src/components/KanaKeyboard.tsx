@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const KeyboardContainer = styled.div<{ $script: string }>`
@@ -500,6 +500,16 @@ export default function KanaKeyboard({
     "hiragana",
   );
   const [mode, setMode] = useState<"seion" | "dakuon" | "yoon">("seion");
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   return (
     <KeyboardContainer $script={script}>

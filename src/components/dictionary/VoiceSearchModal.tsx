@@ -208,6 +208,13 @@ export function VoiceSearchModal({
         }
       }
 
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          onClose();
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+
       // Auto start on open if supported
       if (recognitionRef.current && !error.includes("supported")) {
         try {
@@ -216,15 +223,19 @@ export function VoiceSearchModal({
           /* recognition already started */
         }
       }
-    } else {
-      document.body.style.overflow = "unset";
-      if (recognitionRef.current) {
-        try {
-          recognitionRef.current.stop();
-        } catch {
-          /* already stopped */
+
+      return () => {
+        document.body.style.overflow = "unset";
+        window.removeEventListener("keydown", handleKeyDown);
+        if (recognitionRef.current) {
+          try {
+            recognitionRef.current.stop();
+          } catch {
+            /* already stopped */
+          }
         }
-      }
+      };
+    } else {
       // Defer state resets to avoid synchronous setState in effect body
       setTimeout(() => {
         setIsListening(false);

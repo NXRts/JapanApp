@@ -138,14 +138,25 @@ export function ImageSearchModal({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
+    if (!isOpen) return;
+
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
       document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
       setIsProcessing(false);
       setIsDragActive(false);
-    }
-  }, [isOpen]);
+    };
+  }, [isOpen, onClose]);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
