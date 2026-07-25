@@ -1,22 +1,21 @@
 "use client";
 
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useCallback,
-} from "react";
-import styled from "styled-components";
-import { calculateNextSRS, SRSItem } from "@/lib/srs";
-import { calculateNextLeitner, LeitnerItemState } from "@/lib/leitner";
-import { encryptData, decryptData } from "@/lib/encryption";
-import { logError } from "@/lib/logger";
 import {
   GamificationAlert,
   GamificationAlertData,
 } from "@/components/gamification/GamificationAlert";
+import { decryptData, encryptData } from "@/lib/encryption";
+import { calculateNextLeitner, LeitnerItemState } from "@/lib/leitner";
+import { calculateNextSRS, SRSItem } from "@/lib/srs";
 import { getDailyQuests } from "@/utils/dailyQuests";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import styled from "styled-components";
 
 /* Toast container — pojok kanan atas, di bawah navbar (56px), semua ukuran layar */
 const ToastStack = styled.div`
@@ -254,10 +253,15 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
                 ...(parsed.profile || {}),
               },
               hasSetName: true,
-              gems: typeof parsed.gems === "number" && parsed.gems !== 800 ? parsed.gems : 100,
+              gems:
+                typeof parsed.gems === "number" && parsed.gems !== 800
+                  ? parsed.gems
+                  : 100,
               hearts: typeof parsed.hearts === "number" ? parsed.hearts : 5,
-              maxHearts: typeof parsed.maxHearts === "number" ? parsed.maxHearts : 5,
-              isSuper: typeof parsed.isSuper === "boolean" ? parsed.isSuper : false,
+              maxHearts:
+                typeof parsed.maxHearts === "number" ? parsed.maxHearts : 5,
+              isSuper:
+                typeof parsed.isSuper === "boolean" ? parsed.isSuper : false,
               hasStreakFreeze:
                 typeof parsed.hasStreakFreeze === "boolean"
                   ? parsed.hasStreakFreeze
@@ -268,7 +272,10 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
               league: (() => {
                 const savedLeague = parsed.league || DEFAULT_LEAGUE;
                 // Auto-correct legacy "obsidian" default for users with low EXP
-                if (savedLeague.currentLeagueId === "obsidian" && (parsed.exp || 0) < 1000) {
+                if (
+                  savedLeague.currentLeagueId === "obsidian" &&
+                  (parsed.exp || 0) < 1000
+                ) {
                   return {
                     currentLeagueId: "bronze",
                     weekInLeague: 1,
@@ -491,20 +498,23 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     [triggerAlert, autoClaimCompletedQuests],
   );
 
-  const updateSRS = useCallback((char: string, quality: number) => {
-    setProgress((prev) => {
-      const currentItem = prev.srs[char];
-      const nextItem = calculateNextSRS(currentItem, quality);
-      const nextState = {
-        ...prev,
-        srs: {
-          ...prev.srs,
-          [char]: nextItem,
-        },
-      };
-      return autoClaimCompletedQuests(nextState);
-    });
-  }, [autoClaimCompletedQuests]);
+  const updateSRS = useCallback(
+    (char: string, quality: number) => {
+      setProgress((prev) => {
+        const currentItem = prev.srs[char];
+        const nextItem = calculateNextSRS(currentItem, quality);
+        const nextState = {
+          ...prev,
+          srs: {
+            ...prev.srs,
+            [char]: nextItem,
+          },
+        };
+        return autoClaimCompletedQuests(nextState);
+      });
+    },
+    [autoClaimCompletedQuests],
+  );
 
   const updateLeitnerProgress = useCallback(
     (char: string, isCorrect: boolean) => {

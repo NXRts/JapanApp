@@ -1,17 +1,16 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, Suspense } from "react";
-import styled, { keyframes } from "styled-components";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import {
-  searchDictionary,
-  allVocabulary,
-  allKanji,
-  allGrammar,
-} from "@/lib/dictionary";
 import { playJapaneseAudio } from "@/lib/audio";
+import {
+  allGrammar,
+  allKanji,
+  allVocabulary,
+  searchDictionary,
+} from "@/lib/dictionary";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useMemo, useState } from "react";
+import styled, { keyframes } from "styled-components";
 
 // --- Animations ---
 const fadeIn = keyframes`
@@ -1663,8 +1662,10 @@ function PracticeContent() {
                     const isSelected = selectedOption === optIndex;
                     const isCorrect = optIndex === currentItem.meaning;
                     let state:
-                      "default" | "correct" | "incorrect" | "disabled" =
-                      "default";
+                      | "default"
+                      | "correct"
+                      | "incorrect"
+                      | "disabled" = "default";
 
                     if (isSubmitted) {
                       if (isCorrect) state = "correct";

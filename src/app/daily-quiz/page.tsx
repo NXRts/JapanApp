@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import styled from "styled-components";
-import Link from "next/link";
-import { toRomaji } from "wanakana";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import { SeededRandom, getTodaySeed } from "@/utils/seededRandom";
-import { useProgress } from "@/context/ProgressContext";
 import { TestResultStats } from "@/components/jlpt/TestResultStats";
 import { PostLessonFlow } from "@/components/modals/DuolingoPostLessonModals";
+import { useProgress } from "@/context/ProgressContext";
+import { SeededRandom, getTodaySeed } from "@/utils/seededRandom";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
+import styled from "styled-components";
+import { toRomaji } from "wanakana";
 
 // Styled Components (Reusing similar style to KanaQuizPage for consistency)
 const Container = styled.div`

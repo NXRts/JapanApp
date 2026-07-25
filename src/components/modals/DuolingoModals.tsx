@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
-import styled, { keyframes } from "styled-components";
 import { useProgress } from "@/context/ProgressContext";
-import Link from "next/link";
-import { getDailyQuests, Quest } from "@/utils/dailyQuests";
 import { getLeagueById, getRankStatus } from "@/data/leagues";
+import { getDailyQuests, Quest } from "@/utils/dailyQuests";
+import Link from "next/link";
+import { useEffect, useMemo } from "react";
+import styled, { keyframes } from "styled-components";
 
 /* ─── Shared Modal Overlay & Container ───────────────────────────────────── */
 function useLockBodyScroll(onClose?: () => void) {
@@ -118,7 +118,9 @@ const ModalSub = styled.p`
   line-height: 1.5;
 `;
 
-const ActionBtn = styled.button<{ $variant?: "primary" | "super" | "secondary" | "danger" }>`
+const ActionBtn = styled.button<{
+  $variant?: "primary" | "super" | "secondary" | "danger";
+}>`
   width: 100%;
   padding: 0.85rem 1.25rem;
   border-radius: 14px;
@@ -170,11 +172,36 @@ const ActionBtn = styled.button<{ $variant?: "primary" | "super" | "secondary" |
 export function CourseModal({ onClose }: { onClose: () => void }) {
   useLockBodyScroll(onClose);
   const levels = [
-    { id: "n5", title: "JLPT N5 - Pemula", desc: "Dasar Kanji, Kana, & Percakapan Harian", badge: "🟢 Aktif" },
-    { id: "n4", title: "JLPT N4 - Menengah Bawah", desc: "Tata bahasa dasar lanjut & Kanji N4", badge: "🔒 Segera" },
-    { id: "n3", title: "JLPT N3 - Menengah", desc: "Percakapan alami & Bacaan sedang", badge: "🔒 Segera" },
-    { id: "n2", title: "JLPT N2 - Lanjutan", desc: "Pemahaman bisnis & Bahasa Jepang kompleks", badge: "🔒 Segera" },
-    { id: "n1", title: "JLPT N1 - Mahir", desc: "Tingkat penutur asli & Artikel ilmiah", badge: "🔒 Segera" },
+    {
+      id: "n5",
+      title: "JLPT N5 - Pemula",
+      desc: "Dasar Kanji, Kana, & Percakapan Harian",
+      badge: "🟢 Aktif",
+    },
+    {
+      id: "n4",
+      title: "JLPT N4 - Menengah Bawah",
+      desc: "Tata bahasa dasar lanjut & Kanji N4",
+      badge: "🔒 Segera",
+    },
+    {
+      id: "n3",
+      title: "JLPT N3 - Menengah",
+      desc: "Percakapan alami & Bacaan sedang",
+      badge: "🔒 Segera",
+    },
+    {
+      id: "n2",
+      title: "JLPT N2 - Lanjutan",
+      desc: "Pemahaman bisnis & Bahasa Jepang kompleks",
+      badge: "🔒 Segera",
+    },
+    {
+      id: "n1",
+      title: "JLPT N1 - Mahir",
+      desc: "Tingkat penutur asli & Artikel ilmiah",
+      badge: "🔒 Segera",
+    },
   ];
 
   return (
@@ -182,15 +209,31 @@ export function CourseModal({ onClose }: { onClose: () => void }) {
       <ModalBox onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>×</CloseButton>
         <ModalTitle>🇯🇵 Bahasa Jepang (JLPT)</ModalTitle>
-        <ModalSub>Pilih tingkat pembelajaran aktif kamu untuk menyesuaikan materi kuis & roadmap.</ModalSub>
+        <ModalSub>
+          Pilih tingkat pembelajaran aktif kamu untuk menyesuaikan materi kuis &
+          roadmap.
+        </ModalSub>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem", marginBottom: "1.5rem" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.85rem",
+            marginBottom: "1.5rem",
+          }}
+        >
           {levels.map((lvl) => (
             <div
               key={lvl.id}
               style={{
-                background: lvl.id === "n5" ? "rgba(var(--primary-rgb), 0.12)" : "rgba(255, 255, 255, 0.03)",
-                border: lvl.id === "n5" ? "1.5px solid var(--primary)" : "1px solid var(--border)",
+                background:
+                  lvl.id === "n5"
+                    ? "rgba(var(--primary-rgb), 0.12)"
+                    : "rgba(255, 255, 255, 0.03)",
+                border:
+                  lvl.id === "n5"
+                    ? "1.5px solid var(--primary)"
+                    : "1px solid var(--border)",
                 borderRadius: "16px",
                 padding: "1rem",
                 display: "flex",
@@ -201,10 +244,28 @@ export function CourseModal({ onClose }: { onClose: () => void }) {
               }}
             >
               <div>
-                <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>{lvl.title}</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>{lvl.desc}</div>
+                <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>
+                  {lvl.title}
+                </div>
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    color: "var(--text-secondary)",
+                    marginTop: "0.2rem",
+                  }}
+                >
+                  {lvl.desc}
+                </div>
               </div>
-              <span style={{ fontSize: "0.75rem", fontWeight: 800, padding: "0.2rem 0.5rem", borderRadius: "8px", background: "rgba(255,255,255,0.08)" }}>
+              <span
+                style={{
+                  fontSize: "0.75rem",
+                  fontWeight: 800,
+                  padding: "0.2rem 0.5rem",
+                  borderRadius: "8px",
+                  background: "rgba(255,255,255,0.08)",
+                }}
+              >
                 {lvl.badge}
               </span>
             </div>
@@ -252,15 +313,43 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
         <CloseButton onClick={onClose}>×</CloseButton>
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
           <div style={{ fontSize: "3.5rem", marginBottom: "0.5rem" }}>🔥</div>
-          <ModalTitle style={{ justifyContent: "center" }}>{streak} Hari Streak!</ModalTitle>
-          <ModalSub style={{ marginBottom: "0" }}>Kamu telah belajar berturut-turut. Pertahankan api semangatmu!</ModalSub>
+          <ModalTitle style={{ justifyContent: "center" }}>
+            {streak} Hari Streak!
+          </ModalTitle>
+          <ModalSub style={{ marginBottom: "0" }}>
+            Kamu telah belajar berturut-turut. Pertahankan api semangatmu!
+          </ModalSub>
         </div>
 
         {/* Calendar Row */}
-        <div style={{ display: "flex", justifyContent: "space-between", background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)", borderRadius: "18px", padding: "1rem", marginBottom: "1.5rem" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            background: "rgba(255,255,255,0.03)",
+            border: "1px solid var(--border)",
+            borderRadius: "18px",
+            padding: "1rem",
+            marginBottom: "1.5rem",
+          }}
+        >
           {weekDays.map((d) => (
-            <div key={d.dateStr} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "0.4rem" }}>
-              <span style={{ fontSize: "0.75rem", color: d.isToday ? "#f59e0b" : "var(--text-secondary)", fontWeight: d.isToday ? 900 : 700 }}>
+            <div
+              key={d.dateStr}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "0.4rem",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "0.75rem",
+                  color: d.isToday ? "#f59e0b" : "var(--text-secondary)",
+                  fontWeight: d.isToday ? 900 : 700,
+                }}
+              >
                 {d.label}
               </span>
               <div
@@ -268,7 +357,9 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
                   width: "32px",
                   height: "32px",
                   borderRadius: "50%",
-                  background: d.hasStudied ? "#f59e0b" : "rgba(255,255,255,0.08)",
+                  background: d.hasStudied
+                    ? "#f59e0b"
+                    : "rgba(255,255,255,0.08)",
                   border: d.isToday ? "2px solid #f59e0b" : "none",
                   display: "flex",
                   alignItems: "center",
@@ -285,12 +376,35 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Streak Freeze Card */}
-        <div style={{ background: "rgba(59, 130, 246, 0.1)", border: "1px solid rgba(59, 130, 246, 0.3)", borderRadius: "18px", padding: "1.25rem", marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "1rem" }}>
+        <div
+          style={{
+            background: "rgba(59, 130, 246, 0.1)",
+            border: "1px solid rgba(59, 130, 246, 0.3)",
+            borderRadius: "18px",
+            padding: "1.25rem",
+            marginBottom: "1.5rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "1rem",
+          }}
+        >
           <div style={{ fontSize: "2rem" }}>🛡️</div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 800, fontSize: "0.95rem", color: "#3b82f6" }}>Bekukan Streak (Streak Freeze)</div>
-            <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
-              {hasFreeze ? "Aktif! Streak kamu aman jika tidak belajar 1 hari." : "Lindungi streak kamu jika melewatkan latihan 1 hari."}
+            <div
+              style={{ fontWeight: 800, fontSize: "0.95rem", color: "#3b82f6" }}
+            >
+              Bekukan Streak (Streak Freeze)
+            </div>
+            <div
+              style={{
+                fontSize: "0.8rem",
+                color: "var(--text-secondary)",
+                marginTop: "0.2rem",
+              }}
+            >
+              {hasFreeze
+                ? "Aktif! Streak kamu aman jika tidak belajar 1 hari."
+                : "Lindungi streak kamu jika melewatkan latihan 1 hari."}
             </div>
           </div>
         </div>
@@ -312,7 +426,8 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
 /* ─── 3. SHOP MODAL (GEMS STORE) ─────────────────────────────────────────── */
 export function ShopModal({ onClose }: { onClose: () => void }) {
   useLockBodyScroll(onClose);
-  const { progress, spendGems, refillHearts, buyStreakFreeze, toggleSuper } = useProgress();
+  const { progress, spendGems, refillHearts, buyStreakFreeze, toggleSuper } =
+    useProgress();
   const gems = progress.gems !== undefined ? progress.gems : 100;
   const hearts = progress.hearts !== undefined ? progress.hearts : 5;
   const isSuper = progress.isSuper || false;
@@ -323,23 +438,67 @@ export function ShopModal({ onClose }: { onClose: () => void }) {
       <ModalBox $maxWidth="520px" onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>×</CloseButton>
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginBottom: "1.5rem",
+          }}
+        >
           <div>
             <ModalTitle>🛍️ Toko JapanApp</ModalTitle>
-            <ModalSub style={{ margin: 0 }}>Gunakan Permata 💎 untuk membeli perlengkapan & upgrade.</ModalSub>
+            <ModalSub style={{ margin: 0 }}>
+              Gunakan Permata 💎 untuk membeli perlengkapan & upgrade.
+            </ModalSub>
           </div>
-          <div style={{ background: "rgba(59, 130, 246, 0.15)", border: "1px solid rgba(59, 130, 246, 0.3)", borderRadius: "14px", padding: "0.5rem 0.85rem", fontWeight: 900, color: "#3b82f6", fontSize: "1.1rem" }}>
+          <div
+            style={{
+              background: "rgba(59, 130, 246, 0.15)",
+              border: "1px solid rgba(59, 130, 246, 0.3)",
+              borderRadius: "14px",
+              padding: "0.5rem 0.85rem",
+              fontWeight: 900,
+              color: "#3b82f6",
+              fontSize: "1.1rem",
+            }}
+          >
             💎 {gems}
           </div>
         </div>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            marginBottom: "1.5rem",
+          }}
+        >
           {/* Item 1: Refill Hearts */}
-          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)", borderRadius: "18px", padding: "1.15rem", display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div
+            style={{
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid var(--border)",
+              borderRadius: "18px",
+              padding: "1.15rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+            }}
+          >
             <div style={{ fontSize: "2.2rem" }}>❤️</div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>Isi Ulang Nyawa (Penuh 5 ❤️)</div>
-              <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
+              <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>
+                Isi Ulang Nyawa (Penuh 5 ❤️)
+              </div>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  color: "var(--text-secondary)",
+                  marginTop: "0.25rem",
+                }}
+              >
                 Kembalikan nyawa kamu ke 5 untuk lanjut belajar tanpa batas.
               </div>
             </div>
@@ -350,7 +509,8 @@ export function ShopModal({ onClose }: { onClose: () => void }) {
               }}
               disabled={hearts >= 5 || gems < 100}
               style={{
-                background: hearts >= 5 ? "rgba(255,255,255,0.08)" : "var(--primary)",
+                background:
+                  hearts >= 5 ? "rgba(255,255,255,0.08)" : "var(--primary)",
                 color: "white",
                 border: "none",
                 borderRadius: "12px",
@@ -366,19 +526,40 @@ export function ShopModal({ onClose }: { onClose: () => void }) {
           </div>
 
           {/* Item 2: Streak Freeze */}
-          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)", borderRadius: "18px", padding: "1.15rem", display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div
+            style={{
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid var(--border)",
+              borderRadius: "18px",
+              padding: "1.15rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+            }}
+          >
             <div style={{ fontSize: "2.2rem" }}>🛡️</div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>Bekukan Streak (Streak Freeze)</div>
-              <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
-                Melindungi streak kamu jika kamu lupa atau tidak sempat belajar 1 hari.
+              <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>
+                Bekukan Streak (Streak Freeze)
+              </div>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  color: "var(--text-secondary)",
+                  marginTop: "0.25rem",
+                }}
+              >
+                Melindungi streak kamu jika kamu lupa atau tidak sempat belajar
+                1 hari.
               </div>
             </div>
             <button
               onClick={() => buyStreakFreeze()}
               disabled={hasFreeze || gems < 200}
               style={{
-                background: hasFreeze ? "rgba(255,255,255,0.08)" : "var(--primary)",
+                background: hasFreeze
+                  ? "rgba(255,255,255,0.08)"
+                  : "var(--primary)",
                 color: "white",
                 border: "none",
                 borderRadius: "12px",
@@ -394,11 +575,36 @@ export function ShopModal({ onClose }: { onClose: () => void }) {
           </div>
 
           {/* Item 3: Super Subscription */}
-          <div style={{ background: "linear-gradient(135deg, rgba(236,72,153,0.15), rgba(139,92,246,0.15))", border: "1.5px solid rgba(236,72,153,0.4)", borderRadius: "18px", padding: "1.15rem", display: "flex", alignItems: "center", gap: "1rem" }}>
+          <div
+            style={{
+              background:
+                "linear-gradient(135deg, rgba(236,72,153,0.15), rgba(139,92,246,0.15))",
+              border: "1.5px solid rgba(236,72,153,0.4)",
+              borderRadius: "18px",
+              padding: "1.15rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+            }}
+          >
             <div style={{ fontSize: "2.2rem" }}>👑</div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 800, fontSize: "0.95rem", color: "#ec4899" }}>Super JapanApp (Premium)</div>
-              <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
+              <div
+                style={{
+                  fontWeight: 800,
+                  fontSize: "0.95rem",
+                  color: "#ec4899",
+                }}
+              >
+                Super JapanApp (Premium)
+              </div>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  color: "var(--text-secondary)",
+                  marginTop: "0.25rem",
+                }}
+              >
                 Nyawa Tak Terbatas, Bebas Iklan & Latihan Fokus Kesalahan.
               </div>
             </div>
@@ -420,7 +626,9 @@ export function ShopModal({ onClose }: { onClose: () => void }) {
           </div>
         </div>
 
-        <ActionBtn $variant="secondary" onClick={onClose}>Tutup Toko</ActionBtn>
+        <ActionBtn $variant="secondary" onClick={onClose}>
+          Tutup Toko
+        </ActionBtn>
       </ModalBox>
     </Overlay>
   );
@@ -441,7 +649,9 @@ export function HeartsModal({ onClose }: { onClose: () => void }) {
 
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
           <div style={{ fontSize: "3.5rem", marginBottom: "0.5rem" }}>❤️</div>
-          <ModalTitle style={{ justifyContent: "center" }}>{isSuper ? "Nyawa Tak Terbatas! ♾️" : `${hearts} / 5 Nyawa`}</ModalTitle>
+          <ModalTitle style={{ justifyContent: "center" }}>
+            {isSuper ? "Nyawa Tak Terbatas! ♾️" : `${hearts} / 5 Nyawa`}
+          </ModalTitle>
           <ModalSub style={{ marginBottom: 0 }}>
             {isSuper
               ? "Kamu sedang menggunakan Super JapanApp. Kamu tidak akan pernah kehabisan nyawa saat kuis!"
@@ -450,7 +660,14 @@ export function HeartsModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {!isSuper && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+              marginBottom: "1.5rem",
+            }}
+          >
             <ActionBtn
               onClick={() => {
                 if (hearts >= 5) return;
@@ -461,13 +678,23 @@ export function HeartsModal({ onClose }: { onClose: () => void }) {
               ❤️ Isi Penuh (100 💎)
             </ActionBtn>
 
-            <ActionBtn as={Link} href="/practice" $variant="secondary" style={{ textDecoration: "none" }}>
+            <ActionBtn
+              as={Link}
+              href="/practice"
+              $variant="secondary"
+              style={{ textDecoration: "none" }}
+            >
               💪 Latihan untuk Pulihkan Nyawa
             </ActionBtn>
           </div>
         )}
 
-        <ActionBtn $variant={isSuper ? "primary" : "super"} as={Link} href="/sakura-fitur" style={{ textDecoration: "none" }}>
+        <ActionBtn
+          $variant={isSuper ? "primary" : "super"}
+          as={Link}
+          href="/sakura-fitur"
+          style={{ textDecoration: "none" }}
+        >
           👑 Dapatkan Nyawa Tak Terbatas dengan Super
         </ActionBtn>
       </ModalBox>
@@ -482,10 +709,26 @@ export function SuperModal({ onClose }: { onClose: () => void }) {
   const isSuper = progress.isSuper || false;
 
   const perks = [
-    { icon: "❤️", title: "Nyawa Tak Terbatas", desc: "Jawab kuis tanpa takut kehabisan nyawa." },
-    { icon: "🚫", title: "Bebas Iklan", desc: "Fokus belajar tanpa ada gangguan iklan." },
-    { icon: "🎯", title: "Latihan Kesalahan", desc: "Review otomatis soal-soal yang pernah kamu salah jawab." },
-    { icon: "🦊", title: "Lencana & Hanko Eksklusif", desc: "Dapatkan tampilan avatar & profil bercahaya emas." },
+    {
+      icon: "❤️",
+      title: "Nyawa Tak Terbatas",
+      desc: "Jawab kuis tanpa takut kehabisan nyawa.",
+    },
+    {
+      icon: "🚫",
+      title: "Bebas Iklan",
+      desc: "Fokus belajar tanpa ada gangguan iklan.",
+    },
+    {
+      icon: "🎯",
+      title: "Latihan Kesalahan",
+      desc: "Review otomatis soal-soal yang pernah kamu salah jawab.",
+    },
+    {
+      icon: "🦊",
+      title: "Lencana & Hanko Eksklusif",
+      desc: "Dapatkan tampilan avatar & profil bercahaya emas.",
+    },
   ];
 
   return (
@@ -494,25 +737,80 @@ export function SuperModal({ onClose }: { onClose: () => void }) {
         <CloseButton onClick={onClose}>×</CloseButton>
 
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
-          <span style={{ background: "linear-gradient(90deg, #ec4899, #8b5cf6)", color: "white", padding: "0.25rem 0.75rem", borderRadius: "8px", fontSize: "0.75rem", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+          <span
+            style={{
+              background: "linear-gradient(90deg, #ec4899, #8b5cf6)",
+              color: "white",
+              padding: "0.25rem 0.75rem",
+              borderRadius: "8px",
+              fontSize: "0.75rem",
+              fontWeight: 900,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+            }}
+          >
             Super JapanApp
           </span>
-          <ModalTitle style={{ justifyContent: "center", marginTop: "0.75rem" }}>Belajar Lebih Cepat Tanpa Batas!</ModalTitle>
-          <ModalSub>Nikmati pengalaman belajar bahasa Jepang paling premium dan seru.</ModalSub>
+          <ModalTitle
+            style={{ justifyContent: "center", marginTop: "0.75rem" }}
+          >
+            Belajar Lebih Cepat Tanpa Batas!
+          </ModalTitle>
+          <ModalSub>
+            Nikmati pengalaman belajar bahasa Jepang paling premium dan seru.
+          </ModalSub>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1.5rem" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "1rem",
+            marginBottom: "1.5rem",
+          }}
+        >
           {perks.map((p) => (
-            <div key={p.title} style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)", borderRadius: "18px", padding: "1rem", textAlign: "center" }}>
-              <div style={{ fontSize: "1.75rem", marginBottom: "0.4rem" }}>{p.icon}</div>
-              <div style={{ fontWeight: 800, fontSize: "0.88rem", marginBottom: "0.2rem" }}>{p.title}</div>
-              <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>{p.desc}</div>
+            <div
+              key={p.title}
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid var(--border)",
+                borderRadius: "18px",
+                padding: "1rem",
+                textAlign: "center",
+              }}
+            >
+              <div style={{ fontSize: "1.75rem", marginBottom: "0.4rem" }}>
+                {p.icon}
+              </div>
+              <div
+                style={{
+                  fontWeight: 800,
+                  fontSize: "0.88rem",
+                  marginBottom: "0.2rem",
+                }}
+              >
+                {p.title}
+              </div>
+              <div
+                style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}
+              >
+                {p.desc}
+              </div>
             </div>
           ))}
         </div>
 
-        <ActionBtn $variant="super" onClick={() => { toggleSuper(); onClose(); }}>
-          {isSuper ? "Kembali ke Mode Standar" : "⚡ Aktifkan Super JapanApp Gratis"}
+        <ActionBtn
+          $variant="super"
+          onClick={() => {
+            toggleSuper();
+            onClose();
+          }}
+        >
+          {isSuper
+            ? "Kembali ke Mode Standar"
+            : "⚡ Aktifkan Super JapanApp Gratis"}
         </ActionBtn>
       </ModalBox>
     </Overlay>
@@ -537,7 +835,12 @@ export function LeaderboardModal({ onClose }: { onClose: () => void }) {
 
   // Single user leaderboard (lightweight & clean)
   const rawCompetitors = [
-    { name: `${userName} (Kamu)`, exp: userExp, avatar: userAvatar, isUser: true },
+    {
+      name: `${userName} (Kamu)`,
+      exp: userExp,
+      avatar: userAvatar,
+      isUser: true,
+    },
   ];
 
   const userRankIndex = 1;
@@ -549,12 +852,15 @@ export function LeaderboardModal({ onClose }: { onClose: () => void }) {
         <CloseButton onClick={onClose}>×</CloseButton>
 
         <div style={{ textAlign: "center", marginBottom: "1.25rem" }}>
-          <div style={{ fontSize: "3rem", marginBottom: "0.3rem" }}>{leagueInfo.icon}</div>
+          <div style={{ fontSize: "3rem", marginBottom: "0.3rem" }}>
+            {leagueInfo.icon}
+          </div>
           <ModalTitle style={{ justifyContent: "center" }}>
             {leagueInfo.name} ({leagueInfo.englishName})
           </ModalTitle>
           <ModalSub style={{ marginBottom: "0.5rem" }}>
-            Musim liga berakhir dalam <b>2 hari 14 jam</b>. 5 teratas akan naik ke tingkat berikutnya!
+            Musim liga berakhir dalam <b>2 hari 14 jam</b>. 5 teratas akan naik
+            ke tingkat berikutnya!
           </ModalSub>
           <div
             style={{
@@ -574,7 +880,14 @@ export function LeaderboardModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Competitors List */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginBottom: "1.5rem" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "0.5rem",
+            marginBottom: "1.5rem",
+          }}
+        >
           {rawCompetitors.map((c, idx) => {
             const actualRank = idx + 1;
             return (
@@ -589,38 +902,60 @@ export function LeaderboardModal({ onClose }: { onClose: () => void }) {
                   background: c.isUser
                     ? "rgba(var(--primary-rgb), 0.18)"
                     : actualRank <= 5
-                    ? "rgba(16, 185, 129, 0.05)"
-                    : actualRank >= 9
-                    ? "rgba(239, 68, 68, 0.05)"
-                    : "rgba(255, 255, 255, 0.03)",
+                      ? "rgba(16, 185, 129, 0.05)"
+                      : actualRank >= 9
+                        ? "rgba(239, 68, 68, 0.05)"
+                        : "rgba(255, 255, 255, 0.03)",
                   border: c.isUser
                     ? "1.5px solid var(--primary)"
                     : actualRank <= 5
-                    ? "1px solid rgba(16, 185, 129, 0.2)"
-                    : actualRank >= 9
-                    ? "1px solid rgba(239, 68, 68, 0.2)"
-                    : "1px solid var(--border)",
+                      ? "1px solid rgba(16, 185, 129, 0.2)"
+                      : actualRank >= 9
+                        ? "1px solid rgba(239, 68, 68, 0.2)"
+                        : "1px solid var(--border)",
                 }}
               >
                 <div
                   style={{
                     width: "24px",
                     fontWeight: 900,
-                    color: actualRank <= 3 ? "#f59e0b" : "var(--text-secondary)",
+                    color:
+                      actualRank <= 3 ? "#f59e0b" : "var(--text-secondary)",
                     textAlign: "center",
                   }}
                 >
                   #{actualRank}
                 </div>
                 <div style={{ fontSize: "1.4rem" }}>{c.avatar}</div>
-                <div style={{ flex: 1, fontWeight: c.isUser ? 900 : 700, fontSize: "0.9rem" }}>{c.name}</div>
-                <div style={{ fontWeight: 800, color: "var(--primary)", fontSize: "0.88rem" }}>{c.exp} EXP</div>
+                <div
+                  style={{
+                    flex: 1,
+                    fontWeight: c.isUser ? 900 : 700,
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {c.name}
+                </div>
+                <div
+                  style={{
+                    fontWeight: 800,
+                    color: "var(--primary)",
+                    fontSize: "0.88rem",
+                  }}
+                >
+                  {c.exp} EXP
+                </div>
               </div>
             );
           })}
         </div>
 
-        <ActionBtn as={Link} href="/practice" style={{ textDecoration: "none" }} onClick={onClose}>
+        <ActionBtn
+          as={Link}
+          href="/practice"
+          style={{ textDecoration: "none" }}
+          onClick={onClose}
+        >
           ⚡ Pelajari Soal & Naikkan Peringkat
         </ActionBtn>
       </ModalBox>
@@ -686,9 +1021,19 @@ export function AllQuestsModal({ onClose }: { onClose: () => void }) {
         <CloseButton onClick={onClose}>×</CloseButton>
 
         <ModalTitle>🎯 Misi & Lencana Bulanan</ModalTitle>
-        <ModalSub>Selesaikan misi harian untuk mengumpulkan Permata 💎 dan Lencana Pahlawan.</ModalSub>
+        <ModalSub>
+          Selesaikan misi harian untuk mengumpulkan Permata 💎 dan Lencana
+          Pahlawan.
+        </ModalSub>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.5rem" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            marginBottom: "1.5rem",
+          }}
+        >
           {dailyQuests.map((q: Quest) => {
             const isClaimed = q.isCompleted && claimedQuests.includes(q.id);
             return (
@@ -706,9 +1051,18 @@ export function AllQuestsModal({ onClose }: { onClose: () => void }) {
               >
                 <div style={{ fontSize: "1.75rem" }}>{q.icon}</div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 800, fontSize: "0.9rem" }}>{q.title}</div>
-                  <div style={{ fontSize: "0.78rem", color: "var(--text-secondary)", marginTop: "0.2rem" }}>
-                    Progres: {q.current} / {q.target} (Hadiah: +{q.rewardGems} 💎)
+                  <div style={{ fontWeight: 800, fontSize: "0.9rem" }}>
+                    {q.title}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "0.78rem",
+                      color: "var(--text-secondary)",
+                      marginTop: "0.2rem",
+                    }}
+                  >
+                    Progres: {q.current} / {q.target} (Hadiah: +{q.rewardGems}{" "}
+                    💎)
                   </div>
                 </div>
                 {q.isCompleted && !isClaimed ? (
@@ -735,11 +1089,23 @@ export function AllQuestsModal({ onClose }: { onClose: () => void }) {
                     Klaim 🎁
                   </button>
                 ) : isClaimed ? (
-                  <span style={{ width: "100px", flexShrink: 0, textAlign: "center", fontSize: "0.8rem", fontWeight: 800, color: "#10b981" }}>
+                  <span
+                    style={{
+                      width: "100px",
+                      flexShrink: 0,
+                      textAlign: "center",
+                      fontSize: "0.8rem",
+                      fontWeight: 800,
+                      color: "#10b981",
+                    }}
+                  >
                     Diklaim ✓
                   </span>
                 ) : (
-                  <ModalQuestGoBtn href={q.actionUrl || "/lesson"} onClick={onClose}>
+                  <ModalQuestGoBtn
+                    href={q.actionUrl || "/lesson"}
+                    onClick={onClose}
+                  >
                     <span className="default-label">🎁 +{q.rewardGems} 💎</span>
                     <span className="hover-label">GO 🚀</span>
                   </ModalQuestGoBtn>
@@ -749,7 +1115,9 @@ export function AllQuestsModal({ onClose }: { onClose: () => void }) {
           })}
         </div>
 
-        <ActionBtn $variant="secondary" onClick={onClose}>Tutup Misi</ActionBtn>
+        <ActionBtn $variant="secondary" onClick={onClose}>
+          Tutup Misi
+        </ActionBtn>
       </ModalBox>
     </Overlay>
   );

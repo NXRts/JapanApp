@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useState, useEffect, useRef, Suspense } from "react";
-import styled, { keyframes, css } from "styled-components";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useProgress } from "@/context/ProgressContext";
-import { lessonsData, Lesson, Question } from "@/data/lessonsData";
-import { generatorBank } from "@/data/generatorBank";
-import Link from "next/link";
 import { JAPANESE_TIPS, TipItem } from "@/components/common/SplashLoader";
+import { useProgress } from "@/context/ProgressContext";
+import { generatorBank } from "@/data/generatorBank";
+import { Lesson, lessonsData, Question } from "@/data/lessonsData";
 import { playJapaneseAudio } from "@/lib/audio";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import React, { Suspense, useEffect, useRef, useState } from "react";
+import styled, { css, keyframes } from "styled-components";
 
 // ==========================================
 // ANIMATIONS
