@@ -1461,7 +1461,7 @@ export default function ProfilePage() {
           <MainStatCard style={{ background: "rgba(239, 68, 68, 0.08)", borderColor: "rgba(239, 68, 68, 0.2)" }}>
             <StatLabel>Nyawa (Hearts)</StatLabel>
             <StatValue style={{ color: "#ef4444" }}>
-              ❤️ {progress.isSuper ? "Tak Terbatas ♾️" : `${progress.hearts !== undefined ? progress.hearts : 5} / 5`}
+              ❤️ {progress.isSuper ? "Tak Terbatas ♾️" : `${progress.hearts !== undefined ? progress.hearts : 7} / 7`}
             </StatValue>
           </MainStatCard>
 

@@ -1199,7 +1199,7 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
 function LessonPlayerContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { progress, markExerciseCompleted, addExp } = useProgress();
+  const { progress, markExerciseCompleted, addExp, deductHeart, refillHearts } = useProgress();
   const startTime = useRef<number | null>(null);
 
   const lessonId = searchParams.get("id") || "n5-u1-l1";
@@ -1236,7 +1236,6 @@ function LessonPlayerContent() {
   // State Management
   const [showExitModal, setShowExitModal] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [hearts, setHearts] = useState(5);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [typedAnswer, setTypedAnswer] = useState("");
@@ -1249,6 +1248,13 @@ function LessonPlayerContent() {
   const [elapsedTime, setElapsedTime] = useState<number>(0);
   const [isExiting, setIsExiting] = useState(false);
   const [randomTip, setRandomTip] = useState<TipItem>(JAPANESE_TIPS[0]);
+
+  // Check 0 hearts on mount
+  useEffect(() => {
+    if (!progress.isSuper && (progress.hearts ?? 7) <= 0) {
+      setIsGameOver(true);
+    }
+  }, [progress.isSuper, progress.hearts]);
 
   // Pick a random tip once on component load to override the default
   useEffect(() => {
@@ -1390,24 +1396,26 @@ function LessonPlayerContent() {
       playIncorrectSound();
       setShakeBox(true);
       setTimeout(() => setShakeBox(false), 400);
-      setHearts((h) => {
-        const nextH = h - 1;
-        if (nextH <= 0) {
-          const totalTime = Math.round(
-            (Date.now() - (startTime.current || Date.now())) / 1000,
-          );
-          setElapsedTime(totalTime);
-          setTimeout(() => setIsGameOver(true), 600);
-        }
-        return nextH;
-      });
+
+      deductHeart();
+      const currentH = progress.hearts !== undefined ? progress.hearts : 7;
+      const nextH = progress.isSuper ? 7 : Math.max(0, currentH - 1);
+      if (nextH <= 0) {
+        const totalTime = Math.round(
+          (Date.now() - (startTime.current || Date.now())) / 1000,
+        );
+        setElapsedTime(totalTime);
+        setTimeout(() => setIsGameOver(true), 600);
+      }
     }
   };
 
   // Game over retry
   const handleRetry = () => {
     setCurrentIdx(0);
-    setHearts(5);
+    if (!progress.isSuper && (progress.hearts ?? 7) <= 0) {
+      refillHearts();
+    }
     setSelectedOption(null);
     setSelectedCards([]);
     setTypedAnswer("");
@@ -1600,7 +1608,9 @@ function LessonPlayerContent() {
         <ProgressBar>
           <ProgressFill $percent={progressPercent} />
         </ProgressBar>
-        <LivesIndicator title="Hearts Remaining">❤️ {hearts}</LivesIndicator>
+        <LivesIndicator title="Hearts Remaining">
+          ❤️ {progress.isSuper ? "♾️" : (progress.hearts ?? 7)}
+        </LivesIndicator>
       </LessonHeader>
 
       <ContentWrapper>

@@ -732,7 +732,7 @@ export default function PracticeHubPage() {
             </ActivityRow>
             <ActivityRow>
               <ActivityLabel>Nyawa Belajar</ActivityLabel>
-              <ActivityValue>{progress.isSuper ? "♾️ Super" : `${progress.hearts ?? 5} / 5 ❤️`}</ActivityValue>
+              <ActivityValue>{progress.isSuper ? "♾️ Super" : `${progress.hearts ?? 7} / 7 ❤️`}</ActivityValue>
             </ActivityRow>
           </SideWidget>
 

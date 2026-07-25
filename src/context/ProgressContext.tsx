@@ -83,6 +83,7 @@ interface ProgressData {
   gems: number;
   hearts: number;
   maxHearts: number;
+  lastHeartDepletedAt?: number;
   isSuper: boolean;
   hasStreakFreeze: boolean;
   claimedQuests: string[];
@@ -112,6 +113,8 @@ interface ProgressContextType {
   toggleSuper: () => void;
   buyStreakFreeze: () => boolean;
   claimQuestReward: (questId: string, rewardGems: number) => void;
+  timeUntilNextHeart: number;
+  timeUntilFullRefill: number;
   /** Whether the user progress has finished loading from localStorage */
   isLoaded: boolean;
 }
@@ -153,8 +156,9 @@ const INITIAL_DATA: ProgressData = {
   profile: DEFAULT_PROFILE,
   hasSetName: true,
   gems: 100,
-  hearts: 5,
-  maxHearts: 5,
+  hearts: 7,
+  maxHearts: 7,
+  lastHeartDepletedAt: undefined,
   isSuper: false,
   hasStreakFreeze: false,
   claimedQuests: [],
@@ -257,9 +261,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
                 typeof parsed.gems === "number" && parsed.gems !== 800
                   ? parsed.gems
                   : 100,
-              hearts: typeof parsed.hearts === "number" ? parsed.hearts : 5,
-              maxHearts:
-                typeof parsed.maxHearts === "number" ? parsed.maxHearts : 5,
+              hearts: typeof parsed.hearts === "number" ? parsed.hearts : 7,
+              maxHearts: 7,
               isSuper:
                 typeof parsed.isSuper === "boolean" ? parsed.isSuper : false,
               hasStreakFreeze:
@@ -698,15 +701,92 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     return success;
   }, []);
 
+  const [timeUntilNextHeart, setTimeUntilNextHeart] = useState<number>(0);
+  const [timeUntilFullRefill, setTimeUntilFullRefill] = useState<number>(0);
+
+  // Auto-refill engine effect: +1 heart every ~25.7 minutes (7 hearts in 3 hours / 180 mins)
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const MAX_HEARTS = 7;
+    const TOTAL_REFILL_MS = 180 * 60 * 1000; // 3 hours = 180 mins
+    const MS_PER_HEART = TOTAL_REFILL_MS / MAX_HEARTS; // ~25.71 mins per heart
+
+    const checkRefill = () => {
+      const now = Date.now();
+      const currentHearts = progress.hearts ?? MAX_HEARTS;
+
+      if (currentHearts >= MAX_HEARTS || progress.isSuper) {
+        setTimeUntilNextHeart(0);
+        setTimeUntilFullRefill(0);
+        if (progress.lastHeartDepletedAt !== undefined) {
+          setProgress((prev) => ({ ...prev, lastHeartDepletedAt: undefined }));
+        }
+        return;
+      }
+
+      const depletedAt = progress.lastHeartDepletedAt || now;
+      const elapsed = Math.max(0, now - depletedAt);
+      const heartsGained = Math.floor(elapsed / MS_PER_HEART);
+
+      if (heartsGained > 0) {
+        const nextHearts = Math.min(MAX_HEARTS, currentHearts + heartsGained);
+        const nextDepletedAt =
+          nextHearts >= MAX_HEARTS
+            ? undefined
+            : depletedAt + heartsGained * MS_PER_HEART;
+
+        setProgress((prev) => ({
+          ...prev,
+          hearts: nextHearts,
+          lastHeartDepletedAt: nextDepletedAt,
+        }));
+      }
+
+      // Calculate remaining countdown timers (in seconds)
+      const remMs = MS_PER_HEART - (elapsed % MS_PER_HEART);
+      const remainingSecondsForNext = Math.ceil(remMs / 1000);
+      setTimeUntilNextHeart(remainingSecondsForNext);
+
+      const neededHearts = MAX_HEARTS - currentHearts;
+      const remainingTotalMs = (neededHearts - 1) * MS_PER_HEART + remMs;
+      setTimeUntilFullRefill(Math.ceil(remainingTotalMs / 1000));
+    };
+
+    checkRefill();
+    const interval = setInterval(checkRefill, 1000);
+    return () => clearInterval(interval);
+  }, [
+    isLoaded,
+    progress.hearts,
+    progress.isSuper,
+    progress.lastHeartDepletedAt,
+  ]);
+
   const refillHearts = useCallback(() => {
-    setProgress((prev) => ({ ...prev, hearts: prev.maxHearts || 5 }));
+    setProgress((prev) => ({
+      ...prev,
+      hearts: 7,
+      maxHearts: 7,
+      lastHeartDepletedAt: undefined,
+    }));
   }, []);
 
   const deductHeart = useCallback(() => {
     setProgress((prev) => {
       if (prev.isSuper) return prev;
-      const currentHearts = prev.hearts !== undefined ? prev.hearts : 5;
-      return { ...prev, hearts: Math.max(0, currentHearts - 1) };
+      const currentHearts = prev.hearts !== undefined ? prev.hearts : 7;
+      if (currentHearts <= 0) return prev;
+
+      const nextHearts = currentHearts - 1;
+      const now = Date.now();
+      const nextDepletedAt = prev.lastHeartDepletedAt || now;
+
+      return {
+        ...prev,
+        hearts: nextHearts,
+        lastHeartDepletedAt: nextDepletedAt,
+      };
     });
   }, []);
 
@@ -723,7 +803,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       return {
         ...prev,
         isSuper: nextSuper,
-        hearts: nextSuper ? 5 : prev.hearts,
+        hearts: nextSuper ? 7 : prev.hearts,
+        lastHeartDepletedAt: nextSuper ? undefined : prev.lastHeartDepletedAt,
       };
     });
   }, [triggerAlert]);
@@ -809,6 +890,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       toggleSuper,
       buyStreakFreeze,
       claimQuestReward,
+      timeUntilNextHeart,
+      timeUntilFullRefill,
       isLoaded,
     }),
     [
@@ -833,6 +916,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       toggleSuper,
       buyStreakFreeze,
       claimQuestReward,
+      timeUntilNextHeart,
+      timeUntilFullRefill,
       isLoaded,
     ],
   );
