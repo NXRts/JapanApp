@@ -634,11 +634,28 @@ export function ShopModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+function formatTimer(seconds: number): string {
+  if (seconds <= 0) return "00m 00s";
+  const hours = Math.floor(seconds / 3600);
+  const mins = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  if (hours > 0) {
+    return `${hours}j ${mins.toString().padStart(2, "0")}m`;
+  }
+  return `${mins.toString().padStart(2, "0")}m ${secs.toString().padStart(2, "0")}s`;
+}
+
 /* ─── 4. HEARTS MODAL ─────────────────────────────────────────────────────── */
 export function HeartsModal({ onClose }: { onClose: () => void }) {
   useLockBodyScroll(onClose);
-  const { progress, refillHearts, spendGems } = useProgress();
-  const hearts = progress.hearts !== undefined ? progress.hearts : 5;
+  const {
+    progress,
+    refillHearts,
+    spendGems,
+    timeUntilNextHeart,
+    timeUntilFullRefill,
+  } = useProgress();
+  const hearts = progress.hearts !== undefined ? progress.hearts : 7;
   const isSuper = progress.isSuper || false;
   const gems = progress.gems !== undefined ? progress.gems : 100;
 
@@ -650,14 +667,57 @@ export function HeartsModal({ onClose }: { onClose: () => void }) {
         <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
           <div style={{ fontSize: "3.5rem", marginBottom: "0.5rem" }}>❤️</div>
           <ModalTitle style={{ justifyContent: "center" }}>
-            {isSuper ? "Nyawa Tak Terbatas! ♾️" : `${hearts} / 5 Nyawa`}
+            {isSuper ? "Nyawa Tak Terbatas! ♾️" : `${hearts} / 7 Nyawa`}
           </ModalTitle>
           <ModalSub style={{ marginBottom: 0 }}>
             {isSuper
               ? "Kamu sedang menggunakan Super JapanApp. Kamu tidak akan pernah kehabisan nyawa saat kuis!"
-              : "Nyawa berkurang jika terjadi kesalahan dalam soal. Isi ulang agar terus berlatih."}
+              : "Nyawa hanya berkurang saat salah di Lesson terstruktur. Seluruh kuis & latihan di Practice Hub bebas dikerjakan sepuasnya!"}
           </ModalSub>
         </div>
+
+        {!isSuper && hearts < 7 && (
+          <div
+            style={{
+              background: "rgba(245, 158, 11, 0.1)",
+              border: "1px solid rgba(245, 158, 11, 0.3)",
+              borderRadius: "16px",
+              padding: "0.85rem 1rem",
+              marginBottom: "1.25rem",
+              textAlign: "center",
+            }}
+          >
+            <div
+              style={{ fontSize: "0.85rem", fontWeight: 800, color: "#f59e0b" }}
+            >
+              ⏱️ Auto-Refill Nyawa Otomatis (3 Jam Penuh)
+            </div>
+            <div
+              style={{
+                fontSize: "0.8rem",
+                color: "var(--text-secondary)",
+                marginTop: "0.3rem",
+              }}
+            >
+              +1 ❤️ berikut dalam:{" "}
+              <strong style={{ color: "white" }}>
+                {formatTimer(timeUntilNextHeart)}
+              </strong>
+            </div>
+            <div
+              style={{
+                fontSize: "0.75rem",
+                color: "var(--text-secondary)",
+                marginTop: "0.2rem",
+              }}
+            >
+              Terisi Penuh (7/7 ❤️) dalam:{" "}
+              <strong style={{ color: "#f59e0b" }}>
+                {formatTimer(timeUntilFullRefill)}
+              </strong>
+            </div>
+          </div>
+        )}
 
         {!isSuper && (
           <div
@@ -670,12 +730,12 @@ export function HeartsModal({ onClose }: { onClose: () => void }) {
           >
             <ActionBtn
               onClick={() => {
-                if (hearts >= 5) return;
+                if (hearts >= 7) return;
                 if (spendGems(100)) refillHearts();
               }}
-              disabled={hearts >= 5 || gems < 100}
+              disabled={hearts >= 7 || gems < 100}
             >
-              ❤️ Isi Penuh (100 💎)
+              ❤️ Isi Penuh 7 Nyawa (100 💎)
             </ActionBtn>
 
             <ActionBtn
@@ -683,8 +743,9 @@ export function HeartsModal({ onClose }: { onClose: () => void }) {
               href="/practice"
               $variant="secondary"
               style={{ textDecoration: "none" }}
+              onClick={onClose}
             >
-              💪 Latihan untuk Pulihkan Nyawa
+              💪 Latihan Bebas di Practice Hub
             </ActionBtn>
           </div>
         )}
@@ -694,6 +755,7 @@ export function HeartsModal({ onClose }: { onClose: () => void }) {
           as={Link}
           href="/sakura-fitur"
           style={{ textDecoration: "none" }}
+          onClick={onClose}
         >
           👑 Dapatkan Nyawa Tak Terbatas dengan Super
         </ActionBtn>

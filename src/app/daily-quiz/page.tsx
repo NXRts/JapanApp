@@ -393,8 +393,6 @@ export default function KanaQuizPage() {
 
     if (isCorrect) {
       setScore((s) => s + 1);
-    } else {
-      deductHeart();
     }
 
     // Record individual mastery and SRS
