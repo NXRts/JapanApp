@@ -223,7 +223,7 @@ export function RoadmapInteractiveNode({
         ) : status === "locked" ? (
           <LockIcon />
         ) : (
-          <LessonIcon icon={lesson.icon || "book"} color="white" size={30} />
+          <LessonIcon icon={lesson.icon || "book"} color="white" />
         )}
 
         {status !== "locked" && lesson.expReward > 0 && (
