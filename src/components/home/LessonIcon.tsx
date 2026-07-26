@@ -563,12 +563,17 @@ export function getIconType(icon: string, badge: string): string {
 
 interface LessonIconProps {
   icon: string;
-  badge: string;
-  color: string;
-  unlocked: boolean;
+  badge?: string;
+  color?: string;
+  unlocked?: boolean;
 }
 
-export function LessonIcon({ icon, badge, color, unlocked }: LessonIconProps) {
+export function LessonIcon({
+  icon,
+  badge = "",
+  color = "white",
+  unlocked = true,
+}: LessonIconProps) {
   if (!unlocked) {
     return <LockIcon />;
   }
