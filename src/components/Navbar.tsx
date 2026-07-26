@@ -10,7 +10,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled, { createGlobalStyle, css } from "styled-components";
-import { ArrowRightIcon, UserIcon } from "./icons/AppIcons";
+import { UserIcon } from "./icons/AppIcons";
 
 const DictionarySearchOverlay = dynamic(
   () => import("./dictionary/DictionarySearchOverlay"),
@@ -424,7 +424,9 @@ const MobileMenuOverlay = styled.div<{
     $isOpen ? ($dragOpacity !== undefined ? $dragOpacity : 1) : 0};
   visibility: ${({ $isOpen }) => ($isOpen ? "visible" : "hidden")};
   pointer-events: ${({ $isOpen }) => ($isOpen ? "all" : "none")};
-  transition: opacity 0.35s ease, visibility 0.35s ease;
+  transition:
+    opacity 0.35s ease,
+    visibility 0.35s ease;
 
   @media (min-width: 1101px) {
     display: none !important;
@@ -447,7 +449,9 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s ease;
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0.45s ease;
   transform: ${({ $isOpen }) =>
     $isOpen ? "translateY(0)" : "translateY(100%)"};
   visibility: ${({ $isOpen }) => ($isOpen ? "visible" : "hidden")};
@@ -1447,7 +1451,10 @@ export function Navbar() {
 
             <SidebarNavItem
               href="/practice"
-              $active={pathname.startsWith("/practice") || pathname.startsWith("/study")}
+              $active={
+                pathname.startsWith("/practice") ||
+                pathname.startsWith("/study")
+              }
             >
               <PracticeIcon />
               Practice
@@ -1562,6 +1569,15 @@ export function Navbar() {
                 </Link>
 
                 <PopoverDivider />
+                <Link
+                  href="/development"
+                  style={{ textDecoration: "none", color: "inherit" }}
+                  onClick={() => setIsLainnyaOpen(false)}
+                >
+                  <PopoverItem style={{ color: "#8b5cf6" }}>
+                    <span>🚧</span> Development Labs
+                  </PopoverItem>
+                </Link>
 
                 <Link
                   href="/settings"
@@ -1599,7 +1615,10 @@ export function Navbar() {
               <DeviceModeSwitcher />
             </div>
 
-            <SidebarLevelCard href="/profile" title={`${progress.exp} Total EXP`}>
+            <SidebarLevelCard
+              href="/profile"
+              title={`${progress.exp} Total EXP`}
+            >
               <SidebarLevelHeader>
                 <span>LEVEL {level}</span>
                 <span>{progress.exp} EXP</span>
@@ -1755,7 +1774,10 @@ export function Navbar() {
                 <NavItem>
                   <StyledLink
                     href="/practice"
-                    $active={pathname.startsWith("/practice") || pathname.startsWith("/study")}
+                    $active={
+                      pathname.startsWith("/practice") ||
+                      pathname.startsWith("/study")
+                    }
                   >
                     Practice
                   </StyledLink>
@@ -1858,6 +1880,13 @@ export function Navbar() {
                       $active={pathname === "/practice-sheets"}
                     >
                       Sheets
+                    </DropdownItem>
+                    <DropdownItem
+                      href="/development"
+                      $active={pathname === "/development"}
+                      style={{ color: "#a855f7" }}
+                    >
+                      🚧 Development Labs
                     </DropdownItem>
                     <DropdownItem href="/about" $active={pathname === "/about"}>
                       About
@@ -1997,7 +2026,10 @@ export function Navbar() {
 
             <MobileLink
               href="/practice"
-              $active={pathname.startsWith("/practice") || pathname.startsWith("/study")}
+              $active={
+                pathname.startsWith("/practice") ||
+                pathname.startsWith("/study")
+              }
               $isOpen={isMobileMenuOpen}
               $delay={0.05}
               onClick={() => setIsMobileMenuOpen(false)}
