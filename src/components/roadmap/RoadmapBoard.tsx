@@ -184,8 +184,8 @@ export function RoadmapBoard({
   const unitMap = new Map<string, UnitGroup>();
 
   lessons.forEach((lesson) => {
-    const uId = lesson.unitId || lesson.unit || "unit-1";
-    const uTitle = lesson.unitTitle || lesson.unit || "Unit Pelajaran";
+    const uId = lesson.unitId || "unit-1";
+    const uTitle = lesson.unitTitle || "Unit Pelajaran";
     const uDesc = lesson.unitDescription || lesson.description || "";
     const uColor = lesson.unitColor || "var(--primary)";
 
