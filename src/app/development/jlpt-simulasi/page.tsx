@@ -17,6 +17,11 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `;
 
+const soundWaveAnim = keyframes`
+  0%, 100% { height: 3px; }
+  50% { height: 13px; }
+`;
+
 const Container = styled.div`
   max-width: 1280px;
   margin: 0 auto;
@@ -401,7 +406,7 @@ const PassageBox = styled.div`
 const AudioUnitBox = styled.div`
   background: rgba(var(--primary-rgb), 0.05);
   border: 1px dashed rgba(var(--primary-rgb), 0.25);
-  border-radius: 18px;
+  border-radius: 20px;
   padding: 1.25rem 1.5rem;
   margin-bottom: 1.75rem;
   display: flex;
@@ -417,24 +422,85 @@ const AudioControlsRow = styled.div`
   flex-wrap: wrap;
 `;
 
-const AudioPlayButton = styled.button`
-  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+const CoolAudioPlayerWidget = styled.button<{ $playing: boolean; $disabled: boolean }>`
+  background: ${({ $playing }) =>
+    $playing
+      ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+      : "linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%)"};
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 14px;
+  padding: 0.35rem 0.85rem 0.35rem 0.45rem;
+  border-radius: 40px;
   font-weight: 850;
-  font-size: 0.95rem;
-  cursor: pointer;
-  display: flex;
+  font-size: 0.82rem;
+  cursor: ${({ $disabled }) => ($disabled ? "not-allowed" : "pointer")};
+  display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  gap: 0.55rem;
+  box-shadow: ${({ $playing }) =>
+    $playing
+      ? "0 4px 14px rgba(16, 185, 129, 0.35)"
+      : "0 4px 14px rgba(99, 102, 241, 0.3)"};
   transition: all 0.2s ease;
+  opacity: ${({ $disabled, $playing }) => ($disabled && !$playing ? 0.5 : 1)};
+  position: relative;
+
+  .play-icon-circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .audio-label {
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .equalizer-bars {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 13px;
+    margin-left: 0.1rem;
+
+    span {
+      width: 2.5px;
+      background: white;
+      border-radius: 2px;
+      animation: ${soundWaveAnim} 0.8s ease-in-out infinite;
+
+      &:nth-child(1) { animation-delay: 0s; }
+      &:nth-child(2) { animation-delay: 0.15s; }
+      &:nth-child(3) { animation-delay: 0.3s; }
+      &:nth-child(4) { animation-delay: 0.45s; }
+    }
+  }
 
   &:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: ${({ $playing }) =>
+      $playing
+        ? "0 6px 18px rgba(16, 185, 129, 0.45)"
+        : "0 6px 18px rgba(99, 102, 241, 0.45)"};
+
+    .play-icon-circle {
+      transform: scale(1.08);
+      background: rgba(255, 255, 255, 0.32);
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
   }
 `;
 
@@ -888,7 +954,7 @@ export default function JLPTN5SimulationPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [audioSpeed, setAudioSpeed] = useState<number>(1.0);
   const [showScript, setShowScript] = useState(false);
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+  const [playingAudioId, setPlayingAudioId] = useState<number | null>(null);
 
   // Single Overall Unified Exam Timer (90 Minutes Total = 5400 Seconds)
   const [timeLeft, setTimeLeft] = useState(90 * 60);
@@ -903,10 +969,10 @@ export default function JLPTN5SimulationPage() {
 
   const currentQuestion = sectionQuestions[currentIdx] || N5_SIMULATION_QUESTIONS[0];
 
-  const handlePlayAudioForText = async (audioText: string) => {
-    if (!audioText || isPlayingAudio) return;
-    setIsPlayingAudio(true);
-    console.log("[JLPT Player] handlePlayAudio initiated...");
+  const handlePlayAudioForQuestion = async (qId: number, audioText?: string) => {
+    if (!audioText || playingAudioId !== null) return;
+    setPlayingAudioId(qId);
+    console.log(`[JLPT Player] handlePlayAudio initiated for Question #${qId}...`);
     try {
       const playPromise = playJapaneseAudio(audioText, { rate: audioSpeed });
       const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 25000));
@@ -914,13 +980,7 @@ export default function JLPTN5SimulationPage() {
     } catch (err) {
       console.warn("Audio playback error:", err);
     } finally {
-      setIsPlayingAudio(false);
-    }
-  };
-
-  const handlePlayAudio = () => {
-    if (currentQuestion.audioText) {
-      handlePlayAudioForText(currentQuestion.audioText);
+      setPlayingAudioId(null);
     }
   };
 
@@ -1179,6 +1239,7 @@ export default function JLPTN5SimulationPage() {
                       {secQuestions.map((q) => {
                         const isSelected = userAnswers[q.id] !== undefined;
                         const isFlagged = Boolean(flaggedQuestions[q.id]);
+                        const isThisPlaying = playingAudioId === q.id;
 
                         return (
                           <CompactQuestionBlock key={q.id} id={`question-card-${q.id}`}>
@@ -1202,13 +1263,26 @@ export default function JLPTN5SimulationPage() {
                             {q.audioText && (
                               <div style={{ marginBottom: "0.85rem" }}>
                                 <AudioControlsRow>
-                                  <AudioPlayButton
-                                    onClick={() => handlePlayAudioForText(q.audioText!)}
-                                    disabled={isPlayingAudio}
-                                    style={{ opacity: isPlayingAudio ? 0.8 : 1, padding: "0.45rem 1rem", fontSize: "0.85rem" }}
+                                  <CoolAudioPlayerWidget
+                                    $playing={isThisPlaying}
+                                    $disabled={playingAudioId !== null && !isThisPlaying}
+                                    onClick={() => handlePlayAudioForQuestion(q.id, q.audioText)}
                                   >
-                                    {isPlayingAudio ? "🔊 Memutar..." : "🔊 Putar Audio"}
-                                  </AudioPlayButton>
+                                    <div className="play-icon-circle">
+                                      {isThisPlaying ? "🔊" : "🎧"}
+                                    </div>
+                                    <span className="audio-label">
+                                      {isThisPlaying ? "Memutar Audio" : "Putar Audio"}
+                                    </span>
+                                    {isThisPlaying && (
+                                      <div className="equalizer-bars">
+                                        <span />
+                                        <span />
+                                        <span />
+                                        <span />
+                                      </div>
+                                    )}
+                                  </CoolAudioPlayerWidget>
                                 </AudioControlsRow>
                               </div>
                             )}
@@ -1311,13 +1385,27 @@ export default function JLPTN5SimulationPage() {
                 {currentQuestion.audioText && (
                   <AudioUnitBox>
                     <AudioControlsRow>
-                      <AudioPlayButton
-                        onClick={handlePlayAudio}
-                        disabled={isPlayingAudio}
-                        style={{ opacity: isPlayingAudio ? 0.8 : 1 }}
+                      <CoolAudioPlayerWidget
+                        $playing={playingAudioId === currentQuestion.id}
+                        $disabled={playingAudioId !== null && playingAudioId !== currentQuestion.id}
+                        onClick={() => handlePlayAudioForQuestion(currentQuestion.id, currentQuestion.audioText)}
                       >
-                        {isPlayingAudio ? "🔊 Memutar Audio..." : "🔊 Putar Audio Percakapan"}
-                      </AudioPlayButton>
+                        <div className="play-icon-circle">
+                          {playingAudioId === currentQuestion.id ? "🔊" : "🎧"}
+                        </div>
+                        <span className="audio-label">
+                          {playingAudioId === currentQuestion.id ? "Memutar Audio..." : "Putar Audio"}
+                        </span>
+                        {playingAudioId === currentQuestion.id && (
+                          <div className="equalizer-bars">
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                          </div>
+                        )}
+                      </CoolAudioPlayerWidget>
+
                       <div style={{ display: "flex", gap: "0.4rem" }}>
                         <AudioSpeedButton
                           $active={audioSpeed === 1.0}
