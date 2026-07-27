@@ -475,7 +475,31 @@ export default function DevelopmentPage() {
         </StatCard>
       </StatsRow>
 
-      {/* Flagship Feature: Hafalan Memorization System */}
+      {/* Flagship Feature 1: Simulasi Ujian JLPT N5 */}
+      <FlagshipCard style={{ background: "linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(59, 130, 246, 0.15) 100%)", borderColor: "rgba(16, 185, 129, 0.4)" }}>
+        <FlagshipBadge style={{ background: "#10b981" }}>Beta Siap Dicoba • Module Baru 🏆</FlagshipBadge>
+        <FlagshipContent>
+          <FlagshipInfo>
+            <h2>🏆 Simulasi Ujian Resmi JLPT N5 (Single-Page Quiz)</h2>
+            <p>
+              Simulasi ujian resmi JLPT N5 lengkap (70 Soal: Moji/Goi, Bunpou/Dokkai, Choukai) dengan countdown timer per seksi, lembar jawab digital, audio percakapan, & sertifikat kelulusan.
+            </p>
+
+            <FeaturePillGrid>
+              <FeaturePill>⏱️ Timer Ujian 90 Menit</FeaturePill>
+              <FeaturePill>📝 70 Soal Standar JEES</FeaturePill>
+              <FeaturePill>🎧 Pemutar Audio Choukai</FeaturePill>
+              <FeaturePill>📜 Sertifikat & Rapor Poin</FeaturePill>
+            </FeaturePillGrid>
+
+            <PrimaryCTAButton href="/development/jlpt-simulasi" style={{ background: "linear-gradient(135deg, #10b981 0%, #059669 100%)" }}>
+              🚀 Mulai Simulasi Ujian JLPT N5 Sekarang
+            </PrimaryCTAButton>
+          </FlagshipInfo>
+        </FlagshipContent>
+      </FlagshipCard>
+
+      {/* Flagship Feature 2: Hafalan Memorization System */}
       <FlagshipCard>
         <FlagshipBadge>Beta Tersedia • Fitur Unggulan 🚀</FlagshipBadge>
         <FlagshipContent>

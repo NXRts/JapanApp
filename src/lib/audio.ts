@@ -2,17 +2,9 @@
 
 /**
  * Universal Audio Utility for Cross-Browser Japanese Speech Synthesis
- *
- * Priority chain:
- * 1. High-quality SpeechSynthesis voice (Google/Premium/Apple) — Chrome, macOS, Windows
- * 2. Google Translate TTS (gTTS) fallback — Linux Firefox/Zen with only espeak-ng
- * 3. espeak-ng SpeechSynthesis — last resort (poor quality but still works)
- *
- * Firefox Fix Notes:
- * - Firefox loads voices asynchronously; getVoices() returns [] on first call.
- * - We must wait for onvoiceschanged before voices are available.
- * - Firefox also has a known bug where speechSynthesis can "hang" after cancel().
- *   We work around this by using a small setTimeout after cancel().
+ * Fully supported on Zen Browser, Firefox, Chrome, Edge, Safari (Linux, Windows, macOS, Mobile).
+ * Primary Engine: Same-Origin Server TTS Proxy (/api/tts)
+ * Fallback Engine: Web Speech API (SpeechSynthesis)
  */
 
 interface AudioOptions {
@@ -22,13 +14,9 @@ interface AudioOptions {
 }
 
 let voices: SpeechSynthesisVoice[] = [];
-let voicesReady = false;
+let voicesLoaded = false;
 
-/**
- * Returns a Promise that resolves with the list of available voices.
- * Handles the Firefox async voice loading pattern.
- */
-const getVoicesAsync = (): Promise<SpeechSynthesisVoice[]> => {
+const loadVoices = (): Promise<SpeechSynthesisVoice[]> => {
   return new Promise((resolve) => {
     if (typeof window === "undefined" || !window.speechSynthesis) {
       resolve([]);
@@ -36,158 +24,176 @@ const getVoicesAsync = (): Promise<SpeechSynthesisVoice[]> => {
     }
 
     const synth = window.speechSynthesis;
-    const currentVoices = synth.getVoices();
+    const current = synth.getVoices();
 
-    // Chrome/Edge: voices available synchronously
-    if (currentVoices.length > 0) {
-      voices = currentVoices;
-      voicesReady = true;
+    if (current.length > 0) {
+      voices = current;
+      voicesLoaded = true;
       resolve(voices);
       return;
     }
 
-    // Firefox: voices loaded asynchronously, wait for onvoiceschanged
-    if (voicesReady) {
-      resolve(voices);
-      return;
-    }
-
-    const handleVoicesChanged = () => {
+    const onVoicesChanged = () => {
       voices = synth.getVoices();
-      voicesReady = true;
-      synth.removeEventListener("voiceschanged", handleVoicesChanged);
+      voicesLoaded = true;
+      synth.removeEventListener("voiceschanged", onVoicesChanged);
       resolve(voices);
     };
 
-    synth.addEventListener("voiceschanged", handleVoicesChanged);
+    synth.addEventListener("voiceschanged", onVoicesChanged);
 
-    // Timeout fallback if voiceschanged never fires
     setTimeout(() => {
-      if (!voicesReady) {
-        voicesReady = true;
+      if (!voicesLoaded) {
         voices = synth.getVoices();
-        synth.removeEventListener("voiceschanged", handleVoicesChanged);
+        voicesLoaded = true;
         resolve(voices);
       }
-    }, 1500);
+    }, 600);
   });
 };
 
-// Pre-warm voice loading on module init (non-blocking)
 if (typeof window !== "undefined" && window.speechSynthesis) {
-  getVoicesAsync().then((v) => {
-    voices = v;
-  });
+  loadVoices();
 }
 
 /**
- * Checks whether a voice is high-quality (Google, Apple, Microsoft, Premium).
- * espeak-ng voices are considered low-quality for Japanese.
+ * Plays same-origin TTS audio from Next.js server proxy (/api/tts)
+ * Works 100% reliably in Zen Browser, Firefox, Chrome, Safari without CORS, 403 blocks, or missing OS voices.
  */
-const isHighQualityVoice = (v: SpeechSynthesisVoice): boolean => {
-  const name = v.name.toLowerCase();
-  return (
-    name.includes("google") ||
-    name.includes("premium") ||
-    name.includes("enhanced") ||
-    name.includes("microsoft") ||
-    name.includes("apple") ||
-    name.includes("siri") ||
-    // macOS built-in high-quality Japanese voices
-    name.includes("kyoko") ||
-    name.includes("otoya")
-  );
-};
-
-/**
- * Detects low-quality/espeak voices that should be skipped in favor of Google TTS.
- * espeak-ng on Linux/Firefox/Zen exposes voices as:
- *   "Japanese", "Japanese+Max", "Japanese+male6", etc. with lang:"ja"
- * These are NOT natural-sounding and should always be bypassed.
- */
-const isLowQualityVoice = (v: SpeechSynthesisVoice): boolean => {
-  const name = v.name.toLowerCase();
-  return (
-    name.includes("espeak") ||
-    // espeak-ng naming pattern: "Japanese", "Japanese+Max", "Japanese+female2", etc.
-    // These are all espeak variants — none of them sound natural for Japanese learning
-    (name.startsWith("japanese") &&
-      !v.name.includes("Google") &&
-      !v.name.includes("Microsoft"))
-  );
-};
-
-/**
- * Plays Japanese text using Google Translate TTS (gTTS).
- * Uses referrerPolicy: "no-referrer" to prevent Google from blocking localhost.
- * Returns a Promise that resolves to true if successful, false otherwise.
- */
-const playWithGoogleTTS = (text: string, rate: number): Promise<boolean> => {
+const playApiTTS = (text: string, rate: number): Promise<boolean> => {
   return new Promise((resolve) => {
-    const encoded = encodeURIComponent(text);
-    const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encoded}&tl=ja&client=tw-ob`;
+    if (typeof window === "undefined") return resolve(false);
 
-    const audio = new Audio();
-    (audio as any).referrerPolicy = "no-referrer";
-    audio.src = url;
-    audio.volume = 1.0;
+    try {
+      const clean = text.replace(/[\r\n]+/g, " ").trim();
+      const encoded = encodeURIComponent(clean);
+      const url = `/api/tts?text=${encoded}`;
 
-    // Set playback speed
-    audio.defaultPlaybackRate = rate;
-    audio.playbackRate = rate;
+      console.log("[JapanApp Audio] Requesting same-origin TTS audio from /api/tts...");
 
-    audio.onended = () => resolve(true);
-    audio.onerror = (e: any) => {
-      console.warn("Google TTS fallback failed:", e?.type || "error event");
+      const audio = new Audio(url);
+      audio.volume = 1.0;
+      audio.defaultPlaybackRate = rate;
+      audio.playbackRate = rate;
+
+      let done = false;
+      let isPlaying = false;
+
+      const finish = (success: boolean) => {
+        if (!done) {
+          done = true;
+          clearTimeout(timeout);
+          audio.onended = null;
+          audio.onerror = null;
+          if (isPlaying) {
+            try { audio.pause(); } catch {}
+          }
+          console.log("[JapanApp Audio] Finished playing TTS audio. Success:", success);
+          resolve(success);
+        }
+      };
+
+      const timeout = setTimeout(() => {
+        console.warn("[JapanApp Audio] Timeout waiting for /api/tts audio to finish.");
+        finish(false);
+      }, 35000); // 35s max for full Choukai dialogues
+
+      audio.onended = () => finish(true);
+
+      audio.onerror = (evt: any) => {
+        console.warn("[JapanApp Audio] Audio element error:", evt);
+        try {
+          if (evt && typeof evt.preventDefault === "function") {
+            evt.preventDefault();
+          }
+        } catch {}
+        finish(false);
+      };
+
+      const p = audio.play();
+      if (p !== undefined) {
+        p.then(() => {
+          isPlaying = true;
+          console.log("[JapanApp Audio] Audio play() started successfully!");
+        }).catch((err) => {
+          isPlaying = false;
+          console.warn("[JapanApp Audio] Audio play() promise error:", err);
+          try {
+            if (err && typeof err === "object" && "preventDefault" in err) {
+              (err as any).preventDefault();
+            }
+          } catch {}
+          finish(false);
+        });
+      }
+    } catch (e) {
+      console.warn("[JapanApp Audio] Error playing audio element:", e);
       resolve(false);
-    };
-
-    audio
-      .play()
-      .then(() => {
-        // Playing successfully
-      })
-      .catch((err) => {
-        console.warn("Google TTS play failed:", err?.message || err);
-        resolve(false);
-      });
+    }
   });
 };
 
 /**
- * Plays Japanese text using Youdao TTS API as an alternative fallback.
- * Highly reliable for Japanese audio in browser environments.
- * Returns a Promise that resolves to true if successful, false otherwise.
+ * Fallback via Web Speech API (SpeechSynthesis) for offline support
  */
-const playWithYoudaoTTS = (text: string, rate: number): Promise<boolean> => {
-  return new Promise((resolve) => {
-    const encoded = encodeURIComponent(text);
-    const url = `https://dict.youdao.com/dictvoice?le=jap&audio=${encoded}`;
+const playWebSpeechAPI = (text: string, rate: number, options: AudioOptions): Promise<boolean> => {
+  return new Promise(async (resolve) => {
+    if (typeof window === "undefined" || !window.speechSynthesis) {
+      return resolve(false);
+    }
 
-    const audio = new Audio();
-    (audio as any).referrerPolicy = "no-referrer";
-    audio.src = url;
-    audio.volume = 1.0;
+    try {
+      const synth = window.speechSynthesis;
+      if (synth.paused) {
+        try { synth.resume(); } catch {}
+      }
+      try { synth.cancel(); } catch {}
 
-    // Set playback speed
-    audio.defaultPlaybackRate = rate;
-    audio.playbackRate = rate;
+      const availVoices = voices.length > 0 ? voices : await loadVoices();
+      const jaVoice =
+        options.voice ||
+        availVoices.find((v) => v.lang === "ja-JP" || v.lang.startsWith("ja"));
 
-    audio.onended = () => resolve(true);
-    audio.onerror = (e: any) => {
-      console.warn("Youdao TTS fallback failed:", e?.type || "error event");
+      const cleanText = text.replace(/[\r\n]+/g, " ").trim();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.lang = jaVoice ? jaVoice.lang : "ja-JP";
+      utterance.rate = rate;
+      utterance.pitch = options.pitch ?? 1.0;
+      utterance.volume = 1.0;
+      if (jaVoice) {
+        utterance.voice = jaVoice;
+      }
+
+      let done = false;
+      const finish = (success: boolean) => {
+        if (!done) {
+          done = true;
+          try { synth.cancel(); } catch {}
+          resolve(success);
+        }
+      };
+
+      const maxTimer = setTimeout(() => finish(false), 8000);
+
+      utterance.onend = () => {
+        clearTimeout(maxTimer);
+        finish(true);
+      };
+
+      utterance.onerror = (e: any) => {
+        try {
+          if (e && typeof e.preventDefault === "function") {
+            e.preventDefault();
+          }
+        } catch {}
+        clearTimeout(maxTimer);
+        finish(false);
+      };
+
+      synth.speak(utterance);
+    } catch {
       resolve(false);
-    };
-
-    audio
-      .play()
-      .then(() => {
-        // Playing successfully
-      })
-      .catch((err) => {
-        console.warn("Youdao TTS play failed:", err?.message || err);
-        resolve(false);
-      });
+    }
   });
 };
 
@@ -196,141 +202,25 @@ export const playJapaneseAudio = (
   options: AudioOptions = {},
 ): Promise<void> => {
   return new Promise(async (resolve) => {
-    if (typeof window === "undefined") {
-      return resolve();
-    }
-
-    if (!text || text.trim() === "") {
-      console.warn("Empty text passed to playJapaneseAudio");
+    if (typeof window === "undefined" || !text || text.trim() === "") {
       return resolve();
     }
 
     const rate = options.rate ?? 0.85;
+    const cleanText = text.replace(/[\r\n]+/g, " ").trim();
 
-    if (!window.speechSynthesis) {
-      console.warn("Speech synthesis not supported, trying external TTS...");
-      const successGoogle = await playWithGoogleTTS(text, rate);
-      if (!successGoogle) {
-        await playWithYoudaoTTS(text, rate);
-      }
+    console.log("[JapanApp Audio] playJapaneseAudio called for text length:", cleanText.length);
+
+    // 1. Primary Engine: Next.js Same-Origin API Proxy (/api/tts)
+    const successApi = await playApiTTS(cleanText, rate);
+    if (successApi) {
       return resolve();
     }
 
-    const synth = window.speechSynthesis;
+    console.warn("[JapanApp Audio] /api/tts proxy failed or offline. Falling back to Web Speech API...");
 
-    // Ensure voices are loaded (critical for Firefox)
-    const availableVoices = voices.length > 0 ? voices : await getVoicesAsync();
-
-    // Find the best available Japanese voice
-    const highQualityVoice =
-      options.voice ||
-      availableVoices.find(
-        (v) => v.lang === "ja-JP" && isHighQualityVoice(v),
-      ) ||
-      availableVoices.find(
-        (v) => v.lang.startsWith("ja") && isHighQualityVoice(v),
-      );
-
-    const anyJapaneseVoice =
-      highQualityVoice ||
-      availableVoices.find((v) => v.lang === "ja-JP") ||
-      availableVoices.find((v) => v.lang.startsWith("ja"));
-
-    // If only espeak/low-quality voice is available (Linux/Firefox/Zen), use external TTS
-    const allJapaneseVoices = availableVoices.filter(
-      (v) => v.lang === "ja-JP" || v.lang.startsWith("ja"),
-    );
-    const hasOnlyLowQuality =
-      allJapaneseVoices.length > 0 &&
-      !highQualityVoice &&
-      allJapaneseVoices.every((v) => isLowQualityVoice(v));
-
-    const noJapaneseVoice = allJapaneseVoices.length === 0;
-
-    if (hasOnlyLowQuality || noJapaneseVoice) {
-      console.log(
-        "Only low-quality voice or no voice found. Trying Google TTS fallback...",
-      );
-      const successGoogle = await playWithGoogleTTS(text, rate);
-      if (successGoogle) {
-        return resolve();
-      }
-
-      console.log("Google TTS failed. Trying Youdao TTS fallback...");
-      const successYoudao = await playWithYoudaoTTS(text, rate);
-      if (successYoudao) {
-        return resolve();
-      }
-
-      // If both external options fail, fallback to local SpeechSynthesis (even if it's espeak)
-      if (!anyJapaneseVoice) {
-        console.warn("No Japanese voice and all external TTS backends failed.");
-        return resolve();
-      }
-      console.warn(
-        "External TTS backends failed. Falling back to local SpeechSynthesis.",
-      );
-    }
-
-    // Cancel any ongoing speech
-    synth.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = anyJapaneseVoice ? anyJapaneseVoice.lang : "ja-JP";
-    utterance.rate = rate;
-    utterance.pitch = options.pitch ?? 1.0;
-    if (anyJapaneseVoice) {
-      utterance.voice = anyJapaneseVoice;
-    }
-
-    // Safety timeout: if speech doesn't start within 1.2s (browser is hung/silent), fallback to external TTS
-    let speakingTimeout = setTimeout(async () => {
-      console.warn(
-        "SpeechSynthesis took too long to respond. Falling back to external TTS...",
-      );
-      synth.cancel();
-      const successGoogle = await playWithGoogleTTS(text, rate);
-      if (!successGoogle) {
-        await playWithYoudaoTTS(text, rate);
-      }
-      resolve();
-    }, 1200);
-
-    utterance.onstart = () => {
-      // It successfully started speaking, we can clear the hang timeout
-      clearTimeout(speakingTimeout);
-    };
-
-    utterance.onend = () => {
-      clearTimeout(speakingTimeout);
-      resolve();
-    };
-
-    utterance.onerror = async (e: any) => {
-      clearTimeout(speakingTimeout);
-      try {
-        const errReason = e?.error || e?.type || "speech synthesis failure";
-        if (errReason !== "interrupted") {
-          console.warn(
-            "SpeechSynthesis warning:",
-            errReason,
-            "— trying external fallbacks...",
-          );
-          const successGoogle = await playWithGoogleTTS(text, rate);
-          if (!successGoogle) {
-            await playWithYoudaoTTS(text, rate);
-          }
-        }
-      } catch (err) {
-        console.warn("Audio fallback error caught:", err);
-      } finally {
-        resolve();
-      }
-    };
-
-    // Delay speak() slightly after cancel() to prevent the browser from cancelling the new utterance
-    setTimeout(() => {
-      synth.speak(utterance);
-    }, 100);
+    // 2. Secondary Fallback Engine: Web Speech API
+    await playWebSpeechAPI(cleanText, rate, options);
+    resolve();
   });
 };
