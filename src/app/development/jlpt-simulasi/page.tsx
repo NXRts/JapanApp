@@ -92,6 +92,36 @@ const ModeToggleButton = styled.button<{ $active: boolean }>`
   }
 `;
 
+const LayoutToggleBar = styled.div`
+  display: flex;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 3px;
+  gap: 3px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+`;
+
+const LayoutToggleButton = styled.button<{ $active: boolean }>`
+  background: ${({ $active }) =>
+    $active ? "var(--primary)" : "transparent"};
+  color: ${({ $active }) => ($active ? "white" : "var(--foreground-secondary)")};
+  border: none;
+  padding: 0.55rem 1rem;
+  border-radius: 11px;
+  font-size: 0.84rem;
+  font-weight: 850;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
+  }
+`;
+
 const TimerBox = styled.div<{ $warning: boolean }>`
   background: ${({ $warning }) => ($warning ? "#ef444415" : "var(--surface)")};
   border: 2px solid ${({ $warning }) => ($warning ? "#ef4444" : "var(--border)")};
@@ -153,6 +183,155 @@ const MainContentGrid = styled.div`
   }
 `;
 
+/* Compact Booklet Paper Layout */
+const CompactPaperWrapper = styled.div`
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+
+  @media (max-width: 768px) {
+    padding: 1.25rem 1rem;
+    border-radius: 20px;
+  }
+`;
+
+const SectionHeaderDivider = styled.div<{ $color: string }>`
+  background: ${({ $color }) => `${$color}15`};
+  border: 1.5px solid ${({ $color }) => `${$color}40`};
+  border-left: 6px solid ${({ $color }) => $color};
+  border-radius: 18px;
+  padding: 1.15rem 1.5rem;
+  margin: 1.5rem 0 1.25rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: ${({ $color }) => $color};
+    margin: 0;
+  }
+
+  .sec-badge {
+    background: ${({ $color }) => $color};
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 900;
+    padding: 3px 10px;
+    border-radius: 8px;
+  }
+`;
+
+const CompactQuestionBlock = styled.div`
+  border-bottom: 1.5px dashed var(--border);
+  padding-bottom: 1.75rem;
+  margin-bottom: 1.75rem;
+  &:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+`;
+
+const CompactMetaHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+`;
+
+const CompactOptionsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const CompactOptionCard = styled.button<{
+  $selected: boolean;
+  $correct?: boolean;
+  $wrong?: boolean;
+}>`
+  background: ${({ $selected, $correct, $wrong }) =>
+    $correct
+      ? "#10b98115"
+      : $wrong
+      ? "#ef444415"
+      : $selected
+      ? "rgba(var(--primary-rgb), 0.1)"
+      : "rgba(var(--foreground-rgb), 0.03)"};
+
+  border: 1.5px solid
+    ${({ $selected, $correct, $wrong }) =>
+      $correct
+        ? "#10b981"
+        : $wrong
+        ? "#ef4444"
+        : $selected
+        ? "var(--primary)"
+        : "var(--border)"};
+
+  border-radius: 14px;
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  .opt-letter {
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: ${({ $selected, $correct, $wrong }) =>
+      $correct
+        ? "#10b981"
+        : $wrong
+        ? "#ef4444"
+        : $selected
+        ? "var(--primary)"
+        : "rgba(var(--foreground-rgb), 0.08)"};
+
+    color: ${({ $selected, $correct, $wrong }) =>
+      $selected || $correct || $wrong ? "white" : "var(--foreground)"};
+
+    font-weight: 900;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .opt-text {
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: var(--foreground);
+    line-height: 1.4;
+  }
+
+  &:hover {
+    border-color: var(--primary);
+  }
+`;
+
 const QuestionCard = styled.div`
   background: var(--surface);
   border: 1px solid var(--border);
@@ -198,21 +377,21 @@ const BookmarkButton = styled.button<{ $flagged: boolean }>`
   font-size: 0.85rem;
   font-weight: 800;
   padding: 6px 12px;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
   transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
 `;
 
 const PassageBox = styled.div`
   background: rgba(var(--foreground-rgb), 0.03);
-  border: 1px solid var(--border);
-  border-left: 5px solid var(--primary);
-  border-radius: 18px;
-  padding: 1.5rem;
-  margin-bottom: 1.75rem;
+  border-left: 4px solid var(--primary);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
   font-size: 1.05rem;
   line-height: 1.8;
   color: var(--foreground);
@@ -220,10 +399,10 @@ const PassageBox = styled.div`
 `;
 
 const AudioUnitBox = styled.div`
-  background: rgba(139, 92, 246, 0.08);
-  border: 1px solid rgba(139, 92, 246, 0.25);
-  border-radius: 20px;
-  padding: 1.5rem;
+  background: rgba(var(--primary-rgb), 0.05);
+  border: 1px dashed rgba(var(--primary-rgb), 0.25);
+  border-radius: 18px;
+  padding: 1.25rem 1.5rem;
   margin-bottom: 1.75rem;
   display: flex;
   flex-direction: column;
@@ -233,63 +412,133 @@ const AudioUnitBox = styled.div`
 const AudioControlsRow = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
+  flex-wrap: wrap;
 `;
 
 const AudioPlayButton = styled.button`
-  background: #8b5cf6;
+  background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
   color: white;
   border: none;
-  border-radius: 14px;
   padding: 0.75rem 1.5rem;
+  border-radius: 14px;
+  font-weight: 850;
   font-size: 0.95rem;
-  font-weight: 900;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+  gap: 0.6rem;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
 
-  &:hover {
-    transform: scale(1.03);
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
   }
 `;
 
 const AudioSpeedButton = styled.button<{ $active: boolean }>`
-  background: ${({ $active }) => ($active ? "#8b5cf6" : "var(--surface)")};
-  color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
-  border: 1px solid var(--border);
+  background: ${({ $active }) =>
+    $active ? "var(--primary)" : "rgba(var(--foreground-rgb), 0.06)"};
+  color: ${({ $active }) => ($active ? "white" : "var(--foreground-secondary)")};
+  border: none;
+  padding: 0.4rem 0.85rem;
   border-radius: 10px;
-  padding: 4px 10px;
-  font-size: 0.78rem;
-  font-weight: 850;
+  font-size: 0.8rem;
+  font-weight: 800;
   cursor: pointer;
+  transition: all 0.15s ease;
 `;
 
 const AudioScriptToggle = styled.button`
-  background: transparent;
+  background: none;
   border: none;
-  color: #8b5cf6;
+  color: var(--primary);
   font-size: 0.85rem;
   font-weight: 800;
   cursor: pointer;
   text-decoration: underline;
+  padding: 0;
 `;
 
-const QuestionText = styled.h3`
-  font-size: 1.35rem;
+const QuestionText = styled.h2`
+  font-size: 1.25rem;
   font-weight: 850;
-  line-height: 1.6;
   color: var(--foreground);
-  margin-bottom: 1.75rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  white-space: pre-line;
 `;
 
-/* Options Grid */
+const StarWidgetBox = styled.div`
+  background: rgba(var(--foreground-rgb), 0.03);
+  border: 1.5px dashed var(--border);
+  border-radius: 18px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+
+  .label {
+    font-size: 0.88rem;
+    font-weight: 850;
+    color: var(--text-secondary);
+    margin-bottom: 0.85rem;
+  }
+
+  .sentence-preview {
+    font-size: 1.2rem;
+    font-weight: 850;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    color: var(--foreground);
+
+    .slot {
+      border-bottom: 2.5px solid var(--primary);
+      padding: 0 0.5rem;
+      min-width: 60px;
+      text-align: center;
+      color: var(--primary);
+    }
+    .star-slot {
+      border-bottom-color: #f59e0b;
+      color: #f59e0b;
+    }
+  }
+
+  .blocks-row {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+`;
+
+const BlockPill = styled.div<{ $placed: boolean }>`
+  background: ${({ $placed }) =>
+    $placed ? "rgba(var(--foreground-rgb), 0.05)" : "var(--surface)"};
+  border: 1.5px solid
+    ${({ $placed }) => ($placed ? "transparent" : "var(--border)")};
+  color: ${({ $placed }) =>
+    $placed ? "var(--text-secondary)" : "var(--foreground)"};
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: var(--primary);
+  }
+`;
+
 const OptionsList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 `;
 
 const OptionCard = styled.button<{
@@ -299,12 +548,13 @@ const OptionCard = styled.button<{
 }>`
   background: ${({ $selected, $correct, $wrong }) =>
     $correct
-      ? "rgba(16, 185, 129, 0.12)"
+      ? "#10b98115"
       : $wrong
-      ? "rgba(239, 68, 68, 0.12)"
+      ? "#ef444415"
       : $selected
-      ? "rgba(var(--primary-rgb), 0.1)"
+      ? "rgba(var(--primary-rgb), 0.08)"
       : "var(--surface)"};
+
   border: 2px solid
     ${({ $selected, $correct, $wrong }) =>
       $correct
@@ -314,18 +564,15 @@ const OptionCard = styled.button<{
         : $selected
         ? "var(--primary)"
         : "var(--border)"};
-  border-radius: 18px;
-  padding: 1.1rem 1.35rem;
+
+  border-radius: 20px;
+  padding: 1.25rem 1.5rem;
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  cursor: pointer;
   text-align: left;
+  cursor: pointer;
   transition: all 0.18s ease;
-
-  &:hover {
-    border-color: var(--primary);
-  }
 
   .opt-letter {
     width: 38px;
@@ -339,10 +586,12 @@ const OptionCard = styled.button<{
         : $selected
         ? "var(--primary)"
         : "rgba(var(--foreground-rgb), 0.06)"};
+
     color: ${({ $selected, $correct, $wrong }) =>
       $selected || $correct || $wrong ? "white" : "var(--foreground)"};
+
     font-weight: 900;
-    font-size: 1rem;
+    font-size: 1.05rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -350,82 +599,24 @@ const OptionCard = styled.button<{
   }
 
   .opt-text {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 800;
     color: var(--foreground);
-    line-height: 1.4;
+    line-height: 1.5;
+  }
+
+  &:hover {
+    border-color: ${({ $selected }) => ($selected ? "var(--primary)" : "var(--primary)")};
+    transform: translateX(4px);
   }
 `;
 
-/* Sentence Assembly Star (★) Widget */
-const StarWidgetBox = styled.div`
-  background: rgba(245, 158, 11, 0.08);
-  border: 1.5px solid rgba(245, 158, 11, 0.3);
-  border-radius: 20px;
-  padding: 1.5rem;
-  margin-bottom: 1.75rem;
-
-  .label {
-    font-size: 0.85rem;
-    font-weight: 900;
-    color: #f59e0b;
-    margin-bottom: 0.85rem;
-    text-transform: uppercase;
-  }
-
-  .sentence-preview {
-    font-size: 1.2rem;
-    font-weight: 850;
-    color: var(--foreground);
-    margin-bottom: 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .slot {
-    border-bottom: 3px solid #f59e0b;
-    min-width: 60px;
-    text-align: center;
-    padding: 0 6px 2px;
-
-    &.star-slot {
-      color: #f59e0b;
-      font-weight: 900;
-    }
-  }
-
-  .blocks-row {
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-  }
-`;
-
-const BlockPill = styled.button<{ $placed: boolean }>`
-  background: ${({ $placed }) => ($placed ? "#f59e0b" : "var(--surface)")};
-  color: ${({ $placed }) => ($placed ? "white" : "var(--foreground)")};
-  border: 1.5px solid var(--border);
-  padding: 0.5rem 1rem;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 850;
-  cursor: pointer;
-`;
-
-/* Bottom Navigation Controls */
 const CardFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
-
-  @media (max-width: 600px) {
-    flex-direction: column-reverse;
-  }
 `;
 
 const NavBtn = styled.button<{ $primary?: boolean }>`
@@ -651,24 +842,24 @@ const ScoreCard = styled.div<{ $passed: boolean }>`
   }
 
   .sec-status {
-    font-size: 0.78rem;
-    font-weight: 900;
+    font-size: 0.85rem;
+    font-weight: 850;
     color: ${({ $passed }) => ($passed ? "#10b981" : "#ef4444")};
   }
 `;
 
 const CertificateBox = styled.div`
-  background: var(--surface);
-  border: 3px double #f59e0b;
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
+  border: 2px solid var(--primary);
   border-radius: 24px;
-  padding: 2.5rem;
+  padding: 2.5rem 2rem;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
 
   h3 {
     font-size: 1.6rem;
     font-weight: 900;
-    color: #f59e0b;
+    color: var(--foreground);
     margin-bottom: 0.5rem;
   }
   .cert-sub {
@@ -679,16 +870,17 @@ const CertificateBox = styled.div`
   .cert-name {
     font-size: 2rem;
     font-weight: 900;
-    color: var(--foreground);
-    margin-bottom: 0.5rem;
-    text-decoration: underline;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-family: serif;
   }
 `;
 
 export default function JLPTN5SimulationPage() {
-  const { progress } = useProgress();
+  const { addExp } = useProgress();
   const [mounted, setMounted] = useState(false);
   const [isOfficialMode, setIsOfficialMode] = useState(true);
+  const [layoutMode, setLayoutMode] = useState<"paper" | "single">("paper");
   const [activeSection, setActiveSection] = useState<"moji_goi" | "bunpou_dokkai" | "choukai">("moji_goi");
   const [currentIdx, setCurrentIdx] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
@@ -705,12 +897,18 @@ export default function JLPTN5SimulationPage() {
     setMounted(true);
   }, []);
 
-  const handlePlayAudio = async () => {
-    if (!currentQuestion.audioText || isPlayingAudio) return;
+  const sectionQuestions = useMemo(() => {
+    return N5_SIMULATION_QUESTIONS.filter((q) => q.section === activeSection);
+  }, [activeSection]);
+
+  const currentQuestion = sectionQuestions[currentIdx] || N5_SIMULATION_QUESTIONS[0];
+
+  const handlePlayAudioForText = async (audioText: string) => {
+    if (!audioText || isPlayingAudio) return;
     setIsPlayingAudio(true);
-    console.log("[JLPT Player] handlePlayAudio initiated for question #", currentQuestion.id);
+    console.log("[JLPT Player] handlePlayAudio initiated...");
     try {
-      const playPromise = playJapaneseAudio(currentQuestion.audioText, { rate: audioSpeed });
+      const playPromise = playJapaneseAudio(audioText, { rate: audioSpeed });
       const timeoutPromise = new Promise((resolve) => setTimeout(resolve, 25000));
       await Promise.race([playPromise, timeoutPromise]);
     } catch (err) {
@@ -720,11 +918,11 @@ export default function JLPTN5SimulationPage() {
     }
   };
 
-  const sectionQuestions = useMemo(() => {
-    return N5_SIMULATION_QUESTIONS.filter((q) => q.section === activeSection);
-  }, [activeSection]);
-
-  const currentQuestion = sectionQuestions[currentIdx] || N5_SIMULATION_QUESTIONS[0];
+  const handlePlayAudio = () => {
+    if (currentQuestion.audioText) {
+      handlePlayAudioForText(currentQuestion.audioText);
+    }
+  };
 
   useEffect(() => {
     if (!isOfficialMode || isSubmitted) return;
@@ -746,47 +944,58 @@ export default function JLPTN5SimulationPage() {
   const handleSectionSwitch = (secId: "moji_goi" | "bunpou_dokkai" | "choukai") => {
     setActiveSection(secId);
     setCurrentIdx(0);
-    // Timer is continuous (90 minutes total) - do NOT reset timer on section switch!
+
+    if (layoutMode === "paper") {
+      const el = document.getElementById(`section-${secId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
-  const handleSelectOption = (optIdx: number) => {
+  const handleSelectOptionForQuestion = (questionId: number, optIdx: number) => {
     if (isSubmitted) return;
     setUserAnswers((prev) => ({
       ...prev,
-      [currentQuestion.id]: optIdx,
+      [questionId]: optIdx,
+    }));
+  };
+
+  const handleSelectOption = (optIdx: number) => {
+    handleSelectOptionForQuestion(currentQuestion.id, optIdx);
+  };
+
+  const toggleFlaggedForQuestion = (questionId: number) => {
+    setFlaggedQuestions((prev) => ({
+      ...prev,
+      [questionId]: !prev[questionId],
     }));
   };
 
   const toggleFlagged = () => {
-    setFlaggedQuestions((prev) => ({
-      ...prev,
-      [currentQuestion.id]: !prev[currentQuestion.id],
-    }));
+    toggleFlaggedForQuestion(currentQuestion.id);
   };
 
-  const formatTimer = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-  };
-
+  // Score Calculation
   const results = useMemo(() => {
-    let mojiGoiCorrect = 0;
-    let bunpouDokkaiCorrect = 0;
-    let choukaiCorrect = 0;
+    let rawMojiGoi = 0;
+    let rawBunpouDokkai = 0;
+    let rawChoukai = 0;
 
     N5_SIMULATION_QUESTIONS.forEach((q) => {
-      const isCorrect = userAnswers[q.id] === q.answer;
-      if (isCorrect) {
-        if (q.section === "moji_goi") mojiGoiCorrect++;
-        if (q.section === "bunpou_dokkai") bunpouDokkaiCorrect++;
-        if (q.section === "choukai") choukaiCorrect++;
+      const uAns = userAnswers[q.id];
+      if (uAns !== undefined && uAns === q.answer) {
+        if (q.section === "moji_goi") rawMojiGoi += 2.4;
+        if (q.section === "bunpou_dokkai") rawBunpouDokkai += 2.4;
+        if (q.section === "choukai") rawChoukai += 3.0;
       }
     });
 
-    const mojiGoiScore = Math.round((mojiGoiCorrect / 25) * 60);
-    const bunpouDokkaiScore = Math.round((bunpouDokkaiCorrect / 25) * 60);
-    const choukaiScore = Math.round((choukaiCorrect / 20) * 60);
+    const mojiGoiScore = Math.round(rawMojiGoi);
+    const bunpouDokkaiScore = Math.round(rawBunpouDokkai);
+    const choukaiScore = Math.round(rawChoukai);
 
     const totalScore = mojiGoiScore + bunpouDokkaiScore + choukaiScore;
 
@@ -796,9 +1005,6 @@ export default function JLPTN5SimulationPage() {
     const totalPassed = totalScore >= 80 && mojiGoiPassed && bunpouDokkaiPassed && choukaiPassed;
 
     return {
-      mojiGoiCorrect,
-      bunpouDokkaiCorrect,
-      choukaiCorrect,
       mojiGoiScore,
       bunpouDokkaiScore,
       choukaiScore,
@@ -809,6 +1015,18 @@ export default function JLPTN5SimulationPage() {
       totalPassed,
     };
   }, [userAnswers]);
+
+  useEffect(() => {
+    if (isSubmitted && results.totalPassed) {
+      addExp(150);
+    }
+  }, [isSubmitted, results.totalPassed, addExp]);
+
+  const formatTimer = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  };
 
   if (!mounted) return null;
 
@@ -894,6 +1112,21 @@ export default function JLPTN5SimulationPage() {
             </TitleBox>
 
             <ModeControls>
+              <LayoutToggleBar>
+                <LayoutToggleButton
+                  $active={layoutMode === "paper"}
+                  onClick={() => setLayoutMode("paper")}
+                >
+                  📄 Mode Ringkas (1 Halaman)
+                </LayoutToggleButton>
+                <LayoutToggleButton
+                  $active={layoutMode === "single"}
+                  onClick={() => setLayoutMode("single")}
+                >
+                  🗂️ Mode Per Soal (Stepper)
+                </LayoutToggleButton>
+              </LayoutToggleBar>
+
               <ModeToggleButton
                 $active={isOfficialMode}
                 onClick={() => setIsOfficialMode(true)}
@@ -908,7 +1141,7 @@ export default function JLPTN5SimulationPage() {
               </ModeToggleButton>
 
               {isOfficialMode && (
-                <TimerBox $warning={timeLeft < 180}>
+                <TimerBox $warning={timeLeft < 300}>
                   ⏱️ {formatTimer(timeLeft)}
                 </TimerBox>
               )}
@@ -930,149 +1163,277 @@ export default function JLPTN5SimulationPage() {
           </SectionTabsContainer>
 
           <MainContentGrid>
-            <QuestionCard>
-              <QuestionMetaHeader>
-                <QuestionNumberBadge>
-                  Soal No. {currentQuestion.id} / 70
-                </QuestionNumberBadge>
-                <SubCatBadge>{currentQuestion.subCategory}</SubCatBadge>
-                <BookmarkButton
-                  $flagged={Boolean(flaggedQuestions[currentQuestion.id])}
-                  onClick={toggleFlagged}
-                >
-                  🔖 {flaggedQuestions[currentQuestion.id] ? "Ditandai Ragu" : "Tandai Ragu"}
-                </BookmarkButton>
-              </QuestionMetaHeader>
-
-              {currentQuestion.passageText && (
-                <PassageBox>{currentQuestion.passageText}</PassageBox>
-              )}
-
-              {currentQuestion.audioText && (
-                <AudioUnitBox>
-                  <AudioControlsRow>
-                    <AudioPlayButton
-                      onClick={handlePlayAudio}
-                      disabled={isPlayingAudio}
-                      style={{ opacity: isPlayingAudio ? 0.8 : 1 }}
-                    >
-                      {isPlayingAudio ? "🔊 Memutar Audio..." : "🔊 Putar Audio Percakapan"}
-                    </AudioPlayButton>
-                    <div style={{ display: "flex", gap: "0.4rem" }}>
-                      <AudioSpeedButton
-                        $active={audioSpeed === 1.0}
-                        onClick={() => setAudioSpeed(1.0)}
-                      >
-                        1.0x
-                      </AudioSpeedButton>
-                      <AudioSpeedButton
-                        $active={audioSpeed === 0.85}
-                        onClick={() => setAudioSpeed(0.85)}
-                      >
-                        0.85x (Lambat)
-                      </AudioSpeedButton>
-                    </div>
-                  </AudioControlsRow>
-
-                  {!isOfficialMode && (
-                    <div>
-                      <AudioScriptToggle onClick={() => setShowScript(!showScript)}>
-                        {showScript ? "Sembunyikan Naskah Script" : "Tampilkan Naskah Script Audio 📝"}
-                      </AudioScriptToggle>
-                      {showScript && (
-                        <p style={{ marginTop: "0.5rem", fontSize: "0.9rem", color: "var(--foreground)" }}>
-                          {currentQuestion.audioText}
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </AudioUnitBox>
-              )}
-
-              <QuestionText>{currentQuestion.questionText}</QuestionText>
-
-              {currentQuestion.starSentence && (
-                <StarWidgetBox>
-                  <div className="label">⭐ Susunan Kalimat (Pilih Posisi ★):</div>
-                  <div className="sentence-preview">
-                    <span>{currentQuestion.starSentence.prefix}</span>
-                    <span className="slot">[ 1 ]</span>
-                    <span className="slot">[ 2 ]</span>
-                    <span className="slot star-slot">[ ★ ]</span>
-                    <span className="slot">[ 4 ]</span>
-                    <span>{currentQuestion.starSentence.suffix}</span>
-                  </div>
-                  <div className="blocks-row">
-                    {currentQuestion.starSentence.blocks.map((blk, bIdx) => (
-                      <BlockPill key={bIdx} $placed={false}>
-                        {bIdx + 1}. {blk}
-                      </BlockPill>
-                    ))}
-                  </div>
-                </StarWidgetBox>
-              )}
-
-              <OptionsList>
-                {currentQuestion.options.map((optText, oIdx) => {
-                  const isSelected = userAnswers[currentQuestion.id] === oIdx;
-                  const showCorrect = !isOfficialMode && oIdx === currentQuestion.answer;
-                  const showWrong = !isOfficialMode && isSelected && oIdx !== currentQuestion.answer;
+            {layoutMode === "paper" ? (
+              <CompactPaperWrapper>
+                {JLPT_N5_CONFIG.sections.map((sec) => {
+                  const secQuestions = N5_SIMULATION_QUESTIONS.filter((q) => q.section === sec.id);
+                  const secColor = sec.id === "moji_goi" ? "#3b82f6" : sec.id === "bunpou_dokkai" ? "#8b5cf6" : "#ec4899";
 
                   return (
-                    <OptionCard
-                      key={oIdx}
-                      $selected={isSelected}
-                      $correct={showCorrect}
-                      $wrong={showWrong}
-                      onClick={() => handleSelectOption(oIdx)}
-                    >
-                      <div className="opt-letter">
-                        {String.fromCharCode(65 + oIdx)}
-                      </div>
-                      <div className="opt-text">{optText}</div>
-                    </OptionCard>
+                    <div key={sec.id} id={`section-${sec.id}`}>
+                      <SectionHeaderDivider $color={secColor}>
+                        <h2>{sec.japaneseName} ({sec.name})</h2>
+                        <span className="sec-badge">{sec.questionCount} Soal</span>
+                      </SectionHeaderDivider>
+
+                      {secQuestions.map((q) => {
+                        const isSelected = userAnswers[q.id] !== undefined;
+                        const isFlagged = Boolean(flaggedQuestions[q.id]);
+
+                        return (
+                          <CompactQuestionBlock key={q.id} id={`question-card-${q.id}`}>
+                            <CompactMetaHeader>
+                              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                                <QuestionNumberBadge>
+                                  No. {q.id}
+                                </QuestionNumberBadge>
+                                <SubCatBadge>{q.subCategory}</SubCatBadge>
+                              </div>
+                              <BookmarkButton
+                                $flagged={isFlagged}
+                                onClick={() => toggleFlaggedForQuestion(q.id)}
+                              >
+                                🔖 {isFlagged ? "Ragu" : "Tandai"}
+                              </BookmarkButton>
+                            </CompactMetaHeader>
+
+                            {q.passageText && <PassageBox>{q.passageText}</PassageBox>}
+
+                            {q.audioText && (
+                              <div style={{ marginBottom: "0.85rem" }}>
+                                <AudioControlsRow>
+                                  <AudioPlayButton
+                                    onClick={() => handlePlayAudioForText(q.audioText!)}
+                                    disabled={isPlayingAudio}
+                                    style={{ opacity: isPlayingAudio ? 0.8 : 1, padding: "0.45rem 1rem", fontSize: "0.85rem" }}
+                                  >
+                                    {isPlayingAudio ? "🔊 Memutar..." : "🔊 Putar Audio"}
+                                  </AudioPlayButton>
+                                </AudioControlsRow>
+                              </div>
+                            )}
+
+                            <QuestionText style={{ fontSize: "1.1rem", marginBottom: "0.85rem" }}>
+                              {q.questionText}
+                            </QuestionText>
+
+                            {q.starSentence && (
+                              <StarWidgetBox style={{ padding: "0.85rem 1rem", marginBottom: "1rem" }}>
+                                <div className="label">⭐ Susunan Kalimat (Pilih Posisi ★):</div>
+                                <div className="sentence-preview" style={{ fontSize: "1rem" }}>
+                                  <span>{q.starSentence.prefix}</span>
+                                  <span className="slot">[ 1 ]</span>
+                                  <span className="slot">[ 2 ]</span>
+                                  <span className="slot star-slot">[ ★ ]</span>
+                                  <span className="slot">[ 4 ]</span>
+                                  <span>{q.starSentence.suffix}</span>
+                                </div>
+                                <div className="blocks-row">
+                                  {q.starSentence.blocks.map((blk, bIdx) => (
+                                    <BlockPill key={bIdx} $placed={false} style={{ padding: "0.35rem 0.75rem", fontSize: "0.82rem" }}>
+                                      {bIdx + 1}. {blk}
+                                    </BlockPill>
+                                  ))}
+                                </div>
+                              </StarWidgetBox>
+                            )}
+
+                            <CompactOptionsGrid>
+                              {q.options.map((optText, oIdx) => {
+                                const selected = userAnswers[q.id] === oIdx;
+                                const showCorrect = !isOfficialMode && oIdx === q.answer;
+                                const showWrong = !isOfficialMode && selected && oIdx !== q.answer;
+
+                                return (
+                                  <CompactOptionCard
+                                    key={oIdx}
+                                    $selected={selected}
+                                    $correct={showCorrect}
+                                    $wrong={showWrong}
+                                    onClick={() => handleSelectOptionForQuestion(q.id, oIdx)}
+                                  >
+                                    <div className="opt-letter">
+                                      {String.fromCharCode(65 + oIdx)}
+                                    </div>
+                                    <div className="opt-text">{optText}</div>
+                                  </CompactOptionCard>
+                                );
+                              })}
+                            </CompactOptionsGrid>
+
+                            {!isOfficialMode && userAnswers[q.id] !== undefined && (
+                              <div
+                                style={{
+                                  background: "rgba(var(--primary-rgb), 0.08)",
+                                  border: "1px solid var(--border)",
+                                  borderRadius: "12px",
+                                  padding: "0.85rem 1rem",
+                                  fontSize: "0.88rem",
+                                  lineHeight: "1.5",
+                                }}
+                              >
+                                <strong>💡 Pembahasan:</strong> {q.explanation}
+                              </div>
+                            )}
+                          </CompactQuestionBlock>
+                        );
+                      })}
+                    </div>
                   );
                 })}
-              </OptionsList>
 
-              {!isOfficialMode && userAnswers[currentQuestion.id] !== undefined && (
-                <div
-                  style={{
-                    background: "rgba(var(--primary-rgb), 0.08)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "16px",
-                    padding: "1.25rem",
-                    marginBottom: "1.5rem",
-                    fontSize: "0.92rem",
-                    lineHeight: "1.6",
-                  }}
+                <SubmitExamBtn
+                  onClick={() => setIsSubmitted(true)}
+                  style={{ marginTop: "2rem", padding: "1.25rem", fontSize: "1.05rem" }}
                 >
-                  <strong>💡 Pembahasan:</strong> {currentQuestion.explanation}
-                </div>
-              )}
+                  🏁 Selesaikan & Kumpulkan Ujian JLPT
+                </SubmitExamBtn>
+              </CompactPaperWrapper>
+            ) : (
+              <QuestionCard id={`question-card-${currentQuestion.id}`}>
+                <QuestionMetaHeader>
+                  <QuestionNumberBadge>
+                    Soal No. {currentQuestion.id} / 70
+                  </QuestionNumberBadge>
+                  <SubCatBadge>{currentQuestion.subCategory}</SubCatBadge>
+                  <BookmarkButton
+                    $flagged={Boolean(flaggedQuestions[currentQuestion.id])}
+                    onClick={toggleFlagged}
+                  >
+                    🔖 {flaggedQuestions[currentQuestion.id] ? "Ditandai Ragu" : "Tandai Ragu"}
+                  </BookmarkButton>
+                </QuestionMetaHeader>
 
-              <CardFooter>
-                <NavBtn
-                  disabled={currentIdx === 0}
-                  onClick={() => setCurrentIdx((prev) => Math.max(0, prev - 1))}
-                >
-                  ← Soal Sebelumnya
-                </NavBtn>
+                {currentQuestion.passageText && (
+                  <PassageBox>{currentQuestion.passageText}</PassageBox>
+                )}
 
-                <NavBtn
-                  $primary
-                  onClick={() => {
-                    if (currentIdx < sectionQuestions.length - 1) {
-                      setCurrentIdx((prev) => prev + 1);
-                    }
-                  }}
-                >
-                  {currentIdx === sectionQuestions.length - 1
-                    ? "Selesai Seksi Ini"
-                    : "Soal Berikutnya →"}
-                </NavBtn>
-              </CardFooter>
-            </QuestionCard>
+                {currentQuestion.audioText && (
+                  <AudioUnitBox>
+                    <AudioControlsRow>
+                      <AudioPlayButton
+                        onClick={handlePlayAudio}
+                        disabled={isPlayingAudio}
+                        style={{ opacity: isPlayingAudio ? 0.8 : 1 }}
+                      >
+                        {isPlayingAudio ? "🔊 Memutar Audio..." : "🔊 Putar Audio Percakapan"}
+                      </AudioPlayButton>
+                      <div style={{ display: "flex", gap: "0.4rem" }}>
+                        <AudioSpeedButton
+                          $active={audioSpeed === 1.0}
+                          onClick={() => setAudioSpeed(1.0)}
+                        >
+                          1.0x
+                        </AudioSpeedButton>
+                        <AudioSpeedButton
+                          $active={audioSpeed === 0.85}
+                          onClick={() => setAudioSpeed(0.85)}
+                        >
+                          0.85x (Lambat)
+                        </AudioSpeedButton>
+                      </div>
+                    </AudioControlsRow>
+
+                    {!isOfficialMode && (
+                      <div>
+                        <AudioScriptToggle onClick={() => setShowScript(!showScript)}>
+                          {showScript ? "Sembunyikan Naskah Script" : "Tampilkan Naskah Script Audio 📝"}
+                        </AudioScriptToggle>
+                        {showScript && (
+                          <p style={{ marginTop: "0.5rem", fontSize: "0.9rem", color: "var(--foreground)" }}>
+                            {currentQuestion.audioText}
+                          </p>
+                        )}
+                      </div>
+                    )}
+                  </AudioUnitBox>
+                )}
+
+                <QuestionText>{currentQuestion.questionText}</QuestionText>
+
+                {currentQuestion.starSentence && (
+                  <StarWidgetBox>
+                    <div className="label">⭐ Susunan Kalimat (Pilih Posisi ★):</div>
+                    <div className="sentence-preview">
+                      <span>{currentQuestion.starSentence.prefix}</span>
+                      <span className="slot">[ 1 ]</span>
+                      <span className="slot">[ 2 ]</span>
+                      <span className="slot star-slot">[ ★ ]</span>
+                      <span className="slot">[ 4 ]</span>
+                      <span>{currentQuestion.starSentence.suffix}</span>
+                    </div>
+                    <div className="blocks-row">
+                      {currentQuestion.starSentence.blocks.map((blk, bIdx) => (
+                        <BlockPill key={bIdx} $placed={false}>
+                          {bIdx + 1}. {blk}
+                        </BlockPill>
+                      ))}
+                    </div>
+                  </StarWidgetBox>
+                )}
+
+                <OptionsList>
+                  {currentQuestion.options.map((optText, oIdx) => {
+                    const isSelected = userAnswers[currentQuestion.id] === oIdx;
+                    const showCorrect = !isOfficialMode && oIdx === currentQuestion.answer;
+                    const showWrong = !isOfficialMode && isSelected && oIdx !== currentQuestion.answer;
+
+                    return (
+                      <OptionCard
+                        key={oIdx}
+                        $selected={isSelected}
+                        $correct={showCorrect}
+                        $wrong={showWrong}
+                        onClick={() => handleSelectOption(oIdx)}
+                      >
+                        <div className="opt-letter">
+                          {String.fromCharCode(65 + oIdx)}
+                        </div>
+                        <div className="opt-text">{optText}</div>
+                      </OptionCard>
+                    );
+                  })}
+                </OptionsList>
+
+                {!isOfficialMode && userAnswers[currentQuestion.id] !== undefined && (
+                  <div
+                    style={{
+                      background: "rgba(var(--primary-rgb), 0.08)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "16px",
+                      padding: "1.25rem",
+                      marginBottom: "1.5rem",
+                      fontSize: "0.92rem",
+                      lineHeight: "1.6",
+                    }}
+                  >
+                    <strong>💡 Pembahasan:</strong> {currentQuestion.explanation}
+                  </div>
+                )}
+
+                <CardFooter>
+                  <NavBtn
+                    disabled={currentIdx === 0}
+                    onClick={() => setCurrentIdx((prev) => Math.max(0, prev - 1))}
+                  >
+                    ← Soal Sebelumnya
+                  </NavBtn>
+
+                  <NavBtn
+                    $primary
+                    onClick={() => {
+                      if (currentIdx < sectionQuestions.length - 1) {
+                        setCurrentIdx((prev) => prev + 1);
+                      }
+                    }}
+                  >
+                    {currentIdx === sectionQuestions.length - 1
+                      ? "Selesai Seksi Ini"
+                      : "Soal Berikutnya →"}
+                  </NavBtn>
+                </CardFooter>
+              </QuestionCard>
+            )}
 
             <AnswerSheetCard>
               <SheetHeader>
@@ -1109,6 +1470,12 @@ export default function JLPTN5SimulationPage() {
                           (sq) => sq.id === q.id
                         );
                         setCurrentIdx(targetIdx >= 0 ? targetIdx : 0);
+                        setTimeout(() => {
+                          const el = document.getElementById(`question-card-${q.id}`);
+                          if (el) {
+                            el.scrollIntoView({ behavior: "smooth", block: "center" });
+                          }
+                        }, 100);
                       }}
                     >
                       {q.id}
