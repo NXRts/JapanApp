@@ -698,8 +698,8 @@ export default function JLPTN5SimulationPage() {
   const [showScript, setShowScript] = useState(false);
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
-  // Timers per section
-  const [timeLeft, setTimeLeft] = useState(20 * 60);
+  // Single Overall Unified Exam Timer (90 Minutes Total = 5400 Seconds)
+  const [timeLeft, setTimeLeft] = useState(90 * 60);
 
   useEffect(() => {
     setMounted(true);
@@ -733,6 +733,7 @@ export default function JLPTN5SimulationPage() {
       setTimeLeft((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
+          setIsSubmitted(true);
           return 0;
         }
         return prev - 1;
@@ -745,9 +746,7 @@ export default function JLPTN5SimulationPage() {
   const handleSectionSwitch = (secId: "moji_goi" | "bunpou_dokkai" | "choukai") => {
     setActiveSection(secId);
     setCurrentIdx(0);
-    if (secId === "moji_goi") setTimeLeft(20 * 60);
-    if (secId === "bunpou_dokkai") setTimeLeft(40 * 60);
-    if (secId === "choukai") setTimeLeft(30 * 60);
+    // Timer is continuous (90 minutes total) - do NOT reset timer on section switch!
   };
 
   const handleSelectOption = (optIdx: number) => {
@@ -875,6 +874,7 @@ export default function JLPTN5SimulationPage() {
                 setIsSubmitted(false);
                 setUserAnswers({});
                 setFlaggedQuestions({});
+                setTimeLeft(90 * 60);
                 handleSectionSwitch("moji_goi");
               }}
             >
