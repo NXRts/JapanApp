@@ -157,7 +157,7 @@ async function checkRedisRateLimit(identifier: string): Promise<{
   }
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   try {
     const ip =
       request.headers.get("x-forwarded-for")?.split(",")[0] ??
@@ -228,10 +228,12 @@ export async function middleware(request: NextRequest) {
 
     return response;
   } catch (err: any) {
-    console.error("[Middleware Error]", err?.message || err);
+    console.error("[Proxy Error]", err?.message || err);
     return NextResponse.next();
   }
 }
+
+export const middleware = proxy;
 
 export const config = {
   matcher: [
