@@ -147,7 +147,7 @@ const sakuraFall = keyframes`
     opacity: 0.9;
   }
   100% {
-    transform: translateY(110vh) translateX(120px) rotate(360deg);
+    transform: translateY(110vh) translateX(40px) rotate(360deg);
     opacity: 0;
   }
 `;
@@ -164,7 +164,15 @@ const Overlay = styled.div<{ $isClosing: boolean }>`
   background: var(--background);
   padding: 2rem;
   transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
-  overflow: hidden;
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+  clip-path: inset(0);
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  touch-action: none;
 
   ${({ $isClosing }) =>
     $isClosing &&
@@ -193,7 +201,10 @@ const SakuraContainer = styled.div`
   position: absolute;
   inset: 0;
   pointer-events: none;
-  overflow: hidden;
+  overflow: hidden !important;
+  clip-path: inset(0);
+  max-width: 100vw;
+  max-height: 100vh;
   z-index: 1;
 `;
 
@@ -372,11 +383,15 @@ export function SplashLoader() {
   useEffect(() => {
     if (shouldRender) {
       document.body.style.overflow = "hidden";
+      document.body.style.overflowX = "hidden";
       document.documentElement.style.overflow = "hidden";
+      document.documentElement.style.overflowX = "hidden";
     }
     return () => {
       document.body.style.overflow = "";
+      document.body.style.overflowX = "";
       document.documentElement.style.overflow = "";
+      document.documentElement.style.overflowX = "";
     };
   }, [shouldRender]);
 
