@@ -10,6 +10,7 @@ import {
   N5_SIMULATION_QUESTIONS,
   JLPT_N5_CONFIG,
   JLPTQuestion,
+  verifyAnswer,
 } from "@/data/jlpt/n5_simulation_data";
 
 const fadeIn = keyframes`
@@ -1046,7 +1047,7 @@ export default function JLPTN5SimulationPage() {
 
     N5_SIMULATION_QUESTIONS.forEach((q) => {
       const uAns = userAnswers[q.id];
-      if (uAns !== undefined && uAns === q.answer) {
+      if (uAns !== undefined && verifyAnswer(q.id, uAns, q.encryptedAnswer)) {
         if (q.section === "moji_goi") rawMojiGoi += 2.4;
         if (q.section === "bunpou_dokkai") rawBunpouDokkai += 2.4;
         if (q.section === "choukai") rawChoukai += 3.0;
@@ -1315,8 +1316,9 @@ export default function JLPTN5SimulationPage() {
                             <CompactOptionsGrid>
                               {q.options.map((optText, oIdx) => {
                                 const selected = userAnswers[q.id] === oIdx;
-                                const showCorrect = !isOfficialMode && oIdx === q.answer;
-                                const showWrong = !isOfficialMode && selected && oIdx !== q.answer;
+                                const isOptCorrect = verifyAnswer(q.id, oIdx, q.encryptedAnswer);
+                                const showCorrect = !isOfficialMode && isOptCorrect;
+                                const showWrong = !isOfficialMode && selected && !isOptCorrect;
 
                                 return (
                                   <CompactOptionCard
@@ -1463,8 +1465,9 @@ export default function JLPTN5SimulationPage() {
                 <OptionsList>
                   {currentQuestion.options.map((optText, oIdx) => {
                     const isSelected = userAnswers[currentQuestion.id] === oIdx;
-                    const showCorrect = !isOfficialMode && oIdx === currentQuestion.answer;
-                    const showWrong = !isOfficialMode && isSelected && oIdx !== currentQuestion.answer;
+                    const isOptCorrect = verifyAnswer(currentQuestion.id, oIdx, currentQuestion.encryptedAnswer);
+                    const showCorrect = !isOfficialMode && isOptCorrect;
+                    const showWrong = !isOfficialMode && isSelected && !isOptCorrect;
 
                     return (
                       <OptionCard
