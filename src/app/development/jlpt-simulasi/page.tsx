@@ -25,13 +25,16 @@ const soundWaveAnim = keyframes`
 
 const Container = styled.div`
   max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem 1.5rem 6rem;
   min-height: 100vh;
   animation: ${fadeIn} 0.4s ease-out;
+  box-sizing: border-box;
+  overflow-x: hidden;
 
   @media (max-width: 768px) {
-    padding: 1rem 1rem 4rem;
+    padding: 1rem 0.75rem 7.5rem;
   }
 `;
 
@@ -39,41 +42,51 @@ const TopHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
   flex-wrap: wrap;
+  width: 100%;
 
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 1rem;
   }
 `;
 
 const TitleBox = styled.div`
+  width: 100%;
+
   h1 {
-    font-size: 2.2rem;
+    font-size: clamp(1.35rem, 4vw, 2.2rem);
     font-weight: 900;
     color: var(--foreground);
     letter-spacing: -0.03em;
     margin-bottom: 0.35rem;
-  }
-  p {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
-  @media (max-width: 768px) {
-    h1 { font-size: 1.6rem; }
-    p { font-size: 0.85rem; }
+  p {
+    font-size: clamp(0.78rem, 2.5vw, 0.92rem);
+    color: var(--text-secondary);
+    line-height: 1.5;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 `;
 
 const ModeControls = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.75rem;
   flex-wrap: wrap;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const ModeToggleButton = styled.button<{ $active: boolean }>`
@@ -89,6 +102,7 @@ const ModeToggleButton = styled.button<{ $active: boolean }>`
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -96,16 +110,30 @@ const ModeToggleButton = styled.button<{ $active: boolean }>`
   &:hover {
     border-color: var(--primary);
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.82rem;
+  }
 `;
 
 const LayoutToggleBar = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: 14px;
   padding: 3px;
   gap: 3px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (min-width: 769px) {
+    display: inline-flex;
+    width: auto;
+  }
 `;
 
 const LayoutToggleButton = styled.button<{ $active: boolean }>`
@@ -113,18 +141,28 @@ const LayoutToggleButton = styled.button<{ $active: boolean }>`
     $active ? "var(--primary)" : "transparent"};
   color: ${({ $active }) => ($active ? "white" : "var(--foreground-secondary)")};
   border: none;
-  padding: 0.55rem 1rem;
+  padding: 0.55rem 0.5rem;
   border-radius: 11px;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 850;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+  gap: 0.35rem;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
     color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.76rem;
   }
 `;
 
@@ -138,33 +176,48 @@ const TimerBox = styled.div<{ $warning: boolean }>`
   font-size: 1.1rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 100%;
+
+  @media (min-width: 769px) {
+    width: auto;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.95rem;
+  }
 `;
 
 /* Section Navigation Tabs */
 const SectionTabsContainer = styled.div`
   display: flex;
-  gap: 0.75rem;
-  margin-bottom: 2rem;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+  }
 `;
 
 const SectionTab = styled.button<{ $active: boolean; $color: string }>`
   background: ${({ $active, $color }) => ($active ? `${$color}15` : "var(--surface)")};
   border: 2px solid ${({ $active, $color }) => ($active ? $color : "var(--border)")};
   color: ${({ $active, $color }) => ($active ? $color : "var(--text-secondary)")};
-  padding: 0.75rem 1.4rem;
+  padding: 0.65rem 1.1rem;
   border-radius: 16px;
   font-weight: 850;
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.5rem;
   white-space: nowrap;
   transition: all 0.2s ease;
 
@@ -175,6 +228,32 @@ const SectionTab = styled.button<{ $active: boolean; $color: string }>`
     font-weight: 900;
     padding: 2px 7px;
     border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 0.5rem 0.2rem;
+    font-size: 0.74rem;
+    border-radius: 12px;
+    gap: 0.25rem;
+    width: 100%;
+
+    .tab-text {
+      font-size: 0.74rem;
+      font-weight: 850;
+      line-height: 1.2;
+      word-break: break-word;
+      white-space: normal;
+    }
+
+    .badge {
+      font-size: 0.65rem;
+      padding: 1px 5px;
+      border-radius: 6px;
+    }
   }
 `;
 
@@ -183,6 +262,7 @@ const MainContentGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 340px;
   gap: 2rem;
+  width: 100%;
 
   @media (max-width: 1024px) {
     grid-template-columns: 1fr;
@@ -199,10 +279,15 @@ const CompactPaperWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 
   @media (max-width: 768px) {
-    padding: 1.25rem 1rem;
-    border-radius: 20px;
+    padding: 1rem 0.75rem;
+    border-radius: 18px;
+    gap: 1.25rem;
   }
 `;
 
@@ -210,27 +295,46 @@ const SectionHeaderDivider = styled.div<{ $color: string }>`
   background: ${({ $color }) => `${$color}15`};
   border: 1.5px solid ${({ $color }) => `${$color}40`};
   border-left: 6px solid ${({ $color }) => $color};
-  border-radius: 18px;
-  padding: 1.15rem 1.5rem;
-  margin: 1.5rem 0 1.25rem 0;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0 1rem 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
+  box-sizing: border-box;
 
   h2 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 900;
     color: ${({ $color }) => $color};
     margin: 0;
+    line-height: 1.4;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   .sec-badge {
     background: ${({ $color }) => $color};
     color: white;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 900;
-    padding: 3px 10px;
+    padding: 3px 9px;
     border-radius: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.75rem 0.9rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+
+    h2 {
+      font-size: 0.95rem;
+    }
   }
 `;
 
@@ -250,21 +354,24 @@ const CompactMetaHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.85rem;
-  gap: 0.75rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
+  width: 100%;
 `;
 
 const CompactOptionsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.75rem;
+  gap: 0.65rem;
   margin-bottom: 1rem;
+  width: 100%;
+  box-sizing: border-box;
 
   @media (max-width: 900px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 640px) {
     grid-template-columns: 1fr;
   }
 `;
@@ -676,6 +783,23 @@ const OptionCard = styled.button<{
     border-color: ${({ $selected }) => ($selected ? "var(--primary)" : "var(--primary)")};
     transform: translateX(4px);
   }
+
+  @media (max-width: 768px) {
+    padding: 0.85rem 1rem;
+    gap: 0.85rem;
+    border-radius: 16px;
+
+    .opt-letter {
+      width: 32px;
+      height: 32px;
+      font-size: 0.9rem;
+      border-radius: 10px;
+    }
+
+    .opt-text {
+      font-size: 0.95rem;
+    }
+  }
 `;
 
 const CardFooter = styled.div`
@@ -684,6 +808,12 @@ const CardFooter = styled.div`
   justify-content: space-between;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
+  gap: 0.75rem;
+
+  @media (max-width: 600px) {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
 `;
 
 const NavBtn = styled.button<{ $primary?: boolean }>`
@@ -1178,34 +1308,19 @@ export default function JLPTN5SimulationPage() {
                   $active={layoutMode === "paper"}
                   onClick={() => setLayoutMode("paper")}
                 >
-                  📄 Mode Ringkas (1 Halaman)
+                  📄 Mode Ringkas
                 </LayoutToggleButton>
                 <LayoutToggleButton
                   $active={layoutMode === "single"}
                   onClick={() => setLayoutMode("single")}
                 >
-                  🗂️ Mode Per Soal (Stepper)
+                  🗂️ Mode Per Soal
                 </LayoutToggleButton>
               </LayoutToggleBar>
 
-              <ModeToggleButton
-                $active={isOfficialMode}
-                onClick={() => setIsOfficialMode(true)}
-              >
-                ⏱️ Mode Ujian Resmi
-              </ModeToggleButton>
-              <ModeToggleButton
-                $active={!isOfficialMode}
-                onClick={() => setIsOfficialMode(false)}
-              >
-                🎓 Mode Latihan Santai
-              </ModeToggleButton>
-
-              {isOfficialMode && (
-                <TimerBox $warning={timeLeft < 300}>
-                  ⏱️ {formatTimer(timeLeft)}
-                </TimerBox>
-              )}
+              <TimerBox $warning={timeLeft < 300}>
+                ⏱️ {formatTimer(timeLeft)}
+              </TimerBox>
             </ModeControls>
           </TopHeader>
 
@@ -1217,7 +1332,7 @@ export default function JLPTN5SimulationPage() {
                 $color={sec.id === "moji_goi" ? "#3b82f6" : sec.id === "bunpou_dokkai" ? "#8b5cf6" : "#ec4899"}
                 onClick={() => handleSectionSwitch(sec.id)}
               >
-                {sec.japaneseName}
+                <span className="tab-text">{sec.japaneseName}</span>
                 <span className="badge">{sec.questionCount} Soal</span>
               </SectionTab>
             ))}
