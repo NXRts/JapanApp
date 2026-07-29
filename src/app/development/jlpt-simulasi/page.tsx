@@ -207,9 +207,9 @@ const SectionTabsContainer = styled.div`
 `;
 
 const SectionTab = styled.button<{ $active: boolean; $color: string }>`
-  background: ${({ $active, $color }) => ($active ? `${$color}15` : "var(--surface)")};
+  background: ${({ $active, $color }) => ($active ? $color : "var(--surface)")};
   border: 2px solid ${({ $active, $color }) => ($active ? $color : "var(--border)")};
-  color: ${({ $active, $color }) => ($active ? $color : "var(--text-secondary)")};
+  color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
   padding: 0.65rem 1.1rem;
   border-radius: 16px;
   font-weight: 850;
@@ -220,9 +220,10 @@ const SectionTab = styled.button<{ $active: boolean; $color: string }>`
   gap: 0.5rem;
   white-space: nowrap;
   transition: all 0.2s ease;
+  box-shadow: ${({ $active, $color }) => ($active ? `0 4px 14px ${$color}40` : "0 2px 8px rgba(0, 0, 0, 0.04)")};
 
   .badge {
-    background: ${({ $color }) => $color};
+    background: ${({ $active, $color }) => ($active ? "rgba(255, 255, 255, 0.25)" : $color)};
     color: white;
     font-size: 0.72rem;
     font-weight: 900;
@@ -453,8 +454,8 @@ const QuestionCard = styled.div`
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 
   @media (max-width: 768px) {
-    padding: 1.5rem 1.25rem;
-    border-radius: 20px;
+    padding: 1rem 0.85rem;
+    border-radius: 18px;
   }
 `;
 
@@ -462,15 +463,37 @@ const QuestionMetaHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid var(--border);
+  gap: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+  }
+`;
+
+const MetaLeftGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  flex-shrink: 1;
 `;
 
 const QuestionNumberBadge = styled.span`
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 900;
   color: var(--primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    font-size: 0.85rem;
+  }
 `;
 
 const SubCatBadge = styled.span`
@@ -479,23 +502,38 @@ const SubCatBadge = styled.span`
   border: 1px solid rgba(var(--primary-rgb), 0.25);
   font-size: 0.78rem;
   font-weight: 850;
-  padding: 4px 12px;
-  border-radius: 10px;
+  padding: 3px 10px;
+  border-radius: 9px;
+  white-space: nowrap;
+
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 7px;
+  }
 `;
 
 const BookmarkButton = styled.button<{ $flagged: boolean }>`
   background: ${({ $flagged }) => ($flagged ? "#f59e0b20" : "transparent")};
   border: 1px solid ${({ $flagged }) => ($flagged ? "#f59e0b" : "var(--border)")};
   color: ${({ $flagged }) => ($flagged ? "#f59e0b" : "var(--text-secondary)")};
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 800;
-  padding: 6px 12px;
-  border-radius: 10px;
+  padding: 5px 10px;
+  border-radius: 9px;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.2s ease;
 
   &:hover {
     transform: translateY(-1px);
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.72rem;
+    padding: 3px 7px;
+    border-radius: 7px;
   }
 `;
 
@@ -509,6 +547,13 @@ const PassageBox = styled.div`
   line-height: 1.8;
   color: var(--foreground);
   white-space: pre-line;
+
+  @media (max-width: 768px) {
+    padding: 0.85rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
 `;
 
 const AudioUnitBox = styled.div`
@@ -520,6 +565,13 @@ const AudioUnitBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    padding: 0.85rem 1rem;
+    margin-bottom: 1rem;
+    gap: 0.6rem;
+    border-radius: 14px;
+  }
 `;
 
 const AudioControlsRow = styled.div`
@@ -643,6 +695,12 @@ const QuestionText = styled.h2`
   line-height: 1.6;
   margin-bottom: 1.5rem;
   white-space: pre-line;
+
+  @media (max-width: 768px) {
+    font-size: 1.05rem;
+    line-height: 1.45;
+    margin-bottom: 0.85rem;
+  }
 `;
 
 const StarWidgetBox = styled.div`
@@ -687,6 +745,12 @@ const StarWidgetBox = styled.div`
     gap: 0.6rem;
     flex-wrap: wrap;
   }
+
+  @media (max-width: 768px) {
+    padding: 0.85rem 1rem;
+    margin-bottom: 1.25rem;
+    border-radius: 14px;
+  }
 `;
 
 const BlockPill = styled.div<{ $placed: boolean }>`
@@ -713,6 +777,11 @@ const OptionsList = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-bottom: 2.5rem;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const OptionCard = styled.button<{
@@ -785,19 +854,20 @@ const OptionCard = styled.button<{
   }
 
   @media (max-width: 768px) {
-    padding: 0.85rem 1rem;
-    gap: 0.85rem;
-    border-radius: 16px;
+    padding: 0.6rem 0.85rem;
+    gap: 0.65rem;
+    border-radius: 12px;
 
     .opt-letter {
-      width: 32px;
-      height: 32px;
-      font-size: 0.9rem;
-      border-radius: 10px;
+      width: 28px;
+      height: 28px;
+      font-size: 0.85rem;
+      border-radius: 8px;
     }
 
     .opt-text {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
+      line-height: 1.35;
     }
   }
 `;
@@ -811,8 +881,10 @@ const CardFooter = styled.div`
   gap: 0.75rem;
 
   @media (max-width: 600px) {
-    flex-direction: column-reverse;
-    gap: 0.75rem;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding-top: 0.85rem;
   }
 `;
 
@@ -837,7 +909,10 @@ const NavBtn = styled.button<{ $primary?: boolean }>`
   }
 
   @media (max-width: 600px) {
-    width: 100%;
+    flex: 1;
+    padding: 0.6rem 0.5rem;
+    font-size: 0.82rem;
+    border-radius: 12px;
     justify-content: center;
   }
 `;
@@ -954,6 +1029,11 @@ const SubmitExamBtn = styled.button`
 `;
 
 /* Result Screen Components */
+const formatSubCategory = (subCat: string) => {
+  if (!subCat) return "";
+  return subCat.replace(/\s*\([^)]*\)/g, "").trim();
+};
+
 const ResultWrapper = styled.div`
   max-width: 900px;
   margin: 0 auto;
@@ -1364,7 +1444,7 @@ export default function JLPTN5SimulationPage() {
                                 <QuestionNumberBadge>
                                   No. {q.id}
                                 </QuestionNumberBadge>
-                                <SubCatBadge>{q.subCategory}</SubCatBadge>
+                                <SubCatBadge>{formatSubCategory(q.subCategory)}</SubCatBadge>
                               </div>
                               <BookmarkButton
                                 $flagged={isFlagged}
@@ -1483,15 +1563,18 @@ export default function JLPTN5SimulationPage() {
             ) : (
               <QuestionCard id={`question-card-${currentQuestion.id}`}>
                 <QuestionMetaHeader>
-                  <QuestionNumberBadge>
-                    Soal No. {currentQuestion.id} / 70
-                  </QuestionNumberBadge>
-                  <SubCatBadge>{currentQuestion.subCategory}</SubCatBadge>
+                  <MetaLeftGroup>
+                    <QuestionNumberBadge>
+                      No. {currentQuestion.id}/70
+                    </QuestionNumberBadge>
+                    <SubCatBadge>{formatSubCategory(currentQuestion.subCategory)}</SubCatBadge>
+                  </MetaLeftGroup>
+
                   <BookmarkButton
                     $flagged={Boolean(flaggedQuestions[currentQuestion.id])}
                     onClick={toggleFlagged}
                   >
-                    🔖 {flaggedQuestions[currentQuestion.id] ? "Ditandai Ragu" : "Tandai Ragu"}
+                    🔖 {flaggedQuestions[currentQuestion.id] ? "Ragu" : "Tandai"}
                   </BookmarkButton>
                 </QuestionMetaHeader>
 
