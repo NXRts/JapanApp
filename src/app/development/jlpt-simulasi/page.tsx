@@ -11,7 +11,7 @@ import {
   JLPT_N5_CONFIG,
   JLPTQuestion,
   verifyAnswer,
-} from "@/data/jlpt/n5_simulation_data";
+} from "@/data/jlpt/Simulasi_Ujian/N5/n5_simulation_data";
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(10px); }

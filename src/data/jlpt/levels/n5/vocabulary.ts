@@ -1,17 +1,4 @@
-export interface VocabularyItem {
-  id: string;
-  level: string;
-  word: string;
-  reading: string;
-  romaji: string;
-  meaning: string;
-  category: "noun" | "verb" | "adjective" | "adverb" | "other";
-  example?: {
-    japanese: string;
-    romaji: string;
-    english: string;
-  };
-}
+import { VocabularyItem } from "@/data/jlpt/types";
 
 export const n5Vocabulary: VocabularyItem[] = [
   {
@@ -1046,7 +1033,7 @@ export const n5Vocabulary: VocabularyItem[] = [
     category: "verb",
     example: {
       japanese: "デパートで靴を買います。",
-      romaji: "Depaato de kutsu o kaimasu.",
+      romaji: "Depaato de kutsu o kaimashita.",
       english: "I buy shoes at the department store.",
     },
   },

@@ -4,15 +4,8 @@ export interface Example {
   english: string; // Indonesian translation
 }
 
-export interface GrammarPoint {
-  id: string;
-  level: string;
-  title: string;
-  meaning: string;
-  structure: string;
-  explanation: string;
-  examples: Example[];
-}
+import { GrammarPoint } from "@/data/jlpt/types";
+export type { GrammarPoint };
 
 export const n5Grammar: GrammarPoint[] = [
   {
@@ -653,9 +646,9 @@ export const n5Grammar: GrammarPoint[] = [
       "Used to state a plan or strong intention of the speaker that has been decided beforehand.",
     examples: [
       {
-        japanese: "来年、日本へ行くつもりです。",
-        romaji: "Rainen, Nihon e iku tsumori desu.",
-        english: "Next year, I intend to go to Japan.",
+        japanese: "来年、日本へ行きたいです。",
+        romaji: "Rainen, Nihon e ikitai desu.",
+        english: "Next year, I want to go to Japan.",
       },
       {
         japanese: "今日は出かけないつもりです。",

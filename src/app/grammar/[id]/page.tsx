@@ -3,11 +3,13 @@
 import styled from "styled-components";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import { n5Grammar } from "@/data/jlpt/n5/grammar";
-import { n4Grammar } from "@/data/jlpt/n4/grammar";
-import { n3Grammar } from "@/data/jlpt/n3/grammar";
-import { n2Grammar } from "@/data/jlpt/n2/grammar";
-import { n1Grammar } from "@/data/jlpt/n1/grammar";
+import {
+  n5Grammar,
+  n4Grammar,
+  n3Grammar,
+  n2Grammar,
+  n1Grammar,
+} from "@/data/jlpt/levels";
 import { use } from "react";
 
 const Container = styled.div`

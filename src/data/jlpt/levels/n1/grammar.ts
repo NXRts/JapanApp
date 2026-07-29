@@ -1,4 +1,4 @@
-import { GrammarPoint } from "../n5/grammar";
+import { GrammarPoint } from "@/data/jlpt/types";
 
 export const n1Grammar: GrammarPoint[] = [
   {

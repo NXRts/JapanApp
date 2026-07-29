@@ -1,4 +1,4 @@
-import { VocabularyItem } from "../n5/vocabulary";
+import { VocabularyItem } from "@/data/jlpt/types";
 
 export const n3Vocabulary: VocabularyItem[] = [
   {

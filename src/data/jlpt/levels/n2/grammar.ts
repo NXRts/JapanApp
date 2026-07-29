@@ -1,4 +1,4 @@
-import { GrammarPoint } from "../n5/grammar";
+import { GrammarPoint } from "@/data/jlpt/types";
 
 export const n2Grammar: GrammarPoint[] = [
   {
@@ -437,7 +437,7 @@ export const n2Grammar: GrammarPoint[] = [
       "Sets a limit, where as long as condition A is met then B will continue.",
     examples: [
       {
-        japanese: "私が生きている限り、この会社は潰させない。",
+        japanese: "私がいきている限り、この会社は潰させない。",
         romaji: "Watashi ga ikite iru kagiri, kono kaisha wa tsubusasenai.",
         english:
           "As long as I am alive, I will not let this company go bankrupt.",
