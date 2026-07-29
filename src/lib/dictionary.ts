@@ -1,17 +1,19 @@
 import jlptWordsData from "../../public/JLPT_Vocabulary/data/results/JLPTWordsEnriched.json";
 import numbersData from "../../public/JLPT_Vocabulary/data/Angka.json";
 import kanjiData from "../../public/JLPT_Vocabulary/data/results/KanjiDictionary.json";
-import { n5Vocabulary } from "@/data/jlpt/n5/vocabulary";
-import { n4Vocabulary } from "@/data/jlpt/n4/vocabulary";
-import { n3Vocabulary } from "@/data/jlpt/n3/vocabulary";
-import { n2Vocabulary } from "@/data/jlpt/n2/vocabulary";
-import { n1Vocabulary } from "@/data/jlpt/n1/vocabulary";
-
-import { n5Grammar } from "@/data/jlpt/n5/grammar";
-import { n4Grammar } from "@/data/jlpt/n4/grammar";
-import { n3Grammar } from "@/data/jlpt/n3/grammar";
-import { n2Grammar } from "@/data/jlpt/n2/grammar";
-import { n1Grammar } from "@/data/jlpt/n1/grammar";
+import {
+  VocabularyItem,
+  n5Vocabulary,
+  n4Vocabulary,
+  n3Vocabulary,
+  n2Vocabulary,
+  n1Vocabulary,
+  n5Grammar,
+  n4Grammar,
+  n3Grammar,
+  n2Grammar,
+  n1Grammar,
+} from "@/data/jlpt/levels";
 import { toRomaji } from "wanakana";
 
 export interface ExampleItem {
@@ -79,27 +81,27 @@ const libraryVocabulary = Object.values(jlptWordsData).map((item: unknown) => {
 });
 
 export const allVocabulary: DictionaryResult[] = [
-  ...n5Vocabulary.map((v) => ({
+  ...n5Vocabulary.map((v: VocabularyItem) => ({
     ...v,
     type: "vocabulary" as const,
     source: "local" as const,
   })),
-  ...n4Vocabulary.map((v) => ({
+  ...n4Vocabulary.map((v: VocabularyItem) => ({
     ...v,
     type: "vocabulary" as const,
     source: "local" as const,
   })),
-  ...n3Vocabulary.map((v) => ({
+  ...n3Vocabulary.map((v: VocabularyItem) => ({
     ...v,
     type: "vocabulary" as const,
     source: "local" as const,
   })),
-  ...n2Vocabulary.map((v) => ({
+  ...n2Vocabulary.map((v: VocabularyItem) => ({
     ...v,
     type: "vocabulary" as const,
     source: "local" as const,
   })),
-  ...n1Vocabulary.map((v) => ({
+  ...n1Vocabulary.map((v: VocabularyItem) => ({
     ...v,
     type: "vocabulary" as const,
     source: "local" as const,

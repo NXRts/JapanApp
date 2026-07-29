@@ -3,11 +3,14 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import { n5Vocabulary } from "@/data/jlpt/n5/vocabulary";
-import { n4Vocabulary } from "@/data/jlpt/n4/vocabulary";
-import { n3Vocabulary } from "@/data/jlpt/n3/vocabulary";
-import { n2Vocabulary } from "@/data/jlpt/n2/vocabulary";
-import { n1Vocabulary } from "@/data/jlpt/n1/vocabulary";
+import {
+  VocabularyItem,
+  n5Vocabulary,
+  n4Vocabulary,
+  n3Vocabulary,
+  n2Vocabulary,
+  n1Vocabulary,
+} from "@/data/jlpt/levels";
 
 const Container = styled.div`
   max-width: 1400px;
@@ -285,7 +288,7 @@ export default function VocabularyPage() {
         </LevelSelector>
 
         <VocabList>
-          {currentData?.map((item) => (
+          {currentData?.map((item: VocabularyItem) => (
             <VocabCard key={item.id}>
               <Word>{item.word}</Word>
               <Reading>
