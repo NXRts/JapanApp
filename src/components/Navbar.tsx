@@ -1400,11 +1400,13 @@ export function Navbar() {
     };
   }, [isMobileMenuOpen]);
 
-  // Close mobile menu on Escape key press
+  // Close mobile menu, "Lainnya" popover menu, and dictionary modal on Escape key press
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setIsMobileMenuOpen(false);
+        setIsLainnyaOpen(false);
+        setIsDictionaryOpen(false);
       }
     }
     window.addEventListener("keydown", handleKeyDown);
