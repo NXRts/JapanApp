@@ -1262,6 +1262,17 @@ function LessonPlayerContent() {
     setRandomTip(JAPANESE_TIPS[randomIndex]);
   }, []);
 
+  // Close exit modal on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && showExitModal) {
+        setShowExitModal(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showExitModal]);
+
   // Pick a new tip that is different from the current one when user clicks/taps
   const changeExitTip = (e: React.MouseEvent) => {
     e.stopPropagation();
