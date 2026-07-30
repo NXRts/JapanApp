@@ -518,7 +518,7 @@ export default function DevelopmentPage() {
               <FeaturePill>🔤 Hiragana, Katakana & Kanji</FeaturePill>
             </FeaturePillGrid>
 
-            <PrimaryCTAButton href="/hafalan">
+            <PrimaryCTAButton href="/development/hafalan">
               🚀 Coba Fitur Hafalan Sekarang
             </PrimaryCTAButton>
           </FlagshipInfo>

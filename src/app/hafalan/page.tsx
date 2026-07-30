@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { useProgress } from "@/context/ProgressContext";
@@ -716,6 +716,43 @@ export default function LeitnerHafalanPage() {
     }
   };
 
+  // Keyboard navigation & Esc key handler
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (mode !== "overview") {
+          setMode("overview");
+        }
+      } else if (mode === "study") {
+        if (e.key === " " || e.key === "Enter") {
+          e.preventDefault();
+          setIsFlipped(prev => !prev);
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          setStudyIndex(prev => Math.max(0, prev - 1));
+          setIsFlipped(false);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          setStudyIndex(prev => Math.min(filteredCards.length - 1, prev + 1));
+          setIsFlipped(false);
+        }
+      } else if (mode === "quiz" && !isAnswerChecked && !sessionCompleted) {
+        if (["1", "2", "3", "4"].includes(e.key)) {
+          const idx = parseInt(e.key, 10) - 1;
+          if (quizOptions[idx]) {
+            handleAnswerSubmit(quizOptions[idx]);
+          }
+        }
+      } else if (mode === "quiz" && isAnswerChecked && (e.key === "Enter" || e.key === " ")) {
+        e.preventDefault();
+        handleNextQuizQuestion();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [mode, studyIndex, filteredCards.length, isAnswerChecked, quizOptions, sessionCompleted]);
+
   const boxColors: Record<number, string> = {
     0: "#64748b",
     1: "#ef4444",
@@ -739,7 +776,7 @@ export default function LeitnerHafalanPage() {
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Lainnya", href: "#" },
+          { label: "Development Labs", href: "/development" },
         ]}
         current="Hafalan (Leitner 5-Box)"
       />
@@ -832,7 +869,7 @@ export default function LeitnerHafalanPage() {
                 $box={box}
                 onClick={() => playJapaneseAudio(card.char)}
               >
-                <ItemBoxTag $box={box}>{box === 0 ? "🆕 Baru" : `Box ${box}`}</ItemBoxTag>
+                {box > 0 && <ItemBoxTag $box={box}>Box {box}</ItemBoxTag>}
                 <ItemChar>{card.char}</ItemChar>
                 <ItemSub>{subText}</ItemSub>
               </GridItemCard>
