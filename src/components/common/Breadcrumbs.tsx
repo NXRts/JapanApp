@@ -12,14 +12,14 @@ const Nav = styled.nav`
   color: var(--text-secondary);
   font-family: "DM Mono", monospace;
   width: 100%;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 
   /* Layout alignment - stays left even in centered containers */
   justify-content: flex-start;
 
   @media (max-width: 768px) {
     font-size: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.85rem;
   }
 `;
 

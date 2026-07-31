@@ -11,14 +11,21 @@ const fadeIn = keyframes`
 `;
 
 const Container = styled.div`
-  max-width: 1240px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 6rem;
-  min-height: 100vh;
+  padding: 1.5rem 2rem;
+  min-height: 90vh;
   animation: ${fadeIn} 0.4s ease-out;
 
-  @media (max-width: 768px) {
-    padding: 1.5rem 1rem 5rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
   }
 `;
 
