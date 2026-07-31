@@ -12,6 +12,7 @@ import {
   JLPTQuestion,
   verifyAnswer,
 } from "@/data/jlpt/Simulasi_Ujian/N5/n5_simulation_data";
+import { JlptCertificate } from "@/components/jlpt/JlptCertificate";
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(10px); }
@@ -1347,14 +1348,21 @@ export default function JLPTN5SimulationPage() {
             </ScoreCard>
           </SectionScoresGrid>
 
-          {results.totalPassed && (
-            <CertificateBox>
-              <h3>📜 Sertifikat Kelulusan Simulasi JLPT N5</h3>
-              <p className="cert-sub">Diberikan kepada:</p>
-              <div className="cert-name">JapanApp Learner</div>
-              <p>Telah berhasil menyelesaikan Simulasi Ujian JLPT N5 dengan nilai {results.totalScore}/180.</p>
-            </CertificateBox>
-          )}
+          <JlptCertificate
+            totalPassed={results.totalPassed}
+            totalScore={results.totalScore}
+            sectionScores={{
+              moji_goi: results.mojiGoiScore,
+              bunpou_dokkai: results.bunpouDokkaiScore,
+              choukai: results.choukaiScore,
+            }}
+            passThresholds={{
+              total: JLPT_N5_CONFIG.totalMinPassScore,
+              moji_goi: 19,
+              bunpou_dokkai: 19,
+              choukai: 19,
+            }}
+          />
 
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
             <NavBtn
