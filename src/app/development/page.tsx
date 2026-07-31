@@ -492,9 +492,14 @@ export default function DevelopmentPage() {
               <FeaturePill>📜 Sertifikat & Rapor Poin</FeaturePill>
             </FeaturePillGrid>
 
-            <PrimaryCTAButton href="/development/jlpt-simulasi" style={{ background: "linear-gradient(135deg, #10b981 0%, #059669 100%)" }}>
-              🚀 Mulai Simulasi Ujian JLPT N5 Sekarang
-            </PrimaryCTAButton>
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+              <PrimaryCTAButton href="/development/jlpt-simulasi" style={{ background: "linear-gradient(135deg, #10b981 0%, #059669 100%)" }}>
+                🚀 Mulai Simulasi Ujian JLPT N5
+              </PrimaryCTAButton>
+              <PrimaryCTAButton href="/development/jlpt-sertifikat" style={{ background: "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)" }}>
+                📜 Lihat Pratinjau Sertifikat N5
+              </PrimaryCTAButton>
+            </div>
           </FlagshipInfo>
         </FlagshipContent>
       </FlagshipCard>
