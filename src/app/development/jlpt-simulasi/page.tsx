@@ -1126,31 +1126,51 @@ const ScoreCard = styled.div<{ $passed: boolean }>`
   }
 `;
 
-const CertificateBox = styled.div`
-  background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.05) 0%, rgba(245, 158, 11, 0.05) 100%);
-  border: 2px solid var(--primary);
-  border-radius: 24px;
-  padding: 2.5rem 2rem;
-  text-align: center;
-  position: relative;
+const FailedAnalysisCard = styled.div`
+  background: var(--surface, #1e293b);
+  border: 1.5px solid rgba(239, 68, 68, 0.4);
+  border-radius: 20px;
+  padding: 1.75rem;
+  margin: 1.5rem 0;
 
   h3 {
-    font-size: 1.6rem;
-    font-weight: 900;
-    color: var(--foreground);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #f87171;
     margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
-  .cert-sub {
+
+  p {
     font-size: 0.95rem;
-    color: var(--text-secondary);
-    margin-bottom: 1.5rem;
+    color: var(--foreground-secondary, #94a3b8);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
   }
-  .cert-name {
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--primary);
-    margin-bottom: 1rem;
-    font-family: serif;
+`;
+
+const AdviceGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+`;
+
+const AdviceItem = styled.div<{ $passed?: boolean }>`
+  background: ${({ $passed }) =>
+    $passed ? "rgba(16, 185, 129, 0.08)" : "rgba(239, 68, 68, 0.08)"};
+  border: 1px solid
+    ${({ $passed }) =>
+      $passed ? "rgba(16, 185, 129, 0.25)" : "rgba(239, 68, 68, 0.2)"};
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--foreground);
+
+  strong {
+    color: ${({ $passed }) => ($passed ? "#10b981" : "#f87171")};
   }
 `;
 
@@ -1348,21 +1368,68 @@ export default function JLPTN5SimulationPage() {
             </ScoreCard>
           </SectionScoresGrid>
 
-          <JlptCertificate
-            totalPassed={results.totalPassed}
-            totalScore={results.totalScore}
-            sectionScores={{
-              moji_goi: results.mojiGoiScore,
-              bunpou_dokkai: results.bunpouDokkaiScore,
-              choukai: results.choukaiScore,
-            }}
-            passThresholds={{
-              total: JLPT_N5_CONFIG.totalMinPassScore,
-              moji_goi: 19,
-              bunpou_dokkai: 19,
-              choukai: 19,
-            }}
-          />
+          {results.totalPassed ? (
+            <JlptCertificate
+              totalPassed={results.totalPassed}
+              totalScore={results.totalScore}
+              sectionScores={{
+                moji_goi: results.mojiGoiScore,
+                bunpou_dokkai: results.bunpouDokkaiScore,
+                choukai: results.choukaiScore,
+              }}
+              passThresholds={{
+                total: JLPT_N5_CONFIG.totalMinPassScore,
+                moji_goi: 19,
+                bunpou_dokkai: 19,
+                choukai: 19,
+              }}
+            />
+          ) : (
+            <FailedAnalysisCard>
+              <h3>💡 Analisis & Evaluasi Belajar Simulasi JLPT N5</h3>
+              <p>
+                Maaf, hasil simulasi Anda belum memenuhi kriteria kelulusan resmi JLPT N5. Sertifikat kelulusan hanya diberikan kepada peserta yang berhasil <strong>LULUS</strong> (Min. Total 80 Poin & Min. 19 Poin di setiap seksi).
+              </p>
+
+              <AdviceGrid>
+                {results.mojiGoiPassed ? (
+                  <AdviceItem $passed>
+                    <strong>✅ Seksi Moji & Goi (Kosakata):</strong> Sangat Bagus! Anda berhasil <b>LULUS</b> dengan nilai {results.mojiGoiScore}/60 Poin (di atas ambang minimal 19 Poin). Pertahankan pencapaian ini!
+                  </AdviceItem>
+                ) : (
+                  <AdviceItem $passed={false}>
+                    <strong>🎌 Seksi Moji & Goi (Kosakata):</strong> Nilai Anda ({results.mojiGoiScore}/60) belum mencapai ambang minimal 19 poin. Perbanyak latihan hafalan Hiragana, Katakana, dan Kanji di modul Hafalan Leitner.
+                  </AdviceItem>
+                )}
+
+                {results.bunpouDokkaiPassed ? (
+                  <AdviceItem $passed>
+                    <strong>✅ Seksi Bunpou & Dokkai (Tata Bahasa):</strong> Sangat Bagus! Anda berhasil <b>LULUS</b> dengan nilai {results.bunpouDokkaiScore}/60 Poin (di atas ambang minimal 19 Poin). Pertahankan pencapaian ini!
+                  </AdviceItem>
+                ) : (
+                  <AdviceItem $passed={false}>
+                    <strong>📖 Seksi Bunpou & Dokkai (Tata Bahasa):</strong> Nilai Anda ({results.bunpouDokkaiScore}/60) belum mencapai ambang minimal 19 poin. Pelajari kembali struktur pola kalimat N5 dan bacaan wacana pendek.
+                  </AdviceItem>
+                )}
+
+                {results.choukaiPassed ? (
+                  <AdviceItem $passed>
+                    <strong>✅ Seksi Choukai (Mendengar):</strong> Sangat Bagus! Anda berhasil <b>LULUS</b> dengan nilai {results.choukaiScore}/60 Poin (di atas ambang minimal 19 Poin). Pertahankan pencapaian ini!
+                  </AdviceItem>
+                ) : (
+                  <AdviceItem $passed={false}>
+                    <strong>🎧 Seksi Choukai (Mendengar):</strong> Nilai Anda ({results.choukaiScore}/60) belum mencapai ambang minimal 19 poin. Latihlah pendengaran percakapan audio N5 secara rutin.
+                  </AdviceItem>
+                )}
+
+                {results.mojiGoiPassed && results.bunpouDokkaiPassed && results.choukaiPassed && results.totalScore < 80 && (
+                  <AdviceItem $passed={false}>
+                    <strong>🎯 Total Skor:</strong> Semua seksi sudah memenuhi batas minimal 19 poin, namun total skor ({results.totalScore}/180) masih di bawah 80 poin. Tingkatkan akurasi jawaban di seksi unggulan Anda!
+                  </AdviceItem>
+                )}
+              </AdviceGrid>
+            </FailedAnalysisCard>
+          )}
 
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
             <NavBtn
