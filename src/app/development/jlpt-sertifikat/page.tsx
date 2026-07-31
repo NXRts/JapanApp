@@ -1,9 +1,8 @@
 "use client";
 
-import React from "react";
-import styled from "styled-components";
-import Link from "next/link";
+import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { JlptCertificate } from "@/components/jlpt/JlptCertificate";
+import styled from "styled-components";
 
 export default function JlptCertificatePreviewPage() {
   // Mock data for previewing passing certificate
@@ -25,18 +24,24 @@ export default function JlptCertificatePreviewPage() {
 
   return (
     <PageWrapper>
-      <HeaderContainer className="no-print">
-        <BreadcrumbNav>
-          <Link href="/">Beranda</Link> &gt;{" "}
-          <Link href="/development">Development Labs</Link> &gt;{" "}
-          <span>Sertifikat JLPT N5</span>
-        </BreadcrumbNav>
+      <div className="no-print" style={{ marginBottom: "1.5rem" }}>
+        <Breadcrumbs
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Development", href: "/development" },
+          ]}
+          current="Sertifikat JLPT N5"
+        />
+      </div>
 
+      <HeaderContainer className="no-print">
         <TitleCard>
           <BadgeTag>📜 CERTIFICATE PREVIEW LABS</BadgeTag>
           <h1>Pratinjau Sertifikat Resmi JLPT Level N5</h1>
           <p>
-            Halaman khusus untuk melihat tampilan Sertifikat Resmi JLPT N5 (A4 Portrait), mengubah nama peserta, mengunggah pas foto 3x4 cm, serta mengunduh gambar (PNG) atau mencetak (PDF).
+            Halaman khusus untuk melihat tampilan Sertifikat Resmi JLPT N5 (A4
+            Portrait), mengubah nama peserta, mengunggah pas foto 3x4 cm, serta
+            mengunduh gambar (PNG) atau mencetak (PDF).
           </p>
         </TitleCard>
       </HeaderContainer>
@@ -52,40 +57,36 @@ export default function JlptCertificatePreviewPage() {
 }
 
 const PageWrapper = styled.div`
-  min-height: 100vh;
-  background: var(--background, #0f172a);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  min-height: 90vh;
+  background: transparent;
   color: var(--foreground, #f8fafc);
-  padding: 2.5rem 1.5rem 6rem;
+  box-sizing: border-box;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
+  }
 
   @media print {
     background: #ffffff;
     padding: 0;
+    max-width: 100%;
+    margin: 0;
   }
 `;
 
 const HeaderContainer = styled.div`
   max-width: 820px;
   margin: 0 auto 1.5rem;
-`;
-
-const BreadcrumbNav = styled.nav`
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--foreground-secondary, #94a3b8);
-  margin-bottom: 1.25rem;
-
-  a {
-    color: var(--primary, #3b82f6);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  span {
-    color: var(--foreground);
-  }
 `;
 
 const TitleCard = styled.div`

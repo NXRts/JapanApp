@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
 export interface JlptCertificateProps {
@@ -39,7 +39,8 @@ export function JlptCertificate({
     day: "numeric",
   });
 
-  const languageKnowledgeScore = sectionScores.moji_goi + sectionScores.bunpou_dokkai;
+  const languageKnowledgeScore =
+    sectionScores.moji_goi + sectionScores.bunpou_dokkai;
 
   const handlePrint = () => {
     window.print();
@@ -187,9 +188,12 @@ export function JlptCertificate({
 
             {/* Document Kanji Title */}
             <CertTitleBlock>
-              <CertKanjiTitle>日本語能力試験 認定結果及び成績に関する証明書</CertKanjiTitle>
+              <CertKanjiTitle>
+                日本語能力試験 認定結果及び成績に関する証明書
+              </CertKanjiTitle>
               <CertEngTitle>
-                CERTIFICATE OF RESULT AND SCORES<br />
+                CERTIFICATE OF RESULT AND SCORES
+                <br />
                 JAPANESE-LANGUAGE PROFICIENCY TEST
               </CertEngTitle>
             </CertTitleBlock>
@@ -251,8 +255,11 @@ export function JlptCertificate({
               <tbody>
                 <tr>
                   <td className="section-name">
-                    言語知識 (文字・語彙・文法)・読解<br />
-                    <small>Language Knowledge (Vocabulary/Grammar) & Reading</small>
+                    言語知識 (文字・語彙・文法)・読解
+                    <br />
+                    <small>
+                      Language Knowledge (Vocabulary/Grammar) & Reading
+                    </small>
                   </td>
                   <td className="score-cell">
                     <strong>{languageKnowledgeScore}</strong>
@@ -264,7 +271,8 @@ export function JlptCertificate({
                 </tr>
                 <tr>
                   <td className="section-name">
-                    聴解<br />
+                    聴解
+                    <br />
                     <small>Listening (Choukai)</small>
                   </td>
                   <td className="score-cell">
@@ -276,9 +284,7 @@ export function JlptCertificate({
                   </td>
                 </tr>
                 <tr className="total-row">
-                  <td className="section-name">
-                    総合得点 (Total Score)
-                  </td>
+                  <td className="section-name">総合得点 (Total Score)</td>
                   <td className="score-cell">
                     <big>{totalScore}</big>
                   </td>
@@ -292,8 +298,12 @@ export function JlptCertificate({
 
             {/* Official Certification Statement */}
             <CertificationStatement>
-              上記のとおり日本語能力試験の結果を証明します。<br />
-              <small>This is to certify the result and scores of the Japanese-Language Proficiency Test as stated above.</small>
+              上記のとおり日本語能力試験の結果を証明します。
+              <br />
+              <small>
+                This is to certify the result and scores of the
+                Japanese-Language Proficiency Test as stated above.
+              </small>
             </CertificationStatement>
 
             {/* Dual Official Seals & Issuing Authority */}
@@ -304,7 +314,8 @@ export function JlptCertificate({
                   <span>基金印</span>
                 </div>
                 <div className="seal-text">
-                  独立行政法人国際交流基金理事長<br />
+                  独立行政法人国際交流基金理事長
+                  <br />
                   President, The Japan Foundation
                 </div>
               </OfficialSealBox>
@@ -315,7 +326,8 @@ export function JlptCertificate({
                   <span>協会印</span>
                 </div>
                 <div className="seal-text">
-                  公益財団法人日本国際教育支援協会理事長<br />
+                  公益財団法人日本国際教育支援協会理事長
+                  <br />
                   President, JEES
                 </div>
               </OfficialSealBox>
@@ -482,10 +494,22 @@ const CornerMotif = styled.div`
   position: absolute;
   font-size: 1.2rem;
 
-  &.top-left { top: 6px; left: 10px; }
-  &.top-right { top: 6px; right: 10px; }
-  &.bottom-left { bottom: 6px; left: 10px; }
-  &.bottom-right { bottom: 6px; right: 10px; }
+  &.top-left {
+    top: 6px;
+    left: 10px;
+  }
+  &.top-right {
+    top: 6px;
+    right: 10px;
+  }
+  &.bottom-left {
+    bottom: 6px;
+    left: 10px;
+  }
+  &.bottom-right {
+    bottom: 6px;
+    right: 10px;
+  }
 `;
 
 const OfficialIssuerBanner = styled.div`
@@ -501,10 +525,17 @@ const IssuerItem = styled.div`
   color: #334155;
   line-height: 1.4;
 
-  .jp { font-weight: 700; }
-  .en { font-size: 0.65rem; color: #64748b; }
+  .jp {
+    font-weight: 700;
+  }
+  .en {
+    font-size: 0.65rem;
+    color: #64748b;
+  }
 
-  &.right { text-align: right; }
+  &.right {
+    text-align: right;
+  }
 `;
 
 const CertTitleBlock = styled.div`
@@ -600,9 +631,20 @@ const PhotoPlaceholder = styled.div`
   color: #64748b;
   padding: 0.5rem;
 
-  .photo-icon { font-size: 1.8rem; line-height: 1; margin-bottom: 0.2rem; }
-  .photo-label { font-size: 0.68rem; font-weight: 900; letter-spacing: 0.5px; }
-  .photo-size { font-size: 0.58rem; color: #94a3b8; }
+  .photo-icon {
+    font-size: 1.8rem;
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+  .photo-label {
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+  }
+  .photo-size {
+    font-size: 0.58rem;
+    color: #94a3b8;
+  }
 `;
 
 /* --- Official Score Table --- */
@@ -620,7 +662,8 @@ const OfficialScoreTable = styled.table`
   margin-bottom: 1.5rem;
   font-size: 0.82rem;
 
-  th, td {
+  th,
+  td {
     border: 1px solid #cbd5e1;
     padding: 0.6rem 0.8rem;
     text-align: center;
@@ -636,11 +679,20 @@ const OfficialScoreTable = styled.table`
     text-align: left;
     font-weight: 700;
     color: #334155;
-    small { font-size: 0.7rem; color: #64748b; font-weight: 600; }
+    small {
+      font-size: 0.7rem;
+      color: #64748b;
+      font-weight: 600;
+    }
   }
 
-  .score-cell { font-weight: 800; font-size: 0.95rem; }
-  .status-cell { font-weight: 800; }
+  .score-cell {
+    font-weight: 800;
+    font-size: 0.95rem;
+  }
+  .status-cell {
+    font-weight: 800;
+  }
 
   .badge-pass {
     background: #d1fae5;
@@ -655,8 +707,12 @@ const OfficialScoreTable = styled.table`
     font-weight: 900;
     color: #065f46;
 
-    td { border-top: 2px solid #10b981; }
-    big { font-size: 1.1rem; }
+    td {
+      border-top: 2px solid #10b981;
+    }
+    big {
+      font-size: 1.1rem;
+    }
   }
 
   .badge-pass-final {
@@ -676,7 +732,11 @@ const CertificationStatement = styled.div`
   margin-bottom: 1.75rem;
   line-height: 1.5;
 
-  small { font-size: 0.72rem; color: #64748b; font-weight: 600; }
+  small {
+    font-size: 0.72rem;
+    color: #64748b;
+    font-weight: 600;
+  }
 `;
 
 const IssuingFooter = styled.div`

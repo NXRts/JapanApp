@@ -37,14 +37,21 @@ const fadeIn = keyframes`
 
 // --- Styled Components ---
 const PageWrapper = styled.div`
-  min-height: 90vh;
-  padding: 1.5rem 2rem 4rem;
-  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
+  padding: 1.5rem 2rem;
+  min-height: 90vh;
   animation: ${fadeIn} 0.4s ease-out;
 
-  @media (max-width: 768px) {
-    padding: 1rem 1rem 3rem;
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px 1rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px 0.5rem;
   }
 `;
 
