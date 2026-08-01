@@ -482,7 +482,10 @@ export function JlptCertificate({
                   </td>
                   <td>180</td>
                   <td className="status-cell">
-                    <span className="badge-pass-final">合格 (PASSED)</span>
+                    <span className="badge-pass-final">
+                      <span className="jp-text">合格</span>
+                      <span className="en-text">(PASSED)</span>
+                    </span>
                   </td>
                 </tr>
               </tbody>
@@ -892,11 +895,15 @@ const OfficialScoreTable = styled.table`
   }
 
   .badge-pass {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     background: #d1fae5;
     color: #047857;
-    padding: 2px 8px;
-    border-radius: 4px;
+    padding: 3px 10px;
+    border-radius: 6px;
     font-size: 0.75rem;
+    font-weight: 800;
   }
 
   .total-row {
@@ -906,6 +913,7 @@ const OfficialScoreTable = styled.table`
 
     td {
       border-top: 2px solid #10b981;
+      vertical-align: middle;
     }
     big {
       font-size: 1.1rem;
@@ -913,11 +921,28 @@ const OfficialScoreTable = styled.table`
   }
 
   .badge-pass-final {
-    background: #10b981;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: white;
-    padding: 3px 10px;
-    border-radius: 6px;
-    font-size: 0.82rem;
+    padding: 4px 12px;
+    border-radius: 8px;
+    line-height: 1.25;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+    white-space: nowrap;
+
+    .jp-text {
+      font-size: 0.85rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+    }
+    .en-text {
+      font-size: 0.68rem;
+      font-weight: 700;
+      opacity: 0.95;
+    }
   }
 `;
 
