@@ -24,7 +24,7 @@ const PrintStyleFix = createGlobalStyle`
   @media print {
     @page {
       size: A4 portrait;
-      margin: 0;
+      margin: 0 !important;
     }
 
     html, body {
@@ -34,6 +34,7 @@ const PrintStyleFix = createGlobalStyle`
       color: #000000 !important;
       width: 210mm !important;
       height: 297mm !important;
+      max-height: 297mm !important;
       overflow: hidden !important;
     }
 
@@ -57,25 +58,35 @@ const PrintStyleFix = createGlobalStyle`
     }
 
     .print-image-container {
-      position: absolute !important;
+      position: fixed !important;
       left: 0 !important;
       top: 0 !important;
       width: 210mm !important;
       height: 297mm !important;
+      max-width: 210mm !important;
+      max-height: 297mm !important;
       margin: 0 !important;
-      padding: 8mm 10mm !important;
+      padding: 6mm !important;
       box-sizing: border-box !important;
       background: #ffffff !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
+      overflow: hidden !important;
+      page-break-after: avoid !important;
+      page-break-before: avoid !important;
+      page-break-inside: avoid !important;
     }
 
     .print-image-container img {
       width: 100% !important;
-      height: 100% !important;
+      height: auto !important;
+      max-height: 280mm !important;
       object-fit: contain !important;
       display: block !important;
+      margin: 0 auto !important;
+      page-break-after: avoid !important;
+      page-break-inside: avoid !important;
     }
   }
 `;
@@ -161,7 +172,7 @@ export function JlptCertificate({
           border-right: ${computed.borderRight};
           border-bottom: ${computed.borderBottom};
           border-left: ${computed.borderLeft};
-          border-radius: ${computed.borderRadius};
+          border-radius: ${i === 0 ? "0px" : computed.borderRadius};
           background: ${computed.background};
           background-color: ${computed.backgroundColor};
           color: ${computed.color};
@@ -173,7 +184,7 @@ export function JlptCertificate({
           letter-spacing: ${computed.letterSpacing};
           text-align: ${computed.textAlign};
           text-transform: ${computed.textTransform};
-          box-shadow: ${computed.boxShadow};
+          box-shadow: ${i === 0 ? "none" : computed.boxShadow};
           opacity: ${computed.opacity};
           transform: ${computed.transform};
           overflow: ${computed.overflow};
@@ -647,14 +658,15 @@ const ActionButton = styled.button<{ $variant?: "primary" | "secondary" }>`
 
 /* --- A4 Portrait Frame Layout --- */
 const CertFrameWrapper = styled.div`
-  background: #fffdfa;
+  background: #ffffff;
   color: #0f172a;
-  border-radius: 16px;
+  border-radius: 4px;
   padding: 1.25rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   font-family: "Georgia", "Yu Mincho", "Hiragino Mincho ProN", serif;
   width: 100%;
   box-sizing: border-box;
+  overflow: hidden;
 `;
 
 const CertOuterBorder = styled.div`
