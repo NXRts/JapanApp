@@ -134,6 +134,26 @@ const playApiTTS = (text: string, rate: number): Promise<boolean> => {
 };
 
 /**
+ * Clean & sanitize Japanese audio script text before passing to SpeechSynthesis.
+ * Removes visual speaker labels (男：, 女：) and fill-in-the-blank placeholders ( (____) ).
+ */
+export function sanitizeScriptForTTS(text: string): string {
+  if (!text) return "";
+
+  return text
+    // 1. Remove fill-in-the-blank placeholders: (____), （____）, (...), （　）
+    .replace(/[（\(]\s*[_…\.　]+\s*[）\)]。?/g, "")
+    // 2. Remove visual speaker tags at start of lines: 男：, 女：, 店員：, 学生：
+    .replace(/(?:^|\n)\s*(?:男|女|店員|学生|A|B)(?:の人|の人たち)?\s*[:：]/g, "\n")
+    // 3. Convert newlines to full stops / natural pauses
+    .replace(/[\r\n]+/g, " 。 ")
+    // 4. Collapse multiple punctuation/spaces
+    .replace(/。\s*。/g, "。")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/**
  * Fallback via Web Speech API (SpeechSynthesis) for offline support
  */
 const playWebSpeechAPI = (text: string, rate: number, options: AudioOptions): Promise<boolean> => {
@@ -154,7 +174,7 @@ const playWebSpeechAPI = (text: string, rate: number, options: AudioOptions): Pr
         options.voice ||
         availVoices.find((v) => v.lang === "ja-JP" || v.lang.startsWith("ja"));
 
-      const cleanText = text.replace(/[\r\n]+/g, " ").trim();
+      const cleanText = sanitizeScriptForTTS(text);
       const utterance = new SpeechSynthesisUtterance(cleanText);
       utterance.lang = jaVoice ? jaVoice.lang : "ja-JP";
       utterance.rate = rate;
@@ -207,7 +227,7 @@ export const playJapaneseAudio = (
     }
 
     const rate = options.rate ?? 0.85;
-    const cleanText = text.replace(/[\r\n]+/g, " ").trim();
+    const cleanText = sanitizeScriptForTTS(text);
 
     console.log("[JapanApp Audio] playJapaneseAudio called for text length:", cleanText.length);
 
