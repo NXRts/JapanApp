@@ -753,7 +753,7 @@ export function HeartsModal({ onClose }: { onClose: () => void }) {
         <ActionBtn
           $variant={isSuper ? "primary" : "super"}
           as={Link}
-          href="/sakura-fitur"
+          href="/development"
           style={{ textDecoration: "none" }}
           onClick={onClose}
         >

@@ -442,6 +442,22 @@ const EXPERIMENTAL_FEATURES = [
 
 export default function DevelopmentPage() {
   const [showFeedbackAlert, setShowFeedbackAlert] = useState(false);
+  const [sakuraEnabled, setSakuraEnabled] = useState(true);
+
+  React.useEffect(() => {
+    const status = localStorage.getItem("sakura-particles-enabled");
+    if (status === "false") {
+      setSakuraEnabled(false);
+    }
+  }, []);
+
+  const toggleSakura = () => {
+    const nextState = !sakuraEnabled;
+    setSakuraEnabled(nextState);
+    localStorage.setItem("sakura-particles-enabled", String(nextState));
+    const event = new Event("sakura-theme-changed");
+    window.dispatchEvent(event);
+  };
 
   return (
     <Container>
@@ -451,7 +467,7 @@ export default function DevelopmentPage() {
         <Title>Development & Experimental Labs 🧪</Title>
         <Subtitle>
           Daftar modul dan fitur yang sedang aktif dikembangkan oleh tim JapanApp. Coba
-          fitur beta secara langsung dan berikan saran pengembangan Anda!
+          fitur beta secara langsung, kelola efek tema sakura, dan berikan saran pengembangan Anda!
         </Subtitle>
       </HeaderSection>
 
@@ -460,7 +476,7 @@ export default function DevelopmentPage() {
         <StatCard $borderColor="#10b981">
           <div className="icon-box">🚀</div>
           <div>
-            <div className="value">1 Fitur Beta</div>
+            <div className="value">3 Fitur Beta</div>
             <div className="label">Siap Dicoba</div>
           </div>
         </StatCard>
@@ -533,6 +549,72 @@ export default function DevelopmentPage() {
             <PrimaryCTAButton href="/development/hafalan">
               🚀 Coba Fitur Hafalan Sekarang
             </PrimaryCTAButton>
+          </FlagshipInfo>
+        </FlagshipContent>
+      </FlagshipCard>
+
+      {/* Flagship Feature 3: Sakura Grammar Lab */}
+      <FlagshipCard style={{ background: "linear-gradient(135deg, rgba(236, 72, 153, 0.12) 0%, rgba(139, 92, 246, 0.15) 100%)", borderColor: "rgba(236, 72, 153, 0.4)" }}>
+        <FlagshipBadge style={{ background: "#ec4899" }}>Beta Tersedia • Sakura Grammar 📖</FlagshipBadge>
+        <FlagshipContent>
+          <FlagshipInfo>
+            <h2>📖 Struktur Belajar & Kuis Tata Bahasa (Sakura Grammar)</h2>
+            <p>
+              Belajar tata bahasa Jepang N5 secara terstruktur dan berurutan! Modul ini menyediakan materi dengan furigana, ulasan ringkasan, dan kuis interaktif (pilihan ganda, mengisi partikel, & penyusun kalimat).
+            </p>
+
+            <FeaturePillGrid>
+              <FeaturePill>📚 Materi Terstruktur N5</FeaturePill>
+              <FeaturePill>🔤 Kana & Furigana Dinamis</FeaturePill>
+              <FeaturePill>✍️ Kuis 3 Jenis Soal</FeaturePill>
+              <FeaturePill>🎯 Evaluasi Skor Instant</FeaturePill>
+            </FeaturePillGrid>
+
+            <PrimaryCTAButton href="/grammar/lessons" style={{ background: "linear-gradient(135deg, #ec4899 0%, #be185d 100%)" }}>
+              📖 Mulai Belajar Sakura Grammar
+            </PrimaryCTAButton>
+          </FlagshipInfo>
+        </FlagshipContent>
+      </FlagshipCard>
+
+      {/* Flagship Feature 4: Sakura Visual Petals Theme Customization */}
+      <FlagshipCard style={{ background: "linear-gradient(135deg, rgba(255, 183, 197, 0.2) 0%, rgba(244, 114, 182, 0.15) 100%)", borderColor: "rgba(244, 114, 182, 0.4)" }}>
+        <FlagshipBadge style={{ background: "#f472b6", color: "#831843" }}>Visual & Estetika Theme 🌸</FlagshipBadge>
+        <FlagshipContent>
+          <FlagshipInfo>
+            <h2>🌸 Tema Kelopak Sakura Berguguran (Sakura Flow)</h2>
+            <p>
+              Peningkatan estetika visual kelopak bunga sakura yang jatuh meliuk secara halus di latar belakang layar untuk menghadirkan atmosfer belajar khas Zen Jepang di JapanApp.
+            </p>
+
+            <FeaturePillGrid>
+              <FeaturePill>🌸 Efek Bunga Berguguran</FeaturePill>
+              <FeaturePill>🎨 Nuansa Zen khas JapanApp</FeaturePill>
+              <FeaturePill>⚡ Ringan & Responsif</FeaturePill>
+            </FeaturePillGrid>
+
+            <button
+              onClick={toggleSakura}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.6rem",
+                background: sakuraEnabled
+                  ? "linear-gradient(135deg, #ec4899 0%, #db2777 100%)"
+                  : "linear-gradient(135deg, #64748b 0%, #475569 100%)",
+                color: "white",
+                fontWeight: 900,
+                fontSize: "1rem",
+                padding: "0.9rem 1.75rem",
+                borderRadius: "16px",
+                border: "none",
+                cursor: "pointer",
+                boxShadow: "0 8px 25px rgba(236, 72, 153, 0.35)",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {sakuraEnabled ? "🌸 Nonaktifkan Efek Sakura" : "🌸 Aktifkan Efek Sakura"}
+            </button>
           </FlagshipInfo>
         </FlagshipContent>
       </FlagshipCard>

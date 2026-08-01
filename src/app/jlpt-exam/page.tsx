@@ -438,7 +438,7 @@ export default function JLPTExam() {
         <Breadcrumbs
           items={[
             { label: "Home", href: "/" },
-            { label: "SakuraFitur", href: "/sakura-fitur" },
+            { label: "Development", href: "/development" },
           ]}
           current="Hasil Ujian"
         />

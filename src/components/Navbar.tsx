@@ -1512,15 +1512,6 @@ export function Navbar() {
 
               <PopoverMenu $isOpen={isLainnyaOpen}>
                 <Link
-                  href="/sakura-fitur"
-                  style={{ textDecoration: "none", color: "inherit" }}
-                  onClick={() => setIsLainnyaOpen(false)}
-                >
-                  <PopoverItem style={{ color: "#ffb7c5" }}>
-                    <span>🌸</span> SakuraFitur
-                  </PopoverItem>
-                </Link>
-                <Link
                   href="/practice-sheets"
                   style={{ textDecoration: "none", color: "inherit" }}
                   onClick={() => setIsLainnyaOpen(false)}
@@ -1850,13 +1841,6 @@ export function Navbar() {
                   </StyledLink>
                   <DropdownMenu>
                     <DropdownItem
-                      href="/sakura-fitur"
-                      $active={pathname === "/sakura-fitur"}
-                      style={{ color: "#ffb7c5" }}
-                    >
-                      🌸 SakuraFitur
-                    </DropdownItem>
-                    <DropdownItem
                       href="/materi"
                       $active={pathname.startsWith("/materi")}
                     >
@@ -2140,26 +2124,6 @@ export function Navbar() {
             >
               <KanjiBadge>助</KanjiBadge>
               Bantuan
-            </MobileLink>
-
-            <MobileLink
-              href="/sakura-fitur"
-              $active={pathname === "/sakura-fitur"}
-              $isOpen={isMobileMenuOpen}
-              $delay={0.38}
-              onClick={() => setIsMobileMenuOpen(false)}
-              style={{ color: "#ffb7c5" }}
-            >
-              <KanjiBadge
-                style={{
-                  background: "rgba(255, 183, 197, 0.15)",
-                  color: "#ffb7c5",
-                  borderColor: "rgba(255, 183, 197, 0.3)",
-                }}
-              >
-                桜
-              </KanjiBadge>
-              SakuraFitur
             </MobileLink>
 
             <MobileLink
