@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 export interface JlptCertificateProps {
   totalPassed: boolean;
@@ -20,6 +20,74 @@ export interface JlptCertificateProps {
   onRetake?: () => void;
 }
 
+const PrintStyleFix = createGlobalStyle`
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #ffffff !important;
+      color: #000000 !important;
+      width: 210mm !important;
+      height: 297mm !important;
+      overflow: hidden !important;
+    }
+
+    /* Hide everything by default using visibility */
+    body * {
+      visibility: hidden !important;
+    }
+
+    /* Hide interactive control buttons and original elements */
+    .no-print,
+    .no-print * {
+      display: none !important;
+      visibility: hidden !important;
+    }
+
+    /* Show ONLY the high-res print image container and its image */
+    .print-image-container,
+    .print-image-container * {
+      visibility: visible !important;
+      display: block !important;
+    }
+
+    .print-image-container {
+      position: absolute !important;
+      left: 0 !important;
+      top: 0 !important;
+      width: 210mm !important;
+      height: 297mm !important;
+      margin: 0 !important;
+      padding: 8mm 10mm !important;
+      box-sizing: border-box !important;
+      background: #ffffff !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .print-image-container img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain !important;
+      display: block !important;
+    }
+  }
+`;
+
+const PrintImageContainer = styled.div`
+  display: none;
+
+  @media print {
+    display: flex;
+  }
+`;
+
 export function JlptCertificate({
   totalPassed,
   totalScore,
@@ -30,6 +98,7 @@ export function JlptCertificate({
   const [registrationNo, setRegistrationNo] = useState("26A1010101-50001");
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [printImgUrl, setPrintImgUrl] = useState<string | null>(null);
   const certRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -42,79 +111,191 @@ export function JlptCertificate({
   const languageKnowledgeScore =
     sectionScores.moji_goi + sectionScores.bunpou_dokkai;
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setPhotoUrl(url);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setPhotoUrl(event.target.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleDownloadPNG = async () => {
-    if (!certRef.current) return;
-    setIsDownloading(true);
+  const getSerializedElementWithStyles = (node: HTMLElement) => {
+    const clone = node.cloneNode(true) as HTMLElement;
 
-    try {
+    const origElements = [node, ...Array.from(node.querySelectorAll<HTMLElement>("*"))];
+    const cloneElements = [clone, ...Array.from(clone.querySelectorAll<HTMLElement>("*"))];
+
+    origElements.forEach((orig, i) => {
+      const cloned = cloneElements[i];
+      if (cloned) {
+        const computed = window.getComputedStyle(orig);
+        cloned.style.cssText = `
+          box-sizing: border-box;
+          display: ${computed.display};
+          flex-direction: ${computed.flexDirection};
+          justify-content: ${computed.justifyContent};
+          align-items: ${computed.alignItems};
+          grid-template-columns: ${computed.gridTemplateColumns};
+          grid-gap: ${computed.gridGap};
+          gap: ${computed.gap};
+          position: ${computed.position};
+          top: ${computed.top};
+          left: ${computed.left};
+          right: ${computed.right};
+          bottom: ${computed.bottom};
+          width: ${computed.width};
+          height: ${computed.height};
+          min-width: ${computed.minWidth};
+          min-height: ${computed.minHeight};
+          max-width: ${computed.maxWidth};
+          max-height: ${computed.maxHeight};
+          margin: ${computed.margin};
+          padding: ${computed.padding};
+          border: ${computed.border};
+          border-top: ${computed.borderTop};
+          border-right: ${computed.borderRight};
+          border-bottom: ${computed.borderBottom};
+          border-left: ${computed.borderLeft};
+          border-radius: ${computed.borderRadius};
+          background: ${computed.background};
+          background-color: ${computed.backgroundColor};
+          color: ${computed.color};
+          font-family: ${computed.fontFamily};
+          font-size: ${computed.fontSize};
+          font-weight: ${computed.fontWeight};
+          font-style: ${computed.fontStyle};
+          line-height: ${computed.lineHeight};
+          letter-spacing: ${computed.letterSpacing};
+          text-align: ${computed.textAlign};
+          text-transform: ${computed.textTransform};
+          box-shadow: ${computed.boxShadow};
+          opacity: ${computed.opacity};
+          transform: ${computed.transform};
+          overflow: ${computed.overflow};
+          table-layout: ${computed.tableLayout};
+          border-collapse: ${computed.borderCollapse};
+          border-spacing: ${computed.borderSpacing};
+          vertical-align: ${computed.verticalAlign};
+          white-space: ${computed.whiteSpace};
+          word-break: ${computed.wordBreak};
+        `;
+      }
+    });
+
+    return new XMLSerializer().serializeToString(clone);
+  };
+
+  const generateCertificateCanvasImage = (): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      if (!certRef.current) return reject("Certificate ref not found");
       const element = certRef.current;
-      const width = element.offsetWidth;
-      const height = element.offsetHeight;
+      const width = element.offsetWidth || 794;
+      const height = element.offsetHeight || 1123;
 
-      const canvas = document.createElement("canvas");
-      const scale = 2; // 2x DPI for ultra crisp image
-      canvas.width = width * scale;
-      canvas.height = height * scale;
+      const serializedContent = getSerializedElementWithStyles(element);
 
-      const ctx = canvas.getContext("2d");
-      if (!ctx) throw new Error("Could not get 2D context");
-
-      ctx.scale(scale, scale);
-
-      const data = `
+      const svgData = `
         <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
           <foreignObject width="100%" height="100%">
-            <div xmlns="http://www.w3.org/1999/xhtml">
-              ${new XMLSerializer().serializeToString(element)}
+            <div xmlns="http://www.w3.org/1999/xhtml" style="width:${width}px; height:${height}px; background:#ffffff; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+              ${serializedContent}
             </div>
           </foreignObject>
         </svg>
       `;
 
-      const img = new Image();
-      const svgBlob = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
+      const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
       const url = URL.createObjectURL(svgBlob);
 
+      const scale = 2; // 2x DPI for crisp high-resolution image
+      const canvas = document.createElement("canvas");
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        URL.revokeObjectURL(url);
+        return reject("Could not get 2D context");
+      }
+
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.scale(scale, scale);
+
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+
       img.onload = () => {
-        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0, width, height);
         URL.revokeObjectURL(url);
 
-        const a = document.createElement("a");
-        a.download = `sertifikat-jlpt-n5-${participantName
-          .toLowerCase()
-          .replace(/[^a-z0-9]/g, "-")}.png`;
-        a.href = canvas.toDataURL("image/png");
-        a.click();
-        setIsDownloading(false);
+        try {
+          const pngUrl = canvas.toDataURL("image/png", 1.0);
+          resolve(pngUrl);
+        } catch (exportErr) {
+          reject(exportErr);
+        }
       };
 
-      img.onerror = () => {
-        window.print();
-        setIsDownloading(false);
+      img.onerror = (err) => {
+        URL.revokeObjectURL(url);
+        reject(err);
       };
 
       img.src = url;
+    });
+  };
+
+  const handlePrint = async () => {
+    setIsDownloading(true);
+    try {
+      const dataUrl = await generateCertificateCanvasImage();
+      setPrintImgUrl(dataUrl);
+      setIsDownloading(false);
+      setTimeout(() => {
+        window.print();
+      }, 100);
     } catch (err) {
-      console.error("PNG export error, falling back to print", err);
+      console.warn("Could not generate high-res print image, falling back to print window", err);
+      setIsDownloading(false);
       window.print();
+    }
+  };
+
+  const handleDownloadPNG = async () => {
+    setIsDownloading(true);
+    try {
+      const pngUrl = await generateCertificateCanvasImage();
+      const downloadLink = document.createElement("a");
+      downloadLink.download = `sertifikat-jlpt-n5-${participantName
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "-")}.png`;
+      downloadLink.href = pngUrl;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+    } catch (err) {
+      console.error("Canvas export failed, falling back to print window:", err);
+      window.print();
+    } finally {
       setIsDownloading(false);
     }
   };
 
   return (
-    <CertificateContainer>
+    <>
+      <PrintStyleFix />
+      {printImgUrl && (
+        <PrintImageContainer className="print-image-container">
+          <img src={printImgUrl} alt="Sertifikat Resmi JLPT N5" />
+        </PrintImageContainer>
+      )}
+      <CertificateContainer>
       {/* Control Toolbar */}
       <ControlBar className="no-print">
         <InputFormGrid>
@@ -336,7 +517,8 @@ export function JlptCertificate({
         </CertOuterBorder>
       </CertFrameWrapper>
     </CertificateContainer>
-  );
+  </>
+);
 }
 
 // --- Styled Components (Strict A4 Portrait Specification) ---
@@ -570,6 +752,9 @@ const ExamineeProfileGrid = styled.div`
   border-radius: 10px;
   padding: 1.25rem;
   margin-bottom: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 `;
 
 const InfoTable = styled.div`
