@@ -26,7 +26,7 @@ const ErrorTitle = styled.h1`
 `;
 
 const ErrorMessage = styled.p`
-  font-size: 1.1rem;
+font-size: 1.1rem;
   color: var(--text-secondary);
   max-width: 500px;
   margin-bottom: 2rem;
