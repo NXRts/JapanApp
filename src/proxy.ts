@@ -180,7 +180,9 @@ export async function proxy(request: NextRequest) {
     if (
       path.startsWith("/api") &&
       !path.startsWith("/api/kana") &&
-      !path.startsWith("/api/kanji")
+      !path.startsWith("/api/kanji") &&
+      !path.startsWith("/api/progress") &&
+      !path.startsWith("/api/study")
     ) {
       const identifier = `${ip}:${path}`;
       const rateLimit = await checkRedisRateLimit(identifier);

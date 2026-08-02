@@ -18,27 +18,26 @@ export const Inner = styled.div<{ $flipped: boolean }>`
   width: 100%;
   height: 100%;
   text-align: center;
-  transition:
-    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
   transform-style: preserve-3d;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  -webkit-transform-style: preserve-3d;
+  will-change: transform;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
 
-  transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg)" : "rotateY(0)")};
+  transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg)" : "rotateY(0deg)")};
 
   ${Card}:hover & {
-    box-shadow: 0 14px 32px rgba(59, 130, 246, 0.25);
-    transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg) translateY(-4px)" : "translateY(-4px)")};
+    box-shadow: 0 12px 28px rgba(59, 130, 246, 0.25);
   }
 `;
 
 export const Face = styled.div`
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -46,10 +45,12 @@ export const Face = styled.div`
   border-radius: 20px;
   background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
   color: white;
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
   font-weight: 800;
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
 
   &::before {
     content: "";
@@ -60,7 +61,7 @@ export const Face = styled.div`
     height: 200%;
     background: radial-gradient(
       circle,
-      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.12) 0%,
       transparent 60%
     );
     pointer-events: none;
@@ -89,7 +90,7 @@ export const ReadingItem = styled.div`
 `;
 
 export const Back = styled(Face)`
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(0);
   background: var(--surface);
   color: var(--foreground);
   flex-direction: column;
@@ -125,13 +126,14 @@ export const Back = styled(Face)`
 
 export const AudioButton = styled.button`
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 6px;
+  right: 6px;
+  left: auto;
   background: transparent;
   border: none;
   cursor: pointer;
   color: var(--text-secondary);
-  padding: 8px;
+  padding: 5px;
   border-radius: 50%;
   transition: all 0.2s;
   display: flex;
@@ -141,13 +143,13 @@ export const AudioButton = styled.button`
 
   &:hover {
     color: var(--primary);
-    background-color: rgba(79, 70, 229, 0.1);
-    transform: scale(1.1);
+    background-color: rgba(59, 130, 246, 0.15);
+    transform: scale(1.15);
   }
 
   svg {
-    width: 22px;
-    height: 22px;
+    width: 16px;
+    height: 16px;
     fill: currentColor;
   }
 `;
