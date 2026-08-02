@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import { playJapaneseAudio } from "@/lib/audio";
+import { playJapaneseAudio, stopAllAudio } from "@/lib/audio";
 import { useProgress } from "@/context/ProgressContext";
 import {
   N5_SIMULATION_QUESTIONS,
@@ -1208,7 +1208,13 @@ export default function JLPTN5SimulationPage() {
   const currentQuestion = sectionQuestions[currentIdx] || N5_SIMULATION_QUESTIONS[0];
 
   const handlePlayAudioForQuestion = async (qId: number, audioText?: string) => {
-    if (!audioText || playingAudioId !== null) return;
+    if (!audioText) return;
+    if (playingAudioId !== null) {
+      stopAllAudio();
+      setPlayingAudioId(null);
+    }
+
+    stopAllAudio();
     setPlayingAudioId(qId);
     console.log(`[JLPT Player] handlePlayAudio initiated for Question #${qId}...`);
     try {

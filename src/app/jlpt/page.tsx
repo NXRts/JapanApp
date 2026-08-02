@@ -5,7 +5,7 @@ import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { HandwritingModal } from "@/components/dictionary/HandwritingModal";
 import { ImageSearchModal } from "@/components/dictionary/ImageSearchModal";
 import { VoiceSearchModal } from "@/components/dictionary/VoiceSearchModal";
-import { playJapaneseAudio } from "@/lib/audio";
+import { playJapaneseAudio, stopAllAudio } from "@/lib/audio";
 import {
   DictionaryResult,
   allGrammar,
@@ -1429,13 +1429,13 @@ export default function DictionaryPage() {
     if (!displayData || displayData.length === 0) return;
 
     if (isPlayingAll) {
-      window.speechSynthesis.cancel();
+      stopAllAudio();
       setIsPlayingAll(false);
       setCurrentlyPlayingId(null);
       return;
     }
 
-    window.speechSynthesis.cancel();
+    stopAllAudio();
     setIsPlayingAll(true);
 
     let utteranceEndCount = 0;

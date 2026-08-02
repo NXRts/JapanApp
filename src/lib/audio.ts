@@ -15,6 +15,33 @@ interface AudioOptions {
 
 let voices: SpeechSynthesisVoice[] = [];
 let voicesLoaded = false;
+let activeAudioElement: HTMLAudioElement | null = null;
+
+/**
+ * Hard-stop all currently active Japanese speech audio (HTML5 Audio and Web Speech API).
+ * Prevents overlapping double-audio bugs across browsers (especially Google Chrome).
+ */
+export function stopAllAudio(): void {
+  if (typeof window !== "undefined") {
+    // 1. Stop and tear down active HTML5 Audio Element
+    if (activeAudioElement) {
+      try {
+        activeAudioElement.pause();
+        activeAudioElement.currentTime = 0;
+        activeAudioElement.removeAttribute("src");
+        activeAudioElement.load();
+      } catch {}
+      activeAudioElement = null;
+    }
+
+    // 2. Stop Browser Web Speech API
+    if (window.speechSynthesis) {
+      try {
+        window.speechSynthesis.cancel();
+      } catch {}
+    }
+  }
+}
 
 const loadVoices = (): Promise<SpeechSynthesisVoice[]> => {
   return new Promise((resolve) => {
@@ -57,6 +84,28 @@ if (typeof window !== "undefined" && window.speechSynthesis) {
 }
 
 /**
+ * Safely pause and unload an HTML5 Audio element without throwing uncaught Chrome AbortErrors.
+ */
+const safePauseAudio = (audio: HTMLAudioElement, playPromise?: Promise<void> | null) => {
+  const doPause = () => {
+    try {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.removeAttribute("src");
+      audio.load();
+    } catch {}
+  };
+
+  if (playPromise) {
+    playPromise.then(doPause).catch(() => {
+      doPause();
+    });
+  } else {
+    doPause();
+  }
+};
+
+/**
  * Plays same-origin TTS audio from Next.js server proxy (/api/tts)
  * Works 100% reliably in Zen Browser, Firefox, Chrome, Safari without CORS, 403 blocks, or missing OS voices.
  */
@@ -72,12 +121,14 @@ const playApiTTS = (text: string, rate: number): Promise<boolean> => {
       console.log("[JapanApp Audio] Requesting same-origin TTS audio from /api/tts...");
 
       const audio = new Audio(url);
+      activeAudioElement = audio;
       audio.volume = 1.0;
       audio.defaultPlaybackRate = rate;
       audio.playbackRate = rate;
 
       let done = false;
       let isPlaying = false;
+      let playPromise: Promise<void> | null = null;
 
       const finish = (success: boolean) => {
         if (!done) {
@@ -85,9 +136,12 @@ const playApiTTS = (text: string, rate: number): Promise<boolean> => {
           clearTimeout(timeout);
           audio.onended = null;
           audio.onerror = null;
-          if (isPlaying) {
-            try { audio.pause(); } catch {}
+
+          if (activeAudioElement === audio) {
+            activeAudioElement = null;
           }
+
+          safePauseAudio(audio, playPromise);
           console.log("[JapanApp Audio] Finished playing TTS audio. Success:", success);
           resolve(success);
         }
@@ -112,17 +166,22 @@ const playApiTTS = (text: string, rate: number): Promise<boolean> => {
 
       const p = audio.play();
       if (p !== undefined) {
+        playPromise = p;
         p.then(() => {
           isPlaying = true;
           console.log("[JapanApp Audio] Audio play() started successfully!");
-        }).catch((err) => {
+        }).catch((err: any) => {
           isPlaying = false;
+          // Silence Chrome AbortError when play() is intentionally interrupted by pause()
+          if (
+            err &&
+            (err.name === "AbortError" ||
+              (typeof err.message === "string" && err.message.includes("interrupted")))
+          ) {
+            console.log("[JapanApp Audio] Play request interrupted intentionally (AbortError handled).");
+            return;
+          }
           console.warn("[JapanApp Audio] Audio play() promise error:", err);
-          try {
-            if (err && typeof err === "object" && "preventDefault" in err) {
-              (err as any).preventDefault();
-            }
-          } catch {}
           finish(false);
         });
       }
@@ -225,6 +284,9 @@ export const playJapaneseAudio = (
     if (typeof window === "undefined" || !text || text.trim() === "") {
       return resolve();
     }
+
+    // Stop any currently playing audio to prevent double-audio/echo bugs in Google Chrome
+    stopAllAudio();
 
     const rate = options.rate ?? 0.85;
     const cleanText = sanitizeScriptForTTS(text);
