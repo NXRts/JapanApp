@@ -27,7 +27,7 @@ interface ReadingDetail {
   meanings: string[];
 }
 
-export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
+export function KanjiCard({ char }: { char: string }) {
   const [flipped, setFlipped] = useState(false);
   const [detail, setDetail] = useState<ReadingDetail | null>(null);
   const [loading, setLoading] = useState(false);
@@ -261,4 +261,4 @@ export const KanjiCard = memo(function KanjiCard({ char }: { char: string }) {
       </Inner>
     </Card>
   );
-});
+}
