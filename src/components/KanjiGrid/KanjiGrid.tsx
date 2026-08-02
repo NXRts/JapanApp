@@ -1,11 +1,27 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import Link from "next/link";
 import { KanjiCard } from "@/components/Card/KanjiCard";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { KANJI_DATA } from "@/data/kanji";
+
+const gridFadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
   padding: 1.5rem 2rem;
@@ -20,31 +36,118 @@ const Container = styled.div`
   }
 `;
 
-const Grid = styled.div`
+const Grid = styled.div<{ key?: string }>`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 32px;
-  padding: 20px 0;
-  max-width: 1400px;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1.25rem;
+  padding: 10px 0;
+  max-width: 1100px;
   margin: 0 auto;
+  width: 100%;
+  animation: ${gridFadeIn} 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+    gap: 0.75rem;
+  }
+`;
+
+const HeaderSection = styled.div`
+  text-align: left;
+  margin-bottom: 2rem;
+  max-width: 820px;
 `;
 
 const Title = styled.h1`
-  text-align: center;
-  margin-bottom: 2rem;
   font-size: 3rem;
-  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  font-weight: 900;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-weight: 800;
   letter-spacing: -0.03em;
+
+  @media (max-width: 768px) {
+    font-size: 2.1rem;
+  }
 `;
 
-const Controls = styled.div`
+const Subtitle = styled.p`
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+  }
+`;
+
+const ScriptNavControls = styled.div`
   display: flex;
   justify-content: center;
   gap: 0.75rem;
-  margin-bottom: 3rem;
+  margin: 0 auto 1.75rem auto;
+  background: var(--surface);
+  padding: 0.5rem;
+  border-radius: 20px;
+  width: fit-content;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+`;
+
+const TabButton = styled.div<{ $active?: boolean }>`
+  padding: 0.8rem 2.25rem;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 800;
+  min-width: 150px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+
+  @media (max-width: 480px) {
+    min-width: 120px;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.88rem;
+  }
+`;
+
+const KanaLinkButton = styled(Link)`
+  padding: 0.8rem 1.75rem;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 140px;
+  justify-content: center;
+
+  &:hover {
+    color: var(--foreground);
+    background: rgba(var(--foreground-rgb), 0.06);
+  }
+
+  @media (max-width: 480px) {
+    min-width: 100px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+  }
+`;
+
+const LevelControls = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
 `;
 
@@ -98,40 +201,65 @@ const SearchInput = styled.input`
   }
 `;
 
+const kanjiCache: Record<string, string[]> = {};
+
 export function KanjiGrid() {
-  const [kanjiList, setKanjiList] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
   const [level, setLevel] = useState("n5");
+  const [kanjiList, setKanjiList] = useState<string[]>(() => kanjiCache["n5"] || []);
+  const [loading, setLoading] = useState<boolean>(() => !kanjiCache["n5"]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
+    // If cached, load immediately in 0ms!
+    if (kanjiCache[level] && kanjiCache[level].length > 0) {
+      setKanjiList(kanjiCache[level]);
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     fetch(`/api/kanji/${level}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Failed to load kanji: ${res.statusText}`);
-        }
-        return res.json();
-      })
+      .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (data.error) {
-          console.error("API Error:", data.error);
-          setKanjiList([]);
+        if (data && Array.isArray(data)) {
+          kanjiCache[level] = data;
+          setKanjiList(data);
         } else {
-          setKanjiList(Array.isArray(data) ? data : []);
+          // Fallback to static KANJI_DATA database
+          const upperLvl = level.toUpperCase();
+          const fallbackChars = KANJI_DATA[upperLvl]?.map((item: any) => item.char) || [];
+          kanjiCache[level] = fallbackChars;
+          setKanjiList(fallbackChars);
         }
       })
       .catch((error) => {
-        console.error("Error loading kanji:", error);
-        setKanjiList([]);
+        console.warn("Fallback to offline kanji data:", error);
+        const upperLvl = level.toUpperCase();
+        const fallbackChars = KANJI_DATA[upperLvl]?.map((item: any) => item.char) || [];
+        kanjiCache[level] = fallbackChars;
+        setKanjiList(fallbackChars);
       })
       .finally(() => setLoading(false));
   }, [level]);
 
-  // Filter kanji based on search input
-  // Since we only have the character char in the list (string[]), we can only filter by character match
-  // In a real app with full metadata, we could match meaning/reading too.
-  // For now, this effectively "Highlights" or "Finds" the character if it exists in the list for this level.
+  // Background prefetch all remaining JLPT levels into cache!
+  useEffect(() => {
+    const levels = ["n5", "n4", "n3", "n2", "n1"];
+    levels.forEach((lvl) => {
+      if (!kanjiCache[lvl]) {
+        fetch(`/api/kanji/${lvl}`)
+          .then((res) => res.ok ? res.json() : null)
+          .then((data) => {
+            if (Array.isArray(data)) kanjiCache[lvl] = data;
+          })
+          .catch(() => {});
+      }
+    });
+
+    // Prefetch Kana API as well
+    fetch("/api/kana?type=hiragana").catch(() => {});
+  }, []);
+
   const filteredList = useMemo(
     () => kanjiList.filter((char) => char.includes(search)),
     [kanjiList, search],
@@ -146,9 +274,29 @@ export function KanjiGrid() {
         ]}
         current="Kanji Library"
       />
-      <Title>JLPT {level.toUpperCase()} Kanji</Title>
 
-      <Controls>
+      <HeaderSection>
+        <Title>JLPT {level.toUpperCase()} Kanji 🉐</Title>
+        <Subtitle>
+          Jelajahi dan pelajari karakter Kanji (漢字) bahasa Jepang berdasarkan tingkat JLPT (N5 - N1) lengkap dengan cara baca Kun'yomi, On'yomi, arti, dan urutan coretan.
+        </Subtitle>
+      </HeaderSection>
+
+      {/* Script Navigation Bar (Hiragana, Katakana, Kanji) */}
+      <ScriptNavControls>
+        <KanaLinkButton href="/kana">
+          Hiragana (平仮名)
+        </KanaLinkButton>
+        <KanaLinkButton href="/kana">
+          Katakana (片仮名)
+        </KanaLinkButton>
+        <TabButton $active={true}>
+          Kanji (漢字)
+        </TabButton>
+      </ScriptNavControls>
+
+      {/* JLPT Level Selector */}
+      <LevelControls>
         {["n5", "n4", "n3", "n2", "n1"].map((l) => (
           <LevelButton
             key={l}
@@ -158,7 +306,7 @@ export function KanjiGrid() {
             {l.toUpperCase()}
           </LevelButton>
         ))}
-      </Controls>
+      </LevelControls>
 
       <div style={{ padding: "0 20px" }}>
         <SearchInput
@@ -177,7 +325,7 @@ export function KanjiGrid() {
             : "No kanji found matching your search"}
         </p>
       ) : (
-        <Grid>
+        <Grid key={level}>
           {filteredList.map((char) => (
             <KanjiCard key={char} char={char} />
           ))}

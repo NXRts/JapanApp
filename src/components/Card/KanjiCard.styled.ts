@@ -3,7 +3,7 @@ import styled from "styled-components";
 /* Card is the perspective container + hover shadow. */
 export const Card = styled.div`
   width: 100%;
-  aspect-ratio: 3/4;
+  aspect-ratio: 1 / 1.15;
   perspective: 1200px;
   cursor: pointer;
   /* PWA touch: no highlight, no selection, no context menu */
@@ -12,10 +12,6 @@ export const Card = styled.div`
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-
-  &:hover > div {
-    box-shadow: var(--shadow-lg);
-  }
 `;
 
 export const Inner = styled.div<{ $flipped: boolean }>`
@@ -24,12 +20,17 @@ export const Inner = styled.div<{ $flipped: boolean }>`
   height: 100%;
   text-align: center;
   transition:
-    transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s ease;
   transform-style: preserve-3d;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
   transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg)" : "rotateY(0)")};
+
+  ${Card}:hover & {
+    box-shadow: 0 12px 28px rgba(139, 92, 246, 0.25);
+    transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg) translateY(-4px)" : "translateY(-4px)")};
+  }
 `;
 
 const Baseface = styled.div`
@@ -49,15 +50,11 @@ export const Face = styled(Baseface)`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--primary-dark) 100%
-  );
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
   color: white;
-  font-size: 5rem;
-  font-weight: 700;
-  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  font-weight: 800;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 
   &::before {
     content: "";
@@ -68,7 +65,7 @@ export const Face = styled(Baseface)`
     height: 200%;
     background: radial-gradient(
       circle,
-      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.12) 0%,
       transparent 60%
     );
     pointer-events: none;
