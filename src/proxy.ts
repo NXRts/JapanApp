@@ -176,8 +176,12 @@ export async function proxy(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // Apply rate limiting to API routes
-    if (path.startsWith("/api")) {
+    // Apply rate limiting to API routes (exempt static read-only character data endpoints)
+    if (
+      path.startsWith("/api") &&
+      !path.startsWith("/api/kana") &&
+      !path.startsWith("/api/kanji")
+    ) {
       const identifier = `${ip}:${path}`;
       const rateLimit = await checkRedisRateLimit(identifier);
 

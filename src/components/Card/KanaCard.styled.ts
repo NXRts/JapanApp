@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Card = styled.div`
   width: 100%;
-  aspect-ratio: 3/4;
+  aspect-ratio: 1 / 1.15;
   perspective: 1000px;
   cursor: pointer;
   /* PWA touch: no highlight, no selection, no context menu */
@@ -22,13 +22,14 @@ export const Inner = styled.div<{ $flipped: boolean }>`
     transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s ease;
   transform-style: preserve-3d;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
 
   transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg)" : "rotateY(0)")};
 
   ${Card}:hover & {
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 14px 32px rgba(59, 130, 246, 0.25);
+    transform: ${({ $flipped }) => ($flipped ? "rotateY(180deg) translateY(-4px)" : "translateY(-4px)")};
   }
 `;
 
@@ -43,11 +44,11 @@ export const Face = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 20px;
-  background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
   color: white;
-  font-size: 5rem;
-  font-weight: 700;
-  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 
   &::before {
@@ -106,8 +107,8 @@ export const Back = styled(Face)`
   }
 
   h3 {
-    margin: 0 0 16px;
-    font-size: 3rem;
+    margin: 0 0 8px;
+    font-size: clamp(2rem, 4vw, 3rem);
     color: var(--primary);
     width: 100%;
     padding-bottom: 8px;
