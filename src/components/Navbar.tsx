@@ -223,12 +223,16 @@ const DropdownMenu = styled.div`
   }
 `;
 
-const DropdownItem = styled(Link)<{ $active?: boolean }>`
+const DropdownItem = styled(Link)<{ $active?: boolean; $isDev?: boolean }>`
   display: block;
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  color: ${({ $active }) =>
-    $active ? "var(--primary)" : "var(--text-secondary)"};
+  color: ${({ $active, $isDev }) =>
+    $isDev
+      ? "#a855f7"
+      : $active
+        ? "var(--primary)"
+        : "var(--text-secondary)"};
   text-decoration: none;
   font-size: 0.82rem;
   font-weight: 600;
@@ -236,7 +240,7 @@ const DropdownItem = styled(Link)<{ $active?: boolean }>`
 
   &:hover {
     background: rgba(var(--primary-rgb), 0.08);
-    color: var(--primary);
+    color: ${({ $isDev }) => ($isDev ? "#c084fc" : "var(--primary)")};
   }
 `;
 
@@ -1835,6 +1839,7 @@ export function Navbar() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       style={{ width: "12px", height: "12px" }}
+                      suppressHydrationWarning
                     >
                       <polyline points="6 9 12 15 18 9" />
                     </svg>
@@ -1855,7 +1860,8 @@ export function Navbar() {
                     <DropdownItem
                       href="/development"
                       $active={pathname === "/development"}
-                      style={{ color: "#a855f7" }}
+                      $isDev={true}
+                      suppressHydrationWarning
                     >
                       🚧 Development Labs
                     </DropdownItem>

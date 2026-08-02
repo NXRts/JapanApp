@@ -485,7 +485,10 @@ export function Footer() {
             style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}
           >
             <FooterLink href="/about">About</FooterLink>
-            <span style={{ color: "var(--text-secondary)", opacity: 0.4 }}>
+            <span
+              style={{ color: "var(--text-secondary)", opacity: 0.4 }}
+              suppressHydrationWarning
+            >
               •
             </span>
             <FooterLink href="/contact">Contact</FooterLink>
@@ -499,8 +502,9 @@ export function Footer() {
               href="https://saweria.co/yusufarrofi"
               target="_blank"
               rel="noopener noreferrer"
+              suppressHydrationWarning
             >
-              <span className="icon">
+              <span className="icon" suppressHydrationWarning>
                 <CoffeeIcon size={18} />
               </span>{" "}
               Saweria
@@ -509,8 +513,9 @@ export function Footer() {
               href="https://ko-fi.com/yusufarrofi/"
               target="_blank"
               rel="noopener noreferrer"
+              suppressHydrationWarning
             >
-              <span className="icon">
+              <span className="icon" suppressHydrationWarning>
                 <CoffeeIcon size={18} />
               </span>{" "}
               Ko-fi
