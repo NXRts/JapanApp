@@ -9,18 +9,32 @@ import { IntegrativeQuiz } from "./IntegrativeQuiz";
 import { useProgress } from "@/context/ProgressContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
-const Container = styled.div`
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem 2rem 96px;
+  gap: 1.25rem;
+
+  @media (max-width: 1024px) {
+    padding: 1rem 1rem 96px;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.5rem 96px;
+  }
+`;
+
+const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 1.5rem 2rem 96px;
-
-  @media (max-width: 768px) {
-    padding: 1rem 1rem 96px;
-  }
 `;
 
 const HeroBanner = styled.div`
@@ -305,7 +319,7 @@ export function DailyDashboard() {
   };
 
   return (
-    <Container>
+    <PageContainer>
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
@@ -314,7 +328,8 @@ export function DailyDashboard() {
         current="Hafalan Harian"
       />
 
-      {sessionState === "dashboard" && (
+      <ContentWrapper>
+        {sessionState === "dashboard" && (
         <>
           {/* HERO BANNER */}
           <HeroBanner>
@@ -485,6 +500,7 @@ export function DailyDashboard() {
           </StartSessionBtn>
         </div>
       )}
-    </Container>
+      </ContentWrapper>
+    </PageContainer>
   );
 }
