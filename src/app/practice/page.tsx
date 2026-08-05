@@ -481,6 +481,18 @@ export default function PracticeHubPage() {
   const practiceModes = useMemo(
     () => [
       {
+        id: "daily-study-card",
+        category: "flashcards",
+        icon: "🎯",
+        title: "Target Hafalan Harian & SRS",
+        description: "Target hafalan fleksibel (3-10/hari), Jalur Kana & JLPT Kanji, Interactive Stroke Writer, dan Kuis Evaluasi Integratif.",
+        tag: "Daily SRS",
+        tagColor: "#f43f5e",
+        accentColor: "#f43f5e",
+        href: "/study/daily",
+        btnText: "Mulai Hafalan Harian 🚀",
+      },
+      {
         id: "daily-srs-review",
         category: "flashcards",
         icon: "⚡",
