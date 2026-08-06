@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import styled from "styled-components";
-import { DailyGoalConfig, TrackType, JLPTLevel, QuizResultSummary } from "../types";
-import { getDetailedItemInfo } from "../utils/kanjiDataHelper";
-import { UnifiedStudyStudio } from "./UnifiedStudyStudio";
-import { IntegrativeQuiz } from "./IntegrativeQuiz";
-import { useProgress } from "@/context/ProgressContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { useProgress } from "@/context/ProgressContext";
+import { useMemo, useState } from "react";
+import styled from "styled-components";
+import { DailyGoalConfig, JLPTLevel, QuizResultSummary } from "../types";
+import { getDetailedItemInfo } from "../utils/kanjiDataHelper";
+import { IntegrativeQuiz } from "./IntegrativeQuiz";
+import { UnifiedStudyStudio } from "./UnifiedStudyStudio";
 
 const PageContainer = styled.div`
   display: flex;
@@ -183,7 +183,8 @@ const LevelChip = styled.button<{ $active: boolean }>`
 
   background: ${({ $active }) =>
     $active ? "rgba(var(--primary-rgb), 0.15)" : "transparent"};
-  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   border-color: ${({ $active }) =>
     $active ? "var(--primary)" : "var(--border)"};
 `;
@@ -203,7 +204,9 @@ const StatGrid = styled.div`
 
 const StatCard = styled.div<{ $highlight?: boolean }>`
   background: var(--surface);
-  border: 1.5px solid ${({ $highlight }) => ($highlight ? "rgba(244, 63, 94, 0.3)" : "var(--border)")};
+  border: 1.5px solid
+    ${({ $highlight }) =>
+      $highlight ? "rgba(244, 63, 94, 0.3)" : "var(--border)"};
   border-radius: 24px;
   padding: 1.25rem 1.5rem;
   display: flex;
@@ -220,7 +223,8 @@ const StatCard = styled.div<{ $highlight?: boolean }>`
   .value {
     font-size: 2rem;
     font-weight: 900;
-    color: ${({ $highlight }) => ($highlight ? "#f43f5e" : "var(--foreground)")};
+    color: ${({ $highlight }) =>
+      $highlight ? "#f43f5e" : "var(--foreground)"};
   }
   .desc {
     font-size: 0.8rem;
@@ -232,7 +236,11 @@ const StartSessionBtn = styled.button`
   width: 100%;
   padding: 1.2rem;
   border-radius: 24px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    var(--primary-dark) 100%
+  );
   color: white;
   font-size: 1.15rem;
   font-weight: 900;
@@ -257,6 +265,27 @@ const WeakBankCard = styled.div`
   gap: 1rem;
 `;
 
+const RepairWeakButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.65rem 1.25rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+  color: white;
+  font-size: 0.88rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(244, 63, 94, 0.4);
+  }
+`;
+
 const WeakCharList = styled.div`
   display: flex;
   gap: 0.6rem;
@@ -275,29 +304,81 @@ const WeakCharChip = styled.span`
 `;
 
 export function DailyDashboard() {
-  const { progress, addExp, checkStreak } = useProgress();
+  const { progress, addExp, checkStreak, updateSRS, getDueItems } =
+    useProgress();
   const [config, setConfig] = useState<DailyGoalConfig>({
     targetPerDay: 5,
     activeTrack: "kanji",
     selectedLevel: "N5",
   });
 
-  const [sessionState, setSessionState] = useState<"dashboard" | "flashcards" | "quiz" | "summary">("dashboard");
+  const [sessionState, setSessionState] = useState<
+    "dashboard" | "flashcards" | "quiz" | "summary"
+  >("dashboard");
   const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(0);
-  const [quizSummary, setQuizSummary] = useState<QuizResultSummary | null>(null);
+  const [quizSummary, setQuizSummary] = useState<QuizResultSummary | null>(
+    null,
+  );
+  const [customBatch, setCustomBatch] = useState<string[] | null>(null);
 
-  // Weak items bank mock / state
-  const weakItems = ["日", "月", "火", "水"].slice(0, 3);
+  // Dynamically compute real weak Kanji items from user's progress state stored in LocalStorage
+  const weakItems = useMemo(() => {
+    const list: string[] = [];
 
-  // Sample items batch for active session
-  const batchChars =
-    config.activeTrack === "kana"
+    // 1. Check SRS items with low Ease Factor or reset interval
+    if (progress.srs) {
+      Object.entries(progress.srs).forEach(([id, item]) => {
+        if (
+          item.easeFactor < 2.2 ||
+          (item.repetitions === 0 && item.interval === 1)
+        ) {
+          if (!list.includes(id)) list.push(id);
+        }
+      });
+    }
+
+    // 2. Check items in mastery record with mistakes
+    if (progress.mastery) {
+      Object.entries(progress.mastery).forEach(([id, record]) => {
+        if (record.incorrect > 0 && !list.includes(id)) {
+          list.push(id);
+        }
+      });
+    }
+
+    // Return real weak items from user progress state
+    return list.slice(0, 8);
+  }, [progress.srs, progress.mastery]);
+
+  const dueCount = useMemo(() => {
+    try {
+      return getDueItems ? getDueItems().length : 2;
+    } catch {
+      return 2;
+    }
+  }, [getDueItems]);
+
+  // Determine active item batch
+  const batchChars = useMemo(() => {
+    if (customBatch) return customBatch;
+    return config.activeTrack === "kana"
       ? ["あ", "い", "う", "え", "お"].slice(0, config.targetPerDay)
-      : ["日", "月", "火", "水", "木", "金", "土"].slice(0, config.targetPerDay);
+      : ["日", "月", "火", "水", "木", "金", "土"].slice(
+          0,
+          config.targetPerDay,
+        );
+  }, [customBatch, config.activeTrack, config.targetPerDay]);
 
   const batchDetails = batchChars.map(getDetailedItemInfo);
 
   const handleStartSession = () => {
+    setCustomBatch(null);
+    setCurrentFlashcardIndex(0);
+    setSessionState("flashcards");
+  };
+
+  const handleStartWeakRepairSession = () => {
+    setCustomBatch(weakItems);
     setCurrentFlashcardIndex(0);
     setSessionState("flashcards");
   };
@@ -315,6 +396,15 @@ export function DailyDashboard() {
     setQuizSummary(summary);
     addExp(summary.expEarned);
     checkStreak();
+
+    // Persist real SRS memory updates to ProgressContext & LocalStorage
+    summary.masteredChars.forEach((char) => {
+      if (updateSRS) updateSRS(char, 5); // Perfect recall
+    });
+    summary.needsReviewChars.forEach((char) => {
+      if (updateSRS) updateSRS(char, 1); // Incorrect attempt
+    });
+
     setSessionState("summary");
   };
 
@@ -330,176 +420,293 @@ export function DailyDashboard() {
 
       <ContentWrapper>
         {sessionState === "dashboard" && (
-        <>
-          {/* HERO BANNER */}
-          <HeroBanner>
-            <BannerContent>
-              <StreakBadge>🔥 Streak: {progress.streak || 1} Hari Berturut-turut!</StreakBadge>
-              <h1>Target Hafalan Harian 🎯</h1>
-              <p>
-                Pelajari {config.targetPerDay} {config.activeTrack === "kana" ? "Kana" : `Kanji ${config.selectedLevel}`} hari ini tanpa rasa lelah dengan metode SRS interaktif.
-              </p>
-            </BannerContent>
+          <>
+            {/* HERO BANNER */}
+            <HeroBanner>
+              <BannerContent>
+                <StreakBadge>
+                  🔥 Streak: {progress.streak || 1} Hari Berturut-turut!
+                </StreakBadge>
+                <h1>Target Hafalan Harian 🎯</h1>
+                <p>
+                  Pelajari {config.targetPerDay}{" "}
+                  {config.activeTrack === "kana"
+                    ? "Kana"
+                    : `Kanji ${config.selectedLevel}`}{" "}
+                  hari ini tanpa rasa lelah dengan metode SRS interaktif.
+                </p>
+              </BannerContent>
 
-            <TargetSelectorWrapper>
-              <div style={{ fontSize: "0.82rem", fontWeight: 800, textTransform: "uppercase", opacity: 0.85 }}>
-                Target Harian (Per Hari)
-              </div>
-              <TargetPillGroup>
-                {[3, 5, 10].map((num) => (
-                  <TargetPill
-                    key={num}
-                    $active={config.targetPerDay === num}
-                    onClick={() => setConfig({ ...config, targetPerDay: num })}
-                  >
-                    {num} Items
-                  </TargetPill>
-                ))}
-              </TargetPillGroup>
-            </TargetSelectorWrapper>
-          </HeroBanner>
-
-          {/* DUAL TRACK SWITCHER */}
-          <TrackSwitcherCard>
-            <div>
-              <div style={{ fontSize: "0.78rem", fontWeight: 800, textTransform: "uppercase", color: "var(--text-secondary)" }}>
-                Pilih Jalur Pembelajaran
-              </div>
-              <div style={{ fontSize: "1.1rem", fontWeight: 900, marginTop: "0.25rem" }}>
-                {config.activeTrack === "kana" ? "Jalur Kana (Hiragana/Katakana)" : `Jalur JLPT Kanji (${config.selectedLevel})`}
-              </div>
-            </div>
-
-            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              <TrackTabGroup>
-                <TrackTabBtn
-                  $active={config.activeTrack === "kana"}
-                  onClick={() => setConfig({ ...config, activeTrack: "kana" })}
+              <TargetSelectorWrapper>
+                <div
+                  style={{
+                    fontSize: "0.82rem",
+                    fontWeight: 800,
+                    textTransform: "uppercase",
+                    opacity: 0.85,
+                  }}
                 >
-                  あ Kana
-                </TrackTabBtn>
-                <TrackTabBtn
-                  $active={config.activeTrack === "kanji"}
-                  onClick={() => setConfig({ ...config, activeTrack: "kanji" })}
-                >
-                  🉐 Kanji
-                </TrackTabBtn>
-              </TrackTabGroup>
-
-              {config.activeTrack === "kanji" && (
-                <LevelPickerGroup>
-                  {(["N5", "N4", "N3", "N2", "N1"] as JLPTLevel[]).map((lvl) => (
-                    <LevelChip
-                      key={lvl}
-                      $active={config.selectedLevel === lvl}
-                      onClick={() => setConfig({ ...config, selectedLevel: lvl })}
+                  Target Harian (Per Hari)
+                </div>
+                <TargetPillGroup>
+                  {[3, 5, 10].map((num) => (
+                    <TargetPill
+                      key={num}
+                      $active={config.targetPerDay === num}
+                      onClick={() =>
+                        setConfig({ ...config, targetPerDay: num })
+                      }
                     >
-                      {lvl}
-                    </LevelChip>
+                      {num} Items
+                    </TargetPill>
                   ))}
-                </LevelPickerGroup>
-              )}
-            </div>
-          </TrackSwitcherCard>
+                </TargetPillGroup>
+              </TargetSelectorWrapper>
+            </HeroBanner>
 
-          {/* STAT METRICS GRID */}
-          <StatGrid>
-            <StatCard>
-              <div className="label">Pelajari Hari Ini</div>
-              <div className="value">{config.targetPerDay}</div>
-              <div className="desc">Karakter baru disiapkan</div>
-            </StatCard>
-
-            <StatCard>
-              <div className="label">Review Kemarin</div>
-              <div className="value">2</div>
-              <div className="desc">Jatuh tempo ulasan SRS</div>
-            </StatCard>
-
-            <StatCard>
-              <div className="label">Akurasi Retensi</div>
-              <div className="value">92%</div>
-              <div className="desc">Performa memori rata-rata</div>
-            </StatCard>
-
-            <StatCard $highlight={weakItems.length > 0}>
-              <div className="label">Bank Kanji Lemah</div>
-              <div className="value">{weakItems.length}</div>
-              <div className="desc">Karakter perlu dipertajam</div>
-            </StatCard>
-          </StatGrid>
-
-          {/* WEAK KANJI BANK CARD */}
-          {weakItems.length > 0 && (
-            <WeakBankCard>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <h3 style={{ fontSize: "1.1rem", fontWeight: 900 }}>⚠️ Bank Kanji Lemah</h3>
-                  <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-                    Karakter berikut sering salah pada evaluasi kuis terakhir.
-                  </p>
+            {/* DUAL TRACK SWITCHER */}
+            <TrackSwitcherCard>
+              <div>
+                <div
+                  style={{
+                    fontSize: "0.78rem",
+                    fontWeight: 800,
+                    textTransform: "uppercase",
+                    color: "var(--text-secondary)",
+                  }}
+                >
+                  Pilih Jalur Pembelajaran
+                </div>
+                <div
+                  style={{
+                    fontSize: "1.1rem",
+                    fontWeight: 900,
+                    marginTop: "0.25rem",
+                  }}
+                >
+                  {config.activeTrack === "kana"
+                    ? "Jalur Kana (Hiragana/Katakana)"
+                    : `Jalur JLPT Kanji (${config.selectedLevel})`}
                 </div>
               </div>
-              <WeakCharList>
-                {weakItems.map((char, i) => (
-                  <WeakCharChip key={i}>{char}</WeakCharChip>
-                ))}
-              </WeakCharList>
+
+              <div
+                style={{ display: "flex", gap: "1rem", alignItems: "center" }}
+              >
+                <TrackTabGroup>
+                  <TrackTabBtn
+                    $active={config.activeTrack === "kana"}
+                    onClick={() =>
+                      setConfig({ ...config, activeTrack: "kana" })
+                    }
+                  >
+                    あ Kana
+                  </TrackTabBtn>
+                  <TrackTabBtn
+                    $active={config.activeTrack === "kanji"}
+                    onClick={() =>
+                      setConfig({ ...config, activeTrack: "kanji" })
+                    }
+                  >
+                    🉐 Kanji
+                  </TrackTabBtn>
+                </TrackTabGroup>
+
+                {config.activeTrack === "kanji" && (
+                  <LevelPickerGroup>
+                    {(["N5", "N4", "N3", "N2", "N1"] as JLPTLevel[]).map(
+                      (lvl) => (
+                        <LevelChip
+                          key={lvl}
+                          $active={config.selectedLevel === lvl}
+                          onClick={() =>
+                            setConfig({ ...config, selectedLevel: lvl })
+                          }
+                        >
+                          {lvl}
+                        </LevelChip>
+                      ),
+                    )}
+                  </LevelPickerGroup>
+                )}
+              </div>
+            </TrackSwitcherCard>
+
+            {/* STAT METRICS GRID */}
+            <StatGrid>
+              <StatCard>
+                <div className="label">Pelajari Hari Ini</div>
+                <div className="value">{config.targetPerDay}</div>
+                <div className="desc">Karakter baru disiapkan</div>
+              </StatCard>
+
+              <StatCard>
+                <div className="label">Review Kemarin</div>
+                <div className="value">{dueCount}</div>
+                <div className="desc">Jatuh tempo ulasan SRS</div>
+              </StatCard>
+
+              <StatCard>
+                <div className="label">Akurasi Retensi</div>
+                <div className="value">92%</div>
+                <div className="desc">Performa memori rata-rata</div>
+              </StatCard>
+
+              <StatCard $highlight={weakItems.length > 0}>
+                <div className="label">Bank Kanji Lemah</div>
+                <div className="value">{weakItems.length}</div>
+                <div className="desc">Karakter perlu dipertajam</div>
+              </StatCard>
+            </StatGrid>
+
+            {/* WEAK KANJI BANK CARD (ALWAYS VISIBLE) */}
+            <WeakBankCard
+              style={{
+                borderColor:
+                  weakItems.length > 0
+                    ? "rgba(244, 63, 94, 0.3)"
+                    : "rgba(16, 185, 129, 0.3)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "1rem",
+                }}
+              >
+                <div>
+                  <h3
+                    style={{
+                      fontSize: "1.1rem",
+                      fontWeight: 900,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                    }}
+                  >
+                    {weakItems.length > 0
+                      ? "⚠️ Bank Kanji Lemah"
+                      : "✨ Bank Kanji Lemah"}
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: "0.85rem",
+                      color: "var(--text-secondary)",
+                      marginTop: "2px",
+                    }}
+                  >
+                    {weakItems.length > 0
+                      ? `Terdapat ${weakItems.length} karakter yang membutuhkan latihan ulang untuk memperbaiki skor ingatan.`
+                      : "Belum ada Kanji lemah tersimpan. Semua ingatan kamu sempurna! ✨"}
+                  </p>
+                </div>
+
+                {weakItems.length > 0 ? (
+                  <RepairWeakButton onClick={handleStartWeakRepairSession}>
+                    🛠️ Perbaiki Kanji Lemah ({weakItems.length} Karakter) →
+                  </RepairWeakButton>
+                ) : (
+                  <div
+                    style={{
+                      fontSize: "0.82rem",
+                      fontWeight: 800,
+                      color: "#10b981",
+                      background: "rgba(16, 185, 129, 0.1)",
+                      border: "1px solid rgba(16, 185, 129, 0.25)",
+                      padding: "0.5rem 1rem",
+                      borderRadius: "12px",
+                    }}
+                  >
+                    🎉 Ingatan Tajam & Sempurna
+                  </div>
+                )}
+              </div>
+
+              {weakItems.length > 0 && (
+                <WeakCharList>
+                  {weakItems.map((char, i) => (
+                    <WeakCharChip key={i}>{char}</WeakCharChip>
+                  ))}
+                </WeakCharList>
+              )}
             </WeakBankCard>
-          )}
 
-          {/* START SESSION ACTION */}
-          <StartSessionBtn onClick={handleStartSession}>
-            Mulai Sesi Hafalan Harian ({config.targetPerDay} Karakter) 🚀
-          </StartSessionBtn>
-        </>
-      )}
+            {/* START SESSION ACTION */}
+            <StartSessionBtn onClick={handleStartSession}>
+              Mulai Sesi Hafalan Harian ({config.targetPerDay} Karakter) 🚀
+            </StartSessionBtn>
+          </>
+        )}
 
-      {/* UNIFIED STUDY STUDIO SESSION */}
-      {sessionState === "flashcards" && (
-        <UnifiedStudyStudio
-          item={batchDetails[currentFlashcardIndex]}
-          currentIndex={currentFlashcardIndex}
-          totalItems={batchDetails.length}
-          onNext={handleNextFlashcard}
-          onPrev={() => setCurrentFlashcardIndex((prev) => Math.max(0, prev - 1))}
-        />
-      )}
+        {/* UNIFIED STUDY STUDIO SESSION */}
+        {sessionState === "flashcards" && (
+          <UnifiedStudyStudio
+            item={batchDetails[currentFlashcardIndex]}
+            currentIndex={currentFlashcardIndex}
+            totalItems={batchDetails.length}
+            onNext={handleNextFlashcard}
+            onPrev={() =>
+              setCurrentFlashcardIndex((prev) => Math.max(0, prev - 1))
+            }
+          />
+        )}
 
-      {/* INTEGRATIVE QUIZ SESSION */}
-      {sessionState === "quiz" && (
-        <IntegrativeQuiz
-          items={batchDetails}
-          onComplete={handleQuizComplete}
-        />
-      )}
+        {/* INTEGRATIVE QUIZ SESSION */}
+        {sessionState === "quiz" && (
+          <IntegrativeQuiz
+            items={batchDetails}
+            onComplete={handleQuizComplete}
+          />
+        )}
 
-      {/* SUMMARY MODAL */}
-      {sessionState === "summary" && quizSummary && (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.5rem" }}>
-          <div style={{ textAlign: "center" }}>
-            <h1 style={{ fontSize: "2.5rem", fontWeight: 900 }}>Evaluasi Harian Selesai! 🎉</h1>
-            <p style={{ color: "var(--text-secondary)", fontSize: "1rem" }}>
-              Selamat! Kamu telah menyelesaikan sesi hafalan harian hari ini.
-            </p>
+        {/* SUMMARY MODAL */}
+        {sessionState === "summary" && quizSummary && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1.5rem",
+            }}
+          >
+            <div style={{ textAlign: "center" }}>
+              <h1 style={{ fontSize: "2.5rem", fontWeight: 900 }}>
+                Evaluasi Harian Selesai! 🎉
+              </h1>
+              <p style={{ color: "var(--text-secondary)", fontSize: "1rem" }}>
+                Selamat! Kamu telah menyelesaikan sesi hafalan harian hari ini.
+              </p>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                gap: "1.5rem",
+                width: "100%",
+                maxWidth: "500px",
+              }}
+            >
+              <StatCard style={{ flex: 1, textAlign: "center" }}>
+                <div className="label">Skor Evaluasi</div>
+                <div className="value">{quizSummary.scorePercentage}%</div>
+              </StatCard>
+              <StatCard style={{ flex: 1, textAlign: "center" }}>
+                <div className="label">EXP Diperoleh</div>
+                <div className="value">+{quizSummary.expEarned}</div>
+              </StatCard>
+            </div>
+
+            <StartSessionBtn
+              onClick={() => setSessionState("dashboard")}
+              style={{ maxWidth: "400px" }}
+            >
+              Kembali ke Dashboard Harian 🏠
+            </StartSessionBtn>
           </div>
-
-          <div style={{ display: "flex", gap: "1.5rem", width: "100%", maxWidth: "500px" }}>
-            <StatCard style={{ flex: 1, textAlign: "center" }}>
-              <div className="label">Skor Evaluasi</div>
-              <div className="value">{quizSummary.scorePercentage}%</div>
-            </StatCard>
-            <StatCard style={{ flex: 1, textAlign: "center" }}>
-              <div className="label">EXP Diperoleh</div>
-              <div className="value">+{quizSummary.expEarned}</div>
-            </StatCard>
-          </div>
-
-          <StartSessionBtn onClick={() => setSessionState("dashboard")} style={{ maxWidth: "400px" }}>
-            Kembali ke Dashboard Harian 🏠
-          </StartSessionBtn>
-        </div>
-      )}
+        )}
       </ContentWrapper>
     </PageContainer>
   );
