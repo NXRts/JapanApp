@@ -1,86 +1,90 @@
-# 🇯🇵 Japan App
+# 🇯🇵 JapanApp - Complete Japanese Learning & Mastery Platform
 
-A premium, interactive, and high-fidelity Japanese learning companion application built with **Next.js 15**, **React 19**, and **Styled Components**. Designed to help users master Hiragana, Katakana, Kanji, and grammar through a structured, game-like, and highly immersive interface.
-
----
-
-## ✨ Features & Recent Updates
-
-### 1. 🗺️ Visual Learning Roadmap
-
-- **Custom Vector SVG Animated Portals**: An overhauled serpentine learning path utilizing custom SVG portals (Alphabet, Vocabulary, Grammar, Conversation, Kanji, Finance, Travel, Trophy) instead of standard emojis.
-- **Tactile 3D Buttons**: Nodes feature immersive active-press mechanical compression and smooth scale transitions on hover.
-- **Breathing Neon Rings**: Active lesson portals pulse with custom neon rings corresponding to the JLPT level's specific theme:
-  - **N5**: Emerald Green
-  - **N4**: Violet Purple
-  - **N3**: Sunset Orange
-  - **N2**: Ocean Blue
-  - **N1**: Crimson Red
-- **Frosted Glass Labels**: Level headers and card components use advanced `backdrop-filter: blur(12px)` glassmorphism.
-
-### 2. 🌀 Dynamic Unit Syllabus Expansion (Randomized 8-13 Lessons)
-
-- **Programmatic Runtime Expansion**: To keep the repository lightweight while offering a massive content database, the lessons list is dynamically expanded at runtime.
-- **Deterministic Seeding**: Uses a hashing algorithm based on the unique `unitId` to determine a stable, randomized count of **8 to 13 lessons per unit**. This count remains consistent across page reloads and browser sessions, preserving user progression.
-- **Thematic Question Generator**: Automatically populates generated lessons (Vocabulary, Grammar, Reading, Listening, Conversation) with 5 interactive questions:
-  - **Multiple-Choice**: Vocabulary meaning or translation drill.
-  - **Sentence-Builder**: Reordering words using interactive cards.
-  - **Typing**: Typing translations using direct keyboard inputs.
-  - **Listening**: Audio-based comprehension exercises powered by local pronunciation banks.
-  - **Fill-in-the-Blank**: Completing particle matching structures.
-- **Sequence Preservation**: Dynamically places new practice lessons _before_ the unit's original "Synthesis / Final Challenge" trophy lesson. This ensures the challenge remains the final lock of the unit and maintains database ID compatibility.
-
-### 3. 🖱️ Desktop Mouse Drag-to-Scroll Carousel
-
-- **Draggable Card Carousels**: Implements custom pointer event listeners to make the horizontal scroll lists scrollable via mouse drag on desktop screens.
-- **Locked Node Interaction**: Uses `aria-disabled` and manual event capture instead of standard HTML button disabled properties. This allows mouse pointer events to bubble up, ensuring that locked lessons can still be clicked and dragged horizontally without breaking the scroll gesture.
-
-### 4. 🧭 Centered Mobile Simulation Navigation Submenu ("More")
-
-- **Shortcuts Popover**: When running in mobile simulation mode on desktop screens, clicking **Lainnya** toggles a floating popover menu with direct links to:
-  - **Study** (Graduation Cap Icon - Emerald `#10b981`)
-  - **Quiz** (Check Circle Icon - Green `#22c55e`)
-  - **Learning Materials** (Book Icon - Blue `#3b82f6`)
-  - **Practice Sheets** (Grid Icon - Amber `#f59e0b`)
-  - **Blog** (Document Icon - Purple `#a855f7`)
-  - **Contact** (Envelope Icon - Pink `#ec4899`)
-  - **Settings**, **Help**, and **Logout**
-- **Balanced Centering**: Positioned at `top: -180px` relative to the trigger button to align it vertically in the center. This prevents the menu from extending past the bottom of the viewport or overlapping critical footer elements.
-
-### 5. 🎨 Premium Japanese Zen Aesthetic
-
-- Curated color palettes with responsive hover triggers and fluid typography utilizing Google Fonts (Nunito, Outfit, Noto Sans JP).
-- Safe spacing offsets (e.g. `100px` bottom-position for the **ScrollToTop** button and `min-height: auto` for main pages) prevent overlaps with the mobile floating action dock and clean up unused blank space at the bottom of pages.
-
-### 6. 📰 Overhauled Long-Form Blog
-
-- **Database Cleanup**: Overhauled the mock data in [blog.ts](file:///home/nxrts/Program%20Koding/Japan-App/src/data/blog.ts) to clean up 8 irrelevant or short placeholder posts.
-- **Premium Content**: Retains **10 highly educational, long-form articles** written with rich, multi-sentence paragraphs covering JLPT prep strategies, Kansai dialects, particle distinctions (Wa vs Ga, Ni vs De), business cards etiquette, and hot springs bathing rules.
+A premium, interactive, and high-fidelity Japanese learning application built with **Next.js 16 (App Router)**, **React 19**, **TypeScript**, and **Styled Components**. Designed to guide learners from complete beginner to advanced proficiency (JLPT N5–N1) through interactive SVG stroke order practice, gamified roadmaps, SRS memory retention, mini-games, listening/speaking modules, and OCR camera scanning.
 
 ---
 
-## 🛠️ Tech Stack
+## 🌟 Key Features Overview
 
-- **Core Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
-- **Programming Language**: [TypeScript](https://www.typescriptlang.org/)
+### 1. 📚 Structured Lessons & Learning Roadmap (`/materi`, `/roadmap`, `/lesson`)
+- **Gamified Serpentine Learning Path**: Interactive 3D learning roadmap featuring animated vector SVG portals (Alphabet, Vocabulary, Grammar, Conversation, Kanji, Finance, Travel, Trophy).
+- **Tactile 3D Buttons & Level Themes**: Mechanical compression button feedback and breathing neon rings customized per JLPT level (N5 Emerald, N4 Purple, N3 Sunset, N2 Blue, N1 Crimson).
+- **Dynamic 8-13 Unit Lessons**: Deterministic seeding algorithm populates units dynamically with Vocabulary, Grammar, Reading, Listening, and Fill-in-the-Blank interactive drills.
+
+### 2. 🉐 JLPT Prep & Kanji Mastery (N5–N1) (`/jlpt`, `/jlpt-exam`, `/kanji`)
+- **Kanji Dictionary & Library**: Comprehensive searchable database covering stroke counts, radicals, On'yomi, Kun'yomi, Romaji, and Indonesian translations.
+- **JLPT Kanji Writer (`/jlpt/kanji-writer`)**: HanziWriter vector engine with radical color highlights, automated hint triggers, and offline SVG fallback (`STROKE_PATHS_DB`).
+- **JLPT Simulation Exams (`/jlpt-exam`)**: Full timed JLPT mock exams evaluating vocabulary, grammar, and reading comprehension.
+
+### 3. ⛩️ Unified Single-Page Memorization Studio (`/study/daily`)
+- **2-Column Responsive Studio Layout**:
+  - **Left Panel (Studio Canvas & Audio)**: Interactive SVG stroke order writer canvas (with replay animation, trace guide, grid lines, touch & mouse handwriting, directional arrow badges `❶↓ ❷→ ❸→ ❹→`), plus TTS Audio Playback (Native 1x & 0.7x Slow speed).
+  - **Right Panel (Knowledge Cards)**: Detailed Bahasa Indonesia meaning, On'yomi & Kun'yomi tags, **Jukugo (Pasangan Kosakata Populer)** compound word cards, and **Awas Tertukar (Kanji Mirip)** confusable kanji cards.
+- **Zero-Click Context Learning**: Seamless single-page environment combining audio, handwriting, stroke order, and vocabulary without tab switching.
+
+### 4. ⚠️ Dynamic Real-Time Weak Kanji Bank (`Bank Kanji Lemah`)
+- **LocalStorage SRS Connection**: Dynamically tracks items with low Ease Factor (< 2.2) and past quiz errors directly from `ProgressContext`.
+- **Targeted Repair Sessions**: Interactive **`🛠️ Perbaiki Kanji Lemah`** action button to launch focused study sessions, or disabled status **`Tidak Ada Kanji Lemah ✨`** when memory accuracy is perfect.
+
+### 5. 🎴 Kana Mastery & Practice Sheets (`/kana`, `/practice-sheets`)
+- **Hiragana & Katakana Grid**: Complete chart for basic Vowels, Dakuten, Handakuten, and Yoon combinations with native audio pronunciations.
+- **Interactive Practice Sheets**: Interactive canvas and printable tracing worksheets for offline handwriting practice.
+
+### 6. 🎮 Interactive Learning Mini-Games (`/game`, `/match-pairs`)
+- **Kanji Battle Game**: RPG-style turn-based battle where correct Kanji translations trigger attacks against opponent monsters.
+- **Match Pairs Game**: Fast-paced card matching game connecting Kana/Kanji to their meanings.
+- **Reverse Quiz**: Type the correct Kanji/Kana character when given the Indonesian/Romaji clue.
+
+### 7. 🎧 Listening, Speaking, & Grammar Modules (`/study`, `/grammar`)
+- **Listening Comprehension (Choukai)**: Audio drills with interactive script toggles and speed controls (1x & 0.7x).
+- **Speaking Roleplay (Kaiwa)**: Interactive conversation scenarios with Speech Recognition & native TTS feedback.
+- **Grammar & Particle Drills**: Detailed explanation cards for Japanese sentence structures (Wa vs Ga, Ni vs De, etc.) with fill-in-the-blank exercises.
+
+### 8. 🔄 Spaced Repetition System (SRS) & Leitner Box (`/practice`, `/review`)
+- **SRS Review Engine**: SuperMemo SM-2 algorithm scheduling cards based on ease factors, intervals, and memory retention performance.
+- **Leitner Box**: Multi-stage flashcard review system reinforcing long-term memory.
+
+### 9. 🏆 Gamified Progression, Quests, & Hearts Economy (`/quests`, `/profile`)
+- **EXP & Streak System**: Earn experience points, level up, and maintain daily learning streaks.
+- **Hearts & Gems Economy**: Hearts system rewarding accurate answers and Gems currency to refill hearts or buy streak freezes.
+- **Daily & Weekly Quests**: Complete quests to earn gems, EXP, and unlock exclusive achievement badges.
+- **Leaderboard Leagues**: Compete with other learners in Bronze, Silver, Gold, and Master leagues based on weekly EXP.
+
+### 10. 🔍 OCR Kanji Camera Scanner & Quick Dictionary
+- **Live Camera OCR (Tesseract.js)**: Scan Japanese characters directly from photos or live camera feeds inside the dictionary search overlay.
+- **Quick Dictionary Overlay**: Floating Jisho search accessible anywhere via quick search bar or keyboard shortcut.
+
+### 11. 📰 Long-Form Educational Blog (`/blog`)
+- Rich educational articles covering JLPT study strategies, Kansai dialect nuances, Japanese business etiquette, and culture.
+
+### 12. 📜 Certificate System & Stats Dashboard (`/sertifikat`, `/stats`)
+- Printable course completion certificates and detailed analytics dashboards visualizing learning heatmap, accuracy, and EXP gains.
+
+---
+
+## 🛠️ Tech Stack & Dependencies
+
+- **Core Framework**: [Next.js 16 (App Router)](https://nextjs.org/)
 - **UI Engine**: [React 19](https://react.dev/)
-- **Styling Method**: [Styled Components](https://styled-components.com/) (CSS-in-JS) & Vanilla CSS
-- **Utilities**: [Wanakana](https://wanakana.com/) (Romaji-to-Kana converter)
-- **State Management**: React Context (Progress, DeviceMode, Theme)
+- **Programming Language**: [TypeScript 5](https://www.typescriptlang.org/)
+- **Styling Engine**: [Styled Components 6](https://styled-components.com/) (CSS-in-JS) & Vanilla CSS
+- **PWA & Service Worker**: [@ducanh2912/next-pwa](https://github.com/ducanh2912/next-pwa)
+- **OCR Engine**: [Tesseract.js](https://tesseract.projectnaptha.com/)
+- **Kanji Stroke Engine**: [HanziWriter](https://hanziwriter.org/)
+- **Japanese Text Utility**: [Wanakana](https://wanakana.com/) (Romaji-to-Kana converter)
+- **State & Progression**: React Context (`ProgressContext`, `ThemeContext`, `DeviceModeContext`)
 
 ---
 
 ## 🚀 Getting Started
 
 1. **Clone the repository**:
-
    ```bash
    git clone https://github.com/NXRts/JapanApp.git
    cd JapanApp
    ```
 
 2. **Install dependencies**:
-
    ```bash
    npm install
    ```
@@ -90,29 +94,32 @@ A premium, interactive, and high-fidelity Japanese learning companion applicatio
    npm run dev
    ```
 
-Open [http://localhost:3000](http://localhost:3000) to start your learning journey.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
 ## 📂 Project Structure
 
 ```bash
-src/
-├── app/                  # App Router routes and pages
-│   ├── (auth)/           # Login and Registration pages
-│   ├── roadmap/          # Map-based sequential learning paths
-│   ├── practice/         # Flashcards and interactive drills
-│   ├── study/            # Listening, Reading, and Speaking practice
-│   ├── blog/             # Overhauled educational articles
-│   ├── stats/            # Exp and progression visuals
-│   └── page.tsx          # Dynamic landing and core study dashboard
-├── components/           # Reusable components
-│   ├── roadmap/          # RoadmapBoard, RoadmapPath, and RoadmapNode
-│   ├── mobile/           # FloatingActionDock, HankoSkillCard, and ToriiHeader
-│   └── icons/            # Thematic custom SVG app icons
-├── context/              # Contexts (ProgressContext, DeviceModeContext)
-├── data/                 # Datasets (blog, listening, speaking, lessonsData)
-└── lib/                  # Helper utilities (srs logic, wanakana)
+JapanApp/
+├── public/                 # Static assets, manifests, service workers, & public Icon.json
+├── src/
+│   ├── app/                # Next.js App Router pages (50+ routes)
+│   │   ├── jlpt/           # JLPT Kanji Writer & Mock Exam
+│   │   ├── practice/       # Practice Hub, SRS Reviews, & Drills
+│   │   ├── roadmap/        # Serpentine Map Learning Path
+│   │   ├── study/          # Daily Study Studio & Dashboard
+│   │   ├── game/           # Kanji Battle & Mini Games
+│   │   ├── kana/           # Hiragana & Katakana Master Grid
+│   │   ├── kanji/          # Kanji Library (N5-N1)
+│   │   ├── grammar/        # Grammar Rules & Exercises
+│   │   ├── blog/           # Educational Articles
+│   │   └── quests/         # Daily & Weekly Quests
+│   ├── components/         # Reusable UI components & SVG AppIcons
+│   ├── context/            # React Contexts (ProgressContext, Theme, DeviceMode)
+│   ├── data/               # Static datasets, blog posts, & Icon.json registry
+│   ├── features/           # Feature modules (daily-study, kana, kanji, navigation)
+│   └── lib/                # Audio play helpers, SRS algorithms, & Wanakana
 ```
 
 ---
