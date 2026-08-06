@@ -83,10 +83,11 @@ const AnimatedStrokePath = styled.path<{ $animating: boolean; $delay: number }>`
 `;
 
 const StrokeNumberBadge = styled.text`
-  font-size: 11px;
-  font-weight: 800;
-  fill: var(--primary);
+  font-size: 7.5px;
+  font-weight: 900;
+  fill: #6366f1;
   font-family: "DM Mono", monospace;
+  pointer-events: none;
 `;
 
 const InteractiveCanvas = styled.canvas`
@@ -166,6 +167,90 @@ const HintBox = styled.div`
 interface InteractiveStrokeWriterProps {
   char: string;
   onStrokeCompleted?: () => void;
+}
+
+function getStartCoords(d: string, index: number, allPaths: string[]): { x: number; y: number } {
+  const match = d.match(/M\s*(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)/i);
+  if (!match) return { x: 15, y: 15 };
+
+  let x = parseFloat(match[1]);
+  let y = parseFloat(match[2]);
+
+  // Check direction of stroke (horizontal vs vertical)
+  const nextSegment = d.match(/(?:L|C)\s*(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)/i);
+  let isHorizontal = false;
+  if (nextSegment) {
+    const nx = parseFloat(nextSegment[1]);
+    const ny = parseFloat(nextSegment[2]);
+    if (Math.abs(nx - x) > Math.abs(ny - y)) {
+      isHorizontal = true;
+    }
+  }
+
+  // Handle shared starting points (like stroke 1 and 2 at top-left corner)
+  let isSharedWithPrev = false;
+  for (let i = 0; i < index; i++) {
+    const prevMatch = allPaths[i].match(/M\s*(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)/i);
+    if (prevMatch) {
+      const px = parseFloat(prevMatch[1]);
+      const py = parseFloat(prevMatch[2]);
+      if (Math.abs(x - px) < 6 && Math.abs(y - py) < 6) {
+        isSharedWithPrev = true;
+        break;
+      }
+    }
+  }
+
+  if (isSharedWithPrev) {
+    if (isHorizontal && nextSegment) {
+      const nx = parseFloat(nextSegment[1]);
+      x = (x + nx) / 2; // Position stroke 2 badge above the midpoint of horizontal bar
+      y = Math.max(8, y - 9);
+    } else {
+      x = Math.max(8, x - 11);
+      y = Math.max(8, y - 8);
+    }
+  } else {
+    if (x <= 35) {
+      x = Math.max(8, x - 11);
+    } else if (y <= 30) {
+      y = Math.max(8, y - 10);
+    } else {
+      x = Math.max(8, x - 10);
+      y = Math.max(8, y - 2);
+    }
+  }
+
+  return { x: Math.round(x), y: Math.round(y) };
+}
+
+function getStrokeDirection(d: string): { arrow: string; angle: number } {
+  const matchM = d.match(/M\s*(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)/i);
+  const matchNext = d.match(/(?:L|C)\s*(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)/i);
+
+  if (!matchM || !matchNext) return { arrow: "→", angle: 0 };
+
+  const x1 = parseFloat(matchM[1]);
+  const y1 = parseFloat(matchM[2]);
+  const x2 = parseFloat(matchNext[1]);
+  const y2 = parseFloat(matchNext[2]);
+
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+
+  if (Math.abs(dx) > Math.abs(dy) * 1.5) {
+    return { arrow: dx > 0 ? "→" : "←", angle: dx > 0 ? 0 : 180 };
+  } else if (Math.abs(dy) > Math.abs(dx) * 1.5) {
+    return { arrow: dy > 0 ? "↓" : "↑", angle: dy > 0 ? 90 : 270 };
+  } else if (dx > 0 && dy > 0) {
+    return { arrow: "↘", angle: 45 };
+  } else if (dx < 0 && dy > 0) {
+    return { arrow: "↙", angle: 135 };
+  } else if (dx > 0 && dy < 0) {
+    return { arrow: "↗", angle: 315 };
+  }
+
+  return { arrow: "→", angle: 0 };
 }
 
 export function InteractiveStrokeWriter({ char, onStrokeCompleted }: InteractiveStrokeWriterProps) {
@@ -300,11 +385,37 @@ export function InteractiveStrokeWriter({ char, onStrokeCompleted }: Interactive
                 $animating={isAnimating}
                 $delay={idx * 0.9}
               />
-              {showTemplate && (
-                <StrokeNumberBadge x={parseInt(p.split(" ")[1]) || 20} y={parseInt(p.split(" ")[2]) || 20}>
-                  {idx + 1}
-                </StrokeNumberBadge>
-              )}
+              {showTemplate &&
+                (() => {
+                  const coords = getStartCoords(p, idx, paths);
+                  const dir = getStrokeDirection(p);
+                  return (
+                    <g key={`num-badge-${idx}`} transform={`translate(${coords.x}, ${coords.y})`}>
+                      <rect
+                        x="-6"
+                        y="-4.5"
+                        width="12"
+                        height="9"
+                        rx="4.5"
+                        fill="var(--primary)"
+                        stroke="var(--surface)"
+                        strokeWidth="0.8"
+                      />
+                      <text
+                        x="0"
+                        y="0.7"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontSize="4.2"
+                        fontWeight="900"
+                        fill="#ffffff"
+                        fontFamily="sans-serif"
+                      >
+                        {idx + 1}{dir.arrow}
+                      </text>
+                    </g>
+                  );
+                })()}
             </React.Fragment>
           ))}
         </SvgStrokeGuide>

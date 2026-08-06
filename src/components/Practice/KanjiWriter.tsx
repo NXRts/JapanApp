@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import HanziWriter from "hanzi-writer";
+import { InteractiveStrokeWriter } from "@/features/daily-study/components/InteractiveStrokeWriter";
 
 const CanvasWrapper = styled.div<{ $width: number; $height: number }>`
   position: relative;
@@ -143,34 +144,50 @@ export function KanjiWriter({
   const containerRef = useRef<HTMLDivElement>(null);
   const writerRef = useRef<HanziWriter | null>(null);
   const [isQuizzing, setIsQuizzing] = useState(false);
+  const [hasLoadError, setHasLoadError] = useState(false);
 
   useEffect(() => {
     if (!char || !containerRef.current) return;
 
+    setHasLoadError(false);
     // Clean up previous instance if any
     containerRef.current.innerHTML = "";
 
-    // Initialize HanziWriter
-    writerRef.current = HanziWriter.create(containerRef.current, char, {
-      width: width,
-      height: height,
-      padding: 15,
-      showOutline: true,
-      strokeAnimationSpeed: 1.5,
-      delayBetweenStrokes: 100,
-      strokeColor: "#333333",
-      radicalColor: "#16a34a", // Highlights the radical in green
-      outlineColor: "#e5e7eb",
-    });
+    try {
+      // Initialize HanziWriter with error listener for offline/Kana fallbacks
+      writerRef.current = HanziWriter.create(containerRef.current, char, {
+        width: width,
+        height: height,
+        padding: 15,
+        showOutline: true,
+        strokeAnimationSpeed: 1.5,
+        delayBetweenStrokes: 100,
+        strokeColor: "#333333",
+        radicalColor: "#16a34a", // Highlights the radical in green
+        outlineColor: "#e5e7eb",
+        onLoadCharDataError: (err) => {
+          console.warn(`[KanjiWriter] Data for '${char}' could not be loaded from CDN:`, err);
+          setHasLoadError(true);
+        },
+        onLoadCharDataSuccess: () => {
+          setHasLoadError(false);
+        },
+      });
 
-    // Auto animate or loop
-    setTimeout(() => {
-      if (autoLoop) {
-        writerRef.current?.loopCharacterAnimation();
-      } else {
-        writerRef.current?.animateCharacter();
-      }
-    }, 500);
+      // Auto animate or loop
+      setTimeout(() => {
+        if (writerRef.current) {
+          if (autoLoop) {
+            writerRef.current.loopCharacterAnimation();
+          } else {
+            writerRef.current.animateCharacter();
+          }
+        }
+      }, 500);
+    } catch (err) {
+      console.warn(`[KanjiWriter] Exception initializing '${char}':`, err);
+      setHasLoadError(true);
+    }
 
     return () => {
       writerRef.current = null;
@@ -204,6 +221,12 @@ export function KanjiWriter({
     writerRef.current.showOutline();
     setIsQuizzing(false);
   };
+
+  const isKana = /^[\u3040-\u309F\u30A0-\u30FF]$/.test(char);
+
+  if (hasLoadError || isKana) {
+    return <InteractiveStrokeWriter char={char} />;
+  }
 
   return (
     <div>
