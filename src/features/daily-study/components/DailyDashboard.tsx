@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { DailyGoalConfig, TrackType, JLPTLevel, QuizResultSummary } from "../types";
 import { getDetailedItemInfo } from "../utils/kanjiDataHelper";
-import { DailyFlashcard } from "./DailyFlashcard";
+import { UnifiedStudyStudio } from "./UnifiedStudyStudio";
 import { IntegrativeQuiz } from "./IntegrativeQuiz";
 import { useProgress } from "@/context/ProgressContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
@@ -455,9 +455,9 @@ export function DailyDashboard() {
         </>
       )}
 
-      {/* FLASHCARD SESSION */}
+      {/* UNIFIED STUDY STUDIO SESSION */}
       {sessionState === "flashcards" && (
-        <DailyFlashcard
+        <UnifiedStudyStudio
           item={batchDetails[currentFlashcardIndex]}
           currentIndex={currentFlashcardIndex}
           totalItems={batchDetails.length}
