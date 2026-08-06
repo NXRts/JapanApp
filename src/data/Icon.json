@@ -1,0 +1,394 @@
+{
+  "metadata": {
+    "title": "JapanApp Icon & Emoji Asset Registry",
+    "description": "Comprehensive registry of all icons, SVGs, React icon components, and emoji icons used across JapanApp.",
+    "totalEntries": 48,
+    "lastUpdated": "2026-08-06"
+  },
+  "icons": [
+    {
+      "id": "app-icon-coffee",
+      "name": "CoffeeIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Donation and creator support buttons (Saweria & Ko-fi)",
+      "pageLocation": "Footer (/)"
+    },
+    {
+      "id": "app-icon-check",
+      "name": "CheckIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Indicates correct answers, task completion, and checklist items",
+      "pageLocation": "Quiz, Onboarding, Quests, Characters"
+    },
+    {
+      "id": "app-icon-camera",
+      "name": "CameraIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Triggers OCR Kanji Camera Scanner in Dictionary modal",
+      "pageLocation": "Dictionary Search Overlay"
+    },
+    {
+      "id": "app-icon-gamepad",
+      "name": "GamepadIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Represents Game section in Navigation and Practice Hub",
+      "pageLocation": "Navbar, NavSidebar, FloatingDock, Game (/game)"
+    },
+    {
+      "id": "app-icon-graduation",
+      "name": "GraduationIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Study and onboarding level indicators",
+      "pageLocation": "Onboarding (/onboarding)"
+    },
+    {
+      "id": "app-icon-refresh",
+      "name": "RefreshIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Retry, re-shuffle, or reset actions in Quiz & Game",
+      "pageLocation": "Quiz (/quiz), Game (/game)"
+    },
+    {
+      "id": "app-icon-target",
+      "name": "TargetIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Daily Goal, Quests, and Practice Hub badges",
+      "pageLocation": "Practice (/practice), Quests (/quests), Daily Study (/study/daily)"
+    },
+    {
+      "id": "app-icon-book",
+      "name": "BookIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Represents structured lessons and learning materials",
+      "pageLocation": "Learning Materials (/materi), Lesson (/lesson)"
+    },
+    {
+      "id": "app-icon-swords",
+      "name": "SwordsIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Kanji Battle Mini Game battle mode",
+      "pageLocation": "Game (/game)"
+    },
+    {
+      "id": "app-icon-star",
+      "name": "StarIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "EXP rewards, ratings, and star points",
+      "pageLocation": "Profile (/profile), Leaderboard"
+    },
+    {
+      "id": "app-icon-arrow-right",
+      "name": "ArrowRightIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Navigation CTA action buttons",
+      "pageLocation": "Home (/), Practice (/practice), Quiz (/quiz)"
+    },
+    {
+      "id": "app-icon-sparkles",
+      "name": "SparklesIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "AI mode features & Level Up notifications",
+      "pageLocation": "Navbar, Profile (/profile), AI Dictionary"
+    },
+    {
+      "id": "app-icon-lightbulb",
+      "name": "LightBulbIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Grammar hints, tips, and mnemonic reminders",
+      "pageLocation": "Lesson (/lesson), Practice (/practice)"
+    },
+    {
+      "id": "app-icon-fire",
+      "name": "FireIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Daily Streak Counter indicator",
+      "pageLocation": "Navbar, NavSidebar, Daily Study (/study/daily), Profile (/profile)"
+    },
+    {
+      "id": "app-icon-chart-bar",
+      "name": "ChartBarIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Statistics, progress metrics, and analytics",
+      "pageLocation": "Profile (/profile)"
+    },
+    {
+      "id": "app-icon-user",
+      "name": "UserIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "User Account & Profile button",
+      "pageLocation": "Navbar, NavSidebar, Profile (/profile)"
+    },
+    {
+      "id": "app-icon-trophy",
+      "name": "TrophyIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Leagues, Leaderboard rank, and achievements",
+      "pageLocation": "Profile (/profile)"
+    },
+    {
+      "id": "app-icon-award",
+      "name": "AwardIcon",
+      "type": "react-icon-component",
+      "filePath": "src/components/icons/AppIcons.tsx",
+      "usage": "Badges and quest completion rewards",
+      "pageLocation": "Quests (/quests), Profile (/profile)"
+    },
+    {
+      "id": "svg-japan-flag-file",
+      "name": "jp.svg",
+      "type": "svg",
+      "filePath": "public/jp.svg",
+      "usage": "Vector illustration of the Japanese Flag for app branding",
+      "pageLocation": "Navbar, NavSidebar, Footer, Home (/)"
+    },
+    {
+      "id": "svg-inline-home",
+      "name": "HomeIconInline",
+      "type": "svg",
+      "filePath": "src/components/Navbar.tsx & NavSidebar.tsx",
+      "usage": "Navigation link icon for Home page",
+      "pageLocation": "Navbar, NavSidebar, FloatingDock"
+    },
+    {
+      "id": "svg-inline-dumbbell",
+      "name": "DumbbellIconInline",
+      "type": "svg",
+      "filePath": "src/features/navigation/components/NavSidebar.tsx",
+      "usage": "Navigation link icon for Practice page",
+      "pageLocation": "NavSidebar (/practice)"
+    },
+    {
+      "id": "svg-inline-check-circle",
+      "name": "CheckCircleIconInline",
+      "type": "svg",
+      "filePath": "src/features/navigation/components/NavSidebar.tsx",
+      "usage": "Navigation link icon for Quiz page",
+      "pageLocation": "NavSidebar (/quiz)"
+    },
+    {
+      "id": "svg-inline-more-dots",
+      "name": "MoreDotsIconInline",
+      "type": "svg",
+      "filePath": "src/features/navigation/components/NavSidebar.tsx",
+      "usage": "Triggers the 'Lainnya' flyout popup menu",
+      "pageLocation": "NavSidebar"
+    },
+    {
+      "id": "svg-inline-stroke-play",
+      "name": "PlayTriangleSVG",
+      "type": "svg",
+      "filePath": "src/features/daily-study/components/InteractiveStrokeWriter.tsx",
+      "usage": "Replays the SVG stroke order drawing animation",
+      "pageLocation": "Daily Study Studio (/study/daily)"
+    },
+    {
+      "id": "svg-inline-stroke-grid",
+      "name": "GridCrosshairSVG",
+      "type": "svg",
+      "filePath": "src/features/daily-study/components/InteractiveStrokeWriter.tsx",
+      "usage": "Toggles 十字格 / 田字格 grid lines on writing canvas",
+      "pageLocation": "Daily Study Studio (/study/daily)"
+    },
+    {
+      "id": "svg-inline-stroke-trash",
+      "name": "TrashBinSVG",
+      "type": "svg",
+      "filePath": "src/features/daily-study/components/InteractiveStrokeWriter.tsx",
+      "usage": "Clears user handwriting from canvas",
+      "pageLocation": "Daily Study Studio (/study/daily)"
+    },
+    {
+      "id": "emoji-flag-japan",
+      "name": "🇯🇵 (Japan Flag Emoji)",
+      "type": "emoji",
+      "filePath": "src/components/Navbar.tsx & NavSidebar.tsx",
+      "usage": "JapanApp brand logo header and sidebar title",
+      "pageLocation": "Navbar, NavSidebar, Footer"
+    },
+    {
+      "id": "emoji-fire",
+      "name": "🔥 (Fire Emoji)",
+      "type": "emoji",
+      "filePath": "src/features/daily-study/components/DailyDashboard.tsx",
+      "usage": "Daily Streak indicator badge",
+      "pageLocation": "Daily Study Dashboard (/study/daily)"
+    },
+    {
+      "id": "emoji-target",
+      "name": "🎯 (Target Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/practice/page.tsx",
+      "usage": "Practice Hub header badge & Daily Goal title",
+      "pageLocation": "Practice (/practice), Daily Study (/study/daily)"
+    },
+    {
+      "id": "emoji-lightning",
+      "name": "⚡ (Lightning Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/practice/page.tsx",
+      "usage": "Daily SRS Review card icon",
+      "pageLocation": "Practice (/practice)"
+    },
+    {
+      "id": "emoji-open-book",
+      "name": "📖 (Open Book Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/practice/page.tsx",
+      "usage": "Reading Comprehension (Dokkai) card icon",
+      "pageLocation": "Practice (/practice)"
+    },
+    {
+      "id": "emoji-headphones",
+      "name": "🎧 (Headphones Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/practice/page.tsx",
+      "usage": "Listening Comprehension (Choukai) card icon",
+      "pageLocation": "Practice (/practice)"
+    },
+    {
+      "id": "emoji-speaking-head",
+      "name": "🗣️ (Speaking Head Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/practice/page.tsx",
+      "usage": "Speaking Roleplay (Kaiwa) card icon",
+      "pageLocation": "Practice (/practice)"
+    },
+    {
+      "id": "emoji-books",
+      "name": "📚 (Books Emoji)",
+      "type": "emoji",
+      "filePath": "src/features/daily-study/components/UnifiedStudyStudio.tsx",
+      "usage": "Jukugo (Pasangan Kosakata Populer) section title",
+      "pageLocation": "Daily Study Studio (/study/daily)"
+    },
+    {
+      "id": "emoji-memo",
+      "name": "📝 (Memo Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/practice/page.tsx",
+      "usage": "Drill Tata Bahasa & Partikel card icon",
+      "pageLocation": "Practice (/practice)"
+    },
+    {
+      "id": "emoji-writing-hand",
+      "name": "✍️ (Writing Hand Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/practice/page.tsx",
+      "usage": "Kanji Writer & Interactive Stroke Writer card icon",
+      "pageLocation": "Practice (/practice), Daily Study (/study/daily)"
+    },
+    {
+      "id": "emoji-playing-cards",
+      "name": "🎴 (Flower Playing Card Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/practice/page.tsx",
+      "usage": "Kana Flashcards card icon",
+      "pageLocation": "Practice (/practice)"
+    },
+    {
+      "id": "emoji-japanese-application",
+      "name": "🈸 (Japanese Application Button Emoji)",
+      "type": "emoji",
+      "filePath": "src/features/navigation/components/NavSidebar.tsx",
+      "usage": "Practice Sheets link in 'Lainnya' flyout menu",
+      "pageLocation": "NavSidebar flyout menu"
+    },
+    {
+      "id": "emoji-video-game",
+      "name": "🎮 (Video Game Controller Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/practice/page.tsx",
+      "usage": "Mini Game Belajar Bahasa card icon",
+      "pageLocation": "Practice (/practice)"
+    },
+    {
+      "id": "emoji-fox",
+      "name": "🦊 (Fox Emoji)",
+      "type": "emoji",
+      "filePath": "src/features/navigation/components/NavSidebar.tsx",
+      "usage": "Default User Profile Avatar icon",
+      "pageLocation": "Navbar, NavSidebar, Profile (/profile)"
+    },
+    {
+      "id": "emoji-turtle",
+      "name": "🐢 (Turtle Emoji)",
+      "type": "emoji",
+      "filePath": "src/features/daily-study/components/UnifiedStudyStudio.tsx",
+      "usage": "Slow TTS Audio Playback button (0.7x speed)",
+      "pageLocation": "Daily Study Studio (/study/daily)"
+    },
+    {
+      "id": "emoji-bargain",
+      "name": "🉐 (Japanese Bargain Button Emoji)",
+      "type": "emoji",
+      "filePath": "src/components/KanjiGrid/KanjiGrid.tsx",
+      "usage": "Kanji Library header icon & Kanji JLPT track icon",
+      "pageLocation": "Kanji Library (/kanji), Daily Study (/study/daily)"
+    },
+    {
+      "id": "emoji-construction",
+      "name": "🚧 (Construction Emoji)",
+      "type": "emoji",
+      "filePath": "src/features/navigation/components/NavSidebar.tsx",
+      "usage": "Development Labs item in 'Lainnya' flyout menu",
+      "pageLocation": "NavSidebar flyout menu"
+    },
+    {
+      "id": "emoji-page",
+      "name": "📄 (Page Facing Up Emoji)",
+      "type": "emoji",
+      "filePath": "src/features/navigation/components/NavSidebar.tsx",
+      "usage": "Blog item in 'Lainnya' flyout menu",
+      "pageLocation": "NavSidebar flyout menu"
+    },
+    {
+      "id": "emoji-door",
+      "name": "🚪 (Door Emoji)",
+      "type": "emoji",
+      "filePath": "src/features/navigation/components/NavSidebar.tsx",
+      "usage": "Sign Out / Keluar item in 'Lainnya' flyout menu",
+      "pageLocation": "NavSidebar flyout menu"
+    },
+    {
+      "id": "emoji-torii-gate",
+      "name": "⛩️ (Torii Gate Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/not-found.tsx",
+      "usage": "404 Not Found error page icon",
+      "pageLocation": "404 Not Found (/not-found)"
+    },
+    {
+      "id": "emoji-police-light",
+      "name": "🚨 (Police Car Light Emoji)",
+      "type": "emoji",
+      "filePath": "src/app/global-error.tsx & error.tsx",
+      "usage": "Global Runtime Error fallback page icon",
+      "pageLocation": "Global Error Page"
+    },
+    {
+      "id": "emoji-warning",
+      "name": "⚠️ (Warning Sign Emoji)",
+      "type": "emoji",
+      "filePath": "src/features/daily-study/components/UnifiedStudyStudio.tsx",
+      "usage": "Bank Kanji Lemah & Visually Confusable Kanji section header",
+      "pageLocation": "Daily Study Studio (/study/daily)"
+    }
+  ]
+}
