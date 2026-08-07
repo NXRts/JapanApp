@@ -52,15 +52,16 @@ const HeroBanner = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.5rem;
-    padding: 1.5rem;
+    gap: 0.85rem;
+    padding: 1rem 0.9rem;
+    border-radius: 18px;
   }
 `;
 
 const BannerContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 
   h1 {
     font-size: 2.2rem;
@@ -68,7 +69,8 @@ const BannerContent = styled.div`
     letter-spacing: -0.02em;
 
     @media (max-width: 640px) {
-      font-size: 1.6rem;
+      font-size: 1.25rem;
+      font-weight: 800;
     }
   }
 
@@ -78,7 +80,8 @@ const BannerContent = styled.div`
     max-width: 480px;
 
     @media (max-width: 640px) {
-      font-size: 0.88rem;
+      font-size: 0.78rem;
+      line-height: 1.35;
     }
   }
 `;
@@ -86,7 +89,7 @@ const BannerContent = styled.div`
 const StreakBadge = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(8px);
   padding: 0.5rem 1rem;
@@ -95,17 +98,34 @@ const StreakBadge = styled.div`
   font-weight: 800;
   width: fit-content;
   border: 1px solid rgba(255, 255, 255, 0.3);
+
+  @media (max-width: 640px) {
+    font-size: 0.72rem;
+    padding: 0.28rem 0.7rem;
+  }
 `;
 
 const TargetSelectorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 0.75rem;
+  gap: 0.5rem;
 
   @media (max-width: 768px) {
     align-items: flex-start;
     width: 100%;
+    gap: 0.4rem;
+  }
+`;
+
+const TargetLabel = styled.div`
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  opacity: 0.85;
+
+  @media (max-width: 640px) {
+    font-size: 0.68rem;
   }
 `;
 
@@ -115,6 +135,14 @@ const TargetPillGroup = styled.div`
   background: rgba(0, 0, 0, 0.2);
   padding: 0.35rem;
   border-radius: 16px;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0.25rem;
+    border-radius: 12px;
+  }
 `;
 
 const TargetPill = styled.button<{ $active: boolean }>`
@@ -125,9 +153,16 @@ const TargetPill = styled.button<{ $active: boolean }>`
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  text-align: center;
 
   background: ${({ $active }) => ($active ? "white" : "transparent")};
   color: ${({ $active }) => ($active ? "#4f46e5" : "white")};
+
+  @media (max-width: 640px) {
+    padding: 0.35rem 0.4rem;
+    font-size: 0.72rem;
+    border-radius: 10px;
+  }
 `;
 
 const TrackSwitcherCard = styled.div`
@@ -139,17 +174,24 @@ const TrackSwitcherCard = styled.div`
   justify-content: space-between;
   align-items: center;
   box-shadow: var(--shadow-sm);
+  width: 100%;
 
   @media (max-width: 768px) {
     flex-direction: column;
     gap: 1rem;
     align-items: flex-start;
+    padding: 1rem;
+    border-radius: 20px;
   }
 `;
 
 const TrackTabGroup = styled.div`
   display: flex;
   gap: 0.5rem;
+
+  @media (max-width: 640px) {
+    width: 100%;
+  }
 `;
 
 const TrackTabBtn = styled.button<{ $active: boolean }>`
@@ -166,11 +208,38 @@ const TrackTabBtn = styled.button<{ $active: boolean }>`
   color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
   border-color: ${({ $active }) =>
     $active ? "var(--primary)" : "var(--border)"};
+
+  @media (max-width: 640px) {
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+  }
+`;
+
+const TrackControlsGroup = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0.75rem;
+  }
 `;
 
 const LevelPickerGroup = styled.div`
   display: flex;
   gap: 0.35rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.3rem;
+  }
 `;
 
 const LevelChip = styled.button<{ $active: boolean }>`
@@ -180,6 +249,9 @@ const LevelChip = styled.button<{ $active: boolean }>`
   font-weight: 800;
   cursor: pointer;
   border: 1px solid var(--border);
+  white-space: nowrap;
+  text-align: center;
+  width: 100%;
 
   background: ${({ $active }) =>
     $active ? "rgba(var(--primary-rgb), 0.15)" : "transparent"};
@@ -187,6 +259,11 @@ const LevelChip = styled.button<{ $active: boolean }>`
     $active ? "var(--primary)" : "var(--text-secondary)"};
   border-color: ${({ $active }) =>
     $active ? "var(--primary)" : "var(--border)"};
+
+  @media (max-width: 640px) {
+    padding: 0.45rem 0.2rem;
+    font-size: 0.75rem;
+  }
 `;
 
 const StatGrid = styled.div`
@@ -198,7 +275,8 @@ const StatGrid = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
   @media (max-width: 640px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
   }
 `;
 
@@ -214,21 +292,41 @@ const StatCard = styled.div<{ $highlight?: boolean }>`
   gap: 0.5rem;
   box-shadow: var(--shadow-sm);
 
+  @media (max-width: 640px) {
+    padding: 0.9rem 1rem;
+    border-radius: 18px;
+    gap: 0.3rem;
+  }
+
   .label {
     font-size: 0.78rem;
     font-weight: 800;
     text-transform: uppercase;
     color: var(--text-secondary);
+
+    @media (max-width: 640px) {
+      font-size: 0.68rem;
+      line-height: 1.2;
+    }
   }
   .value {
     font-size: 2rem;
     font-weight: 900;
     color: ${({ $highlight }) =>
       $highlight ? "#f43f5e" : "var(--foreground)"};
+
+    @media (max-width: 640px) {
+      font-size: 1.5rem;
+    }
   }
   .desc {
     font-size: 0.8rem;
     color: var(--text-secondary);
+
+    @media (max-width: 640px) {
+      font-size: 0.7rem;
+      line-height: 1.2;
+    }
   }
 `;
 
@@ -253,6 +351,13 @@ const StartSessionBtn = styled.button`
     transform: translateY(-3px);
     box-shadow: 0 15px 35px -5px rgba(79, 70, 229, 0.5);
   }
+
+  @media (max-width: 640px) {
+    padding: 0.8rem 1rem;
+    border-radius: 14px;
+    font-size: 0.88rem;
+    font-weight: 800;
+  }
 `;
 
 const WeakBankCard = styled.div`
@@ -263,6 +368,19 @@ const WeakBankCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 640px) {
+    padding: 0.85rem 1rem;
+    border-radius: 16px;
+    gap: 0.5rem;
+
+    h3 {
+      font-size: 0.95rem !important;
+    }
+    p {
+      font-size: 0.78rem !important;
+    }
+  }
 `;
 
 const ReviewCard = styled.div`
@@ -274,6 +392,19 @@ const ReviewCard = styled.div`
   flex-direction: column;
   gap: 1rem;
   box-shadow: var(--shadow-sm);
+
+  @media (max-width: 640px) {
+    padding: 0.85rem 1rem;
+    border-radius: 16px;
+    gap: 0.5rem;
+
+    h3 {
+      font-size: 0.95rem !important;
+    }
+    p {
+      font-size: 0.78rem !important;
+    }
+  }
 `;
 
 const StartReviewButton = styled.button`
@@ -295,6 +426,14 @@ const StartReviewButton = styled.button`
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
   }
+
+  @media (max-width: 640px) {
+    width: 100%;
+    justify-content: center;
+    padding: 0.48rem 0.85rem;
+    font-size: 0.78rem;
+    border-radius: 10px;
+  }
 `;
 
 const RepairWeakButton = styled.button`
@@ -315,6 +454,14 @@ const RepairWeakButton = styled.button`
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(244, 63, 94, 0.4);
+  }
+
+  @media (max-width: 640px) {
+    width: 100%;
+    justify-content: center;
+    padding: 0.48rem 0.85rem;
+    font-size: 0.78rem;
+    border-radius: 10px;
   }
 `;
 
@@ -538,16 +685,7 @@ export function DailyDashboard() {
               </BannerContent>
 
               <TargetSelectorWrapper>
-                <div
-                  style={{
-                    fontSize: "0.82rem",
-                    fontWeight: 800,
-                    textTransform: "uppercase",
-                    opacity: 0.85,
-                  }}
-                >
-                  Target Harian (Per Hari)
-                </div>
+                <TargetLabel>Target Harian (Per Hari)</TargetLabel>
                 <TargetPillGroup>
                   {[3, 5, 10].map((num) => (
                     <TargetPill
@@ -590,9 +728,7 @@ export function DailyDashboard() {
                 </div>
               </div>
 
-              <div
-                style={{ display: "flex", gap: "1rem", alignItems: "center" }}
-              >
+              <TrackControlsGroup>
                 <TrackTabGroup>
                   <TrackTabBtn
                     $active={config.activeTrack === "kana"}
@@ -629,7 +765,7 @@ export function DailyDashboard() {
                     )}
                   </LevelPickerGroup>
                 )}
-              </div>
+              </TrackControlsGroup>
             </TrackSwitcherCard>
 
             {/* STAT METRICS GRID */}
