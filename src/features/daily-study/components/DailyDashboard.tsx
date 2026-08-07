@@ -360,7 +360,7 @@ export function DailyDashboard() {
 
   // Determine active item batch
   const batchChars = useMemo(() => {
-    if (customBatch) return customBatch;
+    if (customBatch && customBatch.length > 0) return customBatch;
     return config.activeTrack === "kana"
       ? ["あ", "い", "う", "え", "お"].slice(0, config.targetPerDay)
       : ["日", "月", "火", "水", "木", "金", "土"].slice(
@@ -644,6 +644,7 @@ export function DailyDashboard() {
         {/* UNIFIED STUDY STUDIO SESSION */}
         {sessionState === "flashcards" && (
           <UnifiedStudyStudio
+            items={batchDetails}
             item={batchDetails[currentFlashcardIndex]}
             currentIndex={currentFlashcardIndex}
             totalItems={batchDetails.length}
