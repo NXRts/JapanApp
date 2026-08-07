@@ -265,6 +265,38 @@ const WeakBankCard = styled.div`
   gap: 1rem;
 `;
 
+const ReviewCard = styled.div`
+  background: var(--surface);
+  border: 1.5px solid rgba(99, 102, 241, 0.3);
+  border-radius: 24px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: var(--shadow-sm);
+`;
+
+const StartReviewButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.65rem 1.25rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  color: white;
+  font-size: 0.88rem;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+  }
+`;
+
 const RepairWeakButton = styled.button`
   display: flex;
   align-items: center;
@@ -350,6 +382,23 @@ export function DailyDashboard() {
     return list.slice(0, 8);
   }, [progress.srs, progress.mastery]);
 
+  // Dynamically compute real Retention Accuracy percentage from user's progress state
+  const retentionAccuracy = useMemo(() => {
+    if (!progress.mastery) return 0;
+    let totalCorrect = 0;
+    let totalAttempts = 0;
+
+    Object.values(progress.mastery).forEach((record: any) => {
+      const correct = record.correct || 0;
+      const incorrect = record.incorrect || 0;
+      totalCorrect += correct;
+      totalAttempts += correct + incorrect;
+    });
+
+    if (totalAttempts === 0) return 0;
+    return Math.round((totalCorrect / totalAttempts) * 100);
+  }, [progress.mastery]);
+
   const dueCount = useMemo(() => {
     try {
       return getDueItems ? getDueItems().length : 2;
@@ -379,6 +428,57 @@ export function DailyDashboard() {
 
   const handleStartWeakRepairSession = () => {
     setCustomBatch(weakItems);
+    setCurrentFlashcardIndex(0);
+    setSessionState("flashcards");
+  };
+
+  // Dynamically compute Kanji items studied Today (Hari ini) & Yesterday (Kemarin)
+  const reviewItems = useMemo(() => {
+    const todayStr = new Date().toISOString().split("T")[0];
+    const yesterdayDate = new Date(Date.now() - 86400000).toISOString().split("T")[0];
+
+    const todayList: string[] = [];
+    const yesterdayList: string[] = [];
+    const combinedList: string[] = [];
+
+    // Check SRS & Mastery records in user's progress state
+    if (progress.srs) {
+      Object.entries(progress.srs).forEach(([id, item]) => {
+        const srsAny = item as any;
+        const itemDate = (srsAny.lastReviewedDate || item.nextReviewDate || "").split("T")[0];
+        if (itemDate === todayStr) {
+          if (!todayList.includes(id)) todayList.push(id);
+          if (!combinedList.includes(id)) combinedList.push(id);
+        } else if (itemDate === yesterdayDate) {
+          if (!yesterdayList.includes(id)) yesterdayList.push(id);
+          if (!combinedList.includes(id)) combinedList.push(id);
+        }
+      });
+    }
+
+    if (progress.mastery) {
+      Object.entries(progress.mastery).forEach(([id, record]) => {
+        const masteryAny = record as any;
+        const itemDate = (masteryAny.lastAttempt || masteryAny.lastPracticed || "").split("T")[0];
+        if (itemDate === todayStr) {
+          if (!todayList.includes(id)) todayList.push(id);
+          if (!combinedList.includes(id)) combinedList.push(id);
+        } else if (itemDate === yesterdayDate) {
+          if (!yesterdayList.includes(id)) yesterdayList.push(id);
+          if (!combinedList.includes(id)) combinedList.push(id);
+        }
+      });
+    }
+
+    return {
+      todayList,
+      yesterdayList,
+      combinedList,
+    };
+  }, [progress.srs, progress.mastery]);
+
+  const handleStartReviewSession = () => {
+    setCustomBatch(reviewItems.combinedList);
     setCurrentFlashcardIndex(0);
     setSessionState("flashcards");
   };
@@ -540,16 +640,24 @@ export function DailyDashboard() {
                 <div className="desc">Karakter baru disiapkan</div>
               </StatCard>
 
-              <StatCard>
-                <div className="label">Review Kemarin</div>
-                <div className="value">{dueCount}</div>
-                <div className="desc">Jatuh tempo ulasan SRS</div>
+              <StatCard
+                style={{ cursor: "pointer" }}
+                onClick={handleStartReviewSession}
+                $highlight={reviewItems.combinedList.length > 0}
+              >
+                <div className="label">Review Hari Ini & Kemarin</div>
+                <div className="value">{reviewItems.combinedList.length}</div>
+                <div className="desc">Hari ini: {reviewItems.todayList.length} | Kemarin: {reviewItems.yesterdayList.length}</div>
               </StatCard>
 
               <StatCard>
                 <div className="label">Akurasi Retensi</div>
-                <div className="value">92%</div>
-                <div className="desc">Performa memori rata-rata</div>
+                <div className="value">{retentionAccuracy}%</div>
+                <div className="desc">
+                  {retentionAccuracy > 0
+                    ? "Performa memori rata-rata"
+                    : "Belum ada data kuis"}
+                </div>
               </StatCard>
 
               <StatCard $highlight={weakItems.length > 0}>
@@ -558,6 +666,88 @@ export function DailyDashboard() {
                 <div className="desc">Karakter perlu dipertajam</div>
               </StatCard>
             </StatGrid>
+
+            {/* REVIEW TODAY & YESTERDAY KANJI CARD */}
+            <ReviewCard
+              style={{
+                borderColor:
+                  reviewItems.combinedList.length > 0
+                    ? "rgba(99, 102, 241, 0.3)"
+                    : "var(--border)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "1rem",
+                }}
+              >
+                <div>
+                  <h3
+                    style={{
+                      fontSize: "1.1rem",
+                      fontWeight: 900,
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                    }}
+                  >
+                    🔄 Review Kanji Hari Ini & Kemarin
+                  </h3>
+                  <p
+                    style={{
+                      fontSize: "0.85rem",
+                      color: "var(--text-secondary)",
+                      marginTop: "2px",
+                    }}
+                  >
+                    {reviewItems.combinedList.length > 0
+                      ? `Review ulang ${reviewItems.combinedList.length} Kanji yang telah kamu pelajari hari ini (${reviewItems.todayList.length}) dan kemarin (${reviewItems.yesterdayList.length}) untuk memperkuat daya ingat.`
+                      : "Belum ada Kanji yang dipelajari hari ini & kemarin. Mulai sesi hafalan harian terlebih dahulu! ✨"}
+                  </p>
+                </div>
+
+                {reviewItems.combinedList.length > 0 ? (
+                  <StartReviewButton onClick={handleStartReviewSession}>
+                    🔄 Mulai Review ({reviewItems.combinedList.length} Karakter) →
+                  </StartReviewButton>
+                ) : (
+                  <div
+                    style={{
+                      fontSize: "0.82rem",
+                      fontWeight: 800,
+                      color: "var(--text-secondary)",
+                      background: "rgba(255, 255, 255, 0.05)",
+                      border: "1px solid var(--border)",
+                      padding: "0.5rem 1rem",
+                      borderRadius: "12px",
+                    }}
+                  >
+                    🎉 Belum Ada Data Ulasan
+                  </div>
+                )}
+              </div>
+
+              {reviewItems.combinedList.length > 0 && (
+                <WeakCharList>
+                  {reviewItems.combinedList.map((char, i) => (
+                    <WeakCharChip
+                      key={i}
+                      style={{
+                        background: "rgba(99, 102, 241, 0.1)",
+                        color: "#6366f1",
+                        borderColor: "rgba(99, 102, 241, 0.25)",
+                      }}
+                    >
+                      {char}
+                    </WeakCharChip>
+                  ))}
+                </WeakCharList>
+              )}
+            </ReviewCard>
 
             {/* WEAK KANJI BANK CARD (ALWAYS VISIBLE) */}
             <WeakBankCard
