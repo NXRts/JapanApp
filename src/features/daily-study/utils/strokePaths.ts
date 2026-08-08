@@ -6,88 +6,88 @@ export interface StrokeGuideData {
 }
 
 export const STROKE_PATHS_DB: Record<string, string[]> = {
-  // Hiragana Vowels
+  // Hiragana Vowels (Calibrated to Standard Japanese Typography Font 'Noto Sans JP' / 'Klee One')
   あ: [
-    "M 30,35 L 70,35", // Horizontal top
-    "M 50,15 L 50,85", // Vertical center
-    "M 40,45 C 75,40 85,80 40,75 C 25,70 30,55 50,55", // Loop
+    "M 24,38 C 40,36 60,35 76,35", // Stroke 1: Top horizontal bar
+    "M 50,20 C 48,44 44,64 41,83", // Stroke 2: Vertical stem
+    "M 43,43 C 33,58 22,70 28,78 C 36,88 64,88 74,74 C 82,58 72,46 54,49 C 42,52 35,64 43,72", // Stroke 3: Loop
   ],
   い: [
-    "M 35,25 C 30,50 35,70 25,80", // Left curve
-    "M 65,35 C 65,50 65,65 60,70", // Right short stroke
+    "M 35,28 C 30,48 34,68 24,78", // Left curved stroke
+    "M 65,36 C 65,48 64,62 58,70", // Right short stroke
   ],
   う: [
-    "M 40,20 L 55,25", // Top dot/dash
-    "M 30,40 C 65,30 75,70 35,80", // Curved loop
+    "M 42,20 C 48,22 55,25 58,28", // Top stroke
+    "M 32,42 C 60,35 74,65 36,80", // Curved body
   ],
   え: [
-    "M 40,20 L 55,25", // Top dot
-    "M 30,45 L 65,45 L 35,75 C 55,70 70,75 75,80", // Z-stroke with tail
+    "M 42,20 C 48,22 55,25 58,28", // Top stroke
+    "M 32,46 L 68,46 L 36,76 C 54,72 68,76 76,82", // Z-body
   ],
   お: [
-    "M 25,35 L 65,35", // Horizontal
-    "M 45,20 L 45,65 C 45,85 75,75 75,60 C 75,45 60,45 50,50", // Vertical loop
-    "M 70,25 L 80,35", // Right dot
+    "M 24,36 C 40,34 60,32 70,32", // Horizontal bar
+    "M 46,20 L 46,65 C 46,84 76,76 76,60 C 76,46 62,46 52,52", // Vertical loop
+    "M 68,26 C 72,30 76,34 80,38", // Right dot
   ],
 
-  // Basic Kanji
+  // Basic Kanji (Calibrated to y=56, fontSize=60)
   日: [
-    "M 25,20 L 25,85", // Left vertical
-    "M 25,20 L 75,20 L 75,85", // Top-right corner
-    "M 25,50 L 75,50", // Middle bar
-    "M 25,85 L 75,85", // Bottom bar
+    "M 26,22 L 26,82", // Left vertical
+    "M 26,22 L 74,22 L 74,82", // Top-right corner
+    "M 26,52 L 74,52", // Middle bar
+    "M 26,82 L 74,82", // Bottom bar
   ],
   月: [
-    "M 30,15 C 30,45 25,75 15,90", // Left stroke
-    "M 30,15 L 75,15 L 75,90 C 75,90 70,85 65,85", // Right corner with hook
-    "M 30,40 L 75,40", // Upper bar
-    "M 30,65 L 75,65", // Lower bar
+    "M 30,18 C 30,45 25,72 15,88", // Left stroke
+    "M 30,18 L 74,18 L 74,88 C 74,88 69,82 64,82", // Right corner with hook
+    "M 30,42 L 74,42", // Upper bar
+    "M 30,66 L 74,66", // Lower bar
   ],
   火: [
-    "M 30,40 L 20,55", // Left dot
-    "M 70,40 L 80,55", // Right dot
-    "M 50,20 C 50,45 40,75 15,90", // Center left curve
-    "M 50,45 C 60,60 75,80 90,90", // Right sweeping stroke
+    "M 32,42 L 22,56", // Left dot
+    "M 68,42 L 78,56", // Right dot
+    "M 50,22 C 50,46 40,74 15,88", // Center left curve
+    "M 50,46 C 60,60 74,78 88,88", // Right sweeping stroke
   ],
   水: [
-    "M 50,15 L 50,85 C 50,85 45,80 40,80", // Center vertical hook
-    "M 20,35 L 40,45 L 20,75", // Left angle stroke
-    "M 75,25 L 50,50", // Right top stroke
-    "M 55,50 C 65,65 75,75 90,85", // Right bottom stroke
+    "M 50,18 L 50,84 C 50,84 45,78 40,78", // Center vertical hook
+    "M 22,38 L 40,46 L 22,74", // Left angle stroke
+    "M 74,28 L 50,52", // Right top stroke
+    "M 54,52 C 64,66 74,76 88,86", // Right bottom stroke
   ],
   木: [
-    "M 15,40 L 85,40", // Horizontal bar
-    "M 50,15 L 50,90", // Center vertical
-    "M 50,40 C 40,60 25,75 10,85", // Left diagonal
-    "M 50,40 C 60,60 75,75 90,85", // Right diagonal
+    "M 18,42 L 82,42", // Horizontal bar
+    "M 50,18 L 50,88", // Center vertical
+    "M 50,42 C 40,62 25,76 12,86", // Left diagonal
+    "M 50,42 C 60,62 75,76 88,86", // Right diagonal
   ],
   金: [
-    "M 50,15 C 40,30 25,45 10,55", // Roof left
-    "M 50,15 C 60,30 75,45 90,55", // Roof right
-    "M 25,45 L 75,45", // Top bar
-    "M 20,65 L 80,65", // Middle bar
-    "M 50,45 L 50,85", // Vertical stem
-    "M 35,72 L 25,82", // Left dot
-    "M 65,72 L 75,82", // Right dot
-    "M 15,85 L 85,85", // Bottom base bar
+    "M 50,18 C 40,32 25,46 12,56", // Roof left
+    "M 50,18 C 60,32 75,46 88,56", // Roof right
+    "M 26,46 L 74,46", // Top bar
+    "M 22,64 L 78,64", // Middle bar
+    "M 50,46 L 50,82", // Vertical stem
+    "M 36,70 L 26,80", // Left dot
+    "M 64,70 L 74,80", // Right dot
+    "M 16,82 L 84,82", // Bottom base bar
   ],
   土: [
-    "M 25,35 L 75,35", // Short top bar
-    "M 50,15 L 50,75", // Center vertical
-    "M 15,75 L 85,75", // Long bottom bar
+    "M 26,38 L 74,38", // Short top bar
+    "M 50,18 L 50,76", // Center vertical
+    "M 16,76 L 84,76", // Long bottom bar
   ],
   人: [
-    "M 50,20 C 40,45 25,70 10,85", // Left leg
-    "M 45,40 C 55,60 70,75 90,85", // Right leg
+    "M 50,22 C 40,46 25,70 12,84", // Left leg
+    "M 44,42 C 55,60 70,74 88,84", // Right leg
   ],
   山: [
-    "M 50,15 L 50,85", // Center vertical
-    "M 20,40 L 20,85 L 80,85 L 80,40", // Bottom U-bucket frame
+    "M 50,18 L 50,82", // Center vertical
+    "M 22,42 L 22,82 L 78,82 L 78,42", // Bottom U-bucket frame
   ],
   川: [
-    "M 25,20 C 25,45 20,70 15,85", // Left curved vertical
-    "M 50,25 L 50,80", // Center straight vertical
-    "M 75,15 L 75,90", // Right long vertical
+    "M 26,22 C 26,46 21,70 16,84", // Left curved vertical
+    "M 50,26 L 50,78", // Center straight vertical
+    "M 74,18 L 74,88", // Right long vertical
   ],
 };
 

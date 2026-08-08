@@ -226,9 +226,18 @@ export function KanjiWorksheetCard({ item }: Props) {
                 {/* Grid crosshairs */}
                 <line x1="50" y1="0" x2="50" y2="100" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="2,2" />
                 <line x1="0" y1="50" x2="100" y2="50" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="2,2" />
-                {strokePaths.map((p, idx) => (
-                  <path key={idx} d={p} fill="none" stroke="var(--foreground)" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round" />
-                ))}
+                <text
+                  x="50"
+                  y="58"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontSize="64"
+                  fontWeight="600"
+                  fontFamily="'Klee One', 'Hiragino Kaku Gothic Pro', 'Yu Gothic', 'Noto Sans JP', sans-serif"
+                  fill="var(--foreground)"
+                >
+                  {item.char}
+                </text>
               </svg>
             </SvgCanvasWrapper>
 
