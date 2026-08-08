@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { getStrokePaths } from "../utils/strokePaths";
 
@@ -67,7 +67,8 @@ const CellBox = styled.div<{ $isStep?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${({ $isStep }) => ($isStep ? "rgba(var(--primary-rgb), 0.05)" : "transparent")};
+  background: ${({ $isStep }) =>
+    $isStep ? "rgba(var(--primary-rgb), 0.05)" : "transparent"};
 
   &:last-child {
     border-right: none;
@@ -156,7 +157,9 @@ interface Props {
 }
 
 export function KanjiGridPractice({ char }: Props) {
-  const [svgPaths, setSvgPaths] = useState<string[]>(() => getStrokePaths(char));
+  const [svgPaths, setSvgPaths] = useState<string[]>(() =>
+    getStrokePaths(char),
+  );
   const [showGhost, setShowGhost] = useState(true);
 
   // References to multiple drawing canvases (3 rows * totalColumns)
@@ -202,8 +205,10 @@ export function KanjiGridPractice({ char }: Props) {
   };
 
   const getCanvasCoords = (
-    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>,
-    canvas: HTMLCanvasElement
+    e:
+      | React.MouseEvent<HTMLCanvasElement>
+      | React.TouchEvent<HTMLCanvasElement>,
+    canvas: HTMLCanvasElement,
   ) => {
     const rect = canvas.getBoundingClientRect();
     let clientX = 0;
@@ -227,16 +232,20 @@ export function KanjiGridPractice({ char }: Props) {
   };
 
   const startDrawing = (
-    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>,
-    canvas: HTMLCanvasElement
+    e:
+      | React.MouseEvent<HTMLCanvasElement>
+      | React.TouchEvent<HTMLCanvasElement>,
+    canvas: HTMLCanvasElement,
   ) => {
     isDrawingRef.current = true;
     lastPosRef.current = getCanvasCoords(e, canvas);
   };
 
   const draw = (
-    e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>,
-    canvas: HTMLCanvasElement
+    e:
+      | React.MouseEvent<HTMLCanvasElement>
+      | React.TouchEvent<HTMLCanvasElement>,
+    canvas: HTMLCanvasElement,
   ) => {
     if (!isDrawingRef.current || !lastPosRef.current) return;
     const ctx = canvas.getContext("2d");
@@ -267,7 +276,8 @@ export function KanjiGridPractice({ char }: Props) {
     <GridContainer>
       <SectionHeader>
         <h3>
-          <span>🖌️</span> Lembar Latihan Menulis {isKana ? "Kana" : "Kanji"} ({char})
+          <span>🖌️</span> Lembar Latihan Menulis {isKana ? "Kana" : "Kanji"} (
+          {char})
         </h3>
         <span className="subtitle">Responsif 100% tanpa scrollbar samping</span>
       </SectionHeader>
@@ -277,15 +287,32 @@ export function KanjiGridPractice({ char }: Props) {
         <WorksheetRow $cols={totalColumns}>
           {Array.from({ length: totalColumns }).map((_, colIdx) => {
             const isStepCell = colIdx < totalStrokes;
-            const isTracingCell = colIdx >= totalStrokes && colIdx < totalStrokes + 3;
+            const isTracingCell =
+              colIdx >= totalStrokes && colIdx < totalStrokes + 3;
             const cellIndex = colIdx;
 
             return (
               <CellBox key={`row1-${colIdx}`} $isStep={isStepCell}>
                 {/* Dashed Crosshairs Grid 十字格 (Native KanjiVG 109x109 viewBox) */}
                 <svg className="cell-grid" viewBox="0 0 109 109">
-                  <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3,3" />
-                  <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3,3" />
+                  <line
+                    x1="54.5"
+                    y1="0"
+                    x2="54.5"
+                    y2="109"
+                    stroke="var(--border)"
+                    strokeWidth="0.8"
+                    strokeDasharray="3,3"
+                  />
+                  <line
+                    x1="0"
+                    y1="54.5"
+                    x2="109"
+                    y2="54.5"
+                    stroke="var(--border)"
+                    strokeWidth="0.8"
+                    strokeDasharray="3,3"
+                  />
 
                   {/* Step-by-Step Cells matching JLPT Kanji Writer (Gambar 2) */}
                   {isStepCell && (
@@ -357,7 +384,9 @@ export function KanjiGridPractice({ char }: Props) {
                   <CellCanvas
                     width={100}
                     height={100}
-                    ref={(el) => { cellCanvasRefs.current[cellIndex] = el; }}
+                    ref={(el) => {
+                      cellCanvasRefs.current[cellIndex] = el;
+                    }}
                     onMouseDown={(e) => startDrawing(e, e.currentTarget)}
                     onMouseMove={(e) => draw(e, e.currentTarget)}
                     onMouseUp={stopDrawing}
@@ -380,14 +409,32 @@ export function KanjiGridPractice({ char }: Props) {
             return (
               <CellBox key={`row2-${colIdx}`}>
                 <svg className="cell-grid" viewBox="0 0 100 100">
-                  <line x1="50" y1="0" x2="50" y2="100" stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3,3" />
-                  <line x1="0" y1="50" x2="100" y2="50" stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3,3" />
+                  <line
+                    x1="50"
+                    y1="0"
+                    x2="50"
+                    y2="100"
+                    stroke="var(--border)"
+                    strokeWidth="0.8"
+                    strokeDasharray="3,3"
+                  />
+                  <line
+                    x1="0"
+                    y1="50"
+                    x2="100"
+                    y2="50"
+                    stroke="var(--border)"
+                    strokeWidth="0.8"
+                    strokeDasharray="3,3"
+                  />
                 </svg>
 
                 <CellCanvas
                   width={100}
                   height={100}
-                  ref={(el) => { cellCanvasRefs.current[cellIndex] = el; }}
+                  ref={(el) => {
+                    cellCanvasRefs.current[cellIndex] = el;
+                  }}
                   onMouseDown={(e) => startDrawing(e, e.currentTarget)}
                   onMouseMove={(e) => draw(e, e.currentTarget)}
                   onMouseUp={stopDrawing}
@@ -409,14 +456,32 @@ export function KanjiGridPractice({ char }: Props) {
             return (
               <CellBox key={`row3-${colIdx}`}>
                 <svg className="cell-grid" viewBox="0 0 100 100">
-                  <line x1="50" y1="0" x2="50" y2="100" stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3,3" />
-                  <line x1="0" y1="50" x2="100" y2="50" stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3,3" />
+                  <line
+                    x1="50"
+                    y1="0"
+                    x2="50"
+                    y2="100"
+                    stroke="var(--border)"
+                    strokeWidth="0.8"
+                    strokeDasharray="3,3"
+                  />
+                  <line
+                    x1="0"
+                    y1="50"
+                    x2="100"
+                    y2="50"
+                    stroke="var(--border)"
+                    strokeWidth="0.8"
+                    strokeDasharray="3,3"
+                  />
                 </svg>
 
                 <CellCanvas
                   width={100}
                   height={100}
-                  ref={(el) => { cellCanvasRefs.current[cellIndex] = el; }}
+                  ref={(el) => {
+                    cellCanvasRefs.current[cellIndex] = el;
+                  }}
                   onMouseDown={(e) => startDrawing(e, e.currentTarget)}
                   onMouseMove={(e) => draw(e, e.currentTarget)}
                   onMouseUp={stopDrawing}
@@ -433,14 +498,18 @@ export function KanjiGridPractice({ char }: Props) {
 
       <ControlBar>
         <div className="btn-group">
-          <button onClick={() => setShowGhost(!showGhost)} className={showGhost ? "primary" : ""}>
-            👁️ {showGhost ? "Sembunyikan Bayangan" : "Tampilkan 3 Sel Bayangan Jiplak"}
+          <button
+            onClick={() => setShowGhost(!showGhost)}
+            className={showGhost ? "primary" : ""}
+          >
+            👁️{" "}
+            {showGhost
+              ? "Sembunyikan Bayangan"
+              : "Tampilkan 3 Sel Bayangan Jiplak"}
           </button>
         </div>
 
-        <button onClick={clearAllCanvases}>
-          🧹 Hapus Coretan Grid
-        </button>
+        <button onClick={clearAllCanvases}>🧹 Hapus Coretan Grid</button>
       </ControlBar>
     </GridContainer>
   );
