@@ -176,20 +176,91 @@ export function IntegrativeQuiz({ items, onComplete }: IntegrativeQuizProps) {
   // Alternating question modes: 0 = Multiple Choice, 1 = Typing Romaji/Kana
   const questionType = currentIndex % 2 === 0 ? "mc" : "typing";
 
-  // Dummy options generator for MC
-  const options = React.useMemo(() => {
-    const wrongList = ["Air", "Hari", "Matahari", "Bulan", "Api", "Orang", "Gunung", "Sungai"]
-      .filter((m) => m !== currentItem.meaning);
-    const shuffledWrong = wrongList.sort(() => 0.5 - Math.random()).slice(0, 3);
-    return [currentItem.meaning, ...shuffledWrong].sort(() => 0.5 - Math.random());
+  const isKana = React.useMemo(() => {
+    if (!currentItem) return false;
+    return (
+      /^[\u3040-\u309F\u30A0-\u30FF]/.test(currentItem.char) ||
+      currentItem.meaning.toLowerCase().includes("kana")
+    );
   }, [currentItem]);
+
+  const correctAnswer = React.useMemo(() => {
+    if (!currentItem) return "";
+    return isKana ? currentItem.romaji : currentItem.meaning;
+  }, [currentItem, isKana]);
+
+  // Options generator for MC (Romaji for Kana, Indonesian meanings for Kanji)
+  const options = React.useMemo(() => {
+    if (!currentItem) return [];
+
+    if (isKana) {
+      const targetRomaji = currentItem.romaji.toLowerCase();
+
+      // 1. Primary distractors: Other Kana items from current daily session batch
+      const sessionRomajis = items
+        .map((it) => it.romaji.toLowerCase())
+        .filter((r) => r && r !== targetRomaji);
+      const shuffledSession = [...sessionRomajis].sort(() => 0.5 - Math.random());
+
+      // 2. Secondary distractors: Same row or neighboring row in Gojūon (50-sound table)
+      const KANA_ROWS: string[][] = [
+        ["a", "i", "u", "e", "o"],
+        ["ka", "ki", "ku", "ke", "ko"],
+        ["sa", "shi", "su", "se", "so"],
+        ["ta", "chi", "tsu", "te", "to"],
+        ["na", "ni", "nu", "ne", "no"],
+        ["ha", "hi", "fu", "he", "ho"],
+        ["ma", "mi", "mu", "me", "mo"],
+        ["ya", "yu", "yo"],
+        ["ra", "ri", "ru", "re", "ro"],
+        ["wa", "wo", "n"],
+        ["ga", "gi", "gu", "ge", "go"],
+        ["za", "ji", "zu", "ze", "zo"],
+        ["da", "de", "do"],
+        ["ba", "bi", "bu", "be", "bo"],
+        ["pa", "pi", "pu", "pe", "po"],
+      ];
+
+      let rowIndex = KANA_ROWS.findIndex((row) => row.includes(targetRomaji));
+      if (rowIndex === -1) rowIndex = 0;
+
+      const sameRowRomajis = KANA_ROWS[rowIndex].filter((r) => r !== targetRomaji).sort(() => 0.5 - Math.random());
+      const nextRowRomajis = (KANA_ROWS[rowIndex + 1] || KANA_ROWS[0]).filter((r) => r !== targetRomaji).sort(() => 0.5 - Math.random());
+      const prevRowRomajis = (KANA_ROWS[rowIndex - 1] || KANA_ROWS[KANA_ROWS.length - 1]).filter((r) => r !== targetRomaji).sort(() => 0.5 - Math.random());
+
+      const progressivePool = Array.from(
+        new Set([
+          ...shuffledSession,
+          ...sameRowRomajis,
+          ...nextRowRomajis,
+          ...prevRowRomajis,
+        ])
+      ).filter((r) => r !== targetRomaji);
+
+      const chosenWrong = progressivePool.slice(0, 3);
+      return [targetRomaji, ...chosenWrong].sort(() => 0.5 - Math.random());
+    }
+
+    // Kanji options (Indonesian meanings)
+    const otherItemsMeaning = items.map((it) => it.meaning).filter((m) => m && m !== currentItem.meaning);
+    const defaultWrongList = [
+      "Air", "Hari", "Matahari", "Bulan", "Api", "Orang", "Gunung", "Sungai",
+      "Buku", "Pohon", "Besi", "Emas", "Tangan", "Mata", "Mulut", "Hujan",
+    ];
+    const combinedMeaningPool = Array.from(new Set([...otherItemsMeaning, ...defaultWrongList])).filter(
+      (m) => m !== currentItem.meaning && !m.toLowerCase().includes("kana")
+    );
+
+    const shuffledWrong = combinedMeaningPool.sort(() => 0.5 - Math.random()).slice(0, 3);
+    return [currentItem.meaning, ...shuffledWrong].sort(() => 0.5 - Math.random());
+  }, [currentItem, isKana, items]);
 
   const handleSelectOption = (opt: string) => {
     if (isAnswered) return;
     setSelectedOption(opt);
     setIsAnswered(true);
 
-    const isCorrect = opt === currentItem.meaning;
+    const isCorrect = opt === correctAnswer;
     setAnswersState((prev) => ({ ...prev, [currentItem.char]: isCorrect }));
 
     if (isCorrect) {
@@ -223,20 +294,20 @@ export function IntegrativeQuiz({ items, onComplete }: IntegrativeQuizProps) {
       setTypedInput("");
       setIsAnswered(false);
     } else {
-      // Calculate final results
-      const total = items.length;
       let correctCount = 0;
       const mastered: string[] = [];
       const review: string[] = [];
 
       items.forEach((item) => {
         if (answersState[item.char]) {
-          correctCount += 1;
+          correctCount++;
           mastered.push(item.char);
         } else {
           review.push(item.char);
         }
       });
+
+      const total = items.length || 1;
 
       const percentage = Math.round((correctCount / total) * 100);
       const summary: QuizResultSummary = {
@@ -272,12 +343,16 @@ export function IntegrativeQuiz({ items, onComplete }: IntegrativeQuizProps) {
 
         {questionType === "mc" ? (
           <>
-            <PromptText>Pilih arti Bahasa Indonesia yang paling tepat:</PromptText>
+            <PromptText>
+              {isKana
+                ? "Pilih bacaan (romaji) yang paling tepat:"
+                : "Pilih arti Bahasa Indonesia yang paling tepat:"}
+            </PromptText>
             <OptionsGrid>
               {options.map((opt, i) => {
                 let state: "correct" | "incorrect" | "default" = "default";
                 if (isAnswered) {
-                  if (opt === currentItem.meaning) state = "correct";
+                  if (opt === correctAnswer) state = "correct";
                   else if (selectedOption === opt) state = "incorrect";
                 }
                 return (
