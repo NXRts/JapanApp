@@ -156,14 +156,38 @@ interface Props {
 }
 
 export function KanjiGridPractice({ char }: Props) {
-  const strokePaths = getStrokePaths(char);
-  const totalStrokes = strokePaths.length;
+  const [svgPaths, setSvgPaths] = useState<string[]>(() => getStrokePaths(char));
   const [showGhost, setShowGhost] = useState(true);
 
   // References to multiple drawing canvases (3 rows * totalColumns)
   const cellCanvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const isDrawingRef = useRef(false);
   const lastPosRef = useRef<{ x: number; y: number } | null>(null);
+
+  // Fetch official KanjiVG stroke paths dynamically
+  React.useEffect(() => {
+    let active = true;
+    const fetchSvg = async () => {
+      try {
+        const hex = char.charCodeAt(0).toString(16).padStart(5, "0");
+        const res = await fetch(`/api/kanji-svg?hex=${hex}`);
+        if (res.ok) {
+          const paths = (await res.json()) as string[];
+          if (active && Array.isArray(paths) && paths.length > 0) {
+            setSvgPaths(paths);
+          }
+        }
+      } catch (err) {
+        // Fallback to static getStrokePaths
+      }
+    };
+    fetchSvg();
+    return () => {
+      active = false;
+    };
+  }, [char]);
+
+  const totalStrokes = svgPaths.length || 1;
 
   // Responsive total columns per row (e.g. 10 columns max to fit 100% width cleanly without scrollbar)
   const totalColumns = Math.max(10, totalStrokes + 3);
@@ -237,11 +261,13 @@ export function KanjiGridPractice({ char }: Props) {
     lastPosRef.current = null;
   };
 
+  const isKana = /^[\u3040-\u309F\u30A0-\u30FF]/.test(char);
+
   return (
     <GridContainer>
       <SectionHeader>
         <h3>
-          <span>🖌️</span> Lembar Latihan Menulis Kanji ({char})
+          <span>🖌️</span> Lembar Latihan Menulis {isKana ? "Kana" : "Kanji"} ({char})
         </h3>
         <span className="subtitle">Responsif 100% tanpa scrollbar samping</span>
       </SectionHeader>
@@ -256,39 +282,72 @@ export function KanjiGridPractice({ char }: Props) {
 
             return (
               <CellBox key={`row1-${colIdx}`} $isStep={isStepCell}>
-                {/* Dashed Crosshairs Grid 十字格 */}
-                <svg className="cell-grid" viewBox="0 0 100 100">
-                  <line x1="50" y1="0" x2="50" y2="100" stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3,3" />
-                  <line x1="0" y1="50" x2="100" y2="50" stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3,3" />
+                {/* Dashed Crosshairs Grid 十字格 (Native KanjiVG 109x109 viewBox) */}
+                <svg className="cell-grid" viewBox="0 0 109 109">
+                  <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3,3" />
+                  <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="var(--border)" strokeWidth="0.8" strokeDasharray="3,3" />
 
-                  {/* Step-by-Step strokes */}
-                  {isStepCell &&
-                    strokePaths.slice(0, colIdx + 1).map((p, strokeIdx) => (
-                      <path
-                        key={`step-${colIdx}-${strokeIdx}`}
-                        d={p}
+                  {/* Step-by-Step Cells matching JLPT Kanji Writer (Gambar 2) */}
+                  {isStepCell && (
+                    <>
+                      {/* 1. Remaining Future Strokes (Faint Gray Outline) */}
+                      <g
+                        stroke="var(--border)"
+                        strokeWidth="3.5"
                         fill="none"
-                        stroke={strokeIdx === colIdx ? "var(--primary)" : "var(--foreground)"}
-                        strokeWidth="7"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                      />
-                    ))}
+                        opacity="0.35"
+                      >
+                        {svgPaths.slice(colIdx + 1).map((d, idx) => (
+                          <path key={`future-${colIdx}-${idx}`} d={d} />
+                        ))}
+                      </g>
 
-                  {/* 3 Tracing Ghost Cells */}
-                  {isTracingCell && showGhost &&
-                    strokePaths.map((p, pIdx) => (
-                      <path
-                        key={`ghost-${colIdx}-${pIdx}`}
-                        d={p}
+                      {/* 2. Past Completed Strokes (Solid Light White / Foreground) */}
+                      <g
+                        stroke="var(--foreground)"
+                        strokeWidth="4.5"
                         fill="none"
-                        stroke="var(--text-secondary)"
-                        strokeWidth="5"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        opacity={0.45 - (colIdx - totalStrokes) * 0.1}
-                      />
-                    ))}
+                        opacity="0.85"
+                      >
+                        {svgPaths.slice(0, colIdx).map((d, idx) => (
+                          <path key={`past-${colIdx}-${idx}`} d={d} />
+                        ))}
+                      </g>
+
+                      {/* 3. Active Step Stroke (Highlighted Amber #f6ad55 matching Gambar 2!) */}
+                      {svgPaths[colIdx] && (
+                        <g
+                          stroke="#f6ad55"
+                          strokeWidth="6"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d={svgPaths[colIdx]} />
+                        </g>
+                      )}
+                    </>
+                  )}
+
+                  {/* 3 Tracing Ghost Cells (Faint Gray Full Outline matching Gambar 2 & 3!) */}
+                  {isTracingCell && showGhost && (
+                    <g
+                      stroke="var(--text-secondary)"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      opacity={0.4 - (colIdx - totalStrokes) * 0.1}
+                    >
+                      {svgPaths.map((d, idx) => (
+                        <path key={`ghost-${colIdx}-${idx}`} d={d} />
+                      ))}
+                    </g>
+                  )}
                 </svg>
 
                 {isStepCell && <StepBadge>Step {colIdx + 1}</StepBadge>}

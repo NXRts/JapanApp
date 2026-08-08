@@ -59,7 +59,7 @@ const SvgStrokeGuide = styled.svg`
 const StrokePathTemplate = styled.path`
   fill: none;
   stroke: var(--border);
-  stroke-width: 12;
+  stroke-width: 5.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   opacity: 0.4;
@@ -68,7 +68,7 @@ const StrokePathTemplate = styled.path`
 const AnimatedStrokePath = styled.path<{ $animating: boolean; $delay: number }>`
   fill: none;
   stroke: var(--primary);
-  stroke-width: 10;
+  stroke-width: 4.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 300;
@@ -362,15 +362,15 @@ export function InteractiveStrokeWriter({ char, onStrokeCompleted }: Interactive
       <CanvasWrapper>
         {/* Grid Lines (十字格 / 田字格) */}
         {showGrid && (
-          <GridBackground viewBox="0 0 100 100">
-            <line x1="50" y1="0" x2="50" y2="100" />
-            <line x1="0" y1="50" x2="100" y2="50" />
-            <circle cx="50" cy="50" r="45" fill="none" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="2,2" />
+          <GridBackground viewBox="0 0 109 109">
+            <line x1="54.5" y1="0" x2="54.5" y2="109" />
+            <line x1="0" y1="54.5" x2="109" y2="54.5" />
+            <circle cx="54.5" cy="54.5" r="49" fill="none" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="2,2" />
           </GridBackground>
         )}
 
         {/* SVG Stroke Order Guide Template & Animation */}
-        <SvgStrokeGuide viewBox="0 0 100 100">
+        <SvgStrokeGuide viewBox="0 0 109 109">
           {/* Static Background Template */}
           {showTemplate &&
             paths.map((p, idx) => (
