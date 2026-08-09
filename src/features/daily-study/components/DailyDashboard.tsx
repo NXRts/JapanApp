@@ -284,7 +284,7 @@ const StatCard = styled.div<{ $highlight?: boolean }>`
   background: var(--surface);
   border: 1.5px solid
     ${({ $highlight }) =>
-      $highlight ? "rgba(244, 63, 94, 0.3)" : "var(--border)"};
+      $highlight ? "rgba(59, 130, 246, 0.35)" : "var(--border)"};
   border-radius: 24px;
   padding: 1.25rem 1.5rem;
   display: flex;
@@ -313,7 +313,7 @@ const StatCard = styled.div<{ $highlight?: boolean }>`
     font-size: 2rem;
     font-weight: 900;
     color: ${({ $highlight }) =>
-      $highlight ? "#f43f5e" : "var(--foreground)"};
+      $highlight ? "#3b82f6" : "var(--foreground)"};
 
     @media (max-width: 640px) {
       font-size: 1.5rem;
@@ -362,7 +362,7 @@ const StartSessionBtn = styled.button`
 
 const WeakBankCard = styled.div`
   background: var(--surface);
-  border: 1.5px solid rgba(244, 63, 94, 0.25);
+  border: 1.5px solid rgba(59, 130, 246, 0.3);
   border-radius: 24px;
   padding: 1.5rem;
   display: flex;
@@ -385,7 +385,7 @@ const WeakBankCard = styled.div`
 
 const ReviewCard = styled.div`
   background: var(--surface);
-  border: 1.5px solid rgba(99, 102, 241, 0.3);
+  border: 1.5px solid rgba(59, 130, 246, 0.35);
   border-radius: 24px;
   padding: 1.5rem;
   display: flex;
@@ -413,18 +413,18 @@ const StartReviewButton = styled.button`
   gap: 8px;
   padding: 0.65rem 1.25rem;
   border-radius: 14px;
-  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   font-size: 0.88rem;
   font-weight: 800;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
   }
 
   @media (max-width: 640px) {
@@ -442,18 +442,18 @@ const RepairWeakButton = styled.button`
   gap: 8px;
   padding: 0.65rem 1.25rem;
   border-radius: 14px;
-  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   font-size: 0.88rem;
   font-weight: 800;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(244, 63, 94, 0.4);
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
   }
 
   @media (max-width: 640px) {
@@ -477,9 +477,9 @@ const WeakCharChip = styled.span`
   font-family: "Noto Sans JP", sans-serif;
   padding: 0.4rem 0.85rem;
   border-radius: 12px;
-  background: rgba(244, 63, 94, 0.1);
-  color: #f43f5e;
-  border: 1px solid rgba(244, 63, 94, 0.25);
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
 `;
 
 export function DailyDashboard() {
@@ -890,7 +890,7 @@ export function DailyDashboard() {
               style={{
                 borderColor:
                   weakItems.length > 0
-                    ? "rgba(244, 63, 94, 0.3)"
+                    ? "rgba(59, 130, 246, 0.35)"
                     : "rgba(16, 185, 129, 0.3)",
               }}
             >
