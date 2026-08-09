@@ -162,9 +162,10 @@ const SummaryModal = styled.div`
 interface IntegrativeQuizProps {
   items: DetailedItemData[];
   onComplete: (summary: QuizResultSummary) => void;
+  isReview?: boolean;
 }
 
-export function IntegrativeQuiz({ items, onComplete }: IntegrativeQuizProps) {
+export function IntegrativeQuiz({ items, onComplete, isReview = false }: IntegrativeQuizProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [typedInput, setTypedInput] = useState("");
@@ -314,7 +315,7 @@ export function IntegrativeQuiz({ items, onComplete }: IntegrativeQuizProps) {
         totalQuestions: total,
         correctCount,
         scorePercentage: percentage,
-        expEarned: correctCount * 25 + 50,
+        expEarned: isReview ? correctCount * 5 : correctCount * 25 + 50,
         masteredChars: mastered,
         needsReviewChars: review,
       };
