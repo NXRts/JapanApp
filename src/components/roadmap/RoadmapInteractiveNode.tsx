@@ -227,7 +227,7 @@ export function RoadmapInteractiveNode({
         )}
 
         {status !== "locked" && lesson.expReward > 0 && (
-          <XPBadge>+{lesson.expReward} XP</XPBadge>
+          <XPBadge>+{status === "completed" ? 5 : lesson.expReward} XP</XPBadge>
         )}
       </TactileButton>
 

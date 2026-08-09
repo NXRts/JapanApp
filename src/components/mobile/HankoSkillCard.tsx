@@ -281,10 +281,15 @@ export function HankoSkillCard({
       </div>
 
       <CardFooter>
-        <span>⭐ {expReward} EXP</span>
+        <span>⭐ {state === "mastered" ? 5 : expReward} EXP</span>
         {state === "active" && (
           <span style={{ color: "var(--torii-red)", fontWeight: 800 }}>
             Mulai
+          </span>
+        )}
+        {state === "mastered" && (
+          <span style={{ color: "var(--primary)", fontWeight: 800 }}>
+            Ulang
           </span>
         )}
       </CardFooter>
