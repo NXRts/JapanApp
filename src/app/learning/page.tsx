@@ -544,6 +544,7 @@ export default function LearningPage() {
                       icon={lesson.icon}
                       expReward={lesson.expReward}
                       state={cardState}
+                      score={progress.exerciseScores?.[lesson.id]}
                       color={unit.color}
                       onClick={() => handleNodeClick(lesson, isUnlocked)}
                     />

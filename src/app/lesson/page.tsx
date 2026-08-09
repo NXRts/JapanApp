@@ -1199,8 +1199,9 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
 function LessonPlayerContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { progress, markExerciseCompleted, addExp, deductHeart, refillHearts } = useProgress();
+  const { progress, markExerciseCompleted, updateExerciseScore, addExp, deductHeart, refillHearts } = useProgress();
   const startTime = useRef<number | null>(null);
+  const mistakesCountRef = useRef<number>(0);
 
   const lessonId = searchParams.get("id") || "n5-u1-l1";
   const returnUrl = searchParams.get("from") === "practice" ? "/practice" : "/";
@@ -1386,6 +1387,16 @@ function LessonPlayerContent() {
         const expToAward = isAlreadyCompleted ? 5 : lesson.expReward;
         addExp(expToAward);
         markExerciseCompleted(lesson.id);
+
+        const totalQ = questions.length || 1;
+        const scorePercentage = Math.max(
+          0,
+          Math.round(((totalQ - mistakesCountRef.current) / totalQ) * 100)
+        );
+        if (updateExerciseScore) {
+          updateExerciseScore(lesson.id, scorePercentage);
+        }
+
         setIsFinished(true);
       }
       return;
@@ -1415,6 +1426,7 @@ function LessonPlayerContent() {
     if (correct) {
       playCorrectSound();
     } else {
+      mistakesCountRef.current += 1;
       playIncorrectSound();
       setShakeBox(true);
       setTimeout(() => setShakeBox(false), 400);
