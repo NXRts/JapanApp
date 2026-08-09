@@ -985,6 +985,7 @@ export function DailyDashboard() {
         {sessionState === "quiz" && (
           <IntegrativeQuiz
             items={batchDetails}
+            isReview={customBatch !== null}
             onComplete={handleQuizComplete}
           />
         )}
