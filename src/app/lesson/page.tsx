@@ -1218,7 +1218,17 @@ function LessonPlayerContent() {
 
   const [isUnlocked, setIsUnlocked] = useState<boolean | null>(null);
 
-  // Lock status guard check
+  // Lock status guard check & initial completion status ref
+  const isAlreadyCompletedRef = useRef<boolean>(false);
+
+  useEffect(() => {
+    if (progress.completedExercises && lessonId) {
+      if (progress.completedExercises.includes(lessonId)) {
+        isAlreadyCompletedRef.current = true;
+      }
+    }
+  }, [lessonId, progress.completedExercises]);
+
   useEffect(() => {
     if (lessonId === "n5-u1-l1") {
       setIsUnlocked(true);
@@ -1373,7 +1383,8 @@ function LessonPlayerContent() {
           (Date.now() - (startTime.current || Date.now())) / 1000,
         );
         setElapsedTime(totalTime);
-        addExp(lesson.expReward);
+        const expToAward = isAlreadyCompletedRef.current ? 5 : lesson.expReward;
+        addExp(expToAward);
         markExerciseCompleted(lesson.id);
         setIsFinished(true);
       }
@@ -1547,7 +1558,9 @@ function LessonPlayerContent() {
           <StatsGrid>
             <StatCard $color="#fbbf24">
               <span className="label">EXP Gained</span>
-              <span className="value">+{lesson.expReward} EXP</span>
+              <span className="value">
+                +{isAlreadyCompletedRef.current ? 5 : lesson.expReward} EXP
+              </span>
             </StatCard>
             <StatCard $color="#3b82f6">
               <span className="label">Time</span>
