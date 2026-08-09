@@ -181,28 +181,26 @@ const CardFooter = styled.div`
   color: var(--text-secondary);
 `;
 
-const HankoStamp = styled.div`
+const HankoStamp = styled.div<{ $isPartial?: boolean }>`
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  border: 1.5px solid var(--torii-red);
-  color: var(--torii-red);
+  border: 2px solid ${({ $isPartial }) => ($isPartial ? "#f59e0b" : "#10b981")};
+  color: ${({ $isPartial }) => ($isPartial ? "#f59e0b" : "#10b981")};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.55rem;
+  font-size: ${({ $isPartial }) => ($isPartial ? "0.6rem" : "0.75rem")};
   font-weight: 900;
-  transform: rotate(-12deg);
+  transform: rotate(-6deg);
   font-family: "Noto Sans JP", sans-serif;
   opacity: 0.95;
   user-select: none;
+  background: ${({ $isPartial }) =>
+    $isPartial ? "rgba(245, 158, 11, 0.12)" : "rgba(16, 185, 129, 0.12)"};
   animation: ${stampAppear} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
     forwards;
-
-  &::before {
-    content: "済"; /* Traditional Hanko "Done" character */
-  }
 `;
 
 const LockIcon = styled.div`
@@ -221,6 +219,7 @@ interface HankoSkillCardProps {
   icon: string;
   expReward: number;
   state: "locked" | "available" | "active" | "mastered";
+  score?: number;
   color: string;
   onClick: () => void;
 }
@@ -232,6 +231,7 @@ export function HankoSkillCard({
   icon,
   expReward,
   state,
+  score,
   color,
   onClick,
 }: HankoSkillCardProps) {
@@ -239,6 +239,8 @@ export function HankoSkillCard({
   const solidColor = color.includes("gradient")
     ? color.match(/#(?:[0-9a-fA-F]{3}){1,2}/g)?.[0] || "#10b981"
     : color;
+
+  const isPartial = score !== undefined && score < 100;
 
   return (
     <CardContainer
@@ -272,7 +274,11 @@ export function HankoSkillCard({
           </LockIcon>
         )}
 
-        {state === "mastered" && <HankoStamp />}
+        {state === "mastered" && (
+          <HankoStamp $isPartial={isPartial}>
+            {isPartial ? `${score}%` : "済"}
+          </HankoStamp>
+        )}
       </CardHeader>
 
       <div style={{ width: "100%", flex: 1 }}>
@@ -288,8 +294,13 @@ export function HankoSkillCard({
           </span>
         )}
         {state === "mastered" && (
-          <span style={{ color: "var(--primary)", fontWeight: 800 }}>
-            Ulang
+          <span
+            style={{
+              color: isPartial ? "var(--primary)" : "#10b981",
+              fontWeight: 800,
+            }}
+          >
+            {isPartial ? "Ulang" : "Done"}
           </span>
         )}
       </CardFooter>

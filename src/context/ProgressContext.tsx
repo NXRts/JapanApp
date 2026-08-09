@@ -76,6 +76,7 @@ interface ProgressData {
   activityLog: Record<string, number>; // Date string -> EXP gained
   completedExercises: string[];
   completedGrammarSections: string[];
+  exerciseScores?: Record<string, number>;
   showFurigana: boolean;
   profile?: UserProfile;
   /** true once the user has explicitly entered their name on first launch */
@@ -100,6 +101,7 @@ interface ProgressContextType {
   addExp: (amount: number) => void;
   resetProgress: () => void;
   markExerciseCompleted: (id: string) => void;
+  updateExerciseScore: (id: string, score: number) => void;
   getDueItems: () => (SRSItem & { id: string })[];
   updateProfile: (profileData: Partial<UserProfile>) => void;
   markGrammarSectionCompleted: (key: string) => void;
@@ -604,6 +606,27 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     [triggerAlert, checkStreak, autoClaimCompletedQuests],
   );
 
+  const updateExerciseScore = useCallback(
+    (id: string, score: number) => {
+      setProgress((prev) => {
+        const currentScores = prev.exerciseScores || {};
+        const prevScore = currentScores[id] || 0;
+        const newScore = Math.max(prevScore, Math.min(100, Math.max(0, score)));
+        if (prevScore === newScore && currentScores[id] !== undefined) return prev;
+
+        const nextState = {
+          ...prev,
+          exerciseScores: {
+            ...currentScores,
+            [id]: newScore,
+          },
+        };
+        return autoClaimCompletedQuests(nextState);
+      });
+    },
+    [autoClaimCompletedQuests],
+  );
+
   const getDueItems = useCallback(() => {
     const now = new Date();
     return Object.entries(progress.srs)
@@ -877,6 +900,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       updateLeitnerProgress,
       addExp,
       markExerciseCompleted,
+      updateExerciseScore,
       getDueItems,
       resetProgress,
       updateProfile,
@@ -903,6 +927,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       updateLeitnerProgress,
       addExp,
       markExerciseCompleted,
+      updateExerciseScore,
       getDueItems,
       resetProgress,
       updateProfile,
