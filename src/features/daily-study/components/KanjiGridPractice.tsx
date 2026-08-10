@@ -14,6 +14,8 @@ const GridContainer = styled.div`
   flex-direction: column;
   gap: 1.25rem;
   width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
 `;
 
 const SectionHeader = styled.div`
@@ -46,6 +48,9 @@ const WorksheetTable = styled.div`
   overflow: hidden;
   width: 100%;
   background: var(--background);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 `;
 
 const WorksheetRow = styled.div<{ $cols: number }>`
@@ -69,6 +74,9 @@ const CellBox = styled.div<{ $isStep?: boolean }>`
   justify-content: center;
   background: ${({ $isStep }) =>
     $isStep ? "rgba(var(--primary-rgb), 0.05)" : "transparent"};
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 
   &:last-child {
     border-right: none;
@@ -90,6 +98,9 @@ const CellCanvas = styled.canvas`
   height: 100%;
   cursor: crosshair;
   z-index: 5;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 `;
 
 const StepBadge = styled.div`
@@ -253,6 +264,9 @@ export function KanjiGridPractice({ char }: Props) {
       | React.TouchEvent<HTMLCanvasElement>,
     canvas: HTMLCanvasElement,
   ) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
     isDrawingRef.current = true;
     lastPosRef.current = getCanvasCoords(e, canvas);
   };
@@ -263,6 +277,9 @@ export function KanjiGridPractice({ char }: Props) {
       | React.TouchEvent<HTMLCanvasElement>,
     canvas: HTMLCanvasElement,
   ) => {
+    if (e.cancelable) {
+      e.preventDefault();
+    }
     if (!isDrawingRef.current || !lastPosRef.current) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
