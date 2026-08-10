@@ -110,43 +110,50 @@ const StepBadge = styled.div`
 
 const ControlBar = styled.div`
   display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+  width: 100%;
 
   .btn-group {
     display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
+    gap: 0.6rem;
+    width: 100%;
 
-  button {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 0.5rem 0.9rem;
-    border-radius: 10px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    background: var(--surface);
-    color: var(--foreground);
-    border: 1px solid var(--border);
-    transition: all 0.2s ease;
+    button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 0.6rem 0.4rem;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      background: var(--surface);
+      color: var(--foreground);
+      border: 1.5px solid var(--border);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      -webkit-tap-highlight-color: transparent;
 
-    &:hover {
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    &.primary {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
+      @media (max-width: 480px) {
+        padding: 0.55rem 0.25rem;
+        font-size: 0.76rem;
+        gap: 3px;
+      }
 
       &:hover {
-        opacity: 0.9;
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+
+      &.primary {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+
+        &:hover {
+          opacity: 0.9;
+        }
       }
     }
   }
@@ -157,6 +164,15 @@ interface Props {
 }
 
 export function KanjiGridPractice({ char }: Props) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 640);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const [svgPaths, setSvgPaths] = useState<string[]>(() =>
     getStrokePaths(char),
   );
@@ -192,8 +208,8 @@ export function KanjiGridPractice({ char }: Props) {
 
   const totalStrokes = svgPaths.length || 1;
 
-  // Responsive total columns per row (e.g. 10 columns max to fit 100% width cleanly without scrollbar)
-  const totalColumns = Math.max(10, totalStrokes + 3);
+  // Responsive total columns per row: 5 large columns on mobile for finger drawing vs 10 on desktop
+  const totalColumns = isMobile ? 5 : Math.max(10, totalStrokes + 3);
 
   const clearAllCanvases = () => {
     cellCanvasRefs.current.forEach((canvas) => {
@@ -279,7 +295,7 @@ export function KanjiGridPractice({ char }: Props) {
           <span>🖌️</span> Lembar Latihan Menulis {isKana ? "Kana" : "Kanji"} (
           {char})
         </h3>
-        <span className="subtitle">Responsif 100% tanpa scrollbar samping</span>
+        <span className="subtitle">Latih Urutan Goresan & Menulis</span>
       </SectionHeader>
 
       <WorksheetTable>
@@ -502,14 +518,10 @@ export function KanjiGridPractice({ char }: Props) {
             onClick={() => setShowGhost(!showGhost)}
             className={showGhost ? "primary" : ""}
           >
-            👁️{" "}
-            {showGhost
-              ? "Sembunyikan Bayangan"
-              : "Tampilkan 3 Sel Bayangan Jiplak"}
+            👁️ {showGhost ? "Sembunyikan" : "Bayangan"}
           </button>
+          <button onClick={clearAllCanvases}>🧹 Hapus Grid</button>
         </div>
-
-        <button onClick={clearAllCanvases}>🧹 Hapus Coretan Grid</button>
       </ControlBar>
     </GridContainer>
   );
