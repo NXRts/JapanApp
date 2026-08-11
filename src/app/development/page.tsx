@@ -498,6 +498,30 @@ export default function DevelopmentPage() {
         </StatCard>
       </StatsRow>
 
+      {/* Flagship Feature: Kanji Kaiwa Studio */}
+      <FlagshipCard style={{ background: "linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.18) 100%)", borderColor: "rgba(99, 102, 241, 0.4)" }}>
+        <FlagshipBadge style={{ background: "#6366f1" }}>Fitur Baru • Experimental Kaiwa Labs 💬</FlagshipBadge>
+        <FlagshipContent>
+          <FlagshipInfo>
+            <h2>💬 Kanji Kaiwa Studio (会話で漢字)</h2>
+            <p>
+              Metode inovatif menghafal Kanji lewat konteks percakapan sehari-hari! Lengkap dengan audio percakapan native, Furigana toggle switch, Kanji quick breakdown modal, dan kuis rumpang dialog.
+            </p>
+
+            <FeaturePillGrid>
+              <FeaturePill>💬 Dialog Percakapan Contextual</FeaturePill>
+              <FeaturePill>👁️ Furigana Toggle Switch</FeaturePill>
+              <FeaturePill>🔍 Kanji Quick Modal Breakdown</FeaturePill>
+              <FeaturePill>🧩 Kuis Rumpang Percakapan</FeaturePill>
+            </FeaturePillGrid>
+
+            <PrimaryCTAButton href="/development/kanji-kaiwa" style={{ background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)" }}>
+              💬 Coba Kanji Kaiwa Studio
+            </PrimaryCTAButton>
+          </FlagshipInfo>
+        </FlagshipContent>
+      </FlagshipCard>
+
       {/* Flagship Feature 1: Simulasi Ujian JLPT N5 */}
       <FlagshipCard style={{ background: "linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(59, 130, 246, 0.15) 100%)", borderColor: "rgba(16, 185, 129, 0.4)" }}>
         <FlagshipBadge style={{ background: "#10b981" }}>Beta Siap Dicoba • Module Baru 🏆</FlagshipBadge>
