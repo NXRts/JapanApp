@@ -1,6 +1,5 @@
 "use client";
 
-import { DeviceModeSwitcher } from "@/components/DeviceModeSwitcher";
 import { FloatingDock } from "@/components/mobile/FloatingDock";
 import { useDeviceMode } from "@/context/DeviceModeContext";
 import { useProgress } from "@/context/ProgressContext";
@@ -1617,16 +1616,6 @@ export function Navbar() {
           </SidebarNavList>
 
           <SidebarFooter>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginBottom: "0.25rem",
-              }}
-            >
-              <DeviceModeSwitcher />
-            </div>
-
             <SidebarLevelCard
               href="/profile"
               title={`${progress.exp} Total EXP`}
@@ -1689,11 +1678,9 @@ export function Navbar() {
                   gap: "6px",
                   justifyContent: "center",
                   flex: "1 1 auto",
-                  /* No overflow:hidden here — it clips the switcher slider animation */
                   margin: "0 4px",
                 }}
               >
-                <DeviceModeSwitcher />
                 <Link
                   href="/profile"
                   style={{ textDecoration: "none", flexShrink: 0 }}
@@ -1911,8 +1898,6 @@ export function Navbar() {
               </NavList>
 
               <RightNavContainer>
-                <DeviceModeSwitcher />
-
                 <Link href="/profile" style={{ textDecoration: "none" }}>
                   <LevelBadge title={`${progress.exp} Total EXP`}>
                     LVL {level}{" "}
