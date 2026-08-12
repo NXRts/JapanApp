@@ -25,7 +25,13 @@ const SidebarWrapper = styled.aside`
   flex-direction: column;
   gap: 1.25rem;
   position: sticky;
-  top: 1.5rem;
+  top: 80px;
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   align-self: flex-start;
   z-index: 10;
 

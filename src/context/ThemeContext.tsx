@@ -89,8 +89,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty(
         "--navbar-bg",
         "rgba(11, 17, 33, 0.85)",
-      ); /* Match background */
+      );
       root.style.setProperty("--navbar-border", "rgba(255, 255, 255, 0.08)");
+      root.style.setProperty(
+        "--topbar-bg",
+        "rgba(11, 17, 33, 0.85)",
+      );
+      root.style.setProperty("--topbar-border", "rgba(255, 255, 255, 0.08)");
 
       /* Dark: Glassy transparent */
       root.style.setProperty("--btn-secondary-bg", "rgba(255, 255, 255, 0.05)");
@@ -119,6 +124,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       root.style.setProperty("--dot-color", "#E2E8F0");
       root.style.setProperty("--navbar-bg", "rgba(255, 255, 255, 0.85)");
       root.style.setProperty("--navbar-border", "rgba(226, 232, 240, 0.6)");
+      root.style.setProperty(
+        "--topbar-bg",
+        "rgba(255, 255, 255, 0.85)",
+      );
+      root.style.setProperty("--topbar-border", "rgba(226, 232, 240, 0.6)");
 
       /* Light: White solid with dark text/primary text */
       root.style.setProperty("--btn-secondary-bg", "#FFFFFF");
