@@ -707,6 +707,22 @@ function HomeIcon() {
   );
 }
 
+function LearnIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+    </svg>
+  );
+}
+
 function GameIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
@@ -1437,8 +1453,16 @@ export function Navbar() {
           </SidebarLogo>
 
           <SidebarNavList>
-            <SidebarNavItem href="/" $active={pathname === "/"}>
+            <SidebarNavItem href="/home" $active={pathname === "/home"}>
               <HomeIcon />
+              Home
+            </SidebarNavItem>
+
+            <SidebarNavItem
+              href="/"
+              $active={pathname === "/" || pathname === "/learning"}
+            >
+              <LearnIcon />
               Learn
             </SidebarNavItem>
 
@@ -1746,8 +1770,16 @@ export function Navbar() {
 
               <NavList>
                 <NavItem>
-                  <StyledLink href="/" $active={pathname === "/"}>
+                  <StyledLink href="/home" $active={pathname === "/home"}>
                     Home
+                  </StyledLink>
+                </NavItem>
+                <NavItem>
+                  <StyledLink
+                    href="/"
+                    $active={pathname === "/" || pathname === "/learning"}
+                  >
+                    Learn
                   </StyledLink>
                 </NavItem>
 
