@@ -108,7 +108,7 @@ const MainLayout = styled.div`
   gap: 2.5rem;
   max-width: 1140px;
   margin: 0 auto;
-  padding: 2rem 1.25rem 6rem;
+  padding: 1.5rem 1.25rem 6rem;
   width: 100%;
   box-sizing: border-box;
 

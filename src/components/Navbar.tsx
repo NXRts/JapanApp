@@ -45,7 +45,7 @@ const NavRoot = styled.nav<{ $hideOnDesktop?: boolean; $isMenuOpen?: boolean }>`
     `}
 
   @media (max-width: 768px) {
-    background: var(--surface); /* Solid white/surface color on mobile */
+    background: var(--topbar-bg, var(--surface));
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
