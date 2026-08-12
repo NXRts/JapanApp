@@ -7,7 +7,7 @@ import { isItemDue } from "@/lib/srs";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { createGlobalStyle, css } from "styled-components";
 import { UserIcon } from "./icons/AppIcons";
 
@@ -38,7 +38,9 @@ const NavRoot = styled.nav<{ $hideOnDesktop?: boolean; $isMenuOpen?: boolean }>`
     $hideOnDesktop &&
     css`
       @media (min-width: 1101px) {
-        display: none;
+        margin-left: 240px;
+        width: calc(100% - 240px);
+        max-width: calc(100% - 240px);
       }
     `}
 
@@ -46,6 +48,70 @@ const NavRoot = styled.nav<{ $hideOnDesktop?: boolean; $isMenuOpen?: boolean }>`
     background: var(--surface); /* Solid white/surface color on mobile */
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+  }
+`;
+
+const AppTopHeaderBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.4rem 1.25rem;
+  min-height: 48px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 0.35rem 0.75rem;
+  }
+`;
+
+const AppTopLeftGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+`;
+
+const StatPill = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 0.28rem 0.75rem;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--foreground);
+`;
+
+const AppTopRightGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+`;
+
+const StatusChip = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--foreground);
+  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
+
+  @media (max-width: 480px) {
+    font-size: 0.72rem;
+    padding: 0.25rem 0.45rem;
   }
 `;
 
@@ -154,6 +220,22 @@ const Logo = styled(Link)`
   }
 `;
 
+const MobileHeaderLogo = styled(Logo)`
+  @media (min-width: 1101px) {
+    display: none !important;
+  }
+`;
+
+const MobileHeaderGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  @media (min-width: 1101px) {
+    display: none !important;
+  }
+`;
+
 const NavList = styled.ul`
   display: flex;
   align-items: center;
@@ -227,11 +309,7 @@ const DropdownItem = styled(Link)<{ $active?: boolean; $isDev?: boolean }>`
   padding: 0.5rem 1rem;
   border-radius: 8px;
   color: ${({ $active, $isDev }) =>
-    $isDev
-      ? "#a855f7"
-      : $active
-        ? "var(--primary)"
-        : "var(--text-secondary)"};
+    $isDev ? "#a855f7" : $active ? "var(--primary)" : "var(--text-secondary)"};
   text-decoration: none;
   font-size: 0.82rem;
   font-weight: 600;
@@ -1402,6 +1480,17 @@ export function Navbar() {
   const expNeededForNext = nextLevelExp - currentLevelExp;
   const percent = (expInCurrentLevel / expNeededForNext) * 100;
 
+  const isDailyCompleted = useMemo(() => {
+    if (!progress.completedExercises) return false;
+    const dailyLessons = [
+      "hiragana-a",
+      "hiragana-ka",
+      "katakana-a",
+      "n5-u1-numbers",
+    ];
+    return dailyLessons.every((id) => progress.completedExercises.includes(id));
+  }, [progress.completedExercises]);
+
   // Prevent background scrolling when mobile menu is open and toggle helper class
   useEffect(() => {
     const html = document.documentElement;
@@ -1665,90 +1754,74 @@ export function Navbar() {
       >
         <NavContainer>
           {isMounted && deviceMode === "mobile" ? (
-            <>
-              <Logo href="/" onClick={() => setIsMobileMenuOpen(false)}>
+            <AppTopHeaderBar>
+              <MobileHeaderLogo href="/" onClick={() => setIsMobileMenuOpen(false)}>
                 🇯🇵 <span>JapanApp</span>
-              </Logo>
+              </MobileHeaderLogo>
 
-              {/* ── Middle: DeviceModeSwitcher + LVL Badge ─────────────────── */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  justifyContent: "center",
-                  flex: "1 1 auto",
-                  margin: "0 4px",
-                }}
-              >
-                <Link
-                  href="/profile"
-                  style={{ textDecoration: "none", flexShrink: 0 }}
-                >
-                  <LevelBadge
-                    style={{
-                      borderRadius: "999px",
-                      fontSize: "0.68rem",
-                      padding: "3px 8px",
-                    }}
-                    title={`${progress.exp} Total EXP`}
+              <AppTopRightGroup>
+                <MobileHeaderGroup>
+                  <Link
+                    href="/profile"
+                    style={{ textDecoration: "none", flexShrink: 0 }}
                   >
-                    LVL {level}
-                  </LevelBadge>
-                </Link>
-              </div>
+                    <LevelBadge
+                      style={{
+                        borderRadius: "999px",
+                        fontSize: "0.68rem",
+                        padding: "3px 8px",
+                      }}
+                      title={`${progress.exp} Total EXP`}
+                    >
+                      LVL {level}
+                    </LevelBadge>
+                  </Link>
 
-              {/* ── Right: Search + Avatar + Hamburger ─────────────────────── */}
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "2px",
-                  flexShrink: 0,
-                }}
-              >
-                <SearchBtn
-                  onClick={() => setIsDictionaryOpen(true)}
-                  title="Dictionary (Jisho)"
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                  <SearchBtn
+                    onClick={() => setIsDictionaryOpen(true)}
+                    title="Dictionary (Jisho)"
                   >
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.3-4.3" />
-                  </svg>
-                </SearchBtn>
-                <UserBtn href="/profile" title="Profile">
-                  {progress.profile?.avatar ? (
-                    <span style={{ fontSize: "1.2rem", lineHeight: 1 }}>
-                      {progress.profile.avatar}
-                    </span>
-                  ) : (
-                    <UserIcon size={20} />
-                  )}
-                </UserBtn>
-                <HamburgerBtn
-                  $isOpen={isMobileMenuOpen}
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  aria-label="Toggle menu"
-                >
-                  {isMobileMenuOpen ? (
-                    <svg viewBox="0 0 24 24">
-                      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="11" cy="11" r="8" />
+                      <path d="m21 21-4.3-4.3" />
                     </svg>
-                  ) : (
-                    <svg viewBox="0 0 24 24">
-                      <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-                    </svg>
-                  )}
-                </HamburgerBtn>
-              </div>
-            </>
+                  </SearchBtn>
+
+                  <UserBtn href="/profile" title="Profile">
+                    {progress.profile?.avatar ? (
+                      <span style={{ fontSize: "1.2rem", lineHeight: 1 }}>
+                        {progress.profile.avatar}
+                      </span>
+                    ) : (
+                      <UserIcon size={20} />
+                    )}
+                  </UserBtn>
+
+                  <HamburgerBtn
+                    $isOpen={isMobileMenuOpen}
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    aria-label="Toggle menu"
+                  >
+                    {isMobileMenuOpen ? (
+                      <svg viewBox="0 0 24 24">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 12z" />
+                      </svg>
+                    ) : (
+                      <svg viewBox="0 0 24 24">
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                      </svg>
+                    )}
+                  </HamburgerBtn>
+                </MobileHeaderGroup>
+              </AppTopRightGroup>
+            </AppTopHeaderBar>
           ) : (
             <>
               <Logo href="/" onClick={() => setIsMobileMenuOpen(false)}>
