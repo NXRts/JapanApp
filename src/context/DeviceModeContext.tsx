@@ -20,7 +20,7 @@ export function DeviceModeProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [deviceMode, setDeviceModeState] = useState<DeviceMode>("pc");
+  const [deviceMode, setDeviceModeState] = useState<DeviceMode>("mobile");
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -31,11 +31,11 @@ export function DeviceModeProvider({
       if (saved === "pc" || saved === "mobile") {
         setDeviceModeState(saved);
       } else {
-        const isMobileSize = window.innerWidth <= 768;
-        setDeviceModeState(isMobileSize ? "mobile" : "pc");
+        // Default web layout to mobile/app sidebar mode for all devices
+        setDeviceModeState("mobile");
       }
     } catch {
-      // localStorage is disabled or restricted
+      setDeviceModeState("mobile");
     }
   }, []);
 
