@@ -9,6 +9,7 @@ import {
   ThemeMode,
 } from "@/context/ThemeContext";
 import { useProgress } from "@/context/ProgressContext";
+import { useDeviceMode } from "@/context/DeviceModeContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -658,6 +659,7 @@ const Toast = styled(motion.div)`
 export default function SettingsPage() {
   const { color, setColor, mode, setMode, saveTheme } = useTheme();
   const { resetProgress } = useProgress();
+  const { deviceMode, setDeviceMode } = useDeviceMode();
 
   // Track original settings to allow cancel/revert on navigate away
   const initialColor = useRef(color);
@@ -987,6 +989,35 @@ export default function SettingsPage() {
                       >
                         <span className="icon">🌙</span>
                         <span>Mode Gelap</span>
+                      </ModeBox>
+                    </ModeRow>
+                  </FormGroup>
+
+                  <FormGroup style={{ marginTop: "1.5rem" }}>
+                    <label>Format Tata Letak Web (Layout Mode)</label>
+                    <SubDescription>
+                      Pilih format tata letak navigasi web utama sesuai preferensi tampilan Anda.
+                    </SubDescription>
+                    <ModeRow>
+                      <ModeBox
+                        $active={deviceMode === "mobile"}
+                        onClick={() => {
+                          setDeviceMode("mobile");
+                          triggerToast("Format Tata Letak: App Layout (Sidebar) 📱");
+                        }}
+                      >
+                        <span className="icon">📱</span>
+                        <span>Mode App (Sidebar Samping)</span>
+                      </ModeBox>
+                      <ModeBox
+                        $active={deviceMode === "pc"}
+                        onClick={() => {
+                          setDeviceMode("pc");
+                          triggerToast("Format Tata Letak: PC Layout (Navbar Atas) 🖥️");
+                        }}
+                      >
+                        <span className="icon">🖥️</span>
+                        <span>Mode PC (Navbar Atas)</span>
                       </ModeBox>
                     </ModeRow>
                   </FormGroup>
