@@ -113,6 +113,143 @@ const BreadcrumbSeparator = styled.span`
   user-select: none;
 `;
 
+const DesktopHeaderActionsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+
+  @media (max-width: 1100px) {
+    display: none !important;
+  }
+`;
+
+const SearchPillButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.38rem 0.85rem;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--foreground);
+  }
+
+  svg {
+    width: 15px;
+    height: 15px;
+    stroke-width: 2.2;
+    opacity: 0.85;
+  }
+`;
+
+const KbdShortcutBadge = styled.kbd`
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-family: monospace;
+`;
+
+const HeaderIconButton = styled.button<{ $active?: boolean }>`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: ${({ $active }) =>
+    $active ? "rgba(var(--primary-rgb), 0.15)" : "transparent"};
+  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
+  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.85;
+
+  &:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--foreground);
+  }
+
+  svg {
+    width: 19px;
+    height: 19px;
+    stroke-width: 2;
+  }
+`;
+
+const NotificationBadgeDot = styled.span`
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 2px solid var(--surface);
+`;
+
+const NotificationPopover = styled.div`
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 300px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  padding: 1rem;
+  z-index: 1000;
+  font-family: "Nunito", "Outfit", sans-serif;
+`;
+
+const NotificationHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+
+  h4 {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--foreground);
+  }
+`;
+
+const NotificationList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const NotificationItem = styled.div`
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
+  color: var(--foreground);
+`;
+
 const AppTopLeftGroup = styled.div`
   display: flex;
   align-items: center;
@@ -1528,6 +1665,40 @@ export function Navbar() {
   const [isLainnyaOpen, setIsLainnyaOpen] = useState(false);
   const lainnyaRef = useRef<HTMLDivElement>(null);
 
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const notificationsRef = useRef<HTMLDivElement>(null);
+
+  // Close notifications menu on click outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        notificationsRef.current &&
+        !notificationsRef.current.contains(event.target as Node)
+      ) {
+        setIsNotificationsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Global shortcut for opening Search modal via "/" key
+  useEffect(() => {
+    function handleGlobalKeyDown(e: KeyboardEvent) {
+      if (
+        e.key === "/" &&
+        !["INPUT", "TEXTAREA", "SELECT"].includes(
+          (e.target as HTMLElement)?.tagName
+        )
+      ) {
+        e.preventDefault();
+        setIsDictionaryOpen(true);
+      }
+    }
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, []);
+
   // Drag-to-dismiss state for Mobile Bottom Sheet
   const [dragY, setDragY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -1919,6 +2090,131 @@ export function Navbar() {
               </MobileHeaderLogo>
 
               <AppTopRightGroup>
+                {/* PC Desktop Toolbar Actions (Search [/], Sparkles AI, Notifications, Help, Settings) */}
+                <DesktopHeaderActionsWrapper ref={notificationsRef}>
+                  <SearchPillButton
+                    onClick={() => setIsDictionaryOpen(true)}
+                    title="Cari kata/kanji (Kamus Jisho) - Tekan tombol /"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="11" cy="11" r="8" />
+                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <span>Search</span>
+                    <KbdShortcutBadge>/</KbdShortcutBadge>
+                  </SearchPillButton>
+
+                  <HeaderIconButton
+                    as={Link}
+                    href="/development/kanji-kaiwa"
+                    title="AI Helper & Smart Lab"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.937A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z" />
+                      <path d="M20 3v4" />
+                      <path d="M22 5h-4" />
+                    </svg>
+                  </HeaderIconButton>
+
+                  <div style={{ position: "relative" }}>
+                    <HeaderIconButton
+                      $active={isNotificationsOpen}
+                      onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                      title="Pemberitahuan & Notifikasi"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                      </svg>
+                      <NotificationBadgeDot />
+                    </HeaderIconButton>
+
+                    {isNotificationsOpen && (
+                      <NotificationPopover>
+                        <NotificationHeader>
+                          <h4>🔔 Notifikasi & Update</h4>
+                        </NotificationHeader>
+                        <NotificationList>
+                          <NotificationItem>
+                            <span>🔥</span>
+                            <div>
+                              <strong>Streak Pertahankan!</strong>
+                              <br />
+                              Lanjutkan latihan hari ini untuk mempertahankan streak kamu.
+                            </div>
+                          </NotificationItem>
+                          <NotificationItem>
+                            <span>💎</span>
+                            <div>
+                              <strong>Bonus Daily Quest!</strong>
+                              <br />
+                              Selesaikan 3 misi harian untuk mendapatkan 20 permata.
+                            </div>
+                          </NotificationItem>
+                        </NotificationList>
+                      </NotificationPopover>
+                    )}
+                  </div>
+
+                  <HeaderIconButton
+                    as={Link}
+                    href="/help"
+                    title="Bantuan & Pusat Panduan"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                      <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                  </HeaderIconButton>
+
+                  <HeaderIconButton
+                    as={Link}
+                    href="/settings"
+                    title="Pengaturan"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </HeaderIconButton>
+                </DesktopHeaderActionsWrapper>
+
                 <MobileHeaderGroup>
                   <Link
                     href="/profile"
