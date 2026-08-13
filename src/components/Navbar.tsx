@@ -1437,48 +1437,48 @@ interface BreadcrumbItem {
   icon?: string;
 }
 
-const ROUTE_NAME_MAP: Record<string, { label: string; icon?: string }> = {
-  home: { label: "Home", icon: "🏠" },
-  learning: { label: "Learn", icon: "📖" },
-  characters: { label: "Characters", icon: "あ" },
-  hiragana: { label: "Hiragana" },
-  katakana: { label: "Katakana" },
-  kanji: { label: "Kanji" },
-  jlpt: { label: "JLPT", icon: "⛩️" },
-  "kanji-writer": { label: "Kanji Writer" },
-  "jlpt-simulasi": { label: "JLPT Simulasi" },
-  simulasi: { label: "Simulasi Exam" },
-  flashcards: { label: "Flashcards" },
-  "mini-test": { label: "Mini Test" },
-  practice: { label: "Practice", icon: "🏋️" },
-  quiz: { label: "Quiz", icon: "🎯" },
-  game: { label: "Games", icon: "🎮" },
-  study: { label: "Study", icon: "📖" },
-  speaking: { label: "Speaking" },
-  listening: { label: "Listening" },
-  reading: { label: "Reading" },
-  vocabulary: { label: "Vocabulary" },
-  "smart-flashcards": { label: "Smart Flashcards" },
-  "kana-flashcards": { label: "Kana Flashcards" },
-  "grammar-drills": { label: "Grammar Drills" },
-  materials: { label: "Learning Materials", icon: "📚" },
-  "practice-sheets": { label: "Practice Sheets", icon: "📝" },
-  "match-pairs": { label: "Match Pairs", icon: "🧩" },
-  profile: { label: "Profile", icon: "🦊" },
-  edit: { label: "Edit Profile" },
-  settings: { label: "Settings", icon: "⚙️" },
-  help: { label: "Bantuan", icon: "❓" },
-  contact: { label: "Contact", icon: "✉️" },
-  development: { label: "Development Labs", icon: "🚧" },
-  hafalan: { label: "Hafalan" },
-  quests: { label: "Misi & Quests" },
-  lesson: { label: "Lesson Player" },
+const ROUTE_NAME_MAP: Record<string, string> = {
+  home: "Home",
+  learning: "Learn",
+  characters: "Characters",
+  hiragana: "Hiragana",
+  katakana: "Katakana",
+  kanji: "Kanji",
+  jlpt: "JLPT",
+  "kanji-writer": "Kanji Writer",
+  "jlpt-simulasi": "JLPT Simulasi",
+  simulasi: "Simulasi Exam",
+  flashcards: "Flashcards",
+  "mini-test": "Mini Test",
+  practice: "Practice",
+  quiz: "Quiz",
+  game: "Games",
+  study: "Practice",
+  speaking: "Speaking",
+  listening: "Listening",
+  reading: "Reading",
+  vocabulary: "Vocabulary",
+  "smart-flashcards": "Smart Flashcards",
+  "kana-flashcards": "Kana Flashcards",
+  "grammar-drills": "Grammar Drills",
+  materials: "Learning Materials",
+  "practice-sheets": "Practice Sheets",
+  "match-pairs": "Match Pairs",
+  profile: "Profile",
+  edit: "Edit Profile",
+  settings: "Settings",
+  help: "Bantuan",
+  contact: "Contact",
+  development: "Development Labs",
+  hafalan: "Hafalan",
+  quests: "Misi & Quests",
+  lesson: "Lesson Player",
 };
 
 function formatSegmentLabel(segment: string): string {
   const lower = segment.toLowerCase();
   if (ROUTE_NAME_MAP[lower]) {
-    return ROUTE_NAME_MAP[lower].label;
+    return ROUTE_NAME_MAP[lower];
   }
   // Convert kebab-case or slug to Capital Case (e.g. n5 -> N5, jlpt-n5 -> JLPT N5)
   if (/^n[1-5]$/i.test(segment)) {
@@ -1499,7 +1499,7 @@ function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
   ];
 
   if (!pathname || pathname === "/") {
-    items.push({ label: "Learn", icon: "📖" });
+    items.push({ label: "Learn" });
     return items;
   }
 
@@ -1509,15 +1509,10 @@ function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
   rawSegments.forEach((segment, idx) => {
     currentPath += `/${segment}`;
     const isLast = idx === rawSegments.length - 1;
-
-    const lower = segment.toLowerCase();
-    const routeInfo = ROUTE_NAME_MAP[lower];
     const label = formatSegmentLabel(segment);
-    const icon = routeInfo?.icon;
 
     items.push({
       label,
-      icon,
       href: isLast ? undefined : currentPath,
     });
   });
