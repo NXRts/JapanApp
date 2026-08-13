@@ -65,6 +65,54 @@ const AppTopHeaderBar = styled.div`
   }
 `;
 
+const DesktopBreadcrumbsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  font-family: "Nunito", "Outfit", sans-serif;
+  user-select: none;
+
+  @media (max-width: 1100px) {
+    display: none !important;
+  }
+`;
+
+const BreadcrumbItemContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+`;
+
+const BreadcrumbLink = styled(Link)`
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--primary);
+  }
+`;
+
+const BreadcrumbCurrent = styled.span`
+  color: var(--foreground);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+`;
+
+const BreadcrumbSeparator = styled.span`
+  color: var(--text-secondary);
+  opacity: 0.5;
+  font-size: 0.75rem;
+  user-select: none;
+`;
+
 const AppTopLeftGroup = styled.div`
   display: flex;
   align-items: center;
@@ -1383,6 +1431,100 @@ function ContactIcon({ stroke, ...props }: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+  icon?: string;
+}
+
+const ROUTE_NAME_MAP: Record<string, { label: string; icon?: string }> = {
+  home: { label: "Home", icon: "🏠" },
+  learning: { label: "Learn", icon: "📖" },
+  characters: { label: "Characters", icon: "あ" },
+  hiragana: { label: "Hiragana" },
+  katakana: { label: "Katakana" },
+  kanji: { label: "Kanji" },
+  jlpt: { label: "JLPT", icon: "⛩️" },
+  "kanji-writer": { label: "Kanji Writer" },
+  "jlpt-simulasi": { label: "JLPT Simulasi" },
+  simulasi: { label: "Simulasi Exam" },
+  flashcards: { label: "Flashcards" },
+  "mini-test": { label: "Mini Test" },
+  practice: { label: "Practice", icon: "🏋️" },
+  quiz: { label: "Quiz", icon: "🎯" },
+  game: { label: "Games", icon: "🎮" },
+  study: { label: "Study", icon: "📖" },
+  speaking: { label: "Speaking" },
+  listening: { label: "Listening" },
+  reading: { label: "Reading" },
+  vocabulary: { label: "Vocabulary" },
+  "smart-flashcards": { label: "Smart Flashcards" },
+  "kana-flashcards": { label: "Kana Flashcards" },
+  "grammar-drills": { label: "Grammar Drills" },
+  materials: { label: "Learning Materials", icon: "📚" },
+  "practice-sheets": { label: "Practice Sheets", icon: "📝" },
+  "match-pairs": { label: "Match Pairs", icon: "🧩" },
+  profile: { label: "Profile", icon: "🦊" },
+  edit: { label: "Edit Profile" },
+  settings: { label: "Settings", icon: "⚙️" },
+  help: { label: "Bantuan", icon: "❓" },
+  contact: { label: "Contact", icon: "✉️" },
+  development: { label: "Development Labs", icon: "🚧" },
+  hafalan: { label: "Hafalan" },
+  quests: { label: "Misi & Quests" },
+  lesson: { label: "Lesson Player" },
+};
+
+function formatSegmentLabel(segment: string): string {
+  const lower = segment.toLowerCase();
+  if (ROUTE_NAME_MAP[lower]) {
+    return ROUTE_NAME_MAP[lower].label;
+  }
+  // Convert kebab-case or slug to Capital Case (e.g. n5 -> N5, jlpt-n5 -> JLPT N5)
+  if (/^n[1-5]$/i.test(segment)) {
+    return `${segment.toUpperCase()} Level`;
+  }
+  return segment
+    .split("-")
+    .map((word) => {
+      if (word.toLowerCase() === "jlpt") return "JLPT";
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+}
+
+function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
+  const items: BreadcrumbItem[] = [
+    { label: "JapanApp", href: "/", icon: "▦" },
+  ];
+
+  if (!pathname || pathname === "/") {
+    items.push({ label: "Learn", icon: "📖" });
+    return items;
+  }
+
+  const rawSegments = pathname.split("/").filter(Boolean);
+  let currentPath = "";
+
+  rawSegments.forEach((segment, idx) => {
+    currentPath += `/${segment}`;
+    const isLast = idx === rawSegments.length - 1;
+
+    const lower = segment.toLowerCase();
+    const routeInfo = ROUTE_NAME_MAP[lower];
+    const label = formatSegmentLabel(segment);
+    const icon = routeInfo?.icon;
+
+    items.push({
+      label,
+      icon,
+      href: isLast ? undefined : currentPath,
+    });
+  });
+
+  return items;
+}
+
 export function Navbar() {
   const pathname = usePathname() || "";
 
@@ -1755,6 +1897,28 @@ export function Navbar() {
         <NavContainer>
           {isMounted && deviceMode === "mobile" ? (
             <AppTopHeaderBar>
+              <DesktopBreadcrumbsWrapper>
+                {getBreadcrumbs(pathname).map((crumb, idx, arr) => {
+                  const isLast = idx === arr.length - 1;
+                  return (
+                    <BreadcrumbItemContainer key={idx}>
+                      {idx > 0 && <BreadcrumbSeparator>›</BreadcrumbSeparator>}
+                      {isLast || !crumb.href ? (
+                        <BreadcrumbCurrent>
+                          {crumb.icon && <span>{crumb.icon}</span>}
+                          <span>{crumb.label}</span>
+                        </BreadcrumbCurrent>
+                      ) : (
+                        <BreadcrumbLink href={crumb.href}>
+                          {crumb.icon && <span>{crumb.icon}</span>}
+                          <span>{crumb.label}</span>
+                        </BreadcrumbLink>
+                      )}
+                    </BreadcrumbItemContainer>
+                  );
+                })}
+              </DesktopBreadcrumbsWrapper>
+
               <MobileHeaderLogo href="/" onClick={() => setIsMobileMenuOpen(false)}>
                 🇯🇵 <span>JapanApp</span>
               </MobileHeaderLogo>
