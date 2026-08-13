@@ -44,8 +44,8 @@ const NavRoot = styled.nav<{ $hideOnDesktop?: boolean; $isMenuOpen?: boolean }>`
       }
     `}
 
-  @media (max-width: 768px) {
-    background: var(--topbar-bg, var(--surface));
+  @media (max-width: 1100px) {
+    background: var(--surface);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
@@ -2112,9 +2112,8 @@ export function Navbar() {
                   </SearchPillButton>
 
                   <HeaderIconButton
-                    as={Link}
-                    href="/development/kanji-kaiwa"
-                    title="AI Helper & Smart Lab"
+                    title="AI Assistant"
+                    type="button"
                   >
                     <svg
                       viewBox="0 0 24 24"
