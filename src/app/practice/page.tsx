@@ -474,7 +474,7 @@ export default function PracticeHubPage() {
       const idx = Math.floor(Math.random() * progress.completedExercises.length);
       return progress.completedExercises[idx];
     }
-    return "n5-u1-l1";
+    return "basic-u1-l1";
   }, [progress.completedExercises]);
 
   // Practice & Study Modes Definition

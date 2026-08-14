@@ -61,17 +61,12 @@ export default function LandingHomePage() {
   const { progress } = useProgress();
 
   const isDailyCompleted = useMemo(() => {
-    if (!progress.completedExercises) return false;
-    const dailyLessons = [
-      "hiragana-a",
-      "hiragana-ka",
-      "katakana-a",
-      "n5-u1-numbers",
-    ];
-    return dailyLessons.every((id) =>
-      progress.completedExercises.includes(id),
+    if (!progress.quizHistory) return false;
+    const today = new Date().toISOString().split("T")[0];
+    return progress.quizHistory.some(
+      (q) => q.date.split("T")[0] === today && q.type === "daily-challenge",
     );
-  }, [progress.completedExercises]);
+  }, [progress.quizHistory]);
 
   return (
     <Container>

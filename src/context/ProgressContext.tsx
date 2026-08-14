@@ -117,6 +117,11 @@ interface ProgressContextType {
   claimQuestReward: (questId: string, rewardGems: number) => void;
   timeUntilNextHeart: number;
   timeUntilFullRefill: number;
+  triggerAlert: (
+    type: "level" | "achievement",
+    title: string,
+    description: string,
+  ) => void;
   /** Whether the user progress has finished loading from localStorage */
   isLoaded: boolean;
 }
@@ -926,6 +931,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       claimQuestReward,
       timeUntilNextHeart,
       timeUntilFullRefill,
+      triggerAlert,
       isLoaded,
     }),
     [
@@ -953,6 +959,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       claimQuestReward,
       timeUntilNextHeart,
       timeUntilFullRefill,
+      triggerAlert,
       isLoaded,
     ],
   );

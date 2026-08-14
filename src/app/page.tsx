@@ -834,7 +834,7 @@ interface SelectedNodeData {
 }
 
 export default function Home() {
-  const { progress, addExp } = useProgress();
+  const { progress, triggerAlert } = useProgress();
   const { deviceMode, isMounted } = useDeviceMode();
   const { mode } = useTheme();
   const isDark = mode === "dark";
@@ -957,8 +957,7 @@ export default function Home() {
     return Object.values(unitsMap);
   }, [levelLessons]);
 
-  // Lesson lock logic: A lesson is unlocked if previous lesson is completed.
-  // For N5 (and higher levels), ALL lessons in the previous level (Basic) must be completed first!
+  // Lesson lock logic: All lessons in higher levels (N5, N4, etc.) are locked until previous level is 100% completed.
   const isLessonUnlocked = useCallback(
     (lessonId: string) => {
       const lesson = lessonsData.find((l) => l.id === lessonId);
@@ -993,11 +992,11 @@ export default function Home() {
           progress.completedExercises?.includes(l.id),
         );
         if (!isPrevLevelCompleted) {
-          return false; // Whole level is locked because previous level is not completed!
+          return false; // Whole level lessons locked because previous level is incomplete!
         }
       }
 
-      // If previous level is completed, check sequential unlock within current level
+      // If previous level is 100% completed, first lesson of current level is unlocked
       const currentLevelLessons = lessonsData.filter(
         (l) => l.level === lesson.level,
       );
@@ -1014,6 +1013,55 @@ export default function Home() {
   const isDailyCompleted = progress.quizHistory.some(
     (q) => q.date.split("T")[0] === today && q.type === "daily-challenge",
   );
+
+  const handleNodeClick = (lesson: Lesson, unlocked: boolean) => {
+    if (!unlocked) {
+      const levelOrder: ("Basic" | "N5" | "N4" | "N3" | "N2" | "N1")[] = [
+        "Basic",
+        "N5",
+        "N4",
+        "N3",
+        "N2",
+        "N1",
+      ];
+      const currentLevelIdx = levelOrder.indexOf(lesson.level);
+      const prevLevelCode = levelOrder[currentLevelIdx - 1];
+
+      if (prevLevelCode) {
+        const prevLevelLessons = lessonsData.filter(
+          (l) => l.level === prevLevelCode,
+        );
+        const isPrevLevelCompleted = prevLevelLessons.every((l) =>
+          progress.completedExercises?.includes(l.id),
+        );
+        if (!isPrevLevelCompleted) {
+          triggerAlert(
+            "level",
+            `Pelajaran Level ${lesson.level} Terkunci 🔒`,
+            `Selesaikan semua pelajaran di level ${prevLevelCode} terlebih dahulu untuk membuka pelajaran ini!`,
+          );
+          return;
+        }
+      }
+
+      triggerAlert(
+        "level",
+        "Pelajaran Terkunci 🔒",
+        "Selesaikan pelajaran sebelumnya terlebih dahulu untuk membuka pelajaran ini!",
+      );
+      return;
+    }
+    setSelectedNode({
+      title: lesson.title,
+      description: lesson.description,
+      expReward: lesson.expReward,
+      href: `/lesson?id=${lesson.id}`,
+      icon: lesson.icon,
+      badge: lesson.badge,
+      color: lesson.unitColor,
+    });
+    setIsDrawerOpen(true);
+  };
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -1078,20 +1126,6 @@ export default function Home() {
     };
   };
 
-  const handleNodeClick = (lesson: Lesson, unlocked: boolean) => {
-    if (!unlocked) return;
-    setSelectedNode({
-      title: lesson.title,
-      description: lesson.description,
-      expReward: lesson.expReward,
-      href: `/lesson?id=${lesson.id}`,
-      icon: lesson.icon,
-      badge: lesson.badge,
-      color: lesson.unitColor,
-    });
-    setIsDrawerOpen(true);
-  };
-
   if (isMounted && deviceMode === "mobile") {
     return (
       <>
@@ -1151,8 +1185,8 @@ export default function Home() {
             {activeUnits.map((unit) => {
               const sectHeader = getSectionTitle(unit.id, unit.title);
               const numLessons = unit.lessons.length;
-              const completedInUnit = unit.lessons.filter((l) =>
-                progress.completedExercises?.includes(l.id),
+              const completedInUnit = unit.lessons.filter(
+                (l) => progress.completedExercises?.includes(l.id),
               ).length;
 
               return (
