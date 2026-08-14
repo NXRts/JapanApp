@@ -15,7 +15,7 @@ import {
 } from "@/components/modals/DuolingoModals";
 
 import { getDailyQuests } from "@/utils/dailyQuests";
-import { getLeagueById, getRankStatus, getLeagueCompetitors } from "@/data/leagues";
+import { getLeagueById, getRankStatus } from "@/data/leagues";
 
 /* ─── Sidebar Outer Container ────────────────────────────────────────────── */
 const SidebarWrapper = styled.aside`
@@ -443,12 +443,7 @@ export function RightSidebar() {
     weeklyExp: 0,
   };
   const leagueInfo = getLeagueById(leagueData.currentLeagueId);
-
-  const userName = progress.profile?.displayName || "JapanApp Learner";
-  const userAvatar = progress.profile?.avatar || "🦊";
-  const userWeeklyExp = leagueData.weeklyExp || 0;
-  const { userRank } = getLeagueCompetitors(userWeeklyExp, userName, userAvatar);
-  const rankInfo = getRankStatus(userRank);
+  const rankInfo = getRankStatus(leagueData.rank);
 
   const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
   const dailyQuests = useMemo(
@@ -503,7 +498,7 @@ export function RightSidebar() {
               </WarningBadge>
             </ShieldIconBox>
             <LeagueTextGroup>
-              <LeagueRankText>Kamu di peringkat #{userRank}</LeagueRankText>
+              <LeagueRankText>Kamu di peringkat #{leagueData.rank || 1}</LeagueRankText>
               <LeagueStatusText>
                 {rankInfo.label}
               </LeagueStatusText>
