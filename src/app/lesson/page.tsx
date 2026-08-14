@@ -1203,7 +1203,7 @@ function LessonPlayerContent() {
   const startTime = useRef<number | null>(null);
   const mistakesCountRef = useRef<number>(0);
 
-  const lessonId = searchParams.get("id") || "n5-u1-l1";
+  const lessonId = searchParams.get("id") || "basic-u1-l1";
   const returnUrl = searchParams.get("from") === "practice" ? "/practice" : "/";
   const lesson = lessonsData.find((l) => l.id === lessonId) || lessonsData[0];
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -1231,18 +1231,66 @@ function LessonPlayerContent() {
   }, [lessonId, progress.completedExercises]);
 
   useEffect(() => {
-    if (lessonId === "n5-u1-l1") {
+    if (!lesson) {
+      setIsUnlocked(false);
+      return;
+    }
+
+    if (lesson.level === "Basic") {
+      const basicLessons = lessonsData.filter((l) => l.level === "Basic");
+      if (lessonId === basicLessons[0]?.id || lessonId === "basic-u1-l1") {
+        setIsUnlocked(true);
+        return;
+      }
+      const prevId = lessonRelations.get(lessonId);
+      if (!prevId) {
+        setIsUnlocked(true);
+        return;
+      }
+      setIsUnlocked(progress.completedExercises?.includes(prevId) || false);
+      return;
+    }
+
+    // For N5 or higher level lessons, check if previous level is 100% completed FIRST!
+    const levelOrder: ("Basic" | "N5" | "N4" | "N3" | "N2" | "N1")[] = [
+      "Basic",
+      "N5",
+      "N4",
+      "N3",
+      "N2",
+      "N1",
+    ];
+    const currentLevelIdx = levelOrder.indexOf(lesson.level as any);
+    const prevLevelCode = levelOrder[currentLevelIdx - 1];
+
+    if (prevLevelCode) {
+      const prevLevelLessons = lessonsData.filter(
+        (l) => l.level === prevLevelCode,
+      );
+      const isPrevLevelCompleted = prevLevelLessons.every((l) =>
+        progress.completedExercises?.includes(l.id),
+      );
+      if (!isPrevLevelCompleted) {
+        setIsUnlocked(false);
+        return;
+      }
+    }
+
+    const currentLevelLessons = lessonsData.filter(
+      (l) => l.level === lesson.level,
+    );
+    if (lessonId === currentLevelLessons[0]?.id) {
       setIsUnlocked(true);
       return;
     }
+
     const prevId = lessonRelations.get(lessonId);
     if (!prevId) {
       setIsUnlocked(true);
       return;
     }
-    const unlocked = progress.completedExercises?.includes(prevId);
-    setIsUnlocked(unlocked || false);
-  }, [lessonId, progress.completedExercises, lessonRelations]);
+    setIsUnlocked(progress.completedExercises?.includes(prevId) || false);
+  }, [lessonId, lesson, progress.completedExercises, lessonRelations]);
 
   // State Management
   const [showExitModal, setShowExitModal] = useState(false);

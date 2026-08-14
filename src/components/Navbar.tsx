@@ -1789,15 +1789,12 @@ export function Navbar() {
   const percent = (expInCurrentLevel / expNeededForNext) * 100;
 
   const isDailyCompleted = useMemo(() => {
-    if (!progress.completedExercises) return false;
-    const dailyLessons = [
-      "hiragana-a",
-      "hiragana-ka",
-      "katakana-a",
-      "n5-u1-numbers",
-    ];
-    return dailyLessons.every((id) => progress.completedExercises.includes(id));
-  }, [progress.completedExercises]);
+    if (!progress.quizHistory) return false;
+    const today = new Date().toISOString().split("T")[0];
+    return progress.quizHistory.some(
+      (q) => q.date.split("T")[0] === today && q.type === "daily-challenge",
+    );
+  }, [progress.quizHistory]);
 
   // Prevent background scrolling when mobile menu is open and toggle helper class
   useEffect(() => {
