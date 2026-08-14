@@ -755,7 +755,7 @@ const DuolingoStatsGrid = styled.div`
   }
 `;
 
-const DuoStatCard = styled.div`
+const DuoStatCard = styled.div<{ $hasBadge?: boolean }>`
   background: var(--surface);
   border: 2px solid var(--border);
   border-radius: 20px;
@@ -768,7 +768,7 @@ const DuoStatCard = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 
   @media (max-width: 480px) {
-    padding: 0.85rem 0.9rem;
+    padding: ${(props) => (props.$hasBadge ? "1.25rem 0.85rem 0.75rem" : "0.85rem 0.9rem")};
     gap: 0.75rem;
     border-radius: 16px;
   }
@@ -795,7 +795,7 @@ const DuoStatValue = styled.div`
   line-height: 1.1;
 
   @media (max-width: 480px) {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 `;
 
@@ -822,12 +822,16 @@ const WeekBadgeTag = styled.span`
   padding: 0.15rem 0.5rem;
   border-radius: 8px;
   letter-spacing: 0.04em;
+  white-space: nowrap;
+  z-index: 2;
 
   @media (max-width: 480px) {
-    font-size: 0.55rem;
-    padding: 0.1rem 0.35rem;
-    top: 6px;
+    font-size: 0.48rem;
+    padding: 0.08rem 0.32rem;
+    top: 5px;
     right: 6px;
+    border-radius: 5px;
+    letter-spacing: 0.02em;
   }
 `;
 
@@ -1298,11 +1302,11 @@ export default function ProfilePage() {
             </DuoStatText>
           </DuoStatCard>
 
-          <DuoStatCard style={{ cursor: "pointer" }} onClick={() => setShowLeaderboardModal(true)}>
+          <DuoStatCard $hasBadge style={{ cursor: "pointer" }} onClick={() => setShowLeaderboardModal(true)}>
             <WeekBadgeTag>MINGGU KE-{leagueData.weekInLeague || 1}</WeekBadgeTag>
             <DuoStatIcon>{leagueInfo.icon}</DuoStatIcon>
-            <DuoStatText>
-              <DuoStatValue style={{ fontSize: "1.25rem", color: leagueInfo.color }}>
+            <DuoStatText style={{ minWidth: 0 }}>
+              <DuoStatValue style={{ color: leagueInfo.color, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 {leagueInfo.name.replace("Liga ", "")}
               </DuoStatValue>
               <DuoStatLabel>Liga saat ini</DuoStatLabel>
