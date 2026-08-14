@@ -1,7 +1,7 @@
 "use client";
 
 import { useProgress } from "@/context/ProgressContext";
-import { getLeagueById, getRankStatus } from "@/data/leagues";
+import { getLeagueById, getRankStatus, getLeagueCompetitors } from "@/data/leagues";
 import { getDailyQuests, Quest } from "@/utils/dailyQuests";
 import Link from "next/link";
 import { useEffect, useMemo } from "react";
@@ -895,18 +895,8 @@ export function LeaderboardModal({ onClose }: { onClose: () => void }) {
   const userName = progress.profile?.displayName || "JapanApp Learner";
   const userAvatar = progress.profile?.avatar || "🦊";
 
-  // Single user leaderboard (lightweight & clean)
-  const rawCompetitors = [
-    {
-      name: `${userName} (Kamu)`,
-      exp: userExp,
-      avatar: userAvatar,
-      isUser: true,
-    },
-  ];
-
-  const userRankIndex = 1;
-  const rankInfo = getRankStatus(userRankIndex);
+  const { competitors, userRank } = getLeagueCompetitors(userExp, userName, userAvatar);
+  const rankInfo = getRankStatus(userRank);
 
   return (
     <Overlay onClick={onClose}>
@@ -950,7 +940,7 @@ export function LeaderboardModal({ onClose }: { onClose: () => void }) {
             marginBottom: "1.5rem",
           }}
         >
-          {rawCompetitors.map((c, idx) => {
+          {competitors.map((c, idx) => {
             const actualRank = idx + 1;
             return (
               <div

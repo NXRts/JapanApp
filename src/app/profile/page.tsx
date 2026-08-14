@@ -16,7 +16,7 @@ import {
   SparklesIcon,
   BookIcon,
 } from "@/components/icons/AppIcons";
-import { getLeagueById, getRankStatus } from "@/data/leagues";
+import { getLeagueById, getRankStatus, getLeagueCompetitors } from "@/data/leagues";
 import { LeaderboardModal } from "@/components/modals/DuolingoModals";
 
 const Container = styled.div`
@@ -1003,7 +1003,12 @@ export default function ProfilePage() {
     weeklyExp: 0,
   };
   const leagueInfo = getLeagueById(leagueData.currentLeagueId);
-  const rankInfo = getRankStatus(leagueData.rank);
+
+  const userName = progress.profile?.displayName || "JapanApp Learner";
+  const userAvatar = progress.profile?.avatar || "🦊";
+  const userWeeklyExp = leagueData.weeklyExp || 0;
+  const { userRank } = getLeagueCompetitors(userWeeklyExp, userName, userAvatar);
+  const rankInfo = getRankStatus(userRank);
 
   // Dragging logic for achievements
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -1312,7 +1317,7 @@ export default function ProfilePage() {
           <DuoStatCard>
             <DuoStatIcon>🎖️</DuoStatIcon>
             <DuoStatText>
-              <DuoStatValue>{leagueData.top3Finishes || 7}</DuoStatValue>
+              <DuoStatValue>{leagueData.top3Finishes ?? 0}</DuoStatValue>
               <DuoStatLabel>Posisi 3 besar</DuoStatLabel>
             </DuoStatText>
           </DuoStatCard>
@@ -1382,7 +1387,7 @@ export default function ProfilePage() {
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div style={{ fontSize: "1.05rem", fontWeight: 850, color: "var(--foreground)" }}>
-                Kamu di peringkat #{leagueData.rank || 1}
+                Kamu di peringkat #{userRank}
               </div>
               <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 600 }}>
                 {rankInfo.label}
