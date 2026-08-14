@@ -194,6 +194,10 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
     }
   });
 
+  // Calculate lesson completions for today based on both quizHistory and activityLog EXP
+  const lessonsFromExp = Math.floor(todayExp / 50);
+  const todayLessonCount = Math.max(todayQuizzes.length, lessonsFromExp);
+
   return selectedTemplates.map((t, idx) => {
     const targetIdx = Math.floor(rng.next() * t.targetOptions.length);
     const target = t.targetOptions[targetIdx];
@@ -204,25 +208,25 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
     if (t.type === "exp") {
       current = Math.min(target, todayExp);
     } else if (t.type === "lessons") {
-      current = Math.min(target, todayQuizzes.length);
+      current = Math.min(target, todayLessonCount);
     } else if (t.type === "lessons_score") {
       const highScores = todayQuizzes.filter(
         (q: any) => q.total > 0 && q.score / q.total >= 0.8,
       ).length;
-      current = Math.min(target, highScores);
+      current = Math.min(target, Math.max(highScores, lessonsFromExp));
     } else if (t.type === "unit") {
-      current = Math.min(target, (todayQuizzes.length >= 3 || todayExp >= 50) ? 1 : 0);
+      current = Math.min(target, (todayLessonCount >= 2 || todayExp >= 50) ? 1 : 0);
     } else if (t.type === "perfect_quiz") {
       const perfects = todayQuizzes.filter(
         (q: any) => q.total > 0 && q.score === q.total,
       ).length;
-      current = Math.min(target, perfects);
+      current = Math.min(target, Math.max(perfects, lessonsFromExp));
     } else if (t.type === "study_time") {
-      const estimatedMinutes = Math.floor(todayQuizzes.length * 3 + todayExp / 5);
+      const estimatedMinutes = Math.floor(todayLessonCount * 3 + todayExp / 5);
       current = Math.min(target, estimatedMinutes);
     } else if (t.type === "kanji_learned") {
       const totalCorrect = todayQuizzes.reduce((acc: number, q: any) => acc + (q.score || 0), 0);
-      current = Math.min(target, totalCorrect);
+      current = Math.min(target, Math.max(totalCorrect, lessonsFromExp * 5));
     } else if (t.type === "listening_session") {
       const listeningCount = todayQuizzes.filter(
         (q: any) => q.type && (q.type === "listening_practice" || q.type === "study_listening" || q.type === "listening"),
@@ -243,7 +247,7 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
       const comboExp = Math.floor(todayExp * 0.4);
       current = Math.min(target, comboExp);
     } else if (t.type === "grammar_practice" || t.type === "quiz_practice") {
-      current = Math.min(target, todayQuizzes.length);
+      current = Math.min(target, todayLessonCount);
     } else if (t.type === "streak_accuracy") {
       let streakAcc = 0;
       let maxStreakAcc = 0;
@@ -255,7 +259,7 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
           streakAcc = 0;
         }
       }
-      current = Math.min(target, maxStreakAcc);
+      current = Math.min(target, Math.max(maxStreakAcc, lessonsFromExp));
     }
 
     return {

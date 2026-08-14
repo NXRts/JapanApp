@@ -597,6 +597,16 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
           exp: newExp,
           activityLog: newActivityLog,
           completedExercises: [...(prev.completedExercises || []), id],
+          quizHistory: [
+            {
+              date: new Date().toISOString(),
+              score: 5,
+              total: 5,
+              type: "lesson",
+              id,
+            },
+            ...(prev.quizHistory || []).slice(0, 49),
+          ],
         };
 
         return autoClaimCompletedQuests(nextState);
