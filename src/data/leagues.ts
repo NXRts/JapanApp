@@ -127,47 +127,6 @@ export function getLeagueById(id: string): LeagueInfo {
   return LEAGUES_DATA.find((l) => l.id === id) || LEAGUES_DATA[8]; // Default Obsidian
 }
 
-export interface Competitor {
-  name: string;
-  exp: number;
-  avatar: string;
-  isUser: boolean;
-}
-
-export function getLeagueCompetitors(
-  userExp: number,
-  userName: string = "Kamu",
-  userAvatar: string = "🦊"
-): { competitors: Competitor[]; userRank: number } {
-  const baseBots = [
-    { name: "Kenji", exp: 240, avatar: "🐱" },
-    { name: "Sakura", exp: 180, avatar: "🌸" },
-    { name: "Taro", exp: 140, avatar: "🐼" },
-    { name: "Yuto", exp: 105, avatar: "🐯" },
-    { name: "Aoi", exp: 80, avatar: "🐰" },
-    { name: "Ren", exp: 55, avatar: "🐺" },
-    { name: "Sora", exp: 35, avatar: "🦅" },
-    { name: "Mei", exp: 20, avatar: "🐻" },
-    { name: "Hinata", exp: 5, avatar: "🐶" },
-  ];
-
-  const all: Competitor[] = [
-    ...baseBots.map((b) => ({ ...b, isUser: false })),
-    {
-      name: userName.includes("Kamu") ? userName : `${userName} (Kamu)`,
-      exp: userExp,
-      avatar: userAvatar,
-      isUser: true,
-    },
-  ];
-
-  all.sort((a, b) => b.exp - a.exp);
-
-  const userRank = all.findIndex((c) => c.isUser) + 1;
-
-  return { competitors: all, userRank };
-}
-
 export function getRankStatus(rank: number): {
   zone: "promotion" | "safe" | "demotion";
   label: string;
@@ -181,7 +140,7 @@ export function getRankStatus(rank: number): {
       color: "#10b981",
       badgeColor: "rgba(16, 185, 129, 0.15)",
     };
-  } else if (rank >= 9) {
+  } else if (rank >= 26) {
     return {
       zone: "demotion",
       label: "Kamu merosot ke zona penurunan!",

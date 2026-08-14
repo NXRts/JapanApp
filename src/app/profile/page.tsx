@@ -16,7 +16,7 @@ import {
   SparklesIcon,
   BookIcon,
 } from "@/components/icons/AppIcons";
-import { getLeagueById, getRankStatus, getLeagueCompetitors } from "@/data/leagues";
+import { getLeagueById, getRankStatus } from "@/data/leagues";
 import { LeaderboardModal } from "@/components/modals/DuolingoModals";
 
 const Container = styled.div`
@@ -1003,12 +1003,7 @@ export default function ProfilePage() {
     weeklyExp: 0,
   };
   const leagueInfo = getLeagueById(leagueData.currentLeagueId);
-
-  const userName = progress.profile?.displayName || "JapanApp Learner";
-  const userAvatar = progress.profile?.avatar || "🦊";
-  const userWeeklyExp = leagueData.weeklyExp || 0;
-  const { userRank } = getLeagueCompetitors(userWeeklyExp, userName, userAvatar);
-  const rankInfo = getRankStatus(userRank);
+  const rankInfo = getRankStatus(leagueData.rank);
 
   // Dragging logic for achievements
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -1387,7 +1382,7 @@ export default function ProfilePage() {
             </div>
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div style={{ fontSize: "1.05rem", fontWeight: 850, color: "var(--foreground)" }}>
-                Kamu di peringkat #{userRank}
+                Kamu di peringkat #{leagueData.rank || 1}
               </div>
               <div style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: 600 }}>
                 {rankInfo.label}
