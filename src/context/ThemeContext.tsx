@@ -62,6 +62,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Add/remove dark class for styled-components html.dark selectors
     root.classList.toggle("dark", mode === "dark");
     root.classList.toggle("light", mode === "light");
+    root.style.setProperty("color-scheme", mode);
 
     root.style.setProperty("--primary", theme.primary);
     root.style.setProperty("--primary-light", theme.primaryLight);

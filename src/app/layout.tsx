@@ -13,6 +13,7 @@ const notoSansJP = { variable: "font-noto-sans-jp" };
 
 export const viewport = {
   themeColor: "#4F46E5",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
   minimumScale: 1,
