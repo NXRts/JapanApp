@@ -73,7 +73,7 @@ const GamesGrid = styled(motion.div)`
   }
 `;
 
-const Card = styled(motion(Link))`
+const Card = styled(motion.create(Link))`
   background: var(--surface);
   padding: 2rem;
   border-radius: 24px;
