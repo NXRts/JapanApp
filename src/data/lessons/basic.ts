@@ -672,6 +672,120 @@ function getDeterministicRandom(
   return Math.floor(rng * (max - min + 1)) + min;
 }
 
+function getSmartRomajiDistractors(
+  correctRomaji: string,
+  unitItems: { romaji: string }[],
+  allUnitItems: { romaji: string }[] = [],
+): string[] {
+  const targetLen = correctRomaji.length;
+
+  const romajiPool2 = [
+    "ka", "ki", "ku", "ke", "ko",
+    "sa", "shi", "su", "se", "so",
+    "ta", "chi", "tsu", "te", "to",
+    "na", "ni", "nu", "ne", "no",
+    "ha", "hi", "fu", "he", "ho",
+    "ma", "mi", "mu", "me", "mo",
+    "ra", "ri", "ru", "re", "ro",
+    "ya", "yu", "yo", "wa", "wo",
+  ];
+  const romajiPool1 = ["a", "i", "u", "e", "o"];
+
+  const candidatePool = targetLen === 1 ? romajiPool1 : romajiPool2;
+
+  let candidates: string[] = unitItems
+    .map((i) => i.romaji)
+    .filter((r) => r !== correctRomaji && r.length === targetLen);
+
+  if (candidates.length < 3) {
+    const extraAll = allUnitItems
+      .map((i) => i.romaji)
+      .filter((r) => r !== correctRomaji && r.length === targetLen && !candidates.includes(r));
+    candidates = [...candidates, ...extraAll];
+  }
+
+  if (candidates.length < 3) {
+    const extraPool = candidatePool.filter(
+      (r) => r !== correctRomaji && !candidates.includes(r),
+    );
+    candidates = [...candidates, ...extraPool];
+  }
+
+  const result: string[] = [];
+  for (const c of candidates) {
+    if (!result.includes(c) && c !== correctRomaji) {
+      result.push(c);
+    }
+    if (result.length === 3) break;
+  }
+  return result;
+}
+
+function getSmartKanaDistractors(
+  correctChar: string,
+  unitItems: { char: string }[],
+  allUnitItems: { char: string }[] = [],
+): string[] {
+  const isVowel = ["あ", "い", "う", "え", "お", "ア", "イ", "ウ", "エ", "オ"].includes(correctChar);
+  const kanaPool2 = ["か", "き", "く", "け", "こ", "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と", "な", "に", "ぬ", "ね", "の"];
+  const kanaPool1 = ["あ", "い", "う", "え", "お"];
+
+  const pool = isVowel ? kanaPool1 : kanaPool2;
+
+  let candidates = unitItems
+    .map((i) => i.char)
+    .filter((c) => c !== correctChar && (isVowel ? ["あ", "い", "う", "え", "お"].includes(c) : !["あ", "い", "う", "え", "お"].includes(c)));
+
+  if (candidates.length < 3) {
+    const extraAll = allUnitItems
+      .map((i) => i.char)
+      .filter((c) => c !== correctChar && !candidates.includes(c));
+    candidates = [...candidates, ...extraAll];
+  }
+
+  if (candidates.length < 3) {
+    const extraPool = pool.filter((c) => c !== correctChar && !candidates.includes(c));
+    candidates = [...candidates, ...extraPool];
+  }
+
+  const result: string[] = [];
+  for (const c of candidates) {
+    if (!result.includes(c) && c !== correctChar) {
+      result.push(c);
+    }
+    if (result.length === 3) break;
+  }
+  return result;
+}
+
+function getSmartVocabDistractors(
+  correctEng: string,
+  unitWords: { eng: string }[],
+): string[] {
+  const defaultEnglishVocab = [
+    "Water", "Tea", "Rice", "Fish", "Meat", "Book", "School", "Friend", "Teacher",
+    "House", "Car", "Train", "Station", "Sun", "Moon", "Rain", "Dog", "Cat",
+  ];
+
+  let candidates = unitWords
+    .map((w) => w.eng)
+    .filter((e) => e !== correctEng);
+
+  if (candidates.length < 3) {
+    const extra = defaultEnglishVocab.filter((e) => e !== correctEng && !candidates.includes(e));
+    candidates = [...candidates, ...extra];
+  }
+
+  const result: string[] = [];
+  for (const e of candidates) {
+    if (!result.includes(e) && e !== correctEng) {
+      result.push(e);
+    }
+    if (result.length === 3) break;
+  }
+  return result;
+}
+
 function generateBasicLessons(): Lesson[] {
   const result: Lesson[] = [];
 
@@ -792,10 +906,12 @@ function generateBasicLessons(): Lesson[] {
           lastKey = item.char;
 
           const correct = item.char;
-          const distractors = activeItems
-            .filter((i) => i.char !== correct)
-            .map((i) => i.char);
-          const opts = [correct, ...distractors.slice(0, 3)].sort();
+          const distractors = getSmartKanaDistractors(
+            correct,
+            activeItems,
+            unit.items,
+          );
+          const opts = [correct, ...distractors].sort();
           questions.push({
             id: qId,
             type: "listening",
@@ -831,32 +947,26 @@ function generateBasicLessons(): Lesson[] {
           lastKey = item.jpn;
 
           if (rng(6) > 0.5) {
+            const distractors = getSmartVocabDistractors(item.eng, unit.words);
             questions.push({
               id: qId,
               type: "multiple-choice",
               questionText: `What is the meaning of "${item.jpn}" (${item.rom})?`,
-              options: [
-                item.eng,
-                ...unit.words
-                  .filter((w) => w.eng !== item.eng)
-                  .map((w) => w.eng)
-                  .slice(0, 3),
-              ].sort(),
+              options: [item.eng, ...distractors].sort(),
               answer: item.eng,
               hint: `Romaji: ${item.rom}`,
             });
           } else {
+            const distractors = unit.words
+              .filter((w) => w.jpn !== item.jpn)
+              .map((w) => w.jpn);
+            const fallbackKana = getSmartKanaDistractors(item.jpn, unit.words.map(w => ({ char: w.jpn })), unit.items);
+            const finalOptions = distractors.length >= 3 ? distractors.slice(0, 3) : [...distractors, ...fallbackKana].slice(0, 3);
             questions.push({
               id: qId,
               type: "multiple-choice",
               questionText: `Choose the correct Japanese word for "${item.eng}":`,
-              options: [
-                item.jpn,
-                ...unit.words
-                  .filter((w) => w.jpn !== item.jpn)
-                  .map((w) => w.jpn)
-                  .slice(0, 3),
-              ].sort(),
+              options: [item.jpn, ...finalOptions].sort(),
               answer: item.jpn,
               hint: `Pronounced as: ${item.rom}`,
             });
@@ -879,17 +989,16 @@ function generateBasicLessons(): Lesson[] {
             lastKey = item.char;
 
             if (rng(8) > 0.5) {
+              const distractors = getSmartRomajiDistractors(
+                item.romaji,
+                activeItems,
+                unit.items,
+              );
               questions.push({
                 id: qId,
                 type: "multiple-choice",
-                questionText: `What is the Romaji reading of the character "${item.char}"?`,
-                options: [
-                  item.romaji,
-                  ...activeItems
-                    .filter((i) => i.romaji !== item.romaji)
-                    .map((i) => i.romaji)
-                    .slice(0, 3),
-                ].sort(),
+                questionText: `Choose the correct Romaji reading for "${item.char}":`,
+                options: [item.romaji, ...distractors].sort(),
                 answer: item.romaji,
                 hint: `Mnemonic tip: "${item.char}" ${item.mnemonic}.`,
               });
@@ -932,6 +1041,105 @@ function generateBasicLessons(): Lesson[] {
         questions,
       });
     }
+
+    // Generate 25-Question Unit Exam for this Basic Unit
+    const examLessonId = `${unit.unitId}-exam`;
+    const examQuestions: Question[] = [];
+    const unitCleanTitle = unit.unitTitle
+      .replace(/Unit \d+:\s*/i, "")
+      .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "")
+      .trim();
+
+    for (let qIdx = 1; qIdx <= 25; qIdx++) {
+      const qId = `${examLessonId}-q${qIdx}`;
+      const qHash = qIdx * 101;
+      const rng = (offset: number) => Math.abs(Math.sin(qHash + offset));
+
+      if (qIdx % 4 === 0 && unit.sentences && unit.sentences.length > 0) {
+        const s = unit.sentences[(qIdx - 1) % unit.sentences.length];
+        examQuestions.push({
+          id: qId,
+          type: "sentence-builder",
+          questionText: s.eng,
+          options: [...s.opt].sort(() => rng(1) - 0.5),
+          answer: s.ans,
+          hint: "Arrange the words/characters correctly.",
+        });
+      } else if (qIdx % 3 === 0 && unit.words && unit.words.length > 0) {
+        const w = unit.words[(qIdx - 1) % unit.words.length];
+        const distractors = unit.words
+          .filter((x) => x.eng !== w.eng)
+          .map((x) => x.eng);
+        const opts = [w.eng, ...distractors.slice(0, 3)].sort();
+        examQuestions.push({
+          id: qId,
+          type: "multiple-choice",
+          questionText: `What is the meaning of "${w.jpn}" (${w.rom})?`,
+          options: opts,
+          answer: w.eng,
+          hint: `Word: ${w.rom}`,
+        });
+      } else if (unit.items && unit.items.length > 0) {
+        const item = unit.items[(qIdx - 1) % unit.items.length];
+        if (qIdx % 2 === 0) {
+          const distractors = getSmartKanaDistractors(
+            item.char,
+            unit.items,
+            unit.items,
+          );
+          const opts = [item.char, ...distractors].sort();
+          examQuestions.push({
+            id: qId,
+            type: "listening",
+            questionText:
+              "Listen to the audio and choose the correct character!",
+            audioText: item.char,
+            options: opts,
+            answer: item.char,
+            hint: `Pronounced "${item.romaji}". ${item.mnemonic}`,
+          });
+        } else {
+          const distractors = getSmartRomajiDistractors(
+            item.romaji,
+            unit.items,
+            unit.items,
+          );
+          const opts = [item.romaji, ...distractors].sort();
+          examQuestions.push({
+            id: qId,
+            type: "multiple-choice",
+            questionText: `Choose the correct Romaji reading for "${item.char}":`,
+            options: opts,
+            answer: item.romaji,
+            hint: item.mnemonic,
+          });
+        }
+      } else {
+        examQuestions.push({
+          id: qId,
+          type: "sentence-builder",
+          questionText: "Spell 'Love' (ai):",
+          options: ["あ", "い", "う", "え"],
+          answer: "あ い",
+          hint: "Combine あ and い.",
+        });
+      }
+    }
+
+    result.push({
+      id: examLessonId,
+      level: "Basic",
+      unitId: unit.unitId,
+      unitTitle: unit.unitTitle,
+      unitDescription: unit.unitDescription,
+      unitColor: unit.unitColor,
+      title: `Ujian Unit 🏆: ${unitCleanTitle}`,
+      description: `Ujian komprehensif 25 soal untuk menguji seluruh pemahaman materi ${unitCleanTitle}. Minimal 80% untuk lulus!`,
+      expReward: 100,
+      icon: "🏆",
+      badge: "Ujian Unit",
+      questions: examQuestions,
+    });
   });
 
   return result;

@@ -398,6 +398,50 @@ function expandLessonsData(base: Lesson[]): Lesson[] {
     if (synthesisLesson) {
       expanded.push(synthesisLesson);
     }
+
+    // Generate 25-Question Unit Exam for N5-N1 units
+    const examLessonId = `${unitId}-exam`;
+    const examQuestions: Question[] = [];
+    const unitCleanTitle = firstLesson.unitTitle
+      .replace(/Unit \d+:\s*/i, "")
+      .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "")
+      .trim();
+
+    const badgeTypesForExam = [
+      "Vocabulary",
+      "Grammar",
+      "Reading",
+      "Listening",
+      "Conversation",
+    ];
+
+    for (let qIdx = 1; qIdx <= 25; qIdx++) {
+      const qId = `${examLessonId}-q${qIdx}`;
+      const qBadge = badgeTypesForExam[(qIdx - 1) % badgeTypesForExam.length];
+      examQuestions.push(
+        generateQuestion(
+          qId,
+          firstLesson.level,
+          firstLesson.unitTitle,
+          qBadge,
+        ),
+      );
+    }
+
+    expanded.push({
+      id: examLessonId,
+      level: firstLesson.level,
+      unitId: firstLesson.unitId,
+      unitTitle: firstLesson.unitTitle,
+      unitDescription: firstLesson.unitDescription,
+      unitColor: firstLesson.unitColor,
+      title: `Ujian Unit 🏆: ${unitCleanTitle}`,
+      description: `Ujian komprehensif 25 soal untuk menguji seluruh materi ${unitCleanTitle}. Minimal 80% untuk lulus!`,
+      expReward: 100,
+      icon: "🏆",
+      badge: "Ujian Unit",
+      questions: examQuestions,
+    });
   }
 
   return expanded;
