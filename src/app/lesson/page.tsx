@@ -2,6 +2,8 @@
 
 import { JAPANESE_TIPS, TipItem } from "@/components/common/SplashLoader";
 import { useProgress } from "@/context/ProgressContext";
+import { useLessonLanguage } from "@/context/LessonLanguageContext";
+import { getQuestionText, getHintText } from "@/utils/lessonLocalization";
 import { generatorBank } from "@/data/generatorBank";
 import { Lesson, lessonsData, Question } from "@/data/lessonsData";
 import { playJapaneseAudio } from "@/lib/audio";
@@ -1210,6 +1212,8 @@ function LessonPlayerContent() {
     triggerAlert,
   } = useProgress();
 
+  const { lessonLanguage, setLessonLanguage } = useLessonLanguage();
+
   const startTime = useRef<number | null>(null);
   const mistakesCountRef = useRef<number>(0);
 
@@ -1768,6 +1772,26 @@ function LessonPlayerContent() {
         <ProgressBar>
           <ProgressFill $percent={progressPercent} />
         </ProgressBar>
+
+        <div style={{ display: "flex", background: "var(--surface-hover)", borderRadius: "9999px", padding: "2px", gap: "2px", border: "1px solid var(--border)" }}>
+          <button
+            type="button"
+            style={{ border: "none", background: lessonLanguage === "id" ? "var(--primary)" : "transparent", color: lessonLanguage === "id" ? "#fff" : "var(--text-secondary)", fontSize: "0.75rem", fontWeight: 700, padding: "0.2rem 0.55rem", borderRadius: "9999px", cursor: "pointer" }}
+            onClick={() => setLessonLanguage("id")}
+            title="Bahasa Indonesia (Bawaan)"
+          >
+            🇮🇩 ID
+          </button>
+          <button
+            type="button"
+            style={{ border: "none", background: lessonLanguage === "en" ? "var(--primary)" : "transparent", color: lessonLanguage === "en" ? "#fff" : "var(--text-secondary)", fontSize: "0.75rem", fontWeight: 700, padding: "0.2rem 0.55rem", borderRadius: "9999px", cursor: "pointer" }}
+            onClick={() => setLessonLanguage("en")}
+            title="English Pure"
+          >
+            🇬🇧 EN
+          </button>
+        </div>
+
         <LivesIndicator title="Hearts Remaining">
           ❤️ {progress.isSuper ? "♾️" : (progress.hearts ?? 7)}
         </LivesIndicator>
@@ -1787,7 +1811,9 @@ function LessonPlayerContent() {
                     : "Multiple Choice"}
           </QuestionCategory>
 
-          <QuestionText>{activeQuestion.questionText}</QuestionText>
+          <QuestionText style={{ whiteSpace: "pre-line" }}>
+            {getQuestionText(activeQuestion, lessonLanguage)}
+          </QuestionText>
 
           {/* QUESTION TYPE RENDER */}
           {activeQuestion.type === "multiple-choice" && (

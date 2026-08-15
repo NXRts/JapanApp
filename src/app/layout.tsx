@@ -6,6 +6,7 @@ import { BackToHome } from "@/components/BackToHome";
 import { Footer } from "@/components/Footer";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { LessonLanguageProvider } from "@/context/LessonLanguageContext";
 
 // Google Fonts are mocked to avoid build failure in offline environments
 const inter = { className: "font-inter" };
@@ -105,27 +106,29 @@ export default function RootLayout({
         <ThemeProvider>
           <DeviceModeProvider>
             <ProgressProvider>
-              <ErrorBoundary>
-                <StyledRegistry>
-                  <NavigationScrollToTop />
-                  <SplashLoader />
-                  <SakuraBackground />
-                  <Navbar />
-                  <main
-                    style={{
-                      flex: 1,
-                      position: "relative",
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    {children}
-                  </main>
-                  <Footer />
-                  <ScrollToTop />
-                  <OnboardingOverlay />
-                </StyledRegistry>
-              </ErrorBoundary>
+              <LessonLanguageProvider>
+                <ErrorBoundary>
+                  <StyledRegistry>
+                    <NavigationScrollToTop />
+                    <SplashLoader />
+                    <SakuraBackground />
+                    <Navbar />
+                    <main
+                      style={{
+                        flex: 1,
+                        position: "relative",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      {children}
+                    </main>
+                    <Footer />
+                    <ScrollToTop />
+                    <OnboardingOverlay />
+                  </StyledRegistry>
+                </ErrorBoundary>
+              </LessonLanguageProvider>
             </ProgressProvider>
           </DeviceModeProvider>
         </ThemeProvider>

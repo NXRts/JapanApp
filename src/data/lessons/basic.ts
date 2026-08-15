@@ -916,11 +916,14 @@ function generateBasicLessons(): Lesson[] {
             id: qId,
             type: "listening",
             questionText:
+              "Dengarkan pengucapan audio lalu pilih karakter yang tepat:",
+            questionTextEn:
               "Listen to the pronunciation and select the correct character:",
             audioText: correct,
             options: opts,
             answer: correct,
-            hint: `Mnemonic tip: "${item.char}" ${item.mnemonic}.`,
+            hint: `Tips: Huruf "${item.char}" dibaca "${item.romaji}". ${item.mnemonic}.`,
+            hintEn: `Mnemonic tip: "${item.char}" is read as "${item.romaji}". ${item.mnemonic}.`,
           });
         } else if (badge === "Vocabulary" && unit.words.length > 0) {
           let wordPool = unit.words;
@@ -951,10 +954,12 @@ function generateBasicLessons(): Lesson[] {
             questions.push({
               id: qId,
               type: "multiple-choice",
-              questionText: `What is the meaning of "${item.jpn}" (${item.rom})?`,
+              questionText: `Apa arti dari kosakata "${item.jpn}" (${item.rom})?`,
+              questionTextEn: `What is the meaning of "${item.jpn}" (${item.rom})?`,
               options: [item.eng, ...distractors].sort(),
               answer: item.eng,
-              hint: `Romaji: ${item.rom}`,
+              hint: `Cara baca (Romaji): ${item.rom}`,
+              hintEn: `Romaji: ${item.rom}`,
             });
           } else {
             const distractors = unit.words
@@ -965,10 +970,12 @@ function generateBasicLessons(): Lesson[] {
             questions.push({
               id: qId,
               type: "multiple-choice",
-              questionText: `Choose the correct Japanese word for "${item.eng}":`,
+              questionText: `Pilih kata Bahasa Jepang yang pas untuk "${item.eng}":`,
+              questionTextEn: `Choose the correct Japanese word for "${item.eng}":`,
               options: [item.jpn, ...finalOptions].sort(),
               answer: item.jpn,
-              hint: `Pronounced as: ${item.rom}`,
+              hint: `Dibaca: ${item.rom}`,
+              hintEn: `Pronounced as: ${item.rom}`,
             });
           }
         } else {
@@ -997,19 +1004,23 @@ function generateBasicLessons(): Lesson[] {
               questions.push({
                 id: qId,
                 type: "multiple-choice",
-                questionText: `Choose the correct Romaji reading for "${item.char}":`,
+                questionText: `Pilih cara baca Romaji yang pas untuk huruf "${item.char}":`,
+                questionTextEn: `Choose the correct Romaji reading for "${item.char}":`,
                 options: [item.romaji, ...distractors].sort(),
                 answer: item.romaji,
-                hint: `Mnemonic tip: "${item.char}" ${item.mnemonic}.`,
+                hint: `Tips: Huruf "${item.char}" ${item.mnemonic}.`,
+                hintEn: `Mnemonic tip: "${item.char}" ${item.mnemonic}.`,
               });
             } else {
               questions.push({
                 id: qId,
                 type: "typing",
-                questionText: `Type the Romaji reading of the character "${item.char}":`,
+                questionText: `Ketik cara baca Romaji dari huruf "${item.char}":`,
+                questionTextEn: `Type the Romaji reading of the character "${item.char}":`,
                 options: [],
                 answer: item.romaji.toLowerCase(),
-                hint: `Mnemonic tip: "${item.char}" ${item.mnemonic}.`,
+                hint: `Tips: Huruf "${item.char}" ${item.mnemonic}.`,
+                hintEn: `Mnemonic tip: "${item.char}" ${item.mnemonic}.`,
               });
             }
           } else {
