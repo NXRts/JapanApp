@@ -256,53 +256,72 @@ function generateQuestion(
     return result;
   };
 
+  let questionTextId = "";
+  let questionTextEn = "";
+  let hintId = "";
+  let hintEn = "";
+
   if (type === "multiple-choice") {
     if (rng(3) > 0.5) {
-      questionText = `What is the meaning of the vocabulary "${word.japanese}"?`;
+      questionTextId = `Apa arti dari kosakata "${word.japanese}" (${word.romaji})?`;
+      questionTextEn = `What is the meaning of the vocabulary "${word.japanese}"?`;
       answer = word.english;
       const distractors = getDistractors(answer, 3);
       options = [answer, ...distractors].sort();
-      hint = `Its Romaji spelling is "${word.romaji}".`;
+      hintId = `Cara baca (Romaji): "${word.romaji}".`;
+      hintEn = `Its Romaji spelling is "${word.romaji}".`;
     } else {
-      questionText = `Choose the correct Japanese word for "${word.english}":`;
+      questionTextId = `Pilih kata Bahasa Jepang yang pas untuk "${word.english}":`;
+      questionTextEn = `Choose the correct Japanese word for "${word.english}":`;
       answer = word.japanese;
       const distractors = getJapaneseDistractors(answer, 3);
       options = [answer, ...distractors].sort();
-      hint = `Pronounced as "${word.romaji}".`;
+      hintId = `Pengucapan: "${word.romaji}".`;
+      hintEn = `Pronounced as "${word.romaji}".`;
     }
   } else if (type === "typing") {
-    questionText = `Type the English translation for the Japanese word "${word.japanese}":`;
+    questionTextId = `Ketik arti Bahasa Inggris dari kosakata "${word.japanese}":`;
+    questionTextEn = `Type the English translation for the Japanese word "${word.japanese}":`;
     answer = word.english.toLowerCase();
     options = [];
-    hint = `It starts with the letter "${answer.charAt(0)}".`;
+    hintId = `Tips: Dimulai dengan huruf "${answer.charAt(0)}".`;
+    hintEn = `It starts with the letter "${answer.charAt(0)}".`;
   } else if (type === "fill-in-the-blank") {
-    questionText = `Complete the sentence with the correct word: \n「これは ___ です。」 (Translation: This is ${word.english}.)`;
+    questionTextId = `Lengkapi kalimat berikut dengan kata yang tepat: \n「これは ___ です。」 (Artinya: Ini adalah ${word.english}.)`;
+    questionTextEn = `Complete the sentence with the correct word: \n「これは ___ です。」 (Translation: This is ${word.english}.)`;
     answer = word.japanese;
     const distractors = getJapaneseDistractors(answer, 3);
     options = [answer, ...distractors].sort();
-    hint = `The missing word means "${word.english}".`;
+    hintId = `Tips: Kata yang hilang berarti "${word.english}".`;
+    hintEn = `The missing word means "${word.english}".`;
   } else if (type === "listening") {
-    questionText = `Listen to the pronunciation and choose the correct English meaning:`;
+    questionTextId = `Dengarkan pengucapan audio lalu pilih arti yang pas:`;
+    questionTextEn = `Listen to the pronunciation and choose the correct English meaning:`;
     audioText = word.japanese;
     answer = word.english;
     const distractors = getDistractors(answer, 3);
     options = [answer, ...distractors].sort();
-    hint = `You heard "${word.romaji}".`;
+    hintId = `Tips: Kamu mendengarkan "${word.romaji}".`;
+    hintEn = `You heard "${word.romaji}".`;
   } else {
-    questionText = `Arrange the cards to translate: "${word.english} please."`;
+    questionTextId = `Susun kata berikut agar membentuk kalimat: "Tolong ${word.english}."`;
+    questionTextEn = `Arrange the cards to translate: "${word.english} please."`;
     answer = `${word.japanese} を ください`;
     options = [word.japanese, "を", "ください", "es", "ka", "masu"].sort();
-    hint = `The pattern is: [Item] + を + ください.`;
+    hintId = `Pola kalimat: [Kata] + を + ください.`;
+    hintEn = `The pattern is: [Item] + を + ください.`;
   }
 
   return {
     id: qId,
     type,
-    questionText,
+    questionText: questionTextId,
+    questionTextEn,
     audioText,
     options,
     answer,
-    hint,
+    hint: hintId,
+    hintEn,
   };
 }
 

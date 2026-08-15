@@ -7,10 +7,14 @@ export interface Question {
     | "fill-in-the-blank"
     | "typing";
   questionText: string;
+  questionTextEn?: string;
   audioText?: string;
   options: string[];
+  optionsEn?: string[];
   answer: string;
+  answerEn?: string;
   hint?: string;
+  hintEn?: string;
 }
 
 export interface Lesson {
@@ -18,13 +22,18 @@ export interface Lesson {
   level: "Basic" | "N5" | "N4" | "N3" | "N2" | "N1";
   unitId: string;
   unitTitle: string;
+  unitTitleEn?: string;
   unitDescription: string;
+  unitDescriptionEn?: string;
   unitColor: string;
   title: string;
+  titleEn?: string;
   description: string;
+  descriptionEn?: string;
   expReward: number;
   icon: string;
   badge: string;
+  badgeEn?: string;
   questions: Question[];
 }
 

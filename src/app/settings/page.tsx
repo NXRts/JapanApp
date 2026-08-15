@@ -10,6 +10,7 @@ import {
 } from "@/context/ThemeContext";
 import { useProgress } from "@/context/ProgressContext";
 import { useDeviceMode } from "@/context/DeviceModeContext";
+import { useLessonLanguage } from "@/context/LessonLanguageContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -660,6 +661,7 @@ export default function SettingsPage() {
   const { color, setColor, mode, setMode, saveTheme } = useTheme();
   const { resetProgress } = useProgress();
   const { deviceMode, setDeviceMode } = useDeviceMode();
+  const { lessonLanguage, setLessonLanguage } = useLessonLanguage();
 
   // Track original settings to allow cancel/revert on navigate away
   const initialColor = useRef(color);
@@ -1018,6 +1020,35 @@ export default function SettingsPage() {
                       >
                         <span className="icon">🖥️</span>
                         <span>Mode PC (Navbar Atas)</span>
+                      </ModeBox>
+                    </ModeRow>
+                  </FormGroup>
+
+                  <FormGroup style={{ marginTop: "1.5rem" }}>
+                    <label>Mode Bahasa Pembelajaran (Learning Language)</label>
+                    <SubDescription>
+                      Pilih bahasa utama untuk soal kuis, petunjuk (*hints*), dan penjelasan materi di halaman Lessons.
+                    </SubDescription>
+                    <ModeRow>
+                      <ModeBox
+                        $active={lessonLanguage === "id"}
+                        onClick={() => {
+                          setLessonLanguage("id");
+                          triggerToast("Mode Bahasa: Bahasa Indonesia (Bawaan) 🇮🇩");
+                        }}
+                      >
+                        <span className="icon">🇮🇩</span>
+                        <span>Bahasa Indonesia (Santai / Bawaan)</span>
+                      </ModeBox>
+                      <ModeBox
+                        $active={lessonLanguage === "en"}
+                        onClick={() => {
+                          setLessonLanguage("en");
+                          triggerToast("Mode Bahasa: English Pure 🇬🇧");
+                        }}
+                      >
+                        <span className="icon">🇬🇧</span>
+                        <span>English (Bahasa Inggris Murni)</span>
                       </ModeBox>
                     </ModeRow>
                   </FormGroup>
