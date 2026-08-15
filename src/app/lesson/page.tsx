@@ -1315,6 +1315,7 @@ function LessonPlayerContent() {
   const [shakeBox, setShakeBox] = useState(false);
   const [hasVoiceTriggered, setHasVoiceTriggered] = useState(false);
   const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [finalScorePercentage, setFinalScorePercentage] = useState<number>(100);
   const [isExiting, setIsExiting] = useState(false);
   const [randomTip, setRandomTip] = useState<TipItem>(JAPANESE_TIPS[0]);
 
@@ -1448,6 +1449,7 @@ function LessonPlayerContent() {
           0,
           Math.round(((totalQ - mistakesCountRef.current) / totalQ) * 100),
         );
+        setFinalScorePercentage(scorePercentage);
 
         const isUnitExam =
           lesson.badge === "Ujian Unit" || lesson.id.endsWith("-exam");
@@ -1535,6 +1537,8 @@ function LessonPlayerContent() {
     setIsFinished(false);
     setIsGameOver(false);
     setElapsedTime(0);
+    setFinalScorePercentage(100);
+    mistakesCountRef.current = 0;
     setHasVoiceTriggered(false);
     startTime.current = Date.now();
   };
@@ -1634,14 +1638,9 @@ function LessonPlayerContent() {
   if (isFinished) {
     const elapsedMinutes = Math.floor(elapsedTime / 60);
     const elapsedSeconds = elapsedTime % 60;
-    const totalQ = questions.length || 1;
-    const scorePercentage = Math.max(
-      0,
-      Math.round(((totalQ - mistakesCountRef.current) / totalQ) * 100),
-    );
     const isUnitExam =
       lesson.badge === "Ujian Unit" || lesson.id.endsWith("-exam");
-    const isPassed = !isUnitExam || scorePercentage >= 80;
+    const isPassed = !isUnitExam || finalScorePercentage >= 80;
 
     return (
       <FullscreenContainer>
@@ -1657,15 +1656,15 @@ function LessonPlayerContent() {
           <VictorySubtitle>
             {isUnitExam
               ? isPassed
-                ? `Selamat! Kamu meraih nilai ${scorePercentage}% dan berhasil menguasai unit ini.`
-                : `Nilaumu: ${scorePercentage}%. Diperlukan minimal 80% (20 dari 25 benar) untuk lulus Ujian Unit.`
+                ? `Selamat! Kamu meraih nilai ${finalScorePercentage}% dan berhasil menguasai unit ini.`
+                : `Nilaumu: ${finalScorePercentage}%. Diperlukan minimal 80% (20 dari 25 benar) untuk lulus Ujian Unit.`
               : "Kerja bagus! Sesi ini telah menguji pemahamanmu secara komprehensif."}
           </VictorySubtitle>
 
           <StatsGrid>
             <StatCard $color={isPassed ? "#fbbf24" : "#ef4444"}>
               <span className="label">Akurasi Nilai</span>
-              <span className="value">{scorePercentage}%</span>
+              <span className="value">{finalScorePercentage}%</span>
             </StatCard>
             <StatCard $color="#10b981">
               <span className="label">EXP Diraih</span>
