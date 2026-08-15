@@ -1,4 +1,5 @@
 import { SeededRandom } from "./seededRandom";
+import { lessonsData } from "@/data/lessonsData";
 
 export interface Quest {
   id: string;
@@ -198,6 +199,31 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
   const lessonsFromExp = Math.floor(todayExp / 50);
   const todayLessonCount = Math.max(todayQuizzes.length, lessonsFromExp);
 
+  // Calculate 100% unit completions for today
+  const completedExercises = progress?.completedExercises || [];
+  const unitsMap: Record<string, string[]> = {};
+  lessonsData.forEach((l) => {
+    if (!unitsMap[l.unitId]) {
+      unitsMap[l.unitId] = [];
+    }
+    unitsMap[l.unitId].push(l.id);
+  });
+
+  let todayCompletedUnits = 0;
+  Object.values(unitsMap).forEach((lessonIds) => {
+    const isUnitFullyCompleted =
+      lessonIds.length > 0 &&
+      lessonIds.every((id) => completedExercises.includes(id));
+    if (isUnitFullyCompleted) {
+      const finishedLessonToday = lessonIds.some((id) =>
+        todayQuizzes.some((q: any) => q.id === id || q.lessonId === id),
+      );
+      if (finishedLessonToday) {
+        todayCompletedUnits++;
+      }
+    }
+  });
+
   return selectedTemplates.map((t, idx) => {
     const targetIdx = Math.floor(rng.next() * t.targetOptions.length);
     const target = t.targetOptions[targetIdx];
@@ -215,7 +241,7 @@ export function getDailyQuests(dateStr: string, progress: any): Quest[] {
       ).length;
       current = Math.min(target, Math.max(highScores, lessonsFromExp));
     } else if (t.type === "unit") {
-      current = Math.min(target, (todayLessonCount >= 2 || todayExp >= 50) ? 1 : 0);
+      current = Math.min(target, todayCompletedUnits);
     } else if (t.type === "perfect_quiz") {
       const perfects = todayQuizzes.filter(
         (q: any) => q.total > 0 && q.score === q.total,
