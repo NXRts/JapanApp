@@ -1199,7 +1199,17 @@ function generateDynamicQuestions(lesson: Lesson): Question[] {
 function LessonPlayerContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { progress, markExerciseCompleted, updateExerciseScore, addExp, deductHeart, refillHearts } = useProgress();
+  const {
+    progress,
+    markExerciseCompleted,
+    updateExerciseScore,
+    addExp,
+    deductHeart,
+    refillHearts,
+    addGems,
+    triggerAlert,
+  } = useProgress();
+
   const startTime = useRef<number | null>(null);
   const mistakesCountRef = useRef<number>(0);
 
@@ -1432,17 +1442,36 @@ function LessonPlayerContent() {
           (Date.now() - (startTime.current || Date.now())) / 1000,
         );
         setElapsedTime(totalTime);
-        const expToAward = isAlreadyCompleted ? 5 : lesson.expReward;
-        addExp(expToAward);
-        markExerciseCompleted(lesson.id);
 
         const totalQ = questions.length || 1;
         const scorePercentage = Math.max(
           0,
-          Math.round(((totalQ - mistakesCountRef.current) / totalQ) * 100)
+          Math.round(((totalQ - mistakesCountRef.current) / totalQ) * 100),
         );
-        if (updateExerciseScore) {
-          updateExerciseScore(lesson.id, scorePercentage);
+
+        const isUnitExam =
+          lesson.badge === "Ujian Unit" || lesson.id.endsWith("-exam");
+        const isPassed = !isUnitExam || scorePercentage >= 80;
+
+        if (isPassed) {
+          const expToAward = isAlreadyCompleted ? 15 : lesson.expReward;
+          addExp(expToAward);
+          markExerciseCompleted(lesson.id);
+
+          if (isUnitExam && !isAlreadyCompleted) {
+            addGems(30);
+            if (triggerAlert) {
+              triggerAlert(
+                "achievement",
+                "LULUS UJIAN UNIT! 🏆",
+                `Selamat! Kamu menguasai Ujian Unit dengan nilai ${scorePercentage}%! Unit berikutnya telah terbuka (+100 EXP & +30 Permata)`,
+              );
+            }
+          }
+
+          if (updateExerciseScore) {
+            updateExerciseScore(lesson.id, scorePercentage);
+          }
         }
 
         setIsFinished(true);
@@ -1605,25 +1634,47 @@ function LessonPlayerContent() {
   if (isFinished) {
     const elapsedMinutes = Math.floor(elapsedTime / 60);
     const elapsedSeconds = elapsedTime % 60;
+    const totalQ = questions.length || 1;
+    const scorePercentage = Math.max(
+      0,
+      Math.round(((totalQ - mistakesCountRef.current) / totalQ) * 100),
+    );
+    const isUnitExam =
+      lesson.badge === "Ujian Unit" || lesson.id.endsWith("-exam");
+    const isPassed = !isUnitExam || scorePercentage >= 80;
 
     return (
       <FullscreenContainer>
         <VictoryOverlay>
-          <TrophyGraphic>🏆</TrophyGraphic>
-          <VictoryTitle>Lesson Completed!</VictoryTitle>
+          <TrophyGraphic>{isPassed ? "🏆" : "⚠️"}</TrophyGraphic>
+          <VictoryTitle>
+            {isUnitExam
+              ? isPassed
+                ? "LULUS UJIAN UNIT! 🎉"
+                : "BELUM LULUS UJIAN UNIT"
+              : "Pelajaran Selesai!"}
+          </VictoryTitle>
           <VictorySubtitle>
-            Great job! This session trained your comprehension comprehensively.
+            {isUnitExam
+              ? isPassed
+                ? `Selamat! Kamu meraih nilai ${scorePercentage}% dan berhasil menguasai unit ini.`
+                : `Nilaumu: ${scorePercentage}%. Diperlukan minimal 80% (20 dari 25 benar) untuk lulus Ujian Unit.`
+              : "Kerja bagus! Sesi ini telah menguji pemahamanmu secara komprehensif."}
           </VictorySubtitle>
 
           <StatsGrid>
-            <StatCard $color="#fbbf24">
-              <span className="label">EXP Gained</span>
+            <StatCard $color={isPassed ? "#fbbf24" : "#ef4444"}>
+              <span className="label">Akurasi Nilai</span>
+              <span className="value">{scorePercentage}%</span>
+            </StatCard>
+            <StatCard $color="#10b981">
+              <span className="label">EXP Diraih</span>
               <span className="value">
-                +{isAlreadyCompleted ? 5 : lesson.expReward} EXP
+                +{isPassed ? (isAlreadyCompleted ? 15 : lesson.expReward) : 0} EXP
               </span>
             </StatCard>
             <StatCard $color="#3b82f6">
-              <span className="label">Time</span>
+              <span className="label">Waktu</span>
               <span className="value">
                 {elapsedMinutes > 0 ? `${elapsedMinutes}m ` : ""}
                 {elapsedSeconds}s
@@ -1631,7 +1682,33 @@ function LessonPlayerContent() {
             </StatCard>
           </StatsGrid>
 
-          <ContinueBtn onClick={handleExit}>Continue</ContinueBtn>
+          {!isPassed ? (
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                width: "100%",
+                maxWidth: "360px",
+                marginTop: "1.5rem",
+              }}
+            >
+              <RetryBtn onClick={handleRetry} style={{ flex: 1 }}>
+                Coba Lagi
+              </RetryBtn>
+              <ContinueBtn
+                onClick={handleExit}
+                style={{
+                  flex: 1,
+                  backgroundColor: "var(--surface-hover)",
+                  color: "var(--text-main)",
+                }}
+              >
+                Kembali
+              </ContinueBtn>
+            </div>
+          ) : (
+            <ContinueBtn onClick={handleExit}>Lanjutkan</ContinueBtn>
+          )}
         </VictoryOverlay>
       </FullscreenContainer>
     );
