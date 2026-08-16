@@ -490,9 +490,9 @@ export function RightSidebar() {
         <WidgetCard>
           <WidgetHeader>
             <WidgetTitle>{leagueInfo.name}</WidgetTitle>
-            <WidgetActionText onClick={() => setActiveModal("leaderboard")}>LIHAT LIGA</WidgetActionText>
+            <WidgetActionText as={Link} href="/leaderboard" style={{ textDecoration: "none" }}>LIHAT LIGA</WidgetActionText>
           </WidgetHeader>
-          <LeagueBody onClick={() => setActiveModal("leaderboard")}>
+          <LeagueBody as={Link} href="/leaderboard" style={{ textDecoration: "none" }}>
             <ShieldIconBox style={{ background: leagueInfo.badgeBg, borderColor: leagueInfo.borderColor }}>
               {leagueInfo.icon}
               <WarningBadge style={{ background: rankInfo.color }}>

@@ -48,6 +48,7 @@ export interface UserProfile {
   email: string;
   bio: string;
   avatar: string;
+  statusEmoji?: string;
   difficulty: string;
   dailyGoal: string;
 }
@@ -117,6 +118,7 @@ interface ProgressContextType {
   claimQuestReward: (questId: string, rewardGems: number) => void;
   timeUntilNextHeart: number;
   timeUntilFullRefill: number;
+  setStatusEmoji: (emoji: string) => void;
   triggerAlert: (
     type: "level" | "achievement",
     title: string,
@@ -136,6 +138,7 @@ export const DEFAULT_PROFILE: UserProfile = {
   email: "learner@japanapp.com",
   bio: "Belajar bahasa Jepang untuk menguasai Kanji dan percakapan harian. Target lulus JLPT N5 tahun ini! 🎯",
   avatar: "🦊",
+  statusEmoji: "😎",
   difficulty: "pemula",
   dailyGoal: "50",
 };
@@ -660,6 +663,10 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     }));
   }, []);
 
+  const setStatusEmoji = useCallback((emoji: string) => {
+    updateProfile({ statusEmoji: emoji });
+  }, [updateProfile]);
+
   const markGrammarSectionCompleted = useCallback((key: string) => {
     setProgress((prev) => {
       if (prev.completedGrammarSections?.includes(key)) return prev;
@@ -919,6 +926,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       getDueItems,
       resetProgress,
       updateProfile,
+      setStatusEmoji,
       markGrammarSectionCompleted,
       setShowFurigana,
       initializeName,
@@ -947,6 +955,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       getDueItems,
       resetProgress,
       updateProfile,
+      setStatusEmoji,
       markGrammarSectionCompleted,
       setShowFurigana,
       initializeName,
