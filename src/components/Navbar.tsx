@@ -1888,6 +1888,11 @@ export function Navbar() {
               Quiz
             </SidebarNavItem>
 
+            <SidebarNavItem href="/leaderboard" $active={pathname.startsWith("/leaderboard")}>
+              <span style={{ fontSize: "1.2rem", width: "20px", display: "inline-flex", justifyContent: "center" }}>🏆</span>
+              Leaderboard
+            </SidebarNavItem>
+
             <SidebarNavItem href="/game" $active={pathname.startsWith("/game")}>
               <GameIcon />
               Game
@@ -2356,6 +2361,14 @@ export function Navbar() {
                     $active={pathname.startsWith("/quests")}
                   >
                     Misi
+                  </StyledLink>
+                </NavItem>
+                <NavItem>
+                  <StyledLink
+                    href="/leaderboard"
+                    $active={pathname.startsWith("/leaderboard")}
+                  >
+                    Leaderboard
                   </StyledLink>
                 </NavItem>
                 <NavItem>
