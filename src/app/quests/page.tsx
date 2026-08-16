@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useProgress } from "@/context/ProgressContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { getDailyQuests } from "@/utils/dailyQuests";
+import { CheckIcon } from "@/components/common/CheckIcon";
 
 /* ─── Layout & Page Containers ───────────────────────────────────────────── */
 const Container = styled.div`
@@ -511,7 +512,7 @@ export default function QuestsPage() {
                       </ClaimBtn>
                     ) : isClaimed ? (
                       <ClaimBtn $claimed disabled>
-                        Diklaim ✓
+                        Diklaim <CheckIcon size={14} style={{ marginLeft: "4px" }} />
                       </ClaimBtn>
                     ) : (
                       <QuestGoBtn href={q.actionUrl || "/lesson"}>

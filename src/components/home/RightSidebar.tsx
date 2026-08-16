@@ -4,6 +4,7 @@ import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { useProgress } from "@/context/ProgressContext";
+import { CheckIcon } from "@/components/common/CheckIcon";
 import {
   CourseModal,
   StreakModal,
@@ -71,6 +72,7 @@ const StatPill = styled.div<{ $color?: string }>`
 
 const FlagBox = styled.div`
   display: flex;
+  
   align-items: center;
   gap: 0.35rem;
   background: rgba(255, 255, 255, 0.06);
@@ -534,8 +536,8 @@ export function RightSidebar() {
                       🎁
                     </ChestButton>
                   ) : isClaimed ? (
-                    <ChestButton $claimed disabled title="Diklaim ✓">
-                      ✅
+                    <ChestButton $claimed disabled title="Diklaim">
+                      <CheckIcon size={16} color="#10b981" strokeWidth={3.5} />
                     </ChestButton>
                   ) : (
                     <SidebarQuestGoBtn href={q.actionUrl || "/lesson"} title={`Kerjakan Misi: ${q.title}`}>

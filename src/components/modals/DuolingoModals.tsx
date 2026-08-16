@@ -3,6 +3,7 @@
 import { useProgress } from "@/context/ProgressContext";
 import { getLeagueById, getRankStatus } from "@/data/leagues";
 import { getDailyQuests, Quest } from "@/utils/dailyQuests";
+import { CheckIcon } from "@/components/common/CheckIcon";
 import Link from "next/link";
 import { useEffect, useMemo } from "react";
 import styled, { keyframes } from "styled-components";
@@ -369,7 +370,7 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
                   fontSize: "0.85rem",
                 }}
               >
-                {d.hasStudied ? "✓" : ""}
+                {d.hasStudied ? <CheckIcon size={16} color="#ffffff" strokeWidth={3.5} /> : ""}
               </div>
             </div>
           ))}
@@ -415,7 +416,7 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
           </ActionBtn>
         ) : (
           <ActionBtn $variant="secondary" onClick={onClose}>
-            Streak Aman & Aktif ✓
+            Streak Aman & Aktif <CheckIcon size={16} style={{ marginLeft: "4px" }} />
           </ActionBtn>
         )}
       </ModalBox>
@@ -521,7 +522,7 @@ export function ShopModal({ onClose }: { onClose: () => void }) {
                 opacity: hearts >= 5 || gems < 100 ? 0.6 : 1,
               }}
             >
-              {hearts >= 5 ? "Penuh ✓" : "100 💎"}
+              {hearts >= 5 ? <><CheckIcon size={15} style={{ marginRight: "4px" }} /> Penuh</> : "100 💎"}
             </button>
           </div>
 
@@ -570,7 +571,7 @@ export function ShopModal({ onClose }: { onClose: () => void }) {
                 opacity: hasFreeze || gems < 200 ? 0.6 : 1,
               }}
             >
-              {hasFreeze ? "Dimiliki ✓" : "200 💎"}
+              {hasFreeze ? <><CheckIcon size={15} style={{ marginRight: "4px" }} /> Dimiliki</> : "200 💎"}
             </button>
           </div>
 
@@ -1161,7 +1162,7 @@ export function AllQuestsModal({ onClose }: { onClose: () => void }) {
                       color: "#10b981",
                     }}
                   >
-                    Diklaim ✓
+                    Diklaim <CheckIcon size={14} style={{ marginLeft: "4px" }} />
                   </span>
                 ) : (
                   <ModalQuestGoBtn

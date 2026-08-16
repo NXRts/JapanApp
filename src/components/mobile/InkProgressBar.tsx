@@ -2,6 +2,7 @@
 
 import React from "react";
 import styled from "styled-components";
+import { CheckIcon } from "@/components/common/CheckIcon";
 
 const ProgressBarContainer = styled.div`
   display: flex;
@@ -99,7 +100,7 @@ export function InkProgressBar({
         <BarFill $percent={percent} $color={color} />
       </BarTrack>
       <StampBadge $color={color} $active={isMastered}>
-        {isMastered ? "✓" : `${percent}%`}
+        {isMastered ? <CheckIcon size={12} color="#ffffff" strokeWidth={3.5} /> : `${percent}%`}
       </StampBadge>
     </ProgressBarContainer>
   );

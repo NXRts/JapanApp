@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styled, { keyframes } from "styled-components";
 import { useProgress } from "@/context/ProgressContext";
+import { CheckIcon } from "@/components/common/CheckIcon";
 import { getDailyQuests } from "@/utils/dailyQuests";
 
 /* ─── Keyframe Animations ────────────────────────────────────────────────── */
@@ -391,7 +392,7 @@ export function DailyQuestsUpdateModal({
                   </YellowTrackOuter>
                 </QuestTextGroup>
                 <ChestEndIcon title={isClaimed ? `Hadiah Diklaim (+${q.rewardGems} 💎)` : "Belum Selesai"}>
-                  {isClaimed ? "✅" : "🎁"}
+                  {isClaimed ? <CheckIcon size={20} color="#10b981" strokeWidth={3.5} /> : "🎁"}
                 </ChestEndIcon>
               </QuestProgressCard>
             );

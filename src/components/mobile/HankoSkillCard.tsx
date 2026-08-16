@@ -2,6 +2,7 @@
 
 import React from "react";
 import styled, { keyframes, css } from "styled-components";
+import { CheckIcon } from "@/components/common/CheckIcon";
 
 const stampAppear = keyframes`
   0% { transform: scale(2.5); opacity: 0; filter: blur(3px); }
