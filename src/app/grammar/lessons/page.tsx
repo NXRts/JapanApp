@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { grammarLessons, totalSections } from "@/data/grammarLessons";
 import { useProgress } from "@/context/ProgressContext";
+import { CheckIcon as SVGCheckIcon } from "@/components/common/CheckIcon";
 
 /* ─── Animations ───────────────────────────────────────────────────────── */
 const fadeUp = keyframes`
@@ -465,7 +466,9 @@ export default function GrammarLessonsPage() {
                   <LessonMeta>
                     <MetaTag>{lesson.sections.length} sections</MetaTag>
                     {s.done ? (
-                      <MetaTag $green>✓ Completed</MetaTag>
+                      <MetaTag $green>
+                        <SVGCheckIcon size={12} style={{ marginRight: "4px" }} /> Completed
+                      </MetaTag>
                     ) : s.sectionsDone > 0 ? (
                       <MetaTag>
                         {s.sectionsDone}/{s.totalInLesson} done

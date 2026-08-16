@@ -3,6 +3,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
+import { CheckIcon as SVGCheckIcon } from "@/components/common/CheckIcon";
 
 const NodeContainer = styled.div`
   display: flex;
@@ -76,7 +77,7 @@ const NodeTitle = styled.span`
   line-height: 1.2;
 `;
 
-const CheckIcon = styled.div`
+const CheckBadge = styled.div`
   position: absolute;
   bottom: -4px;
   right: -4px;
@@ -115,7 +116,9 @@ export function GridNode({ title, link, status, rowColor }: GridNodeProps) {
         {status === "completed" && (
           <>
             <span style={{ fontSize: "2rem" }}>⭐</span>
-            <CheckIcon>✓</CheckIcon>
+            <CheckBadge>
+              <SVGCheckIcon size={14} color="#ffffff" strokeWidth={3.5} />
+            </CheckBadge>
           </>
         )}
         {status === "available" && <span style={{ fontSize: "2rem" }}>📖</span>}

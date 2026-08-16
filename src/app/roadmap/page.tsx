@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { CheckIcon } from "@/components/common/CheckIcon";
 import { useProgress } from "@/context/ProgressContext";
 import { lessonsData } from "@/data/lessonsData";
 
@@ -615,7 +616,7 @@ export default function RoadmapSkillTreePage() {
                     </div>
                   </div>
                   <span className="node-status-pill">
-                    {node.mastered ? "Dikuasai ✅" : "Perlu Drill ⚡"}
+                    {node.mastered ? <><CheckIcon size={12} style={{ marginRight: "4px" }} /> Dikuasai</> : "Perlu Drill ⚡"}
                   </span>
                 </SkillNodeItem>
               ))}

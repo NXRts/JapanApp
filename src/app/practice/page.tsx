@@ -637,7 +637,7 @@ export default function PracticeHubPage() {
         tagColor: mistakesCount > 0 ? "#ef4444" : "#10b981",
         accentColor: "#ef4444",
         href: "/characters?practice=true",
-        btnText: mistakesCount > 0 ? `Perbaiki ${mistakesCount} Soal` : "Semua Benar ✓",
+        btnText: mistakesCount > 0 ? `Perbaiki ${mistakesCount} Soal` : "Semua Benar ✨",
         disabled: mistakesCount === 0,
       },
     ],
