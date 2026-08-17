@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { useProgress } from "@/context/ProgressContext";
 import { themes, ThemeColor } from "@/context/ThemeContext";
+import { JapanAppLogoIcon } from "@/components/common/JapanAppLogoIcon";
 
 // ─── Quotes & Tips Data ──────────────────────────────────────────────────────
 export interface TipItem {
@@ -485,7 +486,7 @@ export function SplashLoader() {
           }}
         >
           <LogoContainer>
-            <FlagIcon aria-hidden="true">🇯🇵</FlagIcon>
+            <JapanAppLogoIcon size={56} style={{ marginBottom: "0.5rem" }} />
             <Title>JapanApp</Title>
           </LogoContainer>
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styled from "styled-components";
 import { CoffeeIcon } from "./icons/AppIcons";
+import { JapanAppLogoIcon } from "@/components/common/JapanAppLogoIcon";
 
 const FooterRoot = styled.footer`
   background: var(--surface);
@@ -446,7 +447,7 @@ export function Footer() {
       <NewsletterSection>
         <NewsletterText>
           <h3>
-            Stay <span>Updated</span>
+            Start Learning <span>Japanese</span> Today
           </h3>
           <p>Get the latest lessons and Kanji tips directly in your inbox.</p>
         </NewsletterText>
@@ -459,7 +460,7 @@ export function Footer() {
       <FooterMain>
         <BrandColumn>
           <Logo href="/">
-            🇯🇵 <span>JapanApp</span>
+            <JapanAppLogoIcon size={26} /> <span>JapanApp</span>
           </Logo>
           <p>
             The comprehensive platform for mastering Japanese Kanji and Kana.
