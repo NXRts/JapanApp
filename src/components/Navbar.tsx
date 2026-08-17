@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { createGlobalStyle, css } from "styled-components";
 import { UserIcon } from "./icons/AppIcons";
+import { JapanAppLogoIcon } from "@/components/common/JapanAppLogoIcon";
 
 const DictionarySearchOverlay = dynamic(
   () => import("./dictionary/DictionarySearchOverlay"),
@@ -1842,7 +1843,7 @@ export function Navbar() {
       {isWidescreenMobileSim && (
         <SidebarRoot>
           <SidebarLogo href="/">
-            🇯🇵 <span>JapanApp</span>
+            <JapanAppLogoIcon size={26} /> <span>JapanApp</span>
           </SidebarLogo>
 
           <SidebarNavList>
@@ -1886,11 +1887,6 @@ export function Navbar() {
             <SidebarNavItem href="/quiz" $active={pathname.startsWith("/quiz")}>
               <QuizIcon />
               Quiz
-            </SidebarNavItem>
-
-            <SidebarNavItem href="/leaderboard" $active={pathname.startsWith("/leaderboard")}>
-              <span style={{ fontSize: "1.2rem", width: "20px", display: "inline-flex", justifyContent: "center" }}>🏆</span>
-              Leaderboard
             </SidebarNavItem>
 
             <SidebarNavItem href="/game" $active={pathname.startsWith("/game")}>
@@ -2088,7 +2084,7 @@ export function Navbar() {
               </DesktopBreadcrumbsWrapper>
 
               <MobileHeaderLogo href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                🇯🇵 <span>JapanApp</span>
+                <JapanAppLogoIcon size={24} /> <span>JapanApp</span>
               </MobileHeaderLogo>
 
               <AppTopRightGroup>
@@ -2281,7 +2277,7 @@ export function Navbar() {
           ) : (
             <>
               <Logo href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                🇯🇵 <span>JapanApp</span>
+                <JapanAppLogoIcon size={24} /> <span>JapanApp</span>
               </Logo>
 
               <NavList>
@@ -2361,14 +2357,6 @@ export function Navbar() {
                     $active={pathname.startsWith("/quests")}
                   >
                     Misi
-                  </StyledLink>
-                </NavItem>
-                <NavItem>
-                  <StyledLink
-                    href="/leaderboard"
-                    $active={pathname.startsWith("/leaderboard")}
-                  >
-                    Leaderboard
                   </StyledLink>
                 </NavItem>
                 <NavItem>

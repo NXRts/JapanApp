@@ -98,6 +98,8 @@ interface AuthLayoutProps {
   subtitle: string;
 }
 
+import { JapanAppLogoIcon } from "@/components/common/JapanAppLogoIcon";
+
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
     <PageContainer>
@@ -105,7 +107,7 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
       <AuthCard>
         <LogoContainer>
           <Logo href="/">
-            🇯🇵 <span>JapanApp</span>
+            <JapanAppLogoIcon size={32} /> <span>JapanApp</span>
           </Logo>
           <Title>{title}</Title>
           <Subtitle>{subtitle}</Subtitle>
