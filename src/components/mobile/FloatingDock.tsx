@@ -201,6 +201,22 @@ function GameIcon() {
   );
 }
 
+function QuestIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="11" width="18" height="10" rx="2" />
+      <path d="M3 11V8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v3" />
+      <path d="M12 11v4" />
+    </svg>
+  );
+}
+
 function ProfileIcon() {
   return (
     <svg
@@ -235,8 +251,14 @@ const DOCK_TABS: DockTab[] = [
     matchPaths: ["/roadmap", "/lesson"],
   },
   {
+    href: "/quests",
+    label: "Quests",
+    icon: QuestIcon,
+    matchPaths: ["/quests"],
+  },
+  {
     href: "/characters",
-    label: "Characters",
+    label: "Kana",
     icon: CharactersIcon,
     matchPaths: ["/characters"],
   },

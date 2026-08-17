@@ -1022,6 +1022,23 @@ function JlptIcon() {
   );
 }
 
+function QuestsIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="3" y="11" width="18" height="10" rx="2" />
+      <path d="M3 11V8a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v3" />
+      <path d="M12 11v4" />
+    </svg>
+  );
+}
+
 function CharactersIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor">
@@ -1874,6 +1891,14 @@ export function Navbar() {
             </SidebarNavItem>
 
             <SidebarNavItem
+              href="/quests"
+              $active={pathname.startsWith("/quests")}
+            >
+              <QuestsIcon />
+              Quests
+            </SidebarNavItem>
+
+            <SidebarNavItem
               href="/practice"
               $active={
                 pathname.startsWith("/practice") ||
@@ -2084,7 +2109,7 @@ export function Navbar() {
               </DesktopBreadcrumbsWrapper>
 
               <MobileHeaderLogo href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                <JapanAppLogoIcon size={24} /> <span>JapanApp</span>
+                🇯🇵 <span>JapanApp</span>
               </MobileHeaderLogo>
 
               <AppTopRightGroup>
@@ -2277,7 +2302,7 @@ export function Navbar() {
           ) : (
             <>
               <Logo href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                <JapanAppLogoIcon size={24} /> <span>JapanApp</span>
+                🇯🇵 <span>JapanApp</span>
               </Logo>
 
               <NavList>
