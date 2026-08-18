@@ -1,412 +1,616 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
-import styled, { keyframes } from "styled-components";
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { playJapaneseAudio } from "@/lib/audio";
 import {
-  searchDictionary,
-  getAutoSuggestions,
-  DictionaryResult,
   allKanji,
+  allVocabulary,
+  DictionaryResult,
+  getAutoSuggestions,
+  searchDictionary,
 } from "@/lib/dictionary";
-import { speakJapanese } from "@/lib/audio";
-import { generateConjugations, WordConjugationTable } from "@/utils/japaneseConjugation";
+import {
+  generateConjugations,
+  WordConjugationTable,
+} from "@/utils/japaneseConjugation";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 
-/* ─── Animations ─────────────────────────────────────────────────────────── */
+/* ─── Global Font Imports ────────────────────────────────────────────────── */
+const KamusGlobalStyle = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  :root {
+    --font-kanji: "Noto Serif JP", serif;
+    --font-kana: "Noto Sans JP", sans-serif;
+    --font-ui: "Inter", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+  }
+`;
+
 const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 `;
 
-/* ─── Styled Components ──────────────────────────────────────────────────── */
+/* ─── Styled Components (JapanApp Native Design System) ─────────────────── */
 const PageContainer = styled.div`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem 1.5rem 5rem 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  padding: 1.25rem 1.5rem 5rem 1.5rem;
   min-height: 90vh;
   animation: ${fadeIn} 0.3s ease-out;
+  color: var(--foreground);
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     padding: 1rem 1rem 6rem 1rem;
   }
 `;
 
+/* Header Section */
 const HeaderBox = styled.div`
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   text-align: left;
 `;
 
+const TitleRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+`;
+
 const PageTitle = styled.h1`
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 900;
   color: var(--foreground);
-  margin: 0 0 0.4rem 0;
+  margin: 0;
   display: flex;
   align-items: center;
   gap: 0.6rem;
+  letter-spacing: -0.02em;
+
+  span.brand-mark {
+    font-family: var(--font-kanji);
+    color: var(--primary);
+  }
 
   @media (max-width: 640px) {
-    font-size: 1.65rem;
+    font-size: 1.5rem;
+  }
+`;
+
+const EntryBadge = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
   }
 `;
 
 const Subtitle = styled.p`
   font-size: 0.95rem;
   color: var(--text-secondary);
-  margin: 0;
+  margin: 0.3rem 0 0 0;
 `;
 
-/* ─── Tab Bar (Search vs Bookmarks) ─────────────────────────────────────── */
-const TabContainer = styled.div`
-  display: flex;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 0.5rem;
-`;
-
-const TabBtn = styled.button<{ $active: boolean }>`
-  padding: 0.6rem 1.25rem;
-  border-radius: 12px;
-  font-weight: 800;
-  font-size: 0.9rem;
-  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
-  background: ${({ $active }) =>
-    $active ? "rgba(var(--primary-rgb), 0.15)" : "transparent"};
-  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    color: var(--primary);
-  }
-`;
-
-/* ─── Search Box & Auto Suggestion ───────────────────────────────────────── */
-const SearchWrapper = styled.div`
+/* Search Box Container */
+const SearchBoxWrapper = styled.div`
   position: relative;
-  margin-bottom: 1.25rem;
   width: 100%;
+  margin-bottom: 1.25rem;
 `;
 
-const SearchInputRow = styled.form`
+const SearchBarForm = styled.form`
   display: flex;
   align-items: center;
   background: var(--surface);
   border: 2px solid var(--border);
-  border-radius: 20px;
-  padding: 0.4rem 0.85rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border-radius: 18px;
+  padding: 0.4rem 0.6rem 0.4rem 1.2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
 
   &:focus-within {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb, 79, 70, 229), 0.15);
   }
-`;
 
-const SearchInput = styled.input`
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--foreground);
-  padding: 0.6rem 0.5rem;
-  font-family: inherit;
-
-  &::placeholder {
+  svg.search-icon {
+    flex-shrink: 0;
     color: var(--text-secondary);
-    font-weight: 500;
+    margin-right: 0.5rem;
+  }
+
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-ui);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--foreground);
+    padding: 0.5rem 0;
+
+    &::placeholder {
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    padding: 0.6rem 0.8rem;
+    gap: 0.5rem;
+
+    input {
+      width: 100%;
+    }
   }
 `;
 
-const ClearBtn = styled.button`
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0.4rem;
+const InputToggleBar = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: color 0.2s;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
 
-  &:hover {
-    color: var(--foreground);
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: space-between;
   }
 `;
 
-const SearchBtn = styled.button`
-  background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
-  color: #ffffff;
+const TogglePill = styled.button<{ $active: boolean }>`
   border: none;
-  padding: 0.65rem 1.4rem;
-  border-radius: 14px;
-  font-weight: 800;
-  font-size: 0.95rem;
+  background: ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
+  font-family: var(--font-kana);
+  font-size: 0.8rem;
+  font-weight: ${({ $active }) => ($active ? "700" : "500")};
+  padding: 5px 12px;
+  border-radius: 999px;
   cursor: pointer;
-  margin-left: 0.5rem;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  white-space: nowrap;
 
   &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.4);
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--foreground)")};
+  }
+
+  @media (max-width: 768px) {
+    flex: 1;
+    text-align: center;
+    padding: 6px 4px;
   }
 `;
 
-/* Suggestions Dropdown */
-const SuggestionsDropdown = styled.div`
+const SearchMetaRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  flex-wrap: wrap;
+
+  .chips {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+`;
+
+const LevelChip = styled.button<{ $active: boolean }>`
+  padding: 3px 10px;
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  border-radius: 8px;
+  background: ${({ $active }) =>
+    $active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.12)" : "var(--surface)"};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
+  font-size: 0.78rem;
+  font-weight: ${({ $active }) => ($active ? "800" : "600")};
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+`;
+
+/* Auto Suggestions Dropdown */
+const SuggestionsBox = styled.div`
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
   right: 0;
-  z-index: 50;
+  z-index: 100;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 16px;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
   overflow: hidden;
   max-height: 360px;
   overflow-y: auto;
 `;
 
-const SuggestionItem = styled.div`
+const SuggestionRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1.25rem;
+  padding: 10px 16px;
   cursor: pointer;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  transition: background 0.15s ease;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s ease;
 
   &:last-child {
     border-bottom: none;
   }
 
   &:hover {
-    background: rgba(var(--primary-rgb), 0.1);
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.08);
   }
 `;
 
-/* ─── Filters & History Bar ──────────────────────────────────────────────── */
-const FilterRow = styled.div`
+/* Main Content Body */
+const BodyWrap = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  width: 100%;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
+`;
+
+const GridPanel = styled.div`
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+`;
+
+const ToolbarRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  h2 {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--foreground);
+    letter-spacing: 0.03em;
+    margin: 0;
+    text-transform: uppercase;
+
+    span {
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: none;
+      margin-left: 6px;
+    }
+  }
+`;
+
+const SortBar = styled.div`
+  display: flex;
+  gap: 4px;
+
+  button {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 4px 10px;
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.15s ease;
+
+    &.active {
+      border-color: var(--primary);
+      background: rgba(var(--primary-rgb, 79, 70, 229), 0.12);
+      color: var(--primary);
+    }
+
+    &:hover:not(.active) {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  }
+`;
+
+/* Responsive Auto-Fill Grid */
+const VGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 10px;
+  width: 100%;
+
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 6px;
+    padding: 6px;
+  }
+`;
+
+const CellCard = styled.div<{ $starred?: boolean }>`
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 98px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.06);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  .pos-tag {
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    font-weight: 800;
+    color: #d97706;
+    background: rgba(217, 119, 6, 0.12);
+    border: 1px solid rgba(217, 119, 6, 0.2);
+    padding: 1px 4px;
+    border-radius: 4px;
+    line-height: 1.2;
+  }
+
+  .star-btn {
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    font-size: 11px;
+    color: ${({ $starred }) => ($starred ? "#f59e0b" : "var(--border)")};
+    transition: color 0.15s ease;
+  }
+
+  .furigana {
+    font-family: var(--font-kana);
+    font-size: 9.5px;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    margin-top: 6px;
+    line-height: 1;
+    height: 11px;
+  }
+
+  .kanji {
+    font-family: var(--font-kanji);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--foreground);
+    line-height: 1.15;
+    margin: 2px 0;
+
+    @media (max-width: 640px) {
+      font-size: 1.25rem;
+    }
+  }
+
+  .romaji {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--text-secondary);
+    letter-spacing: 0.2px;
+  }
+
+  .indo {
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--primary);
+    margin-top: 4px;
+    text-align: center;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+    width: 100%;
+
+    @media (max-width: 640px) {
+      font-size: 10px;
+    }
+  }
+`;
+
+/* Pagination */
+const PaginationBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 1.5rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+
+  button {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    transition: all 0.15s ease;
+
+    &.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+      font-weight: 800;
+    }
+
+    &.nav {
+      color: var(--foreground);
+      font-family: var(--font-ui);
+      font-weight: 700;
+    }
+
+    &:hover:not(.active) {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+  }
+
+  .ellipsis {
+    color: var(--text-secondary);
+    padding: 0 4px;
+  }
+
+  @media (max-width: 640px) {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 1rem 0;
+    button {
+      flex-shrink: 0;
+    }
+  }
+`;
+
+/* Right Filter Rail */
+const FilterRail = styled.aside`
+  width: 54px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 90px;
+  height: fit-content;
+
+  @media (max-width: 900px) {
+    width: 100%;
+    flex-direction: row;
+    position: static;
+  }
+`;
+
+const RailCard = styled.div`
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 0;
+
+  @media (max-width: 900px) {
+    flex: 1;
+    min-width: 0;
+  }
+`;
+
+const RailTitle = styled.div`
+  font-size: 8.5px;
+  font-weight: 800;
+  color: var(--text-secondary);
+  text-align: center;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+`;
+
+const RailList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 420px;
+  overflow-y: auto;
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media (max-width: 900px) {
+    flex-direction: row;
+    max-height: none;
+    overflow-x: auto;
+    padding: 0 4px;
+  }
 `;
 
-const FilterChip = styled.button<{ $active: boolean }>`
-  padding: 0.4rem 0.9rem;
-  border-radius: 9999px;
-  font-size: 0.82rem;
-  font-weight: 800;
-  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
-  background: ${({ $active }) =>
-    $active ? "var(--primary)" : "var(--surface)"};
+const RailItem = styled.button<{ $active?: boolean; $kana?: boolean }>`
+  width: 32px;
+  height: 24px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ${({ $kana }) =>
+    $kana ? "var(--font-kana)" : "var(--font-ui)"};
+  font-size: ${({ $kana }) => ($kana ? "12px" : "10.5px")};
+  font-weight: 700;
   color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
+  background: ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
   cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: all 0.12s ease;
 
   &:hover {
-    border-color: var(--primary);
+    background: ${({ $active }) =>
+      $active
+        ? "var(--primary)"
+        : "rgba(var(--primary-rgb, 79, 70, 229), 0.12)"};
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--primary)")};
   }
 `;
 
-const HistoryBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-`;
-
-const HistoryTag = styled.button`
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: rgba(var(--primary-rgb), 0.12);
-    color: var(--primary);
-    border-color: var(--primary);
-  }
-`;
-
-/* ─── Entry Cards Grid & Layout ──────────────────────────────────────────── */
-const ResultsGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const EntryCard = styled.div`
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 1.35rem 1.5rem;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: var(--primary-light);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  }
-`;
-
-const EntryHeader = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-`;
-
-const MainWordGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const RubyText = styled.ruby`
-  font-size: 2rem;
-  font-weight: 900;
-  color: var(--foreground);
-  line-height: 1.2;
-
-  rt {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--primary);
-    padding-bottom: 2px;
-  }
-`;
-
-const RomajiLabel = styled.span`
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 700;
-  margin-top: 0.2rem;
-`;
-
-const BadgeRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-`;
-
-const LevelTag = styled.span<{ $level: string }>`
-  font-size: 0.75rem;
-  font-weight: 900;
-  padding: 0.2rem 0.6rem;
-  border-radius: 8px;
-  background: rgba(79, 70, 229, 0.12);
-  color: var(--primary);
-  border: 1px solid rgba(79, 70, 229, 0.25);
-`;
-
-const PosTag = styled.span`
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 0.2rem 0.6rem;
-  border-radius: 8px;
-  background: rgba(234, 179, 8, 0.12);
-  color: #eab308;
-  border: 1px solid rgba(234, 179, 8, 0.3);
-`;
-
-const DefinitionText = styled.div`
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--foreground);
-  line-height: 1.5;
-
-  span.label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--text-secondary);
-    display: block;
-    margin-bottom: 0.2rem;
-  }
-`;
-
-/* Sentence Examples */
-const ExampleBox = styled.div`
-  background: var(--background);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 0.85rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.9rem;
-`;
-
-const ExampleJp = styled.div`
-  font-weight: 800;
-  color: var(--foreground);
-`;
-
-const ExampleId = styled.div`
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-weight: 600;
-`;
-
-/* Action Buttons Bar */
-const ActionToolbar = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-top: 0.25rem;
-  flex-wrap: wrap;
-`;
-
-const ToolBtn = styled.button<{ $active?: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: ${({ $active }) =>
-    $active ? "rgba(var(--primary-rgb), 0.2)" : "rgba(255, 255, 255, 0.04)"};
-  border: 1px solid
-    ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
-  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--foreground)")};
-  padding: 0.4rem 0.85rem;
-  border-radius: 12px;
-  font-size: 0.82rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: rgba(var(--primary-rgb), 0.12);
-    border-color: var(--primary);
-    color: var(--primary);
-  }
-`;
-
-/* ─── Modal Layout ───────────────────────────────────────────────────────── */
+/* ─── Detail Modal ───────────────────────────────────────────────────────── */
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -414,8 +618,8 @@ const ModalOverlay = styled.div`
   right: 0;
   bottom: 0;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -425,131 +629,244 @@ const ModalOverlay = styled.div`
 const ModalCard = styled.div`
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 24px;
+  border-radius: 20px;
   width: 100%;
-  max-width: 600px;
-  max-height: 85vh;
+  max-width: 560px;
+  max-height: 88vh;
   overflow-y: auto;
-  padding: 1.75rem;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
-  position: relative;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.25);
+  color: var(--foreground);
 `;
 
 const ModalHeader = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 1.25rem;
-
-  h2 {
-    font-size: 1.35rem;
-    font-weight: 900;
-    margin: 0;
-  }
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
 `;
 
-const CloseModalBtn = styled.button`
-  background: none;
-  border: none;
-  font-size: 1.5rem;
+const ModalKanjiTitle = styled.div`
+  font-family: var(--font-kanji);
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--foreground);
+  line-height: 1.1;
+`;
+
+const ModalFurigana = styled.div`
+  font-family: var(--font-kana);
+  font-size: 1rem;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 2px;
+`;
+
+const ModalRomaji = styled.div`
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
   color: var(--text-secondary);
+`;
+
+const ActionGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+`;
+
+const ActionBtn = styled.button<{ $primary?: boolean; $active?: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-family: var(--font-ui);
+  border: 1px solid
+    ${({ $primary, $active }) =>
+      $primary || $active ? "var(--primary)" : "var(--border)"};
+  background: ${({ $primary, $active }) =>
+    $primary
+      ? "var(--primary)"
+      : $active
+        ? "rgba(var(--primary-rgb, 79, 70, 229), 0.15)"
+        : "var(--surface)"};
+  color: ${({ $primary, $active }) =>
+    $primary ? "#ffffff" : $active ? "var(--primary)" : "var(--foreground)"};
   cursor: pointer;
-  padding: 0.2rem;
+  transition: all 0.12s ease;
+
   &:hover {
-    color: var(--foreground);
+    border-color: var(--primary);
+    color: ${({ $primary }) => ($primary ? "#ffffff" : "var(--primary)")};
   }
 `;
 
-const ConjugationTableStyle = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 0.75rem;
-
-  th,
-  td {
-    padding: 0.65rem 0.85rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.88rem;
-  }
-
-  th {
-    font-weight: 800;
-    color: var(--text-secondary);
-    background: rgba(255, 255, 255, 0.02);
-  }
-
-  td.jp {
-    font-weight: 900;
-    color: var(--primary);
-  }
+const ToastBanner = styled.div`
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--foreground);
+  color: var(--background);
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
 `;
 
-/* ─── MAIN COMPONENT ─────────────────────────────────────────────────────── */
+/* ─── DATA & CONSTANTS ───────────────────────────────────────────────────── */
+const ALPHABET_RAIL = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const KANA_RAIL = [
+  "あ",
+  "か",
+  "さ",
+  "た",
+  "な",
+  "は",
+  "ま",
+  "や",
+  "ら",
+  "わ",
+  "が",
+  "ざ",
+  "だ",
+  "ば",
+  "ぱ",
+  "ん",
+];
+
+/* Helper for POS formatting */
+function formatPOS(type?: string, word?: string): string {
+  if (!type && !word) return "N";
+  const str = `${type || ""} ${word || ""}`.toLowerCase();
+  if (str.includes("verb 2") || str.includes("v2") || str.includes("ichidan"))
+    return "V2";
+  if (str.includes("verb 3") || str.includes("v3") || str.includes("suru"))
+    return "V3";
+  if (str.includes("verb 1") || str.includes("v1") || str.includes("godan"))
+    return "V1";
+  if (
+    str.includes("adj-i") ||
+    str.includes("i-adj") ||
+    str.includes("adjective-i")
+  )
+    return "A-i";
+  if (
+    str.includes("adj-na") ||
+    str.includes("na-adj") ||
+    str.includes("adjective-na")
+  )
+    return "A-na";
+  if (str.includes("suru")) return "VS";
+  return "N";
+}
+
+/* ─── MAIN PAGE COMPONENT ────────────────────────────────────────────────── */
 export default function KamusPage() {
-  const [activeTab, setActiveTab] = useState<"search" | "bookmarks">("search");
   const [query, setQuery] = useState("");
+  const [inputMode, setInputMode] = useState<
+    "all" | "hira" | "kata" | "romaji" | "id"
+  >("all");
   const [levelFilter, setLevelFilter] = useState("all");
+  const [sortMode, setSortMode] = useState<"freq" | "alpha" | "level">("freq");
+  const [activeRailChar, setActiveRailChar] = useState<string | null>(null);
+
+  // Pagination & Results
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 120;
+
+  // Search state
   const [results, setResults] = useState<DictionaryResult[]>([]);
   const [suggestions, setSuggestions] = useState<DictionaryResult[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
 
-  // User storage
-  const [searchHistory, setSearchHistory] = useState<string[]>([]);
-  const [bookmarks, setBookmarks] = useState<DictionaryResult[]>([]);
+  // Storage
+  const [bookmarks, setBookmarks] = useState<string[]>([]);
   const [toastMsg, setToastMsg] = useState("");
 
   // Modals
+  const [detailItem, setDetailItem] = useState<DictionaryResult | null>(null);
   const [selectedConjugation, setSelectedConjugation] =
     useState<WordConjugationTable | null>(null);
   const [selectedKanji, setSelectedKanji] = useState<DictionaryResult | null>(
-    null
+    null,
   );
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  /* Load localStorage data */
+  /* Load bookmarks from localStorage */
   useEffect(() => {
     try {
-      const savedHist = localStorage.getItem("japanapp_kamus_history");
-      if (savedHist) setSearchHistory(JSON.parse(savedHist));
-
-      const savedBM = localStorage.getItem("japanapp_kamus_bookmarks");
+      const savedBM = localStorage.getItem("japanapp_kamus_starred");
       if (savedBM) setBookmarks(JSON.parse(savedBM));
     } catch (e) {
-      console.warn("localStorage error:", e);
+      console.warn(e);
     }
   }, []);
 
-  /* Save bookmarks */
-  const toggleBookmark = (item: DictionaryResult) => {
-    setBookmarks((prev) => {
-      const exists = prev.some((b) => b.id === item.id);
-      let updated;
-      if (exists) {
-        updated = prev.filter((b) => b.id !== item.id);
-        triggerToast("Dihapus dari Favorit");
-      } else {
-        updated = [item, ...prev];
-        triggerToast("Disimpan ke Favorit ⭐");
-      }
-      localStorage.setItem("japanapp_kamus_bookmarks", JSON.stringify(updated));
-      return updated;
-    });
+  /* Initial data load */
+  useEffect(() => {
+    performSearch("");
+  }, []);
+
+  /* Perform Search */
+  const performSearch = async (searchTerm: string) => {
+    setLoading(true);
+    setShowSuggestions(false);
+
+    const term = searchTerm.trim();
+    let res: DictionaryResult[] = [];
+
+    if (!term) {
+      res = allVocabulary;
+    } else {
+      res = await searchDictionary(term, "all", levelFilter);
+    }
+
+    setResults(res);
+    setCurrentPage(1);
+    setLoading(false);
   };
 
   /* Toast Helper */
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
-    setTimeout(() => setToastMsg(""), 2500);
+    setTimeout(() => setToastMsg(""), 2400);
   };
 
-  /* Auto-Suggestion Handling */
-  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  /* Toggle Star / Bookmark */
+  const toggleStar = (e: React.MouseEvent, item: DictionaryResult) => {
+    e.stopPropagation();
+    const wordKey = item.word || item.kanji || item.reading || item.id;
+    setBookmarks((prev) => {
+      let updated;
+      if (prev.includes(wordKey)) {
+        updated = prev.filter((k) => k !== wordKey);
+        triggerToast("Dihapus dari favorit");
+      } else {
+        updated = [...prev, wordKey];
+        triggerToast("Disimpan ke favorit ★");
+      }
+      localStorage.setItem("japanapp_kamus_starred", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  /* Auto Suggestion typing */
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setQuery(val);
+
     if (val.trim().length >= 1) {
       const sugs = getAutoSuggestions(val, 8);
       setSuggestions(sugs);
@@ -558,29 +875,6 @@ export default function KamusPage() {
       setSuggestions([]);
       setShowSuggestions(false);
     }
-  };
-
-  /* Execute Search */
-  const handleSearch = async (searchTerm?: string) => {
-    const term = (searchTerm !== undefined ? searchTerm : query).trim();
-    if (!term) return;
-
-    setQuery(term);
-    setShowSuggestions(false);
-    setLoading(true);
-    setHasSearched(true);
-
-    // Save to search history
-    setSearchHistory((prev) => {
-      const filtered = prev.filter((h) => h.toLowerCase() !== term.toLowerCase());
-      const updated = [term, ...filtered].slice(0, 10);
-      localStorage.setItem("japanapp_kamus_history", JSON.stringify(updated));
-      return updated;
-    });
-
-    const res = await searchDictionary(term, "all", levelFilter);
-    setResults(res);
-    setLoading(false);
   };
 
   /* Close suggestion on outside click */
@@ -597,13 +891,71 @@ export default function KamusPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  /* Filtered results when level changes */
-  const displayResults = useMemo(() => {
-    if (levelFilter === "all") return results;
-    return results.filter((r) => r.level === levelFilter);
-  }, [results, levelFilter]);
+  /* Filter & Sort Pipeline */
+  const processedResults = useMemo(() => {
+    let list = [...results];
 
-  /* Open Conjugation Modal */
+    // 1. Mode Input Filter
+    if (inputMode === "hira") {
+      list = list.filter((r) =>
+        /^[\u3040-\u309f]+$/.test(r.reading || r.word || ""),
+      );
+    } else if (inputMode === "kata") {
+      list = list.filter((r) =>
+        /^[\u30a0-\u30ff]+$/.test(r.word || r.reading || ""),
+      );
+    } else if (inputMode === "romaji") {
+      list = list.filter((r) => Boolean(r.romaji));
+    }
+
+    // 2. Level Filter
+    if (levelFilter !== "all") {
+      list = list.filter((r) => r.level === levelFilter);
+    }
+
+    // 3. Rail Character Filter
+    if (activeRailChar) {
+      const char = activeRailChar.toLowerCase();
+      list = list.filter((r) => {
+        const w = (r.word || "").toLowerCase();
+        const rd = (r.reading || "").toLowerCase();
+        const rm = (r.romaji || "").toLowerCase();
+        const mn = (r.meaning || "").toLowerCase();
+        return (
+          w.startsWith(char) ||
+          rd.startsWith(char) ||
+          rm.startsWith(char) ||
+          mn.startsWith(char)
+        );
+      });
+    }
+
+    // 4. Sorting
+    if (sortMode === "alpha") {
+      list.sort((a, b) =>
+        (a.reading || a.word || "").localeCompare(
+          b.reading || b.word || "",
+          "ja",
+        ),
+      );
+    } else if (sortMode === "level") {
+      list.sort((a, b) => (a.level || "N5").localeCompare(b.level || "N5"));
+    }
+
+    return list;
+  }, [results, inputMode, levelFilter, activeRailChar, sortMode]);
+
+  /* Paginated Items */
+  const totalPages = Math.max(
+    1,
+    Math.ceil(processedResults.length / itemsPerPage),
+  );
+  const paginatedItems = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return processedResults.slice(start, start + itemsPerPage);
+  }, [processedResults, currentPage, itemsPerPage]);
+
+  /* Conjugation Modal Handler */
   const handleOpenConjugation = (item: DictionaryResult) => {
     const word = item.word || item.reading || "";
     const reading = item.reading || "";
@@ -613,11 +965,11 @@ export default function KamusPage() {
     if (conj && conj.items.length > 0) {
       setSelectedConjugation(conj);
     } else {
-      triggerToast("Tabel konjugasi hanya untuk kata kerja & kata sifat");
+      triggerToast("Konjugasi hanya berlaku untuk Kata Kerja / Kata Sifat");
     }
   };
 
-  /* Open Kanji Detail Modal */
+  /* Kanjidex Modal Handler */
   const handleOpenKanjiDetail = (kanjiChar: string) => {
     const found = allKanji.find((k) => k.kanji === kanjiChar);
     if (found) {
@@ -634,391 +986,675 @@ export default function KamusPage() {
     }
   };
 
-  /* Copy to Clipboard */
-  const copyToClipboard = (text: string, label: string) => {
-    navigator.clipboard.writeText(text);
-    triggerToast(`${label} berhasil disalin! 📋`);
-  };
-
   return (
     <PageContainer>
+      <KamusGlobalStyle />
+
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
           { label: "Development Lab", href: "/development" },
         ]}
-        current="Kamus Ringan"
+        current="Kamus JapanApp"
       />
 
+      {/* Header Box */}
       <HeaderBox>
-        <PageTitle>📖 Kamus Ringan 2 Arah</PageTitle>
+        <TitleRow>
+          <PageTitle>
+            <span className="brand-mark">学</span> JapanApp — Kamus
+            Jepang-Indonesia
+          </PageTitle>
+
+          <EntryBadge>
+            <span className="dot" />
+            {allVocabulary.length.toLocaleString()} Entri · N5–N1
+          </EntryBadge>
+        </TitleRow>
         <Subtitle>
-          Cari cepat kata Jepang-Indonesia & Indonesia-Jepang (Kanji, Kana, Romaji, atau Kata Indonesia).
+          Cari cepat kata Jepang-Indonesia & Indonesia-Jepang (Kanji, Kana,
+          Romaji, atau Kata Indonesia).
         </Subtitle>
       </HeaderBox>
 
-      {/* Tabs */}
-      <TabContainer>
-        <TabBtn
-          $active={activeTab === "search"}
-          onClick={() => setActiveTab("search")}
+      {/* Search Row */}
+      <SearchBoxWrapper ref={searchContainerRef}>
+        <SearchBarForm
+          onSubmit={(e) => {
+            e.preventDefault();
+            performSearch(query);
+          }}
         >
-          🔍 Pencarian Kamus
-        </TabBtn>
-        <TabBtn
-          $active={activeTab === "bookmarks"}
-          onClick={() => setActiveTab("bookmarks")}
-        >
-          ⭐ Kamus Favorit ({bookmarks.length})
-        </TabBtn>
-      </TabContainer>
-
-      {/* SEARCH TAB CONTENT */}
-      {activeTab === "search" && (
-        <>
-          {/* Smart Search Bar */}
-          <SearchWrapper ref={searchContainerRef}>
-            <SearchInputRow
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSearch();
-              }}
+          <svg
+            className="search-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Cari kata, kanji, atau arti… misalnya 食べる, taberu, atau makan"
+            value={query}
+            onChange={handleInputChange}
+            onFocus={() => query.length >= 1 && setShowSuggestions(true)}
+          />
+          <InputToggleBar>
+            <TogglePill
+              type="button"
+              $active={inputMode === "all"}
+              onClick={() => setInputMode("all")}
             >
-              <span style={{ fontSize: "1.2rem", margin: "0 0.3rem" }}>🔍</span>
-              <SearchInput
-                type="text"
-                placeholder="Cari kata (contoh: taberu, 食べる, makan, N5)..."
-                value={query}
-                onChange={handleQueryChange}
-                onFocus={() => query.length >= 1 && setShowSuggestions(true)}
-              />
-              {query && (
-                <ClearBtn
-                  type="button"
-                  onClick={() => {
-                    setQuery("");
-                    setSuggestions([]);
-                    setShowSuggestions(false);
-                  }}
-                >
-                  ×
-                </ClearBtn>
-              )}
-              <SearchBtn type="submit">Cari Kata</SearchBtn>
-            </SearchInputRow>
+              Semua
+            </TogglePill>
+            <TogglePill
+              type="button"
+              $active={inputMode === "hira"}
+              onClick={() => setInputMode("hira")}
+            >
+              ひら
+            </TogglePill>
+            <TogglePill
+              type="button"
+              $active={inputMode === "kata"}
+              onClick={() => setInputMode("kata")}
+            >
+              カナ
+            </TogglePill>
+            <TogglePill
+              type="button"
+              $active={inputMode === "romaji"}
+              onClick={() => setInputMode("romaji")}
+            >
+              Romaji
+            </TogglePill>
+            <TogglePill
+              type="button"
+              $active={inputMode === "id"}
+              onClick={() => setInputMode("id")}
+            >
+              ID
+            </TogglePill>
+          </InputToggleBar>
+        </SearchBarForm>
 
-            {/* Auto Suggestions */}
-            {showSuggestions && suggestions.length > 0 && (
-              <SuggestionsDropdown>
-                {suggestions.map((sug) => (
-                  <SuggestionItem
-                    key={sug.id}
-                    onClick={() => handleSearch(sug.word || sug.reading || sug.meaning)}
+        {/* Real-time Auto Suggestions Dropdown */}
+        {showSuggestions && suggestions.length > 0 && (
+          <SuggestionsBox>
+            {suggestions.map((sug, idx) => (
+              <SuggestionRow
+                key={`sug-${sug.id}-${idx}`}
+                onClick={() => {
+                  const text = sug.word || sug.reading || sug.meaning;
+                  setQuery(text);
+                  performSearch(text);
+                }}
+              >
+                <div>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-kanji)",
+                      fontWeight: 700,
+                      fontSize: "1.1rem",
+                      marginRight: "8px",
+                    }}
                   >
-                    <div>
-                      <span style={{ fontWeight: 900, fontSize: "1.05rem" }}>
-                        {sug.word || sug.kanji || sug.reading}
-                      </span>
-                      {sug.reading && sug.reading !== sug.word && (
-                        <span
-                          style={{
-                            fontSize: "0.85rem",
-                            color: "var(--text-secondary)",
-                            marginLeft: "0.6rem",
-                          }}
-                        >
-                          ({sug.reading})
-                        </span>
-                      )}
-                    </div>
+                    {sug.word || sug.kanji || sug.reading}
+                  </span>
+                  {sug.reading && sug.reading !== sug.word && (
                     <span
                       style={{
+                        fontFamily: "var(--font-kana)",
                         fontSize: "0.85rem",
                         color: "var(--text-secondary)",
-                        fontWeight: 600,
                       }}
                     >
-                      {sug.meaning}
+                      ({sug.reading})
                     </span>
-                  </SuggestionItem>
-                ))}
-              </SuggestionsDropdown>
-            )}
-          </SearchWrapper>
+                  )}
+                </div>
+                <span
+                  style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                    color: "var(--primary)",
+                  }}
+                >
+                  {sug.meaning}
+                </span>
+              </SuggestionRow>
+            ))}
+          </SuggestionsBox>
+        )}
 
-          {/* Level Filter Bar */}
-          <FilterRow>
+        {/* Search Meta & Level Filters */}
+        <SearchMetaRow>
+          <div className="chips">
             {["all", "N5", "N4", "N3", "N2", "N1"].map((lvl) => (
-              <FilterChip
+              <LevelChip
                 key={lvl}
                 $active={levelFilter === lvl}
                 onClick={() => setLevelFilter(lvl)}
               >
-                {lvl === "all" ? "Semua Level" : lvl}
-              </FilterChip>
+                {lvl === "all" ? "Semua level" : lvl}
+              </LevelChip>
             ))}
-          </FilterRow>
+          </div>
+          <span>
+            Menampilkan{" "}
+            {paginatedItems.length > 0
+              ? (currentPage - 1) * itemsPerPage + 1
+              : 0}
+            –{Math.min(currentPage * itemsPerPage, processedResults.length)}{" "}
+            dari {processedResults.length.toLocaleString()} hasil
+            {query ? ` untuk "${query}"` : ""}
+          </span>
+        </SearchMetaRow>
+      </SearchBoxWrapper>
 
-          {/* History Pills */}
-          {searchHistory.length > 0 && (
-            <HistoryBox>
-              <span
-                style={{
-                  fontSize: "0.8rem",
-                  color: "var(--text-secondary)",
-                  fontWeight: 700,
-                }}
+      {/* Main Body */}
+      <BodyWrap>
+        <GridPanel>
+          <ToolbarRow>
+            <h2>
+              HASIL PENCARIAN <span>· diurutkan berdasarkan {sortMode}</span>
+            </h2>
+            <SortBar>
+              <button
+                className={sortMode === "freq" ? "active" : ""}
+                onClick={() => setSortMode("freq")}
               >
-                Terakhir Dicari:
-              </span>
-              {searchHistory.map((h) => (
-                <HistoryTag key={h} onClick={() => handleSearch(h)}>
-                  {h}
-                </HistoryTag>
-              ))}
-            </HistoryBox>
-          )}
+                Frekuensi
+              </button>
+              <button
+                className={sortMode === "alpha" ? "active" : ""}
+                onClick={() => setSortMode("alpha")}
+              >
+                Abjad (あ→ん)
+              </button>
+              <button
+                className={sortMode === "level" ? "active" : ""}
+                onClick={() => setSortMode("level")}
+              >
+                Level JLPT
+              </button>
+            </SortBar>
+          </ToolbarRow>
 
           {/* Loading Indicator */}
           {loading && (
             <div
               style={{
                 textAlign: "center",
-                padding: "2.5rem",
+                padding: "3rem",
                 color: "var(--text-secondary)",
-                fontWeight: 700,
+                fontWeight: 600,
               }}
             >
-              🔄 Mencari data kata...
+              🔄 Memuat entri kamus...
             </div>
           )}
 
-          {/* Results List */}
-          {!loading && displayResults.length > 0 && (
-            <ResultsGrid>
-              {displayResults.map((item) => {
-                const isBookmarked = bookmarks.some((b) => b.id === item.id);
-                const displayWord = item.word || item.kanji || item.reading || item.title || "";
-                const displayReading = item.reading || "";
+          {/* Dense 12-Column Grid */}
+          {!loading && paginatedItems.length > 0 && (
+            <VGrid>
+              {paginatedItems.map((item, idx) => {
+                const wordKey =
+                  item.word || item.kanji || item.reading || item.id;
+                const isStarred = bookmarks.includes(wordKey);
+                const pos = formatPOS(
+                  item.partOfSpeech || item.category,
+                  item.word,
+                );
 
                 return (
-                  <EntryCard key={item.id}>
-                    <EntryHeader>
-                      <MainWordGroup>
-                        {displayReading && displayReading !== displayWord ? (
-                          <RubyText>
-                            {displayWord}
-                            <rt>{displayReading}</rt>
-                          </RubyText>
-                        ) : (
-                          <div
-                            style={{
-                              fontSize: "1.8rem",
-                              fontWeight: 900,
-                              color: "var(--foreground)",
-                            }}
-                          >
-                            {displayWord}
-                          </div>
-                        )}
-                        {item.romaji && <RomajiLabel>{item.romaji}</RomajiLabel>}
-                      </MainWordGroup>
-
-                      <BadgeRow>
-                        {item.level && <LevelTag $level={item.level}>{item.level}</LevelTag>}
-                        {item.partOfSpeech && <PosTag>{item.partOfSpeech}</PosTag>}
-                      </BadgeRow>
-                    </EntryHeader>
-
-                    <DefinitionText>
-                      <span className="label">ARTI & DEFINISI:</span>
-                      {item.meaning}
-                    </DefinitionText>
-
-                    {/* Example Sentences */}
-                    {item.examples && item.examples.length > 0 && (
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                        {item.examples.slice(0, 2).map((ex, idx) => (
-                          <ExampleBox key={idx}>
-                            <ExampleJp>{ex.japanese}</ExampleJp>
-                            {ex.indonesian && <ExampleId>{ex.indonesian}</ExampleId>}
-                          </ExampleBox>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Action Toolbar */}
-                    <ActionToolbar>
-                      <ToolBtn onClick={() => speakJapanese(displayWord)}>
-                        🔊 Dengar Audio
-                      </ToolBtn>
-
-                      <ToolBtn onClick={() => copyToClipboard(displayWord, displayWord)}>
-                        📋 Salin Kata
-                      </ToolBtn>
-
-                      <ToolBtn
-                        $active={isBookmarked}
-                        onClick={() => toggleBookmark(item)}
-                      >
-                        {isBookmarked ? "⭐ Favorit" : "☆ Simpan"}
-                      </ToolBtn>
-
-                      {/* If word has Kanji, show Kanjidex option */}
-                      {displayWord !== displayReading && (
-                        <ToolBtn
-                          onClick={() => handleOpenKanjiDetail(displayWord.charAt(0))}
-                        >
-                          ⛩️ Detail Kanji
-                        </ToolBtn>
-                      )}
-
-                      {/* Conjugation option */}
-                      <ToolBtn onClick={() => handleOpenConjugation(item)}>
-                        🔄 Konjugasi
-                      </ToolBtn>
-                    </ActionToolbar>
-                  </EntryCard>
+                  <CellCard
+                    key={`${item.id}-${idx}`}
+                    $starred={isStarred}
+                    onClick={() => setDetailItem(item)}
+                  >
+                    <span className="pos-tag">{pos}</span>
+                    <span
+                      className="star-btn"
+                      onClick={(e) => toggleStar(e, item)}
+                    >
+                      ★
+                    </span>
+                    <span className="furigana">
+                      {item.reading && item.reading !== item.word
+                        ? item.reading
+                        : ""}
+                    </span>
+                    <span className="kanji">
+                      {item.word || item.kanji || item.reading}
+                    </span>
+                    <span className="romaji">
+                      {item.romaji || item.reading}
+                    </span>
+                    <span className="indo">{item.meaning}</span>
+                  </CellCard>
                 );
               })}
-            </ResultsGrid>
+            </VGrid>
           )}
 
-          {/* Empty Search Result */}
-          {!loading && hasSearched && displayResults.length === 0 && (
+          {/* Empty State */}
+          {!loading && paginatedItems.length === 0 && (
             <div
               style={{
                 textAlign: "center",
-                padding: "3rem 1.5rem",
+                padding: "4rem 1.5rem",
                 background: "var(--surface)",
-                borderRadius: "20px",
                 border: "1px solid var(--border)",
-                marginTop: "1rem",
+                borderRadius: "16px",
               }}
             >
-              <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>🍃</div>
-              <h3 style={{ margin: "0 0 0.5rem 0", fontWeight: 800 }}>
-                Kata tidak ditemukan
+              <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>
+                🍃
+              </div>
+              <h3 style={{ margin: "0 0 0.4rem 0", fontWeight: 800 }}>
+                Entri kata tidak ditemukan
               </h3>
-              <p style={{ color: "var(--text-secondary)", margin: 0, fontSize: "0.95rem" }}>
-                Coba gunakan kata dasar Romaji (contoh: <i>taberu</i>) atau kata Bahasa Indonesia lainnya.
+              <p
+                style={{
+                  color: "var(--text-secondary)",
+                  margin: 0,
+                  fontSize: "13px",
+                }}
+              >
+                Coba gunakan kata dasar Romaji (contoh: <i>taberu</i>) atau kata
+                Bahasa Indonesia lainnya.
               </p>
             </div>
           )}
-        </>
-      )}
 
-      {/* BOOKMARKS TAB CONTENT */}
-      {activeTab === "bookmarks" && (
-        <ResultsGrid>
-          {bookmarks.length === 0 ? (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "3rem 1.5rem",
-                background: "var(--surface)",
-                borderRadius: "20px",
-                border: "1px solid var(--border)",
-              }}
-            >
-              <div style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}>⭐</div>
-              <h3 style={{ margin: "0 0 0.5rem 0", fontWeight: 800 }}>
-                Belum ada kata favorit
-              </h3>
-              <p style={{ color: "var(--text-secondary)", margin: 0, fontSize: "0.95rem" }}>
-                Simpan kata-kata dari pencarian kamus untuk dipelajari kembali di sini!
-              </p>
-            </div>
-          ) : (
-            bookmarks.map((item) => {
-              const displayWord = item.word || item.kanji || item.reading || "";
-              return (
-                <EntryCard key={item.id}>
-                  <EntryHeader>
-                    <div>
-                      <div style={{ fontSize: "1.6rem", fontWeight: 900 }}>
-                        {displayWord} ({item.reading})
-                      </div>
-                      {item.romaji && <RomajiLabel>{item.romaji}</RomajiLabel>}
-                    </div>
-                    <LevelTag $level={item.level}>{item.level}</LevelTag>
-                  </EntryHeader>
+          {/* Pagination */}
+          {!loading && totalPages > 1 && (
+            <PaginationBox>
+              <button
+                className="nav"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              >
+                ‹ Sebelumnya
+              </button>
 
-                  <DefinitionText>{item.meaning}</DefinitionText>
+              {Array.from(
+                { length: Math.min(5, totalPages) },
+                (_, i) => i + 1,
+              ).map((p) => (
+                <button
+                  key={p}
+                  className={currentPage === p ? "active" : ""}
+                  onClick={() => setCurrentPage(p)}
+                >
+                  {p}
+                </button>
+              ))}
 
-                  <ActionToolbar>
-                    <ToolBtn onClick={() => speakJapanese(displayWord)}>🔊 Dengar</ToolBtn>
-                    <ToolBtn $active onClick={() => toggleBookmark(item)}>
-                      ⭐ Hapus Favorit
-                    </ToolBtn>
-                  </ActionToolbar>
-                </EntryCard>
-              );
-            })
+              {totalPages > 5 && <span className="ellipsis">…</span>}
+
+              {totalPages > 5 && (
+                <button
+                  className={currentPage === totalPages ? "active" : ""}
+                  onClick={() => setCurrentPage(totalPages)}
+                >
+                  {totalPages}
+                </button>
+              )}
+
+              <button
+                className="nav"
+                disabled={currentPage === totalPages}
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+              >
+                Berikutnya ›
+              </button>
+            </PaginationBox>
           )}
-        </ResultsGrid>
-      )}
+        </GridPanel>
 
-      {/* ─── MODAL 1: TABEL KONJUGASI ─────────────────────────────────────── */}
-      {selectedConjugation && (
-        <ModalOverlay onClick={() => setSelectedConjugation(null)}>
+        {/* Right Filter Rail (A-Z & Kana index) */}
+        <FilterRail>
+          <RailCard>
+            <RailTitle>A–Z</RailTitle>
+            <RailList>
+              {ALPHABET_RAIL.map((char) => (
+                <RailItem
+                  key={char}
+                  $active={activeRailChar === char}
+                  onClick={() =>
+                    setActiveRailChar((prev) => (prev === char ? null : char))
+                  }
+                >
+                  {char}
+                </RailItem>
+              ))}
+            </RailList>
+          </RailCard>
+
+          <RailCard>
+            <RailTitle>あ–ん</RailTitle>
+            <RailList>
+              {KANA_RAIL.map((char) => (
+                <RailItem
+                  key={char}
+                  $kana
+                  $active={activeRailChar === char}
+                  onClick={() =>
+                    setActiveRailChar((prev) => (prev === char ? null : char))
+                  }
+                >
+                  {char}
+                </RailItem>
+              ))}
+            </RailList>
+          </RailCard>
+        </FilterRail>
+      </BodyWrap>
+
+      {/* ─── MODAL 1: INTERACTIVE WORD DETAIL MODAL ───────────────────────── */}
+      {detailItem && (
+        <ModalOverlay onClick={() => setDetailItem(null)}>
           <ModalCard onClick={(e) => e.stopPropagation()}>
             <ModalHeader>
-              <h2>🔄 Tabel Konjugasi ({selectedConjugation.word})</h2>
-              <CloseModalBtn onClick={() => setSelectedConjugation(null)}>
-                ×
-              </CloseModalBtn>
+              <div>
+                {detailItem.reading &&
+                  detailItem.reading !== detailItem.word && (
+                    <ModalFurigana>{detailItem.reading}</ModalFurigana>
+                  )}
+                <ModalKanjiTitle>
+                  {detailItem.word || detailItem.kanji || detailItem.reading}
+                </ModalKanjiTitle>
+                <ModalRomaji>
+                  {detailItem.romaji || detailItem.reading}
+                </ModalRomaji>
+              </div>
+
+              <div style={{ textAlign: "right" }}>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 800,
+                    color: "var(--primary)",
+                    background: "rgba(var(--primary-rgb, 79, 70, 229), 0.12)",
+                    padding: "4px 10px",
+                    borderRadius: "6px",
+                  }}
+                >
+                  {detailItem.level || "N5"}
+                </span>
+                <div
+                  style={{
+                    fontSize: "1.4rem",
+                    cursor: "pointer",
+                    marginTop: "8px",
+                    color: bookmarks.includes(
+                      detailItem.word ||
+                        detailItem.kanji ||
+                        detailItem.reading ||
+                        detailItem.id,
+                    )
+                      ? "#f59e0b"
+                      : "var(--border)",
+                  }}
+                  onClick={(e) => toggleStar(e, detailItem)}
+                >
+                  ★
+                </div>
+              </div>
             </ModalHeader>
 
-            <div style={{ fontSize: "0.85rem", color: "var(--primary)", fontWeight: 800 }}>
-              {selectedConjugation.typeLabel}
+            <div
+              style={{
+                fontSize: "14px",
+                fontWeight: 800,
+                color: "var(--foreground)",
+              }}
+            >
+              Arti & Definisi:
+            </div>
+            <div
+              style={{
+                fontSize: "14px",
+                color: "var(--primary)",
+                fontWeight: 700,
+                marginTop: "4px",
+                marginBottom: "1rem",
+              }}
+            >
+              {detailItem.meaning}
             </div>
 
-            <ConjugationTableStyle>
-              <thead>
-                <tr>
-                  <th>Bentuk Perubahan</th>
-                  <th>Jepang</th>
-                  <th>Penjelasan</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedConjugation.items.map((c, idx) => (
-                  <tr key={idx}>
-                    <td>{c.formName}</td>
-                    <td className="jp">
-                      {c.japanese}
-                      {c.polite && (
-                        <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-                          Sopan: {c.polite}
-                        </div>
-                      )}
-                    </td>
-                    <td style={{ color: "var(--text-secondary)" }}>{c.formNameId}</td>
-                  </tr>
+            {/* Example Sentences */}
+            {detailItem.examples && detailItem.examples.length > 0 && (
+              <div style={{ marginTop: "1rem" }}>
+                <div
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 700,
+                    color: "var(--text-secondary)",
+                    marginBottom: "6px",
+                  }}
+                >
+                  CONTOH KALIMAT:
+                </div>
+                {detailItem.examples.map((ex, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      background: "var(--background)",
+                      padding: "8px 12px",
+                      borderRadius: "8px",
+                      marginBottom: "6px",
+                      fontSize: "13px",
+                    }}
+                  >
+                    <div
+                      style={{ fontWeight: 700, color: "var(--foreground)" }}
+                    >
+                      {ex.japanese}
+                    </div>
+                    {ex.indonesian && (
+                      <div
+                        style={{
+                          color: "var(--text-secondary)",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {ex.indonesian}
+                      </div>
+                    )}
+                  </div>
                 ))}
-              </tbody>
-            </ConjugationTableStyle>
+              </div>
+            )}
+
+            {/* Action Buttons Toolbar */}
+            <ActionGrid>
+              <ActionBtn
+                $primary
+                onClick={() =>
+                  playJapaneseAudio(
+                    detailItem.word ||
+                      detailItem.kanji ||
+                      detailItem.reading ||
+                      "",
+                  )
+                }
+              >
+                🔊 Dengar Audio
+              </ActionBtn>
+
+              <ActionBtn
+                onClick={() => {
+                  const text = `${detailItem.word || detailItem.kanji || detailItem.reading} (${detailItem.reading || ""}) - ${detailItem.meaning}`;
+                  navigator.clipboard.writeText(text);
+                  triggerToast("Teks entri berhasil disalin! 📋");
+                }}
+              >
+                📋 Salin Teks
+              </ActionBtn>
+
+              {(detailItem.word || detailItem.kanji || "").length > 0 &&
+                /[一-龯]/.test(detailItem.word || detailItem.kanji || "") && (
+                  <ActionBtn
+                    onClick={() => {
+                      const kanjiChar = (
+                        detailItem.word ||
+                        detailItem.kanji ||
+                        ""
+                      ).charAt(0);
+                      handleOpenKanjiDetail(kanjiChar);
+                    }}
+                  >
+                    ⛩️ Detail Kanji
+                  </ActionBtn>
+                )}
+
+              <ActionBtn onClick={() => handleOpenConjugation(detailItem)}>
+                🔄 Konjugasi Kata
+              </ActionBtn>
+            </ActionGrid>
           </ModalCard>
         </ModalOverlay>
       )}
 
-      {/* ─── MODAL 2: KANJIDEX DETAIL ─────────────────────────────────────── */}
+      {/* ─── MODAL 2: TABEL KONJUGASI ─────────────────────────────────────── */}
+      {selectedConjugation && (
+        <ModalOverlay onClick={() => setSelectedConjugation(null)}>
+          <ModalCard onClick={(e) => e.stopPropagation()}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: "1rem",
+              }}
+            >
+              <h2 style={{ fontSize: "1.2rem", margin: 0, fontWeight: 800 }}>
+                🔄 Konjugasi ({selectedConjugation.word})
+              </h2>
+              <button
+                style={{
+                  border: "none",
+                  background: "none",
+                  fontSize: "1.4rem",
+                  cursor: "pointer",
+                  color: "var(--text-secondary)",
+                }}
+                onClick={() => setSelectedConjugation(null)}
+              >
+                ×
+              </button>
+            </div>
+
+            <div
+              style={{
+                fontSize: "12px",
+                color: "var(--primary)",
+                fontWeight: 700,
+                marginBottom: "1rem",
+              }}
+            >
+              {selectedConjugation.typeLabel}
+            </div>
+
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                fontSize: "13px",
+              }}
+            >
+              <thead>
+                <tr style={{ borderBottom: "1px solid var(--border)" }}>
+                  <th style={{ textAlign: "left", padding: "6px" }}>Bentuk</th>
+                  <th style={{ textAlign: "left", padding: "6px" }}>Jepang</th>
+                  <th style={{ textAlign: "left", padding: "6px" }}>
+                    Penjelasan
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {selectedConjugation.items.map((c, idx) => (
+                  <tr
+                    key={idx}
+                    style={{ borderBottom: "1px solid var(--border)" }}
+                  >
+                    <td style={{ padding: "8px 6px", fontWeight: 600 }}>
+                      {c.formName}
+                    </td>
+                    <td
+                      style={{
+                        padding: "8px 6px",
+                        fontFamily: "var(--font-kanji)",
+                        fontWeight: 700,
+                        color: "var(--primary)",
+                      }}
+                    >
+                      {c.japanese}
+                    </td>
+                    <td
+                      style={{
+                        padding: "8px 6px",
+                        color: "var(--text-secondary)",
+                      }}
+                    >
+                      {c.formNameId}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </ModalCard>
+        </ModalOverlay>
+      )}
+
+      {/* ─── MODAL 3: KANJIDEX BREAKDOWN ─────────────────────────────────── */}
       {selectedKanji && (
         <ModalOverlay onClick={() => setSelectedKanji(null)}>
           <ModalCard onClick={(e) => e.stopPropagation()}>
-            <ModalHeader>
-              <h2>⛩️ Detail Kanji ({selectedKanji.kanji})</h2>
-              <CloseModalBtn onClick={() => setSelectedKanji(null)}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: "1rem",
+              }}
+            >
+              <h2 style={{ fontSize: "1.2rem", margin: 0, fontWeight: 800 }}>
+                ⛩️ Detail Kanji ({selectedKanji.kanji})
+              </h2>
+              <button
+                style={{
+                  border: "none",
+                  background: "none",
+                  fontSize: "1.4rem",
+                  cursor: "pointer",
+                  color: "var(--text-secondary)",
+                }}
+                onClick={() => setSelectedKanji(null)}
+              >
                 ×
-              </CloseModalBtn>
-            </ModalHeader>
+              </button>
+            </div>
 
             <div style={{ textAlign: "center", marginBottom: "1.25rem" }}>
               <div
                 style={{
-                  fontSize: "4rem",
-                  fontWeight: 900,
+                  fontFamily: "var(--font-kanji)",
+                  fontSize: "3.5rem",
+                  fontWeight: 700,
                   color: "var(--primary)",
                   lineHeight: 1,
                 }}
@@ -1027,9 +1663,9 @@ export default function KamusPage() {
               </div>
               <div
                 style={{
-                  fontSize: "1.1rem",
-                  fontWeight: 800,
-                  marginTop: "0.5rem",
+                  fontSize: "1rem",
+                  fontWeight: 700,
+                  marginTop: "6px",
                   color: "var(--foreground)",
                 }}
               >
@@ -1041,22 +1677,22 @@ export default function KamusPage() {
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                gap: "0.75rem",
+                gap: "10px",
                 background: "var(--background)",
-                padding: "1rem",
-                borderRadius: "16px",
-                fontSize: "0.9rem",
+                padding: "12px",
+                borderRadius: "12px",
+                fontSize: "13px",
               }}
             >
               <div>
-                <strong>Kun'yomi (Jepang):</strong>
-                <div style={{ color: "var(--primary)", fontWeight: 800 }}>
+                <strong>Kun&#39;yomi (Jepang):</strong>
+                <div style={{ color: "var(--primary)", fontWeight: 700 }}>
                   {selectedKanji.kunyomi?.join(", ") || "-"}
                 </div>
               </div>
               <div>
-                <strong>On'yomi (Cina):</strong>
-                <div style={{ color: "#eab308", fontWeight: 800 }}>
+                <strong>On&#39;yomi (Cina):</strong>
+                <div style={{ color: "#d97706", fontWeight: 700 }}>
                   {selectedKanji.onyomi?.join(", ") || "-"}
                 </div>
               </div>
@@ -1074,26 +1710,7 @@ export default function KamusPage() {
       )}
 
       {/* Toast Notification */}
-      {toastMsg && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "2rem",
-            left: "50%",
-            transform: "translateX(-50%)",
-            background: "var(--foreground)",
-            color: "var(--background)",
-            padding: "0.75rem 1.5rem",
-            borderRadius: "9999px",
-            fontWeight: 800,
-            fontSize: "0.9rem",
-            boxShadow: "0 8px 24px rgba(0,0,0,0.2)",
-            zIndex: 2000,
-          }}
-        >
-          {toastMsg}
-        </div>
-      )}
+      {toastMsg && <ToastBanner>{toastMsg}</ToastBanner>}
     </PageContainer>
   );
 }
