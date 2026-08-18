@@ -1,0 +1,773 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kamus Jepang–Indonesia — UI Concept</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --white: #ffffff;
+        --paper: #f9fafb;
+        --line: #e3e7ee;
+        --line-soft: #edf0f5;
+        --ink: #1c2433;
+        --ink-soft: #5b6472;
+        --ink-faint: #9aa3b2;
+        --blue: #4f7cff;
+        --blue-deep: #2f5ce0;
+        --blue-mist: #eef3ff;
+        --blue-mist-2: #e4ecff;
+        --amber: #c98a2c;
+        --amber-mist: #fbf3e6;
+
+        --font-kanji: "Noto Serif JP", serif;
+        --font-kana: "Noto Sans JP", sans-serif;
+        --font-ui: "Inter", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+
+        --r-sm: 6px;
+        --r-md: 10px;
+        --r-lg: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--font-ui);
+        -webkit-font-smoothing: antialiased;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      /* ---------- Top App Bar ---------- */
+      .appbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 28px;
+        background: var(--white);
+        border-bottom: 1px solid var(--line);
+      }
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+      .brand .mark {
+        font-family: var(--font-kanji);
+        font-weight: 700;
+        font-size: 22px;
+        color: var(--blue-deep);
+        letter-spacing: 0.5px;
+      }
+      .brand .name {
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.2px;
+      }
+      .brand .tagline {
+        font-size: 11.5px;
+        color: var(--ink-faint);
+        font-weight: 500;
+        padding-left: 10px;
+        border-left: 1px solid var(--line);
+      }
+      .appbar-right {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-size: 13px;
+        color: var(--ink-soft);
+        font-weight: 500;
+      }
+      .appbar-right .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #3fc27a;
+        display: inline-block;
+        margin-right: 6px;
+      }
+
+      /* ---------- Search Row ---------- */
+      .search-row {
+        padding: 18px 28px;
+        background: var(--white);
+        border-bottom: 1px solid var(--line);
+      }
+      .search-bar {
+        max-width: 1040px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        background: var(--paper);
+        border: 1.5px solid var(--line);
+        border-radius: var(--r-lg);
+        height: 54px;
+        padding: 0 6px 0 18px;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+      .search-bar:focus-within {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 4px var(--blue-mist);
+        background: var(--white);
+      }
+      .search-bar svg.search-icon {
+        flex-shrink: 0;
+        color: var(--ink-faint);
+      }
+      .search-bar input {
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-family: var(--font-ui);
+        font-size: 15.5px;
+        color: var(--ink);
+        padding: 0 14px;
+      }
+      .search-bar input::placeholder {
+        color: var(--ink-faint);
+        font-weight: 400;
+      }
+
+      .input-toggle {
+        display: flex;
+        align-items: center;
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 3px;
+        gap: 2px;
+        flex-shrink: 0;
+      }
+      .input-toggle button {
+        border: none;
+        background: transparent;
+        font-family: var(--font-kana);
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--ink-soft);
+        padding: 7px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+      }
+      .input-toggle button.active {
+        background: var(--blue);
+        color: var(--white);
+        font-weight: 600;
+        box-shadow: 0 2px 6px rgba(79, 124, 255, 0.35);
+      }
+
+      .search-meta {
+        max-width: 1040px;
+        margin: 10px auto 0;
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--ink-faint);
+        font-weight: 500;
+      }
+      .search-meta .chips {
+        display: flex;
+        gap: 6px;
+      }
+      .chip {
+        padding: 3px 9px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        color: var(--ink-soft);
+        font-size: 11.5px;
+      }
+      .chip.on {
+        background: var(--blue-mist);
+        border-color: var(--blue-mist-2);
+        color: var(--blue-deep);
+        font-weight: 600;
+      }
+
+      /* ---------- Main Body ---------- */
+      .body-wrap {
+        flex: 1;
+        display: flex;
+        max-width: 1400px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 22px 28px 0;
+        gap: 18px;
+      }
+
+      .grid-panel {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .grid-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        padding: 0 2px;
+      }
+      .grid-toolbar h1 {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--ink);
+        letter-spacing: 0.2px;
+      }
+      .grid-toolbar h1 span {
+        font-weight: 500;
+        color: var(--ink-faint);
+        margin-left: 6px;
+      }
+      .sort-controls {
+        display: flex;
+        gap: 6px;
+        font-size: 11.5px;
+        color: var(--ink-soft);
+      }
+      .sort-controls button {
+        border: 1px solid var(--line);
+        background: var(--white);
+        border-radius: 6px;
+        padding: 5px 10px;
+        font-family: var(--font-ui);
+        font-weight: 600;
+        cursor: pointer;
+        color: var(--ink-soft);
+      }
+      .sort-controls button.active {
+        border-color: var(--blue-mist-2);
+        background: var(--blue-mist);
+        color: var(--blue-deep);
+      }
+
+      /* ---------- Vocabulary Grid ---------- */
+      .vgrid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 6px;
+        background: var(--line-soft);
+        border: 1px solid var(--line);
+        border-radius: var(--r-md);
+        padding: 6px;
+      }
+
+      .cell {
+        position: relative;
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 8px 6px 7px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 96px;
+        cursor: pointer;
+        transition:
+          border-color 0.12s ease,
+          background 0.12s ease,
+          transform 0.08s ease;
+      }
+      .cell:hover {
+        border-color: var(--blue);
+        background: var(--blue-mist);
+        transform: translateY(-1px);
+        z-index: 2;
+      }
+      .cell .pos {
+        position: absolute;
+        top: 4px;
+        left: 5px;
+        font-family: var(--font-mono);
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        color: var(--amber);
+        background: var(--amber-mist);
+        padding: 1px 4px;
+        border-radius: 4px;
+        line-height: 1.4;
+      }
+      .cell .star {
+        position: absolute;
+        top: 5px;
+        right: 6px;
+        font-size: 10px;
+        color: var(--line);
+      }
+      .cell.starred .star {
+        color: #f2b33d;
+      }
+
+      .cell .furigana {
+        font-family: var(--font-kana);
+        font-size: 9.5px;
+        color: var(--ink-faint);
+        letter-spacing: 0.5px;
+        margin-top: 6px;
+        line-height: 1;
+        height: 11px;
+      }
+      .cell .kanji {
+        font-family: var(--font-kanji);
+        font-size: 22px;
+        font-weight: 600;
+        color: var(--ink);
+        line-height: 1.15;
+        margin: 1px 0 3px;
+      }
+      .cell .romaji {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--ink-soft);
+        letter-spacing: 0.2px;
+      }
+      .cell .indo {
+        font-family: var(--font-ui);
+        font-size: 11.5px;
+        font-weight: 700;
+        color: var(--blue-deep);
+        margin-top: 3px;
+        text-align: center;
+        line-height: 1.15;
+      }
+
+      /* ---------- Pagination ---------- */
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        padding: 18px 0 26px;
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+      }
+      .pagination button {
+        min-width: 30px;
+        height: 30px;
+        padding: 0 8px;
+        border: 1px solid var(--line);
+        background: var(--white);
+        color: var(--ink-soft);
+        border-radius: 6px;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-weight: 500;
+      }
+      .pagination button.active {
+        background: var(--blue);
+        border-color: var(--blue);
+        color: var(--white);
+        font-weight: 700;
+      }
+      .pagination button.nav {
+        color: var(--ink-faint);
+        font-family: var(--font-ui);
+        font-weight: 600;
+      }
+      .pagination .ellipsis {
+        color: var(--ink-faint);
+        padding: 0 3px;
+      }
+
+      /* ---------- Right Filter Rail ---------- */
+      .filter-rail {
+        width: 64px;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .rail-card {
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: var(--r-md);
+        padding: 10px 0;
+      }
+      .rail-title {
+        font-size: 9px;
+        font-weight: 700;
+        color: var(--ink-faint);
+        text-align: center;
+        letter-spacing: 0.4px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+      .rail-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-height: 520px;
+        overflow-y: auto;
+        scrollbar-width: none;
+      }
+      .rail-list::-webkit-scrollbar {
+        display: none;
+      }
+      .rail-item {
+        width: 36px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-ui);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--ink-soft);
+        cursor: pointer;
+        border-radius: 5px;
+        flex-shrink: 0;
+      }
+      .rail-item.kana {
+        font-family: var(--font-kana);
+        font-size: 13px;
+      }
+      .rail-item:hover {
+        background: var(--blue-mist);
+        color: var(--blue-deep);
+      }
+      .rail-item.active {
+        background: var(--blue);
+        color: var(--white);
+      }
+
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--line);
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top App Bar -->
+    <header class="appbar">
+      <div class="brand">
+        <span class="mark">辞</span>
+        <span class="name"
+          >Jisho<span style="color: var(--blue-deep)">ID</span></span
+        >
+        <span class="tagline">Kamus Jepang–Indonesia</span>
+      </div>
+      <div class="appbar-right">
+        <span><span class="dot"></span>48,210 entri</span>
+        <span>N5–N1</span>
+        <span>ID / EN</span>
+      </div>
+    </header>
+
+    <!-- Search Row -->
+    <div class="search-row">
+      <div class="search-bar">
+        <svg
+          class="search-icon"
+          width="19"
+          height="19"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="text"
+          placeholder="Cari kata, kanji, atau arti… misalnya 食べる, taberu, atau makan"
+          value="た"
+        />
+        <div class="input-toggle" id="inputToggle">
+          <button class="active" data-mode="hira">ひら</button>
+          <button data-mode="kata">カナ</button>
+          <button data-mode="romaji">Romaji</button>
+          <button data-mode="id">ID</button>
+        </div>
+      </div>
+      <div class="search-meta">
+        <div class="chips">
+          <span class="chip on">Semua level</span>
+          <span class="chip">N5</span>
+          <span class="chip">N4</span>
+          <span class="chip">N3</span>
+          <span class="chip">N2</span>
+          <span class="chip">N1</span>
+        </div>
+        <span>Menampilkan 1–120 dari 1,842 hasil untuk "た"</span>
+      </div>
+    </div>
+
+    <!-- Main Body -->
+    <div class="body-wrap">
+      <div class="grid-panel">
+        <div class="grid-toolbar">
+          <h1>
+            HASIL PENCARIAN <span>· diurutkan berdasarkan frekuensi</span>
+          </h1>
+          <div class="sort-controls">
+            <button class="active">Frekuensi</button>
+            <button>Abjad (あ→ん)</button>
+            <button>Level JLPT</button>
+          </div>
+        </div>
+
+        <div class="vgrid" id="vgrid"></div>
+
+        <div class="pagination" id="pagination"></div>
+      </div>
+
+      <!-- Right filter rail -->
+      <aside class="filter-rail">
+        <div class="rail-card">
+          <div class="rail-title">A–Z</div>
+          <div class="rail-list" id="alphaRail"></div>
+        </div>
+        <div class="rail-card">
+          <div class="rail-title">あ–ん</div>
+          <div class="rail-list" id="kanaRail"></div>
+        </div>
+      </aside>
+    </div>
+
+    <script>
+      // ---------- Vocabulary dataset (illustrative) ----------
+      const words = [
+        ["食べる", "たべる", "taberu", "Makan", "V2"],
+        ["飲む", "のむ", "nomu", "Minum", "V1"],
+        ["見る", "みる", "miru", "Melihat", "V2"],
+        ["聞く", "きく", "kiku", "Mendengar", "V1"],
+        ["話す", "はなす", "hanasu", "Berbicara", "V1"],
+        ["読む", "よむ", "yomu", "Membaca", "V1"],
+        ["書く", "かく", "kaku", "Menulis", "V1"],
+        ["行く", "いく", "iku", "Pergi", "V1"],
+        ["来る", "くる", "kuru", "Datang", "V3"],
+        ["帰る", "かえる", "kaeru", "Pulang", "V1"],
+        ["寝る", "ねる", "neru", "Tidur", "V2"],
+        ["起きる", "おきる", "okiru", "Bangun", "V2"],
+        ["買う", "かう", "kau", "Membeli", "V1"],
+        ["売る", "うる", "uru", "Menjual", "V1"],
+        ["作る", "つくる", "tsukuru", "Membuat", "V1"],
+        ["使う", "つかう", "tsukau", "Memakai", "V1"],
+        ["待つ", "まつ", "matsu", "Menunggu", "V1"],
+        ["立つ", "たつ", "tatsu", "Berdiri", "V1"],
+        ["座る", "すわる", "suwaru", "Duduk", "V1"],
+        ["歩く", "あるく", "aruku", "Berjalan", "V1"],
+        ["走る", "はしる", "hashiru", "Berlari", "V1"],
+        ["泳ぐ", "およぐ", "oyogu", "Berenang", "V1"],
+        ["笑う", "わらう", "warau", "Tertawa", "V1"],
+        ["泣く", "なく", "naku", "Menangis", "V1"],
+        ["怒る", "おこる", "okoru", "Marah", "V1"],
+        ["猫", "ねこ", "neko", "Kucing", "N"],
+        ["犬", "いぬ", "inu", "Anjing", "N"],
+        ["鳥", "とり", "tori", "Burung", "N"],
+        ["魚", "さかな", "sakana", "Ikan", "N"],
+        ["馬", "うま", "uma", "Kuda", "N"],
+        ["牛", "うし", "ushi", "Sapi", "N"],
+        ["象", "ぞう", "zou", "Gajah", "N"],
+        ["虎", "とら", "tora", "Harimau", "N"],
+        ["山", "やま", "yama", "Gunung", "N"],
+        ["川", "かわ", "kawa", "Sungai", "N"],
+        ["海", "うみ", "umi", "Laut", "N"],
+        ["空", "そら", "sora", "Langit", "N"],
+        ["雲", "くも", "kumo", "Awan", "N"],
+        ["雨", "あめ", "ame", "Hujan", "N"],
+        ["雪", "ゆき", "yuki", "Salju", "N"],
+        ["風", "かぜ", "kaze", "Angin", "N"],
+        ["火", "ひ", "hi", "Api", "N"],
+        ["水", "みず", "mizu", "Air", "N"],
+        ["土", "つち", "tsuchi", "Tanah", "N"],
+        ["木", "き", "ki", "Pohon", "N"],
+        ["花", "はな", "hana", "Bunga", "N"],
+        ["草", "くさ", "kusa", "Rumput", "N"],
+        ["石", "いし", "ishi", "Batu", "N"],
+        ["新しい", "あたらしい", "atarashii", "Baru", "A-i"],
+        ["古い", "ふるい", "furui", "Lama", "A-i"],
+        ["大きい", "おおきい", "ookii", "Besar", "A-i"],
+        ["小さい", "ちいさい", "chiisai", "Kecil", "A-i"],
+        ["高い", "たかい", "takai", "Tinggi/Mahal", "A-i"],
+        ["安い", "やすい", "yasui", "Murah", "A-i"],
+        ["長い", "ながい", "nagai", "Panjang", "A-i"],
+        ["短い", "みじかい", "mijikai", "Pendek", "A-i"],
+        ["広い", "ひろい", "hiroi", "Luas", "A-i"],
+        ["狭い", "せまい", "semai", "Sempit", "A-i"],
+        ["暑い", "あつい", "atsui", "Panas", "A-i"],
+        ["寒い", "さむい", "samui", "Dingin", "A-i"],
+        ["暖かい", "あたたかい", "atatakai", "Hangat", "A-i"],
+        ["涼しい", "すずしい", "suzushii", "Sejuk", "A-i"],
+        ["明るい", "あかるい", "akarui", "Terang", "A-i"],
+        ["暗い", "くらい", "kurai", "Gelap", "A-i"],
+        ["忙しい", "いそがしい", "isogashii", "Sibuk", "A-i"],
+        ["楽しい", "たのしい", "tanoshii", "Menyenangkan", "A-i"],
+        ["悲しい", "かなしい", "kanashii", "Sedih", "A-i"],
+        ["嬉しい", "うれしい", "ureshii", "Senang", "A-i"],
+        ["静か", "しずか", "shizuka", "Tenang", "A-na"],
+        ["元気", "げんき", "genki", "Sehat/Semangat", "A-na"],
+        ["便利", "べんり", "benri", "Praktis", "A-na"],
+        ["簡単", "かんたん", "kantan", "Mudah", "A-na"],
+        ["大切", "たいせつ", "taisetsu", "Penting", "A-na"],
+        ["有名", "ゆうめい", "yuumei", "Terkenal", "A-na"],
+        ["親切", "しんせつ", "shinsetsu", "Baik hati", "A-na"],
+        ["丈夫", "じょうぶ", "joubu", "Kuat/Kokoh", "A-na"],
+        ["時間", "じかん", "jikan", "Waktu", "N"],
+        ["今日", "きょう", "kyou", "Hari ini", "N"],
+        ["明日", "あした", "ashita", "Besok", "N"],
+        ["昨日", "きのう", "kinou", "Kemarin", "N"],
+        ["朝", "あさ", "asa", "Pagi", "N"],
+        ["昼", "ひる", "hiru", "Siang", "N"],
+        ["夜", "よる", "yoru", "Malam", "N"],
+        ["週", "しゅう", "shuu", "Minggu", "N"],
+        ["月", "つき", "tsuki", "Bulan", "N"],
+        ["年", "とし", "toshi", "Tahun", "N"],
+        ["学校", "がっこう", "gakkou", "Sekolah", "N"],
+        ["先生", "せんせい", "sensei", "Guru", "N"],
+        ["学生", "がくせい", "gakusei", "Pelajar", "N"],
+        ["会社", "かいしゃ", "kaisha", "Perusahaan", "N"],
+        ["仕事", "しごと", "shigoto", "Pekerjaan", "N"],
+        ["友達", "ともだち", "tomodachi", "Teman", "N"],
+        ["家族", "かぞく", "kazoku", "Keluarga", "N"],
+        ["父", "ちち", "chichi", "Ayah", "N"],
+        ["母", "はは", "haha", "Ibu", "N"],
+        ["兄", "あに", "ani", "Kakak laki-laki", "N"],
+        ["姉", "あね", "ane", "Kakak perempuan", "N"],
+        ["弟", "おとうと", "otouto", "Adik laki-laki", "N"],
+        ["妹", "いもうと", "imouto", "Adik perempuan", "N"],
+        ["家", "いえ", "ie", "Rumah", "N"],
+        ["部屋", "へや", "heya", "Kamar", "N"],
+        ["机", "つくえ", "tsukue", "Meja", "N"],
+        ["椅子", "いす", "isu", "Kursi", "N"],
+        ["本", "ほん", "hon", "Buku", "N"],
+        ["紙", "かみ", "kami", "Kertas", "N"],
+        ["車", "くるま", "kuruma", "Mobil", "N"],
+        ["電車", "でんしゃ", "densha", "Kereta", "N"],
+        ["自転車", "じてんしゃ", "jitensha", "Sepeda", "N"],
+        ["道", "みち", "michi", "Jalan", "N"],
+        ["駅", "えき", "eki", "Stasiun", "N"],
+        ["店", "みせ", "mise", "Toko", "N"],
+        ["病院", "びょういん", "byouin", "Rumah sakit", "N"],
+        ["銀行", "ぎんこう", "ginkou", "Bank", "N"],
+        ["食べ物", "たべもの", "tabemono", "Makanan", "N"],
+        ["飲み物", "のみもの", "nomimono", "Minuman", "N"],
+        ["米", "こめ", "kome", "Beras", "N"],
+        ["肉", "にく", "niku", "Daging", "N"],
+        ["野菜", "やさい", "yasai", "Sayuran", "N"],
+        ["果物", "くだもの", "kudamono", "Buah", "N"],
+        ["卵", "たまご", "tamago", "Telur", "N"],
+        ["塩", "しお", "shio", "Garam", "N"],
+        ["砂糖", "さとう", "satou", "Gula", "N"],
+        ["色", "いろ", "iro", "Warna", "N"],
+        ["赤", "あか", "aka", "Merah", "N"],
+        ["青", "あお", "ao", "Biru", "N"],
+        ["白", "しろ", "shiro", "Putih", "N"],
+        ["黒", "くろ", "kuro", "Hitam", "N"],
+        ["言葉", "ことば", "kotoba", "Kata", "N"],
+        ["名前", "なまえ", "namae", "Nama", "N"],
+        ["質問", "しつもん", "shitsumon", "Pertanyaan", "N"],
+        ["答え", "こたえ", "kotae", "Jawaban", "N"],
+        ["勉強", "べんきょう", "benkyou", "Belajar", "VS"],
+        ["練習", "れんしゅう", "renshuu", "Latihan", "VS"],
+        ["旅行", "りょこう", "ryokou", "Perjalanan", "VS"],
+        ["料理", "りょうり", "ryouri", "Masakan", "VS"],
+        ["運動", "うんどう", "undou", "Olahraga", "VS"],
+        ["掃除", "そうじ", "souji", "Bersih-bersih", "VS"],
+        ["洗濯", "せんたく", "sentaku", "Cuci baju", "VS"],
+        ["結婚", "けっこん", "kekkon", "Menikah", "VS"],
+        ["準備", "じゅんび", "junbi", "Persiapan", "VS"],
+      ];
+
+      const posColors = {};
+
+      function buildCell(w) {
+        const [kanji, furi, romaji, indo, pos] = w;
+        const starred = Math.random() < 0.08;
+        return `<div class="cell${starred ? " starred" : ""}">
+    <span class="pos">${pos}</span>
+    <span class="star">★</span>
+    <span class="furigana">${furi}</span>
+    <span class="kanji">${kanji}</span>
+    <span class="romaji">${romaji}</span>
+    <span class="indo">${indo}</span>
+  </div>`;
+      }
+
+      // fill to exactly 120 cells (12 x 10), cycling dataset with slight variation if needed
+      const grid = document.getElementById("vgrid");
+      let html = "";
+      for (let i = 0; i < 120; i++) {
+        html += buildCell(words[i % words.length]);
+      }
+      grid.innerHTML = html;
+
+      // pagination
+      const pag = document.getElementById("pagination");
+      const pages = [1, 2, 3, 4, 5, "…", 199, 200];
+      let pagHtml = `<button class="nav">‹ Sebelumnya</button>`;
+      pages.forEach((p) => {
+        if (p === "…") {
+          pagHtml += `<span class="ellipsis">…</span>`;
+        } else {
+          pagHtml += `<button class="${p === 1 ? "active" : ""}">${p}</button>`;
+        }
+      });
+      pagHtml += `<button class="nav">Berikutnya ›</button>`;
+      pag.innerHTML = pagHtml;
+
+      // alphabet rail
+      const alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      document.getElementById("alphaRail").innerHTML = alpha
+        .map(
+          (l, i) =>
+            `<div class="rail-item${i === 19 ? " active" : ""}">${l}</div>`,
+        )
+        .join("");
+
+      // kana rail (gojuon order, simplified)
+      const kana = [
+        "あ",
+        "か",
+        "さ",
+        "た",
+        "な",
+        "は",
+        "ま",
+        "や",
+        "ら",
+        "わ",
+        "が",
+        "ざ",
+        "だ",
+        "ば",
+        "ぱ",
+        "ん",
+      ];
+      document.getElementById("kanaRail").innerHTML = kana
+        .map(
+          (k, i) =>
+            `<div class="rail-item kana${i === 3 ? " active" : ""}">${k}</div>`,
+        )
+        .join("");
+    </script>
+  </body>
+</html>

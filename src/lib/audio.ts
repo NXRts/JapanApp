@@ -306,3 +306,6 @@ export const playJapaneseAudio = (
     resolve();
   });
 };
+
+export const speakJapanese = playJapaneseAudio;
+
