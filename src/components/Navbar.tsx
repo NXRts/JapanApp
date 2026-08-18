@@ -2711,10 +2711,21 @@ export function Navbar() {
             </MobileLink>
 
             <MobileLink
+              href="/development"
+              $active={pathname.startsWith("/development")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.43}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <KanjiBadge>研</KanjiBadge>
+              Dev Labs
+            </MobileLink>
+
+            <MobileLink
               href="#"
               $active={false}
               $isOpen={isMobileMenuOpen}
-              $delay={0.43}
+              $delay={0.46}
               onClick={(e) => {
                 e.preventDefault();
                 setIsMobileMenuOpen(false);
