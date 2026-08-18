@@ -535,3 +535,57 @@ export async function searchDictionary(
     return localResults.slice(0, 100);
   }
 }
+
+/**
+ * Fast lightweight auto-suggestions for real-time typing (2-3 chars)
+ */
+export function getAutoSuggestions(
+  query: string,
+  limit: number = 8
+): DictionaryResult[] {
+  const normalized = query.toLowerCase().trim();
+  if (!normalized) return [];
+
+  const results: DictionaryResult[] = [];
+  const seenWords = new Set<string>();
+
+  const isJapaneseQuery = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff]/.test(normalized);
+
+  // 1. Search vocabulary
+  for (const item of allVocabulary) {
+    const key = item.word || item.reading || item.id;
+    if (seenWords.has(key)) continue;
+
+    const wordMatch = item.word && item.word.toLowerCase().includes(normalized);
+    const readingMatch = item.reading && item.reading.toLowerCase().includes(normalized);
+    const romajiMatch = item.romaji && item.romaji.toLowerCase().includes(normalized);
+    const meaningMatch = item.meaning && item.meaning.toLowerCase().includes(normalized);
+    const indonesianMatch = item.indonesian && item.indonesian.toLowerCase().includes(normalized);
+
+    if (wordMatch || readingMatch || romajiMatch || meaningMatch || indonesianMatch) {
+      seenWords.add(key);
+      results.push(item);
+      if (results.length >= limit) break;
+    }
+  }
+
+  // 2. If limit not reached, search Kanji
+  if (results.length < limit) {
+    for (const item of allKanji) {
+      const key = item.kanji || item.id;
+      if (seenWords.has(key)) continue;
+
+      if (
+        (item.kanji && item.kanji.includes(normalized)) ||
+        item.meaning.toLowerCase().includes(normalized)
+      ) {
+        seenWords.add(key);
+        results.push(item);
+        if (results.length >= limit) break;
+      }
+    }
+  }
+
+  return results;
+}
+
