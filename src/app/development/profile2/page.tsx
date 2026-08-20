@@ -18,33 +18,33 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `;
 
-/* ─── Page Wrapper & Layout Grid (Spacious 1400px Dashboard) ─────────────── */
+/* ─── Page Wrapper & Layout Grid (Wide Dashboard Layout - Gambar 2) ────────── */
 const PageWrapper = styled.div`
   width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
   min-height: 85vh;
   color: var(--foreground);
   font-family: var(--p2-font-ui);
-  padding: 1.5rem 1.5rem 5rem 1.5rem;
+  padding: 1.25rem 1.5rem 5rem 1.5rem;
   animation: ${fadeIn} 0.3s ease-out;
 
-  @media (max-width: 980px) {
-    padding: 1rem 1rem 6.5rem 1rem;
+  @media (max-width: 900px) {
+    padding: 0.75rem 0.75rem 6.5rem 0.75rem;
   }
 `;
 
 const LayoutGrid = styled.div`
   display: grid;
-  grid-template-columns: 290px minmax(0, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 1rem;
   margin-top: 0.85rem;
   align-items: flex-start;
   width: 100%;
 
-  @media (max-width: 980px) {
+  @media (max-width: 900px) {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1rem;
   }
 `;
 
@@ -509,7 +509,7 @@ const JlptProgressCard = styled(Card)`
 `;
 
 /* ─── MAIN CONTENT COMPONENTS ────────────────────────────────────────────── */
-const MainContent = styled.main`
+const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
