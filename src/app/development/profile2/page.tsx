@@ -795,19 +795,197 @@ const KanaPanel = styled(Card)`
   .chart-legend {
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 20px;
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
     font-weight: 600;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+    padding: 4px 0;
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
   }
 
   .legend-dot {
-    width: 9px;
-    height: 9px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     display: inline-block;
-    margin-right: 6px;
+    flex-shrink: 0;
+  }
+
+  .view-link {
+    text-align: center;
+    margin-top: 4px;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 0.88rem;
+    cursor: pointer;
+    text-decoration: none !important;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: none !important;
+    }
+  }
+`;
+
+/* ─── VOCABULARY PANEL COMPONENTS ────────────────────────────────────────── */
+const VocabPanel = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+
+  .vocab-panel-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(59, 130, 246, 0.12);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  .block-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--foreground);
+    margin-bottom: 10px;
+  }
+
+  .vocab-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: rgba(var(--foreground-rgb, 255, 255, 255), 0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+
+    .v-stat-item + .v-stat-item {
+      border-left: 1px solid var(--border);
+    }
+
+    .v-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-secondary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .v-val {
+      font-size: 1.6rem;
+      font-weight: 900;
+      margin-top: 4px;
+      color: var(--foreground);
+
+      &.green {
+        color: #10b981;
+      }
+      &.blue {
+        color: #3b82f6;
+      }
+    }
+  }
+
+  .empty-distribution-box {
+    background: rgba(var(--foreground-rgb, 255, 255, 255), 0.02);
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    padding: 45px 20px;
+    text-align: center;
+
+    .main-txt {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .sub-txt {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      opacity: 0.75;
+    }
+  }
+
+  .struggle-table {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+
+    .table-head {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.5fr 1fr;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      padding: 10px 14px;
+      background: rgba(var(--foreground-rgb, 255, 255, 255), 0.03);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-empty {
+      padding: 30px 14px;
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+  }
+
+  .chart-wrap {
+    background: var(--surface);
+    border-radius: 12px;
+    overflow: hidden;
+    width: 100%;
+    padding: 6px 0;
+
+    svg {
+      width: 100%;
+      min-width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+
+  .chart-legend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding: 4px 0;
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
   }
 
   .view-link {
@@ -841,11 +1019,17 @@ const jlptData = [
 const chartDays = ["Aug 13", "Aug 14", "Aug 15", "Aug 16", "Aug 17", "Aug 18", "Aug 19"];
 const chartAttempts = [0, 0, 0, 0, 0, 5, 0];
 
+const vocabDays = ["Aug 15", "Aug 16", "Aug 17", "Aug 18", "Aug 19", "Aug 20", "Aug 21"];
+const vocabReviewed = [0, 0, 0, 0, 0, 0, 0];
+const vocabLearned = [0, 0, 0, 0, 0, 0, 0];
+const vocabAccuracy = [0, 0, 0, 0, 0, 0, 0];
+
 /* ─── MAIN PROFILE 2.0 PAGE COMPONENT ────────────────────────────────────── */
 export default function Profile2Page() {
   const [activeTab, setActiveTab] = useState<"kana" | "vocab" | "grammar" | "conj">("kana");
   const [showDiscord, setShowDiscord] = useState(true);
   const [jlptExpanded, setJlptExpanded] = useState(true);
+  const [hoveredVocabIdx, setHoveredVocabIdx] = useState<number | null>(null);
 
   // Generate 192 heatmap cells
   const heatmapCells = useMemo(() => {
@@ -1095,165 +1279,556 @@ export default function Profile2Page() {
           </TabsBar>
 
           {/* Kana Panel */}
-          <KanaPanel>
-            <div>
-              <div className="kana-panel-head">
-                <span className="tag-ico">Aあ</span> KANA
-              </div>
-            </div>
-
-            <div>
-              <h3 className="block-title">Kana Proficiency</h3>
-              <div className="kana-cols">
-                <div className="kana-col">
-                  <h4>hiragana</h4>
-                  <div className="attempts">(5 attempts)</div>
-                  <Link href="/kana?type=hiragana">
-                    <div className="focus-btn">Focus Area</div>
-                  </Link>
-                  <div className="good-status">
-                    All characters at good proficiency
-                  </div>
-                </div>
-                <div className="kana-col">
-                  <h4>katakana</h4>
-                  <div className="attempts">(0 attempts)</div>
-                  <Link href="/kana?type=katakana">
-                    <div className="focus-btn">Focus Area</div>
-                  </Link>
-                  <div className="good-status">
-                    All characters at good proficiency
-                  </div>
+          {activeTab === "kana" && (
+            <KanaPanel>
+              <div>
+                <div className="kana-panel-head">
+                  <span className="tag-ico">Aあ</span> KANA
                 </div>
               </div>
-            </div>
 
-            <div>
-              <h3 className="block-title">Stats by Type</h3>
-              <div style={{ color: "var(--text-secondary)", fontSize: "0.85rem" }}>
-                Practice Hiragana & Katakana to see breakdown stats by vowel groups (A, I, U, E, O).
+              <div>
+                <h3 className="block-title">Kana Proficiency</h3>
+                <div className="kana-cols">
+                  <div className="kana-col">
+                    <h4>hiragana</h4>
+                    <div className="attempts">(5 attempts)</div>
+                    <Link href="/kana?type=hiragana">
+                      <div className="focus-btn">Focus Area</div>
+                    </Link>
+                    <div className="good-status">
+                      All characters at good proficiency
+                    </div>
+                  </div>
+                  <div className="kana-col">
+                    <h4>katakana</h4>
+                    <div className="attempts">(0 attempts)</div>
+                    <Link href="/kana?type=katakana">
+                      <div className="focus-btn">Focus Area</div>
+                    </Link>
+                    <div className="good-status">
+                      All characters at good proficiency
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div>
-              <h3 className="block-title">Practice Activity Over Time</h3>
-              <div className="chart-legend">
-                <span>
-                  <span className="legend-dot" style={{ background: "#8b7cff" }}></span>
-                  Total Attempts
-                </span>
-                <span>
-                  <span className="legend-dot" style={{ background: "#10b981" }}></span>
-                  Accuracy %
-                </span>
+              <div>
+                <h3 className="block-title">Stats by Type</h3>
+                <div style={{ color: "var(--text-secondary)", fontSize: "0.85rem" }}>
+                  Practice Hiragana & Katakana to see breakdown stats by vowel groups (A, I, U, E, O).
+                </div>
               </div>
 
-              {/* Interactive SVG Chart */}
-              <div className="chart-wrap">
-                <svg
-                  width="100%"
-                  height="330"
-                  viewBox="0 0 1000 330"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  {/* Grid Lines */}
-                  {[0, 1, 2, 3, 4, 5].map((g) => {
-                    const y = 25 + 240 - (g / 5) * 240;
-                    return (
-                      <g key={g}>
-                        <line
-                          x1="55"
-                          x2="940"
-                          y1={y}
-                          y2={y}
-                          stroke="var(--border)"
-                          strokeWidth="1.2"
-                        />
+              <div>
+                <h3 className="block-title">Practice Activity Over Time</h3>
+                <div className="chart-legend">
+                  <span>
+                    <span className="legend-dot" style={{ background: "#8b7cff" }}></span>
+                    Total Attempts
+                  </span>
+                  <span>
+                    <span className="legend-dot" style={{ background: "#10b981" }}></span>
+                    Accuracy %
+                  </span>
+                </div>
+
+                {/* Interactive SVG Chart */}
+                <div className="chart-wrap">
+                  <svg
+                    width="100%"
+                    height="330"
+                    viewBox="0 0 1000 330"
+                    preserveAspectRatio="xMidYMid meet"
+                  >
+                    {/* Grid Lines */}
+                    {[0, 1, 2, 3, 4, 5].map((g) => {
+                      const y = 25 + 240 - (g / 5) * 240;
+                      return (
+                        <g key={g}>
+                          <line
+                            x1="55"
+                            x2="940"
+                            y1={y}
+                            y2={y}
+                            stroke="var(--border)"
+                            strokeWidth="1.2"
+                          />
+                          <text
+                            x="45"
+                            y={y + 5}
+                            textAnchor="end"
+                            fontSize="14"
+                            fontWeight="800"
+                            fill="var(--text-secondary)"
+                          >
+                            {g.toFixed(1)}
+                          </text>
+                        </g>
+                      );
+                    })}
+
+                    {/* X Axis Labels (All 7 Days) */}
+                    {chartDays.map((d, i) => {
+                      const x = 60 + (i * 880) / (chartDays.length - 1);
+                      return (
                         <text
-                          x="45"
-                          y={y + 5}
-                          textAnchor="end"
+                          key={d}
+                          x={x}
+                          y="300"
+                          textAnchor="middle"
                           fontSize="14"
                           fontWeight="800"
                           fill="var(--text-secondary)"
                         >
-                          {g.toFixed(1)}
+                          {d}
                         </text>
-                      </g>
-                    );
-                  })}
+                      );
+                    })}
 
-                  {/* X Axis Labels (All 7 Days) */}
-                  {chartDays.map((d, i) => {
-                    const x = 60 + (i * 880) / (chartDays.length - 1);
-                    return (
-                      <text
-                        key={d}
-                        x={x}
-                        y="300"
-                        textAnchor="middle"
-                        fontSize="14"
-                        fontWeight="800"
-                        fill="var(--text-secondary)"
-                      >
-                        {d}
-                      </text>
-                    );
-                  })}
+                    {/* Accuracy Area Polygon (Green highlight on Aug 18) */}
+                    <polygon
+                      points="646,265 646,25 793,25 793,265"
+                      fill="rgba(16, 185, 129, 0.35)"
+                    />
 
-                  {/* Accuracy Area Polygon (Green highlight on Aug 18) */}
-                  <polygon
-                    points="646,265 646,25 793,25 793,265"
-                    fill="rgba(16, 185, 129, 0.35)"
-                  />
+                    {/* Attempts Line & Circles */}
+                    <polyline
+                      points={chartAttempts
+                        .map((v, i) => {
+                          const x = 60 + (i * 880) / (chartDays.length - 1);
+                          const y = 25 + 240 - (v / 5) * 240;
+                          return `${x},${y}`;
+                        })
+                        .join(" ")}
+                      fill="none"
+                      stroke="#8b7cff"
+                      strokeWidth="4"
+                    />
 
-                  {/* Attempts Line & Circles */}
-                  <polyline
-                    points={chartAttempts
-                      .map((v, i) => {
-                        const x = 60 + (i * 880) / (chartDays.length - 1);
-                        const y = 25 + 240 - (v / 5) * 240;
-                        return `${x},${y}`;
-                      })
-                      .join(" ")}
-                    fill="none"
-                    stroke="#8b7cff"
-                    strokeWidth="4"
-                  />
+                    {chartAttempts.map((v, i) => {
+                      const x = 60 + (i * 880) / (chartDays.length - 1);
+                      const y = 25 + 240 - (v / 5) * 240;
+                      return (
+                        <circle key={i} cx={x} cy={y} r="7" fill="#8b7cff" />
+                      );
+                    })}
 
-                  {chartAttempts.map((v, i) => {
-                    const x = 60 + (i * 880) / (chartDays.length - 1);
-                    const y = 25 + 240 - (v / 5) * 240;
-                    return (
-                      <circle key={i} cx={x} cy={y} r="7" fill="#8b7cff" />
-                    );
-                  })}
-
-                  {/* Right Axis Accuracy % */}
-                  {[0, 20, 40, 60, 80, 100].map((p) => {
-                    const y = 25 + 240 - (p / 100) * 240;
-                    return (
-                      <text
-                        key={p}
-                        x="950"
-                        y={y + 5}
-                        textAnchor="start"
-                        fontSize="13"
-                        fontWeight="800"
-                        fill="var(--text-secondary)"
-                      >
-                        {p}%
-                      </text>
-                    );
-                  })}
-                </svg>
+                    {/* Right Axis Accuracy % */}
+                    {[0, 20, 40, 60, 80, 100].map((p) => {
+                      const y = 25 + 240 - (p / 100) * 240;
+                      return (
+                        <text
+                          key={p}
+                          x="950"
+                          y={y + 5}
+                          textAnchor="start"
+                          fontSize="13"
+                          fontWeight="800"
+                          fill="var(--text-secondary)"
+                        >
+                          {p}%
+                        </text>
+                      );
+                    })}
+                  </svg>
+                </div>
               </div>
-            </div>
 
-            <Link href="/kana" style={{ textDecoration: "none" }}>
-              <div className="view-link">View Kana progress →</div>
-            </Link>
-          </KanaPanel>
+              <Link href="/kana" style={{ textDecoration: "none" }}>
+                <div className="view-link">View Kana progress →</div>
+              </Link>
+            </KanaPanel>
+          )}
+
+          {/* Vocabulary Panel (Gambar Screenshot User 100%) */}
+          {(activeTab === "vocab" || activeTab === "grammar" || activeTab === "conj") && (
+            <VocabPanel>
+              <div>
+                <div
+                  className="vocab-panel-head"
+                  style={{
+                    color:
+                      activeTab === "vocab"
+                        ? "#3b82f6"
+                        : activeTab === "grammar"
+                        ? "#10b981"
+                        : "#f59e0b",
+                    background:
+                      activeTab === "vocab"
+                        ? "rgba(59, 130, 246, 0.12)"
+                        : activeTab === "grammar"
+                        ? "rgba(16, 185, 129, 0.12)"
+                        : "rgba(245, 158, 11, 0.12)",
+                    borderColor:
+                      activeTab === "vocab"
+                        ? "rgba(59, 130, 246, 0.25)"
+                        : activeTab === "grammar"
+                        ? "rgba(16, 185, 129, 0.25)"
+                        : "rgba(245, 158, 11, 0.25)",
+                  }}
+                >
+                  <span className="tag-ico">
+                    {activeTab === "vocab"
+                      ? "📘"
+                      : activeTab === "grammar"
+                      ? "📗"
+                      : "📙"}
+                  </span>{" "}
+                  {activeTab === "vocab"
+                    ? "VOCABULARY"
+                    : activeTab === "grammar"
+                    ? "GRAMMAR"
+                    : "CONJUGATION"}
+                </div>
+              </div>
+
+              {/* 3 Stat Counter Grid */}
+              <div className="vocab-stat-grid">
+                <div className="v-stat-item">
+                  <div className="v-label">Reviews</div>
+                  <div className="v-val">0</div>
+                </div>
+                <div className="v-stat-item">
+                  <div className="v-label">Learned</div>
+                  <div className="v-val green">0</div>
+                </div>
+                <div className="v-stat-item">
+                  <div className="v-label">Accuracy</div>
+                  <div className="v-val blue">0%</div>
+                </div>
+              </div>
+
+              {/* Vocabulary Overview */}
+              <div>
+                <h3 className="block-title">
+                  {activeTab === "vocab"
+                    ? "Vocabulary Overview"
+                    : activeTab === "grammar"
+                    ? "Grammar Overview"
+                    : "Conjugation Overview"}
+                </h3>
+                <div className="chart-legend">
+                  <span>
+                    <span className="legend-dot" style={{ background: "#3b82f6" }}></span>
+                    Words Reviewed
+                  </span>
+                  <span>
+                    <span className="legend-dot" style={{ background: "#a855f7" }}></span>
+                    New Words Learned
+                  </span>
+                  <span>
+                    <span className="legend-dot" style={{ background: "#10b981" }}></span>
+                    Accuracy %
+                  </span>
+                </div>
+
+                <div className="chart-wrap">
+                  <svg
+                    width="100%"
+                    height="330"
+                    viewBox="0 0 1000 330"
+                    preserveAspectRatio="xMidYMid meet"
+                  >
+                    {/* Y-Axis Label left */}
+                    <text
+                      x="20"
+                      y="150"
+                      textAnchor="middle"
+                      fontSize="12"
+                      fontWeight="700"
+                      fill="var(--text-secondary)"
+                      transform="rotate(-90 20 150)"
+                    >
+                      Counts
+                    </text>
+
+                    {/* Y-Axis Label right */}
+                    <text
+                      x="985"
+                      y="150"
+                      textAnchor="middle"
+                      fontSize="12"
+                      fontWeight="700"
+                      fill="var(--text-secondary)"
+                      transform="rotate(90 985 150)"
+                    >
+                      Accuracy
+                    </text>
+
+                    {/* Grid Lines */}
+                    {[0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0].map(
+                      (g, idx) => {
+                        const y = 25 + 240 - (idx / 10) * 240;
+                        return (
+                          <g key={g}>
+                            <line
+                              x1="55"
+                              x2="940"
+                              y1={y}
+                              y2={y}
+                              stroke="var(--border)"
+                              strokeWidth="1"
+                              strokeDasharray={g === 0 ? "none" : "3,3"}
+                              opacity={g === 0 ? 0.6 : 0.25}
+                            />
+                            <text
+                              x="45"
+                              y={y + 4}
+                              textAnchor="end"
+                              fontSize="12"
+                              fontWeight="600"
+                              fill="var(--text-secondary)"
+                            >
+                              {g === 0 || g === 1 ? g : g.toFixed(1)}
+                            </text>
+                          </g>
+                        );
+                      }
+                    )}
+
+                    {/* X Axis Labels */}
+                    {vocabDays.map((d, i) => {
+                      const x = 60 + (i * 880) / (vocabDays.length - 1);
+                      return (
+                        <text
+                          key={d}
+                          x={x}
+                          y="300"
+                          textAnchor="middle"
+                          fontSize="13"
+                          fontWeight="700"
+                          fill="var(--text-secondary)"
+                        >
+                          {d}
+                        </text>
+                      );
+                    })}
+
+                    {/* 1. Words Reviewed (Blue Line & Dots) */}
+                    <polyline
+                      points={vocabReviewed
+                        .map((v, i) => {
+                          const x = 60 + (i * 880) / (vocabDays.length - 1);
+                          const y = 25 + 240 - (v / 1.0) * 240;
+                          return `${x},${y}`;
+                        })
+                        .join(" ")}
+                      fill="none"
+                      stroke="#3b82f6"
+                      strokeWidth="3.5"
+                    />
+                    {vocabReviewed.map((v, i) => {
+                      const x = 60 + (i * 880) / (vocabDays.length - 1);
+                      const y = 25 + 240 - (v / 1.0) * 240;
+                      return (
+                        <circle key={`rev-${i}`} cx={x} cy={y} r="6" fill="#3b82f6" />
+                      );
+                    })}
+
+                    {/* 2. New Words Learned (Purple Dashed Line & Dots) */}
+                    <polyline
+                      points={vocabLearned
+                        .map((v, i) => {
+                          const x = 60 + (i * 880) / (vocabDays.length - 1);
+                          const y = 25 + 240 - (v / 1.0) * 240;
+                          return `${x},${y}`;
+                        })
+                        .join(" ")}
+                      fill="none"
+                      stroke="#a855f7"
+                      strokeWidth="3"
+                      strokeDasharray="4 4"
+                    />
+                    {vocabLearned.map((v, i) => {
+                      const x = 60 + (i * 880) / (vocabDays.length - 1);
+                      const y = 25 + 240 - (v / 1.0) * 240;
+                      return (
+                        <circle key={`lrn-${i}`} cx={x} cy={y} r="5" fill="#a855f7" />
+                      );
+                    })}
+
+                    {/* 3. Accuracy % (Green Line & Dots) */}
+                    <polyline
+                      points={vocabAccuracy
+                        .map((v, i) => {
+                          const x = 60 + (i * 880) / (vocabDays.length - 1);
+                          const y = 25 + 240 - (v / 100) * 240;
+                          return `${x},${y}`;
+                        })
+                        .join(" ")}
+                      fill="none"
+                      stroke="#10b981"
+                      strokeWidth="3"
+                    />
+                    {vocabAccuracy.map((v, i) => {
+                      const x = 60 + (i * 880) / (vocabDays.length - 1);
+                      const y = 25 + 240 - (v / 100) * 240;
+                      return (
+                        <circle key={`acc-${i}`} cx={x} cy={y} r="5" fill="#10b981" />
+                      );
+                    })}
+
+                    {/* Interactive Hover Hit-Areas for 7 Days */}
+                    {vocabDays.map((d, i) => {
+                      const x = 60 + (i * 880) / (vocabDays.length - 1);
+                      return (
+                        <rect
+                          key={`hover-area-${i}`}
+                          x={x - 40}
+                          y="20"
+                          width="80"
+                          height="260"
+                          fill="transparent"
+                          style={{ cursor: "pointer" }}
+                          onMouseEnter={() => setHoveredVocabIdx(i)}
+                          onMouseLeave={() => setHoveredVocabIdx(null)}
+                          onTouchStart={() => setHoveredVocabIdx(i)}
+                        />
+                      );
+                    })}
+
+                    {/* Active Hover Vertical Line Guide */}
+                    {hoveredVocabIdx !== null && (
+                      <line
+                        x1={60 + (hoveredVocabIdx * 880) / (vocabDays.length - 1)}
+                        x2={60 + (hoveredVocabIdx * 880) / (vocabDays.length - 1)}
+                        y1="25"
+                        y2="265"
+                        stroke="rgba(255, 255, 255, 0.3)"
+                        strokeWidth="1.5"
+                        strokeDasharray="4 4"
+                      />
+                    )}
+
+                    {/* Hover Tooltip Card (Gambar 2 User 100% Exact!) */}
+                    {hoveredVocabIdx !== null && (() => {
+                      const hoverX = 60 + (hoveredVocabIdx * 880) / (vocabDays.length - 1);
+                      const ttWidth = 160;
+                      const ttHeight = 90;
+                      let ttX = hoverX - 80;
+                      if (ttX < 55) ttX = 55;
+                      if (ttX + ttWidth > 940) ttX = 940 - ttWidth;
+                      const ttY = 130;
+                      const dateStr = vocabDays[hoveredVocabIdx];
+
+                      return (
+                        <g transform={`translate(${ttX}, ${ttY})`}>
+                          {/* Tooltip Background Card */}
+                          <rect
+                            x="0"
+                            y="0"
+                            width={ttWidth}
+                            height={ttHeight}
+                            rx="8"
+                            fill="#0b0f19"
+                            stroke="rgba(255, 255, 255, 0.2)"
+                            strokeWidth="1.2"
+                            filter="drop-shadow(0px 8px 16px rgba(0,0,0,0.65))"
+                          />
+                          {/* Date Header */}
+                          <text
+                            x="12"
+                            y="22"
+                            fill="#ffffff"
+                            fontSize="13"
+                            fontWeight="800"
+                          >
+                            {dateStr}
+                          </text>
+                          {/* Row 1: Words Reviewed */}
+                          <rect x="12" y="32" width="10" height="10" rx="2" fill="#3b82f6" />
+                          <text x="28" y="41" fill="#e2e8f0" fontSize="11" fontWeight="600">
+                            Words Reviewed: {vocabReviewed[hoveredVocabIdx]}
+                          </text>
+
+                          {/* Row 2: New Words Learned */}
+                          <rect x="12" y="49" width="10" height="10" rx="2" fill="#a855f7" />
+                          <text x="28" y="58" fill="#e2e8f0" fontSize="11" fontWeight="600">
+                            New Words Learned: {vocabLearned[hoveredVocabIdx]}
+                          </text>
+
+                          {/* Row 3: Accuracy % */}
+                          <rect x="12" y="66" width="10" height="10" rx="2" fill="#10b981" />
+                          <text x="28" y="75" fill="#e2e8f0" fontSize="11" fontWeight="600">
+                            Accuracy %: {vocabAccuracy[hoveredVocabIdx]}
+                          </text>
+                        </g>
+                      );
+                    })()}
+
+                    {/* Right Axis Accuracy % */}
+                    {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((p, idx) => {
+                      const y = 25 + 240 - (idx / 10) * 240;
+                      return (
+                        <text
+                          key={p}
+                          x="950"
+                          y={y + 4}
+                          textAnchor="start"
+                          fontSize="11"
+                          fontWeight="600"
+                          fill="var(--text-secondary)"
+                        >
+                          {p}%
+                        </text>
+                      );
+                    })}
+                  </svg>
+                </div>
+              </div>
+
+              {/* Knowledge Distribution by JLPT Level */}
+              <div>
+                <h3 className="block-title">Knowledge Distribution by JLPT Level</h3>
+                <div className="empty-distribution-box">
+                  <div className="main-txt">
+                    No {activeTab === "vocab" ? "vocabulary" : activeTab} data yet
+                  </div>
+                  <div className="sub-txt">
+                    Start learning to see your knowledge distribution
+                  </div>
+                </div>
+              </div>
+
+              {/* Words You Struggle With */}
+              <div>
+                <h3 className="block-title">
+                  {activeTab === "vocab"
+                    ? "Words You Struggle With"
+                    : activeTab === "grammar"
+                    ? "Grammar Items You Struggle With"
+                    : "Conjugation Items You Struggle With"}
+                </h3>
+                <div className="struggle-table">
+                  <div className="table-head">
+                    <div>Word</div>
+                    <div>Reading</div>
+                    <div>Meaning</div>
+                    <div style={{ textAlign: "right" }}>Accuracy</div>
+                  </div>
+                  <div className="table-empty">
+                    No struggling {activeTab === "vocab" ? "words" : "items"} - great job!
+                  </div>
+                </div>
+              </div>
+
+              <Link
+                href={
+                  activeTab === "vocab"
+                    ? "/vocabulary"
+                    : activeTab === "grammar"
+                    ? "/grammar"
+                    : "/conjugation"
+                }
+                style={{ textDecoration: "none" }}
+              >
+                <div className="view-link">
+                  View {activeTab === "vocab" ? "Vocabulary" : activeTab} progress →
+                </div>
+              </Link>
+            </VocabPanel>
+          )}
         </MainContent>
       </LayoutGrid>
 
