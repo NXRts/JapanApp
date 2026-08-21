@@ -1441,7 +1441,7 @@ export default function Profile2Page() {
             </KanaPanel>
           )}
 
-          {/* Vocabulary Panel (Gambar Screenshot User 100%) */}
+          {/* Vocabulary / Grammar / Conjugation Panel */}
           {(activeTab === "vocab" || activeTab === "grammar" || activeTab === "conj") && (
             <VocabPanel>
               <div>
@@ -1452,19 +1452,19 @@ export default function Profile2Page() {
                       activeTab === "vocab"
                         ? "#3b82f6"
                         : activeTab === "grammar"
-                        ? "#10b981"
+                        ? "#ec4899"
                         : "#f59e0b",
                     background:
                       activeTab === "vocab"
                         ? "rgba(59, 130, 246, 0.12)"
                         : activeTab === "grammar"
-                        ? "rgba(16, 185, 129, 0.12)"
+                        ? "rgba(236, 72, 153, 0.12)"
                         : "rgba(245, 158, 11, 0.12)",
                     borderColor:
                       activeTab === "vocab"
                         ? "rgba(59, 130, 246, 0.25)"
                         : activeTab === "grammar"
-                        ? "rgba(16, 185, 129, 0.25)"
+                        ? "rgba(236, 72, 153, 0.25)"
                         : "rgba(245, 158, 11, 0.25)",
                   }}
                 >
@@ -1472,8 +1472,8 @@ export default function Profile2Page() {
                     {activeTab === "vocab"
                       ? "📘"
                       : activeTab === "grammar"
-                      ? "📗"
-                      : "📙"}
+                      ? "📌"
+                      : "⚡"}
                   </span>{" "}
                   {activeTab === "vocab"
                     ? "VOCABULARY"
@@ -1499,7 +1499,7 @@ export default function Profile2Page() {
                 </div>
               </div>
 
-              {/* Vocabulary Overview */}
+              {/* Overview */}
               <div>
                 <h3 className="block-title">
                   {activeTab === "vocab"
@@ -1511,11 +1511,19 @@ export default function Profile2Page() {
                 <div className="chart-legend">
                   <span>
                     <span className="legend-dot" style={{ background: "#3b82f6" }}></span>
-                    Words Reviewed
+                    {activeTab === "vocab"
+                      ? "Words Reviewed"
+                      : activeTab === "grammar"
+                      ? "Grammar Points Reviewed"
+                      : "Forms Reviewed"}
                   </span>
                   <span>
                     <span className="legend-dot" style={{ background: "#a855f7" }}></span>
-                    New Words Learned
+                    {activeTab === "vocab"
+                      ? "New Words Learned"
+                      : activeTab === "grammar"
+                      ? "New Grammar Points"
+                      : "New Forms Learned"}
                   </span>
                   <span>
                     <span className="legend-dot" style={{ background: "#10b981" }}></span>
@@ -1605,7 +1613,7 @@ export default function Profile2Page() {
                       );
                     })}
 
-                    {/* 1. Words Reviewed (Blue Line & Dots) */}
+                    {/* 1. Reviewed Series (Blue Line & Dots) */}
                     <polyline
                       points={vocabReviewed
                         .map((v, i) => {
@@ -1626,7 +1634,7 @@ export default function Profile2Page() {
                       );
                     })}
 
-                    {/* 2. New Words Learned (Purple Dashed Line & Dots) */}
+                    {/* 2. Learned Series (Purple Dashed Line & Dots) */}
                     <polyline
                       points={vocabLearned
                         .map((v, i) => {
@@ -1648,7 +1656,7 @@ export default function Profile2Page() {
                       );
                     })}
 
-                    {/* 3. Accuracy % (Green Line & Dots) */}
+                    {/* 3. Accuracy % Series (Green Line & Dots) */}
                     <polyline
                       points={vocabAccuracy
                         .map((v, i) => {
@@ -1701,16 +1709,29 @@ export default function Profile2Page() {
                       />
                     )}
 
-                    {/* Hover Tooltip Card (Gambar 2 User 100% Exact!) */}
+                    {/* Hover Tooltip Card (Gambar Screenshot User 100% Exact!) */}
                     {hoveredVocabIdx !== null && (() => {
                       const hoverX = 60 + (hoveredVocabIdx * 880) / (vocabDays.length - 1);
-                      const ttWidth = 160;
+                      const ttWidth = 190;
                       const ttHeight = 90;
-                      let ttX = hoverX - 80;
+                      let ttX = hoverX - 95;
                       if (ttX < 55) ttX = 55;
                       if (ttX + ttWidth > 940) ttX = 940 - ttWidth;
                       const ttY = 130;
                       const dateStr = vocabDays[hoveredVocabIdx];
+
+                      const lbl1 =
+                        activeTab === "vocab"
+                          ? "Words Reviewed"
+                          : activeTab === "grammar"
+                          ? "Grammar Points Reviewed"
+                          : "Forms Reviewed";
+                      const lbl2 =
+                        activeTab === "vocab"
+                          ? "New Words Learned"
+                          : activeTab === "grammar"
+                          ? "New Grammar Points"
+                          : "New Forms Learned";
 
                       return (
                         <g transform={`translate(${ttX}, ${ttY})`}>
@@ -1736,19 +1757,19 @@ export default function Profile2Page() {
                           >
                             {dateStr}
                           </text>
-                          {/* Row 1: Words Reviewed */}
+                          {/* Row 1 */}
                           <rect x="12" y="32" width="10" height="10" rx="2" fill="#3b82f6" />
                           <text x="28" y="41" fill="#e2e8f0" fontSize="11" fontWeight="600">
-                            Words Reviewed: {vocabReviewed[hoveredVocabIdx]}
+                            {lbl1}: {vocabReviewed[hoveredVocabIdx]}
                           </text>
 
-                          {/* Row 2: New Words Learned */}
+                          {/* Row 2 */}
                           <rect x="12" y="49" width="10" height="10" rx="2" fill="#a855f7" />
                           <text x="28" y="58" fill="#e2e8f0" fontSize="11" fontWeight="600">
-                            New Words Learned: {vocabLearned[hoveredVocabIdx]}
+                            {lbl2}: {vocabLearned[hoveredVocabIdx]}
                           </text>
 
-                          {/* Row 3: Accuracy % */}
+                          {/* Row 3 */}
                           <rect x="12" y="66" width="10" height="10" rx="2" fill="#10b981" />
                           <text x="28" y="75" fill="#e2e8f0" fontSize="11" fontWeight="600">
                             Accuracy %: {vocabAccuracy[hoveredVocabIdx]}
@@ -1791,24 +1812,48 @@ export default function Profile2Page() {
                 </div>
               </div>
 
-              {/* Words You Struggle With */}
+              {/* Struggle Section */}
               <div>
                 <h3 className="block-title">
                   {activeTab === "vocab"
                     ? "Words You Struggle With"
                     : activeTab === "grammar"
-                    ? "Grammar Items You Struggle With"
+                    ? "Grammar Points You Struggle With"
                     : "Conjugation Items You Struggle With"}
                 </h3>
                 <div className="struggle-table">
-                  <div className="table-head">
-                    <div>Word</div>
-                    <div>Reading</div>
-                    <div>Meaning</div>
-                    <div style={{ textAlign: "right" }}>Accuracy</div>
-                  </div>
+                  {activeTab === "grammar" ? (
+                    <div
+                      className="table-head"
+                      style={{ gridTemplateColumns: "1.5fr 2fr 1fr" }}
+                    >
+                      <div>Grammar Point</div>
+                      <div>Meaning</div>
+                      <div style={{ textAlign: "right" }}>Accuracy</div>
+                    </div>
+                  ) : activeTab === "conj" ? (
+                    <div
+                      className="table-head"
+                      style={{ gridTemplateColumns: "1.5fr 2fr 1fr" }}
+                    >
+                      <div>Form</div>
+                      <div>Rule</div>
+                      <div style={{ textAlign: "right" }}>Accuracy</div>
+                    </div>
+                  ) : (
+                    <div className="table-head">
+                      <div>Word</div>
+                      <div>Reading</div>
+                      <div>Meaning</div>
+                      <div style={{ textAlign: "right" }}>Accuracy</div>
+                    </div>
+                  )}
                   <div className="table-empty">
-                    No struggling {activeTab === "vocab" ? "words" : "items"} - great job!
+                    {activeTab === "vocab"
+                      ? "No struggling words - great job!"
+                      : activeTab === "grammar"
+                      ? "No struggling grammar points - great job!"
+                      : "No struggling conjugation items - great job!"}
                   </div>
                 </div>
               </div>
@@ -1824,7 +1869,7 @@ export default function Profile2Page() {
                 style={{ textDecoration: "none" }}
               >
                 <div className="view-link">
-                  View {activeTab === "vocab" ? "Vocabulary" : activeTab} progress →
+                  View {activeTab === "vocab" ? "Vocabulary" : activeTab === "grammar" ? "Grammar" : "Conjugation"} progress →
                 </div>
               </Link>
             </VocabPanel>
