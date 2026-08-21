@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
@@ -28,6 +28,10 @@ const PageWrapper = styled.div`
   font-family: var(--p2-font-ui);
   padding: 1.25rem 1.5rem 5rem 1.5rem;
   animation: ${fadeIn} 0.3s ease-out;
+
+  a, a:hover, a:focus, a:visited {
+    text-decoration: none !important;
+  }
 
   @media (max-width: 900px) {
     padding: 0.75rem 0.75rem 6.5rem 0.75rem;
@@ -393,23 +397,30 @@ const StartHereCard = styled.div`
     align-items: center;
     gap: 5px;
     white-space: nowrap;
+    text-decoration: none !important;
     transition: opacity 0.15s ease;
 
     &:hover {
       opacity: 0.9;
+      text-decoration: none !important;
     }
   }
 `;
 
-/* Stat Row Grid */
+/* Stat Row Grid (Gambar 1 - Ringkas, Cool, & Compact) */
 const StatRowGrid = styled(Card)`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   text-align: center;
-  padding: 14px 8px;
+  padding: 14px 6px;
+  width: 100%;
 
   .stat-item {
-    padding: 4px 4px;
+    padding: 4px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   .stat-item + .stat-item {
@@ -425,7 +436,7 @@ const StatRowGrid = styled(Card)`
   }
 
   .stat-value {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
     font-weight: 900;
     color: var(--foreground);
     margin: 4px 0 2px;
@@ -435,11 +446,12 @@ const StatRowGrid = styled(Card)`
     gap: 4px;
 
     .emoji {
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
 
     &.jp {
       font-family: var(--p2-font-jp);
+      color: #ec4899;
     }
   }
 
@@ -450,24 +462,19 @@ const StatRowGrid = styled(Card)`
   }
 
   @media (max-width: 560px) {
-    grid-template-columns: 1fr;
-    text-align: left;
+    padding: 12px 4px;
 
-    .stat-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 4px;
-    }
-
-    .stat-item + .stat-item {
-      border-left: none;
-      border-top: 1px solid var(--border);
+    .stat-label {
+      font-size: 9.5px;
     }
 
     .stat-value {
-      margin: 0;
       font-size: 1.2rem;
+      margin: 3px 0 1px;
+    }
+
+    .stat-sub {
+      font-size: 10px;
     }
   }
 `;
@@ -773,7 +780,16 @@ const KanaPanel = styled(Card)`
   .chart-wrap {
     background: var(--surface);
     border-radius: 12px;
-    overflow-x: auto;
+    overflow: hidden;
+    width: 100%;
+    padding: 6px 0;
+
+    svg {
+      width: 100%;
+      min-width: 100%;
+      height: auto;
+      display: block;
+    }
   }
 
   .chart-legend {
@@ -801,10 +817,12 @@ const KanaPanel = styled(Card)`
     font-weight: 800;
     font-size: 0.88rem;
     cursor: pointer;
+    text-decoration: none !important;
     transition: opacity 0.15s ease;
 
     &:hover {
       opacity: 0.8;
+      text-decoration: none !important;
     }
   }
 `;
@@ -940,7 +958,7 @@ export default function Profile2Page() {
                   <div className="start-title">Practice Kana</div>
                 </div>
               </div>
-              <Link href="/kana">
+              <Link href="/kana" style={{ textDecoration: "none" }}>
                 <button className="btn-go">Go →</button>
               </Link>
             </div>
@@ -1134,28 +1152,29 @@ export default function Profile2Page() {
               <div className="chart-wrap">
                 <svg
                   width="100%"
-                  height="300"
-                  viewBox="0 0 1000 300"
+                  height="330"
+                  viewBox="0 0 1000 330"
                   preserveAspectRatio="xMidYMid meet"
                 >
                   {/* Grid Lines */}
                   {[0, 1, 2, 3, 4, 5].map((g) => {
-                    const y = 20 + 240 - (g / 5) * 240;
+                    const y = 25 + 240 - (g / 5) * 240;
                     return (
                       <g key={g}>
                         <line
-                          x1="50"
-                          x2="950"
+                          x1="55"
+                          x2="940"
                           y1={y}
                           y2={y}
                           stroke="var(--border)"
-                          strokeWidth="1"
+                          strokeWidth="1.2"
                         />
                         <text
-                          x="40"
-                          y={y + 4}
+                          x="45"
+                          y={y + 5}
                           textAnchor="end"
-                          fontSize="12"
+                          fontSize="14"
+                          fontWeight="800"
                           fill="var(--text-secondary)"
                         >
                           {g.toFixed(1)}
@@ -1164,16 +1183,17 @@ export default function Profile2Page() {
                     );
                   })}
 
-                  {/* X Axis Labels */}
+                  {/* X Axis Labels (All 7 Days) */}
                   {chartDays.map((d, i) => {
-                    const x = 50 + (i * 900) / (chartDays.length - 1);
+                    const x = 60 + (i * 880) / (chartDays.length - 1);
                     return (
                       <text
                         key={d}
                         x={x}
-                        y="288"
+                        y="300"
                         textAnchor="middle"
-                        fontSize="12"
+                        fontSize="14"
+                        fontWeight="800"
                         fill="var(--text-secondary)"
                       >
                         {d}
@@ -1183,7 +1203,7 @@ export default function Profile2Page() {
 
                   {/* Accuracy Area Polygon (Green highlight on Aug 18) */}
                   <polygon
-                    points="650,260 650,20 725,20 800,20 800,260"
+                    points="646,265 646,25 793,25 793,265"
                     fill="rgba(16, 185, 129, 0.35)"
                   />
 
@@ -1191,34 +1211,35 @@ export default function Profile2Page() {
                   <polyline
                     points={chartAttempts
                       .map((v, i) => {
-                        const x = 50 + (i * 900) / (chartDays.length - 1);
-                        const y = 20 + 240 - (v / 5) * 240;
+                        const x = 60 + (i * 880) / (chartDays.length - 1);
+                        const y = 25 + 240 - (v / 5) * 240;
                         return `${x},${y}`;
                       })
                       .join(" ")}
                     fill="none"
                     stroke="#8b7cff"
-                    strokeWidth="3"
+                    strokeWidth="4"
                   />
 
                   {chartAttempts.map((v, i) => {
-                    const x = 50 + (i * 900) / (chartDays.length - 1);
-                    const y = 20 + 240 - (v / 5) * 240;
+                    const x = 60 + (i * 880) / (chartDays.length - 1);
+                    const y = 25 + 240 - (v / 5) * 240;
                     return (
-                      <circle key={i} cx={x} cy={y} r="5" fill="#8b7cff" />
+                      <circle key={i} cx={x} cy={y} r="7" fill="#8b7cff" />
                     );
                   })}
 
                   {/* Right Axis Accuracy % */}
                   {[0, 20, 40, 60, 80, 100].map((p) => {
-                    const y = 20 + 240 - (p / 100) * 240;
+                    const y = 25 + 240 - (p / 100) * 240;
                     return (
                       <text
                         key={p}
-                        x="960"
-                        y={y + 4}
+                        x="950"
+                        y={y + 5}
                         textAnchor="start"
-                        fontSize="11"
+                        fontSize="13"
+                        fontWeight="800"
                         fill="var(--text-secondary)"
                       >
                         {p}%
@@ -1229,7 +1250,7 @@ export default function Profile2Page() {
               </div>
             </div>
 
-            <Link href="/kana">
+            <Link href="/kana" style={{ textDecoration: "none" }}>
               <div className="view-link">View Kana progress →</div>
             </Link>
           </KanaPanel>
