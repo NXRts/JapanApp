@@ -54,6 +54,11 @@ const Card = styled.div`
   border-radius: 16px;
   padding: 1.25rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 560px) {
+    padding: 1rem;
+    border-radius: 14px;
+  }
 `;
 
 /* ─── SIDEBAR COMPONENTS ─────────────────────────────────────────────────── */
@@ -64,8 +69,8 @@ const Sidebar = styled.aside`
   width: 100%;
   min-width: 0;
 
-  @media (max-width: 980px) {
-    order: 2;
+  @media (max-width: 900px) {
+    order: 1;
   }
 `;
 
@@ -77,19 +82,19 @@ const ProfileCard = styled(Card)`
 const ProfileTop = styled.div`
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 `;
 
 const ProfileAvatar = styled.div`
-  width: 60px;
-  height: 60px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
   border: 2px solid var(--primary);
   background: radial-gradient(circle at 30% 30%, rgba(var(--primary-rgb, 79, 70, 229), 0.3), rgba(var(--primary-rgb, 79, 70, 229), 0.08));
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.7rem;
+  font-size: 1.75rem;
   flex-shrink: 0;
   box-shadow: 0 4px 14px rgba(var(--primary-rgb, 79, 70, 229), 0.2);
 `;
@@ -98,9 +103,10 @@ const ProfileName = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 1.15rem;
+  font-size: 1.18rem;
   font-weight: 800;
   color: var(--foreground);
+  margin-bottom: 6px;
 
   .crown {
     color: #f59e0b;
@@ -109,11 +115,10 @@ const ProfileName = styled.div`
 `;
 
 const ProfileMeta = styled.div`
-  margin-top: 4px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  font-size: 0.82rem;
+  gap: 6px;
+  font-size: 0.85rem;
   color: var(--text-secondary);
   font-weight: 500;
 
@@ -134,6 +139,18 @@ const SectionLabel = styled.div`
 /* Heatmap Grid */
 const HeatmapWrap = styled.div`
   margin-top: 1.25rem;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(var(--foreground-rgb, 255, 255, 255), 0.15);
+    border-radius: 4px;
+  }
 `;
 
 const HeatmapMonths = styled.div`
@@ -144,6 +161,7 @@ const HeatmapMonths = styled.div`
   margin-bottom: 6px;
   padding-left: 2px;
   font-weight: 600;
+  min-width: 260px;
 `;
 
 const HeatmapGrid = styled.div`
@@ -152,6 +170,7 @@ const HeatmapGrid = styled.div`
   grid-auto-rows: 9px;
   gap: 2px;
   width: 100%;
+  min-width: 260px;
 `;
 
 const HeatmapCell = styled.div<{ $level?: number }>`
@@ -207,56 +226,72 @@ const HeatmapFoot = styled.div`
 
 /* Discord Banner */
 const DiscordBanner = styled.div`
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  flex-direction: column;
+  gap: 12px;
   background: rgba(88, 101, 242, 0.12);
   border: 1px solid rgba(88, 101, 242, 0.25);
-  border-radius: 14px;
-  padding: 12px 14px;
+  border-radius: 16px;
+  padding: 14px 16px;
+  width: 100%;
 
-  .info {
+  .banner-header {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 12px;
+    padding-right: 20px;
   }
 
   .discord-icon {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 10px;
     background: #5865f2;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 18px;
     flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .banner-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
   }
 
   .title {
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 0.88rem;
+    font-weight: 800;
     color: var(--foreground);
+    line-height: 1.35;
+    white-space: normal;
+    word-break: break-word;
   }
 
   .sub {
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     color: var(--text-secondary);
-    margin-top: 2px;
+    line-height: 1.4;
+    white-space: normal;
+    word-break: break-word;
   }
 
   .btn-join {
     background: #5865f2;
     color: #fff;
     border: none;
-    padding: 6px 14px;
-    border-radius: 8px;
-    font-size: 0.78rem;
-    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 9px;
+    font-size: 0.82rem;
+    font-weight: 800;
     cursor: pointer;
-    white-space: nowrap;
     transition: opacity 0.15s ease;
+    width: 100%;
+    text-align: center;
 
     &:hover {
       opacity: 0.9;
@@ -264,19 +299,16 @@ const DiscordBanner = styled.div`
   }
 
   .close-x {
+    position: absolute;
+    top: 12px;
+    right: 14px;
     color: var(--text-secondary);
     font-size: 15px;
     cursor: pointer;
-    padding: 0 2px;
+    padding: 2px;
     &:hover {
       color: var(--foreground);
     }
-  }
-
-  @media (max-width: 560px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
   }
 `;
 
@@ -516,8 +548,8 @@ const MainContent = styled.div`
   width: 100%;
   min-width: 0;
 
-  @media (max-width: 980px) {
-    order: 1;
+  @media (max-width: 900px) {
+    order: 2;
   }
 `;
 
@@ -607,10 +639,22 @@ const TabsBar = styled.div`
   border-radius: 14px;
   padding: 5px;
   gap: 4px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 560px) {
+    padding: 4px;
+  }
 `;
 
 const TabItem = styled.div<{ $active: boolean }>`
   flex: 1;
+  min-width: 75px;
+  white-space: nowrap;
   text-align: center;
   padding: 10px 8px;
   border-radius: 10px;
@@ -623,6 +667,12 @@ const TabItem = styled.div<{ $active: boolean }>`
 
   &:hover {
     color: ${({ $active }) => ($active ? "#ffffff" : "var(--foreground)")};
+  }
+
+  @media (max-width: 560px) {
+    padding: 8px 6px;
+    font-size: 0.8rem;
+    min-width: 65px;
   }
 `;
 
@@ -856,24 +906,26 @@ export default function Profile2Page() {
           {/* Discord Community Banner */}
           {showDiscord && (
             <DiscordBanner>
-              <div className="info">
+              <span
+                className="close-x"
+                onClick={() => setShowDiscord(false)}
+                title="Close Banner"
+              >
+                ✕
+              </span>
+              <div className="banner-header">
                 <div className="discord-icon">🎮</div>
-                <div>
+                <div className="banner-text">
                   <div className="title">Join our New Discord Community</div>
                   <div className="sub">Get discounts, ask questions and more!</div>
                 </div>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <button
-                  className="btn-join"
-                  onClick={() => window.open("https://discord.gg", "_blank")}
-                >
-                  Join
-                </button>
-                <span className="close-x" onClick={() => setShowDiscord(false)}>
-                  ✕
-                </span>
-              </div>
+              <button
+                className="btn-join"
+                onClick={() => window.open("https://discord.gg", "_blank")}
+              >
+                Join Community
+              </button>
             </DiscordBanner>
           )}
 
