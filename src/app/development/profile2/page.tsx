@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
-import styled, { createGlobalStyle, keyframes } from "styled-components";
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 
 /* ─── Global Font & Variable Integrations for Native JapanApp Design System ─── */
 const Profile2GlobalStyle = createGlobalStyle`
@@ -29,7 +29,10 @@ const PageWrapper = styled.div`
   padding: 1.25rem 1.5rem 5rem 1.5rem;
   animation: ${fadeIn} 0.3s ease-out;
 
-  a, a:hover, a:focus, a:visited {
+  a,
+  a:hover,
+  a:focus,
+  a:visited {
     text-decoration: none !important;
   }
 
@@ -94,7 +97,11 @@ const ProfileAvatar = styled.div`
   height: 62px;
   border-radius: 50%;
   border: 2px solid var(--primary);
-  background: radial-gradient(circle at 30% 30%, rgba(var(--primary-rgb, 79, 70, 229), 0.3), rgba(var(--primary-rgb, 79, 70, 229), 0.08));
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(var(--primary-rgb, 79, 70, 229), 0.3),
+    rgba(var(--primary-rgb, 79, 70, 229), 0.08)
+  );
   display: flex;
   align-items: center;
   justify-content: center;
@@ -689,22 +696,21 @@ const KanaPanel = styled(Card)`
   gap: 22px;
 
   .kana-panel-head {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.82rem;
+    gap: 6px;
+    background: rgba(139, 124, 255, 0.12);
+    color: #8b7cff;
+    border: 1px solid rgba(139, 124, 255, 0.25);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.05em;
-    color: var(--primary);
   }
 
   .tag-ico {
-    width: 28px;
-    height: 20px;
-    border-radius: 4px;
-    background: rgba(var(--primary-rgb, 79, 70, 229), 0.15);
-    color: var(--primary);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     font-size: 11px;
@@ -1005,7 +1011,167 @@ const VocabPanel = styled(Card)`
   }
 `;
 
+/* ─── CONJUGATION PANEL COMPONENTS ────────────────────────────────────────── */
+const ConjPanel = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 
+  .conj-panel-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(20, 184, 166, 0.12);
+    color: #14b8a6;
+    border: 1px solid rgba(20, 184, 166, 0.25);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  .conj-grid-layout {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr;
+    gap: 32px;
+
+    @media (max-width: 992px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .conj-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media (max-width: 640px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .conj-card {
+    background: rgba(var(--foreground-rgb, 255, 255, 255), 0.025);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 96px;
+    transition: all 0.15s ease;
+
+    &:hover {
+      border-color: rgba(20, 184, 166, 0.4);
+      background: rgba(var(--foreground-rgb, 255, 255, 255), 0.04);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 6px;
+
+      .card-title {
+        font-size: 0.86rem;
+        font-weight: 800;
+        color: var(--foreground);
+        line-height: 1.25;
+      }
+
+      .card-arrow {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        opacity: 0.6;
+        flex-shrink: 0;
+      }
+    }
+
+    .card-sub {
+      font-size: 0.76rem;
+      color: var(--text-secondary);
+      margin-top: 10px;
+      font-weight: 500;
+    }
+
+    .progress-bar-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(var(--foreground-rgb, 255, 255, 255), 0.06);
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+
+      .progress-bar-fill {
+        height: 100%;
+        background: #14b8a6;
+        width: 0%;
+      }
+    }
+  }
+
+  .conj-sidebar-block {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    padding-top: 4px;
+
+    .side-section {
+      .side-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+      }
+
+      .accuracy-val {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: #8b7cff;
+        margin-top: 8px;
+      }
+
+      .accuracy-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #8b7cff;
+        margin-bottom: 4px;
+      }
+
+      .empty-last10 {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        opacity: 0.8;
+        padding: 40px 0;
+        text-align: center;
+      }
+    }
+  }
+
+  .view-link {
+    text-align: center;
+    margin-top: 8px;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 0.88rem;
+    cursor: pointer;
+    text-decoration: none !important;
+    transition: opacity 0.15s ease;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: none !important;
+    }
+  }
+`;
 
 /* ─── DATA & CONSTANTS ───────────────────────────────────────────────────── */
 const jlptData = [
@@ -1016,17 +1182,53 @@ const jlptData = [
   { level: "N1", total: 2938, vocab: 2694, grammar: 244 },
 ];
 
-const chartDays = ["Aug 13", "Aug 14", "Aug 15", "Aug 16", "Aug 17", "Aug 18", "Aug 19"];
+const chartDays = [
+  "Aug 13",
+  "Aug 14",
+  "Aug 15",
+  "Aug 16",
+  "Aug 17",
+  "Aug 18",
+  "Aug 19",
+];
 const chartAttempts = [0, 0, 0, 0, 0, 5, 0];
 
-const vocabDays = ["Aug 15", "Aug 16", "Aug 17", "Aug 18", "Aug 19", "Aug 20", "Aug 21"];
+const vocabDays = [
+  "Aug 15",
+  "Aug 16",
+  "Aug 17",
+  "Aug 18",
+  "Aug 19",
+  "Aug 20",
+  "Aug 21",
+];
 const vocabReviewed = [0, 0, 0, 0, 0, 0, 0];
 const vocabLearned = [0, 0, 0, 0, 0, 0, 0];
 const vocabAccuracy = [0, 0, 0, 0, 0, 0, 0];
 
+const conjForms = [
+  { id: "plain", title: "Plain / Dictionary", attempts: 0 },
+  { id: "polite", title: "Polite", attempts: 0 },
+  { id: "plain_neg", title: "Plain Negative", attempts: 0 },
+  { id: "plain_past", title: "Plain Past", attempts: 0 },
+  { id: "polite_past", title: "Polite Past", attempts: 0 },
+  { id: "polite_neg", title: "Polite Negative", attempts: 0 },
+  { id: "polite_past_neg", title: "Polite Past Negative", attempts: 0 },
+  { id: "plain_past_neg", title: "Plain Past Negative", attempts: 0 },
+  { id: "te_form", title: "Te-form", attempts: 0 },
+  { id: "progressive", title: "Progressive", attempts: 0 },
+  { id: "potential", title: "Potential (can do)", attempts: 0 },
+  { id: "passive", title: "Passive", attempts: 0 },
+  { id: "causative", title: "Causative (make/let do)", attempts: 0 },
+  { id: "volitional", title: "Volitional (let's)", attempts: 0 },
+  { id: "imperative", title: "Imperative (command)", attempts: 0 },
+];
+
 /* ─── MAIN PROFILE 2.0 PAGE COMPONENT ────────────────────────────────────── */
 export default function Profile2Page() {
-  const [activeTab, setActiveTab] = useState<"kana" | "vocab" | "grammar" | "conj">("kana");
+  const [activeTab, setActiveTab] = useState<
+    "kana" | "vocab" | "grammar" | "conj"
+  >("kana");
   const [showDiscord, setShowDiscord] = useState(true);
   const [jlptExpanded, setJlptExpanded] = useState(true);
   const [hoveredVocabIdx, setHoveredVocabIdx] = useState<number | null>(null);
@@ -1065,7 +1267,10 @@ export default function Profile2Page() {
               <ProfileAvatar>🌳</ProfileAvatar>
               <div>
                 <ProfileName>
-                  stjp225 <span className="crown" title="VIP Student">♛</span>
+                  stjp225{" "}
+                  <span className="crown" title="VIP Student">
+                    ♛
+                  </span>
                 </ProfileName>
                 <ProfileMeta>
                   <span>🕐 0m studied</span>
@@ -1087,11 +1292,17 @@ export default function Profile2Page() {
               </HeatmapMonths>
               <HeatmapGrid>
                 {heatmapCells.map((lvl: number, idx: number) => (
-                  <HeatmapCell key={idx} $level={lvl} title={`Activity level: ${lvl}`} />
+                  <HeatmapCell
+                    key={idx}
+                    $level={lvl}
+                    title={`Activity level: ${lvl}`}
+                  />
                 ))}
               </HeatmapGrid>
               <HeatmapFoot>
-                <span className="refresh-ico" title="Refresh Heatmap">↻</span>
+                <span className="refresh-ico" title="Refresh Heatmap">
+                  ↻
+                </span>
                 <div className="legend">
                   Less
                   <HeatmapCell $level={0} />
@@ -1119,7 +1330,9 @@ export default function Profile2Page() {
                 <div className="discord-icon">🎮</div>
                 <div className="banner-text">
                   <div className="title">Join our New Discord Community</div>
-                  <div className="sub">Get discounts, ask questions and more!</div>
+                  <div className="sub">
+                    Get discounts, ask questions and more!
+                  </div>
                 </div>
               </div>
               <button
@@ -1221,8 +1434,8 @@ export default function Profile2Page() {
           <MasterCard>
             <h2>Master Kanas First</h2>
             <p>
-              You need to master both Hiragana and Katakana before unlocking vocabulary
-              and grammar lessons.
+              You need to master both Hiragana and Katakana before unlocking
+              vocabulary and grammar lessons.
             </p>
 
             <div className="prog-row">
@@ -1283,7 +1496,7 @@ export default function Profile2Page() {
             <KanaPanel>
               <div>
                 <div className="kana-panel-head">
-                  <span className="tag-ico">Aあ</span> KANA
+                  <span className="tag-ico">あ</span> KANA
                 </div>
               </div>
 
@@ -1315,8 +1528,14 @@ export default function Profile2Page() {
 
               <div>
                 <h3 className="block-title">Stats by Type</h3>
-                <div style={{ color: "var(--text-secondary)", fontSize: "0.85rem" }}>
-                  Practice Hiragana & Katakana to see breakdown stats by vowel groups (A, I, U, E, O).
+                <div
+                  style={{
+                    color: "var(--text-secondary)",
+                    fontSize: "0.85rem",
+                  }}
+                >
+                  Practice Hiragana & Katakana to see breakdown stats by vowel
+                  groups (A, I, U, E, O).
                 </div>
               </div>
 
@@ -1324,11 +1543,17 @@ export default function Profile2Page() {
                 <h3 className="block-title">Practice Activity Over Time</h3>
                 <div className="chart-legend">
                   <span>
-                    <span className="legend-dot" style={{ background: "#8b7cff" }}></span>
+                    <span
+                      className="legend-dot"
+                      style={{ background: "#8b7cff" }}
+                    ></span>
                     Total Attempts
                   </span>
                   <span>
-                    <span className="legend-dot" style={{ background: "#10b981" }}></span>
+                    <span
+                      className="legend-dot"
+                      style={{ background: "#10b981" }}
+                    ></span>
                     Accuracy %
                   </span>
                 </div>
@@ -1441,45 +1666,28 @@ export default function Profile2Page() {
             </KanaPanel>
           )}
 
-          {/* Vocabulary / Grammar / Conjugation Panel */}
-          {(activeTab === "vocab" || activeTab === "grammar" || activeTab === "conj") && (
+          {/* Vocabulary / Grammar Panel */}
+          {(activeTab === "vocab" || activeTab === "grammar") && (
             <VocabPanel>
               <div>
                 <div
                   className="vocab-panel-head"
                   style={{
-                    color:
-                      activeTab === "vocab"
-                        ? "#3b82f6"
-                        : activeTab === "grammar"
-                        ? "#ec4899"
-                        : "#f59e0b",
+                    color: activeTab === "vocab" ? "#3b82f6" : "#ec4899",
                     background:
                       activeTab === "vocab"
                         ? "rgba(59, 130, 246, 0.12)"
-                        : activeTab === "grammar"
-                        ? "rgba(236, 72, 153, 0.12)"
-                        : "rgba(245, 158, 11, 0.12)",
+                        : "rgba(236, 72, 153, 0.12)",
                     borderColor:
                       activeTab === "vocab"
                         ? "rgba(59, 130, 246, 0.25)"
-                        : activeTab === "grammar"
-                        ? "rgba(236, 72, 153, 0.25)"
-                        : "rgba(245, 158, 11, 0.25)",
+                        : "rgba(236, 72, 153, 0.25)",
                   }}
                 >
                   <span className="tag-ico">
-                    {activeTab === "vocab"
-                      ? "📘"
-                      : activeTab === "grammar"
-                      ? "📌"
-                      : "⚡"}
+                    {activeTab === "vocab" ? "📘" : "📌"}
                   </span>{" "}
-                  {activeTab === "vocab"
-                    ? "VOCABULARY"
-                    : activeTab === "grammar"
-                    ? "GRAMMAR"
-                    : "CONJUGATION"}
+                  {activeTab === "vocab" ? "VOCABULARY" : "GRAMMAR"}
                 </div>
               </div>
 
@@ -1505,28 +1713,37 @@ export default function Profile2Page() {
                   {activeTab === "vocab"
                     ? "Vocabulary Overview"
                     : activeTab === "grammar"
-                    ? "Grammar Overview"
-                    : "Conjugation Overview"}
+                      ? "Grammar Overview"
+                      : "Conjugation Overview"}
                 </h3>
                 <div className="chart-legend">
                   <span>
-                    <span className="legend-dot" style={{ background: "#3b82f6" }}></span>
+                    <span
+                      className="legend-dot"
+                      style={{ background: "#3b82f6" }}
+                    ></span>
                     {activeTab === "vocab"
                       ? "Words Reviewed"
                       : activeTab === "grammar"
-                      ? "Grammar Points Reviewed"
-                      : "Forms Reviewed"}
+                        ? "Grammar Points Reviewed"
+                        : "Forms Reviewed"}
                   </span>
                   <span>
-                    <span className="legend-dot" style={{ background: "#a855f7" }}></span>
+                    <span
+                      className="legend-dot"
+                      style={{ background: "#a855f7" }}
+                    ></span>
                     {activeTab === "vocab"
                       ? "New Words Learned"
                       : activeTab === "grammar"
-                      ? "New Grammar Points"
-                      : "New Forms Learned"}
+                        ? "New Grammar Points"
+                        : "New Forms Learned"}
                   </span>
                   <span>
-                    <span className="legend-dot" style={{ background: "#10b981" }}></span>
+                    <span
+                      className="legend-dot"
+                      style={{ background: "#10b981" }}
+                    ></span>
                     Accuracy %
                   </span>
                 </div>
@@ -1592,7 +1809,7 @@ export default function Profile2Page() {
                             </text>
                           </g>
                         );
-                      }
+                      },
                     )}
 
                     {/* X Axis Labels */}
@@ -1630,7 +1847,13 @@ export default function Profile2Page() {
                       const x = 60 + (i * 880) / (vocabDays.length - 1);
                       const y = 25 + 240 - (v / 1.0) * 240;
                       return (
-                        <circle key={`rev-${i}`} cx={x} cy={y} r="6" fill="#3b82f6" />
+                        <circle
+                          key={`rev-${i}`}
+                          cx={x}
+                          cy={y}
+                          r="6"
+                          fill="#3b82f6"
+                        />
                       );
                     })}
 
@@ -1652,7 +1875,13 @@ export default function Profile2Page() {
                       const x = 60 + (i * 880) / (vocabDays.length - 1);
                       const y = 25 + 240 - (v / 1.0) * 240;
                       return (
-                        <circle key={`lrn-${i}`} cx={x} cy={y} r="5" fill="#a855f7" />
+                        <circle
+                          key={`lrn-${i}`}
+                          cx={x}
+                          cy={y}
+                          r="5"
+                          fill="#a855f7"
+                        />
                       );
                     })}
 
@@ -1673,7 +1902,13 @@ export default function Profile2Page() {
                       const x = 60 + (i * 880) / (vocabDays.length - 1);
                       const y = 25 + 240 - (v / 100) * 240;
                       return (
-                        <circle key={`acc-${i}`} cx={x} cy={y} r="5" fill="#10b981" />
+                        <circle
+                          key={`acc-${i}`}
+                          cx={x}
+                          cy={y}
+                          r="5"
+                          fill="#10b981"
+                        />
                       );
                     })}
 
@@ -1699,8 +1934,12 @@ export default function Profile2Page() {
                     {/* Active Hover Vertical Line Guide */}
                     {hoveredVocabIdx !== null && (
                       <line
-                        x1={60 + (hoveredVocabIdx * 880) / (vocabDays.length - 1)}
-                        x2={60 + (hoveredVocabIdx * 880) / (vocabDays.length - 1)}
+                        x1={
+                          60 + (hoveredVocabIdx * 880) / (vocabDays.length - 1)
+                        }
+                        x2={
+                          60 + (hoveredVocabIdx * 880) / (vocabDays.length - 1)
+                        }
                         y1="25"
                         y2="265"
                         stroke="rgba(255, 255, 255, 0.3)"
@@ -1710,101 +1949,143 @@ export default function Profile2Page() {
                     )}
 
                     {/* Hover Tooltip Card (Gambar Screenshot User 100% Exact!) */}
-                    {hoveredVocabIdx !== null && (() => {
-                      const hoverX = 60 + (hoveredVocabIdx * 880) / (vocabDays.length - 1);
-                      const ttWidth = 190;
-                      const ttHeight = 90;
-                      let ttX = hoverX - 95;
-                      if (ttX < 55) ttX = 55;
-                      if (ttX + ttWidth > 940) ttX = 940 - ttWidth;
-                      const ttY = 130;
-                      const dateStr = vocabDays[hoveredVocabIdx];
+                    {hoveredVocabIdx !== null &&
+                      (() => {
+                        const hoverX =
+                          60 + (hoveredVocabIdx * 880) / (vocabDays.length - 1);
+                        const ttWidth = 190;
+                        const ttHeight = 90;
+                        let ttX = hoverX - 95;
+                        if (ttX < 55) ttX = 55;
+                        if (ttX + ttWidth > 940) ttX = 940 - ttWidth;
+                        const ttY = 130;
+                        const dateStr = vocabDays[hoveredVocabIdx];
 
-                      const lbl1 =
-                        activeTab === "vocab"
-                          ? "Words Reviewed"
-                          : activeTab === "grammar"
-                          ? "Grammar Points Reviewed"
-                          : "Forms Reviewed";
-                      const lbl2 =
-                        activeTab === "vocab"
-                          ? "New Words Learned"
-                          : activeTab === "grammar"
-                          ? "New Grammar Points"
-                          : "New Forms Learned";
+                        const lbl1 =
+                          activeTab === "vocab"
+                            ? "Words Reviewed"
+                            : "Grammar Points Reviewed";
+                        const lbl2 =
+                          activeTab === "vocab"
+                            ? "New Words Learned"
+                            : "New Grammar Points";
 
-                      return (
-                        <g transform={`translate(${ttX}, ${ttY})`}>
-                          {/* Tooltip Background Card */}
-                          <rect
-                            x="0"
-                            y="0"
-                            width={ttWidth}
-                            height={ttHeight}
-                            rx="8"
-                            fill="#0b0f19"
-                            stroke="rgba(255, 255, 255, 0.2)"
-                            strokeWidth="1.2"
-                            filter="drop-shadow(0px 8px 16px rgba(0,0,0,0.65))"
-                          />
-                          {/* Date Header */}
-                          <text
-                            x="12"
-                            y="22"
-                            fill="#ffffff"
-                            fontSize="13"
-                            fontWeight="800"
-                          >
-                            {dateStr}
-                          </text>
-                          {/* Row 1 */}
-                          <rect x="12" y="32" width="10" height="10" rx="2" fill="#3b82f6" />
-                          <text x="28" y="41" fill="#e2e8f0" fontSize="11" fontWeight="600">
-                            {lbl1}: {vocabReviewed[hoveredVocabIdx]}
-                          </text>
+                        return (
+                          <g transform={`translate(${ttX}, ${ttY})`}>
+                            {/* Tooltip Background Card */}
+                            <rect
+                              x="0"
+                              y="0"
+                              width={ttWidth}
+                              height={ttHeight}
+                              rx="8"
+                              fill="#0b0f19"
+                              stroke="rgba(255, 255, 255, 0.2)"
+                              strokeWidth="1.2"
+                              filter="drop-shadow(0px 8px 16px rgba(0,0,0,0.65))"
+                            />
+                            {/* Date Header */}
+                            <text
+                              x="12"
+                              y="22"
+                              fill="#ffffff"
+                              fontSize="13"
+                              fontWeight="800"
+                            >
+                              {dateStr}
+                            </text>
+                            {/* Row 1 */}
+                            <rect
+                              x="12"
+                              y="32"
+                              width="10"
+                              height="10"
+                              rx="2"
+                              fill="#3b82f6"
+                            />
+                            <text
+                              x="28"
+                              y="41"
+                              fill="#e2e8f0"
+                              fontSize="11"
+                              fontWeight="600"
+                            >
+                              {lbl1}: {vocabReviewed[hoveredVocabIdx]}
+                            </text>
 
-                          {/* Row 2 */}
-                          <rect x="12" y="49" width="10" height="10" rx="2" fill="#a855f7" />
-                          <text x="28" y="58" fill="#e2e8f0" fontSize="11" fontWeight="600">
-                            {lbl2}: {vocabLearned[hoveredVocabIdx]}
-                          </text>
+                            {/* Row 2 */}
+                            <rect
+                              x="12"
+                              y="49"
+                              width="10"
+                              height="10"
+                              rx="2"
+                              fill="#a855f7"
+                            />
+                            <text
+                              x="28"
+                              y="58"
+                              fill="#e2e8f0"
+                              fontSize="11"
+                              fontWeight="600"
+                            >
+                              {lbl2}: {vocabLearned[hoveredVocabIdx]}
+                            </text>
 
-                          {/* Row 3 */}
-                          <rect x="12" y="66" width="10" height="10" rx="2" fill="#10b981" />
-                          <text x="28" y="75" fill="#e2e8f0" fontSize="11" fontWeight="600">
-                            Accuracy %: {vocabAccuracy[hoveredVocabIdx]}
-                          </text>
-                        </g>
-                      );
-                    })()}
+                            {/* Row 3 */}
+                            <rect
+                              x="12"
+                              y="66"
+                              width="10"
+                              height="10"
+                              rx="2"
+                              fill="#10b981"
+                            />
+                            <text
+                              x="28"
+                              y="75"
+                              fill="#e2e8f0"
+                              fontSize="11"
+                              fontWeight="600"
+                            >
+                              Accuracy %: {vocabAccuracy[hoveredVocabIdx]}
+                            </text>
+                          </g>
+                        );
+                      })()}
 
                     {/* Right Axis Accuracy % */}
-                    {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((p, idx) => {
-                      const y = 25 + 240 - (idx / 10) * 240;
-                      return (
-                        <text
-                          key={p}
-                          x="950"
-                          y={y + 4}
-                          textAnchor="start"
-                          fontSize="11"
-                          fontWeight="600"
-                          fill="var(--text-secondary)"
-                        >
-                          {p}%
-                        </text>
-                      );
-                    })}
+                    {[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map(
+                      (p, idx) => {
+                        const y = 25 + 240 - (idx / 10) * 240;
+                        return (
+                          <text
+                            key={p}
+                            x="950"
+                            y={y + 4}
+                            textAnchor="start"
+                            fontSize="11"
+                            fontWeight="600"
+                            fill="var(--text-secondary)"
+                          >
+                            {p}%
+                          </text>
+                        );
+                      },
+                    )}
                   </svg>
                 </div>
               </div>
 
               {/* Knowledge Distribution by JLPT Level */}
               <div>
-                <h3 className="block-title">Knowledge Distribution by JLPT Level</h3>
+                <h3 className="block-title">
+                  Knowledge Distribution by JLPT Level
+                </h3>
                 <div className="empty-distribution-box">
                   <div className="main-txt">
-                    No {activeTab === "vocab" ? "vocabulary" : activeTab} data yet
+                    No {activeTab === "vocab" ? "vocabulary" : activeTab} data
+                    yet
                   </div>
                   <div className="sub-txt">
                     Start learning to see your knowledge distribution
@@ -1817,9 +2098,7 @@ export default function Profile2Page() {
                 <h3 className="block-title">
                   {activeTab === "vocab"
                     ? "Words You Struggle With"
-                    : activeTab === "grammar"
-                    ? "Grammar Points You Struggle With"
-                    : "Conjugation Items You Struggle With"}
+                    : "Grammar Points You Struggle With"}
                 </h3>
                 <div className="struggle-table">
                   {activeTab === "grammar" ? (
@@ -1829,15 +2108,6 @@ export default function Profile2Page() {
                     >
                       <div>Grammar Point</div>
                       <div>Meaning</div>
-                      <div style={{ textAlign: "right" }}>Accuracy</div>
-                    </div>
-                  ) : activeTab === "conj" ? (
-                    <div
-                      className="table-head"
-                      style={{ gridTemplateColumns: "1.5fr 2fr 1fr" }}
-                    >
-                      <div>Form</div>
-                      <div>Rule</div>
                       <div style={{ textAlign: "right" }}>Accuracy</div>
                     </div>
                   ) : (
@@ -1851,33 +2121,88 @@ export default function Profile2Page() {
                   <div className="table-empty">
                     {activeTab === "vocab"
                       ? "No struggling words - great job!"
-                      : activeTab === "grammar"
-                      ? "No struggling grammar points - great job!"
-                      : "No struggling conjugation items - great job!"}
+                      : "No struggling grammar points - great job!"}
                   </div>
                 </div>
               </div>
 
               <Link
-                href={
-                  activeTab === "vocab"
-                    ? "/vocabulary"
-                    : activeTab === "grammar"
-                    ? "/grammar"
-                    : "/conjugation"
-                }
+                href={activeTab === "vocab" ? "/vocabulary" : "/grammar"}
                 style={{ textDecoration: "none" }}
               >
                 <div className="view-link">
-                  View {activeTab === "vocab" ? "Vocabulary" : activeTab === "grammar" ? "Grammar" : "Conjugation"} progress →
+                  View {activeTab === "vocab" ? "Vocabulary" : "Grammar"} progress →
                 </div>
               </Link>
             </VocabPanel>
           )}
+
+          {/* Conjugation Panel (Rombak Presisi Gambar 1) */}
+          {activeTab === "conj" && (
+            <ConjPanel>
+              <div>
+                <div className="conj-panel-head">
+                  <span className="tag-ico">🔄</span> CONJUGATION
+                </div>
+              </div>
+
+              <div className="conj-grid-layout">
+                {/* Left Column: Progress by form */}
+                <div>
+                  <h3 className="block-title">Progress by form</h3>
+                  <div className="conj-cards-grid">
+                    {conjForms.map((item) => (
+                      <Link
+                        key={item.id}
+                        href={`/conjugation?form=${item.id}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <div className="conj-card">
+                          <div className="card-top">
+                            <span className="card-title">{item.title}</span>
+                            <span className="card-arrow">→</span>
+                          </div>
+                          <div className="card-sub">
+                            {item.attempts === 0
+                              ? "No attempts yet"
+                              : `${item.attempts} attempts`}
+                          </div>
+                          <div className="progress-bar-track">
+                            <div
+                              className="progress-bar-fill"
+                              style={{
+                                width: item.attempts > 0 ? "50%" : "0%",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right Column: Accuracy & Last 10 */}
+                <div className="conj-sidebar-block">
+                  <div className="side-section">
+                    <div className="side-label">Accuracy</div>
+                    <div className="accuracy-dot" />
+                    <div className="accuracy-val">0.0%</div>
+                  </div>
+
+                  <div className="side-section">
+                    <div className="side-label">Last 10</div>
+                    <div className="empty-last10">No recent activity yet.</div>
+                  </div>
+                </div>
+              </div>
+
+              <Link href="/conjugation" style={{ textDecoration: "none" }}>
+                <div className="view-link">View Conjugation progress →</div>
+              </Link>
+            </ConjPanel>
+          )}
         </MainContent>
       </LayoutGrid>
-
-
     </PageWrapper>
   );
 }
