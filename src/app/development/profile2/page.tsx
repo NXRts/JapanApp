@@ -1422,6 +1422,68 @@ export default function Profile2Page() {
     return `${totalMinutes}m studied`;
   }, [progress.activityLog, progress.quizHistory, progress.exp]);
 
+  // Real Kana stats from progress.mastery (total reviews & most practiced Kana char)
+  const kanaStats = useMemo(() => {
+    const entries = Object.entries(progress.mastery || {});
+    const totalReviews = entries.reduce(
+      (acc, [_, item]) => acc + (item.correct || 0) + (item.incorrect || 0),
+      0,
+    );
+
+    let topChar = "あ";
+    let maxAttempts = -1;
+    entries.forEach(([char, item]) => {
+      const attempts = (item.correct || 0) + (item.incorrect || 0);
+      if (attempts > maxAttempts) {
+        maxAttempts = attempts;
+        topChar = char;
+      }
+    });
+
+    return {
+      reviews: totalReviews > 0 ? totalReviews : 5, // Fallback demo value if brand new user
+      fav: topChar,
+    };
+  }, [progress.mastery]);
+
+  // Real Vocab stats from quizHistory & completedExercises
+  const vocabStats = useMemo(() => {
+    const vocabQuizzes =
+      progress.quizHistory?.filter(
+        (q) => q.type === "vocab" || q.type === "vocabulary",
+      ) || [];
+    const totalVocabReviewed = vocabQuizzes.reduce(
+      (acc, q) => acc + (q.total || 0),
+      0,
+    );
+    return {
+      reviewed: totalVocabReviewed,
+    };
+  }, [progress.quizHistory]);
+
+  // Real Grammar stats
+  const grammarStats = useMemo(() => {
+    const count = progress.completedGrammarSections?.length || 0;
+    return {
+      points: count,
+    };
+  }, [progress.completedGrammarSections]);
+
+  // Real Conjugation stats
+  const conjStats = useMemo(() => {
+    const conjQuizzes =
+      progress.quizHistory?.filter(
+        (q) => q.type === "conj" || q.type === "conjugation",
+      ) || [];
+    const totalAttempts = conjQuizzes.reduce(
+      (acc, q) => acc + (q.total || 0),
+      0,
+    );
+    return {
+      attempts: totalAttempts,
+    };
+  }, [progress.quizHistory]);
+
   // Refresh & synchronize handler
   const handleRefreshHeatmap = () => {
     setIsRefreshing(true);
@@ -1604,26 +1666,92 @@ export default function Profile2Page() {
 
           {/* Stat Counter Grid */}
           <StatRowGrid>
+            {/* Column 1: STREAK */}
             <div className="stat-item">
               <div className="stat-label">Streak</div>
               <div className="stat-value">
-                1 <span className="emoji">🔥</span>
+                {progress.streak || 0} <span className="emoji">🔥</span>
               </div>
-              <div className="stat-sub">day</div>
+              <div className="stat-sub">
+                {progress.streak === 1 ? "day" : "days"}
+              </div>
             </div>
+
+            {/* Column 2: REVIEWS / ATTEMPTS BY ACTIVE TAB */}
             <div className="stat-item">
-              <div className="stat-label">Kanas</div>
-              <div className="stat-value">
-                5 <span className="emoji">✏️</span>
+              <div className="stat-label">
+                {activeTab === "kana"
+                  ? "Kanas"
+                  : activeTab === "vocab"
+                  ? "Vocab"
+                  : activeTab === "grammar"
+                  ? "Grammar"
+                  : "Conj"}
               </div>
-              <div className="stat-sub">reviews</div>
+              <div className="stat-value">
+                {activeTab === "kana"
+                  ? kanaStats.reviews
+                  : activeTab === "vocab"
+                  ? vocabStats.reviewed
+                  : activeTab === "grammar"
+                  ? grammarStats.points
+                  : conjStats.attempts}{" "}
+                <span className="emoji">
+                  {activeTab === "kana"
+                    ? "✏️"
+                    : activeTab === "vocab"
+                    ? "📚"
+                    : activeTab === "grammar"
+                    ? "📌"
+                    : "🔄"}
+                </span>
+              </div>
+              <div className="stat-sub">
+                {activeTab === "kana"
+                  ? "reviews"
+                  : activeTab === "vocab"
+                  ? "reviewed"
+                  : activeTab === "grammar"
+                  ? "points"
+                  : "attempts"}
+              </div>
             </div>
+
+            {/* Column 3: FAVORITE CATEGORY / KANA CHAR BY ACTIVE TAB */}
             <div className="stat-item">
               <div className="stat-label">Favorite</div>
               <div className="stat-value jp">
-                あ <span className="emoji">⭐</span>
+                <span
+                  style={{
+                    color:
+                      activeTab === "kana"
+                        ? "#ec4899"
+                        : activeTab === "vocab"
+                        ? "#3b82f6"
+                        : activeTab === "grammar"
+                        ? "#ec4899"
+                        : "#14b8a6",
+                  }}
+                >
+                  {activeTab === "kana"
+                    ? kanaStats.fav
+                    : activeTab === "vocab"
+                    ? "語"
+                    : activeTab === "grammar"
+                    ? "文"
+                    : "活"}
+                </span>{" "}
+                <span className="emoji">⭐</span>
               </div>
-              <div className="stat-sub">kana</div>
+              <div className="stat-sub">
+                {activeTab === "kana"
+                  ? "kana"
+                  : activeTab === "vocab"
+                  ? "vocab"
+                  : activeTab === "grammar"
+                  ? "grammar"
+                  : "conj"}
+              </div>
             </div>
           </StatRowGrid>
 
