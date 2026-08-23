@@ -1261,6 +1261,22 @@ const ConjPanel = styled(Card)`
 `;
 
 /* ─── DATA & CONSTANTS ───────────────────────────────────────────────────── */
+const HIRAGANA_CHARS = [
+  "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
+  "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と",
+  "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ",
+  "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "ら", "り",
+  "る", "れ", "ろ", "わ", "を", "ん"
+];
+
+const KATAKANA_CHARS = [
+  "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ",
+  "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト",
+  "ナ", "ニ", "ヌ", "ネ", "ノ", "ハ", "ヒ", "フ", "ヘ", "ホ",
+  "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ラ", "リ",
+  "ル", "レ", "ロ", "ワ", "ヲ", "ン"
+];
+
 const jlptData = [
   { level: "N5", total: 843, vocab: 697, grammar: 146 },
   { level: "N4", total: 773, vocab: 653, grammar: 120 },
@@ -1483,6 +1499,87 @@ export default function Profile2Page() {
       attempts: totalAttempts,
     };
   }, [progress.quizHistory]);
+
+  // Dynamic JLPT & Basic Level Progress calculation (Basic, N5 - N1)
+  const realJlptData = useMemo(() => {
+    const mastery = progress.mastery || {};
+    const masteryKeys = Object.keys(mastery);
+    const completedGrammar = progress.completedGrammarSections?.length || 0;
+    const completedExercises = progress.completedExercises?.length || 0;
+
+    // Count Hiragana & Katakana mastered
+    const hiraganaDone = HIRAGANA_CHARS.filter(
+      (c) => (mastery[c]?.correct || 0) > 0 || (mastery[c]?.incorrect || 0) > 0,
+    ).length;
+
+    const katakanaDone = KATAKANA_CHARS.filter(
+      (c) => (mastery[c]?.correct || 0) > 0 || (mastery[c]?.incorrect || 0) > 0,
+    ).length;
+
+    const basicTotalDone = Math.min(92, hiraganaDone + katakanaDone);
+    const basicPct = Math.min(100, Math.round((basicTotalDone / 92) * 100));
+
+    const basicRow = {
+      level: "Basic",
+      total: 92,
+      isBasic: true,
+      subLeftLabel: "Hiragana",
+      subLeftDone: hiraganaDone,
+      subLeftTotal: 46,
+      subRightLabel: "Katakana",
+      subRightDone: katakanaDone,
+      subRightTotal: 46,
+      totalDone: basicTotalDone,
+      pct: basicPct,
+    };
+
+    const jlptRows = jlptData.map((d) => {
+      let vocabDone = 0;
+      let grammarDone = 0;
+
+      if (d.level === "N5") {
+        vocabDone = Math.min(
+          d.vocab,
+          Math.floor(masteryKeys.length * 0.7 + completedExercises * 2),
+        );
+        grammarDone = Math.min(d.grammar, completedGrammar);
+      } else if (d.level === "N4") {
+        vocabDone = Math.min(d.vocab, Math.floor(masteryKeys.length * 0.2));
+        grammarDone = Math.min(
+          d.grammar,
+          Math.max(0, completedGrammar - 146),
+        );
+      } else if (d.level === "N3") {
+        vocabDone = Math.min(d.vocab, Math.floor(masteryKeys.length * 0.08));
+        grammarDone = 0;
+      } else {
+        vocabDone = 0;
+        grammarDone = 0;
+      }
+
+      const totalDone = vocabDone + grammarDone;
+      const pct = Math.min(100, Math.round((totalDone / d.total) * 100));
+
+      return {
+        ...d,
+        isBasic: false,
+        subLeftLabel: "Vocabulary",
+        subLeftDone: vocabDone,
+        subLeftTotal: d.vocab,
+        subRightLabel: "Grammar",
+        subRightDone: grammarDone,
+        subRightTotal: d.grammar,
+        totalDone,
+        pct,
+      };
+    });
+
+    return [basicRow, ...jlptRows];
+  }, [
+    progress.mastery,
+    progress.completedGrammarSections,
+    progress.completedExercises,
+  ]);
 
   // Refresh & synchronize handler
   const handleRefreshHeatmap = () => {
@@ -1767,23 +1864,33 @@ export default function Profile2Page() {
 
             {jlptExpanded && (
               <div className="jlpt-list">
-                {jlptData.map((d) => (
+                {realJlptData.map((d) => (
                   <div key={d.level}>
                     <div className="jlpt-row-top">
                       <span className="jlpt-level">{d.level}</span>
                       <span>
                         <span style={{ color: "var(--text-secondary)" }}>
-                          0/{d.total} items
+                          {d.totalDone}/{d.total} items
                         </span>
-                        <span className="jlpt-pct">0%</span>
+                        <span className="jlpt-pct">{d.pct}%</span>
                       </span>
                     </div>
                     <div className="bar-track">
-                      <div className="bar-fill" style={{ width: "0%" }}></div>
+                      <div
+                        className="bar-fill"
+                        style={{
+                          width: `${d.pct}%`,
+                          transition: "width 0.4s ease",
+                        }}
+                      ></div>
                     </div>
                     <div className="jlpt-split">
-                      <span>Vocabulary: 0/{d.vocab}</span>
-                      <span>Grammar: 0/{d.grammar}</span>
+                      <span>
+                        {d.subLeftLabel}: {d.subLeftDone}/{d.subLeftTotal}
+                      </span>
+                      <span>
+                        {d.subRightLabel}: {d.subRightDone}/{d.subRightTotal}
+                      </span>
                     </div>
                   </div>
                 ))}
