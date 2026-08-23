@@ -1500,6 +1500,33 @@ export default function Profile2Page() {
     };
   }, [progress.quizHistory]);
 
+  // Dynamic Master Kanas progress calculation
+  const masterKanaStats = useMemo(() => {
+    const mastery = progress.mastery || {};
+    const hiraganaDone = HIRAGANA_CHARS.filter(
+      (c) => (mastery[c]?.correct || 0) > 0 || (mastery[c]?.incorrect || 0) > 0,
+    ).length;
+
+    const katakanaDone = KATAKANA_CHARS.filter(
+      (c) => (mastery[c]?.correct || 0) > 0 || (mastery[c]?.incorrect || 0) > 0,
+    ).length;
+
+    const hiraganaPct = Math.min(100, Math.round((hiraganaDone / 46) * 100));
+    const katakanaPct = Math.min(100, Math.round((katakanaDone / 46) * 100));
+
+    const totalDone = hiraganaDone + katakanaDone;
+    const isFullyMastered = hiraganaPct === 100 && katakanaPct === 100;
+
+    return {
+      hiraganaDone,
+      hiraganaPct,
+      katakanaDone,
+      katakanaPct,
+      totalDone,
+      isFullyMastered,
+    };
+  }, [progress.mastery]);
+
   // Dynamic JLPT & Basic Level Progress calculation (Basic, N5 - N1)
   const realJlptData = useMemo(() => {
     const mastery = progress.mastery || {};
@@ -1902,41 +1929,65 @@ export default function Profile2Page() {
         {/* ─── MAIN CONTENT (RIGHT) ────────────────────────────────────────── */}
         <MainContent>
           {/* Practice Banner */}
-          <PracticeBanner>
-            <span className="kana-mini">あア</span> Practice Kanas &nbsp; 0/5
-          </PracticeBanner>
+          <Link href="/kana" style={{ textDecoration: "none" }}>
+            <PracticeBanner style={{ cursor: "pointer" }}>
+              <span className="kana-mini">あア</span> Practice Kanas &nbsp;{" "}
+              {masterKanaStats.totalDone}/92
+            </PracticeBanner>
+          </Link>
 
           {/* Master Kanas Card */}
           <MasterCard>
             <h2>Master Kanas First</h2>
             <p>
-              You need to master both Hiragana and Katakana before unlocking
-              vocabulary and grammar lessons.
+              {masterKanaStats.isFullyMastered
+                ? "🎉 Congratulations! You have mastered both Hiragana and Katakana. All vocabulary and grammar lessons are fully unlocked!"
+                : "You need to master both Hiragana and Katakana before unlocking vocabulary and grammar lessons."}
             </p>
 
-            <div className="prog-row">
-              <div className="prog-top">
-                <span className="left">
-                  <span className="prog-icon">あ</span> Hiragana
-                </span>
-                <span>5%</span>
+            <Link href="/kana" style={{ textDecoration: "none" }}>
+              <div className="prog-row" style={{ cursor: "pointer" }}>
+                <div className="prog-top">
+                  <span className="left">
+                    <span className="prog-icon">あ</span> Hiragana (
+                    {masterKanaStats.hiraganaDone}/46)
+                  </span>
+                  <span>{masterKanaStats.hiraganaPct}%</span>
+                </div>
+                <div className="prog-track">
+                  <div
+                    className="prog-fill"
+                    style={{
+                      width: `${masterKanaStats.hiraganaPct}%`,
+                      transition: "width 0.4s ease",
+                      background: "linear-gradient(90deg, #ec4899, #8b5cf6)",
+                    }}
+                  ></div>
+                </div>
               </div>
-              <div className="prog-track">
-                <div className="prog-fill" style={{ width: "5%" }}></div>
-              </div>
-            </div>
+            </Link>
 
-            <div className="prog-row">
-              <div className="prog-top">
-                <span className="left">
-                  <span className="prog-icon">ア</span> Katakana
-                </span>
-                <span>0%</span>
+            <Link href="/kana" style={{ textDecoration: "none" }}>
+              <div className="prog-row" style={{ cursor: "pointer" }}>
+                <div className="prog-top">
+                  <span className="left">
+                    <span className="prog-icon">ア</span> Katakana (
+                    {masterKanaStats.katakanaDone}/46)
+                  </span>
+                  <span>{masterKanaStats.katakanaPct}%</span>
+                </div>
+                <div className="prog-track">
+                  <div
+                    className="prog-fill"
+                    style={{
+                      width: `${masterKanaStats.katakanaPct}%`,
+                      transition: "width 0.4s ease",
+                      background: "linear-gradient(90deg, #3b82f6, #14b8a6)",
+                    }}
+                  ></div>
+                </div>
               </div>
-              <div className="prog-track">
-                <div className="prog-fill" style={{ width: "0%" }}></div>
-              </div>
-            </div>
+            </Link>
           </MasterCard>
 
           {/* Tabs Bar */}
