@@ -1335,6 +1335,9 @@ export default function Profile2Page() {
   >("kana");
   const [showDiscord, setShowDiscord] = useState(true);
   const [jlptExpanded, setJlptExpanded] = useState(true);
+  const [hoveredKanaChartIdx, setHoveredKanaChartIdx] = useState<
+    number | null
+  >(null);
   const [hoveredVocabIdx, setHoveredVocabIdx] = useState<number | null>(null);
 
   // Heatmap interactive state
@@ -1457,7 +1460,7 @@ export default function Profile2Page() {
     });
 
     return {
-      reviews: totalReviews > 0 ? totalReviews : 5, // Fallback demo value if brand new user
+      reviews: totalReviews, // Pure real data: 0 when local storage is cleared
       fav: topChar,
     };
   }, [progress.mastery]);
@@ -1499,6 +1502,69 @@ export default function Profile2Page() {
       attempts: totalAttempts,
     };
   }, [progress.quizHistory]);
+
+  // Hiragana attempts count from progress.mastery
+  const hiraganaAttempts = useMemo(() => {
+    return HIRAGANA_CHARS.reduce((acc, c) => {
+      const item = progress.mastery?.[c];
+      return acc + (item?.correct || 0) + (item?.incorrect || 0);
+    }, 0);
+  }, [progress.mastery]);
+
+  // Katakana attempts count from progress.mastery
+  const katakanaAttempts = useMemo(() => {
+    return KATAKANA_CHARS.reduce((acc, c) => {
+      const item = progress.mastery?.[c];
+      return acc + (item?.correct || 0) + (item?.incorrect || 0);
+    }, 0);
+  }, [progress.mastery]);
+
+  // Dynamic 7-day Kana practice chart data
+  const kanaChartData = useMemo(() => {
+    const days = [];
+    const attempts = [];
+    const accuracy = [];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+
+      const monthAbbr = d.toLocaleDateString("en-US", { month: "short" });
+      const dayNum = d.getDate();
+      const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(dayNum).padStart(2, "0")}`;
+
+      days.push(`${monthAbbr} ${dayNum}`);
+
+      const exp = progress.activityLog?.[dateStr] || 0;
+      let dayAttempts = 0;
+      let dayAccuracy = 0;
+
+      if (exp > 0) {
+        dayAttempts = Math.min(10, Math.ceil(exp / 15) || 5);
+        dayAccuracy = 100;
+      } else if (progress.quizHistory) {
+        const quizOnDate = progress.quizHistory.find(
+          (q) => q.date && q.date.startsWith(dateStr),
+        );
+        if (quizOnDate) {
+          dayAttempts = quizOnDate.total || 5;
+          dayAccuracy =
+            Math.round(
+              (quizOnDate.score / (quizOnDate.total || 1)) * 100,
+            ) || 100;
+        }
+      }
+
+      attempts.push(dayAttempts);
+      accuracy.push(dayAccuracy);
+    }
+
+    const maxAttempts = Math.max(5, ...attempts);
+
+    return { days, attempts, accuracy, maxAttempts };
+  }, [progress.activityLog, progress.quizHistory]);
 
   // Dynamic Master Kanas progress calculation
   const masterKanaStats = useMemo(() => {
@@ -2032,37 +2098,28 @@ export default function Profile2Page() {
                 <div className="kana-cols">
                   <div className="kana-col">
                     <h4>hiragana</h4>
-                    <div className="attempts">(5 attempts)</div>
+                    <div className="attempts">({hiraganaAttempts} attempts)</div>
                     <Link href="/kana?type=hiragana">
                       <div className="focus-btn">Focus Area</div>
                     </Link>
                     <div className="good-status">
-                      All characters at good proficiency
+                      {masterKanaStats.hiraganaDone === 46
+                        ? "All 46 Hiragana characters mastered!"
+                        : `${masterKanaStats.hiraganaDone}/46 characters practiced`}
                     </div>
                   </div>
                   <div className="kana-col">
                     <h4>katakana</h4>
-                    <div className="attempts">(0 attempts)</div>
+                    <div className="attempts">({katakanaAttempts} attempts)</div>
                     <Link href="/kana?type=katakana">
                       <div className="focus-btn">Focus Area</div>
                     </Link>
                     <div className="good-status">
-                      All characters at good proficiency
+                      {masterKanaStats.katakanaDone === 46
+                        ? "All 46 Katakana characters mastered!"
+                        : `${masterKanaStats.katakanaDone}/46 characters practiced`}
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="block-title">Stats by Type</h3>
-                <div
-                  style={{
-                    color: "var(--text-secondary)",
-                    fontSize: "0.85rem",
-                  }}
-                >
-                  Practice Hiragana & Katakana to see breakdown stats by vowel
-                  groups (A, I, U, E, O).
                 </div>
               </div>
 
@@ -2086,7 +2143,44 @@ export default function Profile2Page() {
                 </div>
 
                 {/* Interactive SVG Chart */}
-                <div className="chart-wrap">
+                <div className="chart-wrap" style={{ position: "relative" }}>
+                  {hoveredKanaChartIdx !== null && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        left: `${
+                          60 + (hoveredKanaChartIdx * 880) / 6
+                        }px`,
+                        transform: "translateX(-50%)",
+                        background: "#0b0f19",
+                        border: "1px solid rgba(139, 124, 255, 0.4)",
+                        borderRadius: "8px",
+                        padding: "6px 12px",
+                        fontSize: "12px",
+                        fontWeight: 700,
+                        color: "#fff",
+                        zIndex: 20,
+                        boxShadow: "0 6px 16px rgba(0,0,0,0.6)",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      <div>{kanaChartData.days[hoveredKanaChartIdx]}</div>
+                      <div
+                        style={{
+                          fontSize: "11px",
+                          color: "#8b7cff",
+                          marginTop: "2px",
+                        }}
+                      >
+                        {kanaChartData.attempts[hoveredKanaChartIdx]} attempts •{" "}
+                        <span style={{ color: "#10b981" }}>
+                          {kanaChartData.accuracy[hoveredKanaChartIdx]}% accuracy
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
                   <svg
                     width="100%"
                     height="330"
@@ -2095,6 +2189,7 @@ export default function Profile2Page() {
                   >
                     {/* Grid Lines */}
                     {[0, 1, 2, 3, 4, 5].map((g) => {
+                      const val = (g / 5) * kanaChartData.maxAttempts;
                       const y = 25 + 240 - (g / 5) * 240;
                       return (
                         <g key={g}>
@@ -2114,15 +2209,16 @@ export default function Profile2Page() {
                             fontWeight="800"
                             fill="var(--text-secondary)"
                           >
-                            {g.toFixed(1)}
+                            {val.toFixed(1)}
                           </text>
                         </g>
                       );
                     })}
 
-                    {/* X Axis Labels (All 7 Days) */}
-                    {chartDays.map((d, i) => {
-                      const x = 60 + (i * 880) / (chartDays.length - 1);
+                    {/* X Axis Labels */}
+                    {kanaChartData.days.map((d, i) => {
+                      const x =
+                        60 + (i * 880) / (kanaChartData.days.length - 1);
                       return (
                         <text
                           key={d}
@@ -2138,18 +2234,29 @@ export default function Profile2Page() {
                       );
                     })}
 
-                    {/* Accuracy Area Polygon (Green highlight on Aug 18) */}
-                    <polygon
-                      points="646,265 646,25 793,25 793,265"
-                      fill="rgba(16, 185, 129, 0.35)"
-                    />
+                    {/* Accuracy Green Highlighted Polygon */}
+                    {kanaChartData.accuracy.map((acc, i) => {
+                      if (acc === 0) return null;
+                      const x1 = 60 + ((i - 0.4) * 880) / 6;
+                      const x2 = 60 + ((i + 0.4) * 880) / 6;
+                      return (
+                        <polygon
+                          key={i}
+                          points={`${x1},265 ${x1},25 ${x2},25 ${x2},265`}
+                          fill="rgba(16, 185, 129, 0.25)"
+                        />
+                      );
+                    })}
 
-                    {/* Attempts Line & Circles */}
+                    {/* Attempts Polyline */}
                     <polyline
-                      points={chartAttempts
+                      points={kanaChartData.attempts
                         .map((v, i) => {
-                          const x = 60 + (i * 880) / (chartDays.length - 1);
-                          const y = 25 + 240 - (v / 5) * 240;
+                          const x = 60 + (i * 880) / 6;
+                          const y =
+                            25 +
+                            240 -
+                            (v / kanaChartData.maxAttempts) * 240;
                           return `${x},${y}`;
                         })
                         .join(" ")}
@@ -2158,11 +2265,27 @@ export default function Profile2Page() {
                       strokeWidth="4"
                     />
 
-                    {chartAttempts.map((v, i) => {
-                      const x = 60 + (i * 880) / (chartDays.length - 1);
-                      const y = 25 + 240 - (v / 5) * 240;
+                    {/* Interactive Circles */}
+                    {kanaChartData.attempts.map((v, i) => {
+                      const x = 60 + (i * 880) / 6;
+                      const y =
+                        25 + 240 - (v / kanaChartData.maxAttempts) * 240;
                       return (
-                        <circle key={i} cx={x} cy={y} r="7" fill="#8b7cff" />
+                        <circle
+                          key={i}
+                          cx={x}
+                          cy={y}
+                          r={hoveredKanaChartIdx === i ? "10" : "7"}
+                          fill="#8b7cff"
+                          stroke="#ffffff"
+                          strokeWidth={hoveredKanaChartIdx === i ? "3" : "0"}
+                          style={{
+                            cursor: "pointer",
+                            transition: "all 0.15s ease",
+                          }}
+                          onMouseEnter={() => setHoveredKanaChartIdx(i)}
+                          onMouseLeave={() => setHoveredKanaChartIdx(null)}
+                        />
                       );
                     })}
 
