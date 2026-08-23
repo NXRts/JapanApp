@@ -1,6 +1,7 @@
 "use client";
 
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { useProgress } from "@/context/ProgressContext";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
@@ -147,65 +148,112 @@ const SectionLabel = styled.div`
   margin-bottom: 8px;
 `;
 
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
 /* Heatmap Grid */
 const HeatmapWrap = styled.div`
   margin-top: 1.25rem;
   width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 4px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 
-  &::-webkit-scrollbar {
-    height: 4px;
+  .cell-info-bar {
+    min-height: 22px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding: 3px 6px;
+    border-radius: 6px;
+    background: rgba(var(--foreground-rgb, 255, 255, 255), 0.025);
+
+    .info-date {
+      font-weight: 800;
+      color: var(--foreground);
+    }
+    .info-exp {
+      color: var(--primary);
+      font-weight: 700;
+    }
   }
-  &::-webkit-scrollbar-thumb {
-    background: rgba(var(--foreground-rgb, 255, 255, 255), 0.15);
-    border-radius: 4px;
+
+  .refresh-toast {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(16, 185, 129, 0.95);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 10.5px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    animation: ${fadeIn} 0.2s ease-out;
+    z-index: 10;
   }
 `;
 
 const HeatmapMonths = styled.div`
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   font-size: 10.5px;
   color: var(--text-secondary);
   margin-bottom: 6px;
   padding-left: 2px;
   font-weight: 600;
-  min-width: 260px;
+  width: 100%;
 `;
 
 const HeatmapGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(24, 1fr);
-  grid-auto-rows: 9px;
-  gap: 2px;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(20, 1fr);
+  gap: 3px;
   width: 100%;
-  min-width: 260px;
 `;
 
-const HeatmapCell = styled.div<{ $level?: number }>`
+const HeatmapCell = styled.div<{ $level?: number; $highlighted?: boolean; $isFuture?: boolean }>`
   width: 100%;
-  height: 9px;
-  border-radius: 2px;
+  aspect-ratio: 1 / 1;
+  border-radius: 2.5px;
+  cursor: ${({ $isFuture }) => ($isFuture ? "default" : "pointer")};
+  pointer-events: ${({ $isFuture }) => ($isFuture ? "none" : "auto")};
+  visibility: ${({ $isFuture }) => ($isFuture ? "hidden" : "visible")};
   background: ${({ $level }) => {
     switch ($level) {
       case 1:
-        return "rgba(var(--primary-rgb, 79, 70, 229), 0.35)";
+        return "rgba(var(--primary-rgb, 79, 70, 229), 0.4)";
       case 2:
-        return "rgba(var(--primary-rgb, 79, 70, 229), 0.6)";
+        return "rgba(var(--primary-rgb, 79, 70, 229), 0.65)";
       case 3:
-        return "rgba(var(--primary-rgb, 79, 70, 229), 0.85)";
+        return "rgba(var(--primary-rgb, 79, 70, 229), 0.88)";
       case 4:
         return "var(--primary)";
       default:
         return "rgba(var(--foreground-rgb, 255, 255, 255), 0.06)";
     }
   }};
-  transition: transform 0.1s ease;
+  box-shadow: ${({ $level, $highlighted }) =>
+    $highlighted || ($level && $level > 2)
+      ? "0 0 6px rgba(var(--primary-rgb, 79, 70, 229), 0.6)"
+      : "none"};
+  transform: ${({ $highlighted }) => ($highlighted ? "scale(1.4)" : "scale(1)")};
+  z-index: ${({ $highlighted }) => ($highlighted ? 2 : 1)};
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    transform: scale(1.3);
+    transform: scale(1.5);
+    z-index: 10;
+    box-shadow: 0 0 8px rgba(var(--primary-rgb, 79, 70, 229), 0.8);
   }
 `;
 
@@ -218,20 +266,59 @@ const HeatmapFoot = styled.div`
   color: var(--text-secondary);
   font-weight: 600;
 
-  .refresh-ico {
+  .refresh-btn {
+    background: transparent;
+    border: none;
+    padding: 2px 6px;
     cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.15s ease;
+    color: var(--text-secondary);
+    opacity: 0.75;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 700;
+    font-size: 11px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
+
     &:hover {
       opacity: 1;
       color: var(--primary);
+      background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+    }
+
+    &.spinning .refresh-ico {
+      display: inline-block;
+      animation: ${spin} 0.6s linear infinite;
     }
   }
 
   .legend {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
+    font-size: 10.5px;
+    color: var(--text-secondary);
+    user-select: none;
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 1px 2px;
+      border-radius: 2px;
+      transition: opacity 0.15s ease;
+
+      ${HeatmapCell} {
+        width: 10px;
+        height: 10px;
+        aspect-ratio: 1 / 1;
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
   }
 `;
 
@@ -1226,6 +1313,7 @@ const conjForms = [
 
 /* ─── MAIN PROFILE 2.0 PAGE COMPONENT ────────────────────────────────────── */
 export default function Profile2Page() {
+  const { progress, checkStreak } = useProgress();
   const [activeTab, setActiveTab] = useState<
     "kana" | "vocab" | "grammar" | "conj"
   >("kana");
@@ -1233,18 +1321,121 @@ export default function Profile2Page() {
   const [jlptExpanded, setJlptExpanded] = useState(true);
   const [hoveredVocabIdx, setHoveredVocabIdx] = useState<number | null>(null);
 
-  // Generate 192 heatmap cells
-  const heatmapCells = useMemo(() => {
+  // Heatmap interactive state
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [refreshToast, setRefreshToast] = useState<string | null>(null);
+  const [hoveredCellDate, setHoveredCellDate] = useState<{
+    displayDate: string;
+    exp: number;
+    level: number;
+  } | null>(null);
+  const [highlightedLegendLevel, setHighlightedLegendLevel] = useState<
+    number | null
+  >(null);
+
+  // Generate 20 weeks x 7 days (140 cells) arranged Sunday to Saturday with rumpang future cells
+  const heatmapData = useMemo(() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const currentDayOfWeek = today.getDay(); // 0 = Sun, 6 = Sat
+    const currentWeekSunday = new Date(today);
+    currentWeekSunday.setDate(today.getDate() - currentDayOfWeek);
+
+    // Start Date: Sunday 19 weeks prior (133 days back from currentWeekSunday)
+    const startDate = new Date(currentWeekSunday);
+    startDate.setDate(currentWeekSunday.getDate() - 133);
+
     const cells = [];
-    for (let i = 0; i < 192; i++) {
-      let level = 0;
-      if (i === 189) level = 4;
-      else if (i === 188) level = 2;
-      else if (i === 175) level = 1;
-      cells.push(level);
+    let cellId = 0;
+
+    for (let col = 0; col < 20; col++) {
+      for (let row = 0; row < 7; row++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + (col * 7 + row));
+
+        const y = currentDate.getFullYear();
+        const m = String(currentDate.getMonth() + 1).padStart(2, "0");
+        const d = String(currentDate.getDate()).padStart(2, "0");
+        const dateKey = `${y}-${m}-${d}`;
+
+        const monthAbbr = currentDate.toLocaleDateString("en-US", { month: "short" });
+        const displayDate = `${monthAbbr} ${currentDate.getDate()}, ${y}`;
+
+        const isFuture = currentDate > today;
+
+        // REAL-TIME DATA ONLY: Lookup from progress.activityLog and quizHistory
+        let exp = 0;
+        if (!isFuture) {
+          exp = progress.activityLog?.[dateKey] || 0;
+          if (exp === 0 && progress.quizHistory) {
+            const quizOnDate = progress.quizHistory.find((q) => q.date && q.date.startsWith(dateKey));
+            if (quizOnDate) {
+              exp = quizOnDate.score * 10 || 15;
+            }
+          }
+        }
+
+        let level = 0;
+        if (!isFuture && exp > 0) {
+          level = exp < 50 ? 1 : exp < 200 ? 2 : exp < 500 ? 3 : 4;
+        }
+
+        cells.push({
+          id: cellId++,
+          col,
+          row,
+          dateKey,
+          displayDate,
+          exp,
+          level,
+          isFuture,
+        });
+      }
     }
-    return cells;
-  }, []);
+
+    // Pick 5 Month Labels evenly spread across 20 columns
+    const monthsList: string[] = [];
+    for (let col = 0; col < 20; col += 4) {
+      const cellDate = new Date(startDate);
+      cellDate.setDate(startDate.getDate() + col * 7);
+      monthsList.push(cellDate.toLocaleDateString("en-US", { month: "short" }));
+    }
+
+    return { cells, monthsList };
+  }, [progress.activityLog, progress.quizHistory]);
+
+  // Dynamic studied time calculation
+  const studiedTimeStr = useMemo(() => {
+    const totalDaysActive = Object.keys(progress.activityLog || {}).length;
+    const quizCount = progress.quizHistory?.length || 0;
+    const totalMinutes = Math.max(
+      0,
+      totalDaysActive * 12 + quizCount * 4 + Math.floor((progress.exp || 0) / 15),
+    );
+
+    if (totalMinutes >= 60) {
+      const hours = Math.floor(totalMinutes / 60);
+      const mins = totalMinutes % 60;
+      return `${hours}h ${mins}m studied`;
+    }
+    return `${totalMinutes}m studied`;
+  }, [progress.activityLog, progress.quizHistory, progress.exp]);
+
+  // Refresh & synchronize handler
+  const handleRefreshHeatmap = () => {
+    setIsRefreshing(true);
+    checkStreak();
+    setRefreshToast("Activity heatmap synchronized!");
+
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 600);
+
+    setTimeout(() => {
+      setRefreshToast(null);
+    }, 2500);
+  };
 
   return (
     <PageWrapper>
@@ -1264,16 +1455,20 @@ export default function Profile2Page() {
           {/* User Profile Card */}
           <ProfileCard>
             <ProfileTop>
-              <ProfileAvatar>🌳</ProfileAvatar>
+              <ProfileAvatar>
+                {progress.profile?.avatar || "🌳"}
+              </ProfileAvatar>
               <div>
                 <ProfileName>
-                  stjp225{" "}
+                  {progress.profile?.username ||
+                    progress.profile?.displayName ||
+                    "stjp225"}{" "}
                   <span className="crown" title="VIP Student">
                     ♛
                   </span>
                 </ProfileName>
                 <ProfileMeta>
-                  <span>🕐 0m studied</span>
+                  <span>🕐 {studiedTimeStr}</span>
                   <span>👥 0 friends</span>
                 </ProfileMeta>
               </div>
@@ -1281,35 +1476,81 @@ export default function Profile2Page() {
 
             {/* Heatmap Grid */}
             <HeatmapWrap>
+              {refreshToast && (
+                <div className="refresh-toast">{refreshToast}</div>
+              )}
+
               <SectionLabel>Activity</SectionLabel>
               <HeatmapMonths>
-                <span>Mar</span>
-                <span>Apr</span>
-                <span>May</span>
-                <span>Jun</span>
-                <span>Jul</span>
-                <span>Aug</span>
+                {heatmapData.monthsList.map((m, idx) => (
+                  <span key={idx}>{m}</span>
+                ))}
               </HeatmapMonths>
               <HeatmapGrid>
-                {heatmapCells.map((lvl: number, idx: number) => (
+                {heatmapData.cells.map((cell) => (
                   <HeatmapCell
-                    key={idx}
-                    $level={lvl}
-                    title={`Activity level: ${lvl}`}
+                    key={cell.id}
+                    $level={cell.level}
+                    $highlighted={highlightedLegendLevel === cell.level}
+                    $isFuture={cell.isFuture}
+                    onMouseEnter={() => {
+                      if (!cell.isFuture) {
+                        setHoveredCellDate({
+                          displayDate: cell.displayDate,
+                          exp: cell.exp,
+                          level: cell.level,
+                        });
+                      }
+                    }}
+                    onMouseLeave={() => setHoveredCellDate(null)}
                   />
                 ))}
               </HeatmapGrid>
+
+              {/* Clean Inline Cell Info Bar (No Overlapping Elements!) */}
+              <div className="cell-info-bar">
+                {hoveredCellDate ? (
+                  <>
+                    <span className="info-date">{hoveredCellDate.displayDate}</span>
+                    <span className="info-exp">
+                      {hoveredCellDate.level === 0
+                        ? "No activity"
+                        : `${hoveredCellDate.exp > 0 ? `${hoveredCellDate.exp} EXP` : "Active"}`}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span>Current Streak</span>
+                    <span className="info-exp">{progress.streak || 0} days</span>
+                  </>
+                )}
+              </div>
+
               <HeatmapFoot>
-                <span className="refresh-ico" title="Refresh Heatmap">
-                  ↻
-                </span>
+                <button
+                  type="button"
+                  className={`refresh-btn ${isRefreshing ? "spinning" : ""}`}
+                  onClick={handleRefreshHeatmap}
+                  title="Refresh Activity Heatmap"
+                >
+                  <span className="refresh-ico">↻</span> Sync
+                </button>
                 <div className="legend">
                   Less
-                  <HeatmapCell $level={0} />
-                  <HeatmapCell $level={1} />
-                  <HeatmapCell $level={2} />
-                  <HeatmapCell $level={3} />
-                  <HeatmapCell $level={4} />
+                  {[0, 1, 2, 3, 4].map((lvl) => (
+                    <span
+                      key={lvl}
+                      className="legend-item"
+                      onMouseEnter={() => setHighlightedLegendLevel(lvl)}
+                      onMouseLeave={() => setHighlightedLegendLevel(null)}
+                      title={`Level ${lvl} Activity`}
+                    >
+                      <HeatmapCell
+                        $level={lvl}
+                        $highlighted={highlightedLegendLevel === lvl}
+                      />
+                    </span>
+                  ))}
                   More
                 </div>
               </HeatmapFoot>
