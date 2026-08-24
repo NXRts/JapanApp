@@ -1682,17 +1682,16 @@ const OthersPanel = styled(Card)`
   flex-direction: column;
   gap: 1.75rem;
   width: 100%;
-  animation: ${fadeIn} 0.3s ease-out;
 
   .others-panel-head {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     background: rgba(234, 179, 8, 0.12);
     color: #eab308;
-    border: 1px solid rgba(234, 179, 8, 0.3);
-    padding: 6px 14px;
-    border-radius: 10px;
+    border: 1px solid rgba(234, 179, 8, 0.25);
+    padding: 4px 10px;
+    border-radius: 6px;
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.05em;
@@ -3429,15 +3428,13 @@ export default function Profile2Page() {
             <OthersPanel>
               <div>
                 <div className="others-panel-head">
-                  <span className="tag-ico">✨</span> LAINNYA / MORE ANALYTICS
+                  <span className="tag-ico">他</span> LAINNYA
                 </div>
               </div>
 
               {/* 1. Level Progress & Daily Goal */}
               <div>
-                <h3 className="block-title">
-                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>🎯</span> LEVEL & DAILY STUDY GOAL
-                </h3>
+                <h3 className="block-title">Level & Daily Study Goal</h3>
                 <GridTwoCol>
                   <GoalCard>
                     <GoalHeader>
@@ -3488,9 +3485,7 @@ export default function Profile2Page() {
 
               {/* 2. League Status */}
               <div>
-                <h3 className="block-title">
-                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>🏆</span> LEAGUE STATUS & LEADERBOARD
-                </h3>
+                <h3 className="block-title">League Status & Leaderboard</h3>
                 <LeagueCard onClick={() => setShowLeaderboardModal(true)}>
                   <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                     <div
@@ -3577,9 +3572,7 @@ export default function Profile2Page() {
 
               {/* 3. Inventory & Member Status */}
               <div>
-                <h3 className="block-title">
-                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>💎</span> INVENTORY & MEMBER STATUS
-                </h3>
+                <h3 className="block-title">Inventory & Member Status</h3>
                 <InventoryGrid>
                   <InventoryItemCard>
                     <span className="inv-label">Permata (Gems)</span>
@@ -3628,9 +3621,7 @@ export default function Profile2Page() {
 
               {/* 4. Achievements & Quests */}
               <div>
-                <h3 className="block-title">
-                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>🎖️</span> ACHIEVEMENTS & QUESTS
-                </h3>
+                <h3 className="block-title">Achievements & Quests</h3>
                 <AchievementsStackCard>
                   <AchievementRow>
                     <LevelBadgeBox $bg="linear-gradient(135deg, #ef4444 0%, #dc2626 100%)">
@@ -3762,9 +3753,7 @@ export default function Profile2Page() {
 
               {/* 5. SRS Stage & Grammar Progress */}
               <div>
-                <h3 className="block-title">
-                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>📊</span> SRS MASTERY & GRAMMAR PROGRESS
-                </h3>
+                <h3 className="block-title">SRS Stage & Grammar Progress</h3>
                 <GridTwoCol>
                   <Card>
                     <div
@@ -3853,9 +3842,7 @@ export default function Profile2Page() {
 
               {/* 6. Items to Focus On (Weak Points) */}
               <div>
-                <h3 className="block-title">
-                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>⚠️</span> ITEMS TO FOCUS ON (WEAK POINTS)
-                </h3>
+                <h3 className="block-title">Items to Focus On (Weak Points)</h3>
                 <GridTwoCol style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
                   {weakPoints.map(([char, m]) => (
                     <ActivityItemCard key={char}>
@@ -3896,9 +3883,7 @@ export default function Profile2Page() {
 
               {/* 7. Recent Activity Log */}
               <div>
-                <h3 className="block-title">
-                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>📜</span> RECENT ACTIVITY LOG
-                </h3>
+                <h3 className="block-title">Recent Activity Log</h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                   {(progress.quizHistory || []).length === 0 ? (
                     <Card style={{ textAlign: "center", padding: "1.5rem" }}>
@@ -3952,9 +3937,7 @@ export default function Profile2Page() {
 
               {/* 8. Account Settings & Data Management */}
               <div>
-                <h3 className="block-title">
-                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>⚙️</span> ACCOUNT SETTINGS & DATA MANAGEMENT
-                </h3>
+                <h3 className="block-title">Account Settings & Data Management</h3>
                 <GridTwoCol>
                   <Card
                     style={{
