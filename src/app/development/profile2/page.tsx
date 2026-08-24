@@ -3,8 +3,20 @@
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { useProgress } from "@/context/ProgressContext";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
+import { LeaderboardModal } from "@/components/modals/DuolingoModals";
+import { getLeagueById, getRankStatus } from "@/data/leagues";
+import { grammarLessons, totalSections } from "@/data/grammarLessons";
+import {
+  UserIcon,
+  TrophyIcon,
+  TargetIcon,
+  AwardIcon,
+  FireIcon,
+  SparklesIcon,
+  BookIcon,
+} from "@/components/icons/AppIcons";
 
 /* ─── Global Font & Variable Integrations for Native JapanApp Design System ─── */
 const Profile2GlobalStyle = createGlobalStyle`
@@ -1327,6 +1339,285 @@ const conjForms = [
   { id: "imperative", title: "Imperative (command)", attempts: 0 },
 ];
 
+/* ─── BOTTOM FULL WIDTH SECTION STYLED COMPONENTS ────────────────────────── */
+const BottomSection = styled.div`
+  max-width: 1300px;
+  margin: 2rem auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 1.2rem;
+  font-weight: 850;
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+
+  &::before {
+    content: "";
+    width: 4px;
+    height: 1.2rem;
+    background: var(--primary);
+    border-radius: 2px;
+  }
+`;
+
+const GridTwoCol = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const GoalCard = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+`;
+
+const GoalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--foreground);
+  }
+
+  span {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+`;
+
+const LevelProgressBar = styled.div`
+  width: 100%;
+  height: 10px;
+  background: rgba(var(--foreground-rgb, 255, 255, 255), 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+`;
+
+const ProgressBarFill = styled.div<{ $width: number }>`
+  height: 100%;
+  width: ${({ $width }) => Math.min(100, Math.max(0, $width))}%;
+  background: linear-gradient(90deg, var(--primary) 0%, #8b5cf6 100%);
+  border-radius: 6px;
+  transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+`;
+
+const LeagueCard = styled(Card)`
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: transform 0.2s, border-color 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary);
+  }
+`;
+
+const InventoryGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const InventoryItemCard = styled(Card)<{ $highlight?: boolean }>`
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  background: ${({ $highlight }) =>
+    $highlight ? "rgba(168, 85, 247, 0.12)" : "var(--surface)"};
+  border-color: ${({ $highlight }) =>
+    $highlight ? "rgba(168, 85, 247, 0.4)" : "var(--border)"};
+
+  .inv-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+  }
+
+  .inv-val {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--foreground);
+  }
+`;
+
+const AchievementsStackCard = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const AchievementRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+`;
+
+const LevelBadgeBox = styled.div<{ $bg: string }>`
+  width: 60px;
+  height: 60px;
+  background: ${({ $bg }) => $bg};
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  .main-icon {
+    font-size: 1.6rem;
+  }
+
+  .level-tag {
+    font-size: 0.58rem;
+    font-weight: 900;
+    color: white;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+`;
+
+const YellowProgressTrack = styled.div`
+  width: 100%;
+  height: 10px;
+  background: rgba(var(--foreground-rgb, 255, 255, 255), 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+`;
+
+const YellowProgressFill = styled.div<{ $pct: number }>`
+  height: 100%;
+  width: ${({ $pct }) => Math.min(100, Math.max(0, $pct))}%;
+  background: linear-gradient(90deg, #f59e0b 0%, #eab308 100%);
+  border-radius: 999px;
+  transition: width 1s ease-in-out;
+`;
+
+const AchievementGrid = styled.div<{ $isDragging?: boolean }>`
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  cursor: ${({ $isDragging }) => ($isDragging ? "grabbing" : "grab")};
+  user-select: none;
+`;
+
+const AchievementCard = styled(Card)<{ $unlocked: boolean }>`
+  min-width: 140px;
+  text-align: center;
+  opacity: ${({ $unlocked }) => ($unlocked ? 1 : 0.45)};
+  filter: ${({ $unlocked }) => ($unlocked ? "none" : "grayscale(80%)")};
+  flex-shrink: 0;
+
+  .icon-wrap {
+    font-size: 2rem;
+    margin-bottom: 0.4rem;
+    color: ${({ $unlocked }) =>
+      $unlocked ? "var(--primary)" : "var(--text-secondary)"};
+  }
+
+  h3 {
+    font-size: 0.9rem;
+    font-weight: 750;
+    margin-bottom: 0.2rem;
+  }
+
+  p {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+`;
+
+const MultiProgressBar = styled.div`
+  width: 100%;
+  height: 18px;
+  background: rgba(var(--foreground-rgb, 255, 255, 255), 0.08);
+  border-radius: 9px;
+  display: flex;
+  overflow: hidden;
+`;
+
+const ProgressSegment = styled.div<{ $width: number; $color: string }>`
+  width: ${({ $width }) => $width}%;
+  height: 100%;
+  background: ${({ $color }) => $color};
+  transition: width 1s ease-in-out;
+`;
+
+const SRSLegend = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  margin-top: 0.85rem;
+`;
+
+const LegendItem = styled.div<{ $color: string }>`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+
+  &::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: ${({ $color }) => $color};
+  }
+`;
+
+const ActivityItemCard = styled(Card)`
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+`;
+
 /* ─── MAIN PROFILE 2.0 PAGE COMPONENT ────────────────────────────────────── */
 export default function Profile2Page() {
   const { progress, checkStreak } = useProgress();
@@ -1334,6 +1625,191 @@ export default function Profile2Page() {
     "kana" | "vocab" | "grammar" | "conj"
   >("kana");
   const [showDiscord, setShowDiscord] = useState(true);
+  const [showLeaderboardModal, setShowLeaderboardModal] = useState(false);
+
+  // League data & Info
+  const leagueData = progress.league || {
+    currentLeagueId: "bronze",
+    weekInLeague: 1,
+    rank: 1,
+    top3Finishes: 0,
+    weeklyExp: 0,
+  };
+  const leagueInfo = getLeagueById(leagueData.currentLeagueId);
+  const rankInfo = getRankStatus(leagueData.rank);
+
+  // Leveling Logic
+  const level = Math.floor(Math.sqrt((progress.exp || 0) / 100)) + 1;
+  const currentLevelExp = Math.pow(level - 1, 2) * 100;
+  const nextLevelExp = Math.pow(level, 2) * 100;
+  const progressToNext = Math.min(
+    100,
+    Math.max(
+      0,
+      (((progress.exp || 0) - currentLevelExp) /
+        (nextLevelExp - currentLevelExp)) *
+        100,
+    ),
+  );
+
+  // Daily Goal Calculation
+  const targetGoal = parseInt(progress.profile?.dailyGoal || "50", 10);
+  const todayStr = new Date().toISOString().split("T")[0];
+  const todayExp = progress.activityLog?.[todayStr] || 0;
+  const dailyGoalCurrent = Math.min(todayExp, targetGoal);
+  const goalPercent = Math.min(100, (dailyGoalCurrent / targetGoal) * 100);
+
+  // SRS Stage Distribution Logic
+  const srsStats = useMemo(() => {
+    const counts = {
+      learning: 0,
+      guru: 0,
+      master: 0,
+      enlightened: 0,
+      burned: 0,
+    };
+    Object.values(progress.srs || {}).forEach((item) => {
+      const reps = item.repetitions;
+      if (reps < 4) counts.learning++;
+      else if (reps < 8) counts.guru++;
+      else if (reps < 12) counts.master++;
+      else if (reps < 16) counts.enlightened++;
+      else counts.burned++;
+    });
+
+    const total = Object.values(progress.srs || {}).length || 1;
+    return {
+      learning: (counts.learning / total) * 100,
+      guru: (counts.guru / total) * 100,
+      master: (counts.master / total) * 100,
+      enlightened: (counts.enlightened / total) * 100,
+      burned: (counts.burned / total) * 100,
+      counts,
+    };
+  }, [progress.srs]);
+
+  // Overall Grammar Progress Logic
+  const completedGrammarSectionsCount = useMemo(() => {
+    const completedSections = progress.completedGrammarSections || [];
+    return grammarLessons.reduce((sum, lesson) => {
+      return (
+        sum +
+        lesson.sections.filter((s) =>
+          completedSections.includes(`${lesson.id}/${s.id}`),
+        ).length
+      );
+    }, 0);
+  }, [progress.completedGrammarSections]);
+
+  const completedGrammarLessonsCount = useMemo(() => {
+    const completedSections = progress.completedGrammarSections || [];
+    const completedExercises = progress.completedExercises || [];
+    return grammarLessons.filter((lesson) => {
+      const sectionsDone = lesson.sections.filter((s) =>
+        completedSections.includes(`${lesson.id}/${s.id}`),
+      ).length;
+      const exerciseDone = completedExercises.includes(lesson.id);
+      return sectionsDone >= lesson.sections.length && exerciseDone;
+    }).length;
+  }, [progress.completedGrammarSections, progress.completedExercises]);
+
+  const grammarProgressPct =
+    Math.round((completedGrammarSectionsCount / totalSections) * 100) || 0;
+
+  // Weak Points Logic
+  const weakPoints = useMemo(() => {
+    return Object.entries(progress.mastery || {})
+      .sort(([, a], [, b]) => (b.incorrect || 0) - (a.incorrect || 0))
+      .filter(([, m]) => (m.incorrect || 0) > 0)
+      .slice(0, 6);
+  }, [progress.mastery]);
+
+  // Achievements Dragging Logic
+  const achievementsScrollRef = useRef<HTMLDivElement>(null);
+  const [isAchievementsDragging, setIsAchievementsDragging] = useState(false);
+  const [achievementsStartX, setAchievementsStartX] = useState(0);
+  const [achievementsScrollLeft, setAchievementsScrollLeft] = useState(0);
+
+  const handleAchievementsMouseDown = (e: React.MouseEvent) => {
+    if (!achievementsScrollRef.current) return;
+    setIsAchievementsDragging(true);
+    setAchievementsStartX(
+      e.pageX - achievementsScrollRef.current.offsetLeft,
+    );
+    setAchievementsScrollLeft(achievementsScrollRef.current.scrollLeft);
+  };
+
+  const handleAchievementsMouseLeave = () => {
+    setIsAchievementsDragging(false);
+  };
+
+  const handleAchievementsMouseUp = () => {
+    setIsAchievementsDragging(false);
+  };
+
+  const handleAchievementsMouseMove = (e: React.MouseEvent) => {
+    if (!isAchievementsDragging || !achievementsScrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - achievementsScrollRef.current.offsetLeft;
+    const walk = (x - achievementsStartX) * 1.5;
+    achievementsScrollRef.current.scrollLeft = achievementsScrollLeft - walk;
+  };
+
+  const totalCharacters = Object.keys(progress.mastery || {}).length;
+  const accuracy = useMemo(() => {
+    let correct = 0;
+    let total = 0;
+    Object.values(progress.mastery || {}).forEach((m) => {
+      correct += m.correct || 0;
+      total += (m.correct || 0) + (m.incorrect || 0);
+    });
+    return total === 0 ? 0 : Math.round((correct / total) * 100);
+  }, [progress.mastery]);
+
+  const achievementsList = [
+    {
+      id: "first_quiz",
+      title: "First Steps",
+      desc: "Reach Level 2",
+      icon: <SparklesIcon />,
+      unlocked: level >= 2,
+    },
+    {
+      id: "streak_3",
+      title: "Fire Starter",
+      desc: "3 Day Streak",
+      icon: <FireIcon />,
+      unlocked: (progress.streak || 0) >= 3,
+    },
+    {
+      id: "kanji_10",
+      title: "Kanji Apprentice",
+      desc: "Learn 10 Kanji",
+      icon: <BookIcon />,
+      unlocked: totalCharacters >= 10,
+    },
+    {
+      id: "accuracy_90",
+      title: "Perfectionist",
+      desc: "90% Accuracy",
+      icon: <TargetIcon />,
+      unlocked: accuracy >= 90 && totalCharacters >= 5,
+    },
+    {
+      id: "level_10",
+      title: "JapanApp Legend",
+      desc: "Reach Level 10",
+      icon: <TrophyIcon />,
+      unlocked: level >= 10,
+    },
+    {
+      id: "streak_10",
+      title: "Unstoppable",
+      desc: "10 Day Streak",
+      icon: <AwardIcon />,
+      unlocked: (progress.streak || 0) >= 10,
+    },
+  ];
   const [jlptExpanded, setJlptExpanded] = useState(true);
   const [hoveredKanaChartIdx, setHoveredKanaChartIdx] = useState<
     number | null
@@ -2853,6 +3329,583 @@ export default function Profile2Page() {
           )}
         </MainContent>
       </LayoutGrid>
+
+      {/* ─── BOTTOM FULL-WIDTH SECTION (Below Sidebar & MainContent) ─────────── */}
+      <BottomSection>
+        {/* 1. Level Progress & Daily Study Goal Grid */}
+        <GridTwoCol>
+          <GoalCard>
+            <GoalHeader>
+              <h3>Level {level} Progress</h3>
+              <span>
+                {Math.round(progressToNext)}% to Level {level + 1}
+              </span>
+            </GoalHeader>
+            <LevelProgressBar>
+              <ProgressBarFill $width={progressToNext} />
+            </LevelProgressBar>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "0.8rem",
+                color: "var(--text-secondary)",
+              }}
+            >
+              {nextLevelExp - (progress.exp || 0)} EXP needed to reach Level{" "}
+              {level + 1}
+            </p>
+          </GoalCard>
+
+          <GoalCard>
+            <GoalHeader>
+              <h3>Daily Study Goal</h3>
+              <span>
+                {dailyGoalCurrent} / {targetGoal} EXP
+              </span>
+            </GoalHeader>
+            <LevelProgressBar>
+              <ProgressBarFill $width={goalPercent} />
+            </LevelProgressBar>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "0.8rem",
+                color: "var(--text-secondary)",
+              }}
+            >
+              {goalPercent >= 100
+                ? "🎉 Daily goal achieved! You're amazing."
+                : `Only ${targetGoal - dailyGoalCurrent} EXP left to hit your daily target!`}
+            </p>
+          </GoalCard>
+        </GridTwoCol>
+
+        {/* 2. League Status Banner */}
+        <SectionTitle>Status Liga & Peringkat Leaderboard</SectionTitle>
+        <LeagueCard onClick={() => setShowLeaderboardModal(true)}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <div
+              style={{
+                width: "52px",
+                height: "52px",
+                borderRadius: "16px",
+                background: leagueInfo.badgeBg,
+                border: `1.5px solid ${leagueInfo.borderColor}`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.75rem",
+                position: "relative",
+                flexShrink: 0,
+                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              {leagueInfo.icon}
+              <span
+                style={{
+                  position: "absolute",
+                  bottom: "-3px",
+                  right: "-3px",
+                  width: "18px",
+                  height: "18px",
+                  borderRadius: "50%",
+                  background: rankInfo.color,
+                  color: "white",
+                  fontSize: "0.65rem",
+                  fontWeight: 900,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "2px solid var(--surface)",
+                }}
+              >
+                {rankInfo.zone === "demotion"
+                  ? "!"
+                  : rankInfo.zone === "promotion"
+                  ? "▲"
+                  : "✓"}
+              </span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div
+                style={{
+                  fontSize: "1.1rem",
+                  fontWeight: 850,
+                  color: "var(--foreground)",
+                }}
+              >
+                {leagueInfo.name} — Peringkat #{leagueData.rank || 1}
+              </div>
+              <div
+                style={{
+                  fontSize: "0.85rem",
+                  color: "var(--text-secondary)",
+                  fontWeight: 600,
+                }}
+              >
+                {rankInfo.label} • Minggu Ke-{leagueData.weekInLeague || 1}
+              </div>
+            </div>
+          </div>
+
+          <button
+            style={{
+              background: "rgba(59, 130, 246, 0.12)",
+              color: "#3b82f6",
+              border: "1px solid rgba(59, 130, 246, 0.3)",
+              padding: "0.5rem 1rem",
+              borderRadius: "10px",
+              fontWeight: 800,
+              fontSize: "0.85rem",
+              cursor: "pointer",
+            }}
+          >
+            Lihat Liga →
+          </button>
+        </LeagueCard>
+
+        {/* 3. Inventory & Status */}
+        <SectionTitle>Inventory & Status Duolingo</SectionTitle>
+        <InventoryGrid>
+          <InventoryItemCard>
+            <span className="inv-label">Permata (Gems)</span>
+            <span className="inv-val" style={{ color: "#3b82f6" }}>
+              💎 {progress.gems !== undefined ? progress.gems : 100}
+            </span>
+          </InventoryItemCard>
+
+          <InventoryItemCard>
+            <span className="inv-label">Nyawa (Hearts)</span>
+            <span className="inv-val" style={{ color: "#ef4444" }}>
+              ❤️{" "}
+              {progress.isSuper
+                ? "Tak Terbatas ♾️"
+                : `${progress.hearts !== undefined ? progress.hearts : 7} / 7`}
+            </span>
+          </InventoryItemCard>
+
+          <InventoryItemCard $highlight={progress.isSuper}>
+            <span className="inv-label">Status Membership</span>
+            <span
+              className="inv-val"
+              style={{
+                color: progress.isSuper ? "#a855f7" : "var(--foreground)",
+              }}
+            >
+              {progress.isSuper ? "Super Member 👑" : "Standar 👤"}
+            </span>
+          </InventoryItemCard>
+
+          <InventoryItemCard>
+            <span className="inv-label">Pelindung Streak</span>
+            <span className="inv-val" style={{ color: "#10b981" }}>
+              {progress.hasStreakFreeze ? "Freeze 🛡️" : "Belum Ada ⚪"}
+            </span>
+          </InventoryItemCard>
+
+          <InventoryItemCard>
+            <span className="inv-label">Misi Selesai</span>
+            <span className="inv-val" style={{ color: "#eab308" }}>
+              🎁 {(progress.claimedQuests || []).length} Klaim
+            </span>
+          </InventoryItemCard>
+        </InventoryGrid>
+
+        {/* 4. Duolingo Style Pencapaian */}
+        <SectionTitle>Pencapaian & Quests</SectionTitle>
+        <AchievementsStackCard>
+          <AchievementRow>
+            <LevelBadgeBox $bg="linear-gradient(135deg, #ef4444 0%, #dc2626 100%)">
+              <span className="main-icon">🔥</span>
+              <span className="level-tag">LEVEL 9</span>
+            </LevelBadgeBox>
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.35rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "0.95rem",
+                  fontWeight: 800,
+                }}
+              >
+                <span>Membara</span>
+                <span style={{ color: "var(--text-secondary)" }}>
+                  {progress.streak || 0}/250
+                </span>
+              </div>
+              <YellowProgressTrack>
+                <YellowProgressFill
+                  $pct={((progress.streak || 0) / 250) * 100}
+                />
+              </YellowProgressTrack>
+              <span
+                style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+              >
+                Capai runtunan 250 hari
+              </span>
+            </div>
+          </AchievementRow>
+
+          <AchievementRow>
+            <LevelBadgeBox $bg="linear-gradient(135deg, #22c55e 0%, #16a34a 100%)">
+              <span className="main-icon">🧙‍♂️</span>
+              <span className="level-tag">LEVEL 10</span>
+            </LevelBadgeBox>
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.35rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "0.95rem",
+                  fontWeight: 800,
+                }}
+              >
+                <span>Orang Bijak</span>
+                <span style={{ color: "var(--text-secondary)" }}>
+                  {progress.exp || 0}/30000
+                </span>
+              </div>
+              <YellowProgressTrack>
+                <YellowProgressFill
+                  $pct={((progress.exp || 0) / 30000) * 100}
+                />
+              </YellowProgressTrack>
+              <span
+                style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+              >
+                Dapatkan 30000 XP
+              </span>
+            </div>
+          </AchievementRow>
+
+          <AchievementRow>
+            <LevelBadgeBox $bg="linear-gradient(135deg, #eab308 0%, #ca8a04 100%)">
+              <span className="main-icon">🪶</span>
+              <span className="level-tag">LEVEL 10</span>
+            </LevelBadgeBox>
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.35rem",
+              }}
+            >
+              <div style={{ fontSize: "0.95rem", fontWeight: 800 }}>Juara</div>
+              <span
+                style={{
+                  fontSize: "0.8rem",
+                  color: "var(--foreground)",
+                  fontWeight: 600,
+                }}
+              >
+                Kamu maju ke Liga Berlian
+              </span>
+            </div>
+          </AchievementRow>
+        </AchievementsStackCard>
+
+        <AchievementGrid
+          ref={achievementsScrollRef}
+          $isDragging={isAchievementsDragging}
+          onMouseDown={handleAchievementsMouseDown}
+          onMouseLeave={handleAchievementsMouseLeave}
+          onMouseUp={handleAchievementsMouseUp}
+          onMouseMove={handleAchievementsMouseMove}
+        >
+          {achievementsList.map((a) => (
+            <AchievementCard
+              key={a.id}
+              $unlocked={a.unlocked}
+              title={a.unlocked ? "Unlocked!" : "Keep studying to unlock"}
+            >
+              <div className="icon-wrap">{a.icon}</div>
+              <h3>{a.title}</h3>
+              <p>{a.desc}</p>
+            </AchievementCard>
+          ))}
+        </AchievementGrid>
+
+        {/* 5. SRS Stage Distribution & Grammar Overall Progress */}
+        <SectionTitle>SRS Stage Distribution & Grammar Progress</SectionTitle>
+        <GridTwoCol>
+          <Card>
+            <div
+              style={{
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                color: "var(--text-secondary)",
+                textTransform: "uppercase",
+                marginBottom: "0.85rem",
+              }}
+            >
+              SRS Stage Distribution
+            </div>
+            <MultiProgressBar>
+              <ProgressSegment $width={srsStats.learning} $color="#94a3b8" />
+              <ProgressSegment $width={srsStats.guru} $color="#10b981" />
+              <ProgressSegment $width={srsStats.master} $color="#3b82f6" />
+              <ProgressSegment
+                $width={srsStats.enlightened}
+                $color="#8b5cf6"
+              />
+              <ProgressSegment $width={srsStats.burned} $color="#f43f5e" />
+            </MultiProgressBar>
+            <SRSLegend>
+              <LegendItem $color="#94a3b8">
+                Learning: {srsStats.counts.learning}
+              </LegendItem>
+              <LegendItem $color="#10b981">
+                Guru: {srsStats.counts.guru}
+              </LegendItem>
+              <LegendItem $color="#3b82f6">
+                Master: {srsStats.counts.master}
+              </LegendItem>
+              <LegendItem $color="#8b5cf6">
+                Enlightened: {srsStats.counts.enlightened}
+              </LegendItem>
+              <LegendItem $color="#f43f5e">
+                Burned: {srsStats.counts.burned}
+              </LegendItem>
+            </SRSLegend>
+          </Card>
+
+          <Card>
+            <div
+              style={{
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                color: "var(--text-secondary)",
+                textTransform: "uppercase",
+              }}
+            >
+              Grammar Overall Progress
+            </div>
+            <div
+              style={{
+                fontSize: "1.5rem",
+                fontWeight: 900,
+                margin: "0.35rem 0",
+              }}
+            >
+              {completedGrammarLessonsCount}{" "}
+              <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+                / {grammarLessons.length} lessons
+              </span>
+            </div>
+            <LevelProgressBar>
+              <ProgressBarFill $width={grammarProgressPct} />
+            </LevelProgressBar>
+            <div
+              style={{
+                fontSize: "0.8rem",
+                color: "var(--text-secondary)",
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: "0.35rem",
+              }}
+            >
+              <span>
+                {completedGrammarSectionsCount} / {totalSections} sections
+              </span>
+              <span>{grammarProgressPct}% completed</span>
+            </div>
+          </Card>
+        </GridTwoCol>
+
+        {/* 6. Items to Focus On (Weak Points) */}
+        <SectionTitle>Items to Focus On (Weak Points)</SectionTitle>
+        <GridTwoCol style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+          {weakPoints.map(([char, m]) => (
+            <ActivityItemCard key={char}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                <div style={{ fontSize: "1.2rem", fontWeight: 800 }}>{char}</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                  {m.incorrect} errors
+                </div>
+              </div>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  fontWeight: 800,
+                  color: "#ef4444",
+                  background: "rgba(239, 68, 68, 0.1)",
+                  padding: "0.25rem 0.6rem",
+                  borderRadius: "6px",
+                }}
+              >
+                {Math.round(
+                  ((m.correct || 0) /
+                    ((m.correct || 0) + (m.incorrect || 0))) *
+                    100,
+                )}
+                % Acc
+              </div>
+            </ActivityItemCard>
+          ))}
+          {weakPoints.length === 0 && (
+            <Card style={{ gridColumn: "1 / -1", textAlign: "center", padding: "1.5rem" }}>
+              <span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+                No weak points detected yet. Keep up the great work!
+              </span>
+            </Card>
+          )}
+        </GridTwoCol>
+
+        {/* 7. Recent Activity Log */}
+        <SectionTitle>Recent Activity Log</SectionTitle>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          {(progress.quizHistory || []).length === 0 ? (
+            <Card style={{ textAlign: "center", padding: "1.5rem" }}>
+              <span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+                No recent quiz activity found. Start a quiz to see your history!
+              </span>
+            </Card>
+          ) : (
+            (progress.quizHistory || []).slice(0, 5).map((item, i) => {
+              const date = new Date(item.date).toLocaleDateString("en-US", {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+              const percent = Math.round((item.score / item.total) * 100);
+              return (
+                <ActivityItemCard key={i}>
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>
+                      {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{" "}
+                      Quiz
+                    </div>
+                    <div
+                      style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+                    >
+                      {date}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      fontWeight: 800,
+                      fontSize: "0.9rem",
+                      color: percent === 100 ? "#10b981" : "var(--primary)",
+                      background:
+                        percent === 100
+                          ? "rgba(16, 185, 129, 0.1)"
+                          : "rgba(var(--primary-rgb, 79, 70, 229), 0.1)",
+                      padding: "0.35rem 0.75rem",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    {item.score}/{item.total} ({percent}%)
+                  </div>
+                </ActivityItemCard>
+              );
+            })
+          )}
+        </div>
+
+        {/* 8. Account Settings & Data Management */}
+        <SectionTitle>Account Settings & Data Management</SectionTitle>
+        <GridTwoCol>
+          <Card
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <div style={{ fontWeight: 800, fontSize: "1rem" }}>
+                Display Name & Profile
+              </div>
+              <div
+                style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}
+              >
+                Customize your display name and avatar
+              </div>
+            </div>
+            <Link href="/profile/edit" style={{ textDecoration: "none" }}>
+              <button
+                style={{
+                  background: "rgba(59, 130, 246, 0.12)",
+                  color: "#3b82f6",
+                  border: "1px solid rgba(59, 130, 246, 0.3)",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "10px",
+                  fontWeight: 800,
+                  fontSize: "0.85rem",
+                  cursor: "pointer",
+                }}
+              >
+                Edit Profile
+              </button>
+            </Link>
+          </Card>
+
+          <Card
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div>
+              <div style={{ fontWeight: 800, fontSize: "1rem" }}>
+                Reset All Progress Data
+              </div>
+              <div
+                style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}
+              >
+                Clear local storage and start fresh
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                if (
+                  confirm(
+                    "Are you sure you want to reset all progress? This action cannot be undone.",
+                  )
+                ) {
+                  localStorage.clear();
+                  window.location.reload();
+                }
+              }}
+              style={{
+                background: "rgba(239, 68, 68, 0.12)",
+                color: "#ef4444",
+                border: "1px solid rgba(239, 68, 68, 0.3)",
+                padding: "0.5rem 1rem",
+                borderRadius: "10px",
+                fontWeight: 800,
+                fontSize: "0.85rem",
+                cursor: "pointer",
+              }}
+            >
+              Reset Data 🗑️
+            </button>
+          </Card>
+        </GridTwoCol>
+      </BottomSection>
+
+      {/* Leaderboard Modal */}
+      {showLeaderboardModal && (
+        <LeaderboardModal onClose={() => setShowLeaderboardModal(false)} />
+      )}
     </PageWrapper>
   );
 }
