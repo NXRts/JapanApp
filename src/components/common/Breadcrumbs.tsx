@@ -4,7 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 
-const Nav = styled.nav`
+const Nav = styled.nav<{ $showOnDesktop?: boolean }>`
   display: flex;
   align-items: center;
   gap: 6px;
@@ -16,6 +16,11 @@ const Nav = styled.nav`
 
   /* Layout alignment - stays left even in centered containers */
   justify-content: flex-start;
+
+  /* Hide in-page breadcrumbs on PC/Desktop view where TopBar breadcrumb is active */
+  @media (min-width: 1101px) {
+    display: ${({ $showOnDesktop }) => ($showOnDesktop ? "flex" : "none")};
+  }
 
   @media (max-width: 768px) {
     font-size: 0.75rem;
@@ -49,12 +54,13 @@ interface BreadcrumbItem {
 interface BreadcrumbsProps {
   items?: BreadcrumbItem[];
   current: string;
+  showOnDesktop?: boolean;
 }
 
-export function Breadcrumbs({ items = [], current }: BreadcrumbsProps) {
+export function Breadcrumbs({ items = [], current, showOnDesktop = false }: BreadcrumbsProps) {
   return (
-    <Nav aria-label="Breadcrumb">
-      {items.map((item, index) => (
+    <Nav aria-label="Breadcrumb" $showOnDesktop={showOnDesktop}>
+      {items.map((item) => (
         <React.Fragment key={item.href}>
           <CrumbLink href={item.href}>{item.label}</CrumbLink>
           <Separator className="separator">/</Separator>
