@@ -498,29 +498,7 @@ export default function DevelopmentPage() {
         </StatCard>
       </StatsRow>
 
-      {/* Flagship Feature: Profil User 2.0 */}
-      <FlagshipCard style={{ background: "linear-gradient(135deg, rgba(108, 99, 245, 0.16) 0%, rgba(139, 124, 255, 0.18) 100%)", borderColor: "rgba(108, 99, 245, 0.4)" }}>
-        <FlagshipBadge style={{ background: "#6c63f5" }}>Desain Baru • Profile Dashboard 2.0 👑</FlagshipBadge>
-        <FlagshipContent>
-          <FlagshipInfo>
-            <h2>👤 Profil User 2.0 (Nihondex Concept)</h2>
-            <p>
-              Halaman profil pengguna baru bernuansa futuristik dengan Heatmap Aktivitas 192-sel, analisis JLPT N5–N1, statistik streak & ulasan Kana, serta grafik perkembangan latihan SVG interaktif.
-            </p>
 
-            <FeaturePillGrid>
-              <FeaturePill>🔥 Streak & Activity Heatmap 192-Sel</FeaturePill>
-              <FeaturePill>📊 Analytics SVG Chart Over Time</FeaturePill>
-              <FeaturePill>🏆 Rapor Kemajuan 5 Level JLPT</FeaturePill>
-              <FeaturePill>⛩️ Status Kana & Step 1 Foundation</FeaturePill>
-            </FeaturePillGrid>
-
-            <PrimaryCTAButton href="/development/profile2" style={{ background: "linear-gradient(135deg, #6c63f5 0%, #8b7cff 100%)" }}>
-              👤 Lihat Halaman Profile 2.0
-            </PrimaryCTAButton>
-          </FlagshipInfo>
-        </FlagshipContent>
-      </FlagshipCard>
 
       {/* Flagship Feature: Kanji Kaiwa Studio */}
       <FlagshipCard style={{ background: "linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.18) 100%)", borderColor: "rgba(99, 102, 241, 0.4)" }}>
