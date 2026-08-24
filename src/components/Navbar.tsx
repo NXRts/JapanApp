@@ -3,10 +3,11 @@
 import { FloatingDock } from "@/components/mobile/FloatingDock";
 import { useDeviceMode } from "@/context/DeviceModeContext";
 import { useProgress } from "@/context/ProgressContext";
+import { useNotifications } from "@/context/NotificationContext";
 import { isItemDue } from "@/lib/srs";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { createGlobalStyle, css } from "styled-components";
 import { UserIcon } from "./icons/AppIcons";
@@ -193,29 +194,43 @@ const HeaderIconButton = styled.button<{ $active?: boolean }>`
   }
 `;
 
-const NotificationBadgeDot = styled.span`
+const NotificationBadgeDot = styled.span<{ $count?: number }>`
   position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+  top: 4px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 99px;
   background: #ef4444;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
   border: 2px solid var(--surface);
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
 `;
 
 const NotificationPopover = styled.div`
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   right: 0;
-  width: 300px;
+  width: 360px;
+  max-width: calc(100vw - 24px);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
-  padding: 1rem;
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  padding: 1.1rem;
   z-index: 1000;
   font-family: "Nunito", "Outfit", sans-serif;
+
+  @media (max-width: 480px) {
+    width: 315px;
+    right: -20px;
+  }
 `;
 
 const NotificationHeader = styled.div`
@@ -229,26 +244,141 @@ const NotificationHeader = styled.div`
   h4 {
     margin: 0;
     font-size: 0.88rem;
-    font-weight: 800;
+    font-weight: 850;
     color: var(--foreground);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mark-btn {
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    font-size: 0.75rem;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(var(--primary-rgb, 79, 70, 229), 0.12);
+    }
+  }
+`;
+
+const FilterChipsRow = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border);
+  padding: 3px;
+  border-radius: 10px;
+  margin-bottom: 0.85rem;
+`;
+
+const FilterChip = styled.button<{ $active: boolean }>`
+  background: ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
+  border: none;
+  border-radius: 7px;
+  padding: 5px 0;
+  font-size: 0.7rem;
+  font-weight: 850;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--foreground);
+    background: ${({ $active }) =>
+      $active ? "var(--primary)" : "rgba(255, 255, 255, 0.08)"};
   }
 `;
 
 const NotificationList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px 4px 4px 2px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+  }
 `;
 
-const NotificationItem = styled.div`
+const NotificationItem = styled.div<{ $unread?: boolean }>`
   display: flex;
-  gap: 0.6rem;
-  padding: 0.5rem 0.6rem;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border);
-  font-size: 0.78rem;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 14px;
+  background: ${({ $unread }) =>
+    $unread
+      ? "linear-gradient(135deg, rgba(var(--primary-rgb, 79, 70, 229), 0.12) 0%, rgba(var(--primary-rgb, 79, 70, 229), 0.04) 100%)"
+      : "rgba(255, 255, 255, 0.02)"};
+  border: 1px solid
+    ${({ $unread }) =>
+      $unread ? "rgba(var(--primary-rgb, 79, 70, 229), 0.35)" : "var(--border)"};
+  font-size: 0.8rem;
   color: var(--foreground);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 14px rgba(var(--primary-rgb, 79, 70, 229), 0.2);
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.16);
+  }
+
+  .notif-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+  }
+
+  .notif-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+
+    .notif-title {
+      font-weight: 850;
+      font-size: 0.83rem;
+      color: var(--foreground);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .notif-desc {
+      font-size: 0.77rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+  }
 `;
 
 const AppTopLeftGroup = styled.div`
@@ -1677,6 +1807,15 @@ function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
 
 export function Navbar() {
   const pathname = usePathname() || "";
+  const router = useRouter();
+
+  const { notifications, unreadCount, markAsRead, markAllAsRead, clearAll, sendTestNotification } = useNotifications();
+  const [notifFilter, setNotifFilter] = useState<"all" | "streak" | "quest" | "srs" | "league">("all");
+
+  const filteredNotifications = useMemo(() => {
+    if (notifFilter === "all") return notifications;
+    return notifications.filter((n) => n.type === notifFilter);
+  }, [notifications, notifFilter]);
 
   const [isDictionaryOpen, setIsDictionaryOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -2152,7 +2291,7 @@ export function Navbar() {
                     </svg>
                   </HeaderIconButton>
 
-                  <div style={{ position: "relative" }}>
+                  <div style={{ position: "relative" }} ref={notificationsRef}>
                     <HeaderIconButton
                       $active={isNotificationsOpen}
                       onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
@@ -2169,32 +2308,92 @@ export function Navbar() {
                         <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
                         <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
                       </svg>
-                      <NotificationBadgeDot />
+                      {unreadCount > 0 && <NotificationBadgeDot>{unreadCount}</NotificationBadgeDot>}
                     </HeaderIconButton>
 
                     {isNotificationsOpen && (
                       <NotificationPopover>
                         <NotificationHeader>
                           <h4>🔔 Notifikasi & Update</h4>
+                          {unreadCount > 0 && (
+                            <button className="mark-btn" onClick={markAllAsRead}>
+                              Tandai Dibaca
+                            </button>
+                          )}
                         </NotificationHeader>
+
+                        {/* 
+                        <FilterChipsRow>
+                          <FilterChip $active={notifFilter === "all"} onClick={() => setNotifFilter("all")}>
+                            Semua
+                          </FilterChip>
+                          <FilterChip $active={notifFilter === "streak"} onClick={() => setNotifFilter("streak")}>
+                            🔥 Streak
+                          </FilterChip>
+                          <FilterChip $active={notifFilter === "quest"} onClick={() => setNotifFilter("quest")}>
+                            💎 Misi
+                          </FilterChip>
+                          <FilterChip $active={notifFilter === "srs"} onClick={() => setNotifFilter("srs")}>
+                            🧠 Belajar
+                          </FilterChip>
+                          <FilterChip $active={notifFilter === "league"} onClick={() => setNotifFilter("league")}>
+                            🏆 Liga
+                          </FilterChip>
+                        </FilterChipsRow>
+                        */}
+
                         <NotificationList>
-                          <NotificationItem>
-                            <span>🔥</span>
-                            <div>
-                              <strong>Streak Pertahankan!</strong>
-                              <br />
-                              Lanjutkan latihan hari ini untuk mempertahankan streak kamu.
+                          {filteredNotifications.length === 0 ? (
+                            <div style={{ textAlign: "center", padding: "1.25rem 0", color: "var(--text-secondary)", fontSize: "0.78rem" }}>
+                              Tidak ada notifikasi saat ini ✨
                             </div>
-                          </NotificationItem>
-                          <NotificationItem>
-                            <span>💎</span>
-                            <div>
-                              <strong>Bonus Daily Quest!</strong>
-                              <br />
-                              Selesaikan 3 misi harian untuk mendapatkan 20 permata.
-                            </div>
-                          </NotificationItem>
+                          ) : (
+                            filteredNotifications.map((notif) => (
+                              <NotificationItem
+                                key={notif.id}
+                                $unread={!notif.read}
+                                onClick={() => {
+                                  markAsRead(notif.id);
+                                  if (notif.actionUrl) {
+                                    setIsNotificationsOpen(false);
+                                    router.push(notif.actionUrl);
+                                  }
+                                }}
+                              >
+                                <span className="notif-avatar">{notif.icon || "🔔"}</span>
+                                <div className="notif-content">
+                                  <div className="notif-title">
+                                    <span>{notif.title}</span>
+                                    {!notif.read && (
+                                      <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--primary)", flexShrink: 0 }} />
+                                    )}
+                                  </div>
+                                  <div className="notif-desc">{notif.message}</div>
+                                </div>
+                              </NotificationItem>
+                            ))
+                          )}
                         </NotificationList>
+
+                        <div style={{ marginTop: "0.75rem", paddingTop: "0.5rem", borderTop: "1px solid var(--border)", textAlign: "center" }}>
+                          <button
+                            onClick={sendTestNotification}
+                            style={{
+                              background: "rgba(var(--primary-rgb, 79, 70, 229), 0.12)",
+                              color: "var(--primary)",
+                              border: "1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.3)",
+                              borderRadius: "8px",
+                              padding: "6px 12px",
+                              fontSize: "0.76rem",
+                              fontWeight: "800",
+                              cursor: "pointer",
+                              width: "100%",
+                              transition: "all 0.15s ease",
+                            }}
+                          >
+                            🧪 Test
+                          </button>
+                        </div>
                       </NotificationPopover>
                     )}
                   </div>

@@ -11,6 +11,7 @@ import {
 import { useProgress } from "@/context/ProgressContext";
 import { useDeviceMode } from "@/context/DeviceModeContext";
 import { useLessonLanguage } from "@/context/LessonLanguageContext";
+import { useNotifications } from "@/context/NotificationContext";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -687,8 +688,16 @@ export default function SettingsPage() {
 
   // Tab State
   const [activeTab, setActiveTab] = useState<
-    "account" | "appearance" | "preferences" | "learning"
+    "account" | "notifications" | "appearance" | "preferences" | "learning"
   >("account");
+
+  const {
+    settings: notifSettings,
+    updateSettings: updateNotifSettings,
+    requestPermission: reqNotifPermission,
+    permission: notifPermission,
+    sendTestNotification,
+  } = useNotifications();
 
   // Form States (Simulasi)
   const [username, setUsername] = useState("japan_learner");
@@ -763,6 +772,23 @@ export default function SettingsPage() {
               </svg>
               <span className="text-desktop">Akun & Fitur</span>
               <span className="text-mobile">Akun</span>
+            </TabButton>
+
+            <TabButton
+              $active={activeTab === "notifications"}
+              onClick={() => setActiveTab("notifications")}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+              <span className="text-desktop">Notifikasi & Reminders</span>
+              <span className="text-mobile">Notif</span>
             </TabButton>
             <TabButton
               $active={activeTab === "appearance"}
@@ -931,6 +957,121 @@ export default function SettingsPage() {
                         />
                       </ToggleRow>
                     </ToggleList>
+                  </div>
+                </FormGrid>
+              </>
+            )}
+
+            {activeTab === "notifications" && (
+              <>
+                <TabHeader>
+                  <h2>Notifikasi & Reminders PWA</h2>
+                  <p>
+                    Atur pengingat harian, peringatan streak bahaya, serta perizinan notifikasi push browser.
+                  </p>
+                </TabHeader>
+
+                <FormGrid>
+                  <FormGroup>
+                    <label>Perizinan Notifikasi System / PWA</label>
+                    <SubDescription>
+                      Status Izin Browser saat ini:{" "}
+                      <strong style={{ color: notifPermission === "granted" ? "#10b981" : "#f59e0b" }}>
+                        {notifPermission === "granted" ? "✅ Diizinkan (Granted)" : "⚠️ Belum Diizinkan"}
+                      </strong>
+                    </SubDescription>
+
+                    {notifPermission !== "granted" && (
+                      <SaveButton
+                        type="button"
+                        style={{ marginTop: "0.5rem", background: "linear-gradient(135deg, #10b981 0%, #059669 100%)" }}
+                        onClick={async () => {
+                          const ok = await reqNotifPermission();
+                          if (ok) triggerToast("Izin notifikasi browser berhasil diberikan! 🔔");
+                          else triggerToast("Izin notifikasi ditolak oleh browser.");
+                        }}
+                      >
+                        🔔 Izinkan Notifikasi Browser
+                      </SaveButton>
+                    )}
+                  </FormGroup>
+
+                  <FormGroup>
+                    <label htmlFor="reminderTime">⏰ Jam Pengingat Harian (Daily Reminder Time)</label>
+                    <SubDescription>Tentukan jam favorit Anda untuk diingatkan latihan Jepang setiap hari.</SubDescription>
+                    <FormInput
+                      id="reminderTime"
+                      type="time"
+                      value={notifSettings.dailyReminderTime}
+                      onChange={(e) => {
+                        updateNotifSettings({ dailyReminderTime: e.target.value });
+                        triggerToast(`Jam pengingat diubah ke ${e.target.value} ⏰`);
+                      }}
+                      style={{ maxWidth: "200px" }}
+                    />
+                  </FormGroup>
+
+                  <div>
+                    <SectionTitle>Pilihan Pengingat & Alert</SectionTitle>
+                    <ToggleList>
+                      <ToggleRow>
+                        <ToggleInfo>
+                          <span className="title">🔥 Peringatan Streak Dalam Bahaya</span>
+                          <span className="desc">
+                            Terima notifikasi peringatan menjelang malam jika Anda belum latihan hari ini.
+                          </span>
+                        </ToggleInfo>
+                        <SwitchButton
+                          $checked={notifSettings.streakDangerAlert}
+                          onClick={() => updateNotifSettings({ streakDangerAlert: !notifSettings.streakDangerAlert })}
+                        />
+                      </ToggleRow>
+
+                      <ToggleRow>
+                        <ToggleInfo>
+                          <span className="title">🧠 Pengingat SRS & Belajar</span>
+                          <span className="desc">Dapatkan notifikasi saat item memori jangka panjang siap diulas.</span>
+                        </ToggleInfo>
+                        <SwitchButton
+                          $checked={notifSettings.srsReminder}
+                          onClick={() => updateNotifSettings({ srsReminder: !notifSettings.srsReminder })}
+                        />
+                      </ToggleRow>
+
+                      <ToggleRow>
+                        <ToggleInfo>
+                          <span className="title">💎 Pengingat Daily Quest & Bonus</span>
+                          <span className="desc">Ingatkan bila ada misi harian yang belum diklaim.</span>
+                        </ToggleInfo>
+                        <SwitchButton
+                          $checked={notifSettings.questReminders}
+                          onClick={() => updateNotifSettings({ questReminders: !notifSettings.questReminders })}
+                        />
+                      </ToggleRow>
+
+                      <ToggleRow>
+                        <ToggleInfo>
+                          <span className="title">🏆 Update Peringkat & Liga</span>
+                          <span className="desc">Notifikasi saat posisi peringkat Anda berubah atau terancam turun liga.</span>
+                        </ToggleInfo>
+                        <SwitchButton
+                          $checked={notifSettings.leagueUpdates}
+                          onClick={() => updateNotifSettings({ leagueUpdates: !notifSettings.leagueUpdates })}
+                        />
+                      </ToggleRow>
+                    </ToggleList>
+                  </div>
+
+                  <div style={{ marginTop: "1rem" }}>
+                    <SaveButton
+                      type="button"
+                      onClick={() => {
+                        sendTestNotification();
+                        triggerToast("Notifikasi tes terkirim! Cek ikon bel TopBar & Notifikasi OS ✨");
+                      }}
+                    >
+                      🧪 Kirim Tes Notifikasi System
+                    </SaveButton>
                   </div>
                 </FormGrid>
               </>

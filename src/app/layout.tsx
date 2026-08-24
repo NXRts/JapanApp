@@ -78,6 +78,7 @@ export const metadata: Metadata = {
 };
 
 import { ProgressProvider } from "@/context/ProgressContext";
+import { NotificationProvider } from "@/context/NotificationContext";
 import { DeviceModeProvider } from "@/context/DeviceModeContext";
 import { SakuraBackground } from "@/components/common/SakuraBackground";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -106,29 +107,31 @@ export default function RootLayout({
         <ThemeProvider>
           <DeviceModeProvider>
             <ProgressProvider>
-              <LessonLanguageProvider>
-                <ErrorBoundary>
-                  <StyledRegistry>
-                    <NavigationScrollToTop />
-                    <SplashLoader />
-                    <SakuraBackground />
-                    <Navbar />
-                    <main
-                      style={{
-                        flex: 1,
-                        position: "relative",
-                        display: "flex",
-                        flexDirection: "column",
-                      }}
-                    >
-                      {children}
-                    </main>
-                    <Footer />
-                    <ScrollToTop />
-                    <OnboardingOverlay />
-                  </StyledRegistry>
-                </ErrorBoundary>
-              </LessonLanguageProvider>
+              <NotificationProvider>
+                <LessonLanguageProvider>
+                  <ErrorBoundary>
+                    <StyledRegistry>
+                      <NavigationScrollToTop />
+                      <SplashLoader />
+                      <SakuraBackground />
+                      <Navbar />
+                      <main
+                        style={{
+                          flex: 1,
+                          position: "relative",
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        {children}
+                      </main>
+                      <Footer />
+                      <ScrollToTop />
+                      <OnboardingOverlay />
+                    </StyledRegistry>
+                  </ErrorBoundary>
+                </LessonLanguageProvider>
+              </NotificationProvider>
             </ProgressProvider>
           </DeviceModeProvider>
         </ThemeProvider>
