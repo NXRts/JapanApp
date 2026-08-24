@@ -1339,31 +1339,44 @@ const conjForms = [
   { id: "imperative", title: "Imperative (command)", attempts: 0 },
 ];
 
-/* ─── BOTTOM FULL WIDTH SECTION STYLED COMPONENTS ────────────────────────── */
+/* ─── BOTTOM FULL WIDTH SECTION STYLED COMPONENTS (PROFILE 2.0 THEME) ─────── */
 const BottomSection = styled.div`
   max-width: 1300px;
-  margin: 2rem auto 0;
+  margin: 2.5rem auto 0;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.75rem;
   width: 100%;
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 850;
   color: var(--foreground);
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
+  letter-spacing: -0.01em;
+
+  .tag-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.15);
+    border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.3);
+    font-size: 14px;
+  }
 
   &::before {
     content: "";
     width: 4px;
-    height: 1.2rem;
-    background: var(--primary);
-    border-radius: 2px;
+    height: 1.15rem;
+    background: linear-gradient(180deg, var(--primary) 0%, #8b5cf6 100%);
+    border-radius: 3px;
   }
 `;
 
@@ -1381,6 +1394,17 @@ const GoalCard = styled(Card)`
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.35rem 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(var(--primary-rgb, 79, 70, 229), 0.4);
+    transform: translateY(-2px);
+  }
 `;
 
 const GoalHeader = styled.div`
@@ -1390,14 +1414,14 @@ const GoalHeader = styled.div`
 
   h3 {
     font-size: 1.05rem;
-    font-weight: 800;
+    font-weight: 850;
     margin: 0;
     color: var(--foreground);
   }
 
   span {
     font-size: 0.88rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--primary);
   }
 `;
@@ -1406,31 +1430,35 @@ const LevelProgressBar = styled.div`
   width: 100%;
   height: 10px;
   background: rgba(var(--foreground-rgb, 255, 255, 255), 0.08);
-  border-radius: 6px;
+  border-radius: 999px;
   overflow: hidden;
 `;
 
 const ProgressBarFill = styled.div<{ $width: number }>`
   height: 100%;
   width: ${({ $width }) => Math.min(100, Math.max(0, $width))}%;
-  background: linear-gradient(90deg, var(--primary) 0%, #8b5cf6 100%);
-  border-radius: 6px;
+  background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%);
+  border-radius: 999px;
   transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
 `;
 
 const LeagueCard = styled(Card)`
-  padding: 1.25rem 1.5rem;
+  padding: 1.35rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   cursor: pointer;
-  border: 1px solid var(--border);
-  transition: transform 0.2s, border-color 0.2s;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+  border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.25);
+  border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     border-color: var(--primary);
+    box-shadow: 0 8px 30px rgba(var(--primary-rgb, 79, 70, 229), 0.3);
   }
 `;
 
@@ -1445,24 +1473,35 @@ const InventoryGrid = styled.div`
 `;
 
 const InventoryItemCard = styled(Card)<{ $highlight?: boolean }>`
-  padding: 1rem 1.25rem;
+  padding: 1.1rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.4rem;
   background: ${({ $highlight }) =>
-    $highlight ? "rgba(168, 85, 247, 0.12)" : "var(--surface)"};
-  border-color: ${({ $highlight }) =>
-    $highlight ? "rgba(168, 85, 247, 0.4)" : "var(--border)"};
+    $highlight
+      ? "linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(147, 51, 234, 0.08))"
+      : "var(--surface)"};
+  border: 1px solid
+    ${({ $highlight }) =>
+      $highlight ? "rgba(168, 85, 247, 0.4)" : "var(--border)"};
+  border-radius: 18px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
 
   .inv-label {
-    font-size: 0.78rem;
-    font-weight: 700;
+    font-size: 0.76rem;
+    font-weight: 800;
     color: var(--text-secondary);
     text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 
   .inv-val {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 900;
     color: var(--foreground);
   }
@@ -1471,14 +1510,18 @@ const InventoryItemCard = styled(Card)<{ $highlight?: boolean }>`
 const AchievementsStackCard = styled(Card)`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.35rem 1.5rem;
 `;
 
 const AchievementRow = styled.div`
   display: flex;
   align-items: center;
   gap: 1.25rem;
-  padding-bottom: 1rem;
+  padding-bottom: 1.1rem;
   border-bottom: 1px solid var(--border);
 
   &:last-child {
@@ -1488,8 +1531,8 @@ const AchievementRow = styled.div`
 `;
 
 const LevelBadgeBox = styled.div<{ $bg: string }>`
-  width: 60px;
-  height: 60px;
+  width: 58px;
+  height: 58px;
   background: ${({ $bg }) => $bg};
   border-radius: 16px;
   display: flex;
@@ -1497,20 +1540,21 @@ const LevelBadgeBox = styled.div<{ $bg: string }>`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 
   .main-icon {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 
   .level-tag {
-    font-size: 0.58rem;
+    font-size: 0.56rem;
     font-weight: 900;
     color: white;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.45);
     padding: 0.1rem 0.35rem;
     border-radius: 4px;
     text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 `;
 
@@ -1544,14 +1588,21 @@ const AchievementGrid = styled.div<{ $isDragging?: boolean }>`
 `;
 
 const AchievementCard = styled(Card)<{ $unlocked: boolean }>`
-  min-width: 140px;
+  min-width: 145px;
   text-align: center;
   opacity: ${({ $unlocked }) => ($unlocked ? 1 : 0.45)};
   filter: ${({ $unlocked }) => ($unlocked ? "none" : "grayscale(80%)")};
   flex-shrink: 0;
+  border-radius: 18px;
+  padding: 1.1rem;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: ${({ $unlocked }) => ($unlocked ? "translateY(-2px)" : "none")};
+  }
 
   .icon-wrap {
-    font-size: 2rem;
+    font-size: 2.1rem;
     margin-bottom: 0.4rem;
     color: ${({ $unlocked }) =>
       $unlocked ? "var(--primary)" : "var(--text-secondary)"};
@@ -1559,12 +1610,12 @@ const AchievementCard = styled(Card)<{ $unlocked: boolean }>`
 
   h3 {
     font-size: 0.9rem;
-    font-weight: 750;
+    font-weight: 800;
     margin-bottom: 0.2rem;
   }
 
   p {
-    font-size: 0.75rem;
+    font-size: 0.74rem;
     color: var(--text-secondary);
     margin: 0;
   }
@@ -1597,9 +1648,9 @@ const SRSLegend = styled.div`
 const LegendItem = styled.div<{ $color: string }>`
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.45rem;
   color: var(--text-secondary);
-  font-weight: 600;
+  font-weight: 700;
 
   &::before {
     content: "";
@@ -1611,18 +1662,57 @@ const LegendItem = styled.div<{ $color: string }>`
 `;
 
 const ActivityItemCard = styled(Card)`
-  padding: 1rem 1.25rem;
+  padding: 1.1rem 1.25rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  border-radius: 16px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(var(--primary-rgb, 79, 70, 229), 0.3);
+  }
 `;
 
 /* ─── MAIN PROFILE 2.0 PAGE COMPONENT ────────────────────────────────────── */
+const OthersPanel = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  width: 100%;
+  animation: ${fadeIn} 0.3s ease-out;
+
+  .others-panel-head {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(234, 179, 8, 0.12);
+    color: #eab308;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+    padding: 6px 14px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  .block-title {
+    font-size: 1rem;
+    font-weight: 850;
+    color: var(--foreground);
+    margin: 0 0 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+`;
+
 export default function Profile2Page() {
   const { progress, checkStreak } = useProgress();
   const [activeTab, setActiveTab] = useState<
-    "kana" | "vocab" | "grammar" | "conj"
+    "kana" | "vocab" | "grammar" | "conj" | "others"
   >("kana");
   const [showDiscord, setShowDiscord] = useState(true);
   const [showLeaderboardModal, setShowLeaderboardModal] = useState(false);
@@ -2558,6 +2648,12 @@ export default function Profile2Page() {
             >
               Conjugation
             </TabItem>
+            <TabItem
+              $active={activeTab === "others"}
+              onClick={() => setActiveTab("others")}
+            >
+              Lainnya
+            </TabItem>
           </TabsBar>
 
           {/* Kana Panel */}
@@ -3327,580 +3423,622 @@ export default function Profile2Page() {
               </Link>
             </ConjPanel>
           )}
-        </MainContent>
-      </LayoutGrid>
 
-      {/* ─── BOTTOM FULL-WIDTH SECTION (Below Sidebar & MainContent) ─────────── */}
-      <BottomSection>
-        {/* 1. Level Progress & Daily Study Goal Grid */}
-        <GridTwoCol>
-          <GoalCard>
-            <GoalHeader>
-              <h3>Level {level} Progress</h3>
-              <span>
-                {Math.round(progressToNext)}% to Level {level + 1}
-              </span>
-            </GoalHeader>
-            <LevelProgressBar>
-              <ProgressBarFill $width={progressToNext} />
-            </LevelProgressBar>
-            <p
-              style={{
-                margin: 0,
-                fontSize: "0.8rem",
-                color: "var(--text-secondary)",
-              }}
-            >
-              {nextLevelExp - (progress.exp || 0)} EXP needed to reach Level{" "}
-              {level + 1}
-            </p>
-          </GoalCard>
-
-          <GoalCard>
-            <GoalHeader>
-              <h3>Daily Study Goal</h3>
-              <span>
-                {dailyGoalCurrent} / {targetGoal} EXP
-              </span>
-            </GoalHeader>
-            <LevelProgressBar>
-              <ProgressBarFill $width={goalPercent} />
-            </LevelProgressBar>
-            <p
-              style={{
-                margin: 0,
-                fontSize: "0.8rem",
-                color: "var(--text-secondary)",
-              }}
-            >
-              {goalPercent >= 100
-                ? "🎉 Daily goal achieved! You're amazing."
-                : `Only ${targetGoal - dailyGoalCurrent} EXP left to hit your daily target!`}
-            </p>
-          </GoalCard>
-        </GridTwoCol>
-
-        {/* 2. League Status Banner */}
-        <SectionTitle>Status Liga & Peringkat Leaderboard</SectionTitle>
-        <LeagueCard onClick={() => setShowLeaderboardModal(true)}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-            <div
-              style={{
-                width: "52px",
-                height: "52px",
-                borderRadius: "16px",
-                background: leagueInfo.badgeBg,
-                border: `1.5px solid ${leagueInfo.borderColor}`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "1.75rem",
-                position: "relative",
-                flexShrink: 0,
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
-              }}
-            >
-              {leagueInfo.icon}
-              <span
-                style={{
-                  position: "absolute",
-                  bottom: "-3px",
-                  right: "-3px",
-                  width: "18px",
-                  height: "18px",
-                  borderRadius: "50%",
-                  background: rankInfo.color,
-                  color: "white",
-                  fontSize: "0.65rem",
-                  fontWeight: 900,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  border: "2px solid var(--surface)",
-                }}
-              >
-                {rankInfo.zone === "demotion"
-                  ? "!"
-                  : rankInfo.zone === "promotion"
-                  ? "▲"
-                  : "✓"}
-              </span>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <div
-                style={{
-                  fontSize: "1.1rem",
-                  fontWeight: 850,
-                  color: "var(--foreground)",
-                }}
-              >
-                {leagueInfo.name} — Peringkat #{leagueData.rank || 1}
-              </div>
-              <div
-                style={{
-                  fontSize: "0.85rem",
-                  color: "var(--text-secondary)",
-                  fontWeight: 600,
-                }}
-              >
-                {rankInfo.label} • Minggu Ke-{leagueData.weekInLeague || 1}
-              </div>
-            </div>
-          </div>
-
-          <button
-            style={{
-              background: "rgba(59, 130, 246, 0.12)",
-              color: "#3b82f6",
-              border: "1px solid rgba(59, 130, 246, 0.3)",
-              padding: "0.5rem 1rem",
-              borderRadius: "10px",
-              fontWeight: 800,
-              fontSize: "0.85rem",
-              cursor: "pointer",
-            }}
-          >
-            Lihat Liga →
-          </button>
-        </LeagueCard>
-
-        {/* 3. Inventory & Status */}
-        <SectionTitle>Inventory & Status Duolingo</SectionTitle>
-        <InventoryGrid>
-          <InventoryItemCard>
-            <span className="inv-label">Permata (Gems)</span>
-            <span className="inv-val" style={{ color: "#3b82f6" }}>
-              💎 {progress.gems !== undefined ? progress.gems : 100}
-            </span>
-          </InventoryItemCard>
-
-          <InventoryItemCard>
-            <span className="inv-label">Nyawa (Hearts)</span>
-            <span className="inv-val" style={{ color: "#ef4444" }}>
-              ❤️{" "}
-              {progress.isSuper
-                ? "Tak Terbatas ♾️"
-                : `${progress.hearts !== undefined ? progress.hearts : 7} / 7`}
-            </span>
-          </InventoryItemCard>
-
-          <InventoryItemCard $highlight={progress.isSuper}>
-            <span className="inv-label">Status Membership</span>
-            <span
-              className="inv-val"
-              style={{
-                color: progress.isSuper ? "#a855f7" : "var(--foreground)",
-              }}
-            >
-              {progress.isSuper ? "Super Member 👑" : "Standar 👤"}
-            </span>
-          </InventoryItemCard>
-
-          <InventoryItemCard>
-            <span className="inv-label">Pelindung Streak</span>
-            <span className="inv-val" style={{ color: "#10b981" }}>
-              {progress.hasStreakFreeze ? "Freeze 🛡️" : "Belum Ada ⚪"}
-            </span>
-          </InventoryItemCard>
-
-          <InventoryItemCard>
-            <span className="inv-label">Misi Selesai</span>
-            <span className="inv-val" style={{ color: "#eab308" }}>
-              🎁 {(progress.claimedQuests || []).length} Klaim
-            </span>
-          </InventoryItemCard>
-        </InventoryGrid>
-
-        {/* 4. Duolingo Style Pencapaian */}
-        <SectionTitle>Pencapaian & Quests</SectionTitle>
-        <AchievementsStackCard>
-          <AchievementRow>
-            <LevelBadgeBox $bg="linear-gradient(135deg, #ef4444 0%, #dc2626 100%)">
-              <span className="main-icon">🔥</span>
-              <span className="level-tag">LEVEL 9</span>
-            </LevelBadgeBox>
-            <div
-              style={{
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.35rem",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontSize: "0.95rem",
-                  fontWeight: 800,
-                }}
-              >
-                <span>Membara</span>
-                <span style={{ color: "var(--text-secondary)" }}>
-                  {progress.streak || 0}/250
-                </span>
-              </div>
-              <YellowProgressTrack>
-                <YellowProgressFill
-                  $pct={((progress.streak || 0) / 250) * 100}
-                />
-              </YellowProgressTrack>
-              <span
-                style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
-              >
-                Capai runtunan 250 hari
-              </span>
-            </div>
-          </AchievementRow>
-
-          <AchievementRow>
-            <LevelBadgeBox $bg="linear-gradient(135deg, #22c55e 0%, #16a34a 100%)">
-              <span className="main-icon">🧙‍♂️</span>
-              <span className="level-tag">LEVEL 10</span>
-            </LevelBadgeBox>
-            <div
-              style={{
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.35rem",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontSize: "0.95rem",
-                  fontWeight: 800,
-                }}
-              >
-                <span>Orang Bijak</span>
-                <span style={{ color: "var(--text-secondary)" }}>
-                  {progress.exp || 0}/30000
-                </span>
-              </div>
-              <YellowProgressTrack>
-                <YellowProgressFill
-                  $pct={((progress.exp || 0) / 30000) * 100}
-                />
-              </YellowProgressTrack>
-              <span
-                style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
-              >
-                Dapatkan 30000 XP
-              </span>
-            </div>
-          </AchievementRow>
-
-          <AchievementRow>
-            <LevelBadgeBox $bg="linear-gradient(135deg, #eab308 0%, #ca8a04 100%)">
-              <span className="main-icon">🪶</span>
-              <span className="level-tag">LEVEL 10</span>
-            </LevelBadgeBox>
-            <div
-              style={{
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                gap: "0.35rem",
-              }}
-            >
-              <div style={{ fontSize: "0.95rem", fontWeight: 800 }}>Juara</div>
-              <span
-                style={{
-                  fontSize: "0.8rem",
-                  color: "var(--foreground)",
-                  fontWeight: 600,
-                }}
-              >
-                Kamu maju ke Liga Berlian
-              </span>
-            </div>
-          </AchievementRow>
-        </AchievementsStackCard>
-
-        <AchievementGrid
-          ref={achievementsScrollRef}
-          $isDragging={isAchievementsDragging}
-          onMouseDown={handleAchievementsMouseDown}
-          onMouseLeave={handleAchievementsMouseLeave}
-          onMouseUp={handleAchievementsMouseUp}
-          onMouseMove={handleAchievementsMouseMove}
-        >
-          {achievementsList.map((a) => (
-            <AchievementCard
-              key={a.id}
-              $unlocked={a.unlocked}
-              title={a.unlocked ? "Unlocked!" : "Keep studying to unlock"}
-            >
-              <div className="icon-wrap">{a.icon}</div>
-              <h3>{a.title}</h3>
-              <p>{a.desc}</p>
-            </AchievementCard>
-          ))}
-        </AchievementGrid>
-
-        {/* 5. SRS Stage Distribution & Grammar Overall Progress */}
-        <SectionTitle>SRS Stage Distribution & Grammar Progress</SectionTitle>
-        <GridTwoCol>
-          <Card>
-            <div
-              style={{
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                color: "var(--text-secondary)",
-                textTransform: "uppercase",
-                marginBottom: "0.85rem",
-              }}
-            >
-              SRS Stage Distribution
-            </div>
-            <MultiProgressBar>
-              <ProgressSegment $width={srsStats.learning} $color="#94a3b8" />
-              <ProgressSegment $width={srsStats.guru} $color="#10b981" />
-              <ProgressSegment $width={srsStats.master} $color="#3b82f6" />
-              <ProgressSegment
-                $width={srsStats.enlightened}
-                $color="#8b5cf6"
-              />
-              <ProgressSegment $width={srsStats.burned} $color="#f43f5e" />
-            </MultiProgressBar>
-            <SRSLegend>
-              <LegendItem $color="#94a3b8">
-                Learning: {srsStats.counts.learning}
-              </LegendItem>
-              <LegendItem $color="#10b981">
-                Guru: {srsStats.counts.guru}
-              </LegendItem>
-              <LegendItem $color="#3b82f6">
-                Master: {srsStats.counts.master}
-              </LegendItem>
-              <LegendItem $color="#8b5cf6">
-                Enlightened: {srsStats.counts.enlightened}
-              </LegendItem>
-              <LegendItem $color="#f43f5e">
-                Burned: {srsStats.counts.burned}
-              </LegendItem>
-            </SRSLegend>
-          </Card>
-
-          <Card>
-            <div
-              style={{
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                color: "var(--text-secondary)",
-                textTransform: "uppercase",
-              }}
-            >
-              Grammar Overall Progress
-            </div>
-            <div
-              style={{
-                fontSize: "1.5rem",
-                fontWeight: 900,
-                margin: "0.35rem 0",
-              }}
-            >
-              {completedGrammarLessonsCount}{" "}
-              <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
-                / {grammarLessons.length} lessons
-              </span>
-            </div>
-            <LevelProgressBar>
-              <ProgressBarFill $width={grammarProgressPct} />
-            </LevelProgressBar>
-            <div
-              style={{
-                fontSize: "0.8rem",
-                color: "var(--text-secondary)",
-                display: "flex",
-                justifyContent: "space-between",
-                marginTop: "0.35rem",
-              }}
-            >
-              <span>
-                {completedGrammarSectionsCount} / {totalSections} sections
-              </span>
-              <span>{grammarProgressPct}% completed</span>
-            </div>
-          </Card>
-        </GridTwoCol>
-
-        {/* 6. Items to Focus On (Weak Points) */}
-        <SectionTitle>Items to Focus On (Weak Points)</SectionTitle>
-        <GridTwoCol style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
-          {weakPoints.map(([char, m]) => (
-            <ActivityItemCard key={char}>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                <div style={{ fontSize: "1.2rem", fontWeight: 800 }}>{char}</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-                  {m.incorrect} errors
+          {/* Others / Lainnya Panel */}
+          {activeTab === "others" && (
+            <OthersPanel>
+              <div>
+                <div className="others-panel-head">
+                  <span className="tag-ico">✨</span> LAINNYA / MORE ANALYTICS
                 </div>
               </div>
-              <div
-                style={{
-                  fontSize: "0.8rem",
-                  fontWeight: 800,
-                  color: "#ef4444",
-                  background: "rgba(239, 68, 68, 0.1)",
-                  padding: "0.25rem 0.6rem",
-                  borderRadius: "6px",
-                }}
-              >
-                {Math.round(
-                  ((m.correct || 0) /
-                    ((m.correct || 0) + (m.incorrect || 0))) *
-                    100,
-                )}
-                % Acc
-              </div>
-            </ActivityItemCard>
-          ))}
-          {weakPoints.length === 0 && (
-            <Card style={{ gridColumn: "1 / -1", textAlign: "center", padding: "1.5rem" }}>
-              <span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-                No weak points detected yet. Keep up the great work!
-              </span>
-            </Card>
-          )}
-        </GridTwoCol>
 
-        {/* 7. Recent Activity Log */}
-        <SectionTitle>Recent Activity Log</SectionTitle>
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-          {(progress.quizHistory || []).length === 0 ? (
-            <Card style={{ textAlign: "center", padding: "1.5rem" }}>
-              <span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-                No recent quiz activity found. Start a quiz to see your history!
-              </span>
-            </Card>
-          ) : (
-            (progress.quizHistory || []).slice(0, 5).map((item, i) => {
-              const date = new Date(item.date).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              });
-              const percent = Math.round((item.score / item.total) * 100);
-              return (
-                <ActivityItemCard key={i}>
-                  <div>
-                    <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>
-                      {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{" "}
-                      Quiz
-                    </div>
-                    <div
-                      style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+              {/* 1. Level Progress & Daily Goal */}
+              <div>
+                <h3 className="block-title">
+                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>🎯</span> LEVEL & DAILY STUDY GOAL
+                </h3>
+                <GridTwoCol>
+                  <GoalCard>
+                    <GoalHeader>
+                      <h3>Level {level} Progress</h3>
+                      <span>
+                        {Math.round(progressToNext)}% to Level {level + 1}
+                      </span>
+                    </GoalHeader>
+                    <LevelProgressBar>
+                      <ProgressBarFill $width={progressToNext} />
+                    </LevelProgressBar>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: "0.8rem",
+                        color: "var(--text-secondary)",
+                      }}
                     >
-                      {date}
+                      {nextLevelExp - (progress.exp || 0)} EXP needed to reach Level{" "}
+                      {level + 1}
+                    </p>
+                  </GoalCard>
+
+                  <GoalCard>
+                    <GoalHeader>
+                      <h3>Daily Study Goal</h3>
+                      <span>
+                        {dailyGoalCurrent} / {targetGoal} EXP
+                      </span>
+                    </GoalHeader>
+                    <LevelProgressBar>
+                      <ProgressBarFill $width={goalPercent} />
+                    </LevelProgressBar>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: "0.8rem",
+                        color: "var(--text-secondary)",
+                      }}
+                    >
+                      {goalPercent >= 100
+                        ? "🎉 Daily goal achieved! You're amazing."
+                        : `Only ${targetGoal - dailyGoalCurrent} EXP left to hit your daily target!`}
+                    </p>
+                  </GoalCard>
+                </GridTwoCol>
+              </div>
+
+              {/* 2. League Status */}
+              <div>
+                <h3 className="block-title">
+                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>🏆</span> LEAGUE STATUS & LEADERBOARD
+                </h3>
+                <LeagueCard onClick={() => setShowLeaderboardModal(true)}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                    <div
+                      style={{
+                        width: "52px",
+                        height: "52px",
+                        borderRadius: "16px",
+                        background: leagueInfo.badgeBg,
+                        border: `1.5px solid ${leagueInfo.borderColor}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "1.75rem",
+                        position: "relative",
+                        flexShrink: 0,
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.2)",
+                      }}
+                    >
+                      {leagueInfo.icon}
+                      <span
+                        style={{
+                          position: "absolute",
+                          bottom: "-3px",
+                          right: "-3px",
+                          width: "18px",
+                          height: "18px",
+                          borderRadius: "50%",
+                          background: rankInfo.color,
+                          color: "white",
+                          fontSize: "0.65rem",
+                          fontWeight: 900,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          border: "2px solid var(--surface)",
+                        }}
+                      >
+                        {rankInfo.zone === "demotion"
+                          ? "!"
+                          : rankInfo.zone === "promotion"
+                          ? "▲"
+                          : "✓"}
+                      </span>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <div
+                        style={{
+                          fontSize: "1.1rem",
+                          fontWeight: 850,
+                          color: "var(--foreground)",
+                        }}
+                      >
+                        {leagueInfo.name} — Peringkat #{leagueData.rank || 1}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "var(--text-secondary)",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {rankInfo.label} • Minggu Ke-{leagueData.weekInLeague || 1}
+                      </div>
                     </div>
                   </div>
-                  <div
+
+                  <button
                     style={{
+                      background: "rgba(59, 130, 246, 0.12)",
+                      color: "#3b82f6",
+                      border: "1px solid rgba(59, 130, 246, 0.3)",
+                      padding: "0.5rem 1rem",
+                      borderRadius: "10px",
                       fontWeight: 800,
-                      fontSize: "0.9rem",
-                      color: percent === 100 ? "#10b981" : "var(--primary)",
-                      background:
-                        percent === 100
-                          ? "rgba(16, 185, 129, 0.1)"
-                          : "rgba(var(--primary-rgb, 79, 70, 229), 0.1)",
-                      padding: "0.35rem 0.75rem",
-                      borderRadius: "8px",
+                      fontSize: "0.85rem",
+                      cursor: "pointer",
                     }}
                   >
-                    {item.score}/{item.total} ({percent}%)
-                  </div>
-                </ActivityItemCard>
-              );
-            })
+                    Lihat Liga →
+                  </button>
+                </LeagueCard>
+              </div>
+
+              {/* 3. Inventory & Member Status */}
+              <div>
+                <h3 className="block-title">
+                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>💎</span> INVENTORY & MEMBER STATUS
+                </h3>
+                <InventoryGrid>
+                  <InventoryItemCard>
+                    <span className="inv-label">Permata (Gems)</span>
+                    <span className="inv-val" style={{ color: "#3b82f6" }}>
+                      💎 {progress.gems !== undefined ? progress.gems : 100}
+                    </span>
+                  </InventoryItemCard>
+
+                  <InventoryItemCard>
+                    <span className="inv-label">Nyawa (Hearts)</span>
+                    <span className="inv-val" style={{ color: "#ef4444" }}>
+                      ❤️{" "}
+                      {progress.isSuper
+                        ? "Tak Terbatas ♾️"
+                        : `${progress.hearts !== undefined ? progress.hearts : 7} / 7`}
+                    </span>
+                  </InventoryItemCard>
+
+                  <InventoryItemCard $highlight={progress.isSuper}>
+                    <span className="inv-label">Status Membership</span>
+                    <span
+                      className="inv-val"
+                      style={{
+                        color: progress.isSuper ? "#a855f7" : "var(--foreground)",
+                      }}
+                    >
+                      {progress.isSuper ? "Super Member 👑" : "Standar 👤"}
+                    </span>
+                  </InventoryItemCard>
+
+                  <InventoryItemCard>
+                    <span className="inv-label">Pelindung Streak</span>
+                    <span className="inv-val" style={{ color: "#10b981" }}>
+                      {progress.hasStreakFreeze ? "Freeze 🛡️" : "Belum Ada ⚪"}
+                    </span>
+                  </InventoryItemCard>
+
+                  <InventoryItemCard>
+                    <span className="inv-label">Misi Selesai</span>
+                    <span className="inv-val" style={{ color: "#eab308" }}>
+                      🎁 {(progress.claimedQuests || []).length} Klaim
+                    </span>
+                  </InventoryItemCard>
+                </InventoryGrid>
+              </div>
+
+              {/* 4. Achievements & Quests */}
+              <div>
+                <h3 className="block-title">
+                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>🎖️</span> ACHIEVEMENTS & QUESTS
+                </h3>
+                <AchievementsStackCard>
+                  <AchievementRow>
+                    <LevelBadgeBox $bg="linear-gradient(135deg, #ef4444 0%, #dc2626 100%)">
+                      <span className="main-icon">🔥</span>
+                      <span className="level-tag">LEVEL 9</span>
+                    </LevelBadgeBox>
+                    <div
+                      style={{
+                        flex: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.35rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          fontSize: "0.95rem",
+                          fontWeight: 800,
+                        }}
+                      >
+                        <span>Membara</span>
+                        <span style={{ color: "var(--text-secondary)" }}>
+                          {progress.streak || 0}/250
+                        </span>
+                      </div>
+                      <YellowProgressTrack>
+                        <YellowProgressFill
+                          $pct={((progress.streak || 0) / 250) * 100}
+                        />
+                      </YellowProgressTrack>
+                      <span
+                        style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+                      >
+                        Capai runtunan 250 hari
+                      </span>
+                    </div>
+                  </AchievementRow>
+
+                  <AchievementRow>
+                    <LevelBadgeBox $bg="linear-gradient(135deg, #22c55e 0%, #16a34a 100%)">
+                      <span className="main-icon">🧙‍♂️</span>
+                      <span className="level-tag">LEVEL 10</span>
+                    </LevelBadgeBox>
+                    <div
+                      style={{
+                        flex: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.35rem",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          fontSize: "0.95rem",
+                          fontWeight: 800,
+                        }}
+                      >
+                        <span>Orang Bijak</span>
+                        <span style={{ color: "var(--text-secondary)" }}>
+                          {progress.exp || 0}/30000
+                        </span>
+                      </div>
+                      <YellowProgressTrack>
+                        <YellowProgressFill
+                          $pct={((progress.exp || 0) / 30000) * 100}
+                        />
+                      </YellowProgressTrack>
+                      <span
+                        style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+                      >
+                        Dapatkan 30000 XP
+                      </span>
+                    </div>
+                  </AchievementRow>
+
+                  <AchievementRow>
+                    <LevelBadgeBox $bg="linear-gradient(135deg, #eab308 0%, #ca8a04 100%)">
+                      <span className="main-icon">🪶</span>
+                      <span className="level-tag">LEVEL 10</span>
+                    </LevelBadgeBox>
+                    <div
+                      style={{
+                        flex: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.35rem",
+                      }}
+                    >
+                      <div style={{ fontSize: "0.95rem", fontWeight: 800 }}>Juara</div>
+                      <span
+                        style={{
+                          fontSize: "0.8rem",
+                          color: "var(--foreground)",
+                          fontWeight: 600,
+                        }}
+                      >
+                        Kamu maju ke Liga Berlian
+                      </span>
+                    </div>
+                  </AchievementRow>
+                </AchievementsStackCard>
+
+                <AchievementGrid
+                  ref={achievementsScrollRef}
+                  $isDragging={isAchievementsDragging}
+                  onMouseDown={handleAchievementsMouseDown}
+                  onMouseLeave={handleAchievementsMouseLeave}
+                  onMouseUp={handleAchievementsMouseUp}
+                  onMouseMove={handleAchievementsMouseMove}
+                  style={{ marginTop: "1rem" }}
+                >
+                  {achievementsList.map((a) => (
+                    <AchievementCard
+                      key={a.id}
+                      $unlocked={a.unlocked}
+                      title={a.unlocked ? "Unlocked!" : "Keep studying to unlock"}
+                    >
+                      <div className="icon-wrap">{a.icon}</div>
+                      <h3>{a.title}</h3>
+                      <p>{a.desc}</p>
+                    </AchievementCard>
+                  ))}
+                </AchievementGrid>
+              </div>
+
+              {/* 5. SRS Stage & Grammar Progress */}
+              <div>
+                <h3 className="block-title">
+                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>📊</span> SRS MASTERY & GRAMMAR PROGRESS
+                </h3>
+                <GridTwoCol>
+                  <Card>
+                    <div
+                      style={{
+                        fontSize: "0.8rem",
+                        fontWeight: 700,
+                        color: "var(--text-secondary)",
+                        textTransform: "uppercase",
+                        marginBottom: "0.85rem",
+                      }}
+                    >
+                      SRS Stage Distribution
+                    </div>
+                    <MultiProgressBar>
+                      <ProgressSegment $width={srsStats.learning} $color="#94a3b8" />
+                      <ProgressSegment $width={srsStats.guru} $color="#10b981" />
+                      <ProgressSegment $width={srsStats.master} $color="#3b82f6" />
+                      <ProgressSegment
+                        $width={srsStats.enlightened}
+                        $color="#8b5cf6"
+                      />
+                      <ProgressSegment $width={srsStats.burned} $color="#f43f5e" />
+                    </MultiProgressBar>
+                    <SRSLegend>
+                      <LegendItem $color="#94a3b8">
+                        Learning: {srsStats.counts.learning}
+                      </LegendItem>
+                      <LegendItem $color="#10b981">
+                        Guru: {srsStats.counts.guru}
+                      </LegendItem>
+                      <LegendItem $color="#3b82f6">
+                        Master: {srsStats.counts.master}
+                      </LegendItem>
+                      <LegendItem $color="#8b5cf6">
+                        Enlightened: {srsStats.counts.enlightened}
+                      </LegendItem>
+                      <LegendItem $color="#f43f5e">
+                        Burned: {srsStats.counts.burned}
+                      </LegendItem>
+                    </SRSLegend>
+                  </Card>
+
+                  <Card>
+                    <div
+                      style={{
+                        fontSize: "0.8rem",
+                        fontWeight: 700,
+                        color: "var(--text-secondary)",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Grammar Overall Progress
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "1.5rem",
+                        fontWeight: 900,
+                        margin: "0.35rem 0",
+                      }}
+                    >
+                      {completedGrammarLessonsCount}{" "}
+                      <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+                        / {grammarLessons.length} lessons
+                      </span>
+                    </div>
+                    <LevelProgressBar>
+                      <ProgressBarFill $width={grammarProgressPct} />
+                    </LevelProgressBar>
+                    <div
+                      style={{
+                        fontSize: "0.8rem",
+                        color: "var(--text-secondary)",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginTop: "0.35rem",
+                      }}
+                    >
+                      <span>
+                        {completedGrammarSectionsCount} / {totalSections} sections
+                      </span>
+                      <span>{grammarProgressPct}% completed</span>
+                    </div>
+                  </Card>
+                </GridTwoCol>
+              </div>
+
+              {/* 6. Items to Focus On (Weak Points) */}
+              <div>
+                <h3 className="block-title">
+                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>⚠️</span> ITEMS TO FOCUS ON (WEAK POINTS)
+                </h3>
+                <GridTwoCol style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+                  {weakPoints.map(([char, m]) => (
+                    <ActivityItemCard key={char}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                        <div style={{ fontSize: "1.2rem", fontWeight: 800 }}>{char}</div>
+                        <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                          {m.incorrect} errors
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "0.8rem",
+                          fontWeight: 800,
+                          color: "#ef4444",
+                          background: "rgba(239, 68, 68, 0.1)",
+                          padding: "0.25rem 0.6rem",
+                          borderRadius: "6px",
+                        }}
+                      >
+                        {Math.round(
+                          ((m.correct || 0) /
+                            ((m.correct || 0) + (m.incorrect || 0))) *
+                            100,
+                        )}
+                        % Acc
+                      </div>
+                    </ActivityItemCard>
+                  ))}
+                  {weakPoints.length === 0 && (
+                    <Card style={{ gridColumn: "1 / -1", textAlign: "center", padding: "1.5rem" }}>
+                      <span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+                        No weak points detected yet. Keep up the great work!
+                      </span>
+                    </Card>
+                  )}
+                </GridTwoCol>
+              </div>
+
+              {/* 7. Recent Activity Log */}
+              <div>
+                <h3 className="block-title">
+                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>📜</span> RECENT ACTIVITY LOG
+                </h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  {(progress.quizHistory || []).length === 0 ? (
+                    <Card style={{ textAlign: "center", padding: "1.5rem" }}>
+                      <span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+                        No recent quiz activity found. Start a quiz to see your history!
+                      </span>
+                    </Card>
+                  ) : (
+                    (progress.quizHistory || []).slice(0, 5).map((item, i) => {
+                      const date = new Date(item.date).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      });
+                      const percent = Math.round((item.score / item.total) * 100);
+                      return (
+                        <ActivityItemCard key={i}>
+                          <div>
+                            <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>
+                              {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{" "}
+                              Quiz
+                            </div>
+                            <div
+                              style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+                            >
+                              {date}
+                            </div>
+                          </div>
+                          <div
+                            style={{
+                              fontWeight: 800,
+                              fontSize: "0.9rem",
+                              color: percent === 100 ? "#10b981" : "var(--primary)",
+                              background:
+                                percent === 100
+                                  ? "rgba(16, 185, 129, 0.1)"
+                                  : "rgba(var(--primary-rgb, 79, 70, 229), 0.1)",
+                              padding: "0.35rem 0.75rem",
+                              borderRadius: "8px",
+                            }}
+                          >
+                            {item.score}/{item.total} ({percent}%)
+                          </div>
+                        </ActivityItemCard>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+
+              {/* 8. Account Settings & Data Management */}
+              <div>
+                <h3 className="block-title">
+                  <span className="tag-ico" style={{ width: 22, height: 22, fontSize: 12 }}>⚙️</span> ACCOUNT SETTINGS & DATA MANAGEMENT
+                </h3>
+                <GridTwoCol>
+                  <Card
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: 800, fontSize: "1rem" }}>
+                        Display Name & Profile
+                      </div>
+                      <div
+                        style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}
+                      >
+                        Customize your display name and avatar
+                      </div>
+                    </div>
+                    <Link href="/profile/edit" style={{ textDecoration: "none" }}>
+                      <button
+                        style={{
+                          background: "rgba(59, 130, 246, 0.12)",
+                          color: "#3b82f6",
+                          border: "1px solid rgba(59, 130, 246, 0.3)",
+                          padding: "0.5rem 1rem",
+                          borderRadius: "10px",
+                          fontWeight: 800,
+                          fontSize: "0.85rem",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Edit Profile
+                      </button>
+                    </Link>
+                  </Card>
+
+                  <Card
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: 800, fontSize: "1rem" }}>
+                        Reset All Progress Data
+                      </div>
+                      <div
+                        style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}
+                      >
+                        Clear local storage and start fresh
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        if (
+                          confirm(
+                            "Are you sure you want to reset all progress? This action cannot be undone.",
+                          )
+                        ) {
+                          localStorage.clear();
+                          window.location.reload();
+                        }
+                      }}
+                      style={{
+                        background: "rgba(239, 68, 68, 0.12)",
+                        color: "#ef4444",
+                        border: "1px solid rgba(239, 68, 68, 0.3)",
+                        padding: "0.5rem 1rem",
+                        borderRadius: "10px",
+                        fontWeight: 800,
+                        fontSize: "0.85rem",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Reset Data 🗑️
+                    </button>
+                  </Card>
+                </GridTwoCol>
+              </div>
+            </OthersPanel>
           )}
-        </div>
-
-        {/* 8. Account Settings & Data Management */}
-        <SectionTitle>Account Settings & Data Management</SectionTitle>
-        <GridTwoCol>
-          <Card
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <div>
-              <div style={{ fontWeight: 800, fontSize: "1rem" }}>
-                Display Name & Profile
-              </div>
-              <div
-                style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}
-              >
-                Customize your display name and avatar
-              </div>
-            </div>
-            <Link href="/profile/edit" style={{ textDecoration: "none" }}>
-              <button
-                style={{
-                  background: "rgba(59, 130, 246, 0.12)",
-                  color: "#3b82f6",
-                  border: "1px solid rgba(59, 130, 246, 0.3)",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "10px",
-                  fontWeight: 800,
-                  fontSize: "0.85rem",
-                  cursor: "pointer",
-                }}
-              >
-                Edit Profile
-              </button>
-            </Link>
-          </Card>
-
-          <Card
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <div>
-              <div style={{ fontWeight: 800, fontSize: "1rem" }}>
-                Reset All Progress Data
-              </div>
-              <div
-                style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}
-              >
-                Clear local storage and start fresh
-              </div>
-            </div>
-            <button
-              onClick={() => {
-                if (
-                  confirm(
-                    "Are you sure you want to reset all progress? This action cannot be undone.",
-                  )
-                ) {
-                  localStorage.clear();
-                  window.location.reload();
-                }
-              }}
-              style={{
-                background: "rgba(239, 68, 68, 0.12)",
-                color: "#ef4444",
-                border: "1px solid rgba(239, 68, 68, 0.3)",
-                padding: "0.5rem 1rem",
-                borderRadius: "10px",
-                fontWeight: 800,
-                fontSize: "0.85rem",
-                cursor: "pointer",
-              }}
-            >
-              Reset Data 🗑️
-            </button>
-          </Card>
-        </GridTwoCol>
-      </BottomSection>
+        </MainContent>
+      </LayoutGrid>
 
       {/* Leaderboard Modal */}
       {showLeaderboardModal && (
