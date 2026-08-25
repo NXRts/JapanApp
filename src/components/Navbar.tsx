@@ -2251,9 +2251,9 @@ export function Navbar() {
                 🇯🇵 <span>JapanApp</span>
               </MobileHeaderLogo>
 
-              <AppTopRightGroup>
+              <AppTopRightGroup ref={notificationsRef}>
                 {/* PC Desktop Toolbar Actions (Search [/], Sparkles AI, Notifications, Help, Settings) */}
-                <DesktopHeaderActionsWrapper ref={notificationsRef}>
+                <DesktopHeaderActionsWrapper>
                   <SearchPillButton
                     onClick={() => setIsDictionaryOpen(true)}
                     title="Cari kata/kanji (Kamus Jisho) - Tekan tombol /"
@@ -2469,6 +2469,96 @@ export function Navbar() {
                       <path d="m21 21-4.3-4.3" />
                     </svg>
                   </SearchBtn>
+
+                  {/* Mobile Notification Bell Icon */}
+                  <div style={{ position: "relative" }}>
+                    <HeaderIconButton
+                      $active={isNotificationsOpen}
+                      onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                      title="Pemberitahuan & Notifikasi"
+                      style={{ width: "36px", height: "36px", padding: "6px" }}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{ width: "18px", height: "18px" }}
+                      >
+                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                      </svg>
+                      {unreadCount > 0 && <NotificationBadgeDot>{unreadCount}</NotificationBadgeDot>}
+                    </HeaderIconButton>
+
+                    {isNotificationsOpen && (
+                      <NotificationPopover style={{ right: "-55px", width: "310px" }}>
+                        <NotificationHeader>
+                          <h4>🔔 Notifikasi & Update</h4>
+                          {unreadCount > 0 && (
+                            <button className="mark-btn" onClick={markAllAsRead}>
+                              Tandai Dibaca
+                            </button>
+                          )}
+                        </NotificationHeader>
+
+                        <NotificationList>
+                          {filteredNotifications.length === 0 ? (
+                            <div style={{ textAlign: "center", padding: "1.25rem 0", color: "var(--text-secondary)", fontSize: "0.78rem" }}>
+                              Tidak ada notifikasi saat ini ✨
+                            </div>
+                          ) : (
+                            filteredNotifications.map((notif) => (
+                              <NotificationItem
+                                key={notif.id}
+                                $unread={!notif.read}
+                                onClick={() => {
+                                  markAsRead(notif.id);
+                                  if (notif.actionUrl) {
+                                    setIsNotificationsOpen(false);
+                                    router.push(notif.actionUrl);
+                                  }
+                                }}
+                              >
+                                <span className="notif-avatar">{notif.icon || "🔔"}</span>
+                                <div className="notif-content">
+                                  <div className="notif-title">
+                                    <span>{notif.title}</span>
+                                    {!notif.read && (
+                                      <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--primary)", flexShrink: 0 }} />
+                                    )}
+                                  </div>
+                                  <div className="notif-desc">{notif.message}</div>
+                                </div>
+                              </NotificationItem>
+                            ))
+                          )}
+                        </NotificationList>
+
+                        <div style={{ marginTop: "0.75rem", paddingTop: "0.5rem", borderTop: "1px solid var(--border)", textAlign: "center" }}>
+                          <button
+                            onClick={sendTestNotification}
+                            style={{
+                              background: "rgba(var(--primary-rgb, 79, 70, 229), 0.12)",
+                              color: "var(--primary)",
+                              border: "1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.3)",
+                              borderRadius: "8px",
+                              padding: "6px 12px",
+                              fontSize: "0.76rem",
+                              fontWeight: "800",
+                              cursor: "pointer",
+                              width: "100%",
+                              transition: "all 0.15s ease",
+                            }}
+                          >
+                            🧪 Test
+                          </button>
+                        </div>
+                      </NotificationPopover>
+                    )}
+                  </div>
 
                   <UserBtn href="/profile" title="Profile">
                     {progress.profile?.avatar ? (
@@ -2852,6 +2942,20 @@ export function Navbar() {
             >
               <KanjiBadge>人</KanjiBadge>
               Profile
+            </MobileLink>
+
+            <MobileLink
+              href="#"
+              $isOpen={isMobileMenuOpen}
+              $delay={0.27}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsMobileMenuOpen(false);
+                setIsNotificationsOpen(true);
+              }}
+            >
+              <KanjiBadge>報</KanjiBadge>
+              Notifikasi {unreadCount > 0 && <span style={{ background: "var(--primary)", color: "#fff", padding: "1px 7px", borderRadius: "999px", fontSize: "0.7rem", fontWeight: "800", marginLeft: "auto" }}>{unreadCount}</span>}
             </MobileLink>
 
             <MobileLink

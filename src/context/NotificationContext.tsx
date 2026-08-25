@@ -18,6 +18,8 @@ export interface AppNotification {
 export interface NotificationSettings {
   enabled: boolean;
   dailyReminderTime: string; // e.g. "20:00"
+  morningReminder: boolean;
+  morningReminderTime: string; // e.g. "09:00"
   streakDangerAlert: boolean;
   srsReminder: boolean;
   leagueUpdates: boolean;
@@ -41,6 +43,8 @@ interface NotificationContextType {
 const DEFAULT_SETTINGS: NotificationSettings = {
   enabled: true,
   dailyReminderTime: "20:00",
+  morningReminder: true,
+  morningReminderTime: "09:00",
   streakDangerAlert: true,
   srsReminder: true,
   leagueUpdates: true,
@@ -250,21 +254,41 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       }
     }
 
+    // 4. Morning Learning Reminder (Past 09:00 AM)
+    if (settings.morningReminder !== false && currentHour >= 9) {
+      const morningId = `morning_reminder_${todayStr}`;
+      if (!existingNotifIds.has(morningId)) {
+        const item: AppNotification = {
+          id: morningId,
+          type: "reminder",
+          title: "Selamat Pagi! Waktunya Belajar",
+          message: "Mulai harimu dengan 5 menit latihan Kana & Kanji untuk memperkuat ingatan!",
+          timestamp: new Date().toISOString(),
+          read: false,
+          actionUrl: "/practice",
+          icon: "☀️",
+        };
+        newItems.push(item);
+        triggerSystemNotification(item.title, { body: item.message });
+      }
+    }
+
     if (newItems.length > 0) {
       saveNotificationsList([...newItems, ...notifications]);
     }
-  }, [progress, settings.enabled, isLoaded, notifications]);
+  }, [progress, settings.enabled, settings.morningReminder, isLoaded, notifications]);
 
   // Scheduled Daily Alarm Checker (runs every 60s)
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isLoaded || !settings.enabled || !settings.dailyReminderTime) return;
+      if (!isLoaded || !settings.enabled) return;
 
       const now = new Date();
       const currentHHMM = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
       const todayStr = now.toISOString().split("T")[0];
 
-      if (currentHHMM === settings.dailyReminderTime) {
+      // Evening Alarm Check
+      if (settings.dailyReminderTime && currentHHMM === settings.dailyReminderTime) {
         const alarmId = `alarm_${todayStr}`;
         if (!notifications.some((n) => n.id === alarmId)) {
           const item: AppNotification = {
@@ -281,10 +305,29 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
           triggerSystemNotification(item.title, { body: item.message });
         }
       }
+
+      // Morning Alarm Check (09:00 AM)
+      if (settings.morningReminder !== false && currentHHMM === (settings.morningReminderTime || "09:00")) {
+        const morningId = `morning_alarm_${todayStr}`;
+        if (!notifications.some((n) => n.id === morningId)) {
+          const item: AppNotification = {
+            id: morningId,
+            type: "reminder",
+            title: "Selamat Pagi! Waktunya Belajar",
+            message: "Mulai harimu dengan 5 menit latihan Kana & Kanji untuk memperkuat ingatan!",
+            timestamp: new Date().toISOString(),
+            read: false,
+            actionUrl: "/practice",
+            icon: "☀️",
+          };
+          saveNotificationsList([item, ...notifications]);
+          triggerSystemNotification(item.title, { body: item.message });
+        }
+      }
     }, 60000);
 
     return () => clearInterval(interval);
-  }, [settings.enabled, settings.dailyReminderTime, notifications]);
+  }, [settings.enabled, settings.dailyReminderTime, settings.morningReminder, settings.morningReminderTime, notifications]);
 
   // Notification actions
   const markAsRead = (id: string) => {

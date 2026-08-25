@@ -1016,6 +1016,19 @@ export default function SettingsPage() {
                     <ToggleList>
                       <ToggleRow>
                         <ToggleInfo>
+                          <span className="title">☀️ Pengingat Pagi Hari (Jam 09:00)</span>
+                          <span className="desc">
+                            Terima notifikasi di pagi hari (09:00) untuk menyemangati awal hari dengan latihan singkat 5 menit.
+                          </span>
+                        </ToggleInfo>
+                        <SwitchButton
+                          $checked={notifSettings.morningReminder !== false}
+                          onClick={() => updateNotifSettings({ morningReminder: notifSettings.morningReminder === false ? true : false })}
+                        />
+                      </ToggleRow>
+
+                      <ToggleRow>
+                        <ToggleInfo>
                           <span className="title">🔥 Peringatan Streak Dalam Bahaya</span>
                           <span className="desc">
                             Terima notifikasi peringatan menjelang malam jika Anda belum latihan hari ini.
