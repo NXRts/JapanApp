@@ -86,7 +86,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
       if (currentPerm === "default") {
         setShowPermissionBanner(true);
-        // Attempt automatic permission request on initial load
         try {
           Notification.requestPermission().then((res) => {
             setPermission(res);
@@ -96,6 +95,13 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
           // Fallback if browser requires click gesture
         }
       }
+    }
+
+    // Register Service Worker for background notifications when app is closed
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").catch((err) => {
+        console.error("Service Worker registration error", err);
+      });
     }
 
     try {
@@ -187,12 +193,15 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         icon: "/icons/icon-192.png",
         badge: "/icons/icon-192.png",
         image: "/icons/icon-512.png",
-        vibrate: [300, 100, 300, 100, 300],
+        vibrate: [500, 200, 500, 200, 500],
         requireInteraction: true,
         renotify: true,
         silent: false,
         tag: `japanapp_${Date.now()}`,
         timestamp: Date.now(),
+        actions: [
+          { action: "open", title: "🚀 Belajar Sekarang" }
+        ],
         ...options,
       };
 
