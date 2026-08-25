@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { useProgress } from "@/context/ProgressContext";
 import { useRouter } from "next/navigation";
+import styled, { keyframes } from "styled-components";
 
 export interface AppNotification {
   id: string;
@@ -63,13 +64,38 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   const [permission, setPermission] = useState<NotificationPermission | "default">("default");
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // In-App Toast Popup & Permission Banner State
+  const [activeToast, setActiveToast] = useState<AppNotification | null>(null);
+  const [showPermissionBanner, setShowPermissionBanner] = useState(false);
+
+  const showToast = (item: AppNotification) => {
+    setActiveToast(item);
+    setTimeout(() => {
+      setActiveToast((prev) => (prev?.id === item.id ? null : prev));
+    }, 5500);
+  };
+
   // Load initial settings & notifications from localStorage
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Check Notification permission
+    // Check & Auto Prompt Notification permission
     if ("Notification" in window) {
-      setPermission(Notification.permission);
+      const currentPerm = Notification.permission;
+      setPermission(currentPerm);
+
+      if (currentPerm === "default") {
+        setShowPermissionBanner(true);
+        // Attempt automatic permission request on initial load
+        try {
+          Notification.requestPermission().then((res) => {
+            setPermission(res);
+            if (res === "granted") setShowPermissionBanner(false);
+          });
+        } catch {
+          // Fallback if browser requires click gesture
+        }
+      }
     }
 
     try {
@@ -142,6 +168,9 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     try {
       const res = await Notification.requestPermission();
       setPermission(res);
+      if (res === "granted") {
+        setShowPermissionBanner(false);
+      }
       return res === "granted";
     } catch (e) {
       console.error("Error requesting notification permission", e);
@@ -149,11 +178,11 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     }
   };
 
-  // Helper to push a system Web Notification
+  // Helper to push a system Web Notification & In-App Toast
   const triggerSystemNotification = (title: string, options?: NotificationOptions) => {
-    if (typeof window === "undefined" || !("Notification" in window)) return;
+    if (typeof window === "undefined") return;
 
-    if (Notification.permission === "granted" && settings.enabled) {
+    if ("Notification" in window && Notification.permission === "granted" && settings.enabled) {
       try {
         if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
           navigator.serviceWorker.ready.then((reg) => {
@@ -203,6 +232,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         };
         newItems.push(item);
         triggerSystemNotification(item.title, { body: item.message });
+        showToast(item);
       }
     }
 
@@ -229,6 +259,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
           };
           newItems.push(item);
           triggerSystemNotification(item.title, { body: item.message });
+          showToast(item);
         }
       }
     }
@@ -250,6 +281,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
             icon: "🎁",
           };
           newItems.push(item);
+          showToast(item);
         }
       }
     }
@@ -270,6 +302,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         };
         newItems.push(item);
         triggerSystemNotification(item.title, { body: item.message });
+        showToast(item);
       }
     }
 
@@ -303,6 +336,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
           };
           saveNotificationsList([item, ...notifications]);
           triggerSystemNotification(item.title, { body: item.message });
+          showToast(item);
         }
       }
 
@@ -322,6 +356,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
           };
           saveNotificationsList([item, ...notifications]);
           triggerSystemNotification(item.title, { body: item.message });
+          showToast(item);
         }
       }
     }, 60000);
@@ -356,11 +391,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       setPermission(currentPerm);
     }
 
-    if (currentPerm !== "granted") {
-      alert("Izin notifikasi belum diberikan di peramban.");
-      return;
-    }
-
     const testItem: AppNotification = {
       id: `test_${Date.now()}`,
       type: "system",
@@ -372,6 +402,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       icon: "🧪",
     };
     saveNotificationsList([testItem, ...notifications]);
+    showToast(testItem);
 
     try {
       if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
@@ -413,6 +444,56 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       }}
     >
       {children}
+
+      {/* Floating In-App Toast Popup Banner */}
+      {activeToast && (
+        <ToastContainer
+          onClick={() => {
+            markAsRead(activeToast.id);
+            if (activeToast.actionUrl) router.push(activeToast.actionUrl);
+            setActiveToast(null);
+          }}
+        >
+          <div className="toast-avatar">{activeToast.icon || "🔔"}</div>
+          <div className="toast-content">
+            <div className="toast-title">{activeToast.title}</div>
+            <div className="toast-msg">{activeToast.message}</div>
+          </div>
+          <button
+            className="toast-close"
+            onClick={(e) => {
+              e.stopPropagation();
+              setActiveToast(null);
+            }}
+          >
+            ✕
+          </button>
+        </ToastContainer>
+      )}
+
+      {/* Bottom Permission Banner Prompt */}
+      {showPermissionBanner && permission === "default" && (
+        <PermissionBannerContainer>
+          <div className="banner-text">
+            <span className="banner-title">🔔 Izinkan Notifikasi Sistem</span>
+            <span className="banner-desc">Dapatkan pengingat Streak & jam belajar harian di HP Anda.</span>
+          </div>
+          <div className="banner-btns">
+            <button
+              className="allow"
+              onClick={async () => {
+                const granted = await requestPermission();
+                if (granted) setShowPermissionBanner(false);
+              }}
+            >
+              Izinkan
+            </button>
+            <button className="dismiss" onClick={() => setShowPermissionBanner(false)}>
+              Nanti
+            </button>
+          </div>
+        </PermissionBannerContainer>
+      )}
     </NotificationContext.Provider>
   );
 }
@@ -435,3 +516,179 @@ export function useNotifications() {
   }
   return context;
 }
+
+// Styled Components for Toast Popup and Permission Banner
+const slideDownAnimation = keyframes`
+  from {
+    transform: translate(-50%, -100%) scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+`;
+
+const slideUpAnimation = keyframes`
+  from {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+`;
+
+const ToastContainer = styled.div`
+  position: fixed;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 420px;
+  background: var(--surface);
+  border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.45);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(var(--primary-rgb, 79, 70, 229), 0.25);
+  padding: 0.85rem 1rem;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  animation: ${slideDownAnimation} 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: "Nunito", "Outfit", sans-serif;
+  user-select: none;
+
+  &:hover {
+    border-color: var(--primary);
+  }
+
+  .toast-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.15);
+    border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .toast-content {
+    flex: 1;
+    min-width: 0;
+
+    .toast-title {
+      font-weight: 850;
+      font-size: 0.86rem;
+      color: var(--foreground);
+      margin-bottom: 2px;
+    }
+
+    .toast-msg {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+
+  .toast-close {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 6px;
+
+    &:hover {
+      color: var(--foreground);
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+`;
+
+const PermissionBannerContainer = styled.div`
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 460px;
+  background: var(--surface);
+  border: 1px solid var(--primary);
+  border-radius: 16px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+  padding: 0.85rem 1.1rem;
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  animation: ${slideUpAnimation} 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: "Nunito", "Outfit", sans-serif;
+
+  .banner-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    .banner-title {
+      font-weight: 850;
+      font-size: 0.85rem;
+      color: var(--foreground);
+    }
+
+    .banner-desc {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.3;
+    }
+  }
+
+  .banner-btns {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+
+    button.allow {
+      background: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.76rem;
+      font-weight: 850;
+      cursor: pointer;
+      white-space: nowrap;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+
+    button.dismiss {
+      background: transparent;
+      color: var(--text-secondary);
+      border: none;
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--foreground);
+      }
+    }
+  }
+`;
