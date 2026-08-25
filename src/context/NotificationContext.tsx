@@ -178,26 +178,31 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     }
   };
 
-  // Helper to push a system Web Notification & In-App Toast
+  // Helper to push a system Web Notification outside the app
   const triggerSystemNotification = (title: string, options?: NotificationOptions) => {
     if (typeof window === "undefined") return;
 
     if ("Notification" in window && Notification.permission === "granted" && settings.enabled) {
+      const highPriorityOptions = {
+        icon: "/icons/icon-192.png",
+        badge: "/icons/icon-192.png",
+        image: "/icons/icon-512.png",
+        vibrate: [300, 100, 300, 100, 300],
+        requireInteraction: true,
+        renotify: true,
+        silent: false,
+        tag: `japanapp_${Date.now()}`,
+        timestamp: Date.now(),
+        ...options,
+      };
+
       try {
         if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
           navigator.serviceWorker.ready.then((reg) => {
-            reg.showNotification(title, {
-              icon: "/icons/icon-192x192.png",
-              badge: "/icons/icon-192x192.png",
-              vibrate: [200, 100, 200],
-              ...options,
-            } as any);
+            reg.showNotification(title, highPriorityOptions as any);
           });
         } else {
-          new Notification(title, {
-            icon: "/icons/icon-192x192.png",
-            ...options,
-          });
+          new Notification(title, highPriorityOptions as any);
         }
       } catch (err) {
         console.error("Failed to trigger browser notification", err);
@@ -232,7 +237,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         };
         newItems.push(item);
         triggerSystemNotification(item.title, { body: item.message });
-        showToast(item);
       }
     }
 
@@ -259,7 +263,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
           };
           newItems.push(item);
           triggerSystemNotification(item.title, { body: item.message });
-          showToast(item);
         }
       }
     }
@@ -281,7 +284,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
             icon: "🎁",
           };
           newItems.push(item);
-          showToast(item);
         }
       }
     }
@@ -302,7 +304,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         };
         newItems.push(item);
         triggerSystemNotification(item.title, { body: item.message });
-        showToast(item);
       }
     }
 
@@ -336,7 +337,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
           };
           saveNotificationsList([item, ...notifications]);
           triggerSystemNotification(item.title, { body: item.message });
-          showToast(item);
         }
       }
 
@@ -356,7 +356,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
           };
           saveNotificationsList([item, ...notifications]);
           triggerSystemNotification(item.title, { body: item.message });
-          showToast(item);
         }
       }
     }, 60000);
@@ -391,6 +390,11 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       setPermission(currentPerm);
     }
 
+    if (currentPerm !== "granted") {
+      alert("Izin notifikasi belum diberikan di peramban.");
+      return;
+    }
+
     const testItem: AppNotification = {
       id: `test_${Date.now()}`,
       type: "system",
@@ -402,26 +406,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       icon: "🧪",
     };
     saveNotificationsList([testItem, ...notifications]);
-    showToast(testItem);
-
-    try {
-      if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
-        const reg = await navigator.serviceWorker.ready;
-        reg.showNotification(testItem.title, {
-          body: testItem.message,
-          icon: "/icons/icon-192x192.png",
-          badge: "/icons/icon-192x192.png",
-          vibrate: [200, 100, 200],
-        } as any);
-      } else {
-        new Notification(testItem.title, {
-          body: testItem.message,
-          icon: "/icons/icon-192x192.png",
-        });
-      }
-    } catch (e) {
-      console.error("Failed to trigger OS test notification", e);
-    }
+    triggerSystemNotification(testItem.title, { body: testItem.message });
   };
 
   const unreadCount = useMemo(() => {
@@ -444,32 +429,6 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       }}
     >
       {children}
-
-      {/* Floating In-App Toast Popup Banner */}
-      {activeToast && (
-        <ToastContainer
-          onClick={() => {
-            markAsRead(activeToast.id);
-            if (activeToast.actionUrl) router.push(activeToast.actionUrl);
-            setActiveToast(null);
-          }}
-        >
-          <div className="toast-avatar">{activeToast.icon || "🔔"}</div>
-          <div className="toast-content">
-            <div className="toast-title">{activeToast.title}</div>
-            <div className="toast-msg">{activeToast.message}</div>
-          </div>
-          <button
-            className="toast-close"
-            onClick={(e) => {
-              e.stopPropagation();
-              setActiveToast(null);
-            }}
-          >
-            ✕
-          </button>
-        </ToastContainer>
-      )}
 
       {/* Bottom Permission Banner Prompt */}
       {showPermissionBanner && permission === "default" && (
@@ -517,18 +476,7 @@ export function useNotifications() {
   return context;
 }
 
-// Styled Components for Toast Popup and Permission Banner
-const slideDownAnimation = keyframes`
-  from {
-    transform: translate(-50%, -100%) scale(0.92);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, 0) scale(1);
-    opacity: 1;
-  }
-`;
-
+// Styled Components for Permission Banner
 const slideUpAnimation = keyframes`
   from {
     transform: translate(-50%, 100%);
@@ -537,82 +485,6 @@ const slideUpAnimation = keyframes`
   to {
     transform: translate(-50%, 0);
     opacity: 1;
-  }
-`;
-
-const ToastContainer = styled.div`
-  position: fixed;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 90%;
-  max-width: 420px;
-  background: var(--surface);
-  border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.45);
-  border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(var(--primary-rgb, 79, 70, 229), 0.25);
-  padding: 0.85rem 1rem;
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  animation: ${slideDownAnimation} 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  font-family: "Nunito", "Outfit", sans-serif;
-  user-select: none;
-
-  &:hover {
-    border-color: var(--primary);
-  }
-
-  .toast-avatar {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    background: rgba(var(--primary-rgb, 79, 70, 229), 0.15);
-    border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    flex-shrink: 0;
-  }
-
-  .toast-content {
-    flex: 1;
-    min-width: 0;
-
-    .toast-title {
-      font-weight: 850;
-      font-size: 0.86rem;
-      color: var(--foreground);
-      margin-bottom: 2px;
-    }
-
-    .toast-msg {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      line-height: 1.35;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-  }
-
-  .toast-close {
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 1.1rem;
-    cursor: pointer;
-    padding: 2px 6px;
-    border-radius: 6px;
-
-    &:hover {
-      color: var(--foreground);
-      background: rgba(255, 255, 255, 0.1);
-    }
   }
 `;
 
