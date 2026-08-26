@@ -36,6 +36,7 @@ interface NotificationContextType {
   requestPermission: () => Promise<boolean>;
   markAsRead: (id: string) => void;
   markAllAsRead: () => void;
+  deleteNotification: (id: string) => void;
   clearAll: () => void;
   updateSettings: (newSettings: Partial<NotificationSettings>) => void;
   sendTestNotification: () => void;
@@ -63,6 +64,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   const [settings, setSettings] = useState<NotificationSettings>(DEFAULT_SETTINGS);
   const [permission, setPermission] = useState<NotificationPermission | "default">("default");
   const [isLoaded, setIsLoaded] = useState(false);
+  const [dismissedIds, setDismissedIds] = useState<string[]>([]);
 
   // In-App Toast Popup & Permission Banner State
   const [activeToast, setActiveToast] = useState<AppNotification | null>(null);
@@ -97,9 +99,19 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       }
     }
 
-    // Register Service Worker for background notifications when app is closed
+    // Register Custom Service Worker for background notifications when app is closed
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").catch((err) => {
+      navigator.serviceWorker.register("/sw-custom.js", { scope: "/" }).then((reg) => {
+        if ("periodicSync" in reg) {
+          try {
+            (reg as any).periodicSync.register("japanapp-daily-reminder", {
+              minInterval: 12 * 60 * 60 * 1000,
+            });
+          } catch {
+            // Periodic sync optional
+          }
+        }
+      }).catch((err) => {
         console.error("Service Worker registration error", err);
       });
     }
@@ -108,6 +120,11 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       const savedSettings = localStorage.getItem("japanapp_notification_settings");
       if (savedSettings) {
         setSettings({ ...DEFAULT_SETTINGS, ...JSON.parse(savedSettings) });
+      }
+
+      const savedDismissed = localStorage.getItem("japanapp_dismissed_notifications");
+      if (savedDismissed) {
+        setDismissedIds(JSON.parse(savedDismissed));
       }
 
       const savedNotifs = localStorage.getItem("japanapp_notifications_list");
@@ -206,9 +223,13 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       };
 
       try {
-        if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {
-          navigator.serviceWorker.ready.then((reg) => {
-            reg.showNotification(title, highPriorityOptions as any);
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker.getRegistration().then((reg) => {
+            if (reg) {
+              reg.showNotification(title, highPriorityOptions as any);
+            } else {
+              new Notification(title, highPriorityOptions as any);
+            }
           });
         } else {
           new Notification(title, highPriorityOptions as any);
@@ -228,12 +249,13 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     const currentHour = new Date().getHours();
 
     const existingNotifIds = new Set(notifications.map((n) => n.id));
+    const dismissedSet = new Set(dismissedIds);
     const newItems: AppNotification[] = [];
 
     // 1. Streak Danger Warning (Past 18:00 and no activity today)
     if (settings.streakDangerAlert && todayExp === 0 && currentHour >= 18) {
       const dangerId = `streak_danger_${todayStr}`;
-      if (!existingNotifIds.has(dangerId)) {
+      if (!existingNotifIds.has(dangerId) && !dismissedSet.has(dangerId)) {
         const item: AppNotification = {
           id: dangerId,
           type: "streak",
@@ -259,7 +281,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
       if (dueItemsCount >= 5) {
         const srsId = `srs_due_${todayStr}`;
-        if (!existingNotifIds.has(srsId)) {
+        if (!existingNotifIds.has(srsId) && !dismissedSet.has(srsId)) {
           const item: AppNotification = {
             id: srsId,
             type: "srs",
@@ -281,7 +303,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       const claimed = (progress.claimedQuests || []).length;
       if (claimed < 3) {
         const questId = `quest_reminder_${todayStr}`;
-        if (!existingNotifIds.has(questId)) {
+        if (!existingNotifIds.has(questId) && !dismissedSet.has(questId)) {
           const item: AppNotification = {
             id: questId,
             type: "quest",
@@ -300,7 +322,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     // 4. Morning Learning Reminder (Past 09:00 AM)
     if (settings.morningReminder !== false && currentHour >= 9) {
       const morningId = `morning_reminder_${todayStr}`;
-      if (!existingNotifIds.has(morningId)) {
+      if (!existingNotifIds.has(morningId) && !dismissedSet.has(morningId)) {
         const item: AppNotification = {
           id: morningId,
           type: "reminder",
@@ -319,7 +341,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     if (newItems.length > 0) {
       saveNotificationsList([...newItems, ...notifications]);
     }
-  }, [progress, settings.enabled, settings.morningReminder, isLoaded, notifications]);
+  }, [progress, settings.enabled, settings.morningReminder, isLoaded, notifications, dismissedIds]);
 
   // Scheduled Daily Alarm Checker (runs every 60s)
   useEffect(() => {
@@ -329,11 +351,12 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       const now = new Date();
       const currentHHMM = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
       const todayStr = now.toISOString().split("T")[0];
+      const dismissedSet = new Set(dismissedIds);
 
       // Evening Alarm Check
       if (settings.dailyReminderTime && currentHHMM === settings.dailyReminderTime) {
         const alarmId = `alarm_${todayStr}`;
-        if (!notifications.some((n) => n.id === alarmId)) {
+        if (!notifications.some((n) => n.id === alarmId) && !dismissedSet.has(alarmId)) {
           const item: AppNotification = {
             id: alarmId,
             type: "reminder",
@@ -352,7 +375,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       // Morning Alarm Check (09:00 AM)
       if (settings.morningReminder !== false && currentHHMM === (settings.morningReminderTime || "09:00")) {
         const morningId = `morning_alarm_${todayStr}`;
-        if (!notifications.some((n) => n.id === morningId)) {
+        if (!notifications.some((n) => n.id === morningId) && !dismissedSet.has(morningId)) {
           const item: AppNotification = {
             id: morningId,
             type: "reminder",
@@ -370,7 +393,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     }, 60000);
 
     return () => clearInterval(interval);
-  }, [settings.enabled, settings.dailyReminderTime, settings.morningReminder, settings.morningReminderTime, notifications]);
+  }, [settings.enabled, settings.dailyReminderTime, settings.morningReminder, settings.morningReminderTime, notifications, dismissedIds]);
 
   // Notification actions
   const markAsRead = (id: string) => {
@@ -383,8 +406,28 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     saveNotificationsList(updated);
   };
 
+  const deleteNotification = (id: string) => {
+    const updated = notifications.filter((n) => n.id !== id);
+    saveNotificationsList(updated);
+    setDismissedIds((prev) => {
+      const next = Array.from(new Set([...prev, id]));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("japanapp_dismissed_notifications", JSON.stringify(next));
+      }
+      return next;
+    });
+  };
+
   const clearAll = () => {
+    const idsToDismiss = notifications.map((n) => n.id);
     saveNotificationsList([]);
+    setDismissedIds((prev) => {
+      const next = Array.from(new Set([...prev, ...idsToDismiss]));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("japanapp_dismissed_notifications", JSON.stringify(next));
+      }
+      return next;
+    });
   };
 
   const sendTestNotification = async () => {
@@ -432,6 +475,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         requestPermission,
         markAsRead,
         markAllAsRead,
+        deleteNotification,
         clearAll,
         updateSettings,
         sendTestNotification,
@@ -477,6 +521,7 @@ export function useNotifications() {
       requestPermission: async () => false,
       markAsRead: () => {},
       markAllAsRead: () => {},
+      deleteNotification: () => {},
       clearAll: () => {},
       updateSettings: () => {},
       sendTestNotification: () => {},

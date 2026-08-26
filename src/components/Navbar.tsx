@@ -251,19 +251,28 @@ const NotificationHeader = styled.div`
     gap: 6px;
   }
 
-  .mark-btn {
+  .mark-btn, .clear-btn {
     background: transparent;
     border: none;
-    color: var(--primary);
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     font-weight: 800;
     cursor: pointer;
     padding: 2px 6px;
     border-radius: 4px;
     transition: background 0.15s ease;
+  }
 
+  .mark-btn {
+    color: var(--primary);
     &:hover {
       background: rgba(var(--primary-rgb, 79, 70, 229), 0.12);
+    }
+  }
+
+  .clear-btn {
+    color: #ef4444;
+    &:hover {
+      background: rgba(239, 68, 68, 0.12);
     }
   }
 `;
@@ -377,6 +386,25 @@ const NotificationItem = styled.div<{ $unread?: boolean }>`
       font-size: 0.77rem;
       color: var(--text-secondary);
       line-height: 1.4;
+    }
+  }
+
+  .delete-item-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 6px;
+    opacity: 0.4;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+
+    &:hover {
+      opacity: 1;
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.15);
     }
   }
 `;
@@ -1809,7 +1837,7 @@ export function Navbar() {
   const pathname = usePathname() || "";
   const router = useRouter();
 
-  const { notifications, unreadCount, markAsRead, markAllAsRead, clearAll, sendTestNotification } = useNotifications();
+  const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification, clearAll, sendTestNotification } = useNotifications();
   const [notifFilter, setNotifFilter] = useState<"all" | "streak" | "quest" | "srs" | "league">("all");
 
   const filteredNotifications = useMemo(() => {
@@ -2315,11 +2343,18 @@ export function Navbar() {
                       <NotificationPopover>
                         <NotificationHeader>
                           <h4>🔔 Notifikasi & Update</h4>
-                          {unreadCount > 0 && (
-                            <button className="mark-btn" onClick={markAllAsRead}>
-                              Tandai Dibaca
-                            </button>
-                          )}
+                          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                            {unreadCount > 0 && (
+                              <button className="mark-btn" onClick={markAllAsRead} title="Tandai semua sebagai dibaca">
+                                Tandai Dibaca
+                              </button>
+                            )}
+                            {notifications.length > 0 && (
+                              <button className="clear-btn" onClick={clearAll} title="Hapus semua notifikasi">
+                                Hapus Semua
+                              </button>
+                            )}
+                          </div>
                         </NotificationHeader>
 
                         {/* 
@@ -2370,6 +2405,16 @@ export function Navbar() {
                                   </div>
                                   <div className="notif-desc">{notif.message}</div>
                                 </div>
+                                <button
+                                  className="delete-item-btn"
+                                  title="Hapus notifikasi ini"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    deleteNotification(notif.id);
+                                  }}
+                                >
+                                  ✕
+                                </button>
                               </NotificationItem>
                             ))
                           )}
@@ -2497,11 +2542,18 @@ export function Navbar() {
                       <NotificationPopover style={{ right: "-55px", width: "310px" }}>
                         <NotificationHeader>
                           <h4>🔔 Notifikasi & Update</h4>
-                          {unreadCount > 0 && (
-                            <button className="mark-btn" onClick={markAllAsRead}>
-                              Tandai Dibaca
-                            </button>
-                          )}
+                          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                            {unreadCount > 0 && (
+                              <button className="mark-btn" onClick={markAllAsRead} title="Tandai semua sebagai dibaca">
+                                Tandai Dibaca
+                              </button>
+                            )}
+                            {notifications.length > 0 && (
+                              <button className="clear-btn" onClick={clearAll} title="Hapus semua notifikasi">
+                                Hapus Semua
+                              </button>
+                            )}
+                          </div>
                         </NotificationHeader>
 
                         <NotificationList>
@@ -2532,6 +2584,16 @@ export function Navbar() {
                                   </div>
                                   <div className="notif-desc">{notif.message}</div>
                                 </div>
+                                <button
+                                  className="delete-item-btn"
+                                  title="Hapus notifikasi ini"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    deleteNotification(notif.id);
+                                  }}
+                                >
+                                  ✕
+                                </button>
                               </NotificationItem>
                             ))
                           )}
