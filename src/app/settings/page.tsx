@@ -1075,7 +1075,7 @@ export default function SettingsPage() {
                     </ToggleList>
                   </div>
 
-                  <div style={{ marginTop: "1rem" }}>
+                  <div style={{ marginTop: "1rem", display: "flex", gap: "12px", flexWrap: "wrap" }}>
                     <SaveButton
                       type="button"
                       onClick={() => {
@@ -1085,6 +1085,20 @@ export default function SettingsPage() {
                     >
                       🧪 Kirim Tes Notifikasi System
                     </SaveButton>
+                  </div>
+
+                  <div style={{ marginTop: "1.5rem", padding: "1.25rem", borderRadius: "16px", background: "rgba(var(--primary-rgb, 79, 70, 229), 0.08)", border: "1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.25)" }}>
+                    <h3 style={{ margin: "0 0 0.5rem 0", fontSize: "0.95rem", fontWeight: "850", color: "var(--foreground)", display: "flex", alignItems: "center", gap: "6px" }}>
+                      📱 Cara Mengaktifkan Banner Melayang di HP Android (Floating Banner)
+                    </h3>
+                    <p style={{ margin: "0 0 0.75rem 0", fontSize: "0.8rem", color: "var(--text-secondary)", lineHeight: "1.4" }}>
+                      Agar notifikasi meluncur melayang di layar HP Anda saat membuka aplikasi lain:
+                    </p>
+                    <ol style={{ margin: 0, paddingLeft: "1.2rem", fontSize: "0.78rem", color: "var(--foreground)", lineHeight: "1.6" }}>
+                      <li><strong>Tambahkan ke Layar Utama (Install PWA)</strong>: Ketuk <strong>⋮</strong> di Chrome HP lalu pilih <em>&quot;Tambahkan ke Layar Utama&quot; / &quot;Install Aplikasi&quot;</em>.</li>
+                      <li><strong>Buka Pengaturan HP</strong>: Masuk ke <em>Settings &rarr; Aplikasi &rarr; JapanApp (atau Chrome) &rarr; Notifikasi</em>.</li>
+                      <li><strong>Aktifkan Sakelar Melayang</strong>: Nyalakan sakelar <strong>&quot;Notifikasi Melayang&quot; / &quot;Floating Notifications&quot; / &quot;Spanduk&quot;</strong>.</li>
+                    </ol>
                   </div>
                 </FormGrid>
               </>

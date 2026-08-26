@@ -1,4 +1,4 @@
-// Dedicated Custom Service Worker for JapanApp Background Notifications & PWA
+// Dedicated Custom Service Worker for JapanApp Background Web Push & PWA
 self.addEventListener("install", (event) => {
   self.skipWaiting();
 });
@@ -7,7 +7,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 
-// Periodic Background Sync Event Handler
+// Periodic Background Sync Event Handler (Runs when PWA is closed)
 self.addEventListener("periodicsync", (event) => {
   if (event.tag === "japanapp-daily-reminder") {
     event.waitUntil(
@@ -29,7 +29,7 @@ self.addEventListener("periodicsync", (event) => {
   }
 });
 
-// Push Event Handler for Remote / Background Push
+// Push Event Handler for Remote / Background Web Push (Runs when app is closed)
 self.addEventListener("push", (event) => {
   let data = {};
   try {
