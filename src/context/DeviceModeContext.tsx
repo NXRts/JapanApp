@@ -31,13 +31,11 @@ export function DeviceModeProvider({
       if (saved === "pc" || saved === "mobile") {
         setDeviceModeState(saved);
       } else {
-        // Automatically default Desktop visitors (>=768px) to "pc" Landing Page for Vercel deployment
-        const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
-        setDeviceModeState(isDesktop ? "pc" : "mobile");
+        // Default layout is ALWAYS the App Sidebar / Roadmap View for all devices
+        setDeviceModeState("mobile");
       }
     } catch {
-      const isDesktop = typeof window !== "undefined" && window.innerWidth >= 768;
-      setDeviceModeState(isDesktop ? "pc" : "mobile");
+      setDeviceModeState("mobile");
     }
   }, []);
 
