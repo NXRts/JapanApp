@@ -2038,10 +2038,10 @@ export function Navbar() {
 
             <SidebarNavItem
               href="/"
-              $active={pathname === "/" || pathname === "/learning"}
+              $active={pathname === "/" || pathname.startsWith("/lessons") || pathname === "/learning"}
             >
               <LearnIcon />
-              Learn
+              Belajar
             </SidebarNavItem>
 
             <SidebarNavItem
@@ -2665,9 +2665,9 @@ export function Navbar() {
                 <NavItem>
                   <StyledLink
                     href="/"
-                    $active={pathname === "/" || pathname === "/learning"}
+                    $active={pathname === "/" || pathname.startsWith("/lessons") || pathname === "/learning"}
                   >
-                    Learn
+                    Lessons
                   </StyledLink>
                 </NavItem>
 
