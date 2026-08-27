@@ -31,7 +31,7 @@ export function DeviceModeProvider({
       if (saved === "pc" || saved === "mobile") {
         setDeviceModeState(saved);
       } else {
-        // Default web layout to mobile/app sidebar mode for all devices
+        // Default layout is ALWAYS the App Sidebar / Roadmap View for all devices
         setDeviceModeState("mobile");
       }
     } catch {
