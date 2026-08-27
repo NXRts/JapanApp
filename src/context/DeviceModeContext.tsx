@@ -31,7 +31,7 @@ export function DeviceModeProvider({
       if (saved === "pc" || saved === "mobile") {
         setDeviceModeState(saved);
       } else {
-        // Default web layout to mobile/app sidebar mode for all devices
+        // Default layout to mobile/app sidebar mode for all devices as preferred by user
         setDeviceModeState("mobile");
       }
     } catch {
