@@ -81,21 +81,17 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Check & Auto Prompt Notification permission
+    // Check Notification permission status with delay after page loading screen finishes
     if ("Notification" in window) {
       const currentPerm = Notification.permission;
       setPermission(currentPerm);
 
       if (currentPerm === "default") {
-        setShowPermissionBanner(true);
-        try {
-          Notification.requestPermission().then((res) => {
-            setPermission(res);
-            if (res === "granted") setShowPermissionBanner(false);
-          });
-        } catch {
-          // Fallback if browser requires click gesture
-        }
+        // Delay showing banner until initial page loading screen finishes (2.5 seconds)
+        const timer = setTimeout(() => {
+          setShowPermissionBanner(true);
+        }, 2500);
+        return () => clearTimeout(timer);
       }
     }
 
@@ -552,15 +548,24 @@ const subscribeWebPush = async (reg: ServiceWorkerRegistration) => {
           </div>
           <div className="banner-btns">
             <button
+              type="button"
               className="allow"
-              onClick={async () => {
-                const granted = await requestPermission();
-                if (granted) setShowPermissionBanner(false);
+              onClick={async (e) => {
+                e.stopPropagation();
+                setShowPermissionBanner(false);
+                await requestPermission();
               }}
             >
               Izinkan
             </button>
-            <button className="dismiss" onClick={() => setShowPermissionBanner(false)}>
+            <button
+              type="button"
+              className="dismiss"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowPermissionBanner(false);
+              }}
+            >
               Nanti
             </button>
           </div>
@@ -614,7 +619,9 @@ const PermissionBannerContainer = styled.div`
   border-radius: 16px;
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
   padding: 0.85rem 1.1rem;
-  z-index: 99998;
+  z-index: 999999;
+  pointer-events: auto;
+  user-select: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
