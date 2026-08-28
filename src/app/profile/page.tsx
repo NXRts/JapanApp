@@ -1,22 +1,21 @@
 "use client";
 
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
-import { useProgress } from "@/context/ProgressContext";
-import Link from "next/link";
-import { useMemo, useState, useRef } from "react";
-import styled, { createGlobalStyle, keyframes } from "styled-components";
-import { LeaderboardModal } from "@/components/modals/DuolingoModals";
-import { getLeagueById, getRankStatus } from "@/data/leagues";
-import { grammarLessons, totalSections } from "@/data/grammarLessons";
 import {
-  UserIcon,
-  TrophyIcon,
-  TargetIcon,
   AwardIcon,
+  BookIcon,
   FireIcon,
   SparklesIcon,
-  BookIcon,
+  TargetIcon,
+  TrophyIcon,
 } from "@/components/icons/AppIcons";
+import { LeaderboardModal } from "@/components/modals/DuolingoModals";
+import { useProgress } from "@/context/ProgressContext";
+import { grammarLessons, totalSections } from "@/data/grammarLessons";
+import { getLeagueById, getRankStatus } from "@/data/leagues";
+import Link from "next/link";
+import { useMemo, useRef, useState } from "react";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 
 /* ─── Global Font & Variable Integrations for Native JapanApp Design System ─── */
 const Profile2GlobalStyle = createGlobalStyle`
@@ -233,7 +232,11 @@ const HeatmapGrid = styled.div`
   width: 100%;
 `;
 
-const HeatmapCell = styled.div<{ $level?: number; $highlighted?: boolean; $isFuture?: boolean }>`
+const HeatmapCell = styled.div<{
+  $level?: number;
+  $highlighted?: boolean;
+  $isFuture?: boolean;
+}>`
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 2.5px;
@@ -258,7 +261,8 @@ const HeatmapCell = styled.div<{ $level?: number; $highlighted?: boolean; $isFut
     $highlighted || ($level && $level > 2)
       ? "0 0 6px rgba(var(--primary-rgb, 79, 70, 229), 0.6)"
       : "none"};
-  transform: ${({ $highlighted }) => ($highlighted ? "scale(1.4)" : "scale(1)")};
+  transform: ${({ $highlighted }) =>
+    $highlighted ? "scale(1.4)" : "scale(1)"};
   z-index: ${({ $highlighted }) => ($highlighted ? 2 : 1)};
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -747,45 +751,56 @@ const MasterCard = styled(Card)`
 
 const TabsBar = styled.div`
   display: flex;
+  align-items: center;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 5px;
-  gap: 4px;
+  border-radius: 16px;
+  padding: 6px;
+  gap: 6px;
   overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
+  scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
     display: none;
   }
 
-  @media (max-width: 560px) {
-    padding: 4px;
+  @media (max-width: 600px) {
+    padding: 5px;
+    gap: 6px;
+    border-radius: 14px;
   }
 `;
 
 const TabItem = styled.div<{ $active: boolean }>`
-  flex: 1;
-  min-width: 75px;
+  flex: 0 0 auto;
+  min-width: max-content;
   white-space: nowrap;
   text-align: center;
-  padding: 10px 8px;
-  border-radius: 10px;
+  padding: 10px 18px;
+  border-radius: 12px;
   font-size: 0.88rem;
   font-weight: 800;
   color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
   background: ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: ${({ $active }) =>
+    $active ? "0 4px 12px rgba(var(--primary-rgb, 79, 70, 229), 0.3)" : "none"};
+  user-select: none;
 
   &:hover {
     color: ${({ $active }) => ($active ? "#ffffff" : "var(--foreground)")};
+    background: ${({ $active }) =>
+      $active ? "var(--primary)" : "rgba(var(--foreground-rgb), 0.04)"};
   }
 
-  @media (max-width: 560px) {
-    padding: 8px 6px;
-    font-size: 0.8rem;
-    min-width: 65px;
+  @media (max-width: 600px) {
+    padding: 8px 14px;
+    font-size: 0.84rem;
+    border-radius: 10px;
   }
 `;
 
@@ -1274,19 +1289,101 @@ const ConjPanel = styled(Card)`
 
 /* ─── DATA & CONSTANTS ───────────────────────────────────────────────────── */
 const HIRAGANA_CHARS = [
-  "あ", "い", "う", "え", "お", "か", "き", "く", "け", "こ",
-  "さ", "し", "す", "せ", "そ", "た", "ち", "つ", "て", "と",
-  "な", "に", "ぬ", "ね", "の", "は", "ひ", "ふ", "へ", "ほ",
-  "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "ら", "り",
-  "る", "れ", "ろ", "わ", "を", "ん"
+  "あ",
+  "い",
+  "う",
+  "え",
+  "お",
+  "か",
+  "き",
+  "く",
+  "け",
+  "こ",
+  "さ",
+  "し",
+  "す",
+  "せ",
+  "そ",
+  "た",
+  "ち",
+  "つ",
+  "て",
+  "と",
+  "な",
+  "に",
+  "ぬ",
+  "ね",
+  "の",
+  "は",
+  "ひ",
+  "ふ",
+  "へ",
+  "ほ",
+  "ま",
+  "み",
+  "む",
+  "め",
+  "も",
+  "や",
+  "ゆ",
+  "よ",
+  "ら",
+  "り",
+  "る",
+  "れ",
+  "ろ",
+  "わ",
+  "を",
+  "ん",
 ];
 
 const KATAKANA_CHARS = [
-  "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ",
-  "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト",
-  "ナ", "ニ", "ヌ", "ネ", "ノ", "ハ", "ヒ", "フ", "ヘ", "ホ",
-  "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ラ", "リ",
-  "ル", "レ", "ロ", "ワ", "ヲ", "ン"
+  "ア",
+  "イ",
+  "ウ",
+  "エ",
+  "オ",
+  "カ",
+  "キ",
+  "ク",
+  "ケ",
+  "コ",
+  "サ",
+  "シ",
+  "ス",
+  "セ",
+  "ソ",
+  "タ",
+  "チ",
+  "ツ",
+  "テ",
+  "ト",
+  "ナ",
+  "ニ",
+  "ヌ",
+  "ネ",
+  "ノ",
+  "ハ",
+  "ヒ",
+  "フ",
+  "ヘ",
+  "ホ",
+  "マ",
+  "ミ",
+  "ム",
+  "メ",
+  "モ",
+  "ヤ",
+  "ユ",
+  "ヨ",
+  "ラ",
+  "リ",
+  "ル",
+  "レ",
+  "ロ",
+  "ワ",
+  "ヲ",
+  "ン",
 ];
 
 const jlptData = [
@@ -1399,7 +1496,9 @@ const GoalCard = styled(Card)`
   border-radius: 20px;
   padding: 1.35rem 1.5rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
 
   &:hover {
     border-color: rgba(var(--primary-rgb, 79, 70, 229), 0.4);
@@ -1449,11 +1548,18 @@ const LeagueCard = styled(Card)`
   justify-content: space-between;
   gap: 1rem;
   cursor: pointer;
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+  background: linear-gradient(
+    135deg,
+    rgba(30, 41, 59, 0.7),
+    rgba(15, 23, 42, 0.9)
+  );
   border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.25);
   border-radius: 20px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 
   &:hover {
     transform: translateY(-3px);
@@ -1485,7 +1591,9 @@ const InventoryItemCard = styled(Card)<{ $highlight?: boolean }>`
     ${({ $highlight }) =>
       $highlight ? "rgba(168, 85, 247, 0.4)" : "var(--border)"};
   border-radius: 18px;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
@@ -1668,7 +1776,9 @@ const ActivityItemCard = styled(Card)`
   justify-content: space-between;
   gap: 1rem;
   border-radius: 16px;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
@@ -1822,9 +1932,7 @@ export default function ProfilePage() {
   const handleAchievementsMouseDown = (e: React.MouseEvent) => {
     if (!achievementsScrollRef.current) return;
     setIsAchievementsDragging(true);
-    setAchievementsStartX(
-      e.pageX - achievementsScrollRef.current.offsetLeft,
-    );
+    setAchievementsStartX(e.pageX - achievementsScrollRef.current.offsetLeft);
     setAchievementsScrollLeft(achievementsScrollRef.current.scrollLeft);
   };
 
@@ -1900,9 +2008,9 @@ export default function ProfilePage() {
     },
   ];
   const [jlptExpanded, setJlptExpanded] = useState(true);
-  const [hoveredKanaChartIdx, setHoveredKanaChartIdx] = useState<
-    number | null
-  >(null);
+  const [hoveredKanaChartIdx, setHoveredKanaChartIdx] = useState<number | null>(
+    null,
+  );
   const [hoveredVocabIdx, setHoveredVocabIdx] = useState<number | null>(null);
 
   // Heatmap interactive state
@@ -1943,7 +2051,9 @@ export default function ProfilePage() {
         const d = String(currentDate.getDate()).padStart(2, "0");
         const dateKey = `${y}-${m}-${d}`;
 
-        const monthAbbr = currentDate.toLocaleDateString("en-US", { month: "short" });
+        const monthAbbr = currentDate.toLocaleDateString("en-US", {
+          month: "short",
+        });
         const displayDate = `${monthAbbr} ${currentDate.getDate()}, ${y}`;
 
         const isFuture = currentDate > today;
@@ -1953,7 +2063,9 @@ export default function ProfilePage() {
         if (!isFuture) {
           exp = progress.activityLog?.[dateKey] || 0;
           if (exp === 0 && progress.quizHistory) {
-            const quizOnDate = progress.quizHistory.find((q) => q.date && q.date.startsWith(dateKey));
+            const quizOnDate = progress.quizHistory.find(
+              (q) => q.date && q.date.startsWith(dateKey),
+            );
             if (quizOnDate) {
               exp = quizOnDate.score * 10 || 15;
             }
@@ -1995,7 +2107,9 @@ export default function ProfilePage() {
     const quizCount = progress.quizHistory?.length || 0;
     const totalMinutes = Math.max(
       0,
-      totalDaysActive * 12 + quizCount * 4 + Math.floor((progress.exp || 0) / 15),
+      totalDaysActive * 12 +
+        quizCount * 4 +
+        Math.floor((progress.exp || 0) / 15),
     );
 
     if (totalMinutes >= 60) {
@@ -2116,9 +2230,8 @@ export default function ProfilePage() {
         if (quizOnDate) {
           dayAttempts = quizOnDate.total || 5;
           dayAccuracy =
-            Math.round(
-              (quizOnDate.score / (quizOnDate.total || 1)) * 100,
-            ) || 100;
+            Math.round((quizOnDate.score / (quizOnDate.total || 1)) * 100) ||
+            100;
         }
       }
 
@@ -2203,10 +2316,7 @@ export default function ProfilePage() {
         grammarDone = Math.min(d.grammar, completedGrammar);
       } else if (d.level === "N4") {
         vocabDone = Math.min(d.vocab, Math.floor(masteryKeys.length * 0.2));
-        grammarDone = Math.min(
-          d.grammar,
-          Math.max(0, completedGrammar - 146),
-        );
+        grammarDone = Math.min(d.grammar, Math.max(0, completedGrammar - 146));
       } else if (d.level === "N3") {
         vocabDone = Math.min(d.vocab, Math.floor(masteryKeys.length * 0.08));
         grammarDone = 0;
@@ -2261,9 +2371,8 @@ export default function ProfilePage() {
       <Breadcrumbs
         items={[
           { label: "Home", href: "/" },
-          { label: "Development Labs", href: "/development" },
         ]}
-        current="Profil User 2.0"
+        current="Profile"
       />
 
       <LayoutGrid>
@@ -2272,9 +2381,7 @@ export default function ProfilePage() {
           {/* User Profile Card */}
           <ProfileCard>
             <ProfileTop>
-              <ProfileAvatar>
-                {progress.profile?.avatar || "🌳"}
-              </ProfileAvatar>
+              <ProfileAvatar>{progress.profile?.avatar || "🌳"}</ProfileAvatar>
               <div>
                 <ProfileName>
                   {progress.profile?.username ||
@@ -2328,7 +2435,9 @@ export default function ProfilePage() {
               <div className="cell-info-bar">
                 {hoveredCellDate ? (
                   <>
-                    <span className="info-date">{hoveredCellDate.displayDate}</span>
+                    <span className="info-date">
+                      {hoveredCellDate.displayDate}
+                    </span>
                     <span className="info-exp">
                       {hoveredCellDate.level === 0
                         ? "No activity"
@@ -2338,7 +2447,9 @@ export default function ProfilePage() {
                 ) : (
                   <>
                     <span>Current Streak</span>
-                    <span className="info-exp">{progress.streak || 0} days</span>
+                    <span className="info-exp">
+                      {progress.streak || 0} days
+                    </span>
                   </>
                 )}
               </div>
@@ -2438,37 +2549,37 @@ export default function ProfilePage() {
                 {activeTab === "kana"
                   ? "Kanas"
                   : activeTab === "vocab"
-                  ? "Vocab"
-                  : activeTab === "grammar"
-                  ? "Grammar"
-                  : "Conj"}
+                    ? "Vocab"
+                    : activeTab === "grammar"
+                      ? "Grammar"
+                      : "Conj"}
               </div>
               <div className="stat-value">
                 {activeTab === "kana"
                   ? kanaStats.reviews
                   : activeTab === "vocab"
-                  ? vocabStats.reviewed
-                  : activeTab === "grammar"
-                  ? grammarStats.points
-                  : conjStats.attempts}{" "}
+                    ? vocabStats.reviewed
+                    : activeTab === "grammar"
+                      ? grammarStats.points
+                      : conjStats.attempts}{" "}
                 <span className="emoji">
                   {activeTab === "kana"
                     ? "✏️"
                     : activeTab === "vocab"
-                    ? "📚"
-                    : activeTab === "grammar"
-                    ? "📌"
-                    : "🔄"}
+                      ? "📚"
+                      : activeTab === "grammar"
+                        ? "📌"
+                        : "🔄"}
                 </span>
               </div>
               <div className="stat-sub">
                 {activeTab === "kana"
                   ? "reviews"
                   : activeTab === "vocab"
-                  ? "reviewed"
-                  : activeTab === "grammar"
-                  ? "points"
-                  : "attempts"}
+                    ? "reviewed"
+                    : activeTab === "grammar"
+                      ? "points"
+                      : "attempts"}
               </div>
             </div>
 
@@ -2482,19 +2593,19 @@ export default function ProfilePage() {
                       activeTab === "kana"
                         ? "#ec4899"
                         : activeTab === "vocab"
-                        ? "#3b82f6"
-                        : activeTab === "grammar"
-                        ? "#ec4899"
-                        : "#14b8a6",
+                          ? "#3b82f6"
+                          : activeTab === "grammar"
+                            ? "#ec4899"
+                            : "#14b8a6",
                   }}
                 >
                   {activeTab === "kana"
                     ? kanaStats.fav
                     : activeTab === "vocab"
-                    ? "語"
-                    : activeTab === "grammar"
-                    ? "文"
-                    : "活"}
+                      ? "語"
+                      : activeTab === "grammar"
+                        ? "文"
+                        : "活"}
                 </span>{" "}
                 <span className="emoji">⭐</span>
               </div>
@@ -2502,10 +2613,10 @@ export default function ProfilePage() {
                 {activeTab === "kana"
                   ? "kana"
                   : activeTab === "vocab"
-                  ? "vocab"
-                  : activeTab === "grammar"
-                  ? "grammar"
-                  : "conj"}
+                    ? "vocab"
+                    : activeTab === "grammar"
+                      ? "grammar"
+                      : "conj"}
               </div>
             </div>
           </StatRowGrid>
@@ -2669,7 +2780,9 @@ export default function ProfilePage() {
                 <div className="kana-cols">
                   <div className="kana-col">
                     <h4>hiragana</h4>
-                    <div className="attempts">({hiraganaAttempts} attempts)</div>
+                    <div className="attempts">
+                      ({hiraganaAttempts} attempts)
+                    </div>
                     <Link href="/kana?type=hiragana">
                       <div className="focus-btn">Focus Area</div>
                     </Link>
@@ -2681,7 +2794,9 @@ export default function ProfilePage() {
                   </div>
                   <div className="kana-col">
                     <h4>katakana</h4>
-                    <div className="attempts">({katakanaAttempts} attempts)</div>
+                    <div className="attempts">
+                      ({katakanaAttempts} attempts)
+                    </div>
                     <Link href="/kana?type=katakana">
                       <div className="focus-btn">Focus Area</div>
                     </Link>
@@ -2720,9 +2835,7 @@ export default function ProfilePage() {
                       style={{
                         position: "absolute",
                         top: "10px",
-                        left: `${
-                          60 + (hoveredKanaChartIdx * 880) / 6
-                        }px`,
+                        left: `${60 + (hoveredKanaChartIdx * 880) / 6}px`,
                         transform: "translateX(-50%)",
                         background: "#0b0f19",
                         border: "1px solid rgba(139, 124, 255, 0.4)",
@@ -2746,7 +2859,8 @@ export default function ProfilePage() {
                       >
                         {kanaChartData.attempts[hoveredKanaChartIdx]} attempts •{" "}
                         <span style={{ color: "#10b981" }}>
-                          {kanaChartData.accuracy[hoveredKanaChartIdx]}% accuracy
+                          {kanaChartData.accuracy[hoveredKanaChartIdx]}%
+                          accuracy
                         </span>
                       </div>
                     </div>
@@ -2825,9 +2939,7 @@ export default function ProfilePage() {
                         .map((v, i) => {
                           const x = 60 + (i * 880) / 6;
                           const y =
-                            25 +
-                            240 -
-                            (v / kanaChartData.maxAttempts) * 240;
+                            25 + 240 - (v / kanaChartData.maxAttempts) * 240;
                           return `${x},${y}`;
                         })
                         .join(" ")}
@@ -3352,7 +3464,8 @@ export default function ProfilePage() {
                 style={{ textDecoration: "none" }}
               >
                 <div className="view-link">
-                  View {activeTab === "vocab" ? "Vocabulary" : "Grammar"} progress →
+                  View {activeTab === "vocab" ? "Vocabulary" : "Grammar"}{" "}
+                  progress →
                 </div>
               </Link>
             </VocabPanel>
@@ -3453,8 +3566,8 @@ export default function ProfilePage() {
                         color: "var(--text-secondary)",
                       }}
                     >
-                      {nextLevelExp - (progress.exp || 0)} EXP needed to reach Level{" "}
-                      {level + 1}
+                      {nextLevelExp - (progress.exp || 0)} EXP needed to reach
+                      Level {level + 1}
                     </p>
                   </GoalCard>
 
@@ -3487,7 +3600,13 @@ export default function ProfilePage() {
               <div>
                 <h3 className="block-title">League Status & Leaderboard</h3>
                 <LeagueCard onClick={() => setShowLeaderboardModal(true)}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "1rem",
+                    }}
+                  >
                     <div
                       style={{
                         width: "52px",
@@ -3526,8 +3645,8 @@ export default function ProfilePage() {
                         {rankInfo.zone === "demotion"
                           ? "!"
                           : rankInfo.zone === "promotion"
-                          ? "▲"
-                          : "✓"}
+                            ? "▲"
+                            : "✓"}
                       </span>
                     </div>
 
@@ -3548,7 +3667,8 @@ export default function ProfilePage() {
                           fontWeight: 600,
                         }}
                       >
-                        {rankInfo.label} • Minggu Ke-{leagueData.weekInLeague || 1}
+                        {rankInfo.label} • Minggu Ke-
+                        {leagueData.weekInLeague || 1}
                       </div>
                     </div>
                   </div>
@@ -3596,7 +3716,9 @@ export default function ProfilePage() {
                     <span
                       className="inv-val"
                       style={{
-                        color: progress.isSuper ? "#a855f7" : "var(--foreground)",
+                        color: progress.isSuper
+                          ? "#a855f7"
+                          : "var(--foreground)",
                       }}
                     >
                       {progress.isSuper ? "Super Member 👑" : "Standar 👤"}
@@ -3655,7 +3777,10 @@ export default function ProfilePage() {
                         />
                       </YellowProgressTrack>
                       <span
-                        style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+                        style={{
+                          fontSize: "0.8rem",
+                          color: "var(--text-secondary)",
+                        }}
                       >
                         Capai runtunan 250 hari
                       </span>
@@ -3694,7 +3819,10 @@ export default function ProfilePage() {
                         />
                       </YellowProgressTrack>
                       <span
-                        style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+                        style={{
+                          fontSize: "0.8rem",
+                          color: "var(--text-secondary)",
+                        }}
                       >
                         Dapatkan 30000 XP
                       </span>
@@ -3714,7 +3842,9 @@ export default function ProfilePage() {
                         gap: "0.35rem",
                       }}
                     >
-                      <div style={{ fontSize: "0.95rem", fontWeight: 800 }}>Juara</div>
+                      <div style={{ fontSize: "0.95rem", fontWeight: 800 }}>
+                        Juara
+                      </div>
                       <span
                         style={{
                           fontSize: "0.8rem",
@@ -3741,7 +3871,9 @@ export default function ProfilePage() {
                     <AchievementCard
                       key={a.id}
                       $unlocked={a.unlocked}
-                      title={a.unlocked ? "Unlocked!" : "Keep studying to unlock"}
+                      title={
+                        a.unlocked ? "Unlocked!" : "Keep studying to unlock"
+                      }
                     >
                       <div className="icon-wrap">{a.icon}</div>
                       <h3>{a.title}</h3>
@@ -3768,14 +3900,26 @@ export default function ProfilePage() {
                       SRS Stage Distribution
                     </div>
                     <MultiProgressBar>
-                      <ProgressSegment $width={srsStats.learning} $color="#94a3b8" />
-                      <ProgressSegment $width={srsStats.guru} $color="#10b981" />
-                      <ProgressSegment $width={srsStats.master} $color="#3b82f6" />
+                      <ProgressSegment
+                        $width={srsStats.learning}
+                        $color="#94a3b8"
+                      />
+                      <ProgressSegment
+                        $width={srsStats.guru}
+                        $color="#10b981"
+                      />
+                      <ProgressSegment
+                        $width={srsStats.master}
+                        $color="#3b82f6"
+                      />
                       <ProgressSegment
                         $width={srsStats.enlightened}
                         $color="#8b5cf6"
                       />
-                      <ProgressSegment $width={srsStats.burned} $color="#f43f5e" />
+                      <ProgressSegment
+                        $width={srsStats.burned}
+                        $color="#f43f5e"
+                      />
                     </MultiProgressBar>
                     <SRSLegend>
                       <LegendItem $color="#94a3b8">
@@ -3815,7 +3959,12 @@ export default function ProfilePage() {
                       }}
                     >
                       {completedGrammarLessonsCount}{" "}
-                      <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+                      <span
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "var(--text-secondary)",
+                        }}
+                      >
                         / {grammarLessons.length} lessons
                       </span>
                     </div>
@@ -3832,7 +3981,8 @@ export default function ProfilePage() {
                       }}
                     >
                       <span>
-                        {completedGrammarSectionsCount} / {totalSections} sections
+                        {completedGrammarSectionsCount} / {totalSections}{" "}
+                        sections
                       </span>
                       <span>{grammarProgressPct}% completed</span>
                     </div>
@@ -3846,9 +3996,22 @@ export default function ProfilePage() {
                 <GridTwoCol style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
                   {weakPoints.map(([char, m]) => (
                     <ActivityItemCard key={char}>
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                        <div style={{ fontSize: "1.2rem", fontWeight: 800 }}>{char}</div>
-                        <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "0.75rem",
+                        }}
+                      >
+                        <div style={{ fontSize: "1.2rem", fontWeight: 800 }}>
+                          {char}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: "0.8rem",
+                            color: "var(--text-secondary)",
+                          }}
+                        >
                           {m.incorrect} errors
                         </div>
                       </div>
@@ -3872,8 +4035,19 @@ export default function ProfilePage() {
                     </ActivityItemCard>
                   ))}
                   {weakPoints.length === 0 && (
-                    <Card style={{ gridColumn: "1 / -1", textAlign: "center", padding: "1.5rem" }}>
-                      <span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
+                    <Card
+                      style={{
+                        gridColumn: "1 / -1",
+                        textAlign: "center",
+                        padding: "1.5rem",
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: "var(--text-secondary)",
+                          fontSize: "0.9rem",
+                        }}
+                      >
                         No weak points detected yet. Keep up the great work!
                       </span>
                     </Card>
@@ -3884,31 +4058,54 @@ export default function ProfilePage() {
               {/* 7. Recent Activity Log */}
               <div>
                 <h3 className="block-title">Recent Activity Log</h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.75rem",
+                  }}
+                >
                   {(progress.quizHistory || []).length === 0 ? (
                     <Card style={{ textAlign: "center", padding: "1.5rem" }}>
-                      <span style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}>
-                        No recent quiz activity found. Start a quiz to see your history!
+                      <span
+                        style={{
+                          color: "var(--text-secondary)",
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                        No recent quiz activity found. Start a quiz to see your
+                        history!
                       </span>
                     </Card>
                   ) : (
                     (progress.quizHistory || []).slice(0, 5).map((item, i) => {
-                      const date = new Date(item.date).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      });
-                      const percent = Math.round((item.score / item.total) * 100);
+                      const date = new Date(item.date).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "short",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        },
+                      );
+                      const percent = Math.round(
+                        (item.score / item.total) * 100,
+                      );
                       return (
                         <ActivityItemCard key={i}>
                           <div>
-                            <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>
-                              {item.type.charAt(0).toUpperCase() + item.type.slice(1)}{" "}
+                            <div
+                              style={{ fontWeight: 800, fontSize: "0.95rem" }}
+                            >
+                              {item.type.charAt(0).toUpperCase() +
+                                item.type.slice(1)}{" "}
                               Quiz
                             </div>
                             <div
-                              style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}
+                              style={{
+                                fontSize: "0.8rem",
+                                color: "var(--text-secondary)",
+                              }}
                             >
                               {date}
                             </div>
@@ -3917,7 +4114,8 @@ export default function ProfilePage() {
                             style={{
                               fontWeight: 800,
                               fontSize: "0.9rem",
-                              color: percent === 100 ? "#10b981" : "var(--primary)",
+                              color:
+                                percent === 100 ? "#10b981" : "var(--primary)",
                               background:
                                 percent === 100
                                   ? "rgba(16, 185, 129, 0.1)"
@@ -3937,7 +4135,9 @@ export default function ProfilePage() {
 
               {/* 8. Account Settings & Data Management */}
               <div>
-                <h3 className="block-title">Account Settings & Data Management</h3>
+                <h3 className="block-title">
+                  Account Settings & Data Management
+                </h3>
                 <GridTwoCol>
                   <Card
                     style={{
@@ -3951,12 +4151,18 @@ export default function ProfilePage() {
                         Display Name & Profile
                       </div>
                       <div
-                        style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}
+                        style={{
+                          fontSize: "0.82rem",
+                          color: "var(--text-secondary)",
+                        }}
                       >
                         Customize your display name and avatar
                       </div>
                     </div>
-                    <Link href="/profile/edit" style={{ textDecoration: "none" }}>
+                    <Link
+                      href="/profile/edit"
+                      style={{ textDecoration: "none" }}
+                    >
                       <button
                         style={{
                           background: "rgba(59, 130, 246, 0.12)",
@@ -3986,7 +4192,10 @@ export default function ProfilePage() {
                         Reset All Progress Data
                       </div>
                       <div
-                        style={{ fontSize: "0.82rem", color: "var(--text-secondary)" }}
+                        style={{
+                          fontSize: "0.82rem",
+                          color: "var(--text-secondary)",
+                        }}
                       >
                         Clear local storage and start fresh
                       </div>
