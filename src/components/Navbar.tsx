@@ -2041,7 +2041,7 @@ export function Navbar() {
               $active={pathname === "/" || pathname.startsWith("/lessons") || pathname === "/learning"}
             >
               <LearnIcon />
-              Belajar
+              Lessons
             </SidebarNavItem>
 
             <SidebarNavItem

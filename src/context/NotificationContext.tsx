@@ -147,9 +147,11 @@ const subscribeWebPush = async (reg: ServiceWorkerRegistration) => {
         }
         if ("periodicSync" in reg) {
           try {
-            (reg as any).periodicSync.register("japanapp-daily-reminder", {
-              minInterval: 12 * 60 * 60 * 1000,
-            });
+            (reg as any).periodicSync
+              ?.register("japanapp-daily-reminder", {
+                minInterval: 12 * 60 * 60 * 1000,
+              })
+              ?.catch(() => {});
           } catch {
             // Periodic sync optional
           }
