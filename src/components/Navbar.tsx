@@ -2031,14 +2031,14 @@ export function Navbar() {
           </SidebarLogo>
 
           <SidebarNavList>
-            <SidebarNavItem href="/home" $active={pathname === "/home"}>
+            <SidebarNavItem href="/" $active={pathname === "/"}>
               <HomeIcon />
               Home
             </SidebarNavItem>
 
             <SidebarNavItem
-              href="/"
-              $active={pathname === "/" || pathname.startsWith("/lessons") || pathname === "/learning"}
+              href="/lessons"
+              $active={pathname.startsWith("/lessons") || pathname === "/learning"}
             >
               <LearnIcon />
               Lessons
@@ -2658,14 +2658,14 @@ export function Navbar() {
 
               <NavList>
                 <NavItem>
-                  <StyledLink href="/home" $active={pathname === "/home"}>
+                  <StyledLink href="/" $active={pathname === "/"}>
                     Home
                   </StyledLink>
                 </NavItem>
                 <NavItem>
                   <StyledLink
-                    href="/"
-                    $active={pathname === "/" || pathname.startsWith("/lessons") || pathname === "/learning"}
+                    href="/lessons"
+                    $active={pathname.startsWith("/lessons") || pathname === "/learning"}
                   >
                     Lessons
                   </StyledLink>
