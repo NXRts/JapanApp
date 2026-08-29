@@ -2026,13 +2026,14 @@ export function Navbar() {
       {/* Permanent Left Sidebar for Desktop view */}
       {isWidescreenMobileSim && (
         <SidebarRoot>
-          <SidebarLogo href="/home">
+          <SidebarLogo href="/landing">
             <JapanAppLogoIcon size={26} /> <span>JapanApp</span>
           </SidebarLogo>
 
           <SidebarNavList>
-            <SidebarNavItem href="/home" $active={pathname === "/home"}>
+            <SidebarNavItem href="/landing" $active={pathname === "/landing"}>
               <HomeIcon />
+              {/* Landing Page Penganti Home */}
               Home
             </SidebarNavItem>
 
@@ -2476,14 +2477,14 @@ export function Navbar() {
             </AppTopHeaderBar>
           ) : (
             <>
-              <Logo href="/home" onClick={() => setIsMobileMenuOpen(false)}>
+              <Logo href="/landing" onClick={() => setIsMobileMenuOpen(false)}>
                 🇯🇵 <span>JapanApp</span>
               </Logo>
 
               <NavList>
                 <NavItem>
-                  <StyledLink href="/home" $active={pathname === "/home"}>
-                    Home
+                  <StyledLink href="/landing" $active={pathname === "/landing"}>
+                    Landing Page
                   </StyledLink>
                 </NavItem>
                 <NavItem>
