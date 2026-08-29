@@ -2026,7 +2026,7 @@ export function Navbar() {
       {/* Permanent Left Sidebar for Desktop view */}
       {isWidescreenMobileSim && (
         <SidebarRoot>
-          <SidebarLogo href="/">
+          <SidebarLogo href="/home">
             <JapanAppLogoIcon size={26} /> <span>JapanApp</span>
           </SidebarLogo>
 
@@ -2476,7 +2476,7 @@ export function Navbar() {
             </AppTopHeaderBar>
           ) : (
             <>
-              <Logo href="/" onClick={() => setIsMobileMenuOpen(false)}>
+              <Logo href="/home" onClick={() => setIsMobileMenuOpen(false)}>
                 🇯🇵 <span>JapanApp</span>
               </Logo>
 
