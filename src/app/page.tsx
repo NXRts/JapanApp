@@ -1,7 +1,5 @@
-"use client";
-
-import { LandingPageView } from "@/components/home/LandingPageView";
+import LessonsPage from "./lessons/page";
 
 export default function RootPage() {
-  return <LandingPageView />;
+  return <LessonsPage />;
 }

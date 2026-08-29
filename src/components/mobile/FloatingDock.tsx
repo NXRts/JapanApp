@@ -245,10 +245,10 @@ interface DockTab {
 
 const DOCK_TABS: DockTab[] = [
   {
-    href: "/lessons",
+    href: "/",
     label: "Learn",
     icon: HomeIcon,
-    matchPaths: ["/lessons", "/roadmap", "/lesson"],
+    matchPaths: ["/", "/lessons", "/roadmap", "/lesson"],
   },
   {
     href: "/quests",

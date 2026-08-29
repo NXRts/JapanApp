@@ -2026,19 +2026,19 @@ export function Navbar() {
       {/* Permanent Left Sidebar for Desktop view */}
       {isWidescreenMobileSim && (
         <SidebarRoot>
-          <SidebarLogo href="/">
+          <SidebarLogo href="/home">
             <JapanAppLogoIcon size={26} /> <span>JapanApp</span>
           </SidebarLogo>
 
           <SidebarNavList>
-            <SidebarNavItem href="/" $active={pathname === "/" || pathname === "/home"}>
+            <SidebarNavItem href="/home" $active={pathname === "/home"}>
               <HomeIcon />
               Home
             </SidebarNavItem>
 
             <SidebarNavItem
-              href="/lessons"
-              $active={pathname.startsWith("/lessons") || pathname === "/learning"}
+              href="/"
+              $active={pathname === "/" || pathname.startsWith("/lessons") || pathname === "/learning"}
             >
               <LearnIcon />
               Lessons
@@ -2476,20 +2476,20 @@ export function Navbar() {
             </AppTopHeaderBar>
           ) : (
             <>
-              <Logo href="/" onClick={() => setIsMobileMenuOpen(false)}>
+              <Logo href="/home" onClick={() => setIsMobileMenuOpen(false)}>
                 🇯🇵 <span>JapanApp</span>
               </Logo>
 
               <NavList>
                 <NavItem>
-                  <StyledLink href="/" $active={pathname === "/" || pathname === "/home"}>
+                  <StyledLink href="/home" $active={pathname === "/home"}>
                     Home
                   </StyledLink>
                 </NavItem>
                 <NavItem>
                   <StyledLink
-                    href="/lessons"
-                    $active={pathname.startsWith("/lessons") || pathname === "/learning"}
+                    href="/"
+                    $active={pathname === "/" || pathname.startsWith("/lessons") || pathname === "/learning"}
                   >
                     Lessons
                   </StyledLink>
