@@ -1729,6 +1729,306 @@ const AchievementCard = styled(Card)<{ $unlocked: boolean }>`
   }
 `;
 
+const AchievementCategoryBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.5rem 0 1rem;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const AchievementTabBtn = styled.button<{ $active: boolean }>`
+  background: ${({ $active }) =>
+    $active
+      ? "linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%)"
+      : "rgba(255, 255, 255, 0.05)"};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
+  border: 1px solid
+    ${({ $active }) =>
+      $active ? "transparent" : "rgba(255, 255, 255, 0.1)"};
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${({ $active }) =>
+      $active
+        ? "linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%)"
+        : "rgba(255, 255, 255, 0.1)"};
+  }
+`;
+
+const AchievementSummaryCard = styled(Card)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 41, 59, 0.7) 0%,
+    rgba(15, 23, 42, 0.8) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+
+  .stat-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+
+    .stat-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+    .stat-value {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--foreground);
+    }
+  }
+
+  .progress-wrap {
+    flex: 1;
+    max-width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+`;
+
+const TierPill = styled.span<{ $tier: "bronze" | "silver" | "gold" | "diamond" }>`
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  ${({ $tier }) =>
+    $tier === "bronze" &&
+    `
+    background: rgba(205, 127, 50, 0.15);
+    color: #cd7f32;
+    border: 1px solid rgba(205, 127, 50, 0.3);
+  `}
+
+  ${({ $tier }) =>
+    $tier === "silver" &&
+    `
+    background: rgba(148, 163, 184, 0.15);
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+  `}
+
+  ${({ $tier }) =>
+    $tier === "gold" &&
+    `
+    background: rgba(245, 158, 11, 0.18);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+  `}
+
+  ${({ $tier }) =>
+    $tier === "diamond" &&
+    `
+    background: rgba(59, 130, 246, 0.18);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.35);
+  `}
+`;
+
+const UpgradedAchievementCard = styled(Card)<{
+  $unlocked: boolean;
+  $tier: "bronze" | "silver" | "gold" | "diamond";
+}>`
+  min-width: 165px;
+  max-width: 190px;
+  text-align: center;
+  flex-shrink: 0;
+  border-radius: 20px;
+  padding: 1.15rem 1rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  opacity: ${({ $unlocked }) => ($unlocked ? 1 : 0.65)};
+  background: ${({ $unlocked }) =>
+    $unlocked
+      ? "linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%)"
+      : "rgba(15, 23, 42, 0.5)"};
+
+  ${({ $unlocked, $tier }) =>
+    $unlocked
+      ? $tier === "diamond"
+        ? "border: 1.5px solid rgba(59, 130, 246, 0.6); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25);"
+        : $tier === "gold"
+        ? "border: 1.5px solid rgba(245, 158, 11, 0.55); box-shadow: 0 4px 18px rgba(245, 158, 11, 0.2);"
+        : $tier === "silver"
+        ? "border: 1.5px solid rgba(148, 163, 184, 0.45);"
+        : "border: 1.5px solid rgba(205, 127, 50, 0.45);"
+      : "border: 1px solid rgba(255, 255, 255, 0.08);"}
+
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .icon-box {
+    font-size: 2.2rem;
+    margin: 0.2rem 0;
+    filter: ${({ $unlocked }) =>
+      $unlocked ? "none" : "grayscale(90%) opacity(0.5)"};
+    transition: transform 0.2s ease;
+  }
+
+  &:hover .icon-box {
+    transform: scale(1.1);
+  }
+
+  h3 {
+    font-size: 0.88rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--foreground);
+    line-height: 1.25;
+  }
+
+  p {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .unlocked-tag {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    margin-top: 0.25rem;
+  }
+
+  .mini-progress-bar {
+    width: 100%;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 0.4rem;
+  }
+
+  .mini-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+    border-radius: 999px;
+  }
+
+  .progress-ratio {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+  }
+`;
+
+const AchievementModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+`;
+
+const AchievementModalCard = styled.div`
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+  }
+
+  .badge-icon {
+    font-size: 4rem;
+    margin: 0.75rem 0;
+  }
+
+  h2 {
+    font-size: 1.35rem;
+    font-weight: 900;
+    margin: 0 0 0.4rem;
+  }
+
+  p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin: 0 0 1.25rem;
+    line-height: 1.4;
+  }
+
+  .reward-box {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #fbbf24;
+    padding: 0.6rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+`;
+
 const MultiProgressBar = styled.div`
   width: 100%;
   height: 18px;
@@ -1963,50 +2263,264 @@ export default function ProfilePage() {
     return total === 0 ? 0 : Math.round((correct / total) * 100);
   }, [progress.mastery]);
 
-  const achievementsList = [
-    {
-      id: "first_quiz",
-      title: "First Steps",
-      desc: "Reach Level 2",
-      icon: <SparklesIcon />,
-      unlocked: level >= 2,
-    },
+  type AchievementCat = "all" | "streak" | "mastery" | "accuracy" | "level" | "quests";
+  type AchievementTierType = "bronze" | "silver" | "gold" | "diamond";
+
+  interface ExpandedAchievement {
+    id: string;
+    title: string;
+    desc: string;
+    icon: string;
+    category: AchievementCat;
+    tier: AchievementTierType;
+    currentValue: number;
+    maxValue: number;
+    unlocked: boolean;
+    reward: string;
+  }
+
+  const [activeAchievementTab, setActiveAchievementTab] = useState<AchievementCat>("all");
+  const [selectedAchievement, setSelectedAchievement] = useState<ExpandedAchievement | null>(null);
+
+  const userStreak = progress.streak || 0;
+  const userQuizCount = (progress.quizHistory || []).length;
+
+  const allAchievementsList: ExpandedAchievement[] = useMemo(() => [
+    // Streak Tiers
     {
       id: "streak_3",
       title: "Fire Starter",
-      desc: "3 Day Streak",
-      icon: <FireIcon />,
-      unlocked: (progress.streak || 0) >= 3,
+      desc: "Pertahankan 3 Hari Streak",
+      icon: "🔥",
+      category: "streak",
+      tier: "bronze",
+      currentValue: userStreak,
+      maxValue: 3,
+      unlocked: userStreak >= 3,
+      reward: "+30 XP",
+    },
+    {
+      id: "streak_7",
+      title: "Unstoppable",
+      desc: "Pertahankan 7 Hari Streak",
+      icon: "⚡",
+      category: "streak",
+      tier: "silver",
+      currentValue: userStreak,
+      maxValue: 7,
+      unlocked: userStreak >= 7,
+      reward: "+100 XP",
+    },
+    {
+      id: "streak_14",
+      title: "Flame Master",
+      desc: "Pertahankan 14 Hari Streak",
+      icon: "🌋",
+      category: "streak",
+      tier: "gold",
+      currentValue: userStreak,
+      maxValue: 14,
+      unlocked: userStreak >= 14,
+      reward: "+300 XP",
+    },
+    {
+      id: "streak_30",
+      title: "Eternal Flame",
+      desc: "Pertahankan 30 Hari Streak",
+      icon: "☀️",
+      category: "streak",
+      tier: "diamond",
+      currentValue: userStreak,
+      maxValue: 30,
+      unlocked: userStreak >= 30,
+      reward: "+1000 XP & Badge Berlian",
+    },
+
+    // Mastery & Character Tiers
+    {
+      id: "kana_20",
+      title: "Kana Apprentice",
+      desc: "Kuasai 20 Karakter Kana",
+      icon: "📖",
+      category: "mastery",
+      tier: "bronze",
+      currentValue: totalCharacters,
+      maxValue: 20,
+      unlocked: totalCharacters >= 20,
+      reward: "+50 XP",
+    },
+    {
+      id: "kana_46",
+      title: "Kana Scholar",
+      desc: "Kuasai 46 Karakter Hiragana",
+      icon: "📜",
+      category: "mastery",
+      tier: "silver",
+      currentValue: totalCharacters,
+      maxValue: 46,
+      unlocked: totalCharacters >= 46,
+      reward: "+150 XP",
     },
     {
       id: "kanji_10",
-      title: "Kanji Apprentice",
-      desc: "Learn 10 Kanji",
-      icon: <BookIcon />,
+      title: "Kanji Initiate",
+      desc: "Pelajari 10 Kanji Pertama",
+      icon: "⛩️",
+      category: "mastery",
+      tier: "bronze",
+      currentValue: totalCharacters,
+      maxValue: 10,
       unlocked: totalCharacters >= 10,
+      reward: "+50 XP",
+    },
+    {
+      id: "kanji_50",
+      title: "Kanji Sensei",
+      desc: "Pelajari 50 Kanji",
+      icon: "✒️",
+      category: "mastery",
+      tier: "gold",
+      currentValue: totalCharacters,
+      maxValue: 50,
+      unlocked: totalCharacters >= 50,
+      reward: "+400 XP",
+    },
+
+    // Accuracy Tiers
+    {
+      id: "accuracy_80",
+      title: "Sharp Mind",
+      desc: "Mencapai Akurasi Kuis >= 80%",
+      icon: "🎯",
+      category: "accuracy",
+      tier: "bronze",
+      currentValue: accuracy,
+      maxValue: 80,
+      unlocked: accuracy >= 80 && totalCharacters >= 5,
+      reward: "+50 XP",
     },
     {
       id: "accuracy_90",
       title: "Perfectionist",
-      desc: "90% Accuracy",
-      icon: <TargetIcon />,
+      desc: "Mencapai Akurasi Kuis >= 90%",
+      icon: "🎯",
+      category: "accuracy",
+      tier: "silver",
+      currentValue: accuracy,
+      maxValue: 90,
       unlocked: accuracy >= 90 && totalCharacters >= 5,
+      reward: "+150 XP",
+    },
+    {
+      id: "accuracy_100",
+      title: "Zen Master",
+      desc: "Mencapai Akurasi Kuis 100% Sempurna",
+      icon: "💎",
+      category: "accuracy",
+      tier: "gold",
+      currentValue: accuracy,
+      maxValue: 100,
+      unlocked: accuracy >= 100 && totalCharacters >= 5,
+      reward: "+300 XP",
+    },
+
+    // Level Tiers
+    {
+      id: "level_2",
+      title: "First Steps",
+      desc: "Capai Level 2",
+      icon: "🌱",
+      category: "level",
+      tier: "bronze",
+      currentValue: Math.max(0, level - 1),
+      maxValue: 1,
+      unlocked: level >= 2,
+      reward: "+50 XP",
+    },
+    {
+      id: "level_5",
+      title: "Rising Star",
+      desc: "Capai Level 5",
+      icon: "⭐",
+      category: "level",
+      tier: "silver",
+      currentValue: Math.max(0, level - 1),
+      maxValue: 4,
+      unlocked: level >= 5,
+      reward: "+150 XP",
     },
     {
       id: "level_10",
       title: "JapanApp Legend",
-      desc: "Reach Level 10",
-      icon: <TrophyIcon />,
+      desc: "Capai Level 10",
+      icon: "👑",
+      category: "level",
+      tier: "gold",
+      currentValue: Math.max(0, level - 1),
+      maxValue: 9,
       unlocked: level >= 10,
+      reward: "+500 XP",
     },
     {
-      id: "streak_10",
-      title: "Unstoppable",
-      desc: "10 Day Streak",
-      icon: <AwardIcon />,
-      unlocked: (progress.streak || 0) >= 10,
+      id: "level_20",
+      title: "Shogun Master",
+      desc: "Capai Level 20",
+      icon: "🏯",
+      category: "level",
+      tier: "diamond",
+      currentValue: Math.max(0, level - 1),
+      maxValue: 19,
+      unlocked: level >= 20,
+      reward: "+1500 XP & Badge Shogun",
     },
-  ];
+
+    // Quests & Feature Exploration Tiers
+    {
+      id: "quest_1",
+      title: "Daily Challenger",
+      desc: "Selesaikan 1 Sesi Kuis Harian",
+      icon: "⚔️",
+      category: "quests",
+      tier: "bronze",
+      currentValue: userQuizCount,
+      maxValue: 1,
+      unlocked: userQuizCount >= 1,
+      reward: "+50 XP",
+    },
+    {
+      id: "quest_5",
+      title: "Quest Hunter",
+      desc: "Selesaikan 5 Sesi Latihan/Kuis",
+      icon: "🏹",
+      category: "quests",
+      tier: "silver",
+      currentValue: userQuizCount,
+      maxValue: 5,
+      unlocked: userQuizCount >= 5,
+      reward: "+150 XP",
+    },
+    {
+      id: "explorer",
+      title: "Master Explorer",
+      desc: "Mulai Belajar Hiragana / Katakana / Kanji",
+      icon: "🧭",
+      category: "quests",
+      tier: "gold",
+      currentValue: totalCharacters > 0 ? 1 : 0,
+      maxValue: 1,
+      unlocked: totalCharacters > 0,
+      reward: "+200 XP",
+    },
+  ], [userStreak, totalCharacters, accuracy, level, userQuizCount]);
+
+  const filteredAchievements = useMemo(() => {
+    if (activeAchievementTab === "all") return allAchievementsList;
+    return allAchievementsList.filter((a) => a.category === activeAchievementTab);
+  }, [activeAchievementTab, allAchievementsList]);
+
+  const unlockedCount = useMemo(() => {
+    return allAchievementsList.filter((a) => a.unlocked).length;
+  }, [allAchievementsList]);
   const [jlptExpanded, setJlptExpanded] = useState(true);
   const [hoveredKanaChartIdx, setHoveredKanaChartIdx] = useState<number | null>(
     null,
@@ -3858,6 +4372,96 @@ export default function ProfilePage() {
                   </AchievementRow>
                 </AchievementsStackCard>
 
+                {/* Summary Progress Card */}
+                <AchievementSummaryCard style={{ marginTop: "1rem" }}>
+                  <div className="stat-info">
+                    <span className="stat-title">Pencapaian Terbuka</span>
+                    <span className="stat-value">
+                      🏆 {unlockedCount} / {allAchievementsList.length} Badge
+                    </span>
+                  </div>
+                  <div className="progress-wrap">
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        color: "var(--text-secondary)",
+                      }}
+                    >
+                      <span>Progres Pencapaian</span>
+                      <span>
+                        {Math.round(
+                          (unlockedCount / allAchievementsList.length) * 100
+                        )}
+                        %
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "8px",
+                        background: "rgba(255, 255, 255, 0.1)",
+                        borderRadius: "999px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: "100%",
+                          width: `${(unlockedCount / allAchievementsList.length) * 100}%`,
+                          background:
+                            "linear-gradient(90deg, #10b981 0%, #3b82f6 50%, #8b5cf6 100%)",
+                          borderRadius: "999px",
+                          transition: "width 0.6s ease",
+                        }}
+                      />
+                    </div>
+                  </div>
+                </AchievementSummaryCard>
+
+                {/* Category Filter Tabs */}
+                <AchievementCategoryBar>
+                  <AchievementTabBtn
+                    $active={activeAchievementTab === "all"}
+                    onClick={() => setActiveAchievementTab("all")}
+                  >
+                    Semua ({allAchievementsList.length})
+                  </AchievementTabBtn>
+                  <AchievementTabBtn
+                    $active={activeAchievementTab === "streak"}
+                    onClick={() => setActiveAchievementTab("streak")}
+                  >
+                    Streak 🔥
+                  </AchievementTabBtn>
+                  <AchievementTabBtn
+                    $active={activeAchievementTab === "mastery"}
+                    onClick={() => setActiveAchievementTab("mastery")}
+                  >
+                    Penguasaan ⛩️
+                  </AchievementTabBtn>
+                  <AchievementTabBtn
+                    $active={activeAchievementTab === "accuracy"}
+                    onClick={() => setActiveAchievementTab("accuracy")}
+                  >
+                    Akurasi 🎯
+                  </AchievementTabBtn>
+                  <AchievementTabBtn
+                    $active={activeAchievementTab === "level"}
+                    onClick={() => setActiveAchievementTab("level")}
+                  >
+                    Level 🏆
+                  </AchievementTabBtn>
+                  <AchievementTabBtn
+                    $active={activeAchievementTab === "quests"}
+                    onClick={() => setActiveAchievementTab("quests")}
+                  >
+                    Quests ⚔️
+                  </AchievementTabBtn>
+                </AchievementCategoryBar>
+
+                {/* Upgraded Grid Cards */}
                 <AchievementGrid
                   ref={achievementsScrollRef}
                   $isDragging={isAchievementsDragging}
@@ -3865,21 +4469,57 @@ export default function ProfilePage() {
                   onMouseLeave={handleAchievementsMouseLeave}
                   onMouseUp={handleAchievementsMouseUp}
                   onMouseMove={handleAchievementsMouseMove}
-                  style={{ marginTop: "1rem" }}
                 >
-                  {achievementsList.map((a) => (
-                    <AchievementCard
-                      key={a.id}
-                      $unlocked={a.unlocked}
-                      title={
-                        a.unlocked ? "Unlocked!" : "Keep studying to unlock"
-                      }
-                    >
-                      <div className="icon-wrap">{a.icon}</div>
-                      <h3>{a.title}</h3>
-                      <p>{a.desc}</p>
-                    </AchievementCard>
-                  ))}
+                  {filteredAchievements.map((a) => {
+                    const pct = Math.min(
+                      100,
+                      Math.round((a.currentValue / a.maxValue) * 100)
+                    );
+                    return (
+                      <UpgradedAchievementCard
+                        key={a.id}
+                        $unlocked={a.unlocked}
+                        $tier={a.tier}
+                        onClick={() => setSelectedAchievement(a)}
+                      >
+                        <TierPill $tier={a.tier}>
+                          {a.tier === "bronze" && "🥉 Bronze"}
+                          {a.tier === "silver" && "🥈 Silver"}
+                          {a.tier === "gold" && "🥇 Gold"}
+                          {a.tier === "diamond" && "💎 Diamond"}
+                        </TierPill>
+
+                        <div className="icon-box">{a.icon}</div>
+                        <h3>{a.title}</h3>
+                        <p>{a.desc}</p>
+
+                        {a.unlocked ? (
+                          <span className="unlocked-tag">✓ Terbuka</span>
+                        ) : (
+                          <div style={{ width: "100%", marginTop: "0.2rem" }}>
+                            <div className="mini-progress-bar">
+                              <div
+                                className="mini-progress-fill"
+                                style={{ width: `${pct}%` }}
+                              />
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginTop: "0.25rem",
+                              }}
+                            >
+                              <span className="progress-ratio">
+                                {a.currentValue} / {a.maxValue}
+                              </span>
+                              <span className="progress-ratio">{pct}%</span>
+                            </div>
+                          </div>
+                        )}
+                      </UpgradedAchievementCard>
+                    );
+                  })}
                 </AchievementGrid>
               </div>
 
@@ -4235,6 +4875,100 @@ export default function ProfilePage() {
       {/* Leaderboard Modal */}
       {showLeaderboardModal && (
         <LeaderboardModal onClose={() => setShowLeaderboardModal(false)} />
+      )}
+
+      {/* Achievement Detail Modal */}
+      {selectedAchievement && (
+        <AchievementModalOverlay onClick={() => setSelectedAchievement(null)}>
+          <AchievementModalCard onClick={(e) => e.stopPropagation()}>
+            <button
+              className="close-btn"
+              onClick={() => setSelectedAchievement(null)}
+            >
+              ✕
+            </button>
+
+            <TierPill $tier={selectedAchievement.tier}>
+              {selectedAchievement.tier === "bronze" && "🥉 Tier Perunggu"}
+              {selectedAchievement.tier === "silver" && "🥈 Tier Perak"}
+              {selectedAchievement.tier === "gold" && "🥇 Tier Emas"}
+              {selectedAchievement.tier === "diamond" && "💎 Tier Berlian"}
+            </TierPill>
+
+            <div className="badge-icon">{selectedAchievement.icon}</div>
+            <h2>{selectedAchievement.title}</h2>
+            <p>{selectedAchievement.desc}</p>
+
+            <div className="reward-box">
+              🎁 Hadiah XP: {selectedAchievement.reward}
+            </div>
+
+            <div style={{ width: "100%", textAlign: "left" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "0.82rem",
+                  fontWeight: 700,
+                  color: "var(--text-secondary)",
+                  marginBottom: "0.4rem",
+                }}
+              >
+                <span>Progres Kamu</span>
+                <span>
+                  {selectedAchievement.currentValue} / {selectedAchievement.maxValue}
+                </span>
+              </div>
+
+              <div
+                style={{
+                  width: "100%",
+                  height: "8px",
+                  background: "rgba(255, 255, 255, 0.1)",
+                  borderRadius: "999px",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    width: `${Math.min(
+                      100,
+                      Math.round(
+                        (selectedAchievement.currentValue /
+                          selectedAchievement.maxValue) *
+                          100
+                      )
+                    )}%`,
+                    background:
+                      "linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)",
+                    borderRadius: "999px",
+                  }}
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={() => setSelectedAchievement(null)}
+              style={{
+                width: "100%",
+                marginTop: "1.5rem",
+                background: selectedAchievement.unlocked
+                  ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
+                  : "linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%)",
+                color: "#ffffff",
+                border: "none",
+                padding: "0.75rem",
+                borderRadius: "14px",
+                fontWeight: 800,
+                fontSize: "0.95rem",
+                cursor: "pointer",
+              }}
+            >
+              {selectedAchievement.unlocked ? "✓ Pencapaian Terbuka!" : "Tutup"}
+            </button>
+          </AchievementModalCard>
+        </AchievementModalOverlay>
       )}
     </PageWrapper>
   );
