@@ -355,22 +355,36 @@ export function StreakModal({ onClose }: { onClose: () => void }) {
               </span>
               <div
                 style={{
-                  width: "32px",
-                  height: "32px",
+                  width: "34px",
+                  height: "34px",
                   borderRadius: "50%",
                   background: d.hasStudied
-                    ? "#f59e0b"
-                    : "rgba(255,255,255,0.08)",
-                  border: d.isToday ? "2px solid #f59e0b" : "none",
+                    ? "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)"
+                    : d.isToday
+                    ? "rgba(245, 158, 11, 0.15)"
+                    : "rgba(255,255,255,0.06)",
+                  border: d.isToday
+                    ? "2px solid #f59e0b"
+                    : d.hasStudied
+                    ? "none"
+                    : "1px solid rgba(255,255,255,0.1)",
+                  boxShadow: d.hasStudied
+                    ? "0 0 12px rgba(245, 158, 11, 0.4)"
+                    : "none",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: d.hasStudied ? "white" : "var(--text-secondary)",
-                  fontWeight: 900,
-                  fontSize: "0.85rem",
+                  fontSize: "1.05rem",
+                  transition: "all 0.2s ease",
                 }}
               >
-                {d.hasStudied ? <CheckIcon size={16} color="#ffffff" strokeWidth={3.5} /> : ""}
+                {d.hasStudied ? (
+                  "🔥"
+                ) : d.isToday ? (
+                  <span style={{ opacity: 0.7, filter: "brightness(1.1)" }}>🔥</span>
+                ) : (
+                  <span style={{ opacity: 0.25, filter: "grayscale(0.8)" }}>🔥</span>
+                )}
               </div>
             </div>
           ))}
