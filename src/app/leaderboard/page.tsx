@@ -631,7 +631,7 @@ const StatusGrid = styled.div`
 const EmojiBtn = styled.button<{ $active: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: center;
+   justify-content: center;
   height: 44px;
   border-radius: 14px;
   font-size: 1.4rem;
