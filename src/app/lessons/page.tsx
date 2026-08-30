@@ -1,19 +1,23 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import styled, { keyframes, css } from "styled-components";
-import dynamic from "next/dynamic";
+import { RoadmapNodeDrawer } from "@/components/home/RoadmapNodeDrawer";
 import { useProgress } from "@/context/ProgressContext";
 import { useTheme } from "@/context/ThemeContext";
-import { RoadmapNodeDrawer } from "@/components/home/RoadmapNodeDrawer";
-import { lessonsData, Lesson } from "@/data/lessonsData";
-import React from "react";
+import { Lesson, lessonsData } from "@/data/lessonsData";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import styled, { css } from "styled-components";
 
-import { ToriiPhaseHeader } from "@/components/mobile/ToriiPhaseHeader";
-import { HankoSkillCard } from "@/components/mobile/HankoSkillCard";
-import { InkProgressBar } from "@/components/mobile/InkProgressBar";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { RightSidebar } from "@/components/home/RightSidebar";
+import { HankoSkillCard } from "@/components/mobile/HankoSkillCard";
+import { InkProgressBar } from "@/components/mobile/InkProgressBar";
+import { ToriiPhaseHeader } from "@/components/mobile/ToriiPhaseHeader";
 
 const HorizontalScrollList = styled.div`
   display: flex;
@@ -184,7 +188,8 @@ const LevelTab = styled.button<{
   border-bottom: 4px solid
     ${({ $active, $activeColor }) =>
       $active ? $activeColor : "rgba(0, 0, 0, 0.12)"};
-  background: ${({ $active, $activeBg }) => ($active ? $activeBg : "var(--surface)")};
+  background: ${({ $active, $activeBg }) =>
+    $active ? $activeBg : "var(--surface)"};
   color: ${({ $active, $activeColor }) =>
     $active ? $activeColor : "var(--text-secondary)"};
   font-weight: 800;
@@ -291,7 +296,9 @@ export default function LessonsPage() {
   const { mode } = useTheme();
   const isDark = mode === "dark";
   const [mounted, setMounted] = useState(false);
-  const [selectedNode, setSelectedNode] = useState<SelectedNodeData | null>(null);
+  const [selectedNode, setSelectedNode] = useState<SelectedNodeData | null>(
+    null,
+  );
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState<
     "Basic" | "N5" | "N4" | "N3" | "N2" | "N1"
@@ -540,7 +547,10 @@ export default function LessonsPage() {
   return (
     <MainLayout>
       <MobileContainer>
-        <Breadcrumbs items={[{ label: "Home", href: "/" }]} current="Roadmap Belajar" />
+        <Breadcrumbs
+          items={[{ label: "Home", href: "/" }]}
+          current="Roadmap Belajar"
+        />
 
         <StatBanner>
           <StatBannerItem title="Total Experience Points">
@@ -580,16 +590,14 @@ export default function LessonsPage() {
         </LevelSelector>
 
         {levelLessons.length === 0 && (
-          <LockBanner>
-            📭 No material available for this level yet.
-          </LockBanner>
+          <LockBanner>📭 No material available for this level yet.</LockBanner>
         )}
 
         {activeUnits.map((unit) => {
           const sectHeader = getSectionTitle(unit.id, unit.title);
           const numLessons = unit.lessons.length;
-          const completedInUnit = unit.lessons.filter(
-            (l) => progress.completedExercises?.includes(l.id),
+          const completedInUnit = unit.lessons.filter((l) =>
+            progress.completedExercises?.includes(l.id),
           ).length;
 
           return (

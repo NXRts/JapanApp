@@ -1,9 +1,10 @@
 "use client";
 
+import { JapanAppLogoIcon } from "@/components/common/JapanAppLogoIcon";
 import { FloatingDock } from "@/components/mobile/FloatingDock";
 import { useDeviceMode } from "@/context/DeviceModeContext";
-import { useProgress } from "@/context/ProgressContext";
 import { useNotifications } from "@/context/NotificationContext";
+import { useProgress } from "@/context/ProgressContext";
 import { isItemDue } from "@/lib/srs";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -11,8 +12,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import styled, { createGlobalStyle, css } from "styled-components";
 import { UserIcon } from "./icons/AppIcons";
-import { JapanAppLogoIcon } from "@/components/common/JapanAppLogoIcon";
 
+import {
+  CourseModal,
+  HeartsModal,
+  ShopModal,
+  StreakModal,
+} from "@/components/modals/DuolingoModals";
 const DictionarySearchOverlay = dynamic(
   () => import("./dictionary/DictionarySearchOverlay"),
   { ssr: false },
@@ -64,6 +70,76 @@ const AppTopHeaderBar = styled.div`
 
   @media (max-width: 768px) {
     padding: 0.35rem 0.75rem;
+  }
+`;
+
+const MobileStatsHeaderBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  padding: 0.45rem 0.75rem 0.55rem;
+  box-sizing: border-box;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  @media (min-width: 1101px) {
+    display: none;
+  }
+`;
+
+const MobileStatPill = styled.div<{ $color?: string; $glowColor?: string }>`
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 850;
+  font-size: 0.85rem;
+  color: ${({ $color }) => $color || "var(--foreground)"};
+  cursor: pointer;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9999px;
+  background: ${({ $glowColor }) =>
+    $glowColor ? `${$glowColor}15` : "rgba(255, 255, 255, 0.06)"};
+  border: 1.5px solid
+    ${({ $glowColor }) => ($glowColor ? `${$glowColor}50` : "rgba(255, 255, 255, 0.18)")};
+  box-shadow: ${({ $glowColor }) =>
+    $glowColor ? `0 2px 10px ${$glowColor}25` : "0 2px 8px rgba(0, 0, 0, 0.1)"};
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: ${({ $glowColor }) =>
+      $glowColor ? `0 4px 14px ${$glowColor}40` : "0 4px 12px rgba(255, 255, 255, 0.2)"};
+  }
+
+  &:active {
+    transform: scale(0.93);
+  }
+`;
+
+const MobileFlagBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.82rem;
+  font-weight: 850;
+  cursor: pointer;
+  color: var(--foreground);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    transform: scale(0.93);
   }
 `;
 
@@ -175,8 +251,10 @@ const HeaderIconButton = styled.button<{ $active?: boolean }>`
   border-radius: 50%;
   background: ${({ $active }) =>
     $active ? "rgba(var(--primary-rgb), 0.15)" : "transparent"};
-  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
-  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
+  border: 1px solid
+    ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
+  color: ${({ $active }) =>
+    $active ? "var(--primary)" : "var(--text-secondary)"};
   cursor: pointer;
   transition: all 0.2s ease;
   opacity: 0.85;
@@ -251,7 +329,8 @@ const NotificationHeader = styled.div`
     gap: 6px;
   }
 
-  .mark-btn, .clear-btn {
+  .mark-btn,
+  .clear-btn {
     background: transparent;
     border: none;
     font-size: 0.73rem;
@@ -340,11 +419,16 @@ const NotificationItem = styled.div<{ $unread?: boolean }>`
       : "rgba(255, 255, 255, 0.02)"};
   border: 1px solid
     ${({ $unread }) =>
-      $unread ? "rgba(var(--primary-rgb, 79, 70, 229), 0.35)" : "var(--border)"};
+      $unread
+        ? "rgba(var(--primary-rgb, 79, 70, 229), 0.35)"
+        : "var(--border)"};
   font-size: 0.8rem;
   color: var(--foreground);
   cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
     border-color: var(--primary);
@@ -1807,9 +1891,7 @@ function formatSegmentLabel(segment: string): string {
 }
 
 function getBreadcrumbs(pathname: string): BreadcrumbItem[] {
-  const items: BreadcrumbItem[] = [
-    { label: "JapanApp", href: "/", icon: "▦" },
-  ];
+  const items: BreadcrumbItem[] = [{ label: "JapanApp", href: "/", icon: "▦" }];
 
   if (!pathname || pathname === "/") {
     items.push({ label: "Learn" });
@@ -1837,8 +1919,18 @@ export function Navbar() {
   const pathname = usePathname() || "";
   const router = useRouter();
 
-  const { notifications, unreadCount, markAsRead, markAllAsRead, deleteNotification, clearAll, sendTestNotification } = useNotifications();
-  const [notifFilter, setNotifFilter] = useState<"all" | "streak" | "quest" | "srs" | "league">("all");
+  const {
+    notifications,
+    unreadCount,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+    clearAll,
+    sendTestNotification,
+  } = useNotifications();
+  const [notifFilter, setNotifFilter] = useState<
+    "all" | "streak" | "quest" | "srs" | "league"
+  >("all");
 
   const filteredNotifications = useMemo(() => {
     if (notifFilter === "all") return notifications;
@@ -1873,7 +1965,7 @@ export function Navbar() {
       if (
         e.key === "/" &&
         !["INPUT", "TEXTAREA", "SELECT"].includes(
-          (e.target as HTMLElement)?.tagName
+          (e.target as HTMLElement)?.tagName,
         )
       ) {
         e.preventDefault();
@@ -1962,6 +2054,14 @@ export function Navbar() {
   }, []);
   const { progress } = useProgress();
   const { deviceMode, isMounted } = useDeviceMode();
+  const [activeStatModal, setActiveStatModal] = useState<
+    "course" | "streak" | "shop" | "hearts" | null
+  >(null);
+
+  const streak = progress.streak || 0;
+  const gems = progress.gems !== undefined ? progress.gems : 100;
+  const hearts = progress.hearts !== undefined ? progress.hearts : 5;
+  const isSuper = progress.isSuper || false;
 
   const dueItemsCount = Object.values(progress.srs).filter(isItemDue).length;
 
@@ -2039,7 +2139,11 @@ export function Navbar() {
 
             <SidebarNavItem
               href="/"
-              $active={pathname === "/" || pathname.startsWith("/lessons") || pathname === "/learning"}
+              $active={
+                pathname === "/" ||
+                pathname.startsWith("/lessons") ||
+                pathname === "/learning"
+              }
             >
               <LearnIcon />
               Lessons
@@ -2276,7 +2380,10 @@ export function Navbar() {
                 })}
               </DesktopBreadcrumbsWrapper>
 
-              <MobileHeaderLogo href="/" onClick={() => setIsMobileMenuOpen(false)}>
+              <MobileHeaderLogo
+                href="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
                 🇯🇵 <span>JapanApp</span>
               </MobileHeaderLogo>
 
@@ -2302,10 +2409,7 @@ export function Navbar() {
                     <KbdShortcutBadge>/</KbdShortcutBadge>
                   </SearchPillButton>
 
-                  <HeaderIconButton
-                    title="AI Assistant"
-                    type="button"
-                  >
+                  <HeaderIconButton title="AI Assistant" type="button">
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
@@ -2320,31 +2424,37 @@ export function Navbar() {
                     </svg>
                   </HeaderIconButton>
 
-                    <HeaderIconButton
-                      $active={pathname === "/notifications"}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (pathname === "/notifications") {
-                          router.back();
-                        } else {
-                          router.push("/notifications");
-                        }
-                      }}
-                      title={pathname === "/notifications" ? "Tutup Notifikasi" : "Pemberitahuan & Notifikasi"}
+                  <HeaderIconButton
+                    $active={pathname === "/notifications"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (pathname === "/notifications") {
+                        router.back();
+                      } else {
+                        router.push("/notifications");
+                      }
+                    }}
+                    title={
+                      pathname === "/notifications"
+                        ? "Tutup Notifikasi"
+                        : "Pemberitahuan & Notifikasi"
+                    }
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                      </svg>
-                      {unreadCount > 0 && <NotificationBadgeDot>{unreadCount}</NotificationBadgeDot>}
-                    </HeaderIconButton>
+                      <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                      <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                    </svg>
+                    {unreadCount > 0 && (
+                      <NotificationBadgeDot>{unreadCount}</NotificationBadgeDot>
+                    )}
+                  </HeaderIconButton>
 
                   <HeaderIconButton
                     as={Link}
@@ -2429,7 +2539,11 @@ export function Navbar() {
                         router.push("/notifications");
                       }
                     }}
-                    title={pathname === "/notifications" ? "Tutup Notifikasi" : "Pemberitahuan & Notifikasi"}
+                    title={
+                      pathname === "/notifications"
+                        ? "Tutup Notifikasi"
+                        : "Pemberitahuan & Notifikasi"
+                    }
                     style={{ width: "36px", height: "36px", padding: "6px" }}
                   >
                     <svg
@@ -2444,7 +2558,9 @@ export function Navbar() {
                       <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
                       <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
                     </svg>
-                    {unreadCount > 0 && <NotificationBadgeDot>{unreadCount}</NotificationBadgeDot>}
+                    {unreadCount > 0 && (
+                      <NotificationBadgeDot>{unreadCount}</NotificationBadgeDot>
+                    )}
                   </HeaderIconButton>
 
                   <UserBtn href="/profile" title="Profile">
@@ -2490,7 +2606,11 @@ export function Navbar() {
                 <NavItem>
                   <StyledLink
                     href="/"
-                    $active={pathname === "/" || pathname.startsWith("/lessons") || pathname === "/learning"}
+                    $active={
+                      pathname === "/" ||
+                      pathname.startsWith("/lessons") ||
+                      pathname === "/learning"
+                    }
                   >
                     Lessons
                   </StyledLink>
@@ -2709,6 +2829,40 @@ export function Navbar() {
           )}
         </NavContainer>
 
+        {/* Mobile Stats Header Bar ([JP] 🔥 0 💎 100 ❤️ 7) */}
+        <MobileStatsHeaderBar>
+          <MobileFlagBox
+            onClick={() => setActiveStatModal("course")}
+            title="Pilih Tingkat JLPT"
+          >
+            🇯🇵 <span>JP</span>
+          </MobileFlagBox>
+          <MobileStatPill
+            $color="#f59e0b"
+            $glowColor="#f59e0b"
+            title="Streak Hari Ini"
+            onClick={() => setActiveStatModal("streak")}
+          >
+            🔥 {streak}
+          </MobileStatPill>
+          <MobileStatPill
+            $color="#3b82f6"
+            $glowColor="#3b82f6"
+            title="Buka Toko Permata"
+            onClick={() => setActiveStatModal("shop")}
+          >
+            💎 {gems}
+          </MobileStatPill>
+          <MobileStatPill
+            $color="#ef4444"
+            $glowColor="#ef4444"
+            title="Nyawa"
+            onClick={() => setActiveStatModal("hearts")}
+          >
+            ❤️ {isSuper ? "♾️" : hearts}
+          </MobileStatPill>
+        </MobileStatsHeaderBar>
+
         <MobileMenuOverlay
           $isOpen={isMobileMenuOpen}
           $dragOpacity={isDragging ? Math.max(0, 1 - dragY / 300) : undefined}
@@ -2842,7 +2996,22 @@ export function Navbar() {
               }}
             >
               <KanjiBadge>報</KanjiBadge>
-              Notifikasi {unreadCount > 0 && <span style={{ background: "var(--primary)", color: "#fff", padding: "1px 7px", borderRadius: "999px", fontSize: "0.7rem", fontWeight: "800", marginLeft: "auto" }}>{unreadCount}</span>}
+              Notifikasi{" "}
+              {unreadCount > 0 && (
+                <span
+                  style={{
+                    background: "var(--primary)",
+                    color: "#fff",
+                    padding: "1px 7px",
+                    borderRadius: "999px",
+                    fontSize: "0.7rem",
+                    fontWeight: "800",
+                    marginLeft: "auto",
+                  }}
+                >
+                  {unreadCount}
+                </span>
+              )}
             </MobileLink>
 
             <MobileLink
@@ -2931,6 +3100,20 @@ export function Navbar() {
 
       {isDictionaryOpen && (
         <DictionarySearchOverlay onClose={() => setIsDictionaryOpen(false)} />
+      )}
+
+      {/* Stat Modals */}
+      {activeStatModal === "course" && (
+        <CourseModal onClose={() => setActiveStatModal(null)} />
+      )}
+      {activeStatModal === "streak" && (
+        <StreakModal onClose={() => setActiveStatModal(null)} />
+      )}
+      {activeStatModal === "shop" && (
+        <ShopModal onClose={() => setActiveStatModal(null)} />
+      )}
+      {activeStatModal === "hearts" && (
+        <HeartsModal onClose={() => setActiveStatModal(null)} />
       )}
 
       {isMounted && deviceMode === "mobile" && <FloatingDock />}

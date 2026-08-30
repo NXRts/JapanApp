@@ -1,15 +1,19 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import React from "react";
-import styled, { css } from "styled-components";
-import { useProgress } from "@/context/ProgressContext";
 import { RoadmapNodeDrawer } from "@/components/home/RoadmapNodeDrawer";
-import { lessonsData, Lesson } from "@/data/lessonsData";
-import { ToriiPhaseHeader } from "@/components/mobile/ToriiPhaseHeader";
 import { HankoSkillCard } from "@/components/mobile/HankoSkillCard";
 import { InkProgressBar } from "@/components/mobile/InkProgressBar";
-import { Breadcrumbs } from "@/components/common/Breadcrumbs";
+import { ToriiPhaseHeader } from "@/components/mobile/ToriiPhaseHeader";
+import { useProgress } from "@/context/ProgressContext";
+import { Lesson, lessonsData } from "@/data/lessonsData";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import styled, { css } from "styled-components";
 
 /* ─── Horizontal Draggable Scroll ─────────────────────────────────────────── */
 const HorizontalScrollList = styled.div`
@@ -479,125 +483,127 @@ export default function LearningPage() {
             </PageSubtitle>
           </PageHeader>
 
-        {/* Stats Banner */}
-        <StatBanner>
-          <StatBannerItem title="Total Experience Points">
-            ⭐ <span style={{ color: "#eab308" }}>{progress.exp} EXP</span>
-          </StatBannerItem>
-          <StatBannerItem title="Daily Challenge Status">
-            🎯{" "}
-            <span
-              style={{
-                color: isDailyCompleted ? "#10b981" : "var(--text-secondary)",
-              }}
-            >
-              {isDailyCompleted ? "Daily Done!" : "Daily Pending"}
-            </span>
-          </StatBannerItem>
-        </StatBanner>
+          {/* Stats Banner */}
+          <StatBanner>
+            <StatBannerItem title="Total Experience Points">
+              ⭐ <span style={{ color: "#eab308" }}>{progress.exp} EXP</span>
+            </StatBannerItem>
+            <StatBannerItem title="Daily Challenge Status">
+              🎯{" "}
+              <span
+                style={{
+                  color: isDailyCompleted ? "#10b981" : "var(--text-secondary)",
+                }}
+              >
+                {isDailyCompleted ? "Daily Done!" : "Daily Pending"}
+              </span>
+            </StatBannerItem>
+          </StatBanner>
 
-        {/* Level Tabs */}
-        <LevelSelector>
-          {levels.map((level) => (
-            <LevelTab
-              key={level.code}
-              $active={selectedLevel === level.code}
-              $activeColor={level.color}
-              onClick={() => setSelectedLevel(level.code)}
-            >
-              {level.code === "Basic" ? (
-                "Basic"
-              ) : (
-                <>
-                  <LevelTabText>JLPT </LevelTabText>
-                  {level.code}
-                </>
-              )}
-            </LevelTab>
-          ))}
-        </LevelSelector>
+          {/* Level Tabs */}
+          <LevelSelector>
+            {levels.map((level) => (
+              <LevelTab
+                key={level.code}
+                $active={selectedLevel === level.code}
+                $activeColor={level.color}
+                onClick={() => setSelectedLevel(level.code)}
+              >
+                {level.code === "Basic" ? (
+                  "Basic"
+                ) : (
+                  <>
+                    <LevelTabText>JLPT </LevelTabText>
+                    {level.code}
+                  </>
+                )}
+              </LevelTab>
+            ))}
+          </LevelSelector>
 
-        {/* No content warning */}
-        {levelLessons.length === 0 && (
-          <LockBanner>📭 No material available for this level yet.</LockBanner>
-        )}
+          {/* No content warning */}
+          {levelLessons.length === 0 && (
+            <LockBanner>
+              📭 No material available for this level yet.
+            </LockBanner>
+          )}
 
-        {/* Units + Lessons */}
-        {activeUnits.map((unit) => {
-          const unitNum = parseInt(unit.id.match(/u(\d+)/i)?.[1] || "1", 10);
-          const numLessons = unit.lessons.length;
-          const completedInUnit = unit.lessons.filter((l) =>
-            progress.completedExercises?.includes(l.id),
-          ).length;
-          const cleanTitle = unit.title
-            .replace(/Unit \d+:\s*/i, "")
-            .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "")
-            .trim();
+          {/* Units + Lessons */}
+          {activeUnits.map((unit) => {
+            const unitNum = parseInt(unit.id.match(/u(\d+)/i)?.[1] || "1", 10);
+            const numLessons = unit.lessons.length;
+            const completedInUnit = unit.lessons.filter((l) =>
+              progress.completedExercises?.includes(l.id),
+            ).length;
+            const cleanTitle = unit.title
+              .replace(/Unit \d+:\s*/i, "")
+              .replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, "")
+              .trim();
 
-          return (
-            <div key={unit.id} style={{ marginBottom: "2.25rem" }}>
-              <ToriiPhaseHeader
-                unitLabel={`UNIT ${unitNum}`}
-                title={cleanTitle}
-                description={unit.description}
-                color={unit.color}
-              />
+            return (
+              <div key={unit.id} style={{ marginBottom: "2.25rem" }}>
+                <ToriiPhaseHeader
+                  unitLabel={`UNIT ${unitNum}`}
+                  title={cleanTitle}
+                  description={unit.description}
+                  color={unit.color}
+                />
 
-              <InkProgressBar
-                completed={completedInUnit}
-                total={numLessons}
-                color={
-                  unit.color.includes("gradient")
-                    ? unit.color.match(/#(?:[0-9a-fA-F]{3}){1,2}/g)?.[0] ||
-                      "#10b981"
-                    : unit.color
-                }
-              />
+                <InkProgressBar
+                  completed={completedInUnit}
+                  total={numLessons}
+                  color={
+                    unit.color.includes("gradient")
+                      ? unit.color.match(/#(?:[0-9a-fA-F]{3}){1,2}/g)?.[0] ||
+                        "#10b981"
+                      : unit.color
+                  }
+                />
 
-              <DraggableScrollList>
-                {unit.lessons.map((lesson) => {
-                  const isUnlocked = isLessonUnlocked(lesson.id);
-                  const isCompleted =
-                    progress.completedExercises?.includes(lesson.id) || false;
-                  const isActive = isUnlocked && !isCompleted;
+                <DraggableScrollList>
+                  {unit.lessons.map((lesson) => {
+                    const isUnlocked = isLessonUnlocked(lesson.id);
+                    const isCompleted =
+                      progress.completedExercises?.includes(lesson.id) || false;
+                    const isActive = isUnlocked && !isCompleted;
 
-                  const cardState = isCompleted
-                    ? "mastered"
-                    : isActive
-                      ? "active"
-                      : isUnlocked
-                        ? "available"
-                        : "locked";
+                    const cardState = isCompleted
+                      ? "mastered"
+                      : isActive
+                        ? "active"
+                        : isUnlocked
+                          ? "available"
+                          : "locked";
 
-                  return (
-                    <HankoSkillCard
-                      key={lesson.id}
-                      id={isActive ? "active-lesson-node" : undefined}
-                      title={lesson.title}
-                      badge={lesson.badge}
-                      icon={lesson.icon}
-                      expReward={lesson.expReward}
-                      state={cardState}
-                      score={progress.exerciseScores?.[lesson.id]}
-                      color={unit.color}
-                      onClick={() => handleNodeClick(lesson, isUnlocked)}
-                    />
-                  );
-                })}
-              </DraggableScrollList>
-            </div>
-          );
-        })}
+                    return (
+                      <HankoSkillCard
+                        key={lesson.id}
+                        id={isActive ? "active-lesson-node" : undefined}
+                        title={lesson.title}
+                        badge={lesson.badge}
+                        icon={lesson.icon}
+                        expReward={lesson.expReward}
+                        state={cardState}
+                        score={progress.exerciseScores?.[lesson.id]}
+                        color={unit.color}
+                        onClick={() => handleNodeClick(lesson, isUnlocked)}
+                      />
+                    );
+                  })}
+                </DraggableScrollList>
+              </div>
+            );
+          })}
 
-        {/* Lesson Drawer */}
-        <RoadmapNodeDrawer
-          isOpen={isDrawerOpen}
-          onClose={() => setIsDrawerOpen(false)}
-          nodeData={selectedNode}
-        />
-      </ContentArea>
-      <RightSidebar />
-    </MainLayout>
-  </PageWrapper>
+          {/* Lesson Drawer */}
+          <RoadmapNodeDrawer
+            isOpen={isDrawerOpen}
+            onClose={() => setIsDrawerOpen(false)}
+            nodeData={selectedNode}
+          />
+        </ContentArea>
+        <RightSidebar />
+      </MainLayout>
+    </PageWrapper>
   );
 }
