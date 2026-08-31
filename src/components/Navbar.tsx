@@ -2829,39 +2829,41 @@ export function Navbar() {
           )}
         </NavContainer>
 
-        {/* Mobile Stats Header Bar ([JP] 🔥 0 💎 100 ❤️ 7) */}
-        <MobileStatsHeaderBar>
-          <MobileFlagBox
-            onClick={() => setActiveStatModal("course")}
-            title="Pilih Tingkat JLPT"
-          >
-            🇯🇵 <span>JP</span>
-          </MobileFlagBox>
-          <MobileStatPill
-            $color="#f59e0b"
-            $glowColor="#f59e0b"
-            title="Streak Hari Ini"
-            onClick={() => setActiveStatModal("streak")}
-          >
-            🔥 {streak}
-          </MobileStatPill>
-          <MobileStatPill
-            $color="#3b82f6"
-            $glowColor="#3b82f6"
-            title="Buka Toko Permata"
-            onClick={() => setActiveStatModal("shop")}
-          >
-            💎 {gems}
-          </MobileStatPill>
-          <MobileStatPill
-            $color="#ef4444"
-            $glowColor="#ef4444"
-            title="Nyawa"
-            onClick={() => setActiveStatModal("hearts")}
-          >
-            ❤️ {isSuper ? "♾️" : hearts}
-          </MobileStatPill>
-        </MobileStatsHeaderBar>
+        {/* Mobile Stats Header Bar ([JP] 🔥 0 💎 100 ❤️ 7) - Only on Lessons pages */}
+        {(pathname.startsWith("/lessons") || pathname.startsWith("/learning") || pathname === "/") && (
+          <MobileStatsHeaderBar>
+            <MobileFlagBox
+              onClick={() => setActiveStatModal("course")}
+              title="Pilih Tingkat JLPT"
+            >
+              🇯🇵 <span>JP</span>
+            </MobileFlagBox>
+            <MobileStatPill
+              $color="#f59e0b"
+              $glowColor="#f59e0b"
+              title="Streak Hari Ini"
+              onClick={() => setActiveStatModal("streak")}
+            >
+              🔥 {streak}
+            </MobileStatPill>
+            <MobileStatPill
+              $color="#3b82f6"
+              $glowColor="#3b82f6"
+              title="Buka Toko Permata"
+              onClick={() => setActiveStatModal("shop")}
+            >
+              💎 {gems}
+            </MobileStatPill>
+            <MobileStatPill
+              $color="#ef4444"
+              $glowColor="#ef4444"
+              title="Nyawa"
+              onClick={() => setActiveStatModal("hearts")}
+            >
+              ❤️ {isSuper ? "♾️" : hearts}
+            </MobileStatPill>
+          </MobileStatsHeaderBar>
+        )}
 
         <MobileMenuOverlay
           $isOpen={isMobileMenuOpen}
