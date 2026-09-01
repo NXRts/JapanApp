@@ -11,7 +11,7 @@ const SectionCard = styled.div`
   box-shadow: var(--shadow-sm);
 
   @media (max-width: 640px) {
-    padding: 1.25rem;
+    padding: 1.15rem;
     border-radius: 20px;
   }
 `;
@@ -21,6 +21,10 @@ const HeaderRow = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.25rem;
+
+  @media (max-width: 640px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 const SideTitle = styled.h3`
@@ -30,6 +34,10 @@ const SideTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  @media (max-width: 640px) {
+    font-size: 1.05rem;
+  }
 `;
 
 const CountChip = styled.span`
@@ -40,6 +48,11 @@ const CountChip = styled.span`
   color: #38bdf8;
   padding: 0.2rem 0.65rem;
   border-radius: 999px;
+
+  @media (max-width: 640px) {
+    font-size: 0.7rem;
+    padding: 0.18rem 0.55rem;
+  }
 `;
 
 const FilterTabs = styled.div`
@@ -50,6 +63,10 @@ const FilterTabs = styled.div`
   border-radius: 12px;
   margin-bottom: 1.25rem;
   border: 1px solid var(--border);
+
+  @media (max-width: 640px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 const TabItem = styled.button<{ $active?: boolean }>`
@@ -66,6 +83,11 @@ const TabItem = styled.button<{ $active?: boolean }>`
 
   &:hover {
     color: white;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.15rem;
   }
 `;
 
@@ -101,6 +123,12 @@ const BadgeItem = styled.div<{ $status: "active" | "unlocked" | "locked" }>`
     border-color: var(--primary-light);
     opacity: 1;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.75rem 0.85rem;
+    gap: 0.65rem;
+    border-radius: 14px;
+  }
 `;
 
 const BadgeIconCircle = styled.div<{ $color?: string; $status: string }>`
@@ -114,6 +142,12 @@ const BadgeIconCircle = styled.div<{ $color?: string; $status: string }>`
   justify-content: center;
   font-size: 1.5rem;
   flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    width: 38px;
+    height: 38px;
+    font-size: 1.25rem;
+  }
 `;
 
 const BadgeTextGroup = styled.div`
@@ -121,6 +155,7 @@ const BadgeTextGroup = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 2px;
+  min-width: 0;
 `;
 
 const BadgeNameRow = styled.div`
@@ -134,6 +169,13 @@ const BadgeName = styled.span`
   font-size: 0.9rem;
   font-weight: 850;
   color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 640px) {
+    font-size: 0.84rem;
+  }
 `;
 
 const BadgeStatusTag = styled.span<{ $status: string }>`
@@ -162,12 +204,22 @@ const BadgeStatusTag = styled.span<{ $status: string }>`
         : $status === "unlocked"
         ? "rgba(34, 197, 94, 0.25)"
         : "transparent"};
+  flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    font-size: 0.6rem;
+    padding: 0.12rem 0.4rem;
+  }
 `;
 
 const BadgeDate = styled.span`
   font-size: 0.76rem;
   color: var(--text-secondary);
   font-weight: 700;
+
+  @media (max-width: 640px) {
+    font-size: 0.7rem;
+  }
 `;
 
 /* New User / Clean Data Empty State Banner */
@@ -182,6 +234,10 @@ const EmptyStateBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.4rem;
+
+  @media (max-width: 640px) {
+    padding: 1rem 0.75rem;
+  }
 `;
 
 const EmptyIcon = styled.div`
@@ -228,6 +284,11 @@ const ModalBox = styled.div`
   text-align: center;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
   position: relative;
+
+  @media (max-width: 480px) {
+    padding: 1.5rem 1.25rem;
+    border-radius: 20px;
+  }
 `;
 
 const ModalCloseBtn = styled.button`

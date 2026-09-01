@@ -13,52 +13,90 @@ const CardContainer = styled.div`
   box-shadow: var(--shadow-sm);
 
   @media (max-width: 768px) {
-    padding: 1.35rem;
+    padding: 1.25rem;
     border-radius: 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    border-radius: 18px;
   }
 `;
 
 const TopMetaRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  flex-wrap: wrap;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  width: 100%;
   margin-bottom: 1rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    gap: 0.35rem;
+    margin-bottom: 0.85rem;
+  }
 `;
 
 const MonthBadge = styled.span`
   background: rgba(20, 184, 166, 0.15);
   color: #2dd4bf;
   border: 1px solid rgba(20, 184, 166, 0.3);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 900;
-  letter-spacing: 0.06em;
-  padding: 0.35rem 0.8rem;
-  border-radius: 10px;
+  letter-spacing: 0.05em;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9px;
   text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    font-size: 0.62rem;
+    padding: 0.2rem 0.45rem;
+  }
 `;
 
 const TimerBadge = styled.span`
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-secondary);
   border: 1px solid var(--border);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  padding: 0.35rem 0.75rem;
-  border-radius: 10px;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9px;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    font-size: 0.62rem;
+    padding: 0.2rem 0.45rem;
+  }
 `;
 
 const RewardBadgeHeader = styled.span`
   background: rgba(245, 158, 11, 0.12);
   color: #f59e0b;
   border: 1px solid rgba(245, 158, 11, 0.25);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 850;
-  padding: 0.35rem 0.75rem;
-  border-radius: 10px;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9px;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    font-size: 0.62rem;
+    padding: 0.2rem 0.45rem;
+  }
 `;
 
 const MainContentFlex = styled.div`
@@ -68,12 +106,18 @@ const MainContentFlex = styled.div`
   gap: 1.5rem;
 
   @media (max-width: 640px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 0.85rem;
   }
 `;
 
 const HeaderGroup = styled.div`
   flex: 1;
+
+  @media (max-width: 640px) {
+    text-align: center;
+  }
 `;
 
 const MonthTitle = styled.h1`
@@ -84,7 +128,7 @@ const MonthTitle = styled.h1`
   letter-spacing: -0.01em;
 
   @media (max-width: 640px) {
-    font-size: 1.65rem;
+    font-size: 1.5rem;
   }
 `;
 
@@ -95,6 +139,11 @@ const MonthSubText = styled.p`
   line-height: 1.45;
   margin-bottom: 1.5rem;
   max-width: 480px;
+
+  @media (max-width: 640px) {
+    font-size: 0.82rem;
+    margin-bottom: 1.15rem;
+  }
 `;
 
 const MascotWrapper = styled.div`
@@ -110,14 +159,18 @@ const MascotWrapper = styled.div`
   justify-content: center;
 
   @media (max-width: 640px) {
-    align-self: center;
-    margin-bottom: 0.5rem;
+    width: 76px;
+    height: 76px;
   }
 `;
 
 const MascotEmoji = styled.div`
   font-size: 2.6rem;
   line-height: 1;
+
+  @media (max-width: 640px) {
+    font-size: 2.1rem;
+  }
 `;
 
 const MascotLabel = styled.span`
@@ -141,6 +194,11 @@ const ProgressBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+
+  @media (max-width: 640px) {
+    padding: 1rem 0.85rem 2.15rem 0.85rem;
+    border-radius: 14px;
+  }
 `;
 
 const ProgressHeader = styled.div`
@@ -150,6 +208,10 @@ const ProgressHeader = styled.div`
   font-size: 0.9rem;
   font-weight: 800;
   color: var(--foreground);
+
+  @media (max-width: 640px) {
+    font-size: 0.82rem;
+  }
 `;
 
 const ProgressCount = styled.span`
@@ -220,6 +282,12 @@ const NodeIconCircle = styled.div<{ $reached?: boolean }>`
   &:hover {
     transform: scale(1.15);
   }
+
+  @media (max-width: 640px) {
+    width: 24px;
+    height: 24px;
+    font-size: 0.82rem;
+  }
 `;
 
 const NodeLabel = styled.span<{ $reached?: boolean }>`
@@ -228,6 +296,10 @@ const NodeLabel = styled.span<{ $reached?: boolean }>`
   color: ${({ $reached }) => ($reached ? "#fef08a" : "var(--text-secondary)")};
   margin-top: 6px;
   white-space: nowrap;
+
+  @media (max-width: 480px) {
+    font-size: 0.62rem;
+  }
 `;
 
 interface MonthlyQuestHeroProps {
@@ -253,12 +325,14 @@ export const MonthlyQuestHero: React.FC<MonthlyQuestHeroProps> = ({
     { target: 50, pos: 94, reward: "Lencana September 🏆", icon: "🏆", label: "50 Misi" },
   ];
 
+  const monthFormatted = currentMonthName.charAt(0) + currentMonthName.slice(1).toLowerCase();
+
   return (
     <CardContainer>
       <TopMetaRow>
         <MonthBadge>{currentMonthName} 2026</MonthBadge>
         <TimerBadge>⏱️ {daysLeft} HARI SISA</TimerBadge>
-        <RewardBadgeHeader>🏆 Lencana Eksklusif September</RewardBadgeHeader>
+        <RewardBadgeHeader>🏆 Lencana {monthFormatted}</RewardBadgeHeader>
       </TopMetaRow>
 
       <MainContentFlex>
