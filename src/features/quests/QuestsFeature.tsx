@@ -18,6 +18,8 @@ const Container = styled.div`
   flex-direction: column;
   gap: 2rem;
   width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 
   @media (max-width: 1024px) {
     padding: 1rem 1rem 110px 1rem;

@@ -11,6 +11,9 @@ const CardContainer = styled.div`
   color: var(--foreground);
   position: relative;
   box-shadow: var(--shadow-sm);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
 
   @media (max-width: 768px) {
     padding: 1.25rem;
@@ -27,19 +30,14 @@ const TopMetaRow = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   width: 100%;
   margin-bottom: 1rem;
-  overflow-x: auto;
-  scrollbar-width: none;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   @media (max-width: 640px) {
-    gap: 0.35rem;
+    gap: 0.4rem;
     margin-bottom: 0.85rem;
+    justify-content: center;
   }
 `;
 
@@ -54,11 +52,10 @@ const MonthBadge = styled.span`
   border-radius: 9px;
   text-transform: uppercase;
   white-space: nowrap;
-  flex-shrink: 0;
 
   @media (max-width: 640px) {
-    font-size: 0.62rem;
-    padding: 0.2rem 0.45rem;
+    font-size: 0.68rem;
+    padding: 0.22rem 0.5rem;
   }
 `;
 
@@ -74,11 +71,10 @@ const TimerBadge = styled.span`
   align-items: center;
   gap: 0.3rem;
   white-space: nowrap;
-  flex-shrink: 0;
 
   @media (max-width: 640px) {
-    font-size: 0.62rem;
-    padding: 0.2rem 0.45rem;
+    font-size: 0.68rem;
+    padding: 0.22rem 0.5rem;
   }
 `;
 
@@ -91,11 +87,14 @@ const RewardBadgeHeader = styled.span`
   padding: 0.3rem 0.65rem;
   border-radius: 9px;
   white-space: nowrap;
-  flex-shrink: 0;
 
   @media (max-width: 640px) {
-    font-size: 0.62rem;
-    padding: 0.2rem 0.45rem;
+    font-size: 0.68rem;
+    padding: 0.22rem 0.5rem;
+  }
+
+  @media (max-width: 440px) {
+    display: none;
   }
 `;
 
