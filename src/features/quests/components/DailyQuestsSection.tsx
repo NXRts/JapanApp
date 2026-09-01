@@ -13,7 +13,7 @@ const SectionCard = styled.div`
   box-shadow: var(--shadow-sm);
 
   @media (max-width: 640px) {
-    padding: 1.25rem;
+    padding: 1.15rem;
     border-radius: 20px;
   }
 `;
@@ -23,6 +23,10 @@ const SectionHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.5rem;
+
+  @media (max-width: 640px) {
+    margin-bottom: 1.15rem;
+  }
 `;
 
 const SectionTitle = styled.h2`
@@ -32,6 +36,10 @@ const SectionTitle = styled.h2`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  @media (max-width: 640px) {
+    font-size: 1.1rem;
+  }
 `;
 
 const TimeTag = styled.div`
@@ -45,6 +53,11 @@ const TimeTag = styled.div`
   padding: 0.25rem 0.65rem;
   border-radius: 999px;
   border: 1px solid rgba(245, 158, 11, 0.25);
+
+  @media (max-width: 640px) {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.5rem;
+  }
 `;
 
 const QuestStack = styled.div`
@@ -68,8 +81,18 @@ const QuestRow = styled.div`
   }
 
   @media (max-width: 640px) {
-    padding: 1rem;
-    gap: 0.85rem;
+    padding: 0.9rem;
+    gap: 0.75rem;
+    border-radius: 16px;
+  }
+
+  @media (max-width: 480px) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "icon detail"
+      "action action";
+    row-gap: 0.75rem;
   }
 `;
 
@@ -81,6 +104,16 @@ const QuestIconBox = styled.div`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    width: 40px;
+    height: 40px;
+    font-size: 1.8rem;
+  }
+
+  @media (max-width: 480px) {
+    grid-area: icon;
+  }
 `;
 
 const QuestDetail = styled.div`
@@ -88,15 +121,24 @@ const QuestDetail = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  min-width: 0;
+
+  @media (max-width: 480px) {
+    grid-area: detail;
+  }
 `;
 
 const QuestTitleText = styled.div`
   font-size: 0.95rem;
   font-weight: 800;
   color: var(--foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   @media (max-width: 640px) {
     font-size: 0.88rem;
+    white-space: normal;
   }
 `;
 
@@ -129,10 +171,18 @@ const QuestTrackText = styled.span`
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 `;
 
+const ActionWrapper = styled.div`
+  flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    grid-area: action;
+    width: 100%;
+  }
+`;
+
 const ClaimBtn = styled.button<{ $claimed?: boolean }>`
   width: 115px;
   height: 40px;
-  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -157,12 +207,16 @@ const ClaimBtn = styled.button<{ $claimed?: boolean }>`
     ${({ $claimed }) =>
       !$claimed ? "transform: translateY(2px); border-bottom: 0px solid transparent;" : ""}
   }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    height: 38px;
+  }
 `;
 
 const QuestGoBtn = styled(Link)`
   width: 115px;
   height: 40px;
-  flex-shrink: 0;
   background: #eab308;
   color: #1e293b;
   border: none;
@@ -208,6 +262,11 @@ const QuestGoBtn = styled(Link)`
     transform: translateY(2px);
     border-bottom: 0px solid transparent;
   }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    height: 38px;
+  }
 `;
 
 /* Friends Quest Card (Duolingo Feature) */
@@ -226,7 +285,8 @@ const FriendsQuestBanner = styled.div`
   @media (max-width: 640px) {
     flex-direction: column;
     align-items: flex-start;
-    padding: 1rem 1.15rem;
+    padding: 1rem;
+    gap: 0.85rem;
   }
 `;
 
@@ -234,6 +294,10 @@ const FriendsLeftFlex = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  @media (max-width: 480px) {
+    gap: 0.75rem;
+  }
 `;
 
 const FriendsAvatarsBox = styled.div`
@@ -242,6 +306,7 @@ const FriendsAvatarsBox = styled.div`
   position: relative;
   width: 64px;
   height: 40px;
+  flex-shrink: 0;
 `;
 
 const AvatarCircle = styled.div<{ $left: number; $bg: string }>`
@@ -269,6 +334,10 @@ const FriendsTitle = styled.div`
   font-size: 0.95rem;
   font-weight: 850;
   color: var(--foreground);
+
+  @media (max-width: 640px) {
+    font-size: 0.88rem;
+  }
 `;
 
 const FriendsSub = styled.div`
@@ -288,6 +357,11 @@ const FriendsRewardBadge = styled.div`
   display: flex;
   align-items: center;
   gap: 0.35rem;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    justify-content: center;
+  }
 `;
 
 interface DailyQuestItem {
@@ -337,20 +411,23 @@ export const DailyQuestsSection: React.FC<DailyQuestsSectionProps> = ({
                   </QuestTrackText>
                 </QuestTrackOuter>
               </QuestDetail>
-              {q.isCompleted && !isClaimed ? (
-                <ClaimBtn onClick={() => onClaim(q.id, q.rewardGems)}>
-                  Klaim +{q.rewardGems} 💎
-                </ClaimBtn>
-              ) : isClaimed ? (
-                <ClaimBtn $claimed disabled>
-                  Diklaim <CheckIcon size={14} style={{ marginLeft: "4px" }} />
-                </ClaimBtn>
-              ) : (
-                <QuestGoBtn href={q.actionUrl || "/lessons"}>
-                  <span className="default-text">🎁 +{q.rewardGems} 💎</span>
-                  <span className="hover-text">GO 🚀</span>
-                </QuestGoBtn>
-              )}
+
+              <ActionWrapper>
+                {q.isCompleted && !isClaimed ? (
+                  <ClaimBtn onClick={() => onClaim(q.id, q.rewardGems)}>
+                    Klaim +{q.rewardGems} 💎
+                  </ClaimBtn>
+                ) : isClaimed ? (
+                  <ClaimBtn $claimed disabled>
+                    Diklaim <CheckIcon size={14} style={{ marginLeft: "4px" }} />
+                  </ClaimBtn>
+                ) : (
+                  <QuestGoBtn href={q.actionUrl || "/lessons"}>
+                    <span className="default-text">🎁 +{q.rewardGems} 💎</span>
+                    <span className="hover-text">GO 🚀</span>
+                  </QuestGoBtn>
+                )}
+              </ActionWrapper>
             </QuestRow>
           );
         })}
