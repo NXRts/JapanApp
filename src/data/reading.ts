@@ -5,16 +5,21 @@ export interface ReadingQuiz {
   explanation: string;
 }
 
+export interface ReadingParagraph {
+  japanese: string;
+  english: string;
+  indonesian?: string;
+}
+
 export interface ReadingPassage {
   id: string;
   title: string;
-  level: string; // e.g., 'N5', 'N4'
+  indonesianTitle?: string;
+  level: string; // e.g., 'N5', 'N4', 'N3', 'N2', 'N1'
   tags: string[];
   estimatedTime: string;
-  paragraphs: {
-    japanese: string;
-    english: string;
-  }[];
+  summary?: string;
+  paragraphs: ReadingParagraph[];
   quizzes: ReadingQuiz[];
 }
 
