@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { readingPassages, ReadingPassage } from "@/data/reading";
 import { useProgress } from "@/context/ProgressContext";
+import { playJapaneseAudio } from "@/lib/audio";
 
 export interface InspectedWordData {
   kanji?: string;
@@ -28,17 +29,17 @@ export function useReading() {
   // Word inspector modal state
   const [inspectedWord, setInspectedWord] = useState<InspectedWordData | null>(null);
 
-  // Audio Speech Synthesis (TTS)
+  // Universal Audio Player (Same-Origin TTS API + Web Speech API fallback)
   const speakText = useCallback((text: string) => {
-    if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
+    if (!text || text.trim() === "") return;
 
-    // Clean HTML tags like <ruby> <rt>
-    const cleanText = text.replace(/<rt>.*?<\/rt>/g, "").replace(/<[^>]+>/g, "");
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = "ja-JP";
-    utterance.rate = 0.85; // Slightly slower for clear learning pronunciation
-    window.speechSynthesis.speak(utterance);
+    // Remove HTML tags like <ruby> and <rt> (Furigana annotations) before sending to TTS
+    const cleanText = text
+      .replace(/<rt>.*?<\/rt>/g, "")
+      .replace(/<[^>]+>/g, "")
+      .trim();
+
+    playJapaneseAudio(cleanText, { rate: 0.85 });
   }, []);
 
   // Filtered passages list
