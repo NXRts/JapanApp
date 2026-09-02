@@ -138,14 +138,9 @@ const ControlBar = styled.div`
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
-  position: sticky;
-  top: 64px;
-  z-index: 99;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 
   @media (max-width: 640px) {
     padding: 0.75rem 0.85rem;
-    top: 56px;
     gap: 0.65rem;
     border-radius: 14px;
   }
