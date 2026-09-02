@@ -8,7 +8,7 @@ import { InspectedWordData } from "../hooks/useReading";
 const ViewerContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1.5rem;
 `;
 
 const ParagraphCard = styled.div`
@@ -22,8 +22,9 @@ const ParagraphCard = styled.div`
   gap: 1.15rem;
 
   @media (max-width: 640px) {
-    padding: 1.25rem 1.15rem;
+    padding: 1.15rem 1rem;
     border-radius: 16px;
+    gap: 0.85rem;
   }
 `;
 
@@ -55,7 +56,8 @@ const JapaneseTextRow = styled.div<{ $showFurigana: boolean }>`
   }
 
   @media (max-width: 640px) {
-    font-size: 1.18rem;
+    font-size: 1.12rem;
+    line-height: ${({ $showFurigana }) => ($showFurigana ? "2.1" : "1.75")};
   }
 `;
 
@@ -66,6 +68,12 @@ const ParagraphActionRow = styled.div`
   gap: 0.75rem;
   padding-top: 0.75rem;
   border-top: 1px dashed var(--border);
+
+  @media (max-width: 540px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
 `;
 
 const TranslationText = styled.p`
@@ -74,6 +82,10 @@ const TranslationText = styled.p`
   line-height: 1.5;
   margin: 0;
   font-weight: 600;
+
+  @media (max-width: 640px) {
+    font-size: 0.85rem;
+  }
 `;
 
 const AudioPlayBtn = styled.button`
@@ -93,6 +105,12 @@ const AudioPlayBtn = styled.button`
 
   &:hover {
     background: rgba(59, 130, 246, 0.22);
+  }
+
+  @media (max-width: 540px) {
+    align-self: flex-end;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.65rem;
   }
 `;
 
@@ -127,7 +145,7 @@ export const InteractivePassageViewer: React.FC<InteractivePassageViewerProps> =
       onInspectWord({
         kanji: kanjiText,
         reading: reading || kanjiText,
-        romaji: "", // Will be auto-formatted in inspector
+        romaji: "",
         meaning: `Klik untuk melihat arti kata "${kanjiText || reading}" di Kamus.`,
       });
     }

@@ -13,16 +13,17 @@ import { ReadingQuizSection } from "./components/ReadingQuizSection";
 const Container = styled.div`
   max-width: 900px;
   margin: 0 auto;
-  padding: 1.5rem 1.5rem 6rem;
+  padding: 1.5rem 1.5rem 120px;
   min-height: 90vh;
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 1.5rem;
   width: 100%;
   box-sizing: border-box;
 
   @media (max-width: 640px) {
-    padding: 0.75rem 0.75rem 110px 0.75rem;
+    padding: 0.75rem 0.75rem 125px 0.75rem;
+    gap: 1.15rem;
   }
 `;
 
@@ -36,8 +37,9 @@ const StoryHeaderCard = styled.div`
   gap: 0.85rem;
 
   @media (max-width: 640px) {
-    padding: 1.25rem 1.15rem;
-    border-radius: 20px;
+    padding: 1.15rem 1rem;
+    border-radius: 18px;
+    gap: 0.65rem;
   }
 `;
 
@@ -46,6 +48,10 @@ const MetaRow = styled.div`
   align-items: center;
   gap: 0.65rem;
   flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    gap: 0.4rem;
+  }
 `;
 
 const LevelTag = styled.span<{ $level: string }>`
@@ -78,6 +84,11 @@ const LevelTag = styled.span<{ $level: string }>`
   font-weight: 900;
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
+
+  @media (max-width: 640px) {
+    font-size: 0.68rem;
+    padding: 0.2rem 0.55rem;
+  }
 `;
 
 const TimeTag = styled.span`
@@ -88,6 +99,11 @@ const TimeTag = styled.span`
   border: 1px solid var(--border);
   padding: 0.25rem 0.65rem;
   border-radius: 999px;
+
+  @media (max-width: 640px) {
+    font-size: 0.68rem;
+    padding: 0.2rem 0.55rem;
+  }
 `;
 
 const StoryMainTitle = styled.h1`
@@ -97,7 +113,7 @@ const StoryMainTitle = styled.h1`
   margin: 0;
 
   @media (max-width: 640px) {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
 `;
 
@@ -105,6 +121,10 @@ const StoryIndonesianTitle = styled.div`
   font-size: 1rem;
   color: var(--text-secondary);
   font-weight: 700;
+
+  @media (max-width: 640px) {
+    font-size: 0.85rem;
+  }
 `;
 
 /* Control Bar */
@@ -119,13 +139,15 @@ const ControlBar = styled.div`
   gap: 1rem;
   flex-wrap: wrap;
   position: sticky;
-  top: 72px;
+  top: 64px;
   z-index: 99;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 
   @media (max-width: 640px) {
-    padding: 0.75rem 1rem;
-    top: 64px;
+    padding: 0.75rem 0.85rem;
+    top: 56px;
+    gap: 0.65rem;
+    border-radius: 14px;
   }
 `;
 
@@ -134,6 +156,12 @@ const ToggleGroup = styled.div`
   align-items: center;
   gap: 1.15rem;
   flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    gap: 0.6rem;
+    width: 100%;
+    justify-content: space-between;
+  }
 `;
 
 const ToggleLabel = styled.label`
@@ -144,6 +172,11 @@ const ToggleLabel = styled.label`
   font-weight: 800;
   color: var(--foreground);
   cursor: pointer;
+
+  @media (max-width: 640px) {
+    font-size: 0.76rem;
+    gap: 0.3rem;
+  }
 `;
 
 const CheckboxInput = styled.input`
@@ -151,6 +184,11 @@ const CheckboxInput = styled.input`
   height: 18px;
   accent-color: #3b82f6;
   cursor: pointer;
+
+  @media (max-width: 640px) {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const LangSelect = styled.select`
@@ -163,6 +201,12 @@ const LangSelect = styled.select`
   font-size: 0.78rem;
   font-weight: 800;
   cursor: pointer;
+
+  @media (max-width: 640px) {
+    height: 28px;
+    font-size: 0.72rem;
+    padding: 0 0.3rem;
+  }
 `;
 
 const AudioAllBtn = styled.button`
@@ -181,6 +225,13 @@ const AudioAllBtn = styled.button`
 
   &:hover {
     filter: brightness(1.1);
+  }
+
+  @media (max-width: 640px) {
+    width: 100%;
+    height: 36px;
+    justify-content: center;
+    font-size: 0.8rem;
   }
 `;
 
@@ -216,6 +267,11 @@ const NavBtn = styled(Link)<{ $primary?: boolean }>`
     border: 1px solid var(--border);
     &:hover { background: rgba(255, 255, 255, 0.12); }
   `}
+
+  @media (max-width: 640px) {
+    padding: 0.55rem 0.85rem;
+    font-size: 0.8rem;
+  }
 `;
 
 const NotFoundBox = styled.div`
@@ -297,7 +353,7 @@ export default function ReadingDetailFeature({ id }: ReadingDetailFeatureProps) 
               checked={showFurigana}
               onChange={(e) => setShowFurigana(e.target.checked)}
             />
-            Furigana (Cara Baca)
+            Furigana
           </ToggleLabel>
 
           <ToggleLabel>
@@ -314,8 +370,8 @@ export default function ReadingDetailFeature({ id }: ReadingDetailFeatureProps) 
               value={translationLang}
               onChange={(e) => setTranslationLang(e.target.value as "ID" | "EN")}
             >
-              <option value="ID">Bahasa Indonesia 🇮🇩</option>
-              <option value="EN">English 🇬🇧</option>
+              <option value="ID">ID 🇮🇩</option>
+              <option value="EN">EN 🇬🇧</option>
             </LangSelect>
           )}
         </ToggleGroup>
