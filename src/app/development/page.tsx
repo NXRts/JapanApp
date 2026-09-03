@@ -645,29 +645,6 @@ export default function DevelopmentPage() {
         </FlagshipContent>
       </FlagshipCard>
 
-      {/* Flagship Feature 5: Kamus Ringan 2 Arah (Jepang - Indonesia) */}
-      <FlagshipCard style={{ background: "linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(99, 102, 241, 0.1) 100%)", borderColor: "rgba(79, 70, 229, 0.4)" }}>
-        <FlagshipBadge style={{ background: "#4f46e5", color: "#ffffff" }}>Fitur Baru 🚀 Siap Diuji</FlagshipBadge>
-        <FlagshipContent>
-          <FlagshipInfo>
-            <h2>📖 Kamus Ringan 2 Arah (Jepang - Indonesia)</h2>
-            <p>
-              Mesin pencari kata pintar dua arah hemat memori dengan fitur Smart Auto-Detect (Kanji, Kana, Romaji, Indonesia), Furigana, Audio TTS, Kanjidex, serta Tabel Konjugasi otomatis.
-            </p>
-
-            <FeaturePillGrid>
-              <FeaturePill>⚡ Smart Auto-Detect & Suggestion</FeaturePill>
-              <FeaturePill>🔊 Audio TTS & Furigana</FeaturePill>
-              <FeaturePill>🔄 Tabel Konjugasi Kata Kerja/Sifat</FeaturePill>
-              <FeaturePill>⭐ Bookmark & Riwayat Pencarian</FeaturePill>
-            </FeaturePillGrid>
-
-            <PrimaryCTAButton href="/development/kamus" style={{ background: "linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)" }}>
-              📖 Buka Kamus Ringan (Development Lab)
-            </PrimaryCTAButton>
-          </FlagshipInfo>
-        </FlagshipContent>
-      </FlagshipCard>
 
       {/* Experimental Features Grid */}
       <SectionTitle>🧪 Modul Dalam Tahap Pengembangan</SectionTitle>

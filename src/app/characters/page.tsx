@@ -8,6 +8,7 @@ import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { useSearchParams, useRouter } from "next/navigation";
 import { KANJI_DATA, KanjiItem } from "@/data/kanji";
 import { KanjiDetailModal } from "@/components/modals/KanjiDetailModal";
+import { KamusLightView } from "@/components/dictionary/KamusLightView";
 
 // ========================================================
 // DATA DEFINITIONS (HIRAGANA & KATAKANA)
@@ -305,18 +306,18 @@ const PageContainer = styled.div`
   max-width: 1400px;
   margin: 0 auto;
   gap: 1.5rem;
-  padding: 1.5rem 2rem;
+  padding: 1.25rem 1.5rem 5rem 1.5rem;
   min-height: 100vh;
   color: var(--foreground);
   overflow-x: hidden;
 
   @media (max-width: 1024px) {
-    padding: 1rem;
+    padding: 1rem 1rem 6.5rem 1rem;
     gap: 1rem;
   }
 
   @media (max-width: 640px) {
-    padding: 0.75rem 0.5rem;
+    padding: 0.75rem 0.5rem 6.5rem 0.5rem;
   }
   @media (max-width: 768px) {
     min-height: auto;
@@ -328,30 +329,31 @@ const HeaderSection = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.75rem;
+  gap: 0.6rem;
   margin-bottom: 0.5rem;
 `;
 
 const MainTitle = styled.h1`
-  font-size: 2.25rem;
-  font-weight: 800;
+  font-size: 2.2rem;
+  font-weight: 900;
   color: var(--foreground);
   margin: 0;
+  letter-spacing: -0.02em;
 
   @media (max-width: 640px) {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 `;
 
 const Subtitle = styled.p`
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   color: var(--text-secondary);
-  max-width: 600px;
+  max-width: 680px;
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.6;
 
   @media (max-width: 640px) {
-    font-size: 0.92rem;
+    font-size: 0.85rem;
   }
 `;
 
@@ -392,48 +394,52 @@ const PrimaryCTAButton = styled.button`
 
 const TabContainer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
-  border-bottom: 2px solid var(--border);
-  width: 100%;
-  margin-top: 1rem;
+  gap: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px;
+  width: fit-content;
+  margin: 1rem auto 0.5rem auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  overflow-x: auto;
+  max-width: 100%;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    justify-content: space-between;
+    padding: 4px;
+    border-radius: 16px;
+    gap: 4px;
+  }
 `;
 
 const TabButton = styled.button<{ $active: boolean }>`
-  background: none;
   border: none;
-  padding: 0.85rem 2.5rem;
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: ${({ $active }) =>
-    $active ? "var(--primary)" : "var(--text-secondary)"};
+  background: ${({ $active }) => ($active ? "var(--primary)" : "transparent")};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--text-secondary)")};
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-weight: ${({ $active }) => ($active ? "800" : "600")};
+  padding: 0.65rem 1.6rem;
+  border-radius: 14px;
   cursor: pointer;
-  position: relative;
-  transition: color 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: var(--primary);
-    border-radius: 99px;
-    transform: scaleX(${({ $active }) => ($active ? 1 : 0)});
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+  transition: all 0.2s ease;
+  white-space: nowrap;
 
   &:hover {
-    color: ${({ $active }) =>
-      $active ? "var(--primary)" : "var(--foreground)"};
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--foreground)")};
+    background: ${({ $active }) => ($active ? "var(--primary)" : "rgba(var(--primary-rgb, 79, 70, 229), 0.08)")};
   }
 
   @media (max-width: 640px) {
-    padding: 0.75rem 1rem;
-    font-size: 0.88rem;
     flex: 1;
+    text-align: center;
+    padding: 0.55rem 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 12px;
   }
 `;
 
@@ -456,21 +462,26 @@ const KanjiFilterBar = styled.div`
 `;
 
 const KanjiFilterTab = styled.button<{ $active?: boolean }>`
-  background: ${({ $active }) => ($active ? "#8b5cf6" : "var(--surface)")};
-  color: ${({ $active }) => ($active ? "white" : "var(--text-secondary)")};
-  border: 1.5px solid ${({ $active }) => ($active ? "#8b5cf6" : "var(--border)")};
-  border-radius: 999px;
-  padding: 0.45rem 1rem;
+  padding: 5px 14px;
+  border: 1px solid ${({ $active }) => ($active ? "var(--primary)" : "var(--border)")};
+  border-radius: 12px;
+  background: ${({ $active }) => ($active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.12)" : "var(--surface)")};
+  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: ${({ $active }) => ($active ? "800" : "600")};
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
+  transition: all 0.15s ease;
 
   &:hover {
-    border-color: #8b5cf6;
-    color: ${({ $active }) => ($active ? "white" : "var(--foreground)")};
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  @media (max-width: 640px) {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    border-radius: 8px;
   }
 `;
 
@@ -504,9 +515,9 @@ const KanjiCardBtn = styled.button`
   width: 100%;
 
   &:hover {
-    border-color: #8b5cf6;
+    border-color: var(--primary);
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.25);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.18);
   }
 
   &:active {
@@ -520,6 +531,7 @@ const KanjiCardBtn = styled.button`
 `;
 
 const KanjiBigChar = styled.span`
+  font-family: var(--font-kanji);
   font-size: 2.2rem;
   font-weight: 900;
   color: var(--foreground);
@@ -1268,9 +1280,9 @@ function CharactersPageContent() {
   const { progress, updateMastery, addExp } = useProgress();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"hiragana" | "katakana" | "kanji">(
-    "hiragana",
-  );
+  const [activeTab, setActiveTab] = useState<
+    "hiragana" | "katakana" | "kanji" | "kamus"
+  >("hiragana");
   const [kanjiFilter, setKanjiFilter] = useState<string>("N5");
   const [selectedKanji, setSelectedKanji] = useState<KanjiItem | null>(null);
   const [isPracticing, setIsPracticing] = useState(false);
@@ -1445,6 +1457,7 @@ function CharactersPageContent() {
   };
 
   const handleStartPractice = () => {
+    if (activeTab === "kamus") return;
     if (activeTab === "kanji") {
       router.push("/jlpt/flashcards?category=kanji");
       return;
@@ -1487,7 +1500,12 @@ function CharactersPageContent() {
     if (!searchParams || hasTriggeredRef.current) return;
 
     const tabParam = searchParams.get("tab");
-    if (tabParam === "katakana" || tabParam === "kanji" || tabParam === "hiragana") {
+    if (
+      tabParam === "katakana" ||
+      tabParam === "kanji" ||
+      tabParam === "hiragana" ||
+      tabParam === "kamus"
+    ) {
       setActiveTab(tabParam);
     }
 
@@ -1706,22 +1724,28 @@ function CharactersPageContent() {
                 ? "Belajar Hiragana Dasar!"
                 : activeTab === "katakana"
                 ? "Belajar Katakana Dasar!"
-                : "Pembelajaran Kanji Interaktif!"}
+                : activeTab === "kanji"
+                ? "Pembelajaran Kanji Interaktif!"
+                : "Kamus Ringan 2 Arah (Jepang - Indonesia)"}
             </MainTitle>
             <Subtitle>
               {activeTab === "hiragana"
                 ? "Pelajari fondasi utama sistem penulisan Jepang. Klik kartu untuk mendengarkan pengucapan audio."
                 : activeTab === "katakana"
                 ? "Pelajari huruf sistem serapan kosakata asing. Klik kartu untuk mendengarkan pengucapan audio."
-                : "Pelajari huruf Kanji secara bertahap mulai dari angka, alam, hingga level JLPT. Klik kartu untuk melihat animasi coretan & contoh kata."}
+                : activeTab === "kanji"
+                ? "Pelajari huruf Kanji secara bertahap mulai dari angka, alam, hingga level JLPT. Klik kartu untuk melihat animasi coretan & contoh kata."
+                : "Mesin pencari kata pintar dua arah hemat memori dengan fitur Smart Auto-Detect, Furigana, Audio TTS, Kanjidex, serta Tabel Konjugasi otomatis."}
             </Subtitle>
-            <PrimaryCTAButton onClick={handleStartPractice}>
-              {activeTab === "hiragana"
-                ? "🚀 LATIHAN HURUF HIRAGANA"
-                : activeTab === "katakana"
-                ? "🚀 LATIHAN HURUF KATAKANA"
-                : "🚀 LATIHAN KANJI INTERAKTIF"}
-            </PrimaryCTAButton>
+            {activeTab !== "kamus" && (
+              <PrimaryCTAButton onClick={handleStartPractice}>
+                {activeTab === "hiragana"
+                  ? "🚀 LATIHAN HURUF HIRAGANA"
+                  : activeTab === "katakana"
+                  ? "🚀 LATIHAN HURUF KATAKANA"
+                  : "🚀 LATIHAN KANJI INTERAKTIF"}
+              </PrimaryCTAButton>
+            )}
           </HeaderSection>
 
           <TabContainer>
@@ -1743,9 +1767,19 @@ function CharactersPageContent() {
             >
               Kanji 🈸
             </TabButton>
+            <TabButton
+              $active={activeTab === "kamus"}
+              onClick={() => setActiveTab("kamus")}
+            >
+              Kamus 📖
+            </TabButton>
           </TabContainer>
 
-          {activeTab === "kanji" ? (
+          {activeTab === "kamus" ? (
+            <div style={{ width: "100%", marginTop: "1rem" }}>
+              <KamusLightView />
+            </div>
+          ) : activeTab === "kanji" ? (
             <div style={{ width: "100%", marginTop: "1rem" }}>
               <KanjiFilterBar>
                 <KanjiFilterTab $active={kanjiFilter === "N5"} onClick={() => setKanjiFilter("N5")}>
