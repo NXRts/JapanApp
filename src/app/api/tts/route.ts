@@ -4,8 +4,19 @@ import { NextRequest, NextResponse } from "next/server";
  * Server-side Japanese TTS Proxy for Next.js App Router
  * Chunks long Japanese text (e.g. Choukai dialogues) into sentence-level MP3 buffers,
  * fetches them without CORS/Referrer blocks, concatenates the MP3 buffers,
- * and streams a single continuous audio/mpeg file to the client.
+ * caches results in RAM for instant latency (<1ms), and streams audio/mpeg to client.
  */
+
+const ttsMemoryCache = new Map<string, Buffer>();
+const MAX_CACHE_ENTRIES = 500;
+
+function setCache(key: string, val: Buffer) {
+  if (ttsMemoryCache.size >= MAX_CACHE_ENTRIES) {
+    const oldestKey = ttsMemoryCache.keys().next().value;
+    if (oldestKey) ttsMemoryCache.delete(oldestKey);
+  }
+  ttsMemoryCache.set(key, val);
+}
 
 async function fetchGoogleTTSChunk(chunkText: string): Promise<Buffer | null> {
   const encoded = encodeURIComponent(chunkText);
@@ -61,8 +72,23 @@ export async function GET(request: NextRequest) {
 
   const cleanText = text.replace(/[\r\n]+/g, " ").trim();
 
+  // Check in-memory RAM cache first for instant playback (<1ms)
+  if (ttsMemoryCache.has(cleanText)) {
+    const cachedBuffer = ttsMemoryCache.get(cleanText)!;
+    return new NextResponse(new Uint8Array(cachedBuffer), {
+      headers: {
+        "Content-Type": "audio/mpeg",
+        "Content-Length": cachedBuffer.length.toString(),
+        "Cache-Control": "public, max-age=31536000, immutable",
+      },
+    });
+  }
+
   // Split text by Japanese sentence punctuation (。！？)
-  const rawSentences = cleanText.split(/(?<=[。！？])/).map((s) => s.trim()).filter(Boolean);
+  const rawSentences = cleanText
+    .split(/(?<=[。！？])/)
+    .map((s) => s.trim())
+    .filter(Boolean);
   const sentences = rawSentences.length > 0 ? rawSentences : [cleanText];
 
   // Group sentences into chunks under ~80 characters for optimal TTS generation
@@ -100,11 +126,14 @@ export async function GET(request: NextRequest) {
   // Concatenate all MP3 buffers into a single audio/mpeg stream
   const combinedBuffer = Buffer.concat(mp3Buffers);
 
-  return new NextResponse(combinedBuffer, {
+  // Save in RAM cache
+  setCache(cleanText, combinedBuffer);
+
+  return new NextResponse(new Uint8Array(combinedBuffer), {
     headers: {
       "Content-Type": "audio/mpeg",
       "Content-Length": combinedBuffer.length.toString(),
-      "Cache-Control": "public, max-age=86400, s-maxage=86400",
+      "Cache-Control": "public, max-age=31536000, immutable",
     },
   });
 }

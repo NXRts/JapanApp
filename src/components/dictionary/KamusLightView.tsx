@@ -13,7 +13,7 @@ import {
   WordConjugationTable,
 } from "@/utils/japaneseConjugation";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import styled, { createGlobalStyle, keyframes } from "styled-components";
+import styled, { createGlobalStyle, keyframes, css } from "styled-components";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 
 /* ─── Global Font Imports ────────────────────────────────────────────────── */
@@ -31,6 +31,12 @@ const KamusGlobalStyle = createGlobalStyle`
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
+`;
+
+const audioPulse = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.6); }
+  70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
 `;
 
 /* ─── Styled Components ─────────────────────────────────────────────────── */
@@ -779,7 +785,11 @@ const ActionGrid = styled.div`
   border-top: 1px solid var(--border);
 `;
 
-const ActionBtn = styled.button<{ $primary?: boolean; $active?: boolean }>`
+const ActionBtn = styled.button<{
+  $primary?: boolean;
+  $active?: boolean;
+  $isPlaying?: boolean;
+}>`
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -789,22 +799,39 @@ const ActionBtn = styled.button<{ $primary?: boolean; $active?: boolean }>`
   font-weight: 700;
   font-family: var(--font-ui);
   border: 1px solid
-    ${({ $primary, $active }) =>
-      $primary || $active ? "var(--primary)" : "var(--border)"};
-  background: ${({ $primary, $active }) =>
-    $primary
+    ${({ $primary, $active, $isPlaying }) =>
+      $primary || $active || $isPlaying ? "var(--primary)" : "var(--border)"};
+  background: ${({ $primary, $active, $isPlaying }) =>
+    $primary || $isPlaying
       ? "var(--primary)"
       : $active
         ? "rgba(var(--primary-rgb, 79, 70, 229), 0.15)"
         : "var(--surface)"};
-  color: ${({ $primary, $active }) =>
-    $primary ? "#ffffff" : $active ? "var(--primary)" : "var(--foreground)"};
+  color: ${({ $primary, $active, $isPlaying }) =>
+    $primary || $isPlaying
+      ? "#ffffff"
+      : $active
+        ? "var(--primary)"
+        : "var(--foreground)"};
   cursor: pointer;
-  transition: all 0.12s ease;
+  transition: all 0.15s ease;
+  user-select: none;
+  touch-action: manipulation;
+  ${({ $isPlaying }) =>
+    $isPlaying &&
+    css`
+      animation: ${audioPulse} 1.2s infinite;
+    `}
 
   &:hover {
     border-color: var(--primary);
-    color: ${({ $primary }) => ($primary ? "#ffffff" : "var(--primary)")};
+    color: ${({ $primary, $isPlaying }) =>
+      $primary || $isPlaying ? "#ffffff" : "var(--primary)"};
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.92);
   }
 `;
 
@@ -896,6 +923,7 @@ export function KamusLightView({ showHeader = false }: KamusLightViewProps) {
   // Storage
   const [bookmarks, setBookmarks] = useState<string[]>([]);
   const [toastMsg, setToastMsg] = useState("");
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   // Modals
   const [detailItem, setDetailItem] = useState<DictionaryResult | null>(null);
@@ -945,6 +973,20 @@ export function KamusLightView({ showHeader = false }: KamusLightViewProps) {
   const triggerToast = (msg: string) => {
     setToastMsg(msg);
     setTimeout(() => setToastMsg(""), 2400);
+  };
+
+  /* Audio Playback Handler with visual feedback */
+  const handlePlayAudio = async (text: string) => {
+    if (!text || isPlayingAudio) return;
+    setIsPlayingAudio(true);
+    try {
+      await playJapaneseAudio(text, {
+        onStart: () => setIsPlayingAudio(true),
+        onEnd: () => setIsPlayingAudio(false),
+      });
+    } finally {
+      setIsPlayingAudio(false);
+    }
   };
 
   /* Toggle Star / Bookmark */
@@ -1589,8 +1631,10 @@ export function KamusLightView({ showHeader = false }: KamusLightViewProps) {
             <ActionGrid>
               <ActionBtn
                 $primary
+                $isPlaying={isPlayingAudio}
+                disabled={isPlayingAudio}
                 onClick={() =>
-                  playJapaneseAudio(
+                  handlePlayAudio(
                     detailItem.word ||
                       detailItem.kanji ||
                       detailItem.reading ||
@@ -1598,7 +1642,7 @@ export function KamusLightView({ showHeader = false }: KamusLightViewProps) {
                   )
                 }
               >
-                🔊 Dengar Audio
+                {isPlayingAudio ? "🔊 Memutar... 🎶" : "🔊 Dengar Audio"}
               </ActionBtn>
 
               <ActionBtn
