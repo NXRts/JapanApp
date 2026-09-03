@@ -3,23 +3,28 @@
 /**
  * Universal Audio Utility for Cross-Browser Japanese Speech Synthesis
  * Fully supported on Zen Browser, Firefox, Chrome, Edge, Safari (Linux, Windows, macOS, Mobile).
- * Primary Engine: Same-Origin Server TTS Proxy (/api/tts)
+ * Primary Engine: Same-Origin Server TTS Proxy (/api/tts) with Client & Server Blob Caching
  * Fallback Engine: Web Speech API (SpeechSynthesis)
  */
 
-interface AudioOptions {
+export interface AudioOptions {
   rate?: number;
   pitch?: number;
   voice?: SpeechSynthesisVoice;
+  onStart?: () => void;
+  onEnd?: () => void;
 }
 
 let voices: SpeechSynthesisVoice[] = [];
 let voicesLoaded = false;
 let activeAudioElement: HTMLAudioElement | null = null;
 
+// Client-side Blob URL Cache for 0ms instant replay
+const clientAudioCache = new Map<string, string>();
+
 /**
  * Hard-stop all currently active Japanese speech audio (HTML5 Audio and Web Speech API).
- * Prevents overlapping double-audio bugs across browsers (especially Google Chrome).
+ * Prevents overlapping double-audio bugs across browsers.
  */
 export function stopAllAudio(): void {
   if (typeof window !== "undefined") {
@@ -86,7 +91,10 @@ if (typeof window !== "undefined" && window.speechSynthesis) {
 /**
  * Safely pause and unload an HTML5 Audio element without throwing uncaught Chrome AbortErrors.
  */
-const safePauseAudio = (audio: HTMLAudioElement, playPromise?: Promise<void> | null) => {
+const safePauseAudio = (
+  audio: HTMLAudioElement,
+  playPromise?: Promise<void> | null,
+) => {
   const doPause = () => {
     try {
       audio.pause();
@@ -107,7 +115,6 @@ const safePauseAudio = (audio: HTMLAudioElement, playPromise?: Promise<void> | n
 
 /**
  * Plays same-origin TTS audio from Next.js server proxy (/api/tts)
- * Works 100% reliably in Zen Browser, Firefox, Chrome, Safari without CORS, 403 blocks, or missing OS voices.
  */
 const playApiTTS = (text: string, rate: number): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -115,19 +122,33 @@ const playApiTTS = (text: string, rate: number): Promise<boolean> => {
 
     try {
       const clean = text.replace(/[\r\n]+/g, " ").trim();
-      const encoded = encodeURIComponent(clean);
-      const url = `/api/tts?text=${encoded}`;
+      let audioUrl = clientAudioCache.get(clean);
 
-      console.log("[JapanApp Audio] Requesting same-origin TTS audio from /api/tts...");
+      if (!audioUrl) {
+        const encoded = encodeURIComponent(clean);
+        audioUrl = `/api/tts?text=${encoded}`;
 
-      const audio = new Audio(url);
+        // Cache short audio blobs in client memory for instant replay
+        if (clean.length <= 60) {
+          fetch(audioUrl)
+            .then((r) => (r.ok ? r.blob() : null))
+            .then((blob) => {
+              if (blob) {
+                const bUrl = URL.createObjectURL(blob);
+                clientAudioCache.set(clean, bUrl);
+              }
+            })
+            .catch(() => {});
+        }
+      }
+
+      const audio = new Audio(audioUrl);
       activeAudioElement = audio;
       audio.volume = 1.0;
       audio.defaultPlaybackRate = rate;
       audio.playbackRate = rate;
 
       let done = false;
-      let isPlaying = false;
       let playPromise: Promise<void> | null = null;
 
       const finish = (success: boolean) => {
@@ -142,51 +163,34 @@ const playApiTTS = (text: string, rate: number): Promise<boolean> => {
           }
 
           safePauseAudio(audio, playPromise);
-          console.log("[JapanApp Audio] Finished playing TTS audio. Success:", success);
           resolve(success);
         }
       };
 
       const timeout = setTimeout(() => {
-        console.warn("[JapanApp Audio] Timeout waiting for /api/tts audio to finish.");
         finish(false);
-      }, 35000); // 35s max for full Choukai dialogues
+      }, 15000);
 
       audio.onended = () => finish(true);
-
       audio.onerror = (evt: any) => {
-        console.warn("[JapanApp Audio] Audio element error:", evt);
-        try {
-          if (evt && typeof evt.preventDefault === "function") {
-            evt.preventDefault();
-          }
-        } catch {}
         finish(false);
       };
 
-      const p = audio.play();
-      if (p !== undefined) {
-        playPromise = p;
-        p.then(() => {
-          isPlaying = true;
-          console.log("[JapanApp Audio] Audio play() started successfully!");
-        }).catch((err: any) => {
-          isPlaying = false;
-          // Silence Chrome AbortError when play() is intentionally interrupted by pause()
+      playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err: any) => {
           if (
             err &&
             (err.name === "AbortError" ||
-              (typeof err.message === "string" && err.message.includes("interrupted")))
+              (typeof err.message === "string" &&
+                err.message.includes("interrupted")))
           ) {
-            console.log("[JapanApp Audio] Play request interrupted intentionally (AbortError handled).");
             return;
           }
-          console.warn("[JapanApp Audio] Audio play() promise error:", err);
           finish(false);
         });
       }
     } catch (e) {
-      console.warn("[JapanApp Audio] Error playing audio element:", e);
       resolve(false);
     }
   });
@@ -194,19 +198,17 @@ const playApiTTS = (text: string, rate: number): Promise<boolean> => {
 
 /**
  * Clean & sanitize Japanese audio script text before passing to SpeechSynthesis.
- * Removes visual speaker labels (男：, 女：) and fill-in-the-blank placeholders ( (____) ).
  */
 export function sanitizeScriptForTTS(text: string): string {
   if (!text) return "";
 
   return text
-    // 1. Remove fill-in-the-blank placeholders: (____), （____）, (...), （　）
     .replace(/[（\(]\s*[_…\.　]+\s*[）\)]。?/g, "")
-    // 2. Remove visual speaker tags at start of lines: 男：, 女：, 店員：, 学生：
-    .replace(/(?:^|\n)\s*(?:男|女|店員|学生|A|B)(?:の人|の人たち)?\s*[:：]/g, "\n")
-    // 3. Convert newlines to full stops / natural pauses
+    .replace(
+      /(?:^|\n)\s*(?:男|女|店員|学生|A|B)(?:の人|の人たち)?\s*[:：]/g,
+      "\n",
+    )
     .replace(/[\r\n]+/g, " 。 ")
-    // 4. Collapse multiple punctuation/spaces
     .replace(/。\s*。/g, "。")
     .replace(/\s+/g, " ")
     .trim();
@@ -215,7 +217,11 @@ export function sanitizeScriptForTTS(text: string): string {
 /**
  * Fallback via Web Speech API (SpeechSynthesis) for offline support
  */
-const playWebSpeechAPI = (text: string, rate: number, options: AudioOptions): Promise<boolean> => {
+const playWebSpeechAPI = (
+  text: string,
+  rate: number,
+  options: AudioOptions,
+): Promise<boolean> => {
   return new Promise(async (resolve) => {
     if (typeof window === "undefined" || !window.speechSynthesis) {
       return resolve(false);
@@ -224,9 +230,13 @@ const playWebSpeechAPI = (text: string, rate: number, options: AudioOptions): Pr
     try {
       const synth = window.speechSynthesis;
       if (synth.paused) {
-        try { synth.resume(); } catch {}
+        try {
+          synth.resume();
+        } catch {}
       }
-      try { synth.cancel(); } catch {}
+      try {
+        synth.cancel();
+      } catch {}
 
       const availVoices = voices.length > 0 ? voices : await loadVoices();
       const jaVoice =
@@ -247,7 +257,9 @@ const playWebSpeechAPI = (text: string, rate: number, options: AudioOptions): Pr
       const finish = (success: boolean) => {
         if (!done) {
           done = true;
-          try { synth.cancel(); } catch {}
+          try {
+            synth.cancel();
+          } catch {}
           resolve(success);
         }
       };
@@ -282,30 +294,28 @@ export const playJapaneseAudio = (
 ): Promise<void> => {
   return new Promise(async (resolve) => {
     if (typeof window === "undefined" || !text || text.trim() === "") {
+      options.onEnd?.();
       return resolve();
     }
 
-    // Stop any currently playing audio to prevent double-audio/echo bugs in Google Chrome
     stopAllAudio();
+    options.onStart?.();
 
     const rate = options.rate ?? 0.85;
     const cleanText = sanitizeScriptForTTS(text);
 
-    console.log("[JapanApp Audio] playJapaneseAudio called for text length:", cleanText.length);
-
     // 1. Primary Engine: Next.js Same-Origin API Proxy (/api/tts)
     const successApi = await playApiTTS(cleanText, rate);
     if (successApi) {
+      options.onEnd?.();
       return resolve();
     }
 
-    console.warn("[JapanApp Audio] /api/tts proxy failed or offline. Falling back to Web Speech API...");
-
     // 2. Secondary Fallback Engine: Web Speech API
     await playWebSpeechAPI(cleanText, rate, options);
+    options.onEnd?.();
     resolve();
   });
 };
 
 export const speakJapanese = playJapaneseAudio;
-
