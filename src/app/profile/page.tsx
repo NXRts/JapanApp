@@ -168,7 +168,7 @@ const spin = keyframes`
 const HeatmapWrap = styled.div`
   margin-top: 1.25rem;
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -230,6 +230,8 @@ const HeatmapGrid = styled.div`
   grid-template-columns: repeat(20, 1fr);
   gap: 3px;
   width: 100%;
+  padding: 3px;
+  margin: -3px 0;
 `;
 
 const HeatmapCell = styled.div<{
@@ -237,6 +239,7 @@ const HeatmapCell = styled.div<{
   $highlighted?: boolean;
   $isFuture?: boolean;
 }>`
+  position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 2.5px;
@@ -259,17 +262,21 @@ const HeatmapCell = styled.div<{
   }};
   box-shadow: ${({ $level, $highlighted }) =>
     $highlighted || ($level && $level > 2)
-      ? "0 0 6px rgba(var(--primary-rgb, 79, 70, 229), 0.6)"
+      ? "0 0 6px rgba(var(--primary-rgb, 79, 70, 229), 0.5)"
       : "none"};
   transform: ${({ $highlighted }) =>
-    $highlighted ? "scale(1.4)" : "scale(1)"};
-  z-index: ${({ $highlighted }) => ($highlighted ? 2 : 1)};
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    $highlighted ? "scale(1.2)" : "scale(1)"};
+  z-index: ${({ $highlighted }) => ($highlighted ? 5 : 1)};
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.15s ease;
+  will-change: transform;
 
   &:hover {
-    transform: scale(1.5);
-    z-index: 10;
-    box-shadow: 0 0 8px rgba(var(--primary-rgb, 79, 70, 229), 0.8);
+    transform: scale(1.25);
+    z-index: 20;
+    box-shadow: 0 0 8px rgba(var(--primary-rgb, 79, 70, 229), 0.75), 0 0 2px rgba(255, 255, 255, 0.4);
+    border-radius: 3px;
   }
 `;
 
