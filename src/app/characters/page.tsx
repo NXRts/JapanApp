@@ -1473,25 +1473,33 @@ function CharactersPageContent() {
     if (kanjiFilter === "N2") return KANJI_DATA.N2 || [];
     if (kanjiFilter === "N1") return KANJI_DATA.N1 || [];
 
-    const allN5 = KANJI_DATA.N5 || [];
+    const allKanji = [
+      ...(KANJI_DATA.N5 || []),
+      ...(KANJI_DATA.N4 || []),
+      ...(KANJI_DATA.N3 || []),
+      ...(KANJI_DATA.N2 || []),
+      ...(KANJI_DATA.N1 || []),
+    ];
+
     if (kanjiFilter === "numbers") {
-      const chars = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "万"];
-      return allN5.filter((k) => chars.includes(k.char));
+      const chars = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "万", "億", "兆", "半", "倍", "数", "計", "第", "零", "点", "番", "幾"];
+      return allKanji.filter((k) => chars.includes(k.char) || k.category?.includes("numbers"));
     }
     if (kanjiFilter === "nature") {
-      const chars = ["日", "月", "火", "水", "木", "金", "土", "山", "川", "天", "気", "雨", "花", "空"];
-      return allN5.filter((k) => chars.includes(k.char));
+      const chars = ["日", "月", "火", "水", "木", "金", "土", "山", "川", "天", "気", "雨", "花", "空", "海", "陸", "池", "原", "野", "風", "光", "星", "雪", "雲", "石", "林", "森", "草", "竹", "虫", "魚", "鳥", "犬", "猫", "牛", "馬", "年", "時", "分", "秒", "朝", "昼", "夜", "夕", "春", "夏", "秋", "冬", "今", "週", "毎", "晴", "曇", "波", "泉", "谷", "岩", "葉", "根", "枝"];
+      return allKanji.filter((k) => chars.includes(k.char) || k.category?.includes("nature"));
     }
     if (kanjiFilter === "people") {
-      const chars = ["人", "男", "女", "子", "目", "口", "手", "足", "父", "母"];
-      return allN5.filter((k) => chars.includes(k.char));
+      const chars = ["人", "男", "女", "子", "目", "口", "手", "足", "父", "母", "兄", "弟", "姉", "妹", "友", "体", "頭", "顔", "耳", "心", "声", "私", "僕", "彼", "王", "主", "民", "医", "者", "家", "族", "親", "夫", "妻", "娘", "息", "身", "首", "毛", "歯", "指", "骨", "血", "腕", "腹", "肩", "背", "胸", "鼻", "先", "生", "学", "校", "会", "社", "働", "勉", "試", "験", "質", "問", "題", "答", "見", "聞", "言", "話", "読", "書", "食", "飲", "買", "行", "帰", "立", "店", "何", "本", "名"];
+      return allKanji.filter((k) => chars.includes(k.char) || k.category?.includes("people"));
     }
     if (kanjiFilter === "directions") {
-      const chars = ["上", "下", "中", "大", "小", "左", "右", "東", "西", "南", "北"];
-      return allN5.filter((k) => chars.includes(k.char));
+      const chars = ["上", "下", "中", "大", "小", "左", "右", "東", "西", "南", "北", "前", "後", "内", "外", "高", "低", "広", "狭", "長", "短", "重", "軽", "近", "遠", "深", "浅", "奥", "角", "向", "側", "端", "央", "表", "裏", "縦", "横", "斜", "太", "細", "厚", "薄", "道", "車", "駅", "旅"];
+      return allKanji.filter((k) => chars.includes(k.char) || k.category?.includes("directions"));
     }
 
-    return KANJI_DATA.N5 || [];
+    // Dynamic category filter fallback for future categories added to UI
+    return allKanji.filter((k) => k.category?.includes(kanjiFilter));
   }, [kanjiFilter]);
 
   const hasTriggeredRef = useRef(false);

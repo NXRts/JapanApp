@@ -10,17 +10,14 @@ export interface KanjiItem {
   on: string;
   kun: string;
   strokes: number;
+  category?: string[];
   examples?: KanjiExample[];
 }
 
 export const KANJI_DATA: Record<string, KanjiItem[]> = {
   N5: [
     {
-      char: "日",
-      meaning: "Sun / Day",
-      on: "ニチ・ジツ",
-      kun: "ひ・か",
-      strokes: 4,
+      char: "日", meaning: "Sun / Day", on: "ニチ・ジツ", kun: "ひ・か", strokes: 4, category: ["nature"],
       examples: [
         { word: "その日", reading: "そのひ", meaning: "that day" },
         { word: "へい日", reading: "へいじつ", meaning: "weekday" },
@@ -29,11 +26,7 @@ export const KANJI_DATA: Record<string, KanjiItem[]> = {
       ],
     },
     {
-      char: "月",
-      meaning: "Moon / Month",
-      on: "ゲツ・ガツ",
-      kun: "つき",
-      strokes: 4,
+      char: "月", meaning: "Moon / Month", on: "ゲツ・ガツ", kun: "つき", strokes: 4, category: ["nature"],
       examples: [
         { word: "月よう日", reading: "げつようび", meaning: "Monday" },
         { word: "毎月", reading: "まいつき", meaning: "every month" },
@@ -42,11 +35,7 @@ export const KANJI_DATA: Record<string, KanjiItem[]> = {
       ],
     },
     {
-      char: "火",
-      meaning: "Fire",
-      on: "カ",
-      kun: "ひ",
-      strokes: 4,
+      char: "火", meaning: "Fire", on: "カ", kun: "ひ", strokes: 4, category: ["nature"],
       examples: [
         { word: "火よう日", reading: "かようび", meaning: "Tuesday" },
         { word: "火事", reading: "かじ", meaning: "fire / conflagration" },
@@ -55,11 +44,7 @@ export const KANJI_DATA: Record<string, KanjiItem[]> = {
       ],
     },
     {
-      char: "水",
-      meaning: "Water",
-      on: "スイ",
-      kun: "みず",
-      strokes: 4,
+      char: "水", meaning: "Water", on: "スイ", kun: "みず", strokes: 4, category: ["nature"],
       examples: [
         { word: "水よう日", reading: "すいようび", meaning: "Wednesday" },
         { word: "水道", reading: "すいどう", meaning: "water supply" },
@@ -68,1173 +53,1011 @@ export const KANJI_DATA: Record<string, KanjiItem[]> = {
       ],
     },
     {
-      char: "木",
-      meaning: "Tree / Wood",
-      on: "モク・ボク",
-      kun: "き",
-      strokes: 4,
+      char: "木", meaning: "Tree / Wood", on: "モク・ボク", kun: "き", strokes: 4, category: ["nature"],
       examples: [
         { word: "木よう日", reading: "もくようび", meaning: "Thursday" },
         { word: "木材", reading: "もくざい", meaning: "lumber / timber" },
         { word: "木", reading: "き", meaning: "tree" },
-        { word: "木陰", reading: "こかげ", meaning: "shade of tree" },
       ],
     },
     {
-      char: "金",
-      meaning: "Gold / Money",
-      on: "キン・コン",
-      kun: "かね",
-      strokes: 8,
+      char: "金", meaning: "Gold / Money", on: "キン・コン", kun: "かね", strokes: 8, category: ["nature"],
       examples: [
         { word: "金よう日", reading: "きんようび", meaning: "Friday" },
         { word: "お金", reading: "おかね", meaning: "money" },
         { word: "金メダル", reading: "きんメダル", meaning: "gold medal" },
-        { word: "金属", reading: "きんぞく", meaning: "metal" },
       ],
     },
     {
-      char: "土",
-      meaning: "Earth / Soil",
-      on: "ド・ト",
-      kun: "つち",
-      strokes: 3,
+      char: "土", meaning: "Earth / Soil", on: "ド・ト", kun: "つち", strokes: 3, category: ["nature"],
       examples: [
         { word: "土よう日", reading: "どようび", meaning: "Saturday" },
         { word: "土", reading: "つち", meaning: "soil / earth" },
         { word: "土地", reading: "とち", meaning: "land" },
-        { word: "粘土", reading: "ねんど", meaning: "clay" },
       ],
     },
     {
-      char: "山",
-      meaning: "Mountain",
-      on: "サン",
-      kun: "やま",
-      strokes: 3,
+      char: "山", meaning: "Mountain", on: "サン", kun: "やま", strokes: 3, category: ["nature"],
       examples: [
         { word: "山", reading: "やま", meaning: "mountain" },
         { word: "登山", reading: "とざん", meaning: "mountain climbing" },
         { word: "富士山", reading: "ふじさん", meaning: "Mt. Fuji" },
-        { word: "山火事", reading: "やまかじ", meaning: "forest fire" },
       ],
     },
     {
-      char: "川",
-      meaning: "River",
-      on: "セン",
-      kun: "かわ",
-      strokes: 3,
+      char: "川", meaning: "River", on: "セン", kun: "かわ", strokes: 3, category: ["nature"],
       examples: [
         { word: "川", reading: "かわ", meaning: "river" },
         { word: "川岸", reading: "かわぎし", meaning: "riverbank" },
-        { word: "小川", reading: "おがわ", meaning: "brook / stream" },
-        { word: "荒川", reading: "あらかわ", meaning: "Arakawa River" },
+        { word: "小川", reading: "おがわ", meaning: "stream" },
       ],
     },
     {
-      char: "田",
-      meaning: "Rice Field",
-      on: "デン",
-      kun: "た",
-      strokes: 5,
+      char: "田", meaning: "Rice Field", on: "デン", kun: "た", strokes: 5, category: ["nature"],
       examples: [
         { word: "田んぼ", reading: "たんぼ", meaning: "rice field" },
         { word: "水田", reading: "すいでん", meaning: "flooded rice field" },
-        { word: "田中", reading: "たなか", meaning: "Tanaka (surname)" },
-        { word: "山田", reading: "やまだ", meaning: "Yamada (surname)" },
       ],
     },
     {
-      char: "人",
-      meaning: "Person",
-      on: "ジン・ニン",
-      kun: "ひと",
-      strokes: 2,
+      char: "天", meaning: "Heaven / Sky", on: "テン", kun: "あまつ・あめ", strokes: 4, category: ["nature"],
+      examples: [
+        { word: "天気", reading: "てんき", meaning: "weather" },
+        { word: "天国", reading: "てんこく", meaning: "heaven" },
+        { word: "天才", reading: "てんさい", meaning: "genius" },
+      ],
+    },
+    {
+      char: "気", meaning: "Spirit / Energy", on: "キ・ケ", "kun": "き", strokes: 6, category: ["nature", "people"],
+      examples: [
+        { word: "元気", reading: "げんき", meaning: "healthy/energetic" },
+        { word: "気持ち", reading: "きもち", meaning: "feeling" },
+        { word: "人気", reading: "にんき", meaning: "popular" },
+      ],
+    },
+    {
+      char: "雨", meaning: "Rain", on: "ウ", kun: "あめ・あま", strokes: 8, category: ["nature"],
+      examples: [
+        { word: "大雨", reading: "おおあめ", meaning: "heavy rain" },
+        { word: "雨天", reading: "うてん", meaning: "rainy weather" },
+      ],
+    },
+    {
+      char: "花", meaning: "Flower", on: "カ", kun: "はな", strokes: 7, category: ["nature"],
+      examples: [
+        { word: "花火", reading: "はなび", meaning: "fireworks" },
+        { word: "花瓶", reading: "かびん", meaning: "flower vase" },
+      ],
+    },
+    {
+      char: "空", meaning: "Sky / Empty", on: "クウ", kun: "そら・あ・から", strokes: 8, category: ["nature"],
+      examples: [
+        { word: "空気", reading: "くうき", meaning: "air" },
+        { word: "空港", reading: "くうこう", meaning: "airport" },
+      ],
+    },
+    {
+      char: "人", meaning: "Person", on: "ジン・ニン", kun: "ひと", strokes: 2, category: ["people"],
       examples: [
         { word: "人", reading: "ひと", meaning: "person" },
         { word: "日本人", reading: "にほんじん", meaning: "Japanese person" },
         { word: "大人", reading: "おとな", meaning: "adult" },
-        { word: "三人", reading: "さんにん", meaning: "three people" },
       ],
     },
     {
-      char: "大",
-      meaning: "Big / Large",
-      on: "ダイ・タイ",
-      kun: "おお",
-      strokes: 3,
+      char: "男", meaning: "Man / Male", on: "ダン・ナン", kun: "おとこ", strokes: 7, category: ["people"],
       examples: [
-        { word: "大きい", reading: "おおきい", meaning: "big" },
+        { word: "男の子", reading: "おとこのこ", meaning: "boy" },
+        { word: "男性", reading: "だんせい", meaning: "man/male" },
+      ],
+    },
+    {
+      char: "女", meaning: "Woman / Female", on: "ジョ・ニョ", kun: "おんな・め", strokes: 3, category: ["people"],
+      examples: [
+        { word: "女の子", reading: "おんなのこ", meaning: "girl" },
+        { word: "女性", reading: "じょせい", meaning: "woman/female" },
+      ],
+    },
+    {
+      char: "子", meaning: "Child", on: "シ・ス", kun: "こ", strokes: 3, category: ["people"],
+      examples: [
+        { word: "子供", reading: "こども", meaning: "child" },
+        { word: "電子", reading: "でんし", meaning: "electronic" },
+      ],
+    },
+    {
+      char: "父", meaning: "Father", on: "フ", kun: "ちち・とう", strokes: 4, category: ["people"],
+      examples: [
+        { word: "父親", reading: "ちちおや", meaning: "father" },
+        { word: "お父さん", reading: "おとうさん", meaning: "father" },
+      ],
+    },
+    {
+      char: "母", meaning: "Mother", on: "ボ", kun: "はは・かあ", strokes: 5, category: ["people"],
+      examples: [
+        { word: "母親", reading: "ははおや", meaning: "mother" },
+        { word: "お母さん", reading: "おかあさん", meaning: "mother" },
+      ],
+    },
+    {
+      char: "友", meaning: "Friend", on: "ユウ", kun: "とも", strokes: 4, category: ["people"],
+      examples: [
+        { word: "友達", reading: "ともだち", meaning: "friend" },
+        { word: "友人", reading: "ゆうじん", meaning: "friend (formal)" },
+      ],
+    },
+    {
+      char: "先", meaning: "Ahead / Previous", on: "セン", kun: "さき", strokes: 6, category: ["people"],
+      examples: [
+        { word: "先生", reading: "せんせい", meaning: "teacher" },
+        { word: "先月", reading: "せんげつ", meaning: "last month" },
+      ],
+    },
+    {
+      char: "生", meaning: "Life / Birth / Student", on: "セイ・ショウ", kun: "い・う・なま", strokes: 5, category: ["people"],
+      examples: [
+        { word: "学生", reading: "がくせい", meaning: "student" },
+        { word: "生活", reading: "せいかつ", meaning: "daily life" },
+      ],
+    },
+    {
+      char: "学", meaning: "Study / Learn", on: "ガク", kun: "まな", strokes: 8, category: ["people"],
+      examples: [
+        { word: "学校", reading: "がっこう", meaning: "school" },
         { word: "大学", reading: "だいがく", meaning: "university" },
-        { word: "大切", reading: "たいせつ", meaning: "important" },
-        { word: "大変", reading: "たいへん", meaning: "difficult / tough" },
       ],
     },
     {
-      char: "小",
-      meaning: "Small / Little",
-      on: "ショウ",
-      kun: "ちい・こ",
-      strokes: 3,
+      char: "校", meaning: "School", on: "コウ", kun: "—", strokes: 10, category: ["people"],
       examples: [
-        { word: "小さい", reading: "ちいさい", meaning: "small" },
-        {
-          word: "小学校",
-          reading: "しょうがっこう",
-          meaning: "elementary school",
-        },
-        { word: "小説", reading: "しょうせつ", meaning: "novel" },
-        { word: "小川", reading: "おがわ", meaning: "stream / brook" },
+        { word: "小学校", reading: "しょうがっこう", meaning: "elementary school" },
+        { word: "高校", reading: "こうこう", meaning: "high school" },
       ],
     },
     {
-      char: "中",
-      meaning: "Middle / Inside",
-      on: "チュウ",
-      kun: "なか",
-      strokes: 4,
+      char: "会", meaning: "Meet / Society", on: "カイ・エ", kun: "あ", strokes: 6, category: ["people"],
       examples: [
-        { word: "中", reading: "なか", meaning: "inside" },
-        { word: "一日中", reading: "いちにちじゅう", meaning: "all day long" },
-        { word: "中国", reading: "ちゅうごく", meaning: "China" },
-        {
-          word: "中学校",
-          reading: "ちゅうがっこう",
-          meaning: "junior high school",
-        },
-      ],
-    },
-    {
-      char: "上",
-      meaning: "Above / Up",
-      on: "ジョウ",
-      kun: "うえ",
-      strokes: 3,
-      examples: [
-        { word: "上", reading: "うえ", meaning: "above / up" },
-        { word: "上げる", reading: "あげる", meaning: "to raise" },
-        { word: "上り", reading: "のぼり", meaning: "ascent / inbound" },
-        { word: "上手", reading: "じょうず", meaning: "skillful" },
-      ],
-    },
-    {
-      char: "下",
-      meaning: "Below / Down",
-      on: "カ・ゲ",
-      kun: "した",
-      strokes: 3,
-      examples: [
-        { word: "下", reading: "した", meaning: "below / down" },
-        { word: "下げる", reading: "さげる", meaning: "to lower" },
-        { word: "下手", reading: "へた", meaning: "unskillful" },
-        { word: "地下鉄", reading: "ちかてつ", meaning: "subway" },
-      ],
-    },
-    {
-      char: "一",
-      meaning: "One",
-      on: "イチ・イツ",
-      kun: "ひと",
-      strokes: 1,
-      examples: [
-        { word: "一つ", reading: "ひとつ", meaning: "one (thing)" },
-        { word: "一日", reading: "ついたち", meaning: "1st of month" },
-        { word: "一緒", reading: "いっしょ", meaning: "together" },
-        { word: "一人前", reading: "ひとりまえ", meaning: "one serving" },
-      ],
-    },
-    {
-      char: "二",
-      meaning: "Two",
-      on: "ニ",
-      kun: "ふた",
-      strokes: 2,
-      examples: [
-        { word: "二つ", reading: "ふたつ", meaning: "two (things)" },
-        { word: "二日", reading: "ふつか", meaning: "2nd of month" },
-        { word: "二番目", reading: "にばんめ", meaning: "second" },
-        { word: "二重", reading: "にじゅう", meaning: "double" },
-      ],
-    },
-    {
-      char: "三",
-      meaning: "Three",
-      on: "サン",
-      kun: "み",
-      strokes: 3,
-      examples: [
-        { word: "三つ", reading: "みっつ", meaning: "three (things)" },
-        { word: "三日", reading: "みっか", meaning: "3rd of month" },
-        { word: "三角", reading: "さんかく", meaning: "triangle" },
-        { word: "三等", reading: "さんとう", meaning: "third class" },
-      ],
-    },
-    {
-      char: "四",
-      meaning: "Four",
-      on: "シ",
-      kun: "よ",
-      strokes: 5,
-      examples: [
-        { word: "四つ", reading: "よっつ", meaning: "four (things)" },
-        { word: "四日", reading: "よっか", meaning: "4th of month" },
-        { word: "四季", reading: "しき", meaning: "four seasons" },
-        { word: "四角", reading: "しかく", meaning: "square" },
-      ],
-    },
-    {
-      char: "五",
-      meaning: "Five",
-      on: "ゴ",
-      kun: "いつ",
-      strokes: 4,
-      examples: [
-        { word: "五つ", reading: "いつつ", meaning: "five (things)" },
-        { word: "五日", reading: "いつか", meaning: "5th of month" },
-        { word: "五感", reading: "ごかん", meaning: "five senses" },
-        { word: "五十音", reading: "ごじゅうおん", meaning: "syllabary" },
-      ],
-    },
-    {
-      char: "六",
-      meaning: "Six",
-      on: "ロク",
-      kun: "む・むい",
-      strokes: 4,
-      examples: [
-        { word: "六つ", reading: "むっつ", meaning: "six (things)" },
-        { word: "六日", reading: "むいか", meaning: "6th of month" },
-        { word: "六角形", reading: "ろくかっけい", meaning: "hexagon" },
-        { word: "六月", reading: "ろくがつ", meaning: "June" },
-      ],
-    },
-    {
-      char: "七",
-      meaning: "Seven",
-      on: "シチ",
-      kun: "なな・なの",
-      strokes: 2,
-      examples: [
-        { word: "七つ", reading: "ななつ", meaning: "seven (things)" },
-        { word: "七日", reading: "なのか", meaning: "7th of month" },
-        { word: "七夕", reading: "たなばた", meaning: "Tanabata festival" },
-        { word: "七月", reading: "しちがつ", meaning: "July" },
-      ],
-    },
-    {
-      char: "八",
-      meaning: "Eight",
-      on: "ハチ",
-      kun: "や・よう",
-      strokes: 2,
-      examples: [
-        { word: "八つ", reading: "やっつ", meaning: "eight (things)" },
-        { word: "八日", reading: "ようか", meaning: "8th of month" },
-        { word: "八百屋", reading: "やおや", meaning: "greengrocer" },
-        { word: "八月", reading: "はちがつ", meaning: "August" },
-      ],
-    },
-    {
-      char: "九",
-      meaning: "Nine",
-      on: "キュウ・ク",
-      kun: "ここの",
-      strokes: 2,
-      examples: [
-        { word: "九つ", reading: "ここのつ", meaning: "nine (things)" },
-        { word: "九日", reading: "ここのか", meaning: "9th of month" },
-        { word: "九月", reading: "くがつ", meaning: "September" },
-        { word: "九州", reading: "きゅうしゅう", meaning: "Kyushu" },
-      ],
-    },
-    {
-      char: "十",
-      meaning: "Ten",
-      on: "ジュウ・ジッ",
-      kun: "とお・と",
-      strokes: 2,
-      examples: [
-        { word: "十", reading: "とお", meaning: "ten (things)" },
-        { word: "十日", reading: "とおか", meaning: "10th of month" },
-        { word: "十字架", reading: "じゅうじか", meaning: "cross" },
-        { word: "十分", reading: "じゅうぶん", meaning: "enough" },
-      ],
-    },
-    {
-      char: "百",
-      meaning: "Hundred",
-      on: "ヒャク",
-      kun: "—",
-      strokes: 6,
-      examples: [
-        { word: "百円", reading: "ひゃくえん", meaning: "100 yen" },
-        {
-          word: "百貨店",
-          reading: "ひゃっかてん",
-          meaning: "department store",
-        },
-        {
-          word: "百科事典",
-          reading: "ひゃっかじてん",
-          meaning: "encyclopedia",
-        },
-        { word: "百万", reading: "ひゃくまん", meaning: "one million" },
-      ],
-    },
-    {
-      char: "千",
-      meaning: "Thousand",
-      on: "セン",
-      kun: "ち",
-      strokes: 3,
-      examples: [
-        { word: "千円", reading: "せんえん", meaning: "1,000 yen" },
-        { word: "千葉県", reading: "ちばけん", meaning: "Chiba prefecture" },
-        { word: "千代田区", reading: "ちよだく", meaning: "Chiyoda ward" },
-        { word: "千人", reading: "せんにん", meaning: "1,000 people" },
-      ],
-    },
-    {
-      char: "万",
-      meaning: "Ten Thousand",
-      on: "マン・バン",
-      kun: "—",
-      strokes: 3,
-      examples: [
-        { word: "一万円", reading: "いちまんえん", meaning: "10,000 yen" },
-        { word: "万能", reading: "ばんのう", meaning: "all-purpose" },
-        { word: "万が一", reading: "まんがいち", meaning: "if by any chance" },
-        { word: "万国", reading: "ばんこく", meaning: "all nations" },
-      ],
-    },
-    {
-      char: "円",
-      meaning: "Yen / Circle",
-      on: "エン",
-      kun: "まる",
-      strokes: 4,
-      examples: [
-        { word: "円", reading: "えん", meaning: "Yen" },
-        { word: "円い", reading: "まるい", meaning: "round" },
-        { word: "楕円", reading: "だえん", meaning: "ellipse" },
-        { word: "円滑", reading: "えんかつ", meaning: "smooth" },
-      ],
-    },
-    {
-      char: "年",
-      meaning: "Year",
-      on: "ネン",
-      kun: "とし",
-      strokes: 6,
-      examples: [
-        { word: "今年", reading: "ことし", meaning: "this year" },
-        { word: "毎年", reading: "まいねん", meaning: "every year" },
-        { word: "去年", reading: "きょねん", meaning: "last year" },
-        { word: "年齢", reading: "ねんれい", meaning: "age" },
-      ],
-    },
-  ],
-  N4: [
-    {
-      char: "会",
-      meaning: "Meeting / Society",
-      on: "カイ・エ",
-      kun: "あ",
-      strokes: 6,
-      examples: [
-        { word: "会う", reading: "あう", meaning: "to meet" },
         { word: "会社", reading: "かいしゃ", meaning: "company" },
-        { word: "会議", reading: "かいぎ", meaning: "meeting" },
         { word: "会話", reading: "かいわ", meaning: "conversation" },
       ],
     },
     {
-      char: "社",
-      meaning: "Company / Shrine",
-      on: "シャ",
-      kun: "やしろ",
-      strokes: 7,
+      char: "社", meaning: "Company / Shrine", on: "シャ", kun: "やしろ", strokes: 7, category: ["people"],
       examples: [
         { word: "社会", reading: "しゃかい", meaning: "society" },
         { word: "神社", reading: "じんじゃ", meaning: "Shinto shrine" },
-        { word: "社長", reading: "しゃちょう", meaning: "company president" },
-        {
-          word: "会社員",
-          reading: "かいしゃいん",
-          meaning: "company employee",
-        },
       ],
     },
     {
-      char: "国",
-      meaning: "Country / Nation",
-      on: "コク",
-      kun: "くに",
-      strokes: 8,
+      char: "目", meaning: "Eye", on: "モク・ボク", kun: "め", strokes: 5, category: ["people"],
       examples: [
-        { word: "国", reading: "くに", meaning: "country" },
-        { word: "外国", reading: "がいこく", meaning: "foreign country" },
-        { word: "国会", reading: "こっかい", meaning: "parliament" },
-        { word: "国内", reading: "こくない", meaning: "domestic" },
+        { word: "目的", reading: "もくてき", meaning: "purpose" },
+        { word: "目薬", reading: "めぐすり", meaning: "eye drops" },
       ],
     },
     {
-      char: "語",
-      meaning: "Language / Word",
-      on: "ゴ",
-      kun: "かた",
-      strokes: 14,
+      char: "口", meaning: "Mouth", on: "コウ・ク", kun: "くち", strokes: 3, category: ["people"],
       examples: [
-        { word: "日本語", reading: "にほんご", meaning: "Japanese language" },
-        { word: "英語", reading: "えいご", meaning: "English language" },
-        { word: "語学", reading: "ごがく", meaning: "language study" },
-        { word: "語る", reading: "かたる", meaning: "to talk" },
+        { word: "人口", reading: "じんこう", meaning: "population" },
+        { word: "出口", reading: "でぐち", meaning: "exit" },
       ],
     },
     {
-      char: "手",
-      meaning: "Hand",
-      on: "シュ",
-      kun: "て",
-      strokes: 4,
+      char: "手", meaning: "Hand", on: "シュ", kun: "て", strokes: 4, category: ["people"],
       examples: [
-        { word: "手", reading: "て", meaning: "hand" },
         { word: "手紙", reading: "てがみ", meaning: "letter" },
-        { word: "手だて", reading: "てだて", meaning: "means / method" },
-        { word: "手洗い", reading: "てあらい", meaning: "restroom / handwash" },
+        { word: "歌手", reading: "かしゅ", meaning: "singer" },
       ],
     },
     {
-      char: "足",
-      meaning: "Foot / Leg",
-      on: "ソク",
-      kun: "あし",
-      strokes: 7,
+      char: "足", meaning: "Foot / Leg", on: "ソク", kun: "あし・た", strokes: 7, category: ["people"],
       examples: [
-        { word: "足", reading: "あし", meaning: "foot / leg" },
-        { word: "足りる", reading: "たりる", meaning: "to be sufficient" },
+        { word: "足", reading: "あし", meaning: "foot/leg" },
         { word: "不足", reading: "ふそく", meaning: "shortage" },
-        { word: "足元", reading: "あしもと", meaning: "at one's feet" },
       ],
     },
     {
-      char: "電",
-      meaning: "Electricity",
-      on: "デン",
-      kun: "—",
-      strokes: 13,
+      char: "耳", meaning: "Ear", on: "ジ", kun: "みみ", strokes: 6, category: ["people"],
       examples: [
-        { word: "電車", reading: "でんしゃ", meaning: "train" },
+        { word: "初耳", reading: "はつみみ", meaning: "hearing for first time" },
+        { word: "耳鼻科", reading: "じびか", meaning: "ENT department" },
+      ],
+    },
+    {
+      char: "体", meaning: "Body", on: "タイ・テイ", kun: "からだ", strokes: 7, category: ["people"],
+      examples: [
+        { word: "体重", reading: "たいじゅう", meaning: "body weight" },
+        { word: "体力", reading: "たいりょく", meaning: "physical strength" },
+      ],
+    },
+    {
+      char: "大", meaning: "Big / Large", on: "ダイ・タイ", kun: "おお", strokes: 3, category: ["directions"],
+      examples: [
+        { word: "大きい", reading: "おおきい", meaning: "big" },
+        { word: "大学", reading: "だいがく", meaning: "university" },
+      ],
+    },
+    {
+      char: "小", meaning: "Small / Little", on: "ショウ", kun: "ちい・こ", strokes: 3, category: ["directions"],
+      examples: [
+        { word: "小さい", reading: "ちいさい", meaning: "small" },
+        { word: "小学校", reading: "しょうがっこう", meaning: "elementary school" },
+      ],
+    },
+    {
+      char: "中", meaning: "Middle / Inside", on: "チュウ", kun: "なか", strokes: 4, category: ["directions"],
+      examples: [
+        { word: "中", reading: "なか", meaning: "inside" },
+        { word: "中国", reading: "ちゅうごく", meaning: "China" },
+      ],
+    },
+    {
+      char: "上", meaning: "Above / Up", on: "ジョウ", kun: "うえ・あ", strokes: 3, category: ["directions"],
+      examples: [
+        { word: "上", reading: "うえ", meaning: "above" },
+        { word: "上手", reading: "じょうず", meaning: "skillful" },
+      ],
+    },
+    {
+      char: "下", meaning: "Below / Down", on: "カ・ゲ", kun: "した・さ", strokes: 3, category: ["directions"],
+      examples: [
+        { word: "下", reading: "した", meaning: "below" },
+        { word: "下手", reading: "へた", meaning: "unskillful" },
+      ],
+    },
+    {
+      char: "一", meaning: "One", on: "イチ・イツ", kun: "ひと", strokes: 1, category: ["numbers"],
+      examples: [
+        { word: "一日", reading: "ついたち", meaning: "1st day of month" },
+        { word: "一人", reading: "ひとり", meaning: "one person" },
+      ],
+    },
+    {
+      char: "二", meaning: "Two", on: "ニ", kun: "ふた", strokes: 2, category: ["numbers"],
+      examples: [
+        { word: "二月", reading: "にがつ", meaning: "February" },
+        { word: "二人", reading: "ふたり", meaning: "two people" },
+      ],
+    },
+    {
+      char: "三", meaning: "Three", on: "サン", kun: "み", strokes: 3, category: ["numbers"],
+      examples: [
+        { word: "三月", reading: "さんがつ", meaning: "March" },
+        { word: "三人", reading: "さんにん", meaning: "three people" },
+      ],
+    },
+    {
+      char: "四", meaning: "Four", on: "シ", kun: "よ・よん", strokes: 5, category: ["numbers"],
+      examples: [
+        { word: "四月", reading: "しがつ", meaning: "April" },
+        { word: "四季", reading: "しき", meaning: "four seasons" },
+      ],
+    },
+    {
+      char: "五", meaning: "Five", on: "ゴ", kun: "いつ", strokes: 4, category: ["numbers"],
+      examples: [
+        { word: "五月", reading: "ごがつ", meaning: "May" },
+        { word: "五感", reading: "ごかん", meaning: "five senses" },
+      ],
+    },
+    {
+      char: "六", meaning: "Six", on: "ロク", kun: "む・むい", strokes: 4, category: ["numbers"],
+      examples: [
+        { word: "六月", reading: "ろくがつ", meaning: "June" },
+        { word: "六日", reading: "むいか", meaning: "6th day of month" },
+      ],
+    },
+    {
+      char: "七", meaning: "Seven", on: "シチ", kun: "なな・なの", strokes: 2, category: ["numbers"],
+      examples: [
+        { word: "七月", reading: "しちがつ", meaning: "July" },
+        { word: "七日", reading: "なのか", meaning: "7th day of month" },
+      ],
+    },
+    {
+      char: "八", meaning: "Eight", on: "ハチ", kun: "や・よう", strokes: 2, category: ["numbers"],
+      examples: [
+        { word: "八月", reading: "はちがつ", meaning: "August" },
+        { word: "八日", reading: "ようか", meaning: "8th day of month" },
+      ],
+    },
+    {
+      char: "九", meaning: "Nine", on: "キュウ・ク", kun: "ここの", strokes: 2, category: ["numbers"],
+      examples: [
+        { word: "九月", reading: "くがつ", meaning: "September" },
+        { word: "九日", reading: "ここのか", meaning: "9th day of month" },
+      ],
+    },
+    {
+      char: "十", meaning: "Ten", on: "ジュウ・ジッ", kun: "とお・と", strokes: 2, category: ["numbers"],
+      examples: [
+        { word: "十月", reading: "じゅうがつ", meaning: "October" },
+        { word: "十日", reading: "とおか", meaning: "10th day of month" },
+      ],
+    },
+    {
+      char: "百", meaning: "Hundred", on: "ヒャク", kun: "モモ", strokes: 6, category: ["numbers"],
+      examples: [
+        { word: "百円", reading: "ひゃくえん", meaning: "100 yen" },
+        { word: "八百屋", reading: "やおや", meaning: "greengrocer" },
+      ],
+    },
+    {
+      char: "千", meaning: "Thousand", on: "セン", kun: "ち", strokes: 3, category: ["numbers"],
+      examples: [
+        { word: "千円", reading: "せんえん", meaning: "1000 yen" },
+        { word: "千葉", reading: "ちば", meaning: "Chiba prefecture" },
+      ],
+    },
+    {
+      char: "万", meaning: "Ten Thousand", on: "マン・バン", kun: "よろず", strokes: 3, category: ["numbers"],
+      examples: [
+        { word: "一万円", reading: "いちまんえん", meaning: "10,000 yen" },
+        { word: "万一", reading: "まんいち", meaning: "just in case" },
+      ],
+    },
+    {
+      char: "円", meaning: "Yen / Circle", on: "エン", kun: "まる", strokes: 4, category: ["numbers"],
+      examples: [
+        { word: "円高", reading: "えんだか", meaning: "strong yen" },
+        { word: "円形", reading: "えんけい", meaning: "circle shape" },
+      ],
+    },
+    {
+      char: "年", meaning: "Year", on: "ネン", kun: "とし", strokes: 6, category: ["nature"],
+      examples: [
+        { word: "今年", reading: "ことし", meaning: "this year" },
+        { word: "来年", reading: "らいねん", meaning: "next year" },
+      ],
+    },
+    {
+      char: "見", meaning: "See / Look", on: "ケン", kun: "み", strokes: 7, category: ["people"],
+      examples: [
+        { word: "見学", reading: "けんがく", meaning: "study tour" },
+        { word: "意見", reading: "いけん", meaning: "opinion" },
+      ],
+    },
+    {
+      char: "聞", meaning: "Hear / Listen", on: "ブン・モン", kun: "き", strokes: 14, category: ["people"],
+      examples: [
+        { word: "新聞", reading: "しんぶん", meaning: "newspaper" },
+        { word: "聞こえる", reading: "きこえる", meaning: "audible" },
+      ],
+    },
+    {
+      char: "言", meaning: "Say / Speak", on: "ゲン・ゴン", kun: "い・こと", strokes: 7, category: ["people"],
+      examples: [
+        { word: "言話", reading: "げんわ", meaning: "speech" },
+        { word: "一言", reading: "ひとこと", meaning: "single word" },
+      ],
+    },
+    {
+      char: "話", meaning: "Talk / Story", on: "ワ", kun: "はなし・はな", strokes: 13, category: ["people"],
+      examples: [
         { word: "電話", reading: "でんわ", meaning: "telephone" },
-        { word: "電気", reading: "でんき", meaning: "electricity" },
-        { word: "電池", reading: "でんち", meaning: "battery" },
+        { word: "話題", reading: "わだい", meaning: "topic" },
       ],
     },
     {
-      char: "車",
-      meaning: "Car / Vehicle",
-      on: "シャ",
-      kun: "くるま",
-      strokes: 7,
+      char: "読", meaning: "Read", on: "ドク・トク", kun: "よ", strokes: 14, category: ["people"],
       examples: [
-        { word: "車", reading: "くるま", meaning: "car" },
-        { word: "自転車", reading: "じてんしゃ", meaning: "bicycle" },
-        { word: "自動車", reading: "じどうしゃ", meaning: "automobile" },
-        { word: "駐車場", reading: "ちゅうしゃじょう", meaning: "parking lot" },
+        { word: "読書", reading: "どくしょ", meaning: "reading" },
+        { word: "音読", reading: "おんどく", meaning: "reading aloud" },
       ],
     },
     {
-      char: "学",
-      meaning: "Study / Learning",
-      on: "ガク",
-      kun: "まな",
-      strokes: 8,
+      char: "書", meaning: "Write", on: "ショ", kun: "か", strokes: 10, category: ["people"],
       examples: [
-        { word: "学ぶ", reading: "まなぶ", meaning: "to learn" },
-        { word: "学生", reading: "がくせい", meaning: "student" },
-        { word: "学校", reading: "がっこう", meaning: "school" },
-        { word: "学業", reading: "がくぎょう", meaning: "academic studies" },
+        { word: "辞書", reading: "じしょ", meaning: "dictionary" },
+        { word: "図書館", reading: "としょかん", meaning: "library" },
       ],
     },
     {
-      char: "校",
-      meaning: "School",
-      on: "コウ",
-      kun: "—",
-      strokes: 10,
+      char: "食", meaning: "Eat / Food", on: "ショク・ジキ", kun: "た・く", strokes: 9, category: ["people"],
       examples: [
-        { word: "校長", reading: "こうちょう", meaning: "principal" },
-        { word: "校舎", reading: "こうしゃ", meaning: "school building" },
-        { word: "校門", reading: "こうもん", meaning: "school gate" },
-        { word: "校友", reading: "こうゆう", meaning: "schoolmate / alumnus" },
+        { word: "食事", reading: "しょくじ", meaning: "meal" },
+        { word: "食べ物", reading: "たべもの", meaning: "food" },
       ],
     },
     {
-      char: "先",
-      meaning: "Before / Previous",
-      on: "セン",
-      kun: "さき",
-      strokes: 6,
+      char: "飲", meaning: "Drink", on: "イン", kun: "の", strokes: 12, category: ["people"],
       examples: [
-        { word: "先生", reading: "せんせい", meaning: "teacher" },
-        { word: "先に", reading: "さきに", meaning: "earlier / ahead" },
-        { word: "先月", reading: "せんげつ", meaning: "last month" },
-        { word: "先祖", reading: "せんぞ", meaning: "ancestor" },
+        { word: "飲み物", reading: "のみもの", meaning: "beverage" },
+        { word: "飲食店", reading: "いんしょくてん", meaning: "restaurant" },
       ],
     },
     {
-      char: "生",
-      meaning: "Life / Birth",
-      on: "セイ・ショウ",
-      kun: "い・う",
-      strokes: 5,
+      char: "買", meaning: "Buy", on: "バイ", kun: "か", strokes: 12, category: ["people"],
       examples: [
-        { word: "生まれる", reading: "うまれる", meaning: "to be born" },
-        { word: "一生", reading: "いっしょう", meaning: "lifetime" },
-        { word: "生ビール", reading: "なまビール", meaning: "draft beer" },
-        { word: "生活", reading: "せいかつ", meaning: "life / living" },
+        { word: "買い物", reading: "かいもの", meaning: "shopping" },
+        { word: "売買", reading: "ばいばい", meaning: "buying & selling" },
       ],
     },
     {
-      char: "気",
-      meaning: "Spirit / Air",
-      on: "キ・ケ",
-      kun: "—",
-      strokes: 6,
+      char: "行", meaning: "Go / Conduct", on: "コウ・ギョウ", kun: "い・ゆ・おこな", strokes: 6, category: ["people"],
       examples: [
-        { word: "気分", reading: "きぶん", meaning: "mood" },
-        { word: "人気", reading: "にんき", meaning: "popularity" },
-        { word: "病気", reading: "びょうき", meaning: "illness" },
-        { word: "天気", reading: "てんき", meaning: "weather" },
+        { word: "旅行", reading: "りょこう", meaning: "travel" },
+        { word: "銀行", reading: "ぎんこう", meaning: "bank" },
       ],
     },
     {
-      char: "時",
-      meaning: "Time / Hour",
-      on: "ジ",
-      kun: "とき",
-      strokes: 10,
+      char: "来", meaning: "Come / Next", on: "ライ", kun: "く・きた", strokes: 7, category: ["nature"],
       examples: [
-        { word: "時間", reading: "じかん", meaning: "time" },
-        { word: "時", reading: "とき", meaning: "time / when" },
-        { word: "時計", reading: "とけい", meaning: "clock / watch" },
-        { word: "時々", reading: "ときどき", meaning: "sometimes" },
+        { word: "来週", reading: "らいしゅう", meaning: "next week" },
+        { word: "未来", reading: "みらい", meaning: "future" },
       ],
     },
     {
-      char: "間",
-      meaning: "Interval / Space",
-      on: "カン・ケン",
-      kun: "ま",
-      strokes: 12,
+      char: "帰", meaning: "Return", on: "キ", kun: "かえ", strokes: 10, category: ["people"],
       examples: [
-        { word: "時間", reading: "じかん", meaning: "time" },
-        { word: "間", reading: "あいだ", meaning: "between" },
-        { word: "人間", reading: "にんげん", meaning: "human being" },
-        { word: "間違い", reading: "まちがい", meaning: "mistake" },
+        { word: "帰国", reading: "きこく", meaning: "return home" },
+        { word: "日帰り", reading: "ひがえり", meaning: "day trip" },
       ],
     },
     {
-      char: "長",
-      meaning: "Long / Chief",
-      on: "チョウ",
-      kun: "なが",
-      strokes: 8,
+      char: "出", meaning: "Exit / Go out", on: "シュツ・シュイ", kun: "で・だ", strokes: 5, category: ["directions"],
       examples: [
-        { word: "長い", reading: "ながい", meaning: "long" },
-        { word: "社長", reading: "しゃちょう", meaning: "company president" },
-        { word: "長男", reading: "ちょうnan", meaning: "eldest son" },
-        {
-          word: "長所",
-          reading: "ちょうしょ",
-          meaning: "strong point / merit",
-        },
-      ],
-    },
-    {
-      char: "出",
-      meaning: "Exit / Leave",
-      on: "シュツ",
-      kun: "で・だ",
-      strokes: 5,
-      examples: [
-        { word: "出る", reading: "でる", meaning: "to exit / leave" },
-        { word: "出す", reading: "だす", meaning: "to take out / submit" },
         { word: "出口", reading: "でぐち", meaning: "exit" },
         { word: "出発", reading: "しゅっぱつ", meaning: "departure" },
       ],
     },
     {
-      char: "入",
-      meaning: "Enter / Insert",
-      on: "ニュウ",
-      kun: "い・はい",
-      strokes: 2,
+      char: "入", meaning: "Enter / Put in", on: "ニュウ", kun: "はい・い", strokes: 2, category: ["directions"],
       examples: [
-        { word: "入る", reading: "はいる", meaning: "to enter" },
-        { word: "入れる", reading: "いれる", meaning: "to insert" },
         { word: "入口", reading: "いりぐち", meaning: "entrance" },
-        { word: "入学", reading: "にゅうがく", meaning: "school admission" },
+        { word: "入学", reading: "にゅうがく", meaning: "school entry" },
       ],
     },
     {
-      char: "本",
-      meaning: "Book / Origin",
-      on: "ホン",
-      kun: "もと",
-      strokes: 5,
+      char: "立", meaning: "Stand", on: "リツ・リュウ", kun: "た", strokes: 5, category: ["people"],
       examples: [
-        { word: "本", reading: "ほん", meaning: "book" },
-        { word: "日本", reading: "にほん", meaning: "Japan" },
-        { word: "本当", reading: "ほんとう", meaning: "truth / reality" },
-        { word: "根本", reading: "こんぽん", meaning: "root / source" },
+        { word: "立場", reading: "たちば", meaning: "standpoint" },
+        { word: "国立", reading: "こくりつ", meaning: "national" },
       ],
     },
     {
-      char: "名",
-      meaning: "Name",
-      on: "メイ・ミョウ",
-      kun: "な",
-      strokes: 6,
+      char: "休", meaning: "Rest / Holiday", on: "キュウ", kun: "やす", strokes: 6, category: ["nature"],
+      examples: [
+        { word: "休日", reading: "きゅうじつ", meaning: "holiday" },
+        { word: "夏休み", reading: "なつやすみ", meaning: "summer vacation" },
+      ],
+    },
+    {
+      char: "左", meaning: "Left", on: "サ", kun: "ひだり", strokes: 5, category: ["directions"],
+      examples: [
+        { word: "左手", reading: "ひだりて", meaning: "left hand" },
+        { word: "左右", reading: "さゆう", meaning: "left and right" },
+      ],
+    },
+    {
+      char: "右", meaning: "Right", on: "ウ・ユウ", kun: "みぎ", strokes: 5, category: ["directions"],
+      examples: [
+        { word: "右手", reading: "みぎて", meaning: "right hand" },
+        { word: "右折", reading: "うせつ", meaning: "right turn" },
+      ],
+    },
+    {
+      char: "東", meaning: "East", on: "トウ", kun: "ひがし", strokes: 8, category: ["directions"],
+      examples: [
+        { word: "東京", reading: "とうきょう", meaning: "Tokyo" },
+        { word: "中東", reading: "ちゅうとう", meaning: "Middle East" },
+      ],
+    },
+    {
+      char: "西", meaning: "West", on: "セイ・サイ", kun: "にし", strokes: 6, category: ["directions"],
+      examples: [
+        { word: "東西", reading: "とうざい", meaning: "east and west" },
+        { word: "関西", reading: "かんさい", meaning: "Kansai region" },
+      ],
+    },
+    {
+      char: "南", meaning: "South", on: "ナン", kun: "みなみ", strokes: 9, category: ["directions"],
+      examples: [
+        { word: "南米", reading: "なんべい", meaning: "South America" },
+        { word: "南北", reading: "なんぼく", meaning: "north and south" },
+      ],
+    },
+    {
+      char: "北", meaning: "North", on: "ホク", kun: "きた", strokes: 5, category: ["directions"],
+      examples: [
+        { word: "北海道", reading: "ほっかいどう", meaning: "Hokkaido" },
+        { word: "北東", reading: "ほくとう", meaning: "northeast" },
+      ],
+    },
+    {
+      char: "前", meaning: "Before / Front", on: "ゼン", kun: "まえ", strokes: 9, category: ["directions", "nature"],
+      examples: [
+        { word: "午前", reading: "ごぜん", meaning: "morning/AM" },
+        { word: "前日", reading: "ぜんじつ", meaning: "previous day" },
+      ],
+    },
+    {
+      char: "後", meaning: "Behind / After", on: "ゴ・コウ", kun: "うし・あと", strokes: 9, category: ["directions", "nature"],
+      examples: [
+        { word: "午後", reading: "ごご", meaning: "afternoon/PM" },
+        { word: "最後", reading: "さいご", meaning: "last/final" },
+      ],
+    },
+    {
+      char: "外", meaning: "Outside", on: "ガイ・ゲ", kun: "そと・ほか", strokes: 5, category: ["directions"],
+      examples: [
+        { word: "外国", reading: "がいこく", meaning: "foreign country" },
+        { word: "例外", reading: "れいがい", meaning: "exception" },
+      ],
+    },
+    {
+      char: "店", meaning: "Shop / Store", on: "テン", kun: "みせ", strokes: 8, category: ["people"],
+      examples: [
+        { word: "店員", reading: "てんいん", meaning: "clerk/store staff" },
+        { word: "売店", reading: "ばいてん", meaning: "stand/kiosk" },
+      ],
+    },
+    {
+      char: "駅", meaning: "Station", on: "エキ", kun: "—", strokes: 14, category: ["directions"],
+      examples: [
+        { word: "駅前", reading: "えきまえ", meaning: "station front" },
+        { word: "東京駅", reading: "とうきょうえき", meaning: "Tokyo Station" },
+      ],
+    },
+    {
+      char: "道", meaning: "Road / Way", on: "ドウ", kun: "みち", strokes: 12, category: ["directions"],
+      examples: [
+        { word: "柔道", reading: "じゅうどう", meaning: "judo" },
+        { word: "近道", reading: "ちかみち", meaning: "shortcut" },
+      ],
+    },
+    {
+      char: "車", meaning: "Car / Vehicle", on: "シャ", kun: "くるま", strokes: 7, category: ["directions"],
+      examples: [
+        { word: "電車", reading: "でんしゃ", meaning: "train" },
+        { word: "自動車", reading: "じどうしゃ", meaning: "automobile" },
+      ],
+    },
+    {
+      char: "電", meaning: "Electricity", on: "デン", kun: "—", strokes: 13, category: ["nature"],
+      examples: [
+        { word: "電力", reading: "でんりょく", meaning: "electric power" },
+        { word: "電池", reading: "でんち", meaning: "battery" },
+      ],
+    },
+    {
+      char: "何", meaning: "What", on: "カ", kun: "なに・なん", strokes: 7, category: ["people"],
+      examples: [
+        { word: "何時", reading: "なんじ", meaning: "what time" },
+        { word: "何か", reading: "なにか", meaning: "something" },
+      ],
+    },
+    {
+      char: "本", meaning: "Book / Origin", on: "ホン", kun: "もと", strokes: 5, category: ["people"],
+      examples: [
+        { word: "日本", reading: "にほん", meaning: "Japan" },
+        { word: "本当", reading: "ほんとう", meaning: "truth" },
+      ],
+    },
+    {
+      char: "名", meaning: "Name / Famous", on: "メイ・ミョウ", kun: "な", strokes: 6, category: ["people"],
       examples: [
         { word: "名前", reading: "なまえ", meaning: "name" },
         { word: "有名", reading: "ゆうめい", meaning: "famous" },
-        { word: "名物", reading: "めいぶつ", meaning: "famous product" },
-        { word: "名刺", reading: "めいし", meaning: "business card" },
       ],
     },
     {
-      char: "白",
-      meaning: "White",
-      on: "ハク・ビャク",
-      kun: "しろ",
-      strokes: 5,
+      char: "高", meaning: "High / Expensive", on: "コウ", kun: "たか", strokes: 10, category: ["directions"],
       examples: [
-        { word: "白い", reading: "しろい", meaning: "white" },
+        { word: "最高", reading: "さいこう", meaning: "highest/best" },
+        { word: "高校生", reading: "こうこうせい", meaning: "high schooler" },
+      ],
+    },
+    {
+      char: "長", meaning: "Long / Leader", on: "チョウ", kun: "なが", strokes: 8, category: ["directions"],
+      examples: [
+        { word: "会長", reading: "かいちょう", meaning: "president" },
+        { word: "長所", reading: "ちょうしょ", meaning: "strong point" },
+      ],
+    },
+    {
+      char: "半", meaning: "Half", on: "ハン", kun: "なか", strokes: 5, category: ["numbers", "directions"],
+      examples: [
+        { word: "半分", reading: "はんぶん", meaning: "half" },
+        { word: "半年", reading: "はんとし", meaning: "half a year" },
+      ],
+    },
+    {
+      char: "多", meaning: "Many / Much", on: "タ", kun: "おお", strokes: 6, category: ["numbers"],
+      examples: [
+        { word: "多数", reading: "たすう", meaning: "large number" },
+        { word: "多額", reading: "たがく", meaning: "large amount" },
+      ],
+    },
+    {
+      char: "少", meaning: "Few / Little", on: "ショウ", kun: "すく・すこ", strokes: 4, category: ["numbers"],
+      examples: [
+        { word: "少数", reading: "しょうすう", meaning: "minority" },
+        { word: "少し", reading: "すこし", meaning: "a little" },
+      ],
+    },
+    {
+      char: "新", meaning: "New", on: "シン", kun: "あたら・あら", strokes: 13, category: ["nature"],
+      examples: [
+        { word: "新幹線", reading: "しんかんせん", meaning: "bullet train" },
+        { word: "新年", reading: "しんねん", meaning: "New Year" },
+      ],
+    },
+    {
+      char: "古", meaning: "Old", on: "コ", kun: "ふる", strokes: 5, category: ["nature"],
+      examples: [
+        { word: "中古", reading: "ちゅうこ", meaning: "second-hand" },
+        { word: "古代", reading: "こだい", meaning: "ancient times" },
+      ],
+    },
+    {
+      char: "白", meaning: "White", on: "ハク", kun: "しろ", strokes: 5, category: ["nature"],
+      examples: [
+        { word: "面白", reading: "おもしろい", meaning: "interesting" },
         { word: "告白", reading: "こくはく", meaning: "confession" },
-        { word: "白色", reading: "はくしょく", meaning: "white color" },
-        {
-          word: "白状",
-          reading: "はくじょう",
-          meaning: "confession / admission",
-        },
       ],
     },
     {
-      char: "空",
-      meaning: "Sky / Empty",
-      on: "クウ",
-      kun: "そら・あ・から",
-      strokes: 8,
+      char: "赤", meaning: "Red", on: "セキ・シャク", kun: "あか", strokes: 7, category: ["nature"],
       examples: [
-        { word: "空", reading: "そら", meaning: "sky" },
-        { word: "空気", reading: "くうき", meaning: "air" },
-        { word: "空港", reading: "くうこう", meaning: "airport" },
-        { word: "空く", reading: "あく", meaning: "to be empty / vacant" },
+        { word: "赤ん坊", reading: "あかんぼう", meaning: "baby" },
+        { word: "赤道", reading: "せきどう", meaning: "equator" },
       ],
     },
     {
-      char: "町",
-      meaning: "Town",
-      on: "チョウ",
-      kun: "まち",
-      strokes: 7,
+      char: "青", meaning: "Blue", on: "セイ・ショウ", kun: "あお", strokes: 8, category: ["nature"],
       examples: [
-        { word: "町", reading: "まち", meaning: "town" },
-        { word: "町長", reading: "ちょうちょう", meaning: "town mayor" },
-        { word: "下町", reading: "したまち", meaning: "downtown / low town" },
-        {
-          word: "町内会",
-          reading: "ちょうないかい",
-          meaning: "neighborhood association",
-        },
+        { word: "青年", reading: "せいねん", meaning: "youth" },
+        { word: "青空", reading: "あおぞら", meaning: "blue sky" },
       ],
     },
     {
-      char: "村",
-      meaning: "Village",
-      on: "ソン",
-      kun: "むら",
-      strokes: 7,
+      char: "今", meaning: "Now", on: "コン・キン", kun: "いま", strokes: 4, category: ["nature"],
       examples: [
-        { word: "村", reading: "むら", meaning: "village" },
-        { word: "村長", reading: "そんちょう", meaning: "village mayor" },
-        { word: "農村", reading: "のうそん", meaning: "farming village" },
-        { word: "山村", reading: "さんそん", meaning: "mountain village" },
+        { word: "今日", reading: "きょう", meaning: "today" },
+        { word: "今年", reading: "ことし", meaning: "this year" },
       ],
     },
     {
-      char: "雨",
-      meaning: "Rain",
-      on: "ウ",
-      kun: "あめ・あま",
-      strokes: 8,
+      char: "週", meaning: "Week", on: "シュウ", kun: "—", strokes: 11, category: ["nature"],
       examples: [
-        { word: "雨", reading: "あめ", meaning: "rain" },
-        { word: "大雨", reading: "おおあめ", meaning: "heavy rain" },
-        { word: "雨天", reading: "うてん", meaning: "rainy weather" },
-        { word: "梅雨", reading: "つゆ", meaning: "rainy season" },
+        { word: "今週", reading: "こんしゅう", meaning: "this week" },
+        { word: "週末", reading: "しゅうまつ", meaning: "weekend" },
+      ],
+    },
+    {
+      char: "毎", meaning: "Every", on: "マイ", kun: "—", strokes: 6, category: ["nature"],
+      examples: [
+        { word: "毎日", reading: "まいにち", meaning: "everyday" },
+        { word: "毎朝", reading: "まいあさ", meaning: "every morning" },
+      ],
+    },
+    {
+      char: "時", meaning: "Time / Hour", on: "ジ", kun: "とき", strokes: 10, category: ["nature"],
+      examples: [
+        { word: "時間", reading: "じかん", meaning: "time" },
+        { word: "時計", reading: "とけい", meaning: "clock" },
+      ],
+    },
+    {
+      char: "分", meaning: "Minute / Part", on: "ブン・フン・ブ", kun: "わ", strokes: 4, category: ["numbers", "nature"],
+      examples: [
+        { word: "自分", reading: "じぶん", meaning: "oneself" },
+        { word: "半分", reading: "はんぶん", meaning: "half" },
+      ],
+    },
+    {
+      char: "間", meaning: "Interval / Between", on: "カン・ケン", kun: "あいだ・ま", strokes: 12, category: ["nature", "directions"],
+      examples: [
+        { word: "人間", reading: "にんげん", meaning: "human being" },
+        { word: "仲間", reading: "なかま", meaning: "companion" },
+      ],
+    },
+    {
+      char: "国", meaning: "Country", on: "コク", kun: "くに", strokes: 8, category: ["directions"],
+      examples: [
+        { word: "外国", reading: "がいこく", meaning: "foreign country" },
+        { word: "国家", reading: "こっか", meaning: "nation" },
+      ],
+    },
+    {
+      char: "語", meaning: "Language / Word", on: "ゴ", kun: "かた", strokes: 14, category: ["people"],
+      examples: [
+        { word: "日本語", reading: "にほんご", meaning: "Japanese language" },
+        { word: "単語", reading: "たんご", meaning: "vocabulary" },
       ],
     },
   ],
-  N3: [
+
+  N4: [
     {
-      char: "愛",
-      meaning: "Love",
-      on: "アイ",
-      kun: "—",
-      strokes: 13,
+      char: "働", meaning: "Work", on: "ドウ", kun: "はたら", strokes: 13, category: ["people"],
       examples: [
-        { word: "愛", reading: "あい", meaning: "love" },
-        { word: "愛する", reading: "あいする", meaning: "to love" },
-        { word: "愛情", reading: "あいじょう", meaning: "affection" },
-        { word: "愛読", reading: "あいどく", meaning: "reading pleasure" },
+        { word: "労働", reading: "ろうどう", meaning: "labor" },
+        { word: "共働き", reading: "ともばたらき", meaning: "dual income" },
       ],
     },
     {
-      char: "暗",
-      meaning: "Dark",
-      on: "アン",
-      kun: "くら",
-      strokes: 13,
+      char: "勉", meaning: "Exert / Study", on: "ベン", kun: "つと", strokes: 10, category: ["people"],
       examples: [
-        { word: "暗い", reading: "くらい", meaning: "dark" },
-        { word: "暗記", reading: "あんき", meaning: "memorization" },
-        { word: "真っ暗", reading: "まっくら", meaning: "pitch black" },
-        { word: "暗号", reading: "あんごう", meaning: "code / cipher" },
+        { word: "勉強", reading: "べんきょう", meaning: "study" },
+        { word: "勤勉", reading: "きんべん", meaning: "diligence" },
       ],
     },
     {
-      char: "意",
-      meaning: "Mind / Meaning",
-      on: "イ",
-      kun: "—",
-      strokes: 13,
+      char: "強", meaning: "Strong", on: "キョウ・ゴウ", kun: "つよ・しい", strokes: 11, category: ["nature"],
+      examples: [
+        { word: "強力", reading: "きょうりょく", meaning: "powerful" },
+        { word: "強調", reading: "きょうちょう", meaning: "emphasis" },
+      ],
+    },
+    {
+      char: "旅", meaning: "Travel", on: "リョ", kun: "たび", strokes: 10, category: ["directions"],
+      examples: [
+        { word: "旅行", reading: "りょこう", meaning: "travel" },
+        { word: "旅館", reading: "りょかん", meaning: "Japanese inn" },
+      ],
+    },
+    {
+      char: "族", meaning: "Family / Tribe", on: "ゾク", kun: "—", strokes: 11, category: ["people"],
+      examples: [
+        { word: "家族", reading: "かぞく", meaning: "family" },
+        { word: "親族", reading: "しんぞく", meaning: "relatives" },
+      ],
+    },
+    {
+      char: "試", meaning: "Test / Try", on: "シ", kun: "こころ・ため", strokes: 13, category: ["people"],
+      examples: [
+        { word: "試験", reading: "しけん", meaning: "examination" },
+        { word: "試合", reading: "しあい", meaning: "match" },
+      ],
+    },
+    {
+      char: "験", meaning: "Verify / Test", on: "ケン・ゲン", kun: "ため", strokes: 18, category: ["people"],
+      examples: [
+        { word: "経験", reading: "けいけん", meaning: "experience" },
+        { word: "実験", reading: "じっけん", meaning: "experiment" },
+      ],
+    },
+    {
+      char: "質", meaning: "Quality / Question", on: "シツ・シチ", kun: "たち", strokes: 15, category: ["people"],
+      examples: [
+        { word: "質問", reading: "しつもん", meaning: "question" },
+        { word: "品質", reading: "ひんしつ", meaning: "quality" },
+      ],
+    },
+    {
+      char: "問", meaning: "Question / Problem", on: "モン", kun: "と", strokes: 11, category: ["people"],
+      examples: [
+        { word: "問題", reading: "もんだい", meaning: "problem" },
+        { word: "学問", reading: "がくもん", meaning: "learning" },
+      ],
+    },
+    {
+      char: "題", meaning: "Topic / Title", on: "ダイ", kun: "—", strokes: 18, category: ["people"],
+      examples: [
+        { word: "宿題", reading: "しゅくだい", meaning: "homework" },
+        { word: "話題", reading: "わだい", meaning: "topic" },
+      ],
+    },
+    {
+      char: "答", meaning: "Answer / Reply", on: "トウ", kun: "こた", strokes: 12, category: ["people"],
+      examples: [
+        { word: "回答", reading: "かいとう", meaning: "reply" },
+        { word: "解答", reading: "かいとう", meaning: "solution" },
+      ],
+    },
+    {
+      char: "意", meaning: "Mind / Intent", on: "イ", kun: "—", strokes: 13, category: ["people"],
       examples: [
         { word: "意味", reading: "いみ", meaning: "meaning" },
-        { word: "意見", reading: "いけん", meaning: "opinion" },
-        { word: "注意", reading: "ちゅうい", meaning: "caution / attention" },
-        { word: "意識", reading: "いしき", meaning: "consciousness" },
+        { word: "注意", reading: "ちゅうい", meaning: "caution" },
       ],
     },
     {
-      char: "悲",
-      meaning: "Sad",
-      on: "ヒ",
-      kun: "かな",
-      strokes: 12,
+      char: "味", meaning: "Taste / Flavour", on: "ミ", kun: "あじ", strokes: 8, category: ["people"],
       examples: [
-        { word: "悲しい", reading: "かなしい", meaning: "sad" },
-        { word: "悲鳴", reading: "ひめい", meaning: "shriek / scream" },
-        { word: "悲劇", reading: "ひげき", meaning: "tragedy" },
-        { word: "悲痛", reading: "ひつう", meaning: "grief / sadness" },
+        { word: "興味", reading: "きょうみ", meaning: "interest" },
+        { word: "趣味", reading: "しゅみ", meaning: "hobby" },
       ],
     },
     {
-      char: "苦",
-      meaning: "Suffer / Bitter",
-      on: "ク",
-      kun: "くる・にが",
-      strokes: 8,
+      char: "始", meaning: "Begin / Start", on: "シ", kun: "はじ", strokes: 8, category: ["nature"],
       examples: [
-        { word: "苦しい", reading: "くるしい", meaning: "painful / difficult" },
-        { word: "苦い", reading: "にがい", meaning: "bitter" },
-        { word: "苦労", reading: "くろう", meaning: "hardships" },
-        { word: "苦手", reading: "にがて", meaning: "poor at" },
+        { word: "開始", reading: "かいし", meaning: "start" },
+        { word: "始発", reading: "しはつ", meaning: "first train" },
       ],
     },
     {
-      char: "寒",
-      meaning: "Cold",
-      on: "カン",
-      kun: "さむ",
-      strokes: 12,
+      char: "終", meaning: "End / Finish", on: "シュウ", kun: "お", strokes: 11, category: ["nature"],
       examples: [
-        { word: "寒い", reading: "さむい", meaning: "cold (weather)" },
-        { word: "寒波", reading: "かんぱ", meaning: "cold wave" },
-        {
-          word: "防寒",
-          reading: "ぼうかん",
-          meaning: "protection against cold",
-        },
-        { word: "寒中", reading: "かんちゅう", meaning: "midwinter" },
+        { word: "終了", reading: "しゅうりょう", meaning: "end" },
+        { word: "終点", reading: "しゅうてん", meaning: "terminus" },
       ],
     },
     {
-      char: "暑",
-      meaning: "Hot (weather)",
-      on: "ショ",
-      kun: "あつ",
-      strokes: 12,
+      char: "病", meaning: "Illness / Sick", on: "ビョウ・ヘイ", kun: "やまい", strokes: 10, category: ["people"],
       examples: [
-        { word: "暑い", reading: "あつい", meaning: "hot (weather)" },
-        { word: "残暑", reading: "ざんしょ", meaning: "late summer heat" },
-        { word: "猛暑", reading: "もうしょ", meaning: "extreme heatwave" },
-        { word: "暑中", reading: "しょちゅう", meaning: "midsummer" },
+        { word: "病院", reading: "びょういん", meaning: "hospital" },
+        { word: "急病", reading: "きゅうびょう", meaning: "sudden illness" },
       ],
     },
     {
-      char: "重",
-      meaning: "Heavy",
-      on: "ジュウ・チョウ",
-      kun: "おも・かさ",
-      strokes: 9,
+      char: "院", meaning: "Institution", on: "イン", kun: "—", strokes: 10, category: ["directions"],
       examples: [
-        { word: "重い", reading: "おもい", meaning: "heavy" },
+        { word: "入院", reading: "にゅういん", meaning: "hospitalization" },
+        { word: "大学院", reading: "だいがくいん", meaning: "graduate school" },
+      ],
+    },
+    {
+      char: "薬", meaning: "Medicine", on: "ヤク", kun: "くすり", strokes: 16, category: ["people"],
+      examples: [
+        { word: "薬局", reading: "やっきょく", meaning: "pharmacy" },
+        { word: "目薬", reading: "めぐすり", meaning: "eye drops" },
+      ],
+    },
+    {
+      char: "海", meaning: "Sea / Ocean", on: "カイ", kun: "うみ", strokes: 9, category: ["nature"],
+      examples: [
+        { word: "海外", reading: "かいがい", meaning: "overseas" },
+        { word: "海水", reading: "かいすい", meaning: "seawater" },
+      ],
+    },
+    {
+      char: "犬", meaning: "Dog", on: "ケン", kun: "いぬ", strokes: 4, category: ["nature"],
+      examples: [
+        { word: "子犬", reading: "こいぬ", meaning: "puppy" },
+        { word: "愛犬", reading: "あいけん", meaning: "pet dog" },
+      ],
+    },
+    {
+      char: "猫", meaning: "Cat", on: "ビョウ", kun: "ねこ", strokes: 11, category: ["nature"],
+      examples: [
+        { word: "野良猫", reading: "のらねこ", meaning: "stray cat" },
+        { word: "愛猫", reading: "あいびょう", meaning: "pet cat" },
+      ],
+    },
+    {
+      char: "鳥", meaning: "Bird", on: "チョウ", kun: "とり", strokes: 11, category: ["nature"],
+      examples: [
+        { word: "小鳥", reading: "ことり", meaning: "small bird" },
+        { word: "野鳥", reading: "やちょう", meaning: "wild bird" },
+      ],
+    },
+    {
+      char: "魚", meaning: "Fish", on: "ギョ", kun: "さかな・うお", strokes: 11, category: ["nature"],
+      examples: [
+        { word: "金魚", reading: "きんぎょ", meaning: "goldfish" },
+        { word: "人魚", reading: "にんぎょ", meaning: "mermaid" },
+      ],
+    },
+    {
+      char: "牛", meaning: "Cow / Cattle", on: "ギュウ", kun: "うし", strokes: 4, category: ["nature"],
+      examples: [
+        { word: "牛肉", reading: "ぎゅうにく", meaning: "beef" },
+        { word: "牛乳", reading: "ぎゅうにゅう", meaning: "milk" },
+      ],
+    },
+    {
+      char: "広", meaning: "Spacious / Wide", on: "コウ", kun: "ひろ", strokes: 5, category: ["directions"],
+      examples: [
+        { word: "広場", reading: "ひろば", meaning: "plaza" },
+        { word: "広告", reading: "こうこく", meaning: "advertisement" },
+      ],
+    },
+    {
+      char: "重", meaning: "Heavy / Overlap", on: "ジュウ・チョウ", kun: "おも・かさ", strokes: 9, category: ["directions"],
+      examples: [
+        { word: "体重", reading: "たいじゅう", meaning: "weight" },
         { word: "重要", reading: "じゅうよう", meaning: "important" },
-        { word: "体重", reading: "たいじゅう", meaning: "body weight" },
-        { word: "重ねる", reading: "かさねる", meaning: "to pile up" },
       ],
     },
     {
-      char: "軽",
-      meaning: "Light",
-      on: "ケイ",
-      kun: "かる・かろ",
-      strokes: 12,
+      char: "軽", meaning: "Lightweight", on: "ケイ", kun: "かる", strokes: 12, category: ["directions"],
       examples: [
-        { word: "軽い", reading: "かるい", meaning: "light" },
-        { word: "気軽に", reading: "きがるに", meaning: "freely / easily" },
-        { word: "軽食", reading: "けいしょく", meaning: "light meal" },
-        { word: "軽蔑", reading: "けいべつ", meaning: "contempt / scorn" },
+        { word: "軽食", reading: "けいしょく", meaning: "snack" },
+        { word: "軽自動車", reading: "けいじどうしゃ", meaning: "light car" },
       ],
     },
     {
-      char: "早",
-      meaning: "Early / Fast",
-      on: "ソウ・サッ",
-      kun: "はや",
-      strokes: 6,
+      char: "近", meaning: "Near / Close", on: "キン", kun: "ちか", strokes: 7, category: ["directions"],
       examples: [
-        { word: "早い", reading: "はやい", meaning: "early / fast" },
-        { word: "早口", reading: "はやくち", meaning: "rapid talking" },
-        { word: "早速", reading: "さっそく", meaning: "immediately" },
-        { word: "早朝", reading: "そうちょう", meaning: "early morning" },
+        { word: "近所", reading: "きんじょ", meaning: "neighborhood" },
+        { word: "最近", reading: "さいきん", meaning: "recently" },
       ],
     },
     {
-      char: "遅",
-      meaning: "Slow / Late",
-      on: "チ",
-      kun: "おく・おそ",
-      strokes: 12,
+      char: "遠", meaning: "Far / Distant", on: "エン・オン", kun: "とお", strokes: 13, category: ["directions"],
       examples: [
-        { word: "遅い", reading: "おそい", meaning: "slow / late" },
-        { word: "遅れる", reading: "おくれる", meaning: "to be late" },
-        { word: "遅刻", reading: "ちこく", meaning: "lateness" },
-        { word: "遅延", reading: "ちえん", meaning: "delay" },
-      ],
-    },
-    {
-      char: "新",
-      meaning: "New",
-      on: "シン",
-      kun: "あたらし",
-      strokes: 13,
-      examples: [
-        { word: "新しい", reading: "あたらしい", meaning: "new" },
-        { word: "新聞", reading: "しんぶん", meaning: "newspaper" },
-        { word: "新年", reading: "しんねん", meaning: "New Year" },
-        { word: "新幹線", reading: "しんかんせん", meaning: "bullet train" },
-      ],
-    },
-    {
-      char: "古",
-      meaning: "Old",
-      on: "コ",
-      kun: "ふる",
-      strokes: 5,
-      examples: [
-        { word: "古い", reading: "ふるい", meaning: "old" },
-        { word: "中古", reading: "ちゅうこ", meaning: "secondhand" },
-        { word: "古代", reading: "こだい", meaning: "ancient times" },
-        { word: "古本", reading: "ふるほん", meaning: "used book" },
-      ],
-    },
-    {
-      char: "親",
-      meaning: "Parent / Intimate",
-      on: "シン",
-      kun: "おや・した",
-      strokes: 16,
-      examples: [
-        { word: "親", reading: "おや", meaning: "parent" },
-        { word: "親しい", reading: "したしい", meaning: "intimate / close" },
-        { word: "親切", reading: "しんせつ", meaning: "kind" },
-        { word: "両親", reading: "りょうしん", meaning: "parents" },
-      ],
-    },
-    {
-      char: "友",
-      meaning: "Friend",
-      on: "ユウ",
-      kun: "とも",
-      strokes: 4,
-      examples: [
-        { word: "友達", reading: "ともだち", meaning: "friend" },
-        { word: "友人", reading: "ゆうじん", meaning: "friend" },
-        { word: "友情", reading: "ゆうじょう", meaning: "friendship" },
-        { word: "親友", reading: "しんゆう", meaning: "best friend" },
+        { word: "遠足", reading: "えんそく", meaning: "excursion" },
+        { word: "遠慮", reading: "えんりょ", meaning: "restraint/reserve" },
       ],
     },
   ],
+
+  N3: [
+    {
+      char: "警", meaning: "Police / Guard", on: "ケイ", kun: "いまし", strokes: 19, category: ["people"],
+      examples: [
+        { word: "警察", reading: "けいさつ", meaning: "police" },
+        { word: "警告", reading: "けいこく", meaning: "warning" },
+      ],
+    },
+    {
+      char: "察", meaning: "Inspect / Observe", on: "サツ", kun: "—", strokes: 14, category: ["people"],
+      examples: [
+        { word: "観察", reading: "かんさつ", meaning: "observation" },
+        { word: "考察", reading: "こうさつ", meaning: "consideration" },
+      ],
+    },
+    {
+      char: "難", meaning: "Difficult / Hard", on: "ナン", kun: "むずか・がた", strokes: 18, category: ["directions"],
+      examples: [
+        { word: "困難", reading: "こんなん", meaning: "difficulty" },
+        { word: "難問", reading: "なんもん", meaning: "hard question" },
+      ],
+    },
+    {
+      char: "易", meaning: "Easy / Simple", on: "エキ・イ", kun: "やさ", strokes: 8, category: ["directions"],
+      examples: [
+        { word: "平易", reading: "へいい", meaning: "easy/plain" },
+        { word: "貿易", reading: "ぼうえき", meaning: "foreign trade" },
+      ],
+    },
+    {
+      char: "勝", meaning: "Win / Victory", on: "ショウ", kun: "か・まさ", strokes: 12, category: ["people"],
+      examples: [
+        { word: "勝利", reading: "しょうり", meaning: "victory" },
+        { word: "決勝", reading: "けっしょう", meaning: "final match" },
+      ],
+    },
+    {
+      char: "負", meaning: "Lose / Defeat", on: "フ", kun: "ま・お", strokes: 9, category: ["people"],
+      examples: [
+        { word: "勝負", reading: "しょうぶ", meaning: "match/bout" },
+        { word: "負傷", reading: "ふしょう", meaning: "injury" },
+      ],
+    },
+    {
+      char: "伝", meaning: "Transmit / Convey", on: "デン", kun: "つた", strokes: 6, category: ["people"],
+      examples: [
+        { word: "伝統", reading: "でんとう", meaning: "tradition" },
+        { word: "手伝い", reading: "てつだい", meaning: "help/assistance" },
+      ],
+    },
+    {
+      char: "記", meaning: "Record / Write down", on: "キ", kun: "しる", strokes: 10, category: ["people"],
+      examples: [
+        { word: "記事", reading: "きじ", meaning: "article" },
+        { word: "日記", reading: "にっき", meaning: "diary" },
+      ],
+    },
+    {
+      char: "選", meaning: "Select / Choose", on: "セン", kun: "えら", strokes: 15, category: ["people"],
+      examples: [
+        { word: "選手", reading: "せんしゅ", meaning: "athlete/player" },
+        { word: "選挙", reading: "せんきょ", meaning: "election" },
+      ],
+    },
+  ],
+
   N2: [
     {
-      char: "確",
-      meaning: "Certain / Firm",
-      on: "カク",
-      kun: "たし",
-      strokes: 15,
-      examples: [
-        { word: "確実", reading: "かくじつ", meaning: "certainty" },
-        { word: "確かめる", reading: "たしかめる", meaning: "to verify" },
-        { word: "確信", reading: "かくしん", meaning: "conviction" },
-        { word: "明確", reading: "めいかく", meaning: "clear / definite" },
-      ],
-    },
-    {
-      char: "率",
-      meaning: "Rate / Lead",
-      on: "ソツ・リツ",
-      kun: "ひき",
-      strokes: 11,
-      examples: [
-        { word: "倍率", reading: "ばいりつ", meaning: "magnification / ratio" },
-        { word: "比率", reading: "ひりつ", meaning: "ratio" },
-        { word: "率直", reading: "そっちょく", meaning: "frankness" },
-        { word: "確率", reading: "かくりつ", meaning: "probability" },
-      ],
-    },
-    {
-      char: "精",
-      meaning: "Refined / Spirit",
-      on: "セイ・ショウ",
-      kun: "—",
-      strokes: 14,
-      examples: [
-        { word: "精神", reading: "せいしん", meaning: "spirit / mind" },
-        { word: "精力", reading: "せいりょく", meaning: "energy / vigor" },
-        { word: "精確", reading: "せいかく", meaning: "accurate" },
-        { word: "精密", reading: "せいみつ", meaning: "precise" },
-      ],
-    },
-    {
-      char: "識",
-      meaning: "Discriminate / Write",
-      on: "シキ",
-      kun: "—",
-      strokes: 19,
-      examples: [
-        { word: "知識", reading: "ちしき", meaning: "knowledge" },
-        { word: "意識", reading: "いしき", meaning: "consciousness" },
-        { word: "常識", reading: "じょうしき", meaning: "common sense" },
-        { word: "識別", reading: "しきべつ", meaning: "discrimination" },
-      ],
-    },
-    {
-      char: "際",
-      meaning: "Occasion / Edge",
-      on: "サイ",
-      kun: "きわ",
-      strokes: 14,
-      examples: [
-        { word: "国際", reading: "こくさい", meaning: "international" },
-        { word: "交際", reading: "こうさい", meaning: "association" },
-        { word: "際立つ", reading: "きわだつ", meaning: "to stand out" },
-        { word: "今際", reading: "いまわ", meaning: "dying hour" },
-      ],
-    },
-    {
-      char: "防",
-      meaning: "Prevent",
-      on: "ボウ",
-      kun: "ふせ",
-      strokes: 7,
-      examples: [
-        { word: "防止", reading: "ぼうし", meaning: "prevention" },
-        { word: "防ぐ", reading: "ふせぐ", meaning: "to defend / prevent" },
-        { word: "予防", reading: "よぼう", meaning: "precaution" },
-        { word: "防犯", reading: "ぼうはん", meaning: "crime prevention" },
-      ],
-    },
-    {
-      char: "限",
-      meaning: "Limit",
-      on: "ゲン",
-      kun: "かぎ",
-      strokes: 9,
-      examples: [
-        { word: "限界", reading: "げんかい", meaning: "limit" },
-        { word: "限り", reading: "かぎり", meaning: "limit" },
-        { word: "期限", reading: "きげん", meaning: "time limit" },
-        { word: "限定", reading: "げんてい", meaning: "limitation" },
-      ],
-    },
-    {
-      char: "制",
-      meaning: "System / Control",
-      on: "セイ",
-      kun: "—",
-      strokes: 8,
-      examples: [
-        { word: "制度", reading: "せいど", meaning: "system" },
-        { word: "制限", reading: "せいげん", meaning: "restriction" },
-        { word: "制御", reading: "せいぎょ", meaning: "control" },
-        { word: "強制", reading: "きょうせい", meaning: "compulsion" },
-      ],
-    },
-    {
-      char: "政",
-      meaning: "Politics",
-      on: "セイ・ショウ",
-      kun: "まつりごと",
-      strokes: 9,
-      examples: [
-        { word: "政治", reading: "せいじ", meaning: "politics" },
-        { word: "政府", reading: "せいふ", meaning: "government" },
-        { word: "政策", reading: "せいさく", meaning: "policy" },
-        { word: "政党", reading: "せいとう", meaning: "political party" },
-      ],
-    },
-    {
-      char: "治",
-      meaning: "Cure / Govern",
-      on: "ジ・チ",
-      kun: "なお・おさ",
-      strokes: 8,
+      char: "治", meaning: "Cure / Govern", on: "ジ・チ", kun: "なお・おさ", strokes: 8, category: ["people"],
       examples: [
         { word: "治療", reading: "ちりょう", meaning: "medical treatment" },
         { word: "治る", reading: "なおる", meaning: "to get well" },
         { word: "自治", reading: "じち", meaning: "autonomy" },
-        { word: "治安", reading: "ちあん", meaning: "public order" },
       ],
     },
   ],
+
   N1: [
     {
-      char: "憂",
-      meaning: "Melancholy",
-      on: "ユウ",
-      kun: "うれ",
-      strokes: 15,
-      examples: [
-        { word: "憂う", reading: "うれう", meaning: "to grieve" },
-        { word: "憂鬱", reading: "ゆううつ", meaning: "melancholy" },
-        { word: "憂慮", reading: "ゆうりょ", meaning: "anxiety" },
-        { word: "一憂", reading: "いちゆう", meaning: "single anxiety" },
-      ],
-    },
-    {
-      char: "覇",
-      meaning: "Hegemony",
-      on: "ハ",
-      kun: "—",
-      strokes: 19,
-      examples: [
-        { word: "覇権", reading: "はけん", meaning: "hegemony" },
-        { word: "覇者", reading: "はしゃ", meaning: "champion" },
-        { word: "制覇", reading: "せいは", meaning: "conquest" },
-        { word: "覇気", reading: "はき", meaning: "ambition" },
-      ],
-    },
-    {
-      char: "犠",
-      meaning: "Sacrifice",
-      on: "ギ",
-      kun: "—",
-      strokes: 17,
-      examples: [
-        { word: "犠牲", reading: "ぎせい", meaning: "sacrifice" },
-        { word: "犠牲者", reading: "ぎせいしゃ", meaning: "victim" },
-      ],
-    },
-    {
-      char: "牲",
-      meaning: "Victim / Offering",
-      on: "セイ",
-      kun: "—",
-      strokes: 9,
-      examples: [
-        { word: "犠牲", reading: "ぎせい", meaning: "sacrifice" },
-        { word: "犠牲者", reading: "ぎせいしゃ", meaning: "victim" },
-      ],
-    },
-    {
-      char: "繊",
-      meaning: "Slender",
-      on: "セン",
-      kun: "—",
-      strokes: 17,
-      examples: [
-        { word: "繊維", reading: "せんい", meaning: "fiber" },
-        { word: "繊細", reading: "せんさい", meaning: "delicate" },
-        { word: "細繊", reading: "さいせん", meaning: "slender" },
-      ],
-    },
-    {
-      char: "驚",
-      meaning: "Wonder / Surprise",
-      on: "キョウ",
-      kun: "おどろ",
-      strokes: 22,
-      examples: [
-        { word: "驚く", reading: "おどろく", meaning: "to be surprised" },
-        { word: "驚き", reading: "おどろき", meaning: "surprise" },
-        { word: "驚異", reading: "きょうい", meaning: "wonder" },
-        { word: "驚嘆", reading: "きょうたん", meaning: "wonder / admiration" },
-      ],
-    },
-    {
-      char: "躍",
-      meaning: "Leap",
-      on: "ヤク",
-      kun: "おど",
-      strokes: 21,
-      examples: [
-        { word: "躍進", reading: "やくしん", meaning: "rapid progress" },
-        { word: "活躍", reading: "かつやく", meaning: "activity / action" },
-        { word: "跳躍", reading: "ちょうやく", meaning: "jump" },
-        { word: "躍動", reading: "やくどう", meaning: "lively motion" },
-      ],
-    },
-    {
-      char: "露",
-      meaning: "Dew / Expose",
-      on: "ロ・ロウ",
-      kun: "つゆ",
-      strokes: 21,
-      examples: [
-        { word: "露出", reading: "ろしゅつ", meaning: "exposure" },
-        { word: "暴露", reading: "ばくろ", meaning: "disclosure" },
-        { word: "結露", reading: "けつろ", meaning: "condensation" },
-        { word: "露骨", reading: "ろこつ", meaning: "frank / open" },
-      ],
-    },
-    {
-      char: "顧",
-      meaning: "Look Back",
-      on: "コ",
-      kun: "かえり",
-      strokes: 21,
-      examples: [
-        { word: "顧客", reading: "こきゃく", meaning: "customer" },
-        { word: "顧みる", reading: "かえりみる", meaning: "to look back" },
-        { word: "顧問", reading: "こもん", meaning: "advisor" },
-        { word: "顧慮", reading: "こりょ", meaning: "concern / care" },
-      ],
-    },
-    {
-      char: "魔",
-      meaning: "Demon / Magic",
-      on: "マ",
-      kun: "—",
-      strokes: 21,
+      char: "魔", meaning: "Demon / Magic", on: "マ", kun: "—", strokes: 21, category: ["people"],
       examples: [
         { word: "魔法", reading: "まほう", meaning: "magic" },
         { word: "悪魔", reading: "あくま", meaning: "devil" },
-        { word: "魔術", reading: "まじゅつ", meaning: "sorcery" },
-        { word: "魔女", reading: "まじょ", meaning: "witch" },
       ],
     },
   ],
