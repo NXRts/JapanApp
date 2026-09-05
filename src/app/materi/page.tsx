@@ -345,7 +345,7 @@ const GridSection = styled.div`
   }
 `;
 
-const Card = styled.div`
+const Card = styled.div<{ $colorRgb: string }>`
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -370,11 +370,11 @@ const Card = styled.div`
 
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 16px 32px -10px rgba(0, 0, 0, 0.25);
-    border-color: rgba(var(--primary-rgb, 79, 70, 229), 0.4);
+    box-shadow: 0 16px 32px -10px rgba(0, 0, 0, 0.25), 0 0 16px ${({ $colorRgb }) => `rgba(${$colorRgb}, 0.15)`};
+    border-color: ${({ $colorRgb }) => `rgba(${$colorRgb}, 0.45)`};
 
     &::before {
-      background: var(--primary);
+      background: ${({ $colorRgb }) => `rgb(${$colorRgb})`};
     }
   }
 `;
@@ -833,7 +833,7 @@ export default function MateriHubPage() {
             {filteredMaterials.map((item) => {
               const isBookmarked = bookmarks.includes(item.id);
               return (
-                <Card key={item.id}>
+                <Card key={item.id} $colorRgb={item.colorRgb}>
                   <div>
                     <CardHeaderRow>
                       <IconWrapper $colorRgb={item.colorRgb}>
