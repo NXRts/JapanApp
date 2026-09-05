@@ -43,7 +43,7 @@ const Container = styled.div`
   }
 
   @media (max-width: 640px) {
-    padding: 0.75rem 0.5rem 96px 0.5rem;
+    padding: 0.75rem 0.75rem 96px 0.75rem;
   }
 `;
 
@@ -58,6 +58,10 @@ const HeroHeader = styled.div`
   text-align: center;
   margin-bottom: 2rem;
   position: relative;
+
+  @media (max-width: 640px) {
+    margin-bottom: 1.1rem;
+  }
 `;
 
 const HeroBadge = styled.div`
@@ -73,6 +77,12 @@ const HeroBadge = styled.div`
   font-weight: 700;
   margin-bottom: 1rem;
   box-shadow: 0 4px 14px rgba(var(--primary-rgb, 79, 70, 229), 0.15);
+
+  @media (max-width: 640px) {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -98,12 +108,23 @@ const Title = styled.h1`
   }
 
   @media (max-width: 768px) {
-    font-size: 1.85rem;
+    font-size: 1.75rem;
     .kanji-sub {
       display: block;
       margin-left: 0;
       margin-top: 4px;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1.45rem;
+    margin-bottom: 0.4rem;
+    .kanji-sub {
+      display: inline-block;
+      margin-left: 6px;
+      margin-top: 0;
+      font-size: 1.05rem;
     }
   }
 `;
@@ -117,6 +138,11 @@ const Subtitle = styled.p`
 
   @media (max-width: 768px) {
     font-size: 0.92rem;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 0.82rem;
+    line-height: 1.42;
   }
 `;
 
@@ -144,12 +170,23 @@ const ProgressBanner = styled.div`
     padding: 1.1rem;
     gap: 1rem;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.85rem 1rem;
+    border-radius: 16px;
+    gap: 0.75rem;
+    margin-bottom: 1.1rem;
+  }
 `;
 
 const ProgressInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
+
+  @media (max-width: 640px) {
+    gap: 10px;
+  }
 `;
 
 const ProgressIconBadge = styled.div`
@@ -164,6 +201,13 @@ const ProgressIconBadge = styled.div`
   font-size: 1.5rem;
   flex-shrink: 0;
   animation: ${float} 3s ease-in-out infinite;
+
+  @media (max-width: 640px) {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+  }
 `;
 
 const ProgressTextGroup = styled.div`
@@ -176,6 +220,16 @@ const ProgressTextGroup = styled.div`
   .desc {
     font-size: 0.85rem;
     color: var(--text-secondary);
+  }
+
+  @media (max-width: 640px) {
+    .head {
+      font-size: 0.9rem;
+    }
+    .desc {
+      font-size: 0.76rem;
+      line-height: 1.35;
+    }
   }
 `;
 
@@ -203,6 +257,12 @@ const ResumeBtn = styled.button`
     width: 100%;
     justify-content: center;
   }
+
+  @media (max-width: 640px) {
+    padding: 0.55rem 0.9rem;
+    font-size: 0.8rem;
+    border-radius: 10px;
+  }
 `;
 
 // ─── SEARCH & FILTER CONTROLS ────────────────────────────────────────────────
@@ -211,6 +271,11 @@ const ControlsSection = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-bottom: 2rem;
+
+  @media (max-width: 640px) {
+    gap: 0.65rem;
+    margin-bottom: 1.1rem;
+  }
 `;
 
 const SearchRow = styled.div`
@@ -221,6 +286,7 @@ const SearchRow = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
   }
 `;
 
@@ -237,6 +303,14 @@ const SearchInputWrap = styled.div`
     width: 20px;
     height: 20px;
     pointer-events: none;
+  }
+
+  @media (max-width: 640px) {
+    svg {
+      left: 12px;
+      width: 16px;
+      height: 16px;
+    }
   }
 `;
 
@@ -260,6 +334,13 @@ const SearchInput = styled.input`
   &::placeholder {
     color: var(--text-secondary);
     opacity: 0.7;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.6rem 0.75rem 0.6rem 2.25rem;
+    font-size: 0.82rem;
+    border-radius: 12px;
   }
 `;
 
@@ -268,10 +349,16 @@ const LevelChipGroup = styled.div`
   align-items: center;
   gap: 6px;
   overflow-x: auto;
-  padding-bottom: 2px;
+  padding-bottom: 4px;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 2px 2px 6px 2px;
   }
 `;
 
@@ -280,6 +367,7 @@ const LevelChip = styled.button<{ $active: boolean }>`
   border-radius: 10px;
   font-size: 0.85rem;
   font-weight: 700;
+  flex-shrink: 0;
   border: 1px solid
     ${({ $active }) =>
       $active ? "var(--primary)" : "rgba(var(--border-rgb, 255, 255, 255), 0.1)"};
@@ -296,6 +384,12 @@ const LevelChip = styled.button<{ $active: boolean }>`
     color: var(--foreground);
     border-color: var(--primary);
   }
+
+  @media (max-width: 640px) {
+    padding: 0.42rem 0.75rem;
+    font-size: 0.78rem;
+    border-radius: 8px;
+  }
 `;
 
 const CategoryTabs = styled.div`
@@ -306,14 +400,21 @@ const CategoryTabs = styled.div`
   padding-bottom: 8px;
   overflow-x: auto;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding-bottom: 6px;
   }
 `;
 
 const CategoryTabBtn = styled.button<{ $active: boolean }>`
   padding: 0.6rem 1.1rem;
   border: none;
+  flex-shrink: 0;
   background: ${({ $active }) =>
     $active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.15)" : "transparent"};
   color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
@@ -329,6 +430,12 @@ const CategoryTabBtn = styled.button<{ $active: boolean }>`
 
   &:hover {
     color: var(--foreground);
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.42rem 0.75rem;
+    font-size: 0.78rem;
+    border-radius: 8px;
   }
 `;
 
@@ -377,13 +484,23 @@ const Card = styled.div<{ $colorRgb: string }>`
       background: ${({ $colorRgb }) => `rgb(${$colorRgb})`};
     }
   }
+
+  @media (max-width: 640px) {
+    padding: 1.1rem;
+    border-radius: 16px;
+  }
 `;
 
 const CardHeaderRow = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  gap: 8px;
   margin-bottom: 1.1rem;
+
+  @media (max-width: 640px) {
+    margin-bottom: 0.85rem;
+  }
 `;
 
 const IconWrapper = styled.div<{ $colorRgb: string }>`
@@ -402,12 +519,25 @@ const IconWrapper = styled.div<{ $colorRgb: string }>`
     width: 26px;
     height: 26px;
   }
+
+  @media (max-width: 640px) {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 const BadgeRow = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 `;
 
 const LevelBadge = styled.span`
@@ -418,6 +548,7 @@ const LevelBadge = styled.span`
   color: var(--text-secondary);
   font-size: 0.72rem;
   font-weight: 800;
+  white-space: nowrap;
 `;
 
 const TagBadge = styled.span<{ $colorRgb: string }>`
@@ -427,6 +558,7 @@ const TagBadge = styled.span<{ $colorRgb: string }>`
   color: ${({ $colorRgb }) => `rgb(${$colorRgb})`};
   font-size: 0.72rem;
   font-weight: 700;
+  white-space: nowrap;
 `;
 
 const BookmarkBtn = styled.button<{ $bookmarked: boolean }>`
@@ -435,7 +567,7 @@ const BookmarkBtn = styled.button<{ $bookmarked: boolean }>`
   color: ${({ $bookmarked }) => ($bookmarked ? "#f59e0b" : "var(--text-secondary)")};
   cursor: pointer;
   font-size: 1.1rem;
-  padding: 4px;
+  padding: 2px 4px;
   transition: transform 0.15s ease;
 
   &:hover {
@@ -451,11 +583,21 @@ const CardTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 
   .kanji {
     font-size: 0.92rem;
     font-weight: 600;
     color: var(--text-secondary);
+  }
+
+  @media (max-width: 640px) {
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+
+    .kanji {
+      font-size: 0.8rem;
+    }
   }
 `;
 
@@ -465,6 +607,12 @@ const CardDescription = styled.p`
   line-height: 1.55;
   margin-bottom: 1.25rem;
   flex-grow: 1;
+
+  @media (max-width: 640px) {
+    font-size: 0.8rem;
+    line-height: 1.42;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const CardMetaRow = styled.div`
@@ -480,6 +628,12 @@ const CardMetaRow = styled.div`
     display: flex;
     align-items: center;
     gap: 4px;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 0.74rem;
+    gap: 10px;
+    margin-bottom: 0.75rem;
   }
 `;
 
@@ -502,12 +656,24 @@ const ActionLinkBtn = styled(Link)<{ $colorRgb: string }>`
   align-items: center;
   justify-content: center;
   gap: 6px;
+  white-space: nowrap;
   transition: all 0.2s ease;
 
   &:hover {
     background: ${({ $colorRgb }) => `rgb(${$colorRgb})`};
     color: #ffffff;
     box-shadow: 0 6px 16px ${({ $colorRgb }) => `rgba(${$colorRgb}, 0.35)`};
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.55rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 10px;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 `;
 
@@ -520,11 +686,18 @@ const PreviewBtn = styled.button`
   border: 1px solid var(--border);
   color: var(--text-secondary);
   cursor: pointer;
+  white-space: nowrap;
   transition: all 0.15s ease;
 
   &:hover {
     color: var(--foreground);
     background: rgba(var(--foreground-rgb, 255, 255, 255), 0.1);
+  }
+
+  @media (max-width: 640px) {
+    padding: 0.55rem 0.65rem;
+    font-size: 0.78rem;
+    border-radius: 10px;
   }
 `;
 
