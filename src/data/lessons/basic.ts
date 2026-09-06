@@ -1050,6 +1050,7 @@ function generateBasicLessons(): Lesson[] {
         icon,
         badge,
         questions,
+        characters: activeItems.map((i) => i.char),
       });
     }
 
@@ -1150,6 +1151,7 @@ function generateBasicLessons(): Lesson[] {
       icon: "🏆",
       badge: "Ujian Unit",
       questions: examQuestions,
+      characters: unit.items.map((i) => i.char),
     });
   });
 

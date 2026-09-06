@@ -1210,6 +1210,7 @@ function LessonPlayerContent() {
     refillHearts,
     addGems,
     triggerAlert,
+    recordCharacterActivity,
   } = useProgress();
 
   const { lessonLanguage, setLessonLanguage } = useLessonLanguage();
@@ -1463,6 +1464,51 @@ function LessonPlayerContent() {
           const expToAward = isAlreadyCompleted ? 15 : lesson.expReward;
           addExp(expToAward);
           markExerciseCompleted(lesson.id);
+
+          // Extract kana characters that actually appeared in this lesson's questions
+          // This is more accurate than pre-computed lesson.characters because:
+          // - sentence-builder questions can include chars outside the planned activeItems
+          // - some planned chars may not have appeared in any question
+          if (recordCharacterActivity) {
+            const singleKanaRe = /^[\u3041-\u309f\u30a0-\u30ff]$/u;
+            const charSet = new Set<string>();
+
+            questions.forEach((q) => {
+              // 1. Listening: audioText is the single kana being tested
+              if (q.audioText && singleKanaRe.test(q.audioText)) {
+                charSet.add(q.audioText);
+              }
+              // 2. Answer is a single kana (e.g., char recognition typing/choice)
+              if (singleKanaRe.test(q.answer)) {
+                charSet.add(q.answer);
+              }
+              // 3. Sentence-builder: answer is tokens separated by spaces ("あ か")
+              if (q.type === "sentence-builder") {
+                q.answer.split(" ").forEach((token) => {
+                  if (token && singleKanaRe.test(token)) charSet.add(token);
+                });
+              }
+              // 4. Multiple-choice where ALL options are single kana (char recognition)
+              if (
+                q.type === "multiple-choice" &&
+                q.options.length > 0 &&
+                q.options.every((o) => singleKanaRe.test(o))
+              ) {
+                q.options.forEach((o) => charSet.add(o));
+                if (singleKanaRe.test(q.answer)) charSet.add(q.answer);
+              }
+              // 5. Typing: answer is romaji (e.g. "u"), the kana char is in the question text
+              //    e.g. 'Ketik cara baca Romaji dari huruf "う":'  → track う
+              if (q.type === "typing") {
+                const kanaInText = q.questionText.match(/[\u3041-\u309f\u30a0-\u30ff]/gu) || [];
+                kanaInText.forEach((c) => charSet.add(c));
+              }
+            });
+
+            charSet.forEach((char) => {
+              recordCharacterActivity(char, "lesson", true);
+            });
+          }
 
           if (isUnitExam && !isAlreadyCompleted) {
             addGems(30);
