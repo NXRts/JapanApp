@@ -35,6 +35,8 @@ export interface Lesson {
   badge: string;
   badgeEn?: string;
   questions: Question[];
+  /** Kana/Kanji characters covered in this lesson (used for mastery tracking) */
+  characters?: string[];
 }
 
 export interface RoadmapLesson {
