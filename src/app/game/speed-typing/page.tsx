@@ -240,7 +240,7 @@ export default function GamePage() {
     return kanaList[randomIndex];
   }, [kanaList]);
 
-  const { addExp } = useProgress();
+  const { addExp, recordCharacterActivity } = useProgress();
 
   // Timer logic
   useEffect(() => {
@@ -285,6 +285,9 @@ export default function GamePage() {
     const targetRomaji = toRomaji(currentKana);
 
     if (val.toLowerCase().trim() === targetRomaji) {
+      if (currentKana && recordCharacterActivity) {
+        recordCharacterActivity(currentKana, "game", true);
+      }
       const nextScore = score + 1;
       setScore(nextScore);
 

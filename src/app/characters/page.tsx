@@ -2,7 +2,11 @@
 
 import React, { useState, useEffect, useMemo, useRef, Suspense } from "react";
 import styled, { keyframes, css } from "styled-components";
-import { useProgress } from "@/context/ProgressContext";
+import {
+  useProgress,
+  calculateCharacterMasteryPercent,
+  MasteryRecord,
+} from "@/context/ProgressContext";
 import { playJapaneseAudio } from "@/lib/audio";
 import { Breadcrumbs } from "@/components/common/Breadcrumbs";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -298,6 +302,11 @@ const KATAKANA_CHOON: KanaItem[] = [
 // ========================================================
 // STYLED COMPONENTS (AESTHETICS & GRID layouts)
 // ========================================================
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
 
 const PageContainer = styled.div`
   display: flex;
@@ -751,9 +760,9 @@ const CardRomaji = styled.span`
 `;
 
 const MasteryBar = styled.div`
-  width: 75%;
-  height: 4px;
-  background: var(--border);
+  width: 80%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 99px;
   overflow: hidden;
   margin-top: 0.25rem;
@@ -764,17 +773,309 @@ const MasteryFill = styled.div<{ $percent: number }>`
   width: ${({ $percent }) => $percent}%;
   background: ${({ $percent }) =>
     $percent >= 100
-      ? "linear-gradient(90deg, #F59E0B 0%, #D97706 100%)"
-      : "var(--primary)"};
+      ? "linear-gradient(90deg, #F59E0B 0%, #EF4444 50%, #F59E0B 100%)"
+      : $percent >= 71
+      ? "linear-gradient(90deg, #F59E0B 0%, #FBBF24 100%)"
+      : $percent >= 36
+      ? "linear-gradient(90deg, #10B981 0%, #34D399 100%)"
+      : $percent > 0
+      ? "linear-gradient(90deg, #3B82F6 0%, #60A5FA 100%)"
+      : "transparent"};
   border-radius: 99px;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: ${({ $percent }) =>
+    $percent >= 100 ? "0 0 8px rgba(245, 158, 11, 0.7)" : "none"};
+`;
+
+const CrownBadge = styled.span`
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 0.72rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+`;
+
+// ─── MASTERY SUMMARY HEADER & FILTERS ─────────────────────────────────────────
+const MasterySummaryCard = styled.div`
+  background: linear-gradient(
+    135deg,
+    rgba(var(--primary-rgb, 79, 70, 229), 0.12) 0%,
+    rgba(var(--surface-rgb, 30, 41, 59), 0.8) 100%
+  );
+  border: 1px solid rgba(var(--primary-rgb, 79, 70, 229), 0.25);
+  border-radius: 20px;
+  padding: 1.25rem 1.5rem;
+  margin: 0.5rem auto 1rem auto;
+  width: 100%;
+  max-width: 1050px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  @media (max-width: 640px) {
+    padding: 0.95rem 1rem;
+    gap: 0.85rem;
+    border-radius: 16px;
+    margin-bottom: 0.85rem;
+  }
+`;
+
+const StatBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  .stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(var(--primary-rgb, 79, 70, 229), 0.2);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .stat-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .stat-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .stat-val {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--foreground);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .pct {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+  }
+
+  .stat-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 4px;
+  }
+
+  .stat-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+`;
+
+const MasteryFilterGroup = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto 1.25rem auto;
+  flex-wrap: wrap;
+`;
+
+const MasteryFilterChip = styled.button<{ $active: boolean }>`
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border: 1px solid
+    ${({ $active }) =>
+      $active ? "var(--primary)" : "rgba(var(--border-rgb, 255, 255, 255), 0.1)"};
+  background: ${({ $active }) =>
+    $active
+      ? "rgba(var(--primary-rgb, 79, 70, 229), 0.18)"
+      : "var(--surface)"};
+  color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: var(--foreground);
+    border-color: var(--primary);
+  }
+
+  @media (max-width: 640px) {
+    padding: 4px 10px;
+    font-size: 0.76rem;
+    border-radius: 8px;
+  }
+`;
+
+// ─── KANA DETAIL MODAL ───────────────────────────────────────────────────────
+const KanaModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: ${fadeIn} 0.2s ease-out;
+`;
+
+const KanaModalCard = styled.div`
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 24px;
+  max-width: 460px;
+  width: 100%;
+  padding: 2rem;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+
+  @media (max-width: 640px) {
+    padding: 1.35rem 1.15rem;
+    border-radius: 18px;
+    gap: 1rem;
+  }
+`;
+
+const CloseModalBtn = styled.button`
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--foreground);
+  }
+`;
+
+const KanaBigDisplay = styled.div`
+  font-size: 5rem;
+  font-weight: 900;
+  color: var(--foreground);
+  background: rgba(var(--primary-rgb, 79, 70, 229), 0.1);
+  border: 2px dashed rgba(var(--primary-rgb, 79, 70, 229), 0.3);
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 28px;
+  position: relative;
+
+  @media (max-width: 640px) {
+    font-size: 4rem;
+    width: 110px;
+    height: 110px;
+    border-radius: 22px;
+  }
+`;
+
+const KanaModalHeader = styled.div`
+  .romaji {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: var(--primary);
+    text-transform: lowercase;
+  }
+  .type {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+`;
+
+const KanaMasteryGauge = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .head-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+  }
+
+  .pct-val {
+    color: var(--primary);
+  }
+
+  .bar-track {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+`;
+
+const KanaStatGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  width: 100%;
+`;
+
+const KanaStatBox = styled.div`
+  background: rgba(var(--foreground-rgb, 255, 255, 255), 0.03);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  .label {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+  }
+
+  .val {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--foreground);
+  }
 `;
 
 interface CharacterCardProps {
   item: KanaItem | null;
+  onSelectKana?: (item: KanaItem) => void;
+  masteryFilter?: "all" | "unlearned" | "learning" | "mastered";
 }
 
-function CharacterCard({ item }: CharacterCardProps) {
+function CharacterCard({ item, onSelectKana, masteryFilter = "all" }: CharacterCardProps) {
   const { progress } = useProgress();
 
   if (!item) {
@@ -782,28 +1083,156 @@ function CharacterCard({ item }: CharacterCardProps) {
   }
 
   const { char, romaji } = item;
+  const record = progress.mastery[char];
+  const masteryPercent = calculateCharacterMasteryPercent(record);
 
-  // Calculate progress level out of 5 correct answers for 100% mastery
-  const correctCount = progress.mastery[char]?.correct || 0;
-  const masteryPercent = Math.min(100, (correctCount / 5) * 100);
+  // Apply Filter
+  if (masteryFilter === "unlearned" && masteryPercent > 0) return null;
+  if (masteryFilter === "learning" && (masteryPercent === 0 || masteryPercent === 100)) return null;
+  if (masteryFilter === "mastered" && masteryPercent < 100) return null;
 
-  const handlePlaySound = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     playJapaneseAudio(char);
+    if (onSelectKana) {
+      onSelectKana(item);
+    }
   };
 
   return (
     <CharacterCardContainer
-      $active={correctCount > 0}
+      $active={masteryPercent > 0}
       $isEmpty={false}
-      onClick={handlePlaySound}
-      title={`Pronounce ${char} (${romaji})`}
+      onClick={handleClick}
+      title={`Lihat detail hafalan ${char} (${romaji})`}
     >
+      {masteryPercent >= 100 && <CrownBadge>👑</CrownBadge>}
       <CardChar>{char}</CardChar>
       <CardRomaji>{romaji}</CardRomaji>
       <MasteryBar>
         <MasteryFill $percent={masteryPercent} />
       </MasteryBar>
     </CharacterCardContainer>
+  );
+}
+
+interface KanaDetailModalProps {
+  kana: KanaItem;
+  kanaType: "Hiragana" | "Katakana";
+  onClose: () => void;
+  onStartPractice: () => void;
+}
+
+function KanaDetailModal({
+  kana,
+  kanaType,
+  onClose,
+  onStartPractice,
+}: KanaDetailModalProps) {
+  const router = useRouter();
+  const { progress } = useProgress();
+  const record = progress.mastery[kana.char];
+  const masteryPct = calculateCharacterMasteryPercent(record);
+
+  let statusLabel = "Belum Hafal";
+  let statusColor = "#94a3b8";
+  if (masteryPct >= 100) {
+    statusLabel = "Hafal 100% 👑";
+    statusColor = "#f59e0b";
+  } else if (masteryPct >= 71) {
+    statusLabel = "Hampir Hafal (71-99%)";
+    statusColor = "#f59e0b";
+  } else if (masteryPct >= 36) {
+    statusLabel = "Cukup Hafal (36-70%)";
+    statusColor = "#10b981";
+  } else if (masteryPct > 0) {
+    statusLabel = "Sedang Dipelajari (1-35%)";
+    statusColor = "#3b82f6";
+  }
+
+  return (
+    <KanaModalOverlay onClick={onClose}>
+      <KanaModalCard onClick={(e) => e.stopPropagation()}>
+        <CloseModalBtn onClick={onClose}>✕</CloseModalBtn>
+
+        <KanaBigDisplay>{kana.char}</KanaBigDisplay>
+
+        <KanaModalHeader>
+          <div className="romaji">{kana.romaji}</div>
+          <div className="type">Sistem Penulisan: {kanaType}</div>
+        </KanaModalHeader>
+
+        <KanaMasteryGauge>
+          <div className="head-row">
+            <span>Tingkat Kehafalan</span>
+            <span className="pct-val" style={{ color: statusColor }}>
+              {masteryPct}% ({statusLabel})
+            </span>
+          </div>
+          <div className="bar-track">
+            <MasteryFill $percent={masteryPct} />
+          </div>
+        </KanaMasteryGauge>
+
+        <KanaStatGrid>
+          <KanaStatBox>
+            <span className="label">🎯 Quiz Benar</span>
+            <span className="val">{record?.correct || 0}</span>
+          </KanaStatBox>
+          <KanaStatBox>
+            <span className="label">✍️ Stroke Writer</span>
+            <span className="val">{record?.writerCount || 0}</span>
+          </KanaStatBox>
+          <KanaStatBox>
+            <span className="label">🃏 Flashcards</span>
+            <span className="val">{record?.flashcardCount || 0}</span>
+          </KanaStatBox>
+          <KanaStatBox>
+            <span className="label">🎮 Minigames</span>
+            <span className="val">{record?.gameCount || 0}</span>
+          </KanaStatBox>
+        </KanaStatGrid>
+
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            width: "100%",
+            marginTop: "0.5rem",
+          }}
+        >
+          <PrimaryCTAButton
+            onClick={() => playJapaneseAudio(kana.char)}
+            style={{
+              flex: 1,
+              marginTop: 0,
+              background: "rgba(var(--primary-rgb, 79, 70, 229), 0.15)",
+              border: "1px solid var(--primary)",
+              color: "var(--primary)",
+              boxShadow: "none",
+              padding: "0.75rem",
+              fontSize: "0.85rem",
+            }}
+          >
+            🔊 Putar Audio
+          </PrimaryCTAButton>
+          <PrimaryCTAButton
+            onClick={() => {
+              onClose();
+              onStartPractice();
+            }}
+            style={{
+              flex: 1,
+              marginTop: 0,
+              padding: "0.75rem",
+              fontSize: "0.85rem",
+            }}
+          >
+            🚀 Latihan Quiz
+          </PrimaryCTAButton>
+        </div>
+      </KanaModalCard>
+    </KanaModalOverlay>
   );
 }
 
@@ -1277,7 +1706,7 @@ interface Question {
 }
 
 function CharactersPageContent() {
-  const { progress, updateMastery, addExp } = useProgress();
+  const { progress, updateMastery, recordCharacterActivity, addExp } = useProgress();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<
@@ -1285,8 +1714,44 @@ function CharactersPageContent() {
   >("hiragana");
   const [kanjiFilter, setKanjiFilter] = useState<string>("N5");
   const [selectedKanji, setSelectedKanji] = useState<KanjiItem | null>(null);
+  const [selectedKana, setSelectedKana] = useState<KanaItem | null>(null);
+  const [masteryFilter, setMasteryFilter] = useState<"all" | "unlearned" | "learning" | "mastered">("all");
   const [isPracticing, setIsPracticing] = useState(false);
   const [isMistakesReview, setIsMistakesReview] = useState(false);
+
+  // Compute summary stats for Hiragana & Katakana
+  const mainHiraganaList = useMemo(
+    () => HIRAGANA_GRID.filter((item): item is KanaItem => item !== null),
+    [],
+  );
+  const mainKatakanaList = useMemo(
+    () => KATAKANA_GRID.filter((item): item is KanaItem => item !== null),
+    [],
+  );
+
+  const hiraganaStats = useMemo(() => {
+    let mastered = 0;
+    let totalPct = 0;
+    mainHiraganaList.forEach((item) => {
+      const pct = calculateCharacterMasteryPercent(progress.mastery[item.char]);
+      if (pct >= 100) mastered++;
+      totalPct += pct;
+    });
+    const avgPct = Math.round(totalPct / (mainHiraganaList.length || 1));
+    return { mastered, total: mainHiraganaList.length, avgPct };
+  }, [progress.mastery, mainHiraganaList]);
+
+  const katakanaStats = useMemo(() => {
+    let mastered = 0;
+    let totalPct = 0;
+    mainKatakanaList.forEach((item) => {
+      const pct = calculateCharacterMasteryPercent(progress.mastery[item.char]);
+      if (pct >= 100) mastered++;
+      totalPct += pct;
+    });
+    const avgPct = Math.round(totalPct / (mainKatakanaList.length || 1));
+    return { mastered, total: mainKatakanaList.length, avgPct };
+  }, [progress.mastery, mainKatakanaList]);
 
   // Practice session states
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -1606,6 +2071,7 @@ function CharactersPageContent() {
       currentQuestion.type !== "matching"
     ) {
       updateMastery(currentQuestion.audioChar, isAnswerCorrect);
+      recordCharacterActivity(currentQuestion.audioChar, "quiz", isAnswerCorrect);
     }
 
     if (currentQuestionIndex + 1 < questions.length) {
@@ -1738,9 +2204,9 @@ function CharactersPageContent() {
             </MainTitle>
             <Subtitle>
               {activeTab === "hiragana"
-                ? "Pelajari fondasi utama sistem penulisan Jepang. Klik kartu untuk mendengarkan pengucapan audio."
+                ? "Pelajari fondasi utama sistem penulisan Jepang. Klik kartu untuk mendengarkan pengucapan & melihat detail hafalan."
                 : activeTab === "katakana"
-                ? "Pelajari huruf sistem serapan kosakata asing. Klik kartu untuk mendengarkan pengucapan audio."
+                ? "Pelajari huruf sistem serapan kosakata asing. Klik kartu untuk mendengarkan pengucapan & melihat detail hafalan."
                 : activeTab === "kanji"
                 ? "Pelajari huruf Kanji secara bertahap mulai dari angka, alam, hingga level JLPT. Klik kartu untuk melihat animasi coretan & contoh kata."
                 : "Mesin pencari kata pintar dua arah hemat memori dengan fitur Smart Auto-Detect, Furigana, Audio TTS, Kanjidex, serta Tabel Konjugasi otomatis."}
@@ -1846,6 +2312,8 @@ function CharactersPageContent() {
                       <CharacterCard
                         key={`grid-${activeTab}-${idx}`}
                         item={item}
+                        onSelectKana={(k) => setSelectedKana(k)}
+                        masteryFilter={masteryFilter}
                       />
                     ),
                   )}
@@ -1865,6 +2333,8 @@ function CharactersPageContent() {
                       <CharacterCard
                         key={`dakuon-${activeTab}-${idx}`}
                         item={item}
+                        onSelectKana={(k) => setSelectedKana(k)}
+                        masteryFilter={masteryFilter}
                       />
                     ))}
                   </DakuonGrid>
@@ -1884,6 +2354,8 @@ function CharactersPageContent() {
                       <CharacterCard
                         key={`yoon-${activeTab}-${idx}`}
                         item={item}
+                        onSelectKana={(k) => setSelectedKana(k)}
+                        masteryFilter={masteryFilter}
                       />
                     ))}
                   </YoonGrid>
@@ -1903,6 +2375,8 @@ function CharactersPageContent() {
                       <CharacterCard
                         key={`sokuon-${activeTab}-${idx}`}
                         item={item}
+                        onSelectKana={(k) => setSelectedKana(k)}
+                        masteryFilter={masteryFilter}
                       />
                     ))}
                   </SokuonGrid>
@@ -1921,6 +2395,8 @@ function CharactersPageContent() {
                       <CharacterCard
                         key={`choon-${activeTab}-${idx}`}
                         item={item}
+                        onSelectKana={(k) => setSelectedKana(k)}
+                        masteryFilter={masteryFilter}
                       />
                     ))}
                   </ChoonGrid>
@@ -1938,6 +2414,18 @@ function CharactersPageContent() {
                   `/jlpt/flashcards?category=kanji&q=${encodeURIComponent(selectedKanji.char)}`,
                 )
               }
+            />
+          )}
+
+          {selectedKana && (
+            <KanaDetailModal
+              kana={selectedKana}
+              kanaType={activeTab === "katakana" ? "Katakana" : "Hiragana"}
+              onClose={() => setSelectedKana(null)}
+              onStartPractice={() => {
+                setSelectedKana(null);
+                handleStartPractice();
+              }}
             />
           )}
         </>

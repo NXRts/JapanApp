@@ -499,7 +499,7 @@ export default function KanaFlashcards() {
 
   const [reviewedCount, setReviewedCount] = useState(0);
   const [sessionComplete, setSessionComplete] = useState(false);
-  const { addExp, markExerciseCompleted } = useProgress();
+  const { addExp, markExerciseCompleted, recordCharacterActivity } = useProgress();
 
   // Touch swipe states
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -550,6 +550,13 @@ export default function KanaFlashcards() {
   const currentKana = kanaList[currentIndex];
 
   const nextCard = () => {
+    if (currentKana) {
+      const char = (currentKana as any).kana || (currentKana as any).char || (currentKana as any).character;
+      if (char && recordCharacterActivity) {
+        recordCharacterActivity(char, "flashcard", true);
+      }
+    }
+
     if (isMobileView) {
       const nextReviewed = reviewedCount + 1;
       setReviewedCount(nextReviewed);
