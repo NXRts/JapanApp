@@ -59,11 +59,12 @@ export const metadata: Metadata = {
     siteName: "JapanApp",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://japan-mee.vercel.app/og-image.jpg",
+        secureUrl: "https://japan-mee.vercel.app/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "JapanApp — Platform Belajar Bahasa Jepang Interaktif",
-        type: "image/png",
+        type: "image/jpeg",
       },
     ],
   },
@@ -72,7 +73,7 @@ export const metadata: Metadata = {
     title: "JapanApp | Platform Belajar Bahasa Jepang Interaktif",
     description:
       "Platform belajar bahasa Jepang terlengkap: kuasai Hiragana, Katakana, Kanji, materi JLPT N5-N1, audio native, latihan menulis & kuis interaktif.",
-    images: ["/og-image.png"],
+    images: ["https://japan-mee.vercel.app/og-image.jpg"],
     creator: "@JapanApp",
   },
   robots: {
