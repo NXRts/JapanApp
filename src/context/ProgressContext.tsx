@@ -36,10 +36,34 @@ const ToastStack = styled.div`
   }
 `;
 
-interface MasteryRecord {
+export interface MasteryRecord {
   correct: number;
   incorrect: number;
   lastAttempt: string;
+  writerCount?: number;
+  flashcardCount?: number;
+  lessonCount?: number;
+  gameCount?: number;
+  masteryPoints?: number;
+}
+
+export function calculateCharacterMasteryPercent(record?: MasteryRecord): number {
+  if (!record) return 0;
+  
+  if (typeof record.masteryPoints === "number") {
+    return Math.min(100, Math.max(0, record.masteryPoints));
+  }
+
+  const quizScore = Math.min(40, (record.correct || 0) * 10);
+  const writerScore = Math.min(30, (record.writerCount || 0) * 15);
+  const flashcardScore = Math.min(15, (record.flashcardCount || 0) * 7.5);
+  const gameScore = Math.min(10, (record.gameCount || 0) * 5);
+  const lessonScore = Math.min(10, (record.lessonCount || 0) * 10);
+
+  const rawTotal = quizScore + writerScore + flashcardScore + gameScore + lessonScore;
+  const legacyScore = Math.min(100, (record.correct || 0) * 20);
+
+  return Math.round(Math.min(100, Math.max(rawTotal, legacyScore)));
 }
 
 export interface UserProfile {
@@ -95,6 +119,11 @@ interface ProgressData {
 interface ProgressContextType {
   progress: ProgressData;
   updateMastery: (char: string, isCorrect: boolean) => void;
+  recordCharacterActivity: (
+    char: string,
+    type: "quiz" | "writer" | "flashcard" | "lesson" | "game",
+    isSuccess: boolean,
+  ) => void;
   recordQuizResult: (score: number, total: number, type: string) => void;
   checkStreak: () => void;
   updateSRS: (char: string, quality: number) => void;
@@ -511,6 +540,53 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     [triggerAlert, autoClaimCompletedQuests],
   );
 
+  const recordCharacterActivity = useCallback(
+    (
+      char: string,
+      type: "quiz" | "writer" | "flashcard" | "lesson" | "game",
+      isSuccess: boolean,
+    ) => {
+      if (!char) return;
+      setProgress((prev) => {
+        const current = prev.mastery[char] || {
+          correct: 0,
+          incorrect: 0,
+          lastAttempt: "",
+          writerCount: 0,
+          flashcardCount: 0,
+          lessonCount: 0,
+          gameCount: 0,
+        };
+
+        const updated: MasteryRecord = {
+          ...current,
+          lastAttempt: new Date().toISOString(),
+        };
+
+        if (isSuccess) {
+          if (type === "quiz") updated.correct = (current.correct || 0) + 1;
+          if (type === "writer") updated.writerCount = (current.writerCount || 0) + 1;
+          if (type === "flashcard") updated.flashcardCount = (current.flashcardCount || 0) + 1;
+          if (type === "lesson") updated.lessonCount = (current.lessonCount || 0) + 1;
+          if (type === "game") updated.gameCount = (current.gameCount || 0) + 1;
+        } else {
+          if (type === "quiz") updated.incorrect = (current.incorrect || 0) + 1;
+        }
+
+        const newMastery = {
+          ...prev.mastery,
+          [char]: updated,
+        };
+
+        return autoClaimCompletedQuests({
+          ...prev,
+          mastery: newMastery,
+        });
+      });
+    },
+    [autoClaimCompletedQuests],
+  );
+
   const updateSRS = useCallback(
     (char: string, quality: number) => {
       setProgress((prev) => {
@@ -916,6 +992,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     () => ({
       progress,
       updateMastery,
+      recordCharacterActivity,
       recordQuizResult,
       checkStreak,
       updateSRS,
@@ -945,6 +1022,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     [
       progress,
       updateMastery,
+      recordCharacterActivity,
       recordQuizResult,
       checkStreak,
       updateSRS,

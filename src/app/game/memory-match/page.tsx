@@ -400,7 +400,7 @@ export default function MemoryMatchPage() {
     generateGame();
   }, [generateGame]);
 
-  const { addExp } = useProgress();
+  const { addExp, recordCharacterActivity } = useProgress();
 
   const handleCardClick = (index: number) => {
     if (
@@ -435,6 +435,10 @@ export default function MemoryMatchPage() {
         firstCard.pairId === secondCard.pairId &&
         firstCard.type !== secondCard.type
       ) {
+        if (recordCharacterActivity) {
+          recordCharacterActivity(firstCard.char, "game", true);
+          recordCharacterActivity(secondCard.char, "game", true);
+        }
         setTimeout(() => {
           setCards((prev) => {
             const copy = [...prev];

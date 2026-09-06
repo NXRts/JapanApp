@@ -1003,7 +1003,7 @@ export default function KanjiWriterPage() {
   const [activeMobileTab, setActiveMobileTab] = useState<
     "practice" | "list" | "stats"
   >("practice");
-  const { addExp, updateMastery } = useProgress();
+  const { addExp, updateMastery, recordCharacterActivity } = useProgress();
 
   // Canvas State
   const drawCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -1555,6 +1555,9 @@ export default function KanjiWriterPage() {
 
       // Global progress tracking
       updateMastery(currentKanji.char, baseScore >= 80);
+      if (recordCharacterActivity) {
+        recordCharacterActivity(currentKanji.char, "writer", baseScore >= 60);
+      }
 
       setHistory((prev) => {
         const filtered = prev.filter((h) => h.kanji.char !== currentKanji.char);
