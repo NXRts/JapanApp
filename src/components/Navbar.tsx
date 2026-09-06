@@ -2901,13 +2901,46 @@ export function Navbar() {
             </MobileMenuSectionTitle>
 
             <MobileLink
+              href="/"
+              $active={pathname === "/" || pathname.startsWith("/lessons") || pathname.startsWith("/lesson")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.04}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <KanjiBadge>学</KanjiBadge>
+              Lessons
+            </MobileLink>
+
+            <MobileLink
+              href="/characters"
+              $active={pathname.startsWith("/characters")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.06}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <KanjiBadge>字</KanjiBadge>
+              Characters
+            </MobileLink>
+
+            <MobileLink
+              href="/jlpt"
+              $active={pathname.startsWith("/jlpt")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.08}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <KanjiBadge>検</KanjiBadge>
+              JLPT
+            </MobileLink>
+
+            <MobileLink
               href="/practice"
               $active={
                 pathname.startsWith("/practice") ||
                 pathname.startsWith("/study")
               }
               $isOpen={isMobileMenuOpen}
-              $delay={0.05}
+              $delay={0.10}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <KanjiBadge>練</KanjiBadge>
@@ -2918,22 +2951,11 @@ export function Navbar() {
               href="/quiz"
               $active={pathname.startsWith("/quiz")}
               $isOpen={isMobileMenuOpen}
-              $delay={0.08}
+              $delay={0.12}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <KanjiBadge>問</KanjiBadge>
               Quiz
-            </MobileLink>
-
-            <MobileLink
-              href="/materi"
-              $active={pathname.startsWith("/materi")}
-              $isOpen={isMobileMenuOpen}
-              $delay={0.11}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <KanjiBadge>資</KanjiBadge>
-              Materials
             </MobileLink>
 
             <MobileLink
@@ -2948,39 +2970,50 @@ export function Navbar() {
             </MobileLink>
 
             <MobileLink
-              href="/practice-sheets"
-              $active={pathname === "/practice-sheets"}
-              $isOpen={isMobileMenuOpen}
-              $delay={0.17}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <KanjiBadge>書</KanjiBadge>
-              Practice Sheets
-            </MobileLink>
-
-            <MobileLink
               href="/quests"
               $active={pathname.startsWith("/quests")}
               $isOpen={isMobileMenuOpen}
-              $delay={0.19}
+              $delay={0.16}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <KanjiBadge>務</KanjiBadge>
               Misi
             </MobileLink>
+
+            <MobileLink
+              href="/materi"
+              $active={pathname.startsWith("/materi")}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.18}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <KanjiBadge>資</KanjiBadge>
+              Materials
+            </MobileLink>
+
+            <MobileLink
+              href="/practice-sheets"
+              $active={pathname === "/practice-sheets"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.20}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <KanjiBadge>書</KanjiBadge>
+              Practice Sheets
+            </MobileLink>
           </MobileMenuSection>
 
-          {/* SECTION 2: PENGATURAN & APLIKASI */}
+          {/* SECTION 2: AKUN & PENGATURAN */}
           <MobileMenuSection>
             <MobileMenuSectionTitle $isOpen={isMobileMenuOpen} $delay={0.22}>
-              <MobileSectionIndicator /> Pengaturan & Aplikasi
+              <MobileSectionIndicator /> Akun &amp; Pengaturan
             </MobileMenuSectionTitle>
 
             <MobileLink
               href="/profile"
               $active={pathname === "/profile"}
               $isOpen={isMobileMenuOpen}
-              $delay={0.25}
+              $delay={0.24}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <KanjiBadge>人</KanjiBadge>
@@ -2990,7 +3023,7 @@ export function Navbar() {
             <MobileLink
               href="#"
               $isOpen={isMobileMenuOpen}
-              $delay={0.27}
+              $delay={0.26}
               onClick={(e) => {
                 e.preventDefault();
                 setIsMobileMenuOpen(false);
@@ -3017,10 +3050,21 @@ export function Navbar() {
             </MobileLink>
 
             <MobileLink
+              href="/settings"
+              $active={pathname === "/settings"}
+              $isOpen={isMobileMenuOpen}
+              $delay={0.28}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <KanjiBadge>設</KanjiBadge>
+              Settings
+            </MobileLink>
+
+            <MobileLink
               href="/blog"
               $active={pathname.startsWith("/blog")}
               $isOpen={isMobileMenuOpen}
-              $delay={0.28}
+              $delay={0.30}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <KanjiBadge>誌</KanjiBadge>
@@ -3028,14 +3072,14 @@ export function Navbar() {
             </MobileLink>
 
             <MobileLink
-              href="/settings"
-              $active={pathname === "/settings"}
+              href="/help"
+              $active={pathname === "/help"}
               $isOpen={isMobileMenuOpen}
-              $delay={0.31}
+              $delay={0.32}
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <KanjiBadge>設</KanjiBadge>
-              Settings
+              <KanjiBadge>助</KanjiBadge>
+              Bantuan
             </MobileLink>
 
             <MobileLink
@@ -3050,21 +3094,10 @@ export function Navbar() {
             </MobileLink>
 
             <MobileLink
-              href="/help"
-              $active={pathname === "/help"}
-              $isOpen={isMobileMenuOpen}
-              $delay={0.37}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <KanjiBadge>助</KanjiBadge>
-              Bantuan
-            </MobileLink>
-
-            <MobileLink
               href="/contact"
               $active={pathname === "/contact"}
               $isOpen={isMobileMenuOpen}
-              $delay={0.4}
+              $delay={0.36}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <KanjiBadge>信</KanjiBadge>
@@ -3075,7 +3108,7 @@ export function Navbar() {
               href="/development"
               $active={pathname.startsWith("/development")}
               $isOpen={isMobileMenuOpen}
-              $delay={0.43}
+              $delay={0.38}
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <KanjiBadge>研</KanjiBadge>
@@ -3086,7 +3119,7 @@ export function Navbar() {
               href="#"
               $active={false}
               $isOpen={isMobileMenuOpen}
-              $delay={0.46}
+              $delay={0.40}
               onClick={(e) => {
                 e.preventDefault();
                 setIsMobileMenuOpen(false);
