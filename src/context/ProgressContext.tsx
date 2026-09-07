@@ -113,6 +113,7 @@ interface ProgressData {
   isSuper: boolean;
   hasStreakFreeze: boolean;
   claimedQuests: string[];
+  claimedAchievements: string[];
   league?: UserLeagueData;
 }
 
@@ -145,6 +146,11 @@ interface ProgressContextType {
   toggleSuper: () => void;
   buyStreakFreeze: () => boolean;
   claimQuestReward: (questId: string, rewardGems: number) => void;
+  claimAchievementReward: (
+    achievementId: string,
+    expAmount: number,
+    title?: string,
+  ) => boolean;
   timeUntilNextHeart: number;
   timeUntilFullRefill: number;
   setStatusEmoji: (emoji: string) => void;
@@ -201,6 +207,7 @@ const INITIAL_DATA: ProgressData = {
   isSuper: false,
   hasStreakFreeze: false,
   claimedQuests: [],
+  claimedAchievements: [],
   league: DEFAULT_LEAGUE,
 };
 
@@ -310,6 +317,9 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
                   : false,
               claimedQuests: Array.isArray(parsed.claimedQuests)
                 ? parsed.claimedQuests
+                : [],
+              claimedAchievements: Array.isArray(parsed.claimedAchievements)
+                ? parsed.claimedAchievements
                 : [],
               league: (() => {
                 const savedLeague = parsed.league || DEFAULT_LEAGUE;
@@ -988,6 +998,60 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     [triggerAlert],
   );
 
+  const claimAchievementReward = useCallback(
+    (achievementId: string, expAmount: number, title?: string) => {
+      let success = false;
+      const today = new Date().toISOString().split("T")[0];
+
+      setProgress((prev) => {
+        const claimed = prev.claimedAchievements || [];
+        if (claimed.includes(achievementId)) return prev;
+
+        success = true;
+        const newExp = (prev.exp || 0) + expAmount;
+        const oldLevel = Math.floor(Math.sqrt((prev.exp || 0) / 100)) + 1;
+        const newLevel = Math.floor(Math.sqrt(newExp / 100)) + 1;
+
+        if (newLevel > oldLevel) {
+          triggerAlert(
+            "level",
+            `Level Up!`,
+            `You've reached level ${newLevel}! Keep it up!`,
+          );
+        }
+
+        const newActivityLog = { ...prev.activityLog };
+        newActivityLog[today] = (newActivityLog[today] || 0) + expAmount;
+
+        const currentLeague = prev.league || DEFAULT_LEAGUE;
+        const updatedLeague = {
+          ...currentLeague,
+          weeklyExp: (currentLeague.weeklyExp || 0) + expAmount,
+        };
+
+        triggerAlert(
+          "achievement",
+          "Hadiah Diklaim! 🎁",
+          `Kamu mendapatkan +${expAmount} XP dari pencapaian ${title ? `"${title}"` : ""}!`,
+        );
+
+        return {
+          ...prev,
+          exp: newExp,
+          activityLog: newActivityLog,
+          league: updatedLeague,
+          claimedAchievements: [...claimed, achievementId],
+        };
+      });
+
+      if (success) {
+        checkStreak();
+      }
+      return success;
+    },
+    [triggerAlert, checkStreak],
+  );
+
   const contextValue = React.useMemo(
     () => ({
       progress,
@@ -1014,6 +1078,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       toggleSuper,
       buyStreakFreeze,
       claimQuestReward,
+      claimAchievementReward,
       timeUntilNextHeart,
       timeUntilFullRefill,
       triggerAlert,
@@ -1044,6 +1109,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       toggleSuper,
       buyStreakFreeze,
       claimQuestReward,
+      claimAchievementReward,
       timeUntilNextHeart,
       timeUntilFullRefill,
       triggerAlert,
