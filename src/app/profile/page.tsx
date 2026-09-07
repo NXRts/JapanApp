@@ -16,6 +16,41 @@ import { getLeagueById, getRankStatus } from "@/data/leagues";
 import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
+import confetti from "canvas-confetti";
+
+function playSuccessChime() {
+  if (typeof window === "undefined") return;
+  try {
+    const AudioContextClass =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext })
+        .webkitAudioContext;
+    if (!AudioContextClass) return;
+    const audioCtx = new AudioContextClass();
+    const now = audioCtx.currentTime;
+    const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6 (joyful victory chime)
+
+    notes.forEach((freq, index) => {
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, now + index * 0.07);
+
+      gainNode.gain.setValueAtTime(0, now + index * 0.07);
+      gainNode.gain.linearRampToValueAtTime(0.06, now + index * 0.07 + 0.02);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, now + index * 0.07 + 0.4);
+
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      osc.start(now + index * 0.07);
+      osc.stop(now + index * 0.07 + 0.45);
+    });
+  } catch {
+    // Ignore audio context errors if blocked by browser autoplay policy
+  }
+}
 
 /* ─── Global Font & Variable Integrations for Native JapanApp Design System ─── */
 const Profile2GlobalStyle = createGlobalStyle`
@@ -1864,6 +1899,7 @@ const TierPill = styled.span<{ $tier: "bronze" | "silver" | "gold" | "diamond" }
 const UpgradedAchievementCard = styled(Card)<{
   $unlocked: boolean;
   $tier: "bronze" | "silver" | "gold" | "diamond";
+  $canClaim?: boolean;
 }>`
   min-width: 165px;
   max-width: 190px;
@@ -1939,6 +1975,17 @@ const UpgradedAchievementCard = styled(Card)<{
     `;
   }}
 
+  ${({ $canClaim }) =>
+    $canClaim &&
+    `
+    border-color: rgba(245, 158, 11, 0.75) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 0 16px rgba(245, 158, 11, 0.35) !important;
+    &:hover {
+      border-color: rgba(251, 191, 36, 1) !important;
+      box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.25), 0 0 24px rgba(245, 158, 11, 0.55) !important;
+    }
+  `}
+
   &:hover {
     transform: translateY(-4px);
   }
@@ -1979,6 +2026,33 @@ const UpgradedAchievementCard = styled(Card)<{
     padding: 0.2rem 0.5rem;
     border-radius: 999px;
     margin-top: 0.25rem;
+  }
+
+  .claim-tag {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid rgba(245, 158, 11, 0.55);
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    margin-top: 0.25rem;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    animation: pulseClaim 2s infinite ease-in-out;
+  }
+
+  @keyframes pulseClaim {
+    0%, 100% {
+      transform: scale(1);
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 16px rgba(245, 158, 11, 0.65);
+    }
   }
 
   .mini-progress-bar {
@@ -2171,7 +2245,7 @@ const OthersPanel = styled(Card)`
 `;
 
 export default function ProfilePage() {
-  const { progress, checkStreak } = useProgress();
+  const { progress, checkStreak, claimAchievementReward } = useProgress();
   const [activeTab, setActiveTab] = useState<
     "kana" | "vocab" | "grammar" | "conj" | "others"
   >("kana");
@@ -2329,6 +2403,7 @@ export default function ProfilePage() {
     maxValue: number;
     unlocked: boolean;
     reward: string;
+    expReward: number;
   }
 
   const [activeAchievementTab, setActiveAchievementTab] = useState<AchievementCat>("all");
@@ -2350,6 +2425,7 @@ export default function ProfilePage() {
       maxValue: 3,
       unlocked: userStreak >= 3,
       reward: "+30 XP",
+      expReward: 30,
     },
     {
       id: "streak_7",
@@ -2362,6 +2438,7 @@ export default function ProfilePage() {
       maxValue: 7,
       unlocked: userStreak >= 7,
       reward: "+100 XP",
+      expReward: 100,
     },
     {
       id: "streak_14",
@@ -2374,6 +2451,7 @@ export default function ProfilePage() {
       maxValue: 14,
       unlocked: userStreak >= 14,
       reward: "+300 XP",
+      expReward: 300,
     },
     {
       id: "streak_30",
@@ -2386,6 +2464,7 @@ export default function ProfilePage() {
       maxValue: 30,
       unlocked: userStreak >= 30,
       reward: "+1000 XP & Badge Berlian",
+      expReward: 1000,
     },
 
     // Mastery & Character Tiers
@@ -2400,6 +2479,7 @@ export default function ProfilePage() {
       maxValue: 20,
       unlocked: totalCharacters >= 20,
       reward: "+50 XP",
+      expReward: 50,
     },
     {
       id: "kana_46",
@@ -2412,6 +2492,7 @@ export default function ProfilePage() {
       maxValue: 46,
       unlocked: totalCharacters >= 46,
       reward: "+150 XP",
+      expReward: 150,
     },
     {
       id: "kanji_10",
@@ -2424,6 +2505,7 @@ export default function ProfilePage() {
       maxValue: 10,
       unlocked: totalCharacters >= 10,
       reward: "+50 XP",
+      expReward: 50,
     },
     {
       id: "kanji_50",
@@ -2436,6 +2518,7 @@ export default function ProfilePage() {
       maxValue: 50,
       unlocked: totalCharacters >= 50,
       reward: "+400 XP",
+      expReward: 400,
     },
 
     // Accuracy Tiers
@@ -2450,6 +2533,7 @@ export default function ProfilePage() {
       maxValue: 80,
       unlocked: accuracy >= 80 && totalCharacters >= 5,
       reward: "+50 XP",
+      expReward: 50,
     },
     {
       id: "accuracy_90",
@@ -2462,6 +2546,7 @@ export default function ProfilePage() {
       maxValue: 90,
       unlocked: accuracy >= 90 && totalCharacters >= 5,
       reward: "+150 XP",
+      expReward: 150,
     },
     {
       id: "accuracy_100",
@@ -2474,6 +2559,7 @@ export default function ProfilePage() {
       maxValue: 100,
       unlocked: accuracy >= 100 && totalCharacters >= 5,
       reward: "+300 XP",
+      expReward: 300,
     },
 
     // Level Tiers
@@ -2488,6 +2574,7 @@ export default function ProfilePage() {
       maxValue: 1,
       unlocked: level >= 2,
       reward: "+50 XP",
+      expReward: 50,
     },
     {
       id: "level_5",
@@ -2500,6 +2587,7 @@ export default function ProfilePage() {
       maxValue: 4,
       unlocked: level >= 5,
       reward: "+150 XP",
+      expReward: 150,
     },
     {
       id: "level_10",
@@ -2512,6 +2600,7 @@ export default function ProfilePage() {
       maxValue: 9,
       unlocked: level >= 10,
       reward: "+500 XP",
+      expReward: 500,
     },
     {
       id: "level_20",
@@ -2524,6 +2613,7 @@ export default function ProfilePage() {
       maxValue: 19,
       unlocked: level >= 20,
       reward: "+1500 XP & Badge Shogun",
+      expReward: 1500,
     },
 
     // Quests & Feature Exploration Tiers
@@ -2538,6 +2628,7 @@ export default function ProfilePage() {
       maxValue: 1,
       unlocked: userQuizCount >= 1,
       reward: "+50 XP",
+      expReward: 50,
     },
     {
       id: "quest_5",
@@ -2550,6 +2641,7 @@ export default function ProfilePage() {
       maxValue: 5,
       unlocked: userQuizCount >= 5,
       reward: "+150 XP",
+      expReward: 150,
     },
     {
       id: "explorer",
@@ -2562,8 +2654,19 @@ export default function ProfilePage() {
       maxValue: 1,
       unlocked: totalCharacters > 0,
       reward: "+200 XP",
+      expReward: 200,
     },
   ], [userStreak, totalCharacters, accuracy, level, userQuizCount]);
+
+  const claimedAchievementsList = useMemo(() => {
+    return progress.claimedAchievements || [];
+  }, [progress.claimedAchievements]);
+
+  const readyToClaimCount = useMemo(() => {
+    return allAchievementsList.filter(
+      (a) => a.unlocked && !claimedAchievementsList.includes(a.id)
+    ).length;
+  }, [allAchievementsList, claimedAchievementsList]);
 
   const filteredAchievements = useMemo(() => {
     if (activeAchievementTab === "all") return allAchievementsList;
@@ -4428,8 +4531,37 @@ export default function ProfilePage() {
                 <AchievementSummaryCard style={{ marginTop: "1rem" }}>
                   <div className="stat-info">
                     <span className="stat-title">Pencapaian Terbuka</span>
-                    <span className="stat-value">
-                      🏆 {unlockedCount} / {allAchievementsList.length} Badge
+                    <span
+                      className="stat-value"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <span>
+                        🏆 {unlockedCount} / {allAchievementsList.length} Badge
+                      </span>
+                      {readyToClaimCount > 0 && (
+                        <span
+                          style={{
+                            fontSize: "0.75rem",
+                            background: "rgba(245, 158, 11, 0.2)",
+                            color: "#fbbf24",
+                            border: "1px solid rgba(245, 158, 11, 0.5)",
+                            padding: "0.2rem 0.55rem",
+                            borderRadius: "999px",
+                            fontWeight: 800,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.3rem",
+                            boxShadow: "0 0 10px rgba(245, 158, 11, 0.3)",
+                          }}
+                        >
+                          🎁 {readyToClaimCount} Siap Diklaim
+                        </span>
+                      )}
                     </span>
                   </div>
                   <div className="progress-wrap">
@@ -4480,6 +4612,7 @@ export default function ProfilePage() {
                     onClick={() => setActiveAchievementTab("all")}
                   >
                     Semua ({allAchievementsList.length})
+                    {readyToClaimCount > 0 && " 🎁"}
                   </AchievementTabBtn>
                   <AchievementTabBtn
                     $active={activeAchievementTab === "streak"}
@@ -4527,11 +4660,15 @@ export default function ProfilePage() {
                       100,
                       Math.round((a.currentValue / a.maxValue) * 100)
                     );
+                    const isClaimed = claimedAchievementsList.includes(a.id);
+                    const canClaim = a.unlocked && !isClaimed;
+
                     return (
                       <UpgradedAchievementCard
                         key={a.id}
                         $unlocked={a.unlocked}
                         $tier={a.tier}
+                        $canClaim={canClaim}
                         onClick={() => setSelectedAchievement(a)}
                       >
                         <TierPill $tier={a.tier}>
@@ -4546,7 +4683,11 @@ export default function ProfilePage() {
                         <p>{a.desc}</p>
 
                         {a.unlocked ? (
-                          <span className="unlocked-tag">✓ Terbuka</span>
+                          isClaimed ? (
+                            <span className="unlocked-tag">✓ Terbuka</span>
+                          ) : (
+                            <span className="claim-tag">🎁 Klaim Hadiah</span>
+                          )
                         ) : (
                           <div style={{ width: "100%", marginTop: "0.2rem" }}>
                             <div className="mini-progress-bar">
@@ -4951,74 +5092,182 @@ export default function ProfilePage() {
             <h2>{selectedAchievement.title}</h2>
             <p>{selectedAchievement.desc}</p>
 
-            <div className="reward-box">
-              🎁 Hadiah XP: {selectedAchievement.reward}
-            </div>
+            {(() => {
+              const isClaimed = selectedAchievement
+                ? claimedAchievementsList.includes(selectedAchievement.id)
+                : false;
 
-            <div style={{ width: "100%", textAlign: "left" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontSize: "0.82rem",
-                  fontWeight: 700,
-                  color: "var(--text-secondary)",
-                  marginBottom: "0.4rem",
-                }}
-              >
-                <span>Progres Kamu</span>
-                <span>
-                  {selectedAchievement.currentValue} / {selectedAchievement.maxValue}
-                </span>
-              </div>
+              return (
+                <>
+                  <div
+                    className="reward-box"
+                    style={{
+                      background: isClaimed
+                        ? "rgba(16, 185, 129, 0.15)"
+                        : "rgba(245, 158, 11, 0.12)",
+                      borderColor: isClaimed
+                        ? "rgba(16, 185, 129, 0.4)"
+                        : "rgba(245, 158, 11, 0.3)",
+                      color: isClaimed ? "#34d399" : "#fbbf24",
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    {isClaimed
+                      ? `✓ Hadiah Terklaim: ${selectedAchievement.reward}`
+                      : `🎁 Hadiah XP: ${selectedAchievement.reward}`}
+                  </div>
 
-              <div
-                style={{
-                  width: "100%",
-                  height: "8px",
-                  background: "rgba(255, 255, 255, 0.1)",
-                  borderRadius: "999px",
-                  overflow: "hidden",
-                }}
-              >
-                <div
-                  style={{
-                    height: "100%",
-                    width: `${Math.min(
-                      100,
-                      Math.round(
-                        (selectedAchievement.currentValue /
-                          selectedAchievement.maxValue) *
-                          100
-                      )
-                    )}%`,
-                    background:
-                      "linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)",
-                    borderRadius: "999px",
-                  }}
-                />
-              </div>
-            </div>
+                  <div style={{ width: "100%", textAlign: "left" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontSize: "0.82rem",
+                        fontWeight: 700,
+                        color: "var(--text-secondary)",
+                        marginBottom: "0.4rem",
+                      }}
+                    >
+                      <span>Progres Kamu</span>
+                      <span>
+                        {selectedAchievement.currentValue} / {selectedAchievement.maxValue}
+                      </span>
+                    </div>
 
-            <button
-              onClick={() => setSelectedAchievement(null)}
-              style={{
-                width: "100%",
-                marginTop: "1.5rem",
-                background: selectedAchievement.unlocked
-                  ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
-                  : "linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%)",
-                color: "#ffffff",
-                border: "none",
-                padding: "0.75rem",
-                borderRadius: "14px",
-                fontWeight: 800,
-                fontSize: "0.95rem",
-                cursor: "pointer",
-              }}
-            >
-              {selectedAchievement.unlocked ? "✓ Pencapaian Terbuka!" : "Tutup"}
-            </button>
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "8px",
+                        background: "rgba(255, 255, 255, 0.1)",
+                        borderRadius: "999px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: "100%",
+                          width: `${Math.min(
+                            100,
+                            Math.round(
+                              (selectedAchievement.currentValue /
+                                selectedAchievement.maxValue) *
+                                100
+                            )
+                          )}%`,
+                          background:
+                            "linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)",
+                          borderRadius: "999px",
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {selectedAchievement.unlocked ? (
+                    !isClaimed ? (
+                      <button
+                        onClick={() => {
+                          const ok = claimAchievementReward(
+                            selectedAchievement.id,
+                            selectedAchievement.expReward,
+                            selectedAchievement.title
+                          );
+                          if (ok) {
+                            playSuccessChime();
+                            confetti({
+                              particleCount: 130,
+                              spread: 80,
+                              origin: { y: 0.6 },
+                              colors: [
+                                "#f59e0b",
+                                "#10b981",
+                                "#3b82f6",
+                                "#ec4899",
+                                "#fbbf24",
+                              ],
+                            });
+                          }
+                        }}
+                        style={{
+                          width: "100%",
+                          marginTop: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
+                          color: "#ffffff",
+                          border: "none",
+                          padding: "0.85rem",
+                          borderRadius: "14px",
+                          fontWeight: 800,
+                          fontSize: "0.98rem",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "0.5rem",
+                          boxShadow:
+                            "0 6px 22px -2px rgba(245, 158, 11, 0.5)",
+                          transition:
+                            "transform 0.15s ease, box-shadow 0.15s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = "scale(1.02)";
+                          e.currentTarget.style.boxShadow =
+                            "0 8px 26px -2px rgba(245, 158, 11, 0.7)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = "scale(1)";
+                          e.currentTarget.style.boxShadow =
+                            "0 6px 22px -2px rgba(245, 158, 11, 0.5)";
+                        }}
+                      >
+                        🎁 Klaim Hadiah (+{selectedAchievement.expReward} XP)
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setSelectedAchievement(null)}
+                        style={{
+                          width: "100%",
+                          marginTop: "1.5rem",
+                          background:
+                            "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                          color: "#ffffff",
+                          border: "none",
+                          padding: "0.85rem",
+                          borderRadius: "14px",
+                          fontWeight: 800,
+                          fontSize: "0.95rem",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "0.4rem",
+                          boxShadow: "0 4px 15px rgba(16, 185, 129, 0.35)",
+                        }}
+                      >
+                        ✓ Hadiah Sudah Diklaim
+                      </button>
+                    )
+                  ) : (
+                    <button
+                      onClick={() => setSelectedAchievement(null)}
+                      style={{
+                        width: "100%",
+                        marginTop: "1.5rem",
+                        background: "rgba(255, 255, 255, 0.08)",
+                        color: "var(--text-secondary)",
+                        border: "1px solid rgba(255, 255, 255, 0.12)",
+                        padding: "0.85rem",
+                        borderRadius: "14px",
+                        fontWeight: 700,
+                        fontSize: "0.95rem",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Tutup
+                    </button>
+                  )}
+                </>
+              );
+            })()}
           </AchievementModalCard>
         </AchievementModalOverlay>
       )}

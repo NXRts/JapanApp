@@ -67,6 +67,8 @@ const ProgressDataSchema = z.object({
   showFurigana: z.boolean().optional(),
   profile: UserProfileSchema.optional(),
   hasSetName: z.boolean().optional(),
+  claimedQuests: z.array(z.string()).optional(),
+  claimedAchievements: z.array(z.string()).optional(),
 });
 
 export async function POST(request: NextRequest) {
