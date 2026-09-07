@@ -1693,7 +1693,10 @@ const AchievementGrid = styled.div<{ $isDragging?: boolean }>`
   display: flex;
   gap: 1rem;
   overflow-x: auto;
-  padding-bottom: 0.75rem;
+  padding: 0.85rem 0.5rem 1rem 0.5rem;
+  margin-top: -0.35rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
@@ -1741,7 +1744,7 @@ const AchievementCategoryBar = styled.div`
   align-items: center;
   gap: 0.5rem;
   overflow-x: auto;
-  padding: 0.5rem 0 1rem;
+  padding: 0.5rem 0 0.5rem;
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
@@ -1874,7 +1877,9 @@ const UpgradedAchievementCard = styled(Card)<{
   align-items: center;
   gap: 0.4rem;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.25s ease;
 
   opacity: ${({ $unlocked }) => ($unlocked ? 1 : 0.65)};
   background: ${({ $unlocked }) =>
@@ -1882,20 +1887,60 @@ const UpgradedAchievementCard = styled(Card)<{
       ? "linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%)"
       : "rgba(15, 23, 42, 0.5)"};
 
-  ${({ $unlocked, $tier }) =>
-    $unlocked
-      ? $tier === "diamond"
-        ? "border: 1.5px solid rgba(59, 130, 246, 0.6); box-shadow: 0 4px 20px rgba(59, 130, 246, 0.25);"
-        : $tier === "gold"
-        ? "border: 1.5px solid rgba(245, 158, 11, 0.55); box-shadow: 0 4px 18px rgba(245, 158, 11, 0.2);"
-        : $tier === "silver"
-        ? "border: 1.5px solid rgba(148, 163, 184, 0.45);"
-        : "border: 1.5px solid rgba(205, 127, 50, 0.45);"
-      : "border: 1px solid rgba(255, 255, 255, 0.08);"}
+  ${({ $unlocked, $tier }) => {
+    if (!$unlocked) {
+      return `
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        &:hover {
+          border-color: rgba(255, 255, 255, 0.18);
+          box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.25);
+        }
+      `;
+    }
+    if ($tier === "diamond") {
+      return `
+        border: 1.5px solid rgba(59, 130, 246, 0.5);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2), 0 0 12px rgba(59, 130, 246, 0.15);
+        &:hover {
+          border-color: rgba(96, 165, 250, 0.85);
+          box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.25), 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+      `;
+    }
+    if ($tier === "gold") {
+      return `
+        border: 1.5px solid rgba(245, 158, 11, 0.5);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2), 0 0 12px rgba(245, 158, 11, 0.15);
+        &:hover {
+          border-color: rgba(251, 191, 36, 0.85);
+          box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.25), 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+      `;
+    }
+    if ($tier === "silver") {
+      return `
+        border: 1.5px solid rgba(148, 163, 184, 0.4);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2), 0 0 10px rgba(148, 163, 184, 0.12);
+        &:hover {
+          border-color: rgba(203, 213, 225, 0.75);
+          box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.25), 0 0 18px rgba(148, 163, 184, 0.22);
+        }
+      `;
+    }
+    // Bronze
+    return `
+      border: 1.5px solid rgba(205, 127, 50, 0.45);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2), 0 0 10px rgba(205, 127, 50, 0.12);
+      &:hover {
+        border-color: rgba(245, 158, 11, 0.75);
+        box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.25), 0 0 18px rgba(205, 127, 50, 0.28);
+      }
+    `;
+  }}
 
   &:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
   }
 
   .icon-box {
