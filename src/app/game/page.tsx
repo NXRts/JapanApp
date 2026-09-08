@@ -407,45 +407,59 @@ const CategoryTabs = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
   border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+
   &::-webkit-scrollbar {
     display: none;
   }
 
-  @media (max-width: 768px) {
-    width: 100%;
+  @media (max-width: 960px) {
     padding-bottom: 6px;
+    padding-right: 1.5rem;
+
+    &::after {
+      content: "";
+      flex: 0 0 1rem;
+    }
   }
 `;
 
 const CategoryTabBtn = styled.button<{ $active: boolean }>`
-  padding: 0.6rem 1.1rem;
+  flex: 1 1 0px;
+  min-width: max-content;
+  padding: 0.65rem 0.85rem;
   border: none;
-  flex-shrink: 0;
   background: ${({ $active }) =>
     $active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.15)" : "transparent"};
   color: ${({ $active }) =>
     $active ? "var(--primary)" : "var(--text-secondary)"};
   font-weight: ${({ $active }) => ($active ? "800" : "600")};
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   border-radius: 10px;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 6px;
 
   &:hover {
     color: var(--foreground);
+    background: ${({ $active }) =>
+      $active
+        ? "rgba(var(--primary-rgb, 79, 70, 229), 0.22)"
+        : "rgba(var(--foreground-rgb, 255, 255, 255), 0.05)"};
   }
 
   @media (max-width: 640px) {
-    padding: 0.42rem 0.75rem;
+    padding: 0.42rem 0.65rem;
     font-size: 0.78rem;
     border-radius: 8px;
   }
@@ -1130,13 +1144,13 @@ export default function GamesHubPage() {
               $active={activeTab === "all"}
               onClick={() => setActiveTab("all")}
             >
-              🎮 Semua Game ({GAME_CATALOG.length})
+              🎮 Semua ({GAME_CATALOG.length})
             </CategoryTabBtn>
             <CategoryTabBtn
               $active={activeTab === "reflex"}
               onClick={() => setActiveTab("reflex")}
             >
-              ⚡ Refleks & Kecepatan
+              ⚡ Refleks
             </CategoryTabBtn>
             <CategoryTabBtn
               $active={activeTab === "puzzle"}
@@ -1148,13 +1162,13 @@ export default function GamesHubPage() {
               $active={activeTab === "grammar"}
               onClick={() => setActiveTab("grammar")}
             >
-              ⛩️ Tata Bahasa & Kalimat
+              ⛩️ Tata Bahasa
             </CategoryTabBtn>
             <CategoryTabBtn
               $active={activeTab === "drill"}
               onClick={() => setActiveTab("drill")}
             >
-              📖 Konjugasi Kata
+              📖 Konjugasi
             </CategoryTabBtn>
             <CategoryTabBtn
               $active={activeTab === "quiz"}
@@ -1166,7 +1180,7 @@ export default function GamesHubPage() {
               $active={activeTab === "favorites"}
               onClick={() => setActiveTab("favorites")}
             >
-              ⭐ Favorit Saya ({bookmarks.length})
+              ⭐ Favorit ({bookmarks.length})
             </CategoryTabBtn>
           </CategoryTabs>
         </ControlsSection>

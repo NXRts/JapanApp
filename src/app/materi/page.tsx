@@ -396,6 +396,7 @@ const CategoryTabs = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
   border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
   overflow-x: auto;
@@ -412,9 +413,10 @@ const CategoryTabs = styled.div`
 `;
 
 const CategoryTabBtn = styled.button<{ $active: boolean }>`
+  flex: 1 1 0px;
+  min-width: max-content;
   padding: 0.6rem 1.1rem;
   border: none;
-  flex-shrink: 0;
   background: ${({ $active }) =>
     $active ? "rgba(var(--primary-rgb, 79, 70, 229), 0.15)" : "transparent"};
   color: ${({ $active }) => ($active ? "var(--primary)" : "var(--text-secondary)")};
@@ -426,13 +428,24 @@ const CategoryTabBtn = styled.button<{ $active: boolean }>`
   transition: all 0.15s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 6px;
 
   &:hover {
     color: var(--foreground);
+    background: ${({ $active }) =>
+      $active
+        ? "rgba(var(--primary-rgb, 79, 70, 229), 0.22)"
+        : "rgba(var(--foreground-rgb, 255, 255, 255), 0.05)"};
+  }
+
+  @media (max-width: 768px) {
+    flex: 0 0 auto;
   }
 
   @media (max-width: 640px) {
+    flex: 0 0 auto;
     padding: 0.42rem 0.75rem;
     font-size: 0.78rem;
     border-radius: 8px;
