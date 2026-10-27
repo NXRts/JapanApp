@@ -521,6 +521,17 @@ export function Footer() {
               </span>{" "}
               Ko-fi
             </SupportButton>
+            <SupportButton
+              href="https://yapp.ink/yusufarrofi21"
+              target="_blank"
+              rel="noopener noreferrer"
+              suppressHydrationWarning
+            >
+              <span className="icon" suppressHydrationWarning>
+                <CoffeeIcon size={18} />
+              </span>{" "}
+              Yapp
+            </SupportButton>
           </SupportButtonGroup>
         </FooterColumn>
 

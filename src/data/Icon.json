@@ -11,7 +11,7 @@
       "name": "CoffeeIcon",
       "type": "react-icon-component",
       "filePath": "src/components/icons/AppIcons.tsx",
-      "usage": "Donation and creator support buttons (Saweria & Ko-fi)",
+      "usage": "Donation and creator support buttons (Saweria, Ko-fi & Yapp)",
       "pageLocation": "Footer (/)"
     },
     {
